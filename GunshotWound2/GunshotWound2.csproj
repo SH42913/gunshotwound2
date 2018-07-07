@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B6AB6B48-B388-427D-8CE9-2A06E3F63736}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GunshotWound2</RootNamespace>
+    <AssemblyName>GunshotWound2</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Components\DamageComponents\BodyDamageComponents\BodyDamageComponent.cs" />
+    <Compile Include="Components\DamageComponents\BodyDamageComponents\BodyDamageRequestComponent.cs" />
+    <Compile Include="Components\DamageComponents\WeaponDamageComponents\BaseWeaponDamageComponent.cs" />
+    <Compile Include="Components\DamageComponents\WeaponDamageComponents\CuttingDamageComponent.cs" />
+    <Compile Include="Components\DamageComponents\WeaponDamageComponents\HeavyImpactDamageComponent.cs" />
+    <Compile Include="Components\DamageComponents\WeaponDamageComponents\HighCaliberDamageComponent.cs" />
+    <Compile Include="Components\DamageComponents\WeaponDamageComponents\LightImpactDamageComponent.cs" />
+    <Compile Include="Components\DamageComponents\WeaponDamageComponents\MediumCaliberDamageComponent.cs" />
+    <Compile Include="Components\DamageComponents\WeaponDamageComponents\OtherDamageComponent.cs" />
+    <Compile Include="Components\DamageComponents\WeaponDamageComponents\ShotgunDamageComponent.cs" />
+    <Compile Include="Components\DamageComponents\WeaponDamageComponents\SmallCaliberDamageComponent.cs" />
+    <Compile Include="Components\NpcComponents\NpcComponent.cs" />
+    <Compile Include="Components\PlayerComponents\HelmetRequestComponent.cs" />
+    <Compile Include="Components\PlayerComponents\PlayerComponent.cs" />
+    <Compile Include="Components\UiComponents\CheckPedComponent.cs" />
+    <Compile Include="Components\UiComponents\NotificationComponent.cs" />
+    <Compile Include="Components\WoundComponent.cs" />
+    <Compile Include="Components\WoundComponents\BleedingComponent.cs" />
+    <Compile Include="Components\WoundComponents\CriticalWoundComponents\ArmsCriticalComponent.cs" />
+    <Compile Include="Components\WoundComponents\CriticalWoundComponents\BaseCriticalComponent.cs" />
+    <Compile Include="Components\WoundComponents\CriticalWoundComponents\GutsCritcalComponent.cs" />
+    <Compile Include="Components\WoundComponents\CriticalWoundComponents\HeartCriticalComponent.cs" />
+    <Compile Include="Components\WoundComponents\CriticalWoundComponents\LegsCriticalComponent.cs" />
+    <Compile Include="Components\WoundComponents\CriticalWoundComponents\LungsCriticalComponent.cs" />
+    <Compile Include="Components\WoundComponents\CriticalWoundComponents\NervesCriticalComponent.cs" />
+    <Compile Include="Components\WoundComponents\CriticalWoundComponents\StomachCriticalComponent.cs" />
+    <Compile Include="Components\WoundComponents\InstantDamageComponent.cs" />
+    <Compile Include="Components\WoundComponents\PainComponent.cs" />
+    <Compile Include="Components\WoundComponents\WoundedPedComponent.cs" />
+    <Compile Include="Configs\MainConfig.cs" />
+    <Compile Include="Configs\NpcConfig.cs" />
+    <Compile Include="Configs\PlayerConfig.cs" />
+    <Compile Include="Configs\WoundConfig.cs" />
+    <Compile Include="GunshotWoundScript.cs" />
+    <Compile Include="RandomExtensions.cs" />
+    <Compile Include="Systems\HitSystems\BodyDamageSystems\BodyDamageSystem.cs" />
+    <Compile Include="Systems\HitSystems\HitCleanSystem.cs" />
+    <Compile Include="Systems\HitSystems\WeaponDamageSystems\BaseWeaponDamageSystem.cs" />
+    <Compile Include="Systems\HitSystems\WeaponDamageSystems\CuttingDamageSystem.cs" />
+    <Compile Include="Systems\HitSystems\WeaponDamageSystems\HeavyImpactDamageSystem.cs" />
+    <Compile Include="Systems\HitSystems\WeaponDamageSystems\HighCaliberDamageSystem.cs" />
+    <Compile Include="Systems\HitSystems\WeaponDamageSystems\LightImpactDamageSystem.cs" />
+    <Compile Include="Systems\HitSystems\WeaponDamageSystems\MediumCaliberDamageSystem.cs" />
+    <Compile Include="Systems\HitSystems\WeaponDamageSystems\OtherDamageSystem.cs" />
+    <Compile Include="Systems\HitSystems\WeaponDamageSystems\ShotgunDamageSystem.cs" />
+    <Compile Include="Systems\HitSystems\WeaponDamageSystems\SmallCaliberDamageSystem.cs" />
+    <Compile Include="Systems\HitSystems\WeaponHitSystems\BaseWeaponHitSystem.cs" />
+    <Compile Include="Systems\HitSystems\WeaponHitSystems\CuttingHitSystem.cs" />
+    <Compile Include="Systems\HitSystems\WeaponHitSystems\HeavyImpactHitSystem.cs" />
+    <Compile Include="Systems\HitSystems\WeaponHitSystems\HighCaliberHitSystem.cs" />
+    <Compile Include="Systems\HitSystems\WeaponHitSystems\LightImpactHitSystem.cs" />
+    <Compile Include="Systems\HitSystems\WeaponHitSystems\MediumCaliberHitSystem.cs" />
+    <Compile Include="Systems\HitSystems\WeaponHitSystems\OtherHitSystem.cs" />
+    <Compile Include="Systems\HitSystems\WeaponHitSystems\ShotgunHitSystem.cs" />
+    <Compile Include="Systems\HitSystems\WeaponHitSystems\SmallCaliberHitSystem.cs" />
+    <Compile Include="Systems\NpcSystems\NpcSystem.cs" />
+    <Compile Include="Systems\PlayerSystems\HelmetRequestSystem.cs" />
+    <Compile Include="Systems\PlayerSystems\PlayerSystem.cs" />
+    <Compile Include="Systems\UiSystems\CheckPedSystem.cs" />
+    <Compile Include="Systems\UiSystems\NotificationSystem.cs" />
+    <Compile Include="Systems\WoundSystems\BleedingSystem.cs" />
+    <Compile Include="Systems\WoundSystems\CriticalWoundSystems\ArmsCriticalSystem.cs" />
+    <Compile Include="Systems\WoundSystems\CriticalWoundSystems\BaseCriticalSystem.cs" />
+    <Compile Include="Systems\WoundSystems\CriticalWoundSystems\GutsCriticalSystem.cs" />
+    <Compile Include="Systems\WoundSystems\CriticalWoundSystems\HeartCriticalSystem.cs" />
+    <Compile Include="Systems\WoundSystems\CriticalWoundSystems\LegsCriticalSystem.cs" />
+    <Compile Include="Systems\WoundSystems\CriticalWoundSystems\LungsCriticalSystem.cs" />
+    <Compile Include="Systems\WoundSystems\CriticalWoundSystems\NervesCriticalSystem.cs" />
+    <Compile Include="Systems\WoundSystems\CriticalWoundSystems\StomachCriticalSystem.cs" />
+    <Compile Include="Systems\WoundSystems\InstantDamageSystem.cs" />
+    <Compile Include="Systems\WoundSystems\PainSystem.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+         Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
+</Project>
