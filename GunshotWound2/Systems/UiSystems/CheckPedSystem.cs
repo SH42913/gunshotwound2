@@ -93,15 +93,15 @@ namespace GunshotWound2.Systems.UiSystems
                     var wound = _wounds.Components1[woundIndex];
                     if(pedEntity != wound.PedEntity) continue;
                     
-                    if (wound.BleedSeverity > 3f)
+                    if (wound.BleedSeverity > 1.5f)
                     {
                         wounds += $"~r~{wound.Name}~s~\n";
                     }
-                    else if (wound.BleedSeverity > 2f)
+                    else if (wound.BleedSeverity > 1f)
                     {
                         wounds += $"~o~{wound.Name}~s~\n";
                     }
-                    else if (wound.BleedSeverity > 1f)
+                    else if (wound.BleedSeverity > 0.5f)
                     {
                         wounds += $"~y~{wound.Name}\n";
                     }

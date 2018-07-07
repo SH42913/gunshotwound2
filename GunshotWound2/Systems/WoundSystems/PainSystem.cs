@@ -1,4 +1,5 @@
-﻿using GTA.Native;
+﻿using System;
+using GTA.Native;
 using GunshotWound2.Components.WoundComponents;
 using GunshotWound2.Configs;
 using LeopotamGroup.Ecs;
@@ -24,6 +25,10 @@ namespace GunshotWound2.Systems.WoundSystems
                 {
                     var additionalPain = _components.Components1[i].PainAmount;
                     woundedPed.PainMeter += additionalPain;
+                    if (woundedPed.PainMeter > woundedPed.MaximalPain)
+                    {
+                        woundedPed.PainMeter = woundedPed.MaximalPain;
+                    }
 
                     var painPercent = woundedPed.PainMeter / woundedPed.MaximalPain;
                     var backPercent = 1 - painPercent;

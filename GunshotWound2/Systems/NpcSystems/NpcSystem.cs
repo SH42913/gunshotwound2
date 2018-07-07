@@ -57,7 +57,7 @@ namespace GunshotWound2.Systems.NpcSystems
                 woundPed.ThisPed = nearbyPed;
                 woundPed.Armor = nearbyPed.Armor;
                 woundPed.IsMale = nearbyPed.Gender == Gender.Male;
-                woundPed.Health = _random.Next(30, 100);
+                woundPed.Health = _random.Next(50, (int) _config.Data.MaximalHealth);
                 woundPed.MaximalPain = _random.Next(50, 100);
 
                 nearbyPed.CanWrithe = false;

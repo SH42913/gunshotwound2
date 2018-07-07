@@ -61,6 +61,7 @@
     <Compile Include="Components\DamageComponents\WeaponDamageComponents\OtherDamageComponent.cs" />
     <Compile Include="Components\DamageComponents\WeaponDamageComponents\ShotgunDamageComponent.cs" />
     <Compile Include="Components\DamageComponents\WeaponDamageComponents\SmallCaliberDamageComponent.cs" />
+    <Compile Include="Components\HealComponent.cs" />
     <Compile Include="Components\NpcComponents\NpcComponent.cs" />
     <Compile Include="Components\PlayerComponents\HelmetRequestComponent.cs" />
     <Compile Include="Components\PlayerComponents\PlayerComponent.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Configs\WoundConfig.cs" />
     <Compile Include="GunshotWound2.cs" />
     <Compile Include="RandomExtensions.cs" />
+    <Compile Include="Systems\HealSystem.cs" />
     <Compile Include="Systems\HitSystems\BodyDamageSystems\BodyDamageSystem.cs" />
     <Compile Include="Systems\HitSystems\HitCleanSystem.cs" />
     <Compile Include="Systems\HitSystems\WeaponDamageSystems\BaseWeaponDamageSystem.cs" />

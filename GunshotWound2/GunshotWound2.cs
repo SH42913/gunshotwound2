@@ -3,10 +3,12 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using GTA;
 using GTA.Native;
+using GunshotWound2.Components;
 using GunshotWound2.Components.PlayerComponents;
 using GunshotWound2.Components.UiComponents;
 using GunshotWound2.Components.WoundComponents;
 using GunshotWound2.Configs;
+using GunshotWound2.Systems;
 using GunshotWound2.Systems.HitSystems;
 using GunshotWound2.Systems.HitSystems.BodyDamageSystems;
 using GunshotWound2.Systems.HitSystems.WeaponDamageSystems;
@@ -59,8 +61,11 @@ namespace GunshotWound2
                 case Keys.H:
                     _ecsWorld.CreateEntityWith<HelmetRequestComponent>();
                     break;
-                case Keys.T:
-                    Test();
+                case Keys.I:
+                    CheckPlayer();
+                    break;
+                case Keys.J:
+                    HealPlayer();
                     break;
             }
         }
@@ -110,12 +115,12 @@ namespace GunshotWound2
                 .Add(new HitCleanSystem())
                 .Add(new HelmetRequestSystem())
                 .Add(new CheckPedSystem())
+                .Add(new HealSystem())
                 .Add(new NotificationSystem());
             
             _updateSystems.Initialize();
             
-            Function.Call(Hash._STOP_ALL_SCREEN_EFFECTS);
-            Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, Game.Player, 0.1f);
+            Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, Game.Player, 0.01f);
             Tick += OnTick;
             KeyUp += OnKeyUp;
             
@@ -136,6 +141,7 @@ namespace GunshotWound2
             _npcConfig.AddingPedRange = 5f;
             _npcConfig.RemovePedRange = _npcConfig.AddingPedRange * 2f;
             _npcConfig.ShowEnemyCriticalMessages = true;
+            _npcConfig.MaximalHealth = 100;
 
             _woundConfig.StopBleedingAmount = 0.005f;
             _woundConfig.MoveRateOnNervesDamage = 0.8f;
@@ -179,6 +185,8 @@ namespace GunshotWound2
                                     $"Ms: {_debugStopwatch.ElapsedMilliseconds}";
             UI.ShowSubtitle(debugSubtitles);
         }
+        
+        
 
         private void ReduceRange(float value)
         {
@@ -198,11 +206,20 @@ namespace GunshotWound2
             SendMessage($"Adding Range: {_npcConfig.AddingPedRange}\n" +
                         $"Removing Range: {_npcConfig.RemovePedRange}");
         }
+        
+        
 
-        private void Test()
+        private void CheckPlayer()
         {
             _ecsWorld.CreateEntityWith<CheckPedComponent>().PedEntity = _playerConfig.PlayerEntity;
         }
+
+        private void HealPlayer()
+        {
+            _ecsWorld.CreateEntityWith<HealComponent>().PedEntity = _playerConfig.PlayerEntity;
+        }
+
+        
 
         private void SendMessage(string message, NotifyLevels level = NotifyLevels.COMMON)
         {

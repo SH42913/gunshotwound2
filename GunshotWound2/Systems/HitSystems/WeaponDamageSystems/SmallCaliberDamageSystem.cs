@@ -29,27 +29,27 @@ namespace GunshotWound2.Systems.HitSystems.WeaponDamageSystems
             {
                 {GrazeInjury, 1},
                 {LongShallow, 1},
-                {Fragmentation, 2},
-                {ArterySevered, 2},
-                {NeckCase1, 2},
+                {Fragmentation, 1},
+                {ArterySevered, 1},
+                {NeckCase1, 1},
             };
             
             UpperBodyActions = new StaticWeightedRandomizer<Action<int>>
             {
                 {LongShallow, 1},
-                {InternalBleeding, 2},
-                {UpperBodyCase1, 3},
-                {UpperBodyCase2, 3},
-                {UpperBodyCase3, 3},
+                {InternalBleeding, 1},
+                {UpperBodyCase1, 1},
+                {UpperBodyCase2, 1},
+                {UpperBodyCase3, 1},
             };
             
             LowerBodyActions = new StaticWeightedRandomizer<Action<int>>
             {
                 {LongShallow, 1},
-                {InternalBleeding, 2},
-                {LowerBodyCase1, 3},
-                {LowerBodyCase2, 3},
-                {LowerBodyCase3, 3},
+                {InternalBleeding, 1},
+                {LowerBodyCase1, 1},
+                {LowerBodyCase2, 1},
+                {LowerBodyCase3, 1},
             };
             
             ArmActions = new StaticWeightedRandomizer<Action<int>>
@@ -57,8 +57,8 @@ namespace GunshotWound2.Systems.HitSystems.WeaponDamageSystems
                 {GrazeInjury, 1},
                 {LongShallow, 1},
                 {ThroughAndThrough, 1},
-                {ArterySevered, 2},
-                {ArmCase1, 3},
+                {ArterySevered, 1},
+                {ArmCase1, 1},
             };
             
             LegActions = new StaticWeightedRandomizer<Action<int>>
@@ -66,36 +66,36 @@ namespace GunshotWound2.Systems.HitSystems.WeaponDamageSystems
                 {GrazeInjury, 1},
                 {LongShallow, 1},
                 {ThroughAndThrough, 1},
-                {ArterySevered, 2},
-                {LegCase1, 3},
+                {ArterySevered, 1},
+                {LegCase1, 1},
             };
         }
 
         private void GrazeInjury(int entity)
         {
-            InstantDamage(entity, 10f);
+            InstantDamage(entity, 15f);
             CreateBleeding(entity, 0.5f, "Graze Injury");
             SendMessage(entity, "Graze injury from ricochet/fragment");
         }
 
         private void LongShallow(int entity)
         {
-            InstantDamage(entity, 10f);
-            CreateBleeding(entity, 0.8f, "Long Shallow");
+            InstantDamage(entity, 25f);
+            CreateBleeding(entity, 0.8f, "Long Shallow GSW");
             SendMessage(entity, "Long shallow GSW, superficial damage");
         }
 
         private void InternalBleeding(int entity)
         {
-            InstantDamage(entity, 20f);
+            InstantDamage(entity, 30f);
             CreateBleeding(entity, 1.5f, "Internal Bleeding");
             SendMessage(entity, "Internal bleeding from GSW path");
         }
 
         private void ThroughAndThrough(int entity)
         {
-            InstantDamage(entity, 15f);
-            CreateBleeding(entity, 1.8f, "Hole");
+            InstantDamage(entity, 25f);
+            CreateBleeding(entity, 1.8f, "Through-and-through GSW");
             SendMessage(entity, "Through-and-through small caliber gunshot wound");
         }
 
@@ -109,7 +109,7 @@ namespace GunshotWound2.Systems.HitSystems.WeaponDamageSystems
         private void ArterySevered(int entity)
         {
             InstantDamage(entity, 20f);
-            CreateBleeding(entity, 3f, "Artery");
+            CreateBleeding(entity, 3f, "Severed Artery");
             SendMessage(entity, "Artery severed", NotifyLevels.EMERGENCY);
         }
 
@@ -165,14 +165,14 @@ namespace GunshotWound2.Systems.HitSystems.WeaponDamageSystems
         private void UpperBodyCase2(int entity)
         {
             InstantDamage(entity, 35f);
-            CreateBleeding(entity, 1.5f, "Destroyed lung");
+            CreateBleeding(entity, 1.5f, "Upper Body GSW");
             SendMessage(entity, "Punctured or collapsed lung detected");
             EcsWorld.CreateEntityWith<LungsCriticalComponent>().PedEntity = entity;
         }
         private void UpperBodyCase3(int entity)
         {
             InstantDamage(entity, 45f);
-            CreateBleeding(entity, 3.5f, "Destroyed Heart");
+            CreateBleeding(entity, 3.5f, "Upper Body GSW");
             SendMessage(entity, "Punctured heart detected");
             EcsWorld.CreateEntityWith<HeartCriticalComponent>().PedEntity = entity;
         }
@@ -184,18 +184,18 @@ namespace GunshotWound2.Systems.HitSystems.WeaponDamageSystems
         private void LowerBodyCase1(int entity)
         {
             InstantDamage(entity, 30f);
-            CreateBleeding(entity, 1.5f, "Damaged Stomach");
+            CreateBleeding(entity, 1.5f, "Lower Body GSW");
             SendMessage(entity, "Punctured stomach detected");
         }
         private void LowerBodyCase2(int entity)
         {
             InstantDamage(entity, 30f);
-            CreateBleeding(entity, 1.5f, "Damaged Guts");
+            CreateBleeding(entity, 1.5f, "Lower Body GSW");
             SendMessage(entity, "Punctured guts detected");
         }
         private void LowerBodyCase3(int entity)
         {
-            InstantDamage(entity, 30f);
+            InstantDamage(entity, 20f);
             CreateBleeding(entity, 1.5f, "Lost balls");
             SendMessage(entity, "Bullet torn apart your balls");
         }
