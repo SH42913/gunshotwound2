@@ -3,24 +3,24 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using GTA;
 using GTA.Native;
-using GunshotWoundEcs.Components.PlayerComponents;
-using GunshotWoundEcs.Components.UiComponents;
-using GunshotWoundEcs.Components.WoundComponents;
-using GunshotWoundEcs.Configs;
-using GunshotWoundEcs.Systems.HitSystems;
-using GunshotWoundEcs.Systems.HitSystems.BodyDamageSystems;
-using GunshotWoundEcs.Systems.HitSystems.WeaponDamageSystems;
-using GunshotWoundEcs.Systems.HitSystems.WeaponHitSystems;
-using GunshotWoundEcs.Systems.NpcSystems;
-using GunshotWoundEcs.Systems.PlayerSystems;
-using GunshotWoundEcs.Systems.UiSystems;
-using GunshotWoundEcs.Systems.WoundSystems;
-using GunshotWoundEcs.Systems.WoundSystems.CriticalWoundSystems;
+using GunshotWound2.Components.PlayerComponents;
+using GunshotWound2.Components.UiComponents;
+using GunshotWound2.Components.WoundComponents;
+using GunshotWound2.Configs;
+using GunshotWound2.Systems.HitSystems;
+using GunshotWound2.Systems.HitSystems.BodyDamageSystems;
+using GunshotWound2.Systems.HitSystems.WeaponDamageSystems;
+using GunshotWound2.Systems.HitSystems.WeaponHitSystems;
+using GunshotWound2.Systems.NpcSystems;
+using GunshotWound2.Systems.PlayerSystems;
+using GunshotWound2.Systems.UiSystems;
+using GunshotWound2.Systems.WoundSystems;
+using GunshotWound2.Systems.WoundSystems.CriticalWoundSystems;
 using LeopotamGroup.Ecs;
 
-namespace GunshotWoundEcs
+namespace GunshotWound2
 {
-    public class GunshotWoundScript : Script
+    public class GunshotWound2 : Script
     {
         private EcsWorld _ecsWorld;
         private EcsSystems _updateSystems;
@@ -32,7 +32,7 @@ namespace GunshotWoundEcs
         public static string LastSystem = "Nothing";
         private bool _messageWasShown;
         
-        public GunshotWoundScript()
+        public GunshotWound2()
         {
             try
             {

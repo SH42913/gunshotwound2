@@ -1,12 +1,12 @@
 ﻿using System;
 using GTA;
-using GunshotWoundEcs.Components.NpcComponents;
-using GunshotWoundEcs.Components.UiComponents;
-using GunshotWoundEcs.Components.WoundComponents;
-using GunshotWoundEcs.Configs;
+using GunshotWound2.Components.NpcComponents;
+using GunshotWound2.Components.UiComponents;
+using GunshotWound2.Components.WoundComponents;
+using GunshotWound2.Configs;
 using LeopotamGroup.Ecs;
 
-namespace GunshotWoundEcs.Systems.NpcSystems
+namespace GunshotWound2.Systems.NpcSystems
 {
     [EcsInject]
     public class NpcSystem : IEcsRunSystem

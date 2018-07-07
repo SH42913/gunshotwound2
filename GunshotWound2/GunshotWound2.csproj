@@ -21,21 +21,33 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>0</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LeopotamGroup.Ecs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>Libs\LeopotamGroup.Ecs.dll</HintPath>
+    </Reference>
+    <Reference Include="ScriptHookVDotNet2, Version=2.10.6.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\ScriptHookVDotNet2.2.10.6\lib\net452\ScriptHookVDotNet2.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Weighted Randomizer, Version=1.0.2.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\WeightedRandomizer.1.0.2\lib\net35\Weighted Randomizer.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\DamageComponents\BodyDamageComponents\BodyDamageComponent.cs" />
@@ -54,7 +66,6 @@
     <Compile Include="Components\PlayerComponents\PlayerComponent.cs" />
     <Compile Include="Components\UiComponents\CheckPedComponent.cs" />
     <Compile Include="Components\UiComponents\NotificationComponent.cs" />
-    <Compile Include="Components\WoundComponent.cs" />
     <Compile Include="Components\WoundComponents\BleedingComponent.cs" />
     <Compile Include="Components\WoundComponents\CriticalWoundComponents\ArmsCriticalComponent.cs" />
     <Compile Include="Components\WoundComponents\CriticalWoundComponents\BaseCriticalComponent.cs" />
@@ -71,7 +82,7 @@
     <Compile Include="Configs\NpcConfig.cs" />
     <Compile Include="Configs\PlayerConfig.cs" />
     <Compile Include="Configs\WoundConfig.cs" />
-    <Compile Include="GunshotWoundScript.cs" />
+    <Compile Include="GunshotWound2.cs" />
     <Compile Include="RandomExtensions.cs" />
     <Compile Include="Systems\HitSystems\BodyDamageSystems\BodyDamageSystem.cs" />
     <Compile Include="Systems\HitSystems\HitCleanSystem.cs" />
@@ -109,6 +120,22 @@
     <Compile Include="Systems\WoundSystems\CriticalWoundSystems\StomachCriticalSystem.cs" />
     <Compile Include="Systems\WoundSystems\InstantDamageSystem.cs" />
     <Compile Include="Systems\WoundSystems\PainSystem.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\scripthookvdotnet\ScriptHookVDotNet.csproj">
+      <Project>{61165c1a-6bfe-4776-b371-5a3fdb1a2ed7}</Project>
+      <Name>ScriptHookVDotNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Weighted-Item-Randomizer-for-C-Sharp\Weighted Randomizer\Weighted Randomizer.csproj">
+      <Project>{1245bc96-2f42-404c-9f11-65a4326299d6}</Project>
+      <Name>Weighted Randomizer</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Libs\LeopotamGroup.Ecs.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,11 +1,11 @@
 ﻿using System;
-using GunshotWoundEcs.Components.DamageComponents.WeaponDamageComponents;
-using GunshotWoundEcs.Components.UiComponents;
-using GunshotWoundEcs.Components.WoundComponents.CriticalWoundComponents;
+using GunshotWound2.Components.DamageComponents.WeaponDamageComponents;
+using GunshotWound2.Components.UiComponents;
+using GunshotWound2.Components.WoundComponents.CriticalWoundComponents;
 using LeopotamGroup.Ecs;
 using Weighted_Randomizer;
 
-namespace GunshotWoundEcs.Systems.HitSystems.WeaponDamageSystems
+namespace GunshotWound2.Systems.HitSystems.WeaponDamageSystems
 {
     [EcsInject]
     public class SmallCaliberDamageSystem : BaseWeaponDamageSystem<SmallCaliberDamageComponent>

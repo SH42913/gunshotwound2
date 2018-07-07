@@ -1,10 +1,10 @@
 ﻿using GTA;
-using GunshotWoundEcs.Components.PlayerComponents;
-using GunshotWoundEcs.Components.WoundComponents;
-using GunshotWoundEcs.Configs;
+using GunshotWound2.Components.PlayerComponents;
+using GunshotWound2.Components.WoundComponents;
+using GunshotWound2.Configs;
 using LeopotamGroup.Ecs;
 
-namespace GunshotWoundEcs.Systems.PlayerSystems
+namespace GunshotWound2.Systems.PlayerSystems
 {
     [EcsInject]
     public class PlayerSystem : IEcsInitSystem, IEcsRunSystem

@@ -1,7 +1,7 @@
-﻿using GunshotWoundEcs.Components.DamageComponents.WeaponDamageComponents;
+﻿using GunshotWound2.Components.DamageComponents.WeaponDamageComponents;
 using LeopotamGroup.Ecs;
 
-namespace GunshotWoundEcs.Systems.HitSystems.WeaponDamageSystems
+namespace GunshotWound2.Systems.HitSystems.WeaponDamageSystems
 {
     [EcsInject]
     public class OtherDamageSystem : BaseWeaponDamageSystem<OtherDamageComponent>

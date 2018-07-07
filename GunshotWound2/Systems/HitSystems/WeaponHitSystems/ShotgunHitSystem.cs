@@ -1,8 +1,8 @@
 ﻿using GTA.Native;
-using GunshotWoundEcs.Components.DamageComponents.WeaponDamageComponents;
+using GunshotWound2.Components.DamageComponents.WeaponDamageComponents;
 using LeopotamGroup.Ecs;
 
-namespace GunshotWoundEcs.Systems.HitSystems.WeaponHitSystems
+namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
 {
     [EcsInject]
     public class ShotgunHitSystem : BaseWeaponHitSystem

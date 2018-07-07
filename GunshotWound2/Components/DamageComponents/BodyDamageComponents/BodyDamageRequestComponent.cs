@@ -1,4 +1,4 @@
-﻿namespace GunshotWoundEcs.Components.DamageComponents.BodyDamageComponents
+﻿namespace GunshotWound2.Components.DamageComponents.BodyDamageComponents
 {
     public class BodyDamageRequestComponent
     {

@@ -1,9 +1,9 @@
 ﻿using GTA.Native;
-using GunshotWoundEcs.Components.DamageComponents.BodyDamageComponents;
-using GunshotWoundEcs.Components.WoundComponents;
+using GunshotWound2.Components.DamageComponents.BodyDamageComponents;
+using GunshotWound2.Components.WoundComponents;
 using LeopotamGroup.Ecs;
 
-namespace GunshotWoundEcs.Systems.HitSystems
+namespace GunshotWound2.Systems.HitSystems
 {
     [EcsInject]
     public class HitCleanSystem : IEcsRunSystem
@@ -13,7 +13,7 @@ namespace GunshotWoundEcs.Systems.HitSystems
         
         public void Run()
         {
-            GunshotWoundScript.LastSystem = nameof(HitCleanSystem);
+            GunshotWound2.LastSystem = nameof(HitCleanSystem);
             for (int i = 0; i < _componentsToClean.EntitiesCount; i++)
             {
                 int pedEntity = _componentsToClean.Components1[i].PedEntity;

@@ -1,7 +1,7 @@
 ﻿using System;
 using GTA;
 
-namespace GunshotWoundEcs.Components.WoundComponents
+namespace GunshotWound2.Components.WoundComponents
 {
     [Flags]
     public enum DamageTypes

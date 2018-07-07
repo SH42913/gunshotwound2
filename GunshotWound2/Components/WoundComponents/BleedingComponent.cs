@@ -1,4 +1,4 @@
-﻿namespace GunshotWoundEcs.Components.WoundComponents
+﻿namespace GunshotWound2.Components.WoundComponents
 {
     public class BleedingComponent
     {

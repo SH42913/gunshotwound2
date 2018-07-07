@@ -1,13 +1,13 @@
 ﻿using System;
-using GunshotWoundEcs.Components.DamageComponents.BodyDamageComponents;
-using GunshotWoundEcs.Components.DamageComponents.WeaponDamageComponents;
-using GunshotWoundEcs.Components.UiComponents;
-using GunshotWoundEcs.Components.WoundComponents;
-using GunshotWoundEcs.Configs;
+using GunshotWound2.Components.DamageComponents.BodyDamageComponents;
+using GunshotWound2.Components.DamageComponents.WeaponDamageComponents;
+using GunshotWound2.Components.UiComponents;
+using GunshotWound2.Components.WoundComponents;
+using GunshotWound2.Configs;
 using LeopotamGroup.Ecs;
 using Weighted_Randomizer;
 
-namespace GunshotWoundEcs.Systems.HitSystems.WeaponDamageSystems
+namespace GunshotWound2.Systems.HitSystems.WeaponDamageSystems
 {
     [EcsInject]
     public abstract class BaseWeaponDamageSystem<T> : IEcsRunSystem where T : BaseWeaponDamageComponent, new()
@@ -30,7 +30,7 @@ namespace GunshotWoundEcs.Systems.HitSystems.WeaponDamageSystems
 
         public void Run()
         {
-            GunshotWoundScript.LastSystem = nameof(BaseWeaponDamageSystem<T>);
+            GunshotWound2.LastSystem = nameof(BaseWeaponDamageSystem<T>);
             for (int damageIndex = 0; damageIndex < DamageComponents.EntitiesCount; damageIndex++)
             {
                 var damage = DamageComponents.Components1[damageIndex];

@@ -1,9 +1,9 @@
 ﻿using GTA.Native;
-using GunshotWoundEcs.Components.WoundComponents;
-using GunshotWoundEcs.Configs;
+using GunshotWound2.Components.WoundComponents;
+using GunshotWound2.Configs;
 using LeopotamGroup.Ecs;
 
-namespace GunshotWoundEcs.Systems.WoundSystems
+namespace GunshotWound2.Systems.WoundSystems
 {
     [EcsInject]
     public class PainSystem : IEcsRunSystem
@@ -14,7 +14,7 @@ namespace GunshotWoundEcs.Systems.WoundSystems
         
         public void Run()
         {
-            GunshotWoundScript.LastSystem = nameof(PainSystem);
+            GunshotWound2.LastSystem = nameof(PainSystem);
             for (int i = 0; i < _components.EntitiesCount; i++)
             {
                 int pedEntity = _components.Components1[i].PedEntity;

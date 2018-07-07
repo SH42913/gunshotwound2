@@ -1,4 +1,4 @@
-﻿namespace GunshotWoundEcs.Components.UiComponents
+﻿namespace GunshotWound2.Components.UiComponents
 {
     public enum NotifyLevels
     {

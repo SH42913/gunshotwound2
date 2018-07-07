@@ -1,12 +1,12 @@
 ﻿using System;
 using GTA;
 using GTA.Native;
-using GunshotWoundEcs.Components.DamageComponents.BodyDamageComponents;
-using GunshotWoundEcs.Components.UiComponents;
-using GunshotWoundEcs.Components.WoundComponents;
+using GunshotWound2.Components.DamageComponents.BodyDamageComponents;
+using GunshotWound2.Components.UiComponents;
+using GunshotWound2.Components.WoundComponents;
 using LeopotamGroup.Ecs;
 
-namespace GunshotWoundEcs.Systems.HitSystems.WeaponHitSystems
+namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
 {
     [EcsInject]
     public abstract class BaseWeaponHitSystem : IEcsRunSystem
@@ -17,7 +17,7 @@ namespace GunshotWoundEcs.Systems.HitSystems.WeaponHitSystems
 
         public void Run()
         {
-            GunshotWoundScript.LastSystem = nameof(BaseWeaponHitSystem);
+            GunshotWound2.LastSystem = nameof(BaseWeaponHitSystem);
             for (int i = 0; i < Peds.EntitiesCount; i++)
             {
                 if(!PedWasDamaged(WeaponHashes, Peds.Components1[i].ThisPed)) continue;

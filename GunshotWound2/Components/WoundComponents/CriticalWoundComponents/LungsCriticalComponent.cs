@@ -1,4 +1,4 @@
-﻿namespace GunshotWoundEcs.Components.WoundComponents.CriticalWoundComponents
+﻿namespace GunshotWound2.Components.WoundComponents.CriticalWoundComponents
 {
     public class LungsCriticalComponent : BaseCriticalComponent
     {}

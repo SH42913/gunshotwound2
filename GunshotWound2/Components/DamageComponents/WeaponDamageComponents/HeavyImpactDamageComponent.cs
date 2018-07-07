@@ -1,4 +1,4 @@
-﻿namespace GunshotWoundEcs.Components.DamageComponents.WeaponDamageComponents
+﻿namespace GunshotWound2.Components.DamageComponents.WeaponDamageComponents
 {
     public class HeavyImpactDamageComponent : BaseWeaponDamageComponent
     {}

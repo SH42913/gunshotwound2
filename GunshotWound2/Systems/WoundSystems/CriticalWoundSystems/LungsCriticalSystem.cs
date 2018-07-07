@@ -1,9 +1,9 @@
 ﻿using GTA.Native;
-using GunshotWoundEcs.Components.WoundComponents;
-using GunshotWoundEcs.Components.WoundComponents.CriticalWoundComponents;
+using GunshotWound2.Components.WoundComponents;
+using GunshotWound2.Components.WoundComponents.CriticalWoundComponents;
 using LeopotamGroup.Ecs;
 
-namespace GunshotWoundEcs.Systems.WoundSystems.CriticalWoundSystems
+namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
 {
     [EcsInject]
     public class LungsCriticalSystem : BaseCriticalSystem<HeartCriticalComponent>

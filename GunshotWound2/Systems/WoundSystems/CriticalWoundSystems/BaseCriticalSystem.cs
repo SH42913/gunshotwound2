@@ -1,10 +1,10 @@
-﻿using GunshotWoundEcs.Components.UiComponents;
-using GunshotWoundEcs.Components.WoundComponents;
-using GunshotWoundEcs.Components.WoundComponents.CriticalWoundComponents;
-using GunshotWoundEcs.Configs;
+﻿using GunshotWound2.Components.UiComponents;
+using GunshotWound2.Components.WoundComponents;
+using GunshotWound2.Components.WoundComponents.CriticalWoundComponents;
+using GunshotWound2.Configs;
 using LeopotamGroup.Ecs;
 
-namespace GunshotWoundEcs.Systems.WoundSystems.CriticalWoundSystems
+namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
 {
     [EcsInject]
     public abstract class BaseCriticalSystem<T> : IEcsRunSystem where T : BaseCriticalComponent, new()

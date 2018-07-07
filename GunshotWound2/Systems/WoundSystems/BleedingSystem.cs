@@ -1,9 +1,9 @@
 ﻿using GTA;
-using GunshotWoundEcs.Components.WoundComponents;
-using GunshotWoundEcs.Configs;
+using GunshotWound2.Components.WoundComponents;
+using GunshotWound2.Configs;
 using LeopotamGroup.Ecs;
 
-namespace GunshotWoundEcs.Systems.WoundSystems
+namespace GunshotWound2.Systems.WoundSystems
 {
     [EcsInject]
     public class BleedingSystem : IEcsRunSystem
@@ -14,7 +14,7 @@ namespace GunshotWoundEcs.Systems.WoundSystems
         
         public void Run()
         {
-            GunshotWoundScript.LastSystem = nameof(BleedingSystem);
+            GunshotWound2.LastSystem = nameof(BleedingSystem);
             for (int i = 0; i < _components.EntitiesCount; i++)
             {
                 var component = _components.Components1[i];

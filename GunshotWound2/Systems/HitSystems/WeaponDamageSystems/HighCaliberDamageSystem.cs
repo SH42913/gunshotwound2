@@ -1,7 +1,7 @@
-﻿using GunshotWoundEcs.Components.DamageComponents.BodyDamageComponents;
-using GunshotWoundEcs.Components.DamageComponents.WeaponDamageComponents;
+﻿using GunshotWound2.Components.DamageComponents.BodyDamageComponents;
+using GunshotWound2.Components.DamageComponents.WeaponDamageComponents;
 
-namespace GunshotWoundEcs.Systems.HitSystems.WeaponDamageSystems
+namespace GunshotWound2.Systems.HitSystems.WeaponDamageSystems
 {
     public class HighCaliberDamageSystem : BaseWeaponDamageSystem<HighCaliberDamageComponent>
     {

@@ -1,10 +1,10 @@
 ﻿using System;
 using GTA;
-using GunshotWoundEcs.Components.UiComponents;
-using GunshotWoundEcs.Configs;
+using GunshotWound2.Components.UiComponents;
+using GunshotWound2.Configs;
 using LeopotamGroup.Ecs;
 
-namespace GunshotWoundEcs.Systems.UiSystems
+namespace GunshotWound2.Systems.UiSystems
 {
     [EcsInject]
     public class NotificationSystem : IEcsRunSystem
@@ -15,7 +15,7 @@ namespace GunshotWoundEcs.Systems.UiSystems
 
         public void Run()
         {
-            GunshotWoundScript.LastSystem = nameof(NotificationSystem);
+            GunshotWound2.LastSystem = nameof(NotificationSystem);
             string commonNotification = "";
             string warnNotification = "";
             string alertNotification = "";

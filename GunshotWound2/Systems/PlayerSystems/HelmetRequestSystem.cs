@@ -1,11 +1,11 @@
 ﻿using System;
 using GTA;
-using GunshotWoundEcs.Components.PlayerComponents;
-using GunshotWoundEcs.Components.UiComponents;
-using GunshotWoundEcs.Configs;
+using GunshotWound2.Components.PlayerComponents;
+using GunshotWound2.Components.UiComponents;
+using GunshotWound2.Configs;
 using LeopotamGroup.Ecs;
 
-namespace GunshotWoundEcs.Systems.PlayerSystems
+namespace GunshotWound2.Systems.PlayerSystems
 {
     [EcsInject]
     public class HelmetRequestSystem : IEcsRunSystem
@@ -17,7 +17,7 @@ namespace GunshotWoundEcs.Systems.PlayerSystems
         
         public void Run()
         {
-            GunshotWoundScript.LastSystem = nameof(HelmetRequestSystem);
+            GunshotWound2.LastSystem = nameof(HelmetRequestSystem);
             if(_requests.EntitiesCount == 0) return;
 
             var player = Game.Player;

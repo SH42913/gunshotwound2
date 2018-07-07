@@ -1,4 +1,4 @@
-﻿namespace GunshotWoundEcs.Configs
+﻿namespace GunshotWound2.Configs
 {
     public class PlayerConfig
     {

@@ -1,9 +1,0 @@
-[submodule "ecs"]
-	path = ecs
-	url = https://github.com/Leopotam/ecs
-[submodule "scripthookvdotnet"]
-	path = scripthookvdotnet
-	url = https://github.com/crosire/scripthookvdotnet
-[submodule "Weighted-Item-Randomizer-for-C-Sharp"]
-	path = Weighted-Item-Randomizer-for-C-Sharp
-	url = https://github.com/BlueRaja/Weighted-Item-Randomizer-for-C-Sharp

@@ -1,8 +1,8 @@
-﻿using GunshotWoundEcs.Components.UiComponents;
-using GunshotWoundEcs.Components.WoundComponents;
+﻿using GunshotWound2.Components.UiComponents;
+using GunshotWound2.Components.WoundComponents;
 using LeopotamGroup.Ecs;
 
-namespace GunshotWoundEcs.Systems.UiSystems
+namespace GunshotWound2.Systems.UiSystems
 {
     [EcsInject]
     public class CheckPedSystem : IEcsRunSystem
@@ -13,7 +13,7 @@ namespace GunshotWoundEcs.Systems.UiSystems
         
         public void Run()
         {
-            GunshotWoundScript.LastSystem = nameof(CheckPedSystem);
+            GunshotWound2.LastSystem = nameof(CheckPedSystem);
             for (int i = 0; i < _components.EntitiesCount; i++)
             {
                 int pedEntity = _components.Components1[i].PedEntity;

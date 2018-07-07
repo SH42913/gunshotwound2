@@ -1,6 +1,6 @@
 ﻿using LeopotamGroup.Ecs;
 
-namespace GunshotWoundEcs.Components.NpcComponents
+namespace GunshotWound2.Components.NpcComponents
 {
     [EcsIgnoreInFilter]
     public class NpcComponent
