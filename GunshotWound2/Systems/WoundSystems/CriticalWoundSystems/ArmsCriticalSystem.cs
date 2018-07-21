@@ -1,4 +1,5 @@
 ﻿using GTA.Native;
+using GunshotWound2.Components.UiComponents;
 using GunshotWound2.Components.WoundComponents;
 using GunshotWound2.Components.WoundComponents.CriticalWoundComponents;
 using LeopotamGroup.Ecs;
@@ -15,15 +16,22 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
         
         protected override void ActionForPlayer(WoundedPedComponent pedComponent, int pedEntity)
         {
+            CreatePain(pedEntity, 25f);
             Function.Call(Hash._SET_CAM_EFFECT, 2);
+
+            if (!pedComponent.DamagedParts.HasFlag(DamageTypes.NERVES_DAMAGED))
+            {
+                SendMessage("You feel awful pain in your arm", NotifyLevels.WARNING);
+            }
         }
 
         protected override void ActionForNpc(WoundedPedComponent pedComponent, int pedEntity)
         {
-            pedComponent.ThisPed.Accuracy = (int) (0.2f * pedComponent.DefaultAccuracy);
-            if(!NpcConfig.Data.ShowEnemyCriticalMessages ||
-               pedComponent.DamagedParts.HasFlag(DamageTypes.NERVES_DAMAGED)) return;
-            SendMessage($"{(pedComponent.IsMale ? "His" : "Her")} arm looks very bad");
+            CreatePain(pedEntity, 25f);
+            pedComponent.ThisPed.Accuracy = (int) (0.1f * pedComponent.DefaultAccuracy);
+            
+            if(!Config.Data.NpcConfig.ShowEnemyCriticalMessages) return;
+            SendMessage($"{pedComponent.HisHer} arm looks very bad");
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿namespace GunshotWound2.Components.WoundComponents.CriticalWoundComponents
 {
-    public class GutsCritcalComponent : BaseCriticalComponent
+    public class GutsCritcalComponent : ComponentWithPedEntity
     {}
 }

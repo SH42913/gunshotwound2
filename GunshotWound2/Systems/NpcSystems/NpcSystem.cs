@@ -12,16 +12,18 @@ namespace GunshotWound2.Systems.NpcSystems
     public class NpcSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
-        private EcsFilterSingle<MainConfig> _mainConfig;
-        private EcsFilterSingle<NpcConfig> _config;
+        private EcsFilterSingle<MainConfig> _config;
         private EcsFilter<WoundedPedComponent, NpcComponent> _npcs;
-        private int ticks;
-        private static readonly Random _random = new Random();
+        
+        private int _ticks;
+        private static readonly Random Random = new Random();
         
         public void Run()
         {
-            var ticksToRefresh = _mainConfig.Data.TicksToRefresh;
-            if(++ticks % ticksToRefresh != 0) return;
+            GunshotWound2.LastSystem = nameof(NpcSystem);
+            
+            var ticksToRefresh = _config.Data.TicksToRefresh;
+            if((++_ticks + 2) % ticksToRefresh != 0) return;
             
             AddPeds();
             RemovePeds();
@@ -29,7 +31,7 @@ namespace GunshotWound2.Systems.NpcSystems
 
         private void AddPeds()
         {
-            float addRange = _config.Data.AddingPedRange;
+            float addRange = _config.Data.NpcConfig.AddingPedRange;
             if(addRange < 1) return;
             
             int addedPedCount = 0;
@@ -55,16 +57,41 @@ namespace GunshotWound2.Systems.NpcSystems
                 
                 var woundPed = _ecsWorld.AddComponent<WoundedPedComponent>(entity);
                 woundPed.ThisPed = nearbyPed;
-                woundPed.Armor = nearbyPed.Armor;
-                woundPed.IsMale = nearbyPed.Gender == Gender.Male;
-                woundPed.Health = _random.Next(50, (int) _config.Data.MaximalHealth);
-                woundPed.MaximalPain = _random.Next(50, 100);
 
-                nearbyPed.CanWrithe = false;
-                addedPedCount++;
+                var newHealth = Random.Next(
+                    _config.Data.NpcConfig.MaximalHealth/2,
+                    _config.Data.NpcConfig.MaximalHealth);
+                woundPed.Health = newHealth;
+                woundPed.Armor = nearbyPed.Armor;
+                woundPed.ThisPed.MaxHealth = newHealth;
+                woundPed.ThisPed.Health = newHealth;
+                woundPed.ThisPed.CanWrithe = false;
+
+                woundPed.StopBleedingAmount = Random.NextFloat(
+                    _config.Data.NpcConfig.MaximalBleedStopSpeed/2,
+                    _config.Data.NpcConfig.MaximalBleedStopSpeed);
+                woundPed.DefaultAccuracy = nearbyPed.Accuracy;
                 
-                if(!_mainConfig.Data.Debug) continue;
-                nearbyPed.AddBlip();
+                woundPed.HeShe = nearbyPed.Gender == Gender.Male
+                    ? "He"
+                    : "She";
+                woundPed.HisHer = nearbyPed.Gender == Gender.Male
+                    ? "His"
+                    : "Her";
+                
+                woundPed.PainMeter = 0;
+                woundPed.MaximalPain = Random.NextFloat(
+                    _config.Data.NpcConfig.MaximalPain/2,
+                    _config.Data.NpcConfig.MaximalPain);
+                woundPed.PainRecoverSpeed = Random.NextFloat(
+                    _config.Data.NpcConfig.MaximalPainRecoverSpeed/2,
+                    _config.Data.NpcConfig.MaximalPainRecoverSpeed);
+
+                addedPedCount++;
+
+#if DEBUG
+                nearbyPed.AddBlip();       
+#endif
             }
 
             if (addedPedCount > 1)
@@ -81,21 +108,25 @@ namespace GunshotWound2.Systems.NpcSystems
                 if(ped.IsAlive && !OutRemoveRange(ped)) continue;
                 
                 _ecsWorld.RemoveEntity(_npcs.Entities[pedIndex]);
+#if DEBUG
                 ped.CurrentBlip.Remove();
+#endif
             }
         }
 
         private bool OutRemoveRange(Ped ped)
         {
-            var removeRange = _config.Data.RemovePedRange;
+            var removeRange = _config.Data.NpcConfig.RemovePedRange;
             return World.GetDistance(Game.Player.Character.Position, ped.Position) > removeRange;
         }
 
         private void SendDebug(string message)
         {
+#if DEBUG
             var notification = _ecsWorld.CreateEntityWith<NotificationComponent>();
             notification.Level = NotifyLevels.DEBUG;
             notification.StringToShow = message;
+#endif
         }
     }
 }

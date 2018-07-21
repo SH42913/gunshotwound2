@@ -1,5 +1,5 @@
 ﻿namespace GunshotWound2.Components.WoundComponents.CriticalWoundComponents
 {
-    public class HeartCriticalComponent : BaseCriticalComponent
+    public class HeartCriticalComponent : ComponentWithPedEntity
     {}
 }

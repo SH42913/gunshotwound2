@@ -1,6 +1,5 @@
 ﻿using GTA;
 using GunshotWound2.Components.WoundComponents;
-using GunshotWound2.Configs;
 using LeopotamGroup.Ecs;
 
 namespace GunshotWound2.Systems.WoundSystems
@@ -9,26 +8,27 @@ namespace GunshotWound2.Systems.WoundSystems
     public class BleedingSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
-        private EcsFilterSingle<WoundConfig> _config;
         private EcsFilter<BleedingComponent> _components;
         
         public void Run()
         {
             GunshotWound2.LastSystem = nameof(BleedingSystem);
+            
             for (int i = 0; i < _components.EntitiesCount; i++)
             {
                 var component = _components.Components1[i];
                 int pedEntity = _components.Components1[i].PedEntity;
                 var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
 
-                if (woundedPed == null || component.BleedSeverity < 0)
+                if (woundedPed == null || component.BleedSeverity <= 0f)
                 {
                     _ecsWorld.RemoveEntity(_components.Entities[i]);
                     continue;
                 }
                 
+                if(woundedPed.IsDead) continue;
                 woundedPed.Health -= component.BleedSeverity * Game.LastFrameTime;
-                component.BleedSeverity -= _config.Data.StopBleedingAmount * Game.LastFrameTime;
+                component.BleedSeverity -= woundedPed.StopBleedingAmount * Game.LastFrameTime;
                 woundedPed.ThisPed.Health = (int) woundedPed.Health;
             }
         }

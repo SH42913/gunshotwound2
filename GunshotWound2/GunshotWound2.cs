@@ -9,9 +9,8 @@ using GunshotWound2.Components.UiComponents;
 using GunshotWound2.Components.WoundComponents;
 using GunshotWound2.Configs;
 using GunshotWound2.Systems;
+using GunshotWound2.Systems.DamageSystems;
 using GunshotWound2.Systems.HitSystems;
-using GunshotWound2.Systems.HitSystems.BodyDamageSystems;
-using GunshotWound2.Systems.HitSystems.WeaponDamageSystems;
 using GunshotWound2.Systems.HitSystems.WeaponHitSystems;
 using GunshotWound2.Systems.NpcSystems;
 using GunshotWound2.Systems.PlayerSystems;
@@ -26,13 +25,12 @@ namespace GunshotWound2
     {
         private EcsWorld _ecsWorld;
         private EcsSystems _updateSystems;
+        
+        private bool _warningMessageWasShown;
         private MainConfig _mainConfig;
-        private PlayerConfig _playerConfig;
-        private NpcConfig _npcConfig;
-        private WoundConfig _woundConfig;
         private Stopwatch _debugStopwatch;
         public static string LastSystem = "Nothing";
-        private bool _messageWasShown;
+        
         
         public GunshotWound2()
         {
@@ -89,69 +87,43 @@ namespace GunshotWound2
             _ecsWorld = new EcsWorld();
 
             _mainConfig = EcsFilterSingle<MainConfig>.Create(_ecsWorld);
-            _playerConfig = EcsFilterSingle<PlayerConfig>.Create(_ecsWorld);
-            _npcConfig = EcsFilterSingle<NpcConfig>.Create(_ecsWorld);
-            _woundConfig = EcsFilterSingle<WoundConfig>.Create(_ecsWorld);
             LoadConfigsFromXml();
             
             _updateSystems = new EcsSystems(_ecsWorld);
             
-            if (_npcConfig.AddingPedRange > 1f)
+            if (_mainConfig.NpcConfig.AddingPedRange > 1f)
             {
                 _updateSystems
                     .Add(new NpcSystem());
             }
 
-            if (_playerConfig.WoundedPlayerEnabled)
+            if (_mainConfig.PlayerConfig.WoundedPlayerEnabled)
             {
                 _updateSystems
                     .Add(new PlayerSystem());
             }
             
             _updateSystems
+                .Add(new HealSystem())
                 .AddHitSystems()
                 .AddDamageSystems()
                 .AddWoundSystems()
                 .Add(new HitCleanSystem())
                 .Add(new HelmetRequestSystem())
-                .Add(new CheckPedSystem())
-                .Add(new HealSystem())
-                .Add(new NotificationSystem());
+                .Add(new DebugInfoSystem())
+                .Add(new CheckSystem())
+                .Add(new NotificationSystem())
+                .Add(new AdrenalineSystem())
+                .Add(new ArmorSystem());
             
             _updateSystems.Initialize();
             
-            Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, Game.Player, 0.01f);
             Tick += OnTick;
             KeyUp += OnKeyUp;
+            Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, Game.Player, 0.001f);
+            Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, Game.Player, 0f);
             
             _debugStopwatch = new Stopwatch();
-        }
-
-        private void LoadConfigsFromXml()
-        {
-            _mainConfig.Debug = false;
-            _mainConfig.TicksToRefresh = 30;
-
-            _playerConfig.WoundedPlayerEnabled = true;
-            _playerConfig.MoneyForHelmet = 30;
-            _playerConfig.MaximalHealth = 100;
-            _playerConfig.MinimalHealth = 0;
-            _playerConfig.MaximalPain = 100;
-
-            _npcConfig.AddingPedRange = 5f;
-            _npcConfig.RemovePedRange = _npcConfig.AddingPedRange * 2f;
-            _npcConfig.ShowEnemyCriticalMessages = true;
-            _npcConfig.MaximalHealth = 100;
-
-            _woundConfig.StopBleedingAmount = 0.005f;
-            _woundConfig.MoveRateOnNervesDamage = 0.8f;
-            
-            if(!_mainConfig.Debug) return;
-            UI.Notify("Configs:\n" +
-                      $"{_mainConfig}\n" +
-                      $"{_playerConfig}\n" +
-                      $"{_npcConfig}\n" +
-                      $"{_woundConfig}\n");
         }
 
         private void GunshotWoundTick()
@@ -160,63 +132,118 @@ namespace GunshotWound2
             _updateSystems.Run();
             _debugStopwatch.Stop();
             
-            if (_mainConfig.TicksToRefresh < 90 &&_debugStopwatch.ElapsedMilliseconds > 40)
-            {
-                _mainConfig.TicksToRefresh++;
-            }
-            else if(_mainConfig.TicksToRefresh > 2 && _debugStopwatch.ElapsedMilliseconds < 20)
-            {
-                _mainConfig.TicksToRefresh--;
-                _messageWasShown = false;
-            }
-            else if(_mainConfig.TicksToRefresh == 90)
-            {
-                if(!_messageWasShown) 
-                {
-                    SendMessage("You better to reduce adding range " +
-                            "or turn off WoundedPeds!", NotifyLevels.WARNING);
-                    _messageWasShown = true;
-                }           
-            }
+            CheckTime(_debugStopwatch.ElapsedMilliseconds);
 
-            if (!_mainConfig.Debug) return;
+#if DEBUG
             string debugSubtitles = $"ActiveEntities: {_ecsWorld.GetStats().ActiveEntities}/{_mainConfig.TicksToRefresh}\n" +
                                     $"Peds: {_ecsWorld.GetFilter<EcsFilter<WoundedPedComponent>>().EntitiesCount}\n" +
                                     $"Ms: {_debugStopwatch.ElapsedMilliseconds}";
             UI.ShowSubtitle(debugSubtitles);
+#endif
+        }
+
+        private void LoadConfigsFromXml()
+        {
+            _mainConfig.TicksToRefresh = 30;
+
+            _mainConfig.PlayerConfig = new PlayerConfig
+            {
+                WoundedPlayerEnabled = true,
+                MoneyForHelmet = 30,
+                MaximalHealth = 99,
+                MinimalHealth = 0,
+                MaximalPain = 100,
+                PainRecoverSpeed = 2f,
+                BleedHealingSpeed = 0.001f,
+                PlayerEntity = -1
+            };
+
+            _mainConfig.NpcConfig = new NpcConfig
+            {
+                AddingPedRange = 50f,
+                RemovePedRange = 100f,
+                ShowEnemyCriticalMessages = true,
+                MaximalHealth = 100,
+                MaximalBleedStopSpeed = 0.001f,
+                MaximalPain = 80,
+                MaximalPainRecoverSpeed = 1f
+            };
+
+            _mainConfig.WoundConfig = new WoundConfig
+            {
+                MoveRateOnNervesDamage = 0.7f,
+                MoveRateOnFullPain = 0.8f,
+                EmergencyBleedingLevel = 1.5f,
+                RealisticNervesDamage = true,
+                DamageMultiplier = 1,
+                BleedingMultiplier = 1,
+                PainMultiplier = 1,
+                DamageDeviation = 0.2f,
+                BleedingDeviation = 0.2f,
+                PainDeviation = 0.2f
+            };
+
+#if DEBUG
+            UI.Notify($"{_mainConfig}");
+#endif
         }
         
-        
+        private void CheckTime(long timeInMs)
+        {
+            if (_mainConfig.TicksToRefresh < 90 && timeInMs > 40)
+            {
+                _mainConfig.TicksToRefresh++;
+            }
+            else if(_mainConfig.TicksToRefresh > 3 && timeInMs < 20)
+            {
+                _mainConfig.TicksToRefresh--;
+                _warningMessageWasShown = false;
+            }
+            else if(_mainConfig.TicksToRefresh == 90)
+            {
+                if (_warningMessageWasShown) return;
+                
+                SendMessage("Perfomance drop!\nYou better to reduce adding range " +
+                            "or turn off WoundedPeds!", NotifyLevels.WARNING);
+                _warningMessageWasShown = true;
+            }
+        }
 
         private void ReduceRange(float value)
         {
-            if(_npcConfig.AddingPedRange <= value) return;
-            _npcConfig.AddingPedRange -= value;
-            _npcConfig.RemovePedRange = _npcConfig.AddingPedRange * 2f;
+            if(_mainConfig.NpcConfig.AddingPedRange <= value) return;
+            _mainConfig.NpcConfig.AddingPedRange -= value;
+            _mainConfig.NpcConfig.RemovePedRange = _mainConfig.NpcConfig.AddingPedRange * 2f;
             
-            SendMessage($"Adding Range: {_npcConfig.AddingPedRange}\n" +
-                        $"Removing Range: {_npcConfig.RemovePedRange}");
+            SendMessage($"Adding Range: {_mainConfig.NpcConfig.AddingPedRange}\n" +
+                        $"Removing Range: {_mainConfig.NpcConfig.RemovePedRange}");
         }
 
         private void IncreaseRange(float value)
         {
-            _npcConfig.AddingPedRange += value;
-            _npcConfig.RemovePedRange = _npcConfig.AddingPedRange * 2f;
+            _mainConfig.NpcConfig.AddingPedRange += value;
+            _mainConfig.NpcConfig.RemovePedRange = _mainConfig.NpcConfig.AddingPedRange * 2f;
             
-            SendMessage($"Adding Range: {_npcConfig.AddingPedRange}\n" +
-                        $"Removing Range: {_npcConfig.RemovePedRange}");
+            SendMessage($"Adding Range: {_mainConfig.NpcConfig.AddingPedRange}\n" +
+                        $"Removing Range: {_mainConfig.NpcConfig.RemovePedRange}");
         }
         
         
 
         private void CheckPlayer()
         {
-            _ecsWorld.CreateEntityWith<CheckPedComponent>().PedEntity = _playerConfig.PlayerEntity;
+            int playerEntity = _mainConfig.PlayerConfig.PlayerEntity;
+            if(playerEntity < 0) return;
+            
+            _ecsWorld.CreateEntityWith<CheckPedComponent>().PedEntity = playerEntity;
         }
 
         private void HealPlayer()
         {
-            _ecsWorld.CreateEntityWith<HealComponent>().PedEntity = _playerConfig.PlayerEntity;
+            int playerEntity = _mainConfig.PlayerConfig.PlayerEntity;
+            if(playerEntity < 0) return;
+            
+            _ecsWorld.CreateEntityWith<HealComponent>().PedEntity = playerEntity;
         }
 
         
@@ -234,7 +261,6 @@ namespace GunshotWound2
         public static EcsSystems AddHitSystems(this EcsSystems systems)
         {
             return systems
-                .Add(new OtherHitSystem())
                 .Add(new LightImpactHitSystem())
                 .Add(new CuttingHitSystem())
                 .Add(new HeavyImpactHitSystem())
@@ -247,8 +273,7 @@ namespace GunshotWound2
         public static EcsSystems AddDamageSystems(this EcsSystems systems)
         {
             return systems
-                .Add(new BodyDamageSystem())
-                .Add(new OtherDamageSystem())
+                .Add(new BodyHitSystem())
                 .Add(new LightImpactDamageSystem())
                 .Add(new CuttingDamageSystem())
                 .Add(new HeavyImpactDamageSystem())
@@ -261,16 +286,27 @@ namespace GunshotWound2
         public static EcsSystems AddWoundSystems(this EcsSystems systems)
         {
             return systems
-                .Add(new InstantDamageSystem())
-                .Add(new BleedingSystem())
-                .Add(new PainSystem())
-                .Add(new ArmsCriticalSystem())
-                .Add(new LegsCriticalSystem())
+                .Add(new WoundSystem())
                 .Add(new HeartCriticalSystem())
                 .Add(new LungsCriticalSystem())
                 .Add(new NervesCriticalSystem())
+                .Add(new ArmsCriticalSystem())
+                .Add(new LegsCriticalSystem())
                 .Add(new GutsCriticalSystem())
-                .Add(new StomachCriticalSystem());
+                .Add(new StomachCriticalSystem())
+                .Add(new BleedingSystem())
+                .Add(new PainSystem())
+                .Add(new PainRecoverySystem());
+        }
+        
+        
+        public static float NextFloat(this Random rand, float min, float max)
+        {
+            if (min > max)
+            {
+                throw new ArgumentException("min must be less than max");
+            }
+            return (float)rand.NextDouble() * (max - min) + min;
         }
     }
 }

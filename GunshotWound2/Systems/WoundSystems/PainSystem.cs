@@ -1,5 +1,6 @@
 ﻿using System;
 using GTA.Native;
+using GunshotWound2.Components;
 using GunshotWound2.Components.WoundComponents;
 using GunshotWound2.Configs;
 using LeopotamGroup.Ecs;
@@ -10,54 +11,42 @@ namespace GunshotWound2.Systems.WoundSystems
     public class PainSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
+        private EcsFilterSingle<MainConfig> _config;
         private EcsFilter<PainComponent> _components;
-        private EcsFilterSingle<WoundConfig> _config;
+        
+        private static readonly Random Random = new Random();
         
         public void Run()
         {
             GunshotWound2.LastSystem = nameof(PainSystem);
+            
             for (int i = 0; i < _components.EntitiesCount; i++)
             {
-                int pedEntity = _components.Components1[i].PedEntity;
+                var component = _components.Components1[i];
+                int pedEntity = component.PedEntity;
                 var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
 
                 if (woundedPed != null)
                 {
-                    var additionalPain = _components.Components1[i].PainAmount;
-                    woundedPed.PainMeter += additionalPain;
-                    if (woundedPed.PainMeter > woundedPed.MaximalPain)
-                    {
-                        woundedPed.PainMeter = woundedPed.MaximalPain;
-                    }
+                    var additionalPain = component.PainAmount;
+                    
+                    var painDeviation = Random.NextFloat(
+                        -_config.Data.WoundConfig.PainDeviation, 
+                        _config.Data.WoundConfig.PainDeviation);
+                    woundedPed.PainMeter += _config.Data.WoundConfig.PainMultiplier * additionalPain + painDeviation;
 
-                    var painPercent = woundedPed.PainMeter / woundedPed.MaximalPain;
-                    var backPercent = 1 - painPercent;
                     if (woundedPed.IsPlayer)
                     {
-                        if (additionalPain > 40)
+                        if (additionalPain > 30)
+                        {
+                            Function.Call(Hash._SET_CAM_EFFECT, 1);
+                        }
+                        
+                        if (additionalPain > 60)
                         {
                             Function.Call(Hash.SET_FLASH, 0, 0, 100, 500, 100);
+                            _ecsWorld.CreateEntityWith<AdrenalineComponent>();
                         }
-
-                        if (!woundedPed.DamagedParts.HasFlag(DamageTypes.ARMS_DAMAGED) &&
-                            painPercent > 0.5f)
-                        {
-                            Function.Call(Hash._SET_CAM_EFFECT, 2);
-                        }
-                    }
-                    else
-                    {
-                        if (!woundedPed.DamagedParts.HasFlag(DamageTypes.ARMS_DAMAGED))
-                        {
-                            woundedPed.ThisPed.Accuracy = (int) (backPercent * woundedPed.DefaultAccuracy);
-                        }
-                    }
-
-                    if (!woundedPed.DamagedParts.HasFlag(DamageTypes.LEGS_DAMAGED))
-                    {
-                        var moveRate = _config.Data.MoveRateOnFullPain +
-                                       (1 - _config.Data.MoveRateOnFullPain) * backPercent;
-                        Function.Call(Hash.SET_PED_MOVE_RATE_OVERRIDE, woundedPed.ThisPed, moveRate);
                     }
                 }
                 

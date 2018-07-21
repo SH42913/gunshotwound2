@@ -2,14 +2,17 @@
 {
     public class MainConfig
     {
-        public bool Debug;
         public int TicksToRefresh;
+
+        public WoundConfig WoundConfig;
+        public NpcConfig NpcConfig;
+        public PlayerConfig PlayerConfig;
 
         public override string ToString()
         {
-            return "MainConfig:\n" +
-                   $"Debug: {Debug}\n" +
-                   $"TicksToRefresh: {TicksToRefresh}\n";
+            return $"{WoundConfig}\n" +
+                   $"{NpcConfig}\n" +
+                   $"{PlayerConfig}";
         }
     }
 }

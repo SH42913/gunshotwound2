@@ -1,7 +1,7 @@
 ﻿using System;
 using GTA;
 using GTA.Native;
-using GunshotWound2.Components.DamageComponents.BodyDamageComponents;
+using GunshotWound2.Components.HitComponents.BodyDamageComponents;
 using GunshotWound2.Components.UiComponents;
 using GunshotWound2.Components.WoundComponents;
 using LeopotamGroup.Ecs;
@@ -18,13 +18,14 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
         public void Run()
         {
             GunshotWound2.LastSystem = nameof(BaseWeaponHitSystem);
+            
             for (int i = 0; i < Peds.EntitiesCount; i++)
             {
                 if(!PedWasDamaged(WeaponHashes, Peds.Components1[i].ThisPed)) continue;
 
                 int pedEntity = Peds.Entities[i];
                 EcsWorld
-                    .CreateEntityWith<BodyDamageRequestComponent>()
+                    .CreateEntityWith<RequestBodyHitComponent>()
                     .PedEntity = pedEntity;
                 CreateComponent(pedEntity);
             }
@@ -53,9 +54,11 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
 
         private void SendDebug(string message)
         {
+#if DEBUG
             var notification = EcsWorld.CreateEntityWith<NotificationComponent>();
             notification.Level = NotifyLevels.DEBUG;
             notification.StringToShow = message;
+#endif
         }
     }
 }

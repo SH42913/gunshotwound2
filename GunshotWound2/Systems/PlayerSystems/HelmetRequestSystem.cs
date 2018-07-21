@@ -11,13 +11,16 @@ namespace GunshotWound2.Systems.PlayerSystems
     public class HelmetRequestSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
-        private EcsFilterSingle<PlayerConfig> _config;
+        private EcsFilterSingle<MainConfig> _config;
+        
         private EcsFilter<HelmetRequestComponent> _requests;
-        private static readonly Random _random = new Random();
+        
+        private static readonly Random Random = new Random();
         
         public void Run()
         {
             GunshotWound2.LastSystem = nameof(HelmetRequestSystem);
+            
             if(_requests.EntitiesCount == 0) return;
 
             var player = Game.Player;
@@ -27,15 +30,14 @@ namespace GunshotWound2.Systems.PlayerSystems
             }
             else
             {
-                if (player.Money > _config.Data.MoneyForHelmet)
+                if (player.Money > _config.Data.PlayerConfig.MoneyForHelmet)
                 {
-                    player.Money -= _config.Data.MoneyForHelmet;
-                    player.Character.GiveHelmet(false, HelmetType.RegularMotorcycleHelmet, _random.Next(0, 20));
+                    player.Money -= _config.Data.PlayerConfig.MoneyForHelmet;
+                    player.Character.GiveHelmet(false, HelmetType.RegularMotorcycleHelmet, Random.Next(0, 20));
                 }
                 else
                 {
-                    var message = _ecsWorld
-                        .CreateEntityWith<NotificationComponent>();
+                    var message = _ecsWorld.CreateEntityWith<NotificationComponent>();
                     message.StringToShow = "You don't have enough money to buy helmet";
                     message.Level = NotifyLevels.COMMON;
                 }

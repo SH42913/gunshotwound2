@@ -1,5 +1,6 @@
 ﻿using GTA;
 using GTA.Native;
+using GunshotWound2.Components.UiComponents;
 using GunshotWound2.Components.WoundComponents;
 using GunshotWound2.Components.WoundComponents.CriticalWoundComponents;
 using LeopotamGroup.Ecs;
@@ -20,7 +21,12 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
             Function.Call(
                 Hash.SET_PED_MOVE_RATE_OVERRIDE,
                 pedComponent.ThisPed, 
-                WoundConfig.Data.MoveRateOnNervesDamage);
+                Config.Data.WoundConfig.MoveRateOnNervesDamage);
+
+            if (!pedComponent.DamagedParts.HasFlag(DamageTypes.NERVES_DAMAGED))
+            {
+                SendMessage("You feel awful pain in your leg", NotifyLevels.WARNING);
+            }
         }
 
         protected override void ActionForNpc(WoundedPedComponent pedComponent, int pedEntity)
@@ -28,11 +34,12 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
             Function.Call(
                 Hash.SET_PED_MOVE_RATE_OVERRIDE,
                 pedComponent.ThisPed, 
-                WoundConfig.Data.MoveRateOnNervesDamage);
+                Config.Data.WoundConfig.MoveRateOnNervesDamage);
             
-            if(!NpcConfig.Data.ShowEnemyCriticalMessages ||
+            if(!Config.Data.NpcConfig.ShowEnemyCriticalMessages ||
                pedComponent.DamagedParts.HasFlag(DamageTypes.NERVES_DAMAGED)) return;
-            SendMessage($"{(pedComponent.IsMale ? "His" : "Her")} arm looks very bad");
+            
+            SendMessage($"{pedComponent.HisHer} leg looks very bad");
         }
     }
 }

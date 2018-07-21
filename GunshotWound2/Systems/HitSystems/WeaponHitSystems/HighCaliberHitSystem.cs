@@ -1,5 +1,5 @@
 ﻿using GTA.Native;
-using GunshotWound2.Components.DamageComponents.WeaponDamageComponents;
+using GunshotWound2.Components.HitComponents.WeaponDamageComponents;
 using LeopotamGroup.Ecs;
 
 namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
@@ -29,7 +29,7 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
         protected override void CreateComponent(int pedEntity)
         {
             EcsWorld
-                .CreateEntityWith<HighCaliberDamageComponent>()
+                .CreateEntityWith<HighCaliberHitComponent>()
                 .PedEntity = pedEntity;
         }
     }

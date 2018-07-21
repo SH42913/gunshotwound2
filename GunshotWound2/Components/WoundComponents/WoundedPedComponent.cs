@@ -18,18 +18,27 @@ namespace GunshotWound2.Components.WoundComponents
     public class WoundedPedComponent
     {
         public Ped ThisPed;
-        public bool IsMale;
-        public string HeShe => IsMale ? "He:" : "She";
         public bool IsPlayer;
+        public string HeShe;
+        public string HisHer;
 
         public int DefaultAccuracy;
         
         public float Health;
+        public bool IsDead;
         public DamageTypes DamagedParts;
+        public float StopBleedingAmount;
         
         public float PainMeter;
         public float MaximalPain;
+        public bool GivesInToPain;
+        public float PainRecoverSpeed;
         
         public int Armor;
+
+        public override string ToString()
+        {
+            return $"{HisHer} HP:{Health} Pain:{PainMeter / MaximalPain * 100:0.0}%";
+        }
     }
 }

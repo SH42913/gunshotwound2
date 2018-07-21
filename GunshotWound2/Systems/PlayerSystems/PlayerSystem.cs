@@ -1,5 +1,8 @@
-﻿using GTA;
+﻿using System;
+using GTA;
+using GunshotWound2.Components;
 using GunshotWound2.Components.PlayerComponents;
+using GunshotWound2.Components.UiComponents;
 using GunshotWound2.Components.WoundComponents;
 using GunshotWound2.Configs;
 using LeopotamGroup.Ecs;
@@ -10,12 +13,12 @@ namespace GunshotWound2.Systems.PlayerSystems
     public class PlayerSystem : IEcsInitSystem, IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
-        private EcsFilterSingle<PlayerConfig> _config;
+        private EcsFilterSingle<MainConfig> _config;
         private EcsFilter<WoundedPedComponent, PlayerComponent> _playerComponents;
 
         public void Initialize()
         {
-            if(!_config.Data.WoundedPlayerEnabled) return;
+            if(!_config.Data.PlayerConfig.WoundedPlayerEnabled) return;
 
             var ped = Game.Player.Character;
             
@@ -23,26 +26,65 @@ namespace GunshotWound2.Systems.PlayerSystems
             _ecsWorld.AddComponent<PlayerComponent>(entity);
             
             var woundPed = _ecsWorld.AddComponent<WoundedPedComponent>(entity);
-            woundPed.ThisPed = ped;
-            woundPed.Armor = ped.Armor;
             woundPed.IsPlayer = true;
-            woundPed.IsMale = ped.Gender == Gender.Male;
-            woundPed.Health = _config.Data.MaximalHealth;
-            woundPed.MaximalPain = _config.Data.MaximalPain;
+            woundPed.ThisPed = ped;
+            
+            woundPed.Armor = ped.Armor;
+            woundPed.Health = _config.Data.PlayerConfig.MaximalHealth;
             woundPed.ThisPed.Health = (int) woundPed.Health;
+            
+            woundPed.HeShe = ped.Gender == Gender.Male
+                ? "He"
+                : "She";
+            woundPed.HisHer = ped.Gender == Gender.Male
+                ? "His"
+                : "Her";
 
-            _config.Data.PlayerEntity = entity;
+            woundPed.PainMeter = 0;
+            woundPed.MaximalPain = _config.Data.PlayerConfig.MaximalPain;
+            woundPed.PainRecoverSpeed = _config.Data.PlayerConfig.PainRecoverSpeed;
+            woundPed.StopBleedingAmount = 0.005f;
+
+            _config.Data.PlayerConfig.PlayerEntity = entity;
+            FindDeadlyWound();
         }
         
         public void Run()
         {
             for (int i = 0; i < _playerComponents.EntitiesCount; i++)
             {
-                _playerComponents.Components1[i].ThisPed = Game.Player.Character;
+                var woundedPed = _playerComponents.Components1[i];
+                woundedPed.ThisPed = Game.Player.Character;
+                woundedPed.Armor = woundedPed.ThisPed.Armor;
+                
+                if (woundedPed.ThisPed.Health < _config.Data.PlayerConfig.MinimalHealth &&
+                    !woundedPed.IsDead)
+                {
+                    woundedPed.Health = woundedPed.ThisPed.Health;
+                    woundedPed.IsDead = true;
+                    woundedPed.PainRecoverSpeed = 0;
+                
+                    var pain = _ecsWorld.CreateEntityWith<PainComponent>();
+                    pain.PainAmount = int.MaxValue;
+                    pain.PedEntity = _playerComponents.Entities[i];
+
+                    _ecsWorld.CreateEntityWith<CheckPedComponent>().PedEntity = _playerComponents.Entities[i];
+                }
+                else if(woundedPed.ThisPed.Health > _config.Data.PlayerConfig.MaximalHealth)
+                {
+                    _ecsWorld.CreateEntityWith<HealComponent>().PedEntity = _playerComponents.Entities[i];
+                }
             }
         }
 
         public void Destroy()
         {}
+
+        private void FindDeadlyWound()
+        {
+            var totalHealth = _config.Data.PlayerConfig.MaximalHealth - _config.Data.PlayerConfig.MinimalHealth;
+            var critical = (float) Math.Sqrt(totalHealth * _config.Data.PlayerConfig.BleedHealingSpeed);
+            _config.Data.WoundConfig.EmergencyBleedingLevel = critical;
+        }
     }
 }

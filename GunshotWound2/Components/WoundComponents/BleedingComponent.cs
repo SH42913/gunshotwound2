@@ -1,9 +1,8 @@
 ﻿namespace GunshotWound2.Components.WoundComponents
 {
-    public class BleedingComponent
+    public class BleedingComponent : ComponentWithPedEntity
     {
-        public int PedEntity;
         public float BleedSeverity;
-        public string Name = "Wound";
+        public string Name;
     }
 }

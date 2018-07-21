@@ -16,6 +16,7 @@ namespace GunshotWound2.Systems.UiSystems
         public void Run()
         {
             GunshotWound2.LastSystem = nameof(NotificationSystem);
+            
             string commonNotification = "";
             string warnNotification = "";
             string alertNotification = "";
@@ -49,20 +50,10 @@ namespace GunshotWound2.Systems.UiSystems
                 
                 _ecsWorld.RemoveEntity(_components.Entities[i]);
             }
-
-            if (_mainConfig.Data.Debug && !string.IsNullOrEmpty(debugNotification))
-            {
-                UI.Notify("Debug:\n~c~" + debugNotification);
-            }
             
-            if (!string.IsNullOrEmpty(commonNotification))
+            if (!string.IsNullOrEmpty(emergencyNotification))
             {
-                UI.Notify(commonNotification);
-            }
-            
-            if (!string.IsNullOrEmpty(warnNotification))
-            {
-                UI.Notify("~y~" + warnNotification);
+                UI.Notify("~r~" + emergencyNotification);
             }
             
             if (!string.IsNullOrEmpty(alertNotification))
@@ -70,10 +61,22 @@ namespace GunshotWound2.Systems.UiSystems
                 UI.Notify("~o~" + alertNotification);
             }
             
-            if (!string.IsNullOrEmpty(emergencyNotification))
+            if (!string.IsNullOrEmpty(warnNotification))
             {
-                UI.Notify("~r~" + emergencyNotification);
+                UI.Notify("~y~" + warnNotification);
             }
+            
+            if (!string.IsNullOrEmpty(commonNotification))
+            {
+                UI.Notify(commonNotification);
+            }
+
+#if DEBUG
+            if (!string.IsNullOrEmpty(debugNotification))
+            {
+                UI.Notify("Debug:\n~c~" + debugNotification);
+            }
+#endif
         }
     }
 }

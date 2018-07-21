@@ -1,7 +1,5 @@
 ﻿namespace GunshotWound2.Components
 {
-    public class HealComponent
-    {
-        public int PedEntity;
-    }
+    public class HealComponent : ComponentWithPedEntity
+    {}
 }

@@ -1,8 +1,7 @@
 ﻿namespace GunshotWound2.Components.WoundComponents
 {
-    public class PainComponent
+    public class PainComponent : ComponentWithPedEntity
     {
-        public int PedEntity;
         public float PainAmount;
     }
 }

@@ -11,6 +11,8 @@
         public int MinimalHealth;
 
         public float MaximalPain;
+        public float PainRecoverSpeed;
+        public float BleedHealingSpeed;
 
         public override string ToString()
         {
@@ -18,7 +20,9 @@
                    $"WoundedPlayer: {WoundedPlayerEnabled}\n" +
                    $"HelmetCost: {MoneyForHelmet}\n" +
                    $"Min/MaxHealth: {MinimalHealth}/{MaximalHealth}\n" +
-                   $"MaxPain: {MaximalPain}\n";
+                   $"MaxPain: {MaximalPain}\n" +
+                   $"PainRecoverSpeed: {PainRecoverSpeed}\n" +
+                   $"BleedHealingSpeed: {BleedHealingSpeed}\n";
         }
     }
 }

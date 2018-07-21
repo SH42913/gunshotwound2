@@ -1,5 +1,5 @@
 ﻿using GTA.Native;
-using GunshotWound2.Components.DamageComponents.WeaponDamageComponents;
+using GunshotWound2.Components.HitComponents.WeaponDamageComponents;
 using LeopotamGroup.Ecs;
 
 namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
@@ -12,7 +12,9 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
             WeaponHashes = new uint[]
             {
                 //GarbageBug Briefcase  Briefcase2
-                3794977420, 2294779575, 28811031, 
+                3794977420, 2294779575, 28811031,
+                //Fall      WaterCannon
+                3452007600, 3425972830, 
                 (uint) WeaponHash.Ball, 
                 (uint) WeaponHash.Flashlight, 
                 (uint) WeaponHash.KnuckleDuster,
@@ -27,7 +29,7 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
         protected override void CreateComponent(int pedEntity)
         {
             EcsWorld
-                .CreateEntityWith<LightImpactDamageComponent>()
+                .CreateEntityWith<LightImpactHitComponent>()
                 .PedEntity = pedEntity;
         }
     }

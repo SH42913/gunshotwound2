@@ -1,5 +1,5 @@
 ﻿using GTA.Native;
-using GunshotWound2.Components.DamageComponents.WeaponDamageComponents;
+using GunshotWound2.Components.HitComponents.WeaponDamageComponents;
 using LeopotamGroup.Ecs;
 
 namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
@@ -9,8 +9,10 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
     {
         public HeavyImpactHitSystem()
         {
-            WeaponHashes = new []
+            WeaponHashes = new uint[]
             {
+                //Rammed     RunOverCar  HeliCrash
+                133987706, 2741846334, 341774354,
                 (uint) WeaponHash.Bat, 
                 (uint) WeaponHash.Crowbar,
                 (uint) WeaponHash.FireExtinguisher, 
@@ -26,7 +28,7 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
         protected override void CreateComponent(int pedEntity)
         {
             EcsWorld
-                .CreateEntityWith<HeavyImpactDamageComponent>()
+                .CreateEntityWith<HeavyImpactHitComponent>()
                 .PedEntity = pedEntity;
         }
     }
