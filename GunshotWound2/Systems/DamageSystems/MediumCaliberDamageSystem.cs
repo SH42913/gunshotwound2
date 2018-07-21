@@ -11,14 +11,14 @@ namespace GunshotWound2.Systems.DamageSystems
             WeaponClass = "Medium Caliber";
 
             GrazeWoundWeight = 1;
-            FleshWoundWeight = 1;
-            PenetratingWoundWeight = 3;
-            PerforeatinWoundWeight = 5;
+            FleshWoundWeight = 2;
+            PenetratingWoundWeight = 4;
+            PerforeatinWoundWeight = 6;
             AvulsiveWoundWeight = 2;
             
-            DamageMultiplier = 1.3f;
+            DamageMultiplier = 1.2f;
             BleeedingMultiplier = 1.4f;
-            PainMultiplier = 1.2f;
+            PainMultiplier = 1.5f;
 
             HelmetSafeChance = 0.3f;
             ArmorDamage = 20;

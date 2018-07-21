@@ -4,6 +4,7 @@
     {
         public bool AdrenalineSlowMotion;
         public bool WoundedPlayerEnabled;
+        public bool PoliceCanForgetYou;
         
         public int PlayerEntity = -1;
         public int MoneyForHelmet;

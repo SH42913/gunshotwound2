@@ -90,7 +90,7 @@ namespace GunshotWound2.Systems.DamageSystems
                     NeckActions?.NextWithReplacement()(pedEntity);
                     break;
                 case BodyParts.UPPER_BODY:
-                    if (CheckArmorPenetration(woundedPed, pedEntity))
+                    if (!CheckArmorPenetration(woundedPed, pedEntity))
                     {
                         SendMessage("Armor saved your upper body", pedEntity, NotifyLevels.WARNING);
                         CreatePain(pedEntity, ArmorDamage/5f);
@@ -99,7 +99,7 @@ namespace GunshotWound2.Systems.DamageSystems
                     UpperBodyActions?.NextWithReplacement()(pedEntity);
                     break;
                 case BodyParts.LOWER_BODY:
-                    if (CheckArmorPenetration(woundedPed, pedEntity))
+                    if (!CheckArmorPenetration(woundedPed, pedEntity))
                     {
                         SendMessage("Armor saved your upper body", pedEntity, NotifyLevels.WARNING);
                         CreatePain(pedEntity, ArmorDamage/5f);
@@ -152,6 +152,8 @@ namespace GunshotWound2.Systems.DamageSystems
 
         private bool CheckArmorPenetration(WoundedPedComponent woundedPed, int pedEntity)
         {
+            if (woundedPed.Armor == 0) return true;
+            
             woundedPed.Armor -= ArmorDamage;
             if (woundedPed.Armor < 0)
             {

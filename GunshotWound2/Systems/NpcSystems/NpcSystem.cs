@@ -66,6 +66,7 @@ namespace GunshotWound2.Systems.NpcSystems
                 woundedPed.ThisPed.MaxHealth = newHealth;
                 woundedPed.ThisPed.Health = newHealth;
                 woundedPed.ThisPed.CanWrithe = false;
+                woundedPed.ThisPed.AlwaysDiesOnLowHealth = false;
 
                 woundedPed.StopBleedingAmount = Random.NextFloat(
                     _config.Data.NpcConfig.MaximalBleedStopSpeed/2,

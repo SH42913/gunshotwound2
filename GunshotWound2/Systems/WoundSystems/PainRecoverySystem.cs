@@ -43,6 +43,8 @@ namespace GunshotWound2.Systems.WoundSystems
                     SendDebug($"Send this ped to ragdoll with {painPercent}");
                     if (woundedPed.IsPlayer)
                     {
+                        Game.Player.IgnoredByEveryone = true;
+                        if (_config.Data.PlayerConfig.PoliceCanForgetYou) Game.Player.WantedLevel = 0;
                         if (!woundedPed.DamagedParts.HasFlag(DamageTypes.NERVES_DAMAGED) && !woundedPed.IsDead)
                         {
                             SendMessage("You can't take this pain anymore!\n" +
@@ -61,6 +63,7 @@ namespace GunshotWound2.Systems.WoundSystems
                         Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, 1, 1, 1, 0, 0, 0);
                         woundedPed.GivesInToPain = false;
                         SendDebug("Recover this ped from ragdoll");
+                        if(woundedPed.ThisPed.IsPlayer) Game.Player.IgnoredByEveryone = false;
                     }
                     else
                     {

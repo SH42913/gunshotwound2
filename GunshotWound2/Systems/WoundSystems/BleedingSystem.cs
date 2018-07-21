@@ -27,6 +27,7 @@ namespace GunshotWound2.Systems.WoundSystems
                 }
                 
                 if(woundedPed.IsDead) continue;
+                
                 woundedPed.Health -= component.BleedSeverity * Game.LastFrameTime;
                 component.BleedSeverity -= woundedPed.StopBleedingAmount * Game.LastFrameTime;
                 woundedPed.ThisPed.Health = (int) woundedPed.Health;

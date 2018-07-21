@@ -13,7 +13,7 @@ namespace GunshotWound2.Systems.DamageSystems
         {
             WeaponClass = "Heavy Impact";
 
-            HelmetSafeChance = 0.5f;
+            HelmetSafeChance = 0.8f;
             ArmorDamage = 0;
             
             DefaultAction = DefaultGrazeWound;

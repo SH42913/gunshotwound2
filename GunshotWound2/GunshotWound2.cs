@@ -156,7 +156,8 @@ namespace GunshotWound2
                 PainRecoverSpeed = 2f,
                 BleedHealingSpeed = 0.001f,
                 PlayerEntity = -1,
-                AdrenalineSlowMotion = true
+                AdrenalineSlowMotion = true,
+                PoliceCanForgetYou = true
             };
 
             _mainConfig.NpcConfig = new NpcConfig

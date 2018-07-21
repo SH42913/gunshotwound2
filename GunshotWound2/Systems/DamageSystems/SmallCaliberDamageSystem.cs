@@ -11,8 +11,8 @@ namespace GunshotWound2.Systems.DamageSystems
             WeaponClass = "Small Caliber";
 
             GrazeWoundWeight = 1;
-            FleshWoundWeight = 1;
-            PenetratingWoundWeight = 4;
+            FleshWoundWeight = 2;
+            PenetratingWoundWeight = 6;
             PerforeatinWoundWeight = 0;
             AvulsiveWoundWeight = 2;
             

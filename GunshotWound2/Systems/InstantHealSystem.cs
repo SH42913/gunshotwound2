@@ -37,6 +37,7 @@ namespace GunshotWound2.Systems
                         Function.Call(Hash._STOP_ALL_SCREEN_EFFECTS);
                         woundedPed.Health = _mainConfig.Data.PlayerConfig.MaximalHealth;
                         _ecsWorld.CreateEntityWith<AdrenalineComponent>().Revert = true;
+                        Game.Player.IgnoredByEveryone = false;
                     }
                     else
                     {
