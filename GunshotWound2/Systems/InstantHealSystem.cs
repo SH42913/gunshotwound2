@@ -9,19 +9,19 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Systems
 {
     [EcsInject]
-    public class HealSystem : IEcsRunSystem
+    public class InstantHealSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
         private EcsFilterSingle<MainConfig> _mainConfig;
         
-        private EcsFilter<HealComponent> _components;
+        private EcsFilter<InstantHealComponent> _components;
         private EcsFilter<BleedingComponent> _bleedingComponents;
         
         private static Random _random = new Random();
         
         public void Run()
         {
-            GunshotWound2.LastSystem = nameof(HealSystem);
+            GunshotWound2.LastSystem = nameof(InstantHealSystem);
             
             for (int i = 0; i < _components.EntitiesCount; i++)
             {

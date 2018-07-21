@@ -22,6 +22,7 @@ namespace GunshotWound2.Systems.DamageSystems
 
             HelmetSafeChance = 0.3f;
             ArmorDamage = 20;
+            CanPenetrateArmor = true;
             
             FillWithDefaultGunActions();
         }

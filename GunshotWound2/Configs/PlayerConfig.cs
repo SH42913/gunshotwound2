@@ -2,6 +2,7 @@
 {
     public class PlayerConfig
     {
+        public bool AdrenalineSlowMotion;
         public bool WoundedPlayerEnabled;
         
         public int PlayerEntity = -1;

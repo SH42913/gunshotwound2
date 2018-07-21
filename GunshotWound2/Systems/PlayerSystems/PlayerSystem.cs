@@ -72,7 +72,7 @@ namespace GunshotWound2.Systems.PlayerSystems
                 }
                 else if(woundedPed.ThisPed.Health > _config.Data.PlayerConfig.MaximalHealth)
                 {
-                    _ecsWorld.CreateEntityWith<HealComponent>().PedEntity = _playerComponents.Entities[i];
+                    _ecsWorld.CreateEntityWith<InstantHealComponent>().PedEntity = _playerComponents.Entities[i];
                 }
             }
         }

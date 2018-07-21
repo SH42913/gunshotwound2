@@ -13,7 +13,7 @@ namespace GunshotWound2.Systems.WoundSystems
         private EcsWorld _ecsWorld;
         private EcsFilter<WoundedPedComponent> _peds;
         private EcsFilterSingle<MainConfig> _config;
-        private int _ticks;
+        private uint _ticks;
         private float _lastTime;
         
         public void Run()

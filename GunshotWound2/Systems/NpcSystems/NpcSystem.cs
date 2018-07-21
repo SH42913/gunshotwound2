@@ -106,7 +106,8 @@ namespace GunshotWound2.Systems.NpcSystems
             {
                 var ped = _npcs.Components1[pedIndex].ThisPed;
                 if(ped.IsAlive && !OutRemoveRange(ped)) continue;
-                
+
+                _npcs.Components1[pedIndex].ThisPed = null;
                 _ecsWorld.RemoveEntity(_npcs.Entities[pedIndex]);
 #if DEBUG
                 ped.CurrentBlip.Remove();

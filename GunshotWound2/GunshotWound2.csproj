@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GunshotWound2</RootNamespace>
     <AssemblyName>GunshotWound2</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -60,7 +60,7 @@
     <Compile Include="Components\HitComponents\WeaponDamageComponents\OtherHitComponent.cs" />
     <Compile Include="Components\HitComponents\WeaponDamageComponents\ShotgunHitComponent.cs" />
     <Compile Include="Components\HitComponents\WeaponDamageComponents\SmallCaliberHitComponent.cs" />
-    <Compile Include="Components\HealComponent.cs" />
+    <Compile Include="Components\InstantHealComponent.cs" />
     <Compile Include="Components\NpcComponents\NpcComponent.cs" />
     <Compile Include="Components\PlayerComponents\HelmetRequestComponent.cs" />
     <Compile Include="Components\PlayerComponents\PlayerComponent.cs" />
@@ -96,7 +96,7 @@
     <Compile Include="Systems\DamageSystems\MediumCaliberDamageSystem.cs" />
     <Compile Include="Systems\DamageSystems\ShotgunDamageSystem.cs" />
     <Compile Include="Systems\DamageSystems\SmallCaliberDamageSystem.cs" />
-    <Compile Include="Systems\HealSystem.cs" />
+    <Compile Include="Systems\InstantHealSystem.cs" />
     <Compile Include="Systems\HitSystems\BodyHitSystem.cs" />
     <Compile Include="Systems\HitSystems\HitCleanSystem.cs" />
     <Compile Include="Systems\HitSystems\WeaponHitSystems\BaseWeaponHitSystem.cs" />
@@ -127,25 +127,16 @@
     <Compile Include="Systems\WoundSystems\PainSystem.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\leoEcs\Leopotam.Ecs.csproj">
       <Project>{45fc0562-7188-4470-b350-6a73699fe6e2}</Project>
       <Name>Leopotam.Ecs</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\leoEcs\Leopotam.Ecs.csproj">
-      <Project>{45fc0562-7188-4470-b350-6a73699fe6e2}</Project>
-      <Name>Leopotam.Ecs</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\scripthookvdotnet\ScriptHookVDotNet.csproj">
-      <Project>{61165c1a-6bfe-4776-b371-5a3fdb1a2ed7}</Project>
-      <Name>ScriptHookVDotNet</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Weighted-Item-Randomizer-for-C-Sharp\Weighted Randomizer\Weighted Randomizer.csproj">
-      <Project>{1245bc96-2f42-404c-9f11-65a4326299d6}</Project>
-      <Name>Weighted Randomizer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <Folder Include="Components\WoundComponents\PainStates" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

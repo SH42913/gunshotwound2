@@ -32,6 +32,7 @@ namespace GunshotWound2.Systems.DamageSystems
         protected IWeightedRandomizer<Action<int>> ArmActions;
         protected IWeightedRandomizer<Action<int>> LegActions;
 
+        protected bool CanPenetrateArmor = false;
         protected int ArmorDamage = 0;
         protected float HelmetSafeChance = 0;
         
@@ -89,21 +90,19 @@ namespace GunshotWound2.Systems.DamageSystems
                     NeckActions?.NextWithReplacement()(pedEntity);
                     break;
                 case BodyParts.UPPER_BODY:
-                    woundedPed.Armor -= ArmorDamage;
-                    if (woundedPed.Armor > 0)
+                    if (CheckArmorPenetration(woundedPed, pedEntity))
                     {
                         SendMessage("Armor saved your upper body", pedEntity, NotifyLevels.WARNING);
-                        CreatePain(pedEntity, ArmorDamage/4f);
+                        CreatePain(pedEntity, ArmorDamage/5f);
                         return;
                     }
                     UpperBodyActions?.NextWithReplacement()(pedEntity);
                     break;
                 case BodyParts.LOWER_BODY:
-                    woundedPed.Armor -= ArmorDamage;
-                    if (woundedPed.Armor > 0)
+                    if (CheckArmorPenetration(woundedPed, pedEntity))
                     {
-                        SendMessage("Armor saved your lower body", pedEntity, NotifyLevels.WARNING);
-                        CreatePain(pedEntity, ArmorDamage/4f);
+                        SendMessage("Armor saved your upper body", pedEntity, NotifyLevels.WARNING);
+                        CreatePain(pedEntity, ArmorDamage/5f);
                         return;
                     }
                     LowerBodyActions?.NextWithReplacement()(pedEntity);
@@ -151,7 +150,28 @@ namespace GunshotWound2.Systems.DamageSystems
             wound.ArterySevered = Random.IsTrueWithProbability(arteryDamageChance);
         }
 
-        protected void SendDebug(string message)
+        private bool CheckArmorPenetration(WoundedPedComponent woundedPed, int pedEntity)
+        {
+            woundedPed.Armor -= ArmorDamage;
+            if (woundedPed.Armor < 0)
+            {
+                woundedPed.Armor = 0;
+                return true;
+            }
+
+            if (!CanPenetrateArmor) return false;
+
+            float armorPercent = woundedPed.Armor / 100f;
+            bool penetration = Random.IsTrueWithProbability(0.5f + 0.5f * armorPercent);
+            if (penetration)
+            {
+                SendMessage("Your armor was penetrated", pedEntity, NotifyLevels.WARNING);
+            }
+
+            return penetration;
+        }
+
+        private void SendDebug(string message)
         {
 #if DEBUG
             var notification = EcsWorld.CreateEntityWith<NotificationComponent>();

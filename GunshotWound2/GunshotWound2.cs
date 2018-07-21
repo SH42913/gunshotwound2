@@ -104,7 +104,7 @@ namespace GunshotWound2
             }
             
             _updateSystems
-                .Add(new HealSystem())
+                .Add(new InstantHealSystem())
                 .AddHitSystems()
                 .AddDamageSystems()
                 .AddWoundSystems()
@@ -155,7 +155,8 @@ namespace GunshotWound2
                 MaximalPain = 100,
                 PainRecoverSpeed = 2f,
                 BleedHealingSpeed = 0.001f,
-                PlayerEntity = -1
+                PlayerEntity = -1,
+                AdrenalineSlowMotion = true
             };
 
             _mainConfig.NpcConfig = new NpcConfig
@@ -243,7 +244,7 @@ namespace GunshotWound2
             int playerEntity = _mainConfig.PlayerConfig.PlayerEntity;
             if(playerEntity < 0) return;
             
-            _ecsWorld.CreateEntityWith<HealComponent>().PedEntity = playerEntity;
+            _ecsWorld.CreateEntityWith<InstantHealComponent>().PedEntity = playerEntity;
         }
 
         
