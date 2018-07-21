@@ -34,9 +34,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LeopotamGroup.Ecs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>Libs\LeopotamGroup.Ecs.dll</HintPath>
-    </Reference>
     <Reference Include="ScriptHookVDotNet2, Version=2.10.6.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\ScriptHookVDotNet2.2.10.6\lib\net452\ScriptHookVDotNet2.dll</HintPath>
     </Reference>
@@ -130,6 +127,14 @@
     <Compile Include="Systems\WoundSystems\PainSystem.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\leoEcs\Leopotam.Ecs.csproj">
+      <Project>{45fc0562-7188-4470-b350-6a73699fe6e2}</Project>
+      <Name>Leopotam.Ecs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\leoEcs\Leopotam.Ecs.csproj">
+      <Project>{45fc0562-7188-4470-b350-6a73699fe6e2}</Project>
+      <Name>Leopotam.Ecs</Name>
+    </ProjectReference>
     <ProjectReference Include="..\scripthookvdotnet\ScriptHookVDotNet.csproj">
       <Project>{61165c1a-6bfe-4776-b371-5a3fdb1a2ed7}</Project>
       <Name>ScriptHookVDotNet</Name>
@@ -141,9 +146,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Libs\LeopotamGroup.Ecs.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

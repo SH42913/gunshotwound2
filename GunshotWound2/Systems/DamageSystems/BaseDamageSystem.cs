@@ -4,7 +4,7 @@ using GunshotWound2.Components.HitComponents.WeaponDamageComponents;
 using GunshotWound2.Components.UiComponents;
 using GunshotWound2.Components.WoundComponents;
 using GunshotWound2.Configs;
-using LeopotamGroup.Ecs;
+using Leopotam.Ecs;
 using Weighted_Randomizer;
 
 namespace GunshotWound2.Systems.DamageSystems

@@ -17,7 +17,7 @@ using GunshotWound2.Systems.PlayerSystems;
 using GunshotWound2.Systems.UiSystems;
 using GunshotWound2.Systems.WoundSystems;
 using GunshotWound2.Systems.WoundSystems.CriticalWoundSystems;
-using LeopotamGroup.Ecs;
+using Leopotam.Ecs;
 
 namespace GunshotWound2
 {

@@ -1,7 +1,7 @@
 ﻿using GTA;
 using GunshotWound2.Components;
 using GunshotWound2.Components.UiComponents;
-using LeopotamGroup.Ecs;
+using Leopotam.Ecs;
 
 namespace GunshotWound2.Systems
 {

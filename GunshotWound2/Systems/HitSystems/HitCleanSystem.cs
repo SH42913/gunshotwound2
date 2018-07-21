@@ -1,7 +1,7 @@
 ﻿using GTA.Native;
 using GunshotWound2.Components.HitComponents.BodyDamageComponents;
 using GunshotWound2.Components.WoundComponents;
-using LeopotamGroup.Ecs;
+using Leopotam.Ecs;
 
 namespace GunshotWound2.Systems.HitSystems
 {

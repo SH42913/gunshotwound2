@@ -5,7 +5,7 @@ using GunshotWound2.Components.PlayerComponents;
 using GunshotWound2.Components.UiComponents;
 using GunshotWound2.Components.WoundComponents;
 using GunshotWound2.Configs;
-using LeopotamGroup.Ecs;
+using Leopotam.Ecs;
 
 namespace GunshotWound2.Systems.PlayerSystems
 {
@@ -21,11 +21,11 @@ namespace GunshotWound2.Systems.PlayerSystems
             if(!_config.Data.PlayerConfig.WoundedPlayerEnabled) return;
 
             var ped = Game.Player.Character;
+
+            PlayerComponent playerComponent;
+            WoundedPedComponent woundPed;
+            var entity = _ecsWorld.CreateEntityWith(out playerComponent, out woundPed);
             
-            var entity = _ecsWorld.CreateEntity();
-            _ecsWorld.AddComponent<PlayerComponent>(entity);
-            
-            var woundPed = _ecsWorld.AddComponent<WoundedPedComponent>(entity);
             woundPed.IsPlayer = true;
             woundPed.ThisPed = ped;
             

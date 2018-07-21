@@ -1,7 +1,7 @@
 ﻿using GunshotWound2.Components.UiComponents;
 using GunshotWound2.Components.WoundComponents;
 using GunshotWound2.Configs;
-using LeopotamGroup.Ecs;
+using Leopotam.Ecs;
 
 namespace GunshotWound2.Systems.UiSystems
 {

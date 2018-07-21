@@ -4,7 +4,7 @@ using GunshotWound2.Components.NpcComponents;
 using GunshotWound2.Components.UiComponents;
 using GunshotWound2.Components.WoundComponents;
 using GunshotWound2.Configs;
-using LeopotamGroup.Ecs;
+using Leopotam.Ecs;
 
 namespace GunshotWound2.Systems.NpcSystems
 {
@@ -52,38 +52,38 @@ namespace GunshotWound2.Systems.NpcSystems
                 }
                 if(componentExist) continue;
 
-                var entity = _ecsWorld.CreateEntity();
-                _ecsWorld.AddComponent<NpcComponent>(entity);
+                NpcComponent npcComponent;
+                WoundedPedComponent woundedPed;
+                 _ecsWorld.CreateEntityWith(out npcComponent, out woundedPed);
                 
-                var woundPed = _ecsWorld.AddComponent<WoundedPedComponent>(entity);
-                woundPed.ThisPed = nearbyPed;
+                woundedPed.ThisPed = nearbyPed;
 
                 var newHealth = Random.Next(
                     _config.Data.NpcConfig.MaximalHealth/2,
                     _config.Data.NpcConfig.MaximalHealth);
-                woundPed.Health = newHealth;
-                woundPed.Armor = nearbyPed.Armor;
-                woundPed.ThisPed.MaxHealth = newHealth;
-                woundPed.ThisPed.Health = newHealth;
-                woundPed.ThisPed.CanWrithe = false;
+                woundedPed.Health = newHealth;
+                woundedPed.Armor = nearbyPed.Armor;
+                woundedPed.ThisPed.MaxHealth = newHealth;
+                woundedPed.ThisPed.Health = newHealth;
+                woundedPed.ThisPed.CanWrithe = false;
 
-                woundPed.StopBleedingAmount = Random.NextFloat(
+                woundedPed.StopBleedingAmount = Random.NextFloat(
                     _config.Data.NpcConfig.MaximalBleedStopSpeed/2,
                     _config.Data.NpcConfig.MaximalBleedStopSpeed);
-                woundPed.DefaultAccuracy = nearbyPed.Accuracy;
+                woundedPed.DefaultAccuracy = nearbyPed.Accuracy;
                 
-                woundPed.HeShe = nearbyPed.Gender == Gender.Male
+                woundedPed.HeShe = nearbyPed.Gender == Gender.Male
                     ? "He"
                     : "She";
-                woundPed.HisHer = nearbyPed.Gender == Gender.Male
+                woundedPed.HisHer = nearbyPed.Gender == Gender.Male
                     ? "His"
                     : "Her";
                 
-                woundPed.PainMeter = 0;
-                woundPed.MaximalPain = Random.NextFloat(
+                woundedPed.PainMeter = 0;
+                woundedPed.MaximalPain = Random.NextFloat(
                     _config.Data.NpcConfig.MaximalPain/2,
                     _config.Data.NpcConfig.MaximalPain);
-                woundPed.PainRecoverSpeed = Random.NextFloat(
+                woundedPed.PainRecoverSpeed = Random.NextFloat(
                     _config.Data.NpcConfig.MaximalPainRecoverSpeed/2,
                     _config.Data.NpcConfig.MaximalPainRecoverSpeed);
 

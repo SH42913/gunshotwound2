@@ -1,5 +1,5 @@
 ﻿using GunshotWound2.Components.HitComponents.WeaponDamageComponents;
-using LeopotamGroup.Ecs;
+using Leopotam.Ecs;
 
 namespace GunshotWound2.Systems.DamageSystems
 {
