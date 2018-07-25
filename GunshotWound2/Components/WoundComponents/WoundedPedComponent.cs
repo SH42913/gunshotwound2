@@ -1,5 +1,6 @@
 ﻿using System;
 using GTA;
+using Leopotam.Ecs;
 
 namespace GunshotWound2.Components.WoundComponents
 {
@@ -13,6 +14,16 @@ namespace GunshotWound2.Components.WoundComponents
         STOMACH_DAMAGED = 16,
         LUNGS_DAMAGED = 32,
         HEART_DAMAGED = 64,
+    }
+
+    public enum PainStates
+    {
+        NONE,
+        MILD,
+        AVERAGE,
+        INTENSE,
+        UNBEARABLE,
+        DEADLY
     }
     
     public class WoundedPedComponent
@@ -31,6 +42,7 @@ namespace GunshotWound2.Components.WoundComponents
         
         public float PainMeter;
         public float MaximalPain;
+        public PainStates PainState;
         public bool GivesInToPain;
         public float PainRecoverSpeed;
         

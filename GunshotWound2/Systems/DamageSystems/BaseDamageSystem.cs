@@ -153,18 +153,17 @@ namespace GunshotWound2.Systems.DamageSystems
         private bool CheckArmorPenetration(WoundedPedComponent woundedPed, int pedEntity)
         {
             if (woundedPed.Armor == 0) return true;
-            
+
             woundedPed.Armor -= ArmorDamage;
             if (woundedPed.Armor < 0)
             {
-                woundedPed.Armor = 0;
                 return true;
             }
 
             if (!CanPenetrateArmor) return false;
-
+            
             float armorPercent = woundedPed.Armor / 100f;
-            bool penetration = Random.IsTrueWithProbability(0.5f + 0.5f * armorPercent);
+            bool penetration = Random.IsTrueWithProbability(1 - (0.6f + 0.4f * armorPercent));
             if (penetration)
             {
                 SendMessage("Your armor was penetrated", pedEntity, NotifyLevels.WARNING);

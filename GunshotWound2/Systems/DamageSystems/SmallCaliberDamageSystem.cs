@@ -21,7 +21,7 @@ namespace GunshotWound2.Systems.DamageSystems
             PainMultiplier = 1f;
 
             HelmetSafeChance = 0.7f;
-            ArmorDamage = 10;
+            ArmorDamage = 5;
             CanPenetrateArmor = true;
 
             FillWithDefaultGunActions();

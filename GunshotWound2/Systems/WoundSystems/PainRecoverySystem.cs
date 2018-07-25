@@ -2,6 +2,7 @@
 using GTA.Native;
 using GunshotWound2.Components.UiComponents;
 using GunshotWound2.Components.WoundComponents;
+using GunshotWound2.Components.WoundComponents.PainStateComponents;
 using GunshotWound2.Configs;
 using Leopotam.Ecs;
 
@@ -27,7 +28,8 @@ namespace GunshotWound2.Systems.WoundSystems
             for (int i = 0; i < _peds.EntitiesCount; i++)
             {
                 var woundedPed = _peds.Components1[i];
-                if(woundedPed.PainMeter <= 0) continue;
+                int pedEntity = _peds.Entities[i];
+                if(woundedPed.PainMeter <= 0.05f) continue;
                 
                 woundedPed.PainMeter -= woundedPed.PainRecoverSpeed * _lastTime;
                 var painPercent = woundedPed.PainMeter / woundedPed.MaximalPain;
@@ -36,79 +38,62 @@ namespace GunshotWound2.Systems.WoundSystems
                     : 1 - painPercent;
                 if (woundedPed.PainMeter < 0) woundedPed.PainMeter = 0;
 
-                if (painPercent > 1 && !woundedPed.ThisPed.IsRagdoll && !woundedPed.GivesInToPain)
+                /*if (painPercent > 3f)
                 {
-                    Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, -1, -1, 0, 0, 0, 0);
-                    woundedPed.GivesInToPain = true;
-                    SendDebug($"Send this ped to ragdoll with {painPercent}");
-                    if (woundedPed.IsPlayer)
-                    {
-                        Game.Player.IgnoredByEveryone = true;
-                        if (_config.Data.PlayerConfig.PoliceCanForgetYou) Game.Player.WantedLevel = 0;
-                        if (!woundedPed.DamagedParts.HasFlag(DamageTypes.NERVES_DAMAGED) && !woundedPed.IsDead)
-                        {
-                            SendMessage("You can't take this pain anymore!\n" +
-                                        "You lose consciousness!", NotifyLevels.WARNING);
-                        }
-                    }
-                    continue;
-                }
+                    if(woundedPed.PainState == PainStates.DEADLY) continue;
 
-                if (woundedPed.GivesInToPain)
-                {
-                    if (painPercent < 0.75f && 
-                        !(_config.Data.WoundConfig.RealisticNervesDamage &&
-                          woundedPed.DamagedParts.HasFlag(DamageTypes.NERVES_DAMAGED)))    
-                    {
-                        Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, 1, 1, 1, 0, 0, 0);
-                        woundedPed.GivesInToPain = false;
-                        SendDebug("Recover this ped from ragdoll");
-                        if(woundedPed.ThisPed.IsPlayer) Game.Player.IgnoredByEveryone = false;
-                    }
-                    else
-                    {
-                        continue;
-                    }
+                    _ecsWorld.AddComponent<DeadlyPainStateComponent>(pedEntity);
                 }
-
-                if (!woundedPed.DamagedParts.HasFlag(DamageTypes.LEGS_DAMAGED))
+                else */
+                if (painPercent > 1f)
                 {
-                    var moveRate = _config.Data.WoundConfig.MoveRateOnFullPain +
-                                   (1 - _config.Data.WoundConfig.MoveRateOnFullPain) * backPercent;
-                    Function.Call(Hash.SET_PED_MOVE_RATE_OVERRIDE, woundedPed.ThisPed, moveRate);
+                    if(woundedPed.PainState == PainStates.UNBEARABLE) continue;
+
+                    _ecsWorld
+                        .CreateEntityWith<UnbearablePainStateComponent>()
+                        .PedEntity = pedEntity;
                 }
-
-                if (woundedPed.DamagedParts.HasFlag(DamageTypes.ARMS_DAMAGED)) continue;
-                
-                if (woundedPed.IsPlayer)
+                else if(painPercent > 0.7f)
                 {
-                    Function.Call(Hash._SET_CAM_EFFECT, painPercent > 0.5f 
-                        ? 2 
-                        : 0);
+                    if(woundedPed.PainState == PainStates.INTENSE) continue;
+
+                    _ecsWorld
+                        .CreateEntityWith<IntensePainStateComponent>()
+                        .PedEntity = pedEntity;
+                }
+                else if (painPercent > 0.3f)
+                {
+                    if(woundedPed.PainState == PainStates.AVERAGE) continue;
+
+                    _ecsWorld
+                        .CreateEntityWith<AveragePainStateComponent>()
+                        .PedEntity = pedEntity;
+                }
+                else if (painPercent > 0.1f)
+                {
+                    if (woundedPed.PainState == PainStates.MILD) continue;
+
+                    _ecsWorld
+                        .CreateEntityWith<MildPainStateComponent>()
+                        .PedEntity = pedEntity;
                 }
                 else
                 {
-                    woundedPed.ThisPed.Accuracy = (int) (backPercent * woundedPed.DefaultAccuracy);
+                    if(woundedPed.PainState == PainStates.NONE) continue;
+
+                    _ecsWorld
+                        .CreateEntityWith<NoPainStateComponent>()
+                        .PedEntity = pedEntity;
                 }
+
+                if (woundedPed.DamagedParts.HasFlag(DamageTypes.LEGS_DAMAGED)) continue;
+                
+                var moveRate = _config.Data.WoundConfig.MoveRateOnFullPain +
+                               (1 - _config.Data.WoundConfig.MoveRateOnFullPain) * backPercent;
+                Function.Call(Hash.SET_PED_MOVE_RATE_OVERRIDE, woundedPed.ThisPed, moveRate);
             }
 
             _lastTime = 0;
-        }
-
-        private void SendDebug(string message)
-        {
-#if DEBUG
-            var notification = _ecsWorld.CreateEntityWith<NotificationComponent>();
-            notification.Level = NotifyLevels.DEBUG;
-            notification.StringToShow = message;
-#endif
-        }
-        
-        private void SendMessage(string message, NotifyLevels level = NotifyLevels.COMMON)
-        {
-            var notification = _ecsWorld.CreateEntityWith<NotificationComponent>();
-            notification.Level = level;
-            notification.StringToShow = message;
         }
     }
 }

@@ -14,12 +14,12 @@ namespace GunshotWound2.Systems.DamageSystems
             PerforeatinWoundWeight = 2;
             AvulsiveWoundWeight = 4;
             
-            DamageMultiplier = 1.5f;
+            DamageMultiplier = 1.3f;
             BleeedingMultiplier = 1.5f;
             PainMultiplier = 2f;
 
             HelmetSafeChance = 0.05f;
-            ArmorDamage = 30;
+            ArmorDamage = 15;
             CanPenetrateArmor = true;
             
             FillWithDefaultGunActions();

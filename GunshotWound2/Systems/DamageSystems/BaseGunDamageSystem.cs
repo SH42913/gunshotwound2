@@ -1,10 +1,12 @@
 ﻿using System;
 using GunshotWound2.Components.HitComponents.WeaponDamageComponents;
 using GunshotWound2.Components.WoundComponents;
+using Leopotam.Ecs;
 using Weighted_Randomizer;
 
 namespace GunshotWound2.Systems.DamageSystems
 {
+    [EcsInject]
     public class BaseGunDamageSystem<T> : BaseDamageSystem<T> 
         where T : BaseWeaponHitComponent, new()
     {

@@ -3,6 +3,7 @@ using GTA;
 using GTA.Native;
 using GunshotWound2.Components;
 using GunshotWound2.Components.WoundComponents;
+using GunshotWound2.Components.WoundComponents.PainStateComponents;
 using GunshotWound2.Configs;
 using Leopotam.Ecs;
 
@@ -52,6 +53,8 @@ namespace GunshotWound2.Systems
                     Function.Call(Hash.SET_PED_MOVE_RATE_OVERRIDE, woundedPed.ThisPed, 1f);
                     woundedPed.ThisPed.Health = (int) woundedPed.Health;
                     woundedPed.Armor = woundedPed.ThisPed.Armor;
+
+                    _ecsWorld.CreateEntityWith<NoPainStateComponent>().PedEntity = pedEntity;
                 }
 
                 for (int bleedIndex = 0; bleedIndex < _bleedingComponents.EntitiesCount; bleedIndex++)

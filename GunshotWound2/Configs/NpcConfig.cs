@@ -4,11 +4,18 @@
     {
         public float AddingPedRange;
         public float RemovePedRange;
+        
         public bool ShowEnemyCriticalMessages;
         public int MaximalHealth;
         public float MaximalBleedStopSpeed;
+        
         public float MaximalPain;
         public float MaximalPainRecoverSpeed;
+
+        public string NoPainAnim;
+        public string MildPainAnim;
+        public string AvgPainAnim;
+        public string IntensePainAnim;
 
         public override string ToString()
         {

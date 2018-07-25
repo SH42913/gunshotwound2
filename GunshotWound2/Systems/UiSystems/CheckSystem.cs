@@ -68,7 +68,7 @@ namespace GunshotWound2.Systems.UiSystems
                     {
                         SendMessage($"~s~Pain Level: ~y~{painPercent * 100f:0.0}%~s~");
                     }
-                    else
+                    else if (painPercent > 0f)
                     {
                         SendMessage($"~s~Pain Level: ~g~{painPercent * 100f:0.0}%~s~");
                     }

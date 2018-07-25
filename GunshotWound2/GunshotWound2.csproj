@@ -49,6 +49,8 @@
   <ItemGroup>
     <Compile Include="Components\AdrenalineComponent.cs" />
     <Compile Include="Components\ComponentWithPedEntity.cs" />
+    <Compile Include="Components\EffectComponents\RagdollRequestComponent.cs" />
+    <Compile Include="Components\EffectComponents\SwitchAnimationComponent.cs" />
     <Compile Include="Components\HitComponents\BodyDamageComponents\BodyHitComponent.cs" />
     <Compile Include="Components\HitComponents\BodyDamageComponents\RequestBodyHitComponent.cs" />
     <Compile Include="Components\HitComponents\WeaponDamageComponents\BaseWeaponHitComponent.cs" />
@@ -76,6 +78,13 @@
     <Compile Include="Components\WoundComponents\CriticalWoundComponents\NervesCriticalComponent.cs" />
     <Compile Include="Components\WoundComponents\CriticalWoundComponents\StomachCriticalComponent.cs" />
     <Compile Include="Components\WoundComponents\PainComponent.cs" />
+    <Compile Include="Components\WoundComponents\PainStateComponents\BasePainStateComponent.cs" />
+    <Compile Include="Components\WoundComponents\PainStateComponents\DeadlyPainStateComponent.cs" />
+    <Compile Include="Components\WoundComponents\PainStateComponents\NoPainStateComponent.cs" />
+    <Compile Include="Components\WoundComponents\PainStateComponents\UnbearablePainStateComponent.cs" />
+    <Compile Include="Components\WoundComponents\PainStateComponents\IntensePainStateComponent.cs" />
+    <Compile Include="Components\WoundComponents\PainStateComponents\MildPainStateComponent.cs" />
+    <Compile Include="Components\WoundComponents\PainStateComponents\AveragePainStateComponent.cs" />
     <Compile Include="Components\WoundComponents\WoundComponent.cs" />
     <Compile Include="Components\WoundComponents\WoundedPedComponent.cs" />
     <Compile Include="Configs\MainConfig.cs" />
@@ -96,6 +105,8 @@
     <Compile Include="Systems\DamageSystems\MediumCaliberDamageSystem.cs" />
     <Compile Include="Systems\DamageSystems\ShotgunDamageSystem.cs" />
     <Compile Include="Systems\DamageSystems\SmallCaliberDamageSystem.cs" />
+    <Compile Include="Systems\EffectSystems\RagdollSystem.cs" />
+    <Compile Include="Systems\EffectSystems\SwitchAnimationSystem.cs" />
     <Compile Include="Systems\InstantHealSystem.cs" />
     <Compile Include="Systems\HitSystems\BodyHitSystem.cs" />
     <Compile Include="Systems\HitSystems\HitCleanSystem.cs" />
@@ -122,6 +133,13 @@
     <Compile Include="Systems\WoundSystems\CriticalWoundSystems\LungsCriticalSystem.cs" />
     <Compile Include="Systems\WoundSystems\CriticalWoundSystems\NervesCriticalSystem.cs" />
     <Compile Include="Systems\WoundSystems\CriticalWoundSystems\StomachCriticalSystem.cs" />
+    <Compile Include="Systems\WoundSystems\PainStatesSystem\AveragePainStateSystem.cs" />
+    <Compile Include="Systems\WoundSystems\PainStatesSystem\BasePainStateSystem.cs" />
+    <Compile Include="Systems\WoundSystems\PainStatesSystem\DeadlyPainStateSystem.cs" />
+    <Compile Include="Systems\WoundSystems\PainStatesSystem\IntensePainStateSystem.cs" />
+    <Compile Include="Systems\WoundSystems\PainStatesSystem\MildPainStateSystem.cs" />
+    <Compile Include="Systems\WoundSystems\PainStatesSystem\NoPainStateSystem.cs" />
+    <Compile Include="Systems\WoundSystems\PainStatesSystem\UnbearablePainStateSystem.cs" />
     <Compile Include="Systems\WoundSystems\WoundSystem.cs" />
     <Compile Include="Systems\WoundSystems\PainRecoverySystem.cs" />
     <Compile Include="Systems\WoundSystems\PainSystem.cs" />
@@ -134,9 +152,6 @@
       <Project>{45fc0562-7188-4470-b350-6a73699fe6e2}</Project>
       <Name>Leopotam.Ecs</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Components\WoundComponents\PainStates" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

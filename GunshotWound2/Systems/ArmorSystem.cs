@@ -25,8 +25,6 @@ namespace GunshotWound2.Systems
                 if (ped.Armor < 0)
                 {
                     ped.Armor = 0;
-                    ped.ThisPed.Armor = 0;
-                    continue;
                 }
 
                 ped.ThisPed.Armor = ped.Armor;

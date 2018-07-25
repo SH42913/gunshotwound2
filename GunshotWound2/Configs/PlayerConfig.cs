@@ -16,6 +16,11 @@
         public float PainRecoverSpeed;
         public float BleedHealingSpeed;
 
+        public string NoPainAnim;
+        public string MildPainAnim;
+        public string AvgPainAnim;
+        public string IntensePainAnim;
+
         public override string ToString()
         {
             return "PlayerConfig:\n" +

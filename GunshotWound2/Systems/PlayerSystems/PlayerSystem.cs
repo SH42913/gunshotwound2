@@ -4,6 +4,7 @@ using GunshotWound2.Components;
 using GunshotWound2.Components.PlayerComponents;
 using GunshotWound2.Components.UiComponents;
 using GunshotWound2.Components.WoundComponents;
+using GunshotWound2.Components.WoundComponents.PainStateComponents;
 using GunshotWound2.Configs;
 using Leopotam.Ecs;
 
@@ -25,6 +26,7 @@ namespace GunshotWound2.Systems.PlayerSystems
             PlayerComponent playerComponent;
             WoundedPedComponent woundPed;
             var entity = _ecsWorld.CreateEntityWith(out playerComponent, out woundPed);
+            woundPed.PainState = PainStates.DEADLY;
             
             woundPed.IsPlayer = true;
             woundPed.ThisPed = ped;
@@ -47,6 +49,8 @@ namespace GunshotWound2.Systems.PlayerSystems
 
             _config.Data.PlayerConfig.PlayerEntity = entity;
             FindDeadlyWound();
+
+            _ecsWorld.CreateEntityWith<NoPainStateComponent>().PedEntity = entity;
         }
         
         public void Run()

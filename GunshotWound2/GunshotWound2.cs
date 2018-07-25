@@ -10,6 +10,7 @@ using GunshotWound2.Components.WoundComponents;
 using GunshotWound2.Configs;
 using GunshotWound2.Systems;
 using GunshotWound2.Systems.DamageSystems;
+using GunshotWound2.Systems.EffectSystems;
 using GunshotWound2.Systems.HitSystems;
 using GunshotWound2.Systems.HitSystems.WeaponHitSystems;
 using GunshotWound2.Systems.NpcSystems;
@@ -17,6 +18,7 @@ using GunshotWound2.Systems.PlayerSystems;
 using GunshotWound2.Systems.UiSystems;
 using GunshotWound2.Systems.WoundSystems;
 using GunshotWound2.Systems.WoundSystems.CriticalWoundSystems;
+using GunshotWound2.Systems.WoundSystems.PainStatesSystem;
 using Leopotam.Ecs;
 
 namespace GunshotWound2
@@ -102,25 +104,28 @@ namespace GunshotWound2
                 _updateSystems
                     .Add(new PlayerSystem());
             }
-            
+
             _updateSystems
                 .Add(new InstantHealSystem())
                 .AddHitSystems()
                 .AddDamageSystems()
                 .AddWoundSystems()
+                .AddPainSystems()
                 .Add(new HitCleanSystem())
                 .Add(new HelmetRequestSystem())
                 .Add(new DebugInfoSystem())
                 .Add(new CheckSystem())
                 .Add(new NotificationSystem())
                 .Add(new AdrenalineSystem())
-                .Add(new ArmorSystem());
+                .Add(new ArmorSystem())
+                .Add(new RagdollSystem())
+                .Add(new SwitchAnimationSystem());
             
             _updateSystems.Initialize();
             
             Tick += OnTick;
             KeyUp += OnKeyUp;
-            Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, Game.Player, 0.001f);
+            Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, Game.Player, 0.00001f);
             Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, Game.Player, 0f);
             
             _debugStopwatch = new Stopwatch();
@@ -157,7 +162,11 @@ namespace GunshotWound2
                 BleedHealingSpeed = 0.001f,
                 PlayerEntity = -1,
                 AdrenalineSlowMotion = true,
-                PoliceCanForgetYou = true
+                PoliceCanForgetYou = true,
+                NoPainAnim = "move_m@generic",
+                MildPainAnim = "move_m@gangster@a",
+                AvgPainAnim = "move_m@drunk@moderatedrunk",
+                IntensePainAnim = "move_m@drunk@verydrunk"
             };
 
             _mainConfig.NpcConfig = new NpcConfig
@@ -296,9 +305,20 @@ namespace GunshotWound2
                 .Add(new LegsCriticalSystem())
                 .Add(new GutsCriticalSystem())
                 .Add(new StomachCriticalSystem())
-                .Add(new BleedingSystem())
+                .Add(new BleedingSystem());
+        }
+
+        public static EcsSystems AddPainSystems(this EcsSystems systems)
+        {
+            return systems
                 .Add(new PainSystem())
-                .Add(new PainRecoverySystem());
+                .Add(new PainRecoverySystem())
+                .Add(new NoPainStateSystem())
+                .Add(new MildPainStateSystem())
+                .Add(new AveragePainStateSystem())
+                .Add(new IntensePainStateSystem())
+                .Add(new UnbearablePainStateSystem())
+                .Add(new DeadlyPainStateSystem());
         }
         
         

@@ -17,11 +17,11 @@ namespace GunshotWound2.Systems.DamageSystems
             AvulsiveWoundWeight = 2;
             
             DamageMultiplier = 1.2f;
-            BleeedingMultiplier = 1.4f;
+            BleeedingMultiplier = 1.3f;
             PainMultiplier = 1.5f;
 
             HelmetSafeChance = 0.3f;
-            ArmorDamage = 20;
+            ArmorDamage = 10;
             CanPenetrateArmor = true;
             
             FillWithDefaultGunActions();
