@@ -42,6 +42,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="Weighted Randomizer, Version=1.0.2.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\WeightedRandomizer.1.0.2\lib\net35\Weighted Randomizer.dll</HintPath>
     </Reference>

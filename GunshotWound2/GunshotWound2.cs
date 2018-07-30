@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using GTA;
 using GTA.Native;
 using GunshotWound2.Components;
@@ -150,6 +151,8 @@ namespace GunshotWound2
         private void LoadConfigsFromXml()
         {
             _mainConfig.TicksToRefresh = 30;
+            
+            XDocument doc = XDocument.Load("GSW2Config.xml");
 
             _mainConfig.PlayerConfig = new PlayerConfig
             {
@@ -174,7 +177,8 @@ namespace GunshotWound2
                 AddingPedRange = 50f,
                 RemovePedRange = 100f,
                 ShowEnemyCriticalMessages = true,
-                MaximalHealth = 100,
+                MinimalStartHealth = 50,
+                MaximalStartHealth = 100,
                 MaximalBleedStopSpeed = 0.001f,
                 MaximalPain = 80,
                 MaximalPainRecoverSpeed = 1f

@@ -172,6 +172,24 @@ namespace GunshotWound2.Systems.DamageSystems
             return penetration;
         }
 
+        protected void LoadMultsFromConfig()
+        {
+            var woundConfig = Config.Data.WoundConfig;
+            if(!woundConfig.DamageSystemConfigs.ContainsKey(WeaponClass)) return;
+
+            var multsArray = woundConfig.DamageSystemConfigs[WeaponClass];
+            if(multsArray.Length < 3) return;
+            
+            var damage = multsArray[0];
+            if (damage.HasValue) DamageMultiplier = damage.Value;
+
+            var bleeding = multsArray[1];
+            if (bleeding.HasValue) BleeedingMultiplier = bleeding.Value;
+
+            var pain = multsArray[2];
+            if (pain.HasValue) PainMultiplier = pain.Value;
+        }
+
         private void SendDebug(string message)
         {
 #if DEBUG

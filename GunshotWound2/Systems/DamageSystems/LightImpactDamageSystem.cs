@@ -59,6 +59,8 @@ namespace GunshotWound2.Systems.DamageSystems
                 {LegCase2, 3},
                 {LegCase3, 1},
             };
+            
+            LoadMultsFromConfig();
         }
 
         private void HeadCase1(int entity)

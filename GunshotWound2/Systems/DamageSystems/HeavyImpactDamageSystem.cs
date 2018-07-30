@@ -59,6 +59,8 @@ namespace GunshotWound2.Systems.DamageSystems
                 {LegCase2, 2},
                 {LegCase3, 1},
             };
+            
+            LoadMultsFromConfig();
         }
         
         

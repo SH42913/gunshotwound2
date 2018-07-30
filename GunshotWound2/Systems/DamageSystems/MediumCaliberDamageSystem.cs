@@ -24,6 +24,7 @@ namespace GunshotWound2.Systems.DamageSystems
             ArmorDamage = 10;
             CanPenetrateArmor = true;
             
+            LoadMultsFromConfig();
             FillWithDefaultGunActions();
         }
     }

@@ -6,7 +6,8 @@
         public float RemovePedRange;
         
         public bool ShowEnemyCriticalMessages;
-        public int MaximalHealth;
+        public int MinimalStartHealth;
+        public int MaximalStartHealth;
         public float MaximalBleedStopSpeed;
         
         public float MaximalPain;
@@ -24,7 +25,7 @@
                    $"RemovePedRange: {RemovePedRange}\n" +
                    $"EnemyCritical: {ShowEnemyCriticalMessages}" +
                    $"BleedStop: {MaximalBleedStopSpeed}\n" +
-                   $"MaximalHealth: {MaximalHealth}\n" +
+                   $"MaximalStartHealth: {MaximalStartHealth}\n" +
                    $"MaximalPain: {MaximalPain}\n" +
                    $"PainRecoverSpeed: {MaximalPainRecoverSpeed}\n";
         }

@@ -1,4 +1,6 @@
-﻿namespace GunshotWound2.Configs
+﻿using System.Collections.Generic;
+
+namespace GunshotWound2.Configs
 {
     public class WoundConfig
     {
@@ -16,6 +18,8 @@
         
         public float MoveRateOnFullPain;
         public float MoveRateOnNervesDamage;
+
+        public Dictionary<string, float?[]> DamageSystemConfigs;
 
         public override string ToString()
         {
