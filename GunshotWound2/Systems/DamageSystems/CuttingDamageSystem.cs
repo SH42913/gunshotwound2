@@ -1,5 +1,5 @@
 ﻿using System;
-using GunshotWound2.Components.HitComponents.WeaponDamageComponents;
+using GunshotWound2.Components.HitComponents.WeaponHitComponents;
 using GunshotWound2.Components.WoundComponents;
 using Leopotam.Ecs;
 using Weighted_Randomizer;

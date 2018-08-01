@@ -1,4 +1,4 @@
-﻿using GunshotWound2.Components.HitComponents.WeaponDamageComponents;
+﻿using GunshotWound2.Components.HitComponents.WeaponHitComponents;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Systems.DamageSystems

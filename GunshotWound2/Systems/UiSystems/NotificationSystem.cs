@@ -51,22 +51,22 @@ namespace GunshotWound2.Systems.UiSystems
                 _ecsWorld.RemoveEntity(_components.Entities[i]);
             }
             
-            if (!string.IsNullOrEmpty(emergencyNotification))
+            if (_mainConfig.Data.EmergencyMessages && !string.IsNullOrEmpty(emergencyNotification))
             {
                 UI.Notify("~r~" + emergencyNotification);
             }
             
-            if (!string.IsNullOrEmpty(alertNotification))
+            if (_mainConfig.Data.AlertMessages && !string.IsNullOrEmpty(alertNotification))
             {
                 UI.Notify("~o~" + alertNotification);
             }
             
-            if (!string.IsNullOrEmpty(warnNotification))
+            if (_mainConfig.Data.WarningMessages && !string.IsNullOrEmpty(warnNotification))
             {
                 UI.Notify("~y~" + warnNotification);
             }
             
-            if (!string.IsNullOrEmpty(commonNotification))
+            if (_mainConfig.Data.CommonMessages && !string.IsNullOrEmpty(commonNotification))
             {
                 UI.Notify(commonNotification);
             }

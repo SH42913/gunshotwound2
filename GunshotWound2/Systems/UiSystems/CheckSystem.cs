@@ -50,6 +50,7 @@ namespace GunshotWound2.Systems.UiSystems
                     {
                         SendMessage("~r~You are dead!~s~");
                     }
+                    SendMessage($"Real health is {woundedPed.ThisPed.Health}/{healthPercent:0.0}%", NotifyLevels.DEBUG);
                     
                     var painPercent = woundedPed.PainMeter / woundedPed.MaximalPain;
                     if (painPercent > 1.5f)
@@ -72,6 +73,7 @@ namespace GunshotWound2.Systems.UiSystems
                     {
                         SendMessage($"~s~Pain Level: ~g~{painPercent * 100f:0.0}%~s~");
                     }
+                    SendMessage($"Real pain is {woundedPed.PainMeter:0.0}/{painPercent:0.0}%", NotifyLevels.DEBUG);
                     
                     var armorPercent = woundedPed.Armor / 100f;
                     if (armorPercent > 0)

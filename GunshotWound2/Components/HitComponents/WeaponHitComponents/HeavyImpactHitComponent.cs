@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.Components.HitComponents.WeaponDamageComponents
+﻿namespace GunshotWound2.Components.HitComponents.WeaponHitComponents
 {
     public class HeavyImpactHitComponent : BaseWeaponHitComponent
     {

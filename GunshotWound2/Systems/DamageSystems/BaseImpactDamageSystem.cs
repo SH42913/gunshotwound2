@@ -1,4 +1,4 @@
-﻿using GunshotWound2.Components.HitComponents.WeaponDamageComponents;
+﻿using GunshotWound2.Components.HitComponents.WeaponHitComponents;
 using GunshotWound2.Components.WoundComponents;
 using Leopotam.Ecs;
 
@@ -35,12 +35,12 @@ namespace GunshotWound2.Systems.DamageSystems
         protected void HeavyBruiseWound(string position, int entity, params DamageTypes?[] crits)
         {
             CreateWound($"Heavy bruise on {position}", entity, DamageMultiplier * 20f,
-                -1f, PainMultiplier * 50f, 0f, crits);
+                -1f, PainMultiplier * 50f, -1, crits);
         }
 
         protected void WindedFromImpact(int entity)
         {
-            CreateWound("Winded from impact", entity, DamageMultiplier * 20f, 0f, PainMultiplier * 40f);
+            CreateWound("Winded from impact", entity, DamageMultiplier * 20f, -1, PainMultiplier * 40f);
         }
     }
 }

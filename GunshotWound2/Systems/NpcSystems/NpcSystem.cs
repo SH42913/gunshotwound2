@@ -59,7 +59,7 @@ namespace GunshotWound2.Systems.NpcSystems
                 woundedPed.ThisPed = nearbyPed;
 
                 var newHealth = Random.Next(
-                    _config.Data.NpcConfig.MaximalStartHealth/2,
+                    _config.Data.NpcConfig.MinimalStartHealth,
                     _config.Data.NpcConfig.MaximalStartHealth);
                 woundedPed.Health = newHealth;
                 woundedPed.Armor = nearbyPed.Armor;

@@ -23,7 +23,7 @@ namespace GunshotWound2.Configs
 
         public override string ToString()
         {
-            return "WoundConfig:" +
+            return "WoundConfig:\n" +
                    $"RealisticNervesDamage: {RealisticNervesDamage}\n" +
                    $"D/P/B Mults: {DamageMultiplier}/{PainMultiplier}/{BleedingMultiplier}\n" +
                    $"D/P/B Deviations: {DamageDeviation}/{PainDeviation}/{BleedingDeviation}\n" +

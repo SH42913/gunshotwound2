@@ -1,5 +1,5 @@
 ﻿using System;
-using GunshotWound2.Components.HitComponents.WeaponDamageComponents;
+using GunshotWound2.Components.HitComponents.WeaponHitComponents;
 using GunshotWound2.Components.WoundComponents;
 using Leopotam.Ecs;
 using Weighted_Randomizer;
@@ -175,25 +175,25 @@ namespace GunshotWound2.Systems.DamageSystems
 
         private void UpperBodyCase1(int entity)
         {
-            CreateGrazeWound("upper body", entity);
+            CreateGrazeWound("chest", entity);
         }
         private void UpperBodyCase2(int entity)
         {
-            CreateFleshWound("upper body", entity, 0.1f);
+            CreateFleshWound("chest", entity, 0.1f);
         }
         private void UpperBodyCase3(int entity)
         {
-            CreatePenetratingWound("upper body", entity, 0.2f, DamageTypes.NERVES_DAMAGED,
+            CreatePenetratingWound("chest", entity, 0.2f, DamageTypes.NERVES_DAMAGED,
                 DamageTypes.LUNGS_DAMAGED, DamageTypes.HEART_DAMAGED, null, null);
         }
         private void UpperBodyCase4(int entity)
         {
-            CreatePerforatingWound("upper body", entity, 0.2f, DamageTypes.NERVES_DAMAGED,
+            CreatePerforatingWound("chest", entity, 0.2f, DamageTypes.NERVES_DAMAGED,
                 DamageTypes.LUNGS_DAMAGED, DamageTypes.HEART_DAMAGED, null, null);
         }
         private void UpperBodyCase5(int entity)
         {
-            CreateAvulsiveWound("upper body", entity, 0.3f, DamageTypes.NERVES_DAMAGED,
+            CreateAvulsiveWound("chest", entity, 0.3f, DamageTypes.NERVES_DAMAGED,
                 DamageTypes.LUNGS_DAMAGED, DamageTypes.HEART_DAMAGED);
         }
 

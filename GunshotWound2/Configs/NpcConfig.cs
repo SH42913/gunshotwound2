@@ -23,7 +23,7 @@
             return "NpcConfig:\n" +
                    $"AddingPedRange: {AddingPedRange}\n" +
                    $"RemovePedRange: {RemovePedRange}\n" +
-                   $"EnemyCritical: {ShowEnemyCriticalMessages}" +
+                   $"EnemyCritical: {ShowEnemyCriticalMessages}\n" +
                    $"BleedStop: {MaximalBleedStopSpeed}\n" +
                    $"MaximalStartHealth: {MaximalStartHealth}\n" +
                    $"MaximalPain: {MaximalPain}\n" +

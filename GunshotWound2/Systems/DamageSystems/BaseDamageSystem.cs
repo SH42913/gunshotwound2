@@ -1,6 +1,6 @@
 ﻿using System;
 using GunshotWound2.Components.HitComponents.BodyDamageComponents;
-using GunshotWound2.Components.HitComponents.WeaponDamageComponents;
+using GunshotWound2.Components.HitComponents.WeaponHitComponents;
 using GunshotWound2.Components.UiComponents;
 using GunshotWound2.Components.WoundComponents;
 using GunshotWound2.Configs;
@@ -126,7 +126,7 @@ namespace GunshotWound2.Systems.DamageSystems
             float damage, 
             float bleeding, 
             float pain, 
-            float arteryDamageChance = 0,
+            float arteryDamageChance = -1,
             params DamageTypes?[] possibleCrits)
         {
             var wound = EcsWorld.CreateEntityWith<WoundComponent>();
@@ -147,6 +147,8 @@ namespace GunshotWound2.Systems.DamageSystems
                 ? null
                 : possibleCrits[critIndex];
             wound.CriticalDamage = crit;
+            
+            if(arteryDamageChance <= 0) return;
             wound.ArterySevered = Random.IsTrueWithProbability(arteryDamageChance);
         }
 
@@ -174,9 +176,12 @@ namespace GunshotWound2.Systems.DamageSystems
 
         protected void LoadMultsFromConfig()
         {
+            return;
+            
             var woundConfig = Config.Data.WoundConfig;
+            if(woundConfig.DamageSystemConfigs == null) return;
             if(!woundConfig.DamageSystemConfigs.ContainsKey(WeaponClass)) return;
-
+            
             var multsArray = woundConfig.DamageSystemConfigs[WeaponClass];
             if(multsArray.Length < 3) return;
             

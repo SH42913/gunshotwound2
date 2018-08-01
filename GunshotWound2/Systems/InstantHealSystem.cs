@@ -48,7 +48,7 @@ namespace GunshotWound2.Systems
 
                     woundedPed.IsDead = false;
                     woundedPed.DamagedParts = 0;
-                    woundedPed.PainMeter = 0.01f;
+                    woundedPed.PainMeter = 0;
                     Function.Call(Hash.CLEAR_PED_BLOOD_DAMAGE, woundedPed.ThisPed);
                     Function.Call(Hash.SET_PED_MOVE_RATE_OVERRIDE, woundedPed.ThisPed, 1f);
                     woundedPed.ThisPed.Health = (int) woundedPed.Health;
