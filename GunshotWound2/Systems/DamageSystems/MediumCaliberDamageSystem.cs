@@ -6,7 +6,7 @@ namespace GunshotWound2.Systems.DamageSystems
     [EcsInject]
     public class MediumCaliberDamageSystem : BaseGunDamageSystem<MediumCaliberHitComponent>
     {
-        public MediumCaliberDamageSystem()
+        public override void Initialize()
         {
             WeaponClass = "Medium Caliber";
 

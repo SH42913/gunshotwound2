@@ -6,7 +6,7 @@ namespace GunshotWound2.Systems.DamageSystems
     [EcsInject]
     public class SmallCaliberDamageSystem : BaseGunDamageSystem<SmallCaliberHitComponent>
     {
-        public SmallCaliberDamageSystem()
+        public override void Initialize()
         {
             WeaponClass = "Small Caliber";
 

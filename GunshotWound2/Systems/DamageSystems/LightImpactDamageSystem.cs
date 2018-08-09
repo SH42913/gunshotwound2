@@ -9,7 +9,7 @@ namespace GunshotWound2.Systems.DamageSystems
     [EcsInject]
     public class LightImpactDamageSystem : BaseImpactDamageSystem<LightImpactHitComponent>
     {
-        public LightImpactDamageSystem()
+        public override void Initialize()
         {
             WeaponClass = "Light Impact";
 

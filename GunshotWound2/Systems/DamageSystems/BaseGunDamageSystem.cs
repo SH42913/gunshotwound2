@@ -7,7 +7,7 @@ using Weighted_Randomizer;
 namespace GunshotWound2.Systems.DamageSystems
 {
     [EcsInject]
-    public class BaseGunDamageSystem<T> : BaseDamageSystem<T> 
+    public abstract class BaseGunDamageSystem<T> : BaseDamageSystem<T> 
         where T : BaseWeaponHitComponent, new()
     {
         protected int GrazeWoundWeight;

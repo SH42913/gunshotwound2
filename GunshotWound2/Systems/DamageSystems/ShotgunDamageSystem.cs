@@ -6,7 +6,7 @@ namespace GunshotWound2.Systems.DamageSystems
     [EcsInject]
     public class ShotgunDamageSystem : BaseGunDamageSystem<ShotgunHitComponent>
     {
-        public ShotgunDamageSystem()
+        public override void Initialize()
         {
             WeaponClass = "Shotgun";
 

@@ -7,9 +7,9 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
     [EcsInject]
     public class MediumCaliberHitSystem : BaseWeaponHitSystem, IEcsRunSystem
     {
-        public MediumCaliberHitSystem()
+        protected override uint[] GetWeaponHashes()
         {
-            WeaponHashes = new []
+            return new []
             {
                 (uint) WeaponHash.AdvancedRifle, 
                 (uint) WeaponHash.AssaultSMG,

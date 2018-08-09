@@ -9,7 +9,7 @@ namespace GunshotWound2.Systems.DamageSystems
     [EcsInject]
     public class HeavyImpactDamageSystem : BaseImpactDamageSystem<HeavyImpactHitComponent>
     {
-        public HeavyImpactDamageSystem()
+        public override void Initialize()
         {
             WeaponClass = "Heavy Impact";
 

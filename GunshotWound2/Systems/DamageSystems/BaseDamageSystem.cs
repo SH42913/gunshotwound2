@@ -10,7 +10,7 @@ using Weighted_Randomizer;
 namespace GunshotWound2.Systems.DamageSystems
 {
     [EcsInject]
-    public abstract class BaseDamageSystem<T> : IEcsRunSystem 
+    public abstract class BaseDamageSystem<T> : IEcsInitSystem, IEcsRunSystem 
         where T : BaseWeaponHitComponent, new()
     {
         protected EcsWorld EcsWorld;
@@ -37,6 +37,8 @@ namespace GunshotWound2.Systems.DamageSystems
         protected float HelmetSafeChance = 0;
         
         private static readonly Random Random = new Random();
+
+        public abstract void Initialize();
 
         public void Run()
         {
@@ -176,8 +178,6 @@ namespace GunshotWound2.Systems.DamageSystems
 
         protected void LoadMultsFromConfig()
         {
-            return;
-            
             var woundConfig = Config.Data.WoundConfig;
             if(woundConfig.DamageSystemConfigs == null) return;
             if(!woundConfig.DamageSystemConfigs.ContainsKey(WeaponClass)) return;
@@ -220,6 +220,11 @@ namespace GunshotWound2.Systems.DamageSystems
             var pain = EcsWorld.CreateEntityWith<PainComponent>();
             pain.PedEntity = pedEntity;
             pain.PainAmount = amount;
+        }
+
+        public void Destroy()
+        {
+            
         }
     }
 }

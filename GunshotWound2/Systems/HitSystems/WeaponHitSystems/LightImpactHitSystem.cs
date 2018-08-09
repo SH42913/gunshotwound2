@@ -7,9 +7,9 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
     [EcsInject]
     public class LightImpactHitSystem : BaseWeaponHitSystem
     {
-        public LightImpactHitSystem()
+        protected override uint[] GetWeaponHashes()
         {
-            WeaponHashes = new uint[]
+            return new uint[]
             {
                 //GarbageBug Briefcase  Briefcase2
                 3794977420, 2294779575, 28811031,

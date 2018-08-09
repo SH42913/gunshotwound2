@@ -5,7 +5,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Systems.DamageSystems
 {
     [EcsInject]
-    public class BaseImpactDamageSystem<T> : BaseDamageSystem<T>
+    public abstract class BaseImpactDamageSystem<T> : BaseDamageSystem<T>
         where T : BaseWeaponHitComponent, new()
     {
         protected void DefaultGrazeWound(int entity)

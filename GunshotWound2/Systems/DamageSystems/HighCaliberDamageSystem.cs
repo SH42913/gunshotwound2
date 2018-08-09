@@ -4,7 +4,7 @@ namespace GunshotWound2.Systems.DamageSystems
 {
     public class HighCaliberDamageSystem : BaseGunDamageSystem<HighCaliberHitComponent>
     {
-        public HighCaliberDamageSystem()
+        public override void Initialize()
         {
             WeaponClass = "High Caliber";
 

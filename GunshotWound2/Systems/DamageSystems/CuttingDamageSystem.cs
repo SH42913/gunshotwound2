@@ -9,7 +9,7 @@ namespace GunshotWound2.Systems.DamageSystems
     [EcsInject]
     public class CuttingDamageSystem : BaseDamageSystem<CuttingHitComponent>
     {
-        public CuttingDamageSystem()
+        public override void Initialize()
         {
             WeaponClass = "Cutting";
 

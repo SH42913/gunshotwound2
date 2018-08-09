@@ -6,7 +6,7 @@ namespace GunshotWound2.Systems.DamageSystems
 {
     public class ExplosionDamageSystem : BaseDamageSystem<ExplosionHitComponent>
     {
-        public ExplosionDamageSystem()
+        public override void Initialize()
         {
             WeaponClass = "Explosive";
 
