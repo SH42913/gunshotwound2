@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GunshotWoundMod>
+	<Player>
+		<WoundedPlayerEnabled>true</WoundedPlayerEnabled>
+		<!-- Change it to FALSE, if you don't want player-ped influenced by script -->
+		
+		<PoliceCanForget>true</PoliceCanForget>
+		<!-- If TRUE - cops will can forget you, when you fall unconscious -->
+		
+		<MaximalPain>100.0</MaximalPain>
+		
+		<PainRecoverySpeed>2.0</PainRecoverySpeed>
+		
+		<BleedHealSpeed>0.002</BleedHealSpeed>
+		
+		<Animations NoPain="move_m@generic" MildPain="move_m@gangster@a" AvgPain="move_m@drunk@moderatedrunk" IntensePain="move_m@drunk@verydrunk"/>
+	</Player>
+	
+	<Peds>
+		<WoundedPedsEnabled>true</WoundedPedsEnabled>
+		<!-- It can strike on performance!!! Especially in big city, where a lot of people!
+		Use it carefully, it also possibly can create troubles in mission, when you has friendly ped! -->
+		
+		<CriticalMessages>true</CriticalMessages>
+		<!-- Set TRUE if you want to see message about critical wound of other peds -->
+		
+		<MinimalStartHealth>50</MinimalStartHealth>
+		
+		<MaximalStartHealth>80</MaximalStartHealth>
+		
+		<PainRecoverySpeed>1.0</PainRecoverySpeed>
+		
+		<BleedHealSpeed>0.001</BleedHealSpeed>
+		
+		<MaximalPain>80.0</MaximalPain>
+		
+		<Animations NoPain="" MildPain="" AvgPain="" IntensePain=""/>
+	</Peds>
+	
+	<Notifications>
+		<Common>true</Common>
+		<!-- Common notifications like CheckSelf and OtherPedsCriticalWound -->
+		
+		<Warning>true</Warning>
+		<!-- Warning notifications like CriticalDamage or PerformanceHit -->
+		
+		<Alert>true</Alert>
+		<!-- Alert notifications like LightWounds -->
+		
+		<Emergency>true</Emergency>
+		<!-- Emergency notifications like HeavyWounds -->
+	</Notifications>
+	
+	<Wounds>
+		<RealisticNervesDamage>true</RealisticNervesDamage>
+		<!-- If true, peds will set to ragdoll on spine damage -->
+		
+		<MoveRateOnFullPain>0.7</MoveRateOnFullPain>
+		
+		<OverallDamageMult>1.0</OverallDamageMult>
+		<DamageDeviation>0.3</DamageDeviation>
+		<!-- 0.3 mean +-30% random damage -->
+		
+		<OverallBleedingMult>1.0</OverallBleedingMult>
+		<BleedingDeviation>0.3</BleedingDeviation>
+		
+		<OverallPainMult>1.0</OverallPainMult>
+		<PainDeviation>0.3</PainDeviation>
+	</Wounds>
+    
+    <Weapons>
+		<SmallCaliber DamageMult="1.0" BleedingMult="1.0" PainMult="1.0"/>
+		<MediumCaliber DamageMult="1.2" BleedingMult="1.3" PainMult="1.5"/>
+		<HighCaliber DamageMult="1.3" BleedingMult="1.5" PainMult="2.0"/>
+		<Shotgun DamageMult="0.7" BleedingMult="1.1" PainMult="1.2"/>
+		<Cutting DamageMult="1.0" BleedingMult="1.0" PainMult="1.0"/>
+		<LightImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.0"/>
+		<HeavyImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.0"/>
+		<Explosive DamageMult="1.0" BleedingMult="1.0" PainMult="1.0"/>
+    </Weapons>
+	
+	<Hotkeys>
+		<CheckKey>76</CheckKey>
+		<!-- Check Yourself. Show status-notifications one time, fine variant for realistic and not annoying gameplay.
+		Default: L on keyboard. -->
+		
+		<HealKey>75</HealKey>
+		<!-- Totally heal player ped.
+		Default: K on keyboard. -->
+		
+		<GetHelmetKey>74</GetHelmetKey>
+		<!-- Give to player ped motorbike helmet if you have $30.
+		Helmet can save your head from impacts and small caliber weapon.
+		If you have helmet, this hotkey will remove it.
+		Default: J on keyboard. -->
+	</Hotkeys>
+</GunshotWoundMod>

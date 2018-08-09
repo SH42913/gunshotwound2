@@ -6,7 +6,7 @@ namespace GunshotWound2.Systems.DamageSystems
     {
         public override void Initialize()
         {
-            WeaponClass = "High Caliber";
+            WeaponClass = "HighCaliber";
 
             GrazeWoundWeight = 1;
             FleshWoundWeight = 1;

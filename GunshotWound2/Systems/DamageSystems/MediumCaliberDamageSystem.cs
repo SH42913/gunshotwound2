@@ -8,7 +8,7 @@ namespace GunshotWound2.Systems.DamageSystems
     {
         public override void Initialize()
         {
-            WeaponClass = "Medium Caliber";
+            WeaponClass = "MediumCaliber";
 
             GrazeWoundWeight = 1;
             FleshWoundWeight = 2;

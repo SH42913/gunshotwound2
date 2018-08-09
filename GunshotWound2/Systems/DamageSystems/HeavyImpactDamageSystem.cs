@@ -11,7 +11,7 @@ namespace GunshotWound2.Systems.DamageSystems
     {
         public override void Initialize()
         {
-            WeaponClass = "Heavy Impact";
+            WeaponClass = "HeavyImpact";
 
             HelmetSafeChance = 0.8f;
             ArmorDamage = 0;

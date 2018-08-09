@@ -318,19 +318,19 @@ namespace GunshotWound2
                 var nervesDamage = woundsNode.Element("RealisticNervesDamage").Value;
                 _mainConfig.WoundConfig.RealisticNervesDamage = bool.Parse(nervesDamage);
 
-                var damageMult = woundsNode.Element("DamageMult").Value;
+                var damageMult = woundsNode.Element("OverallDamageMult").Value;
                 _mainConfig.WoundConfig.DamageMultiplier = float.Parse(damageMult, CultureInfo.InvariantCulture);
 
                 var damageDev = woundsNode.Element("DamageDeviation").Value;
                 _mainConfig.WoundConfig.DamageDeviation = float.Parse(damageDev, CultureInfo.InvariantCulture);
 
-                var painMult = woundsNode.Element("PainMult").Value;
+                var painMult = woundsNode.Element("OverallPainMult").Value;
                 _mainConfig.WoundConfig.PainMultiplier = float.Parse(painMult, CultureInfo.InvariantCulture);
 
                 var painDev = woundsNode.Element("PainDeviation").Value;
                 _mainConfig.WoundConfig.PainDeviation = float.Parse(painDev, CultureInfo.InvariantCulture);
 
-                var bleedMult = woundsNode.Element("BleedingMult").Value;
+                var bleedMult = woundsNode.Element("OverallBleedingMult").Value;
                 _mainConfig.WoundConfig.BleedingMultiplier = float.Parse(bleedMult, CultureInfo.InvariantCulture);
 
                 var bleedDev = woundsNode.Element("BleedingDeviation").Value;

@@ -20,9 +20,9 @@ namespace GunshotWound2.Systems.DamageSystems
         protected EcsFilter<BodyHitComponent> BodyHitComponents;
         
         protected string WeaponClass = "UNKNOWN";
-        protected float DamageMultiplier = 1;
-        protected float BleeedingMultiplier = 1;
-        protected float PainMultiplier = 1;
+        protected float DamageMultiplier = 1f;
+        protected float BleeedingMultiplier = 1f;
+        protected float PainMultiplier = 1f;
 
         protected Action<int> DefaultAction;
         protected IWeightedRandomizer<Action<int>> HeadActions;
