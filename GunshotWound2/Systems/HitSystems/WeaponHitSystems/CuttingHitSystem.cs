@@ -7,9 +7,9 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
     [EcsInject]
     public class CuttingHitSystem : BaseWeaponHitSystem
     {
-        public CuttingHitSystem()
+        protected override uint[] GetWeaponHashes()
         {
-            WeaponHashes = new uint[]
+            return new uint[]
             {
                 //Animal    Cougar     BarbedWire
                 4194021054, 148160082, 1223143800, 

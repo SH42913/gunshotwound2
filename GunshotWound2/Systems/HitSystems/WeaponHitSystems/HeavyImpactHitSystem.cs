@@ -7,9 +7,9 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
     [EcsInject]
     public class HeavyImpactHitSystem : BaseWeaponHitSystem
     {
-        public HeavyImpactHitSystem()
+        protected override uint[] GetWeaponHashes()
         {
-            WeaponHashes = new uint[]
+            return new uint[]
             {
                 //Rammed     RunOverCar  HeliCrash
                 133987706, 2741846334, 341774354,

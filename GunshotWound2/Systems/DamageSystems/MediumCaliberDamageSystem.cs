@@ -6,14 +6,14 @@ namespace GunshotWound2.Systems.DamageSystems
     [EcsInject]
     public class MediumCaliberDamageSystem : BaseGunDamageSystem<MediumCaliberHitComponent>
     {
-        public MediumCaliberDamageSystem()
+        public override void Initialize()
         {
-            WeaponClass = "Medium Caliber";
+            WeaponClass = "MediumCaliber";
 
             GrazeWoundWeight = 1;
             FleshWoundWeight = 2;
             PenetratingWoundWeight = 4;
-            PerforeatinWoundWeight = 6;
+            PerforatingWoundWeight = 6;
             AvulsiveWoundWeight = 2;
             
             DamageMultiplier = 1.2f;
@@ -23,6 +23,7 @@ namespace GunshotWound2.Systems.DamageSystems
             HelmetSafeChance = 0.3f;
             ArmorDamage = 10;
             CanPenetrateArmor = true;
+            CritChance = 0.7f;
             
             LoadMultsFromConfig();
             FillWithDefaultGunActions();

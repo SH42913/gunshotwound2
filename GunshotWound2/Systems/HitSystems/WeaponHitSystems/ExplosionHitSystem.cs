@@ -7,9 +7,9 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
     [EcsInject]
     public class ExplosionHitSystem : BaseWeaponHitSystem
     {
-        public ExplosionHitSystem()
+        protected override uint[] GetWeaponHashes()
         {
-            WeaponHashes = new uint[]
+            return  new uint[]
             {
                 //Explosion
                 539292904, 

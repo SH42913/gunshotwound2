@@ -24,6 +24,8 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
             request.PedEntity = pedEntity;
             request.Enable = true;
             
+            woundedPed.ThisPed.Weapons.Drop();
+            
             if (!woundedPed.IsPlayer) return;
 
             Game.Player.IgnoredByEveryone = true;

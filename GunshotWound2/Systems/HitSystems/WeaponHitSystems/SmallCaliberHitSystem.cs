@@ -7,9 +7,9 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
     [EcsInject]
     public class SmallCaliberHitSystem : BaseWeaponHitSystem
     {
-        public SmallCaliberHitSystem()
+        protected override uint[] GetWeaponHashes()
         {
-            WeaponHashes = new []
+            return new []
             {
                 (uint) WeaponHash.Pistol, 
                 (uint) WeaponHash.CombatPistol, 

@@ -6,12 +6,14 @@ namespace GunshotWound2.Systems.DamageSystems
 {
     public class ExplosionDamageSystem : BaseDamageSystem<ExplosionHitComponent>
     {
-        public ExplosionDamageSystem()
+        public override void Initialize()
         {
             WeaponClass = "Explosive";
 
             HelmetSafeChance = 0;
             ArmorDamage = 100;
+
+            CritChance = 1f;
             
             DefaultAction = DefaultGrazeWound;
             

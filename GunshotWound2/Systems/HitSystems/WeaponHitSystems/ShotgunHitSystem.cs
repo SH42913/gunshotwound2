@@ -7,9 +7,9 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
     [EcsInject]
     public class ShotgunHitSystem : BaseWeaponHitSystem
     {
-        public ShotgunHitSystem()
+        protected override uint[] GetWeaponHashes()
         {
-            WeaponHashes = new[]
+            return new[]
             {
                 (uint) WeaponHash.AssaultShotgun,
                 (uint) WeaponHash.BullpupShotgun,

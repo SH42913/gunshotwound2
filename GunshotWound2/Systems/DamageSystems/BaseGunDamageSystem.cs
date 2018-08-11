@@ -7,13 +7,13 @@ using Weighted_Randomizer;
 namespace GunshotWound2.Systems.DamageSystems
 {
     [EcsInject]
-    public class BaseGunDamageSystem<T> : BaseDamageSystem<T> 
+    public abstract class BaseGunDamageSystem<T> : BaseDamageSystem<T> 
         where T : BaseWeaponHitComponent, new()
     {
         protected int GrazeWoundWeight;
         protected int FleshWoundWeight;
         protected int PenetratingWoundWeight;
-        protected int PerforeatinWoundWeight;
+        protected int PerforatingWoundWeight;
         protected int AvulsiveWoundWeight;
         
         protected void FillWithDefaultGunActions()
@@ -25,7 +25,7 @@ namespace GunshotWound2.Systems.DamageSystems
                 {HeadCase1, GrazeWoundWeight},
                 {HeadCase2, FleshWoundWeight},
                 {HeadCase3, PenetratingWoundWeight},
-                {HeadCase4, PerforeatinWoundWeight},
+                {HeadCase4, PerforatingWoundWeight},
                 {HeadCase5, AvulsiveWoundWeight},
             };
             
@@ -34,7 +34,7 @@ namespace GunshotWound2.Systems.DamageSystems
                 {NeckCase1, GrazeWoundWeight},
                 {NeckCase2, FleshWoundWeight},
                 {NeckCase3, PenetratingWoundWeight},
-                {NeckCase4, PerforeatinWoundWeight},
+                {NeckCase4, PerforatingWoundWeight},
                 {NeckCase5, AvulsiveWoundWeight},
             };
             
@@ -43,7 +43,7 @@ namespace GunshotWound2.Systems.DamageSystems
                 {UpperBodyCase1, GrazeWoundWeight},
                 {UpperBodyCase2, FleshWoundWeight},
                 {UpperBodyCase3, PenetratingWoundWeight},
-                {UpperBodyCase4, PerforeatinWoundWeight},
+                {UpperBodyCase4, PerforatingWoundWeight},
                 {UpperBodyCase5, AvulsiveWoundWeight},
             };
             
@@ -52,7 +52,7 @@ namespace GunshotWound2.Systems.DamageSystems
                 {LowerBodyCase1, GrazeWoundWeight},
                 {LowerBodyCase2, FleshWoundWeight},
                 {LowerBodyCase3, PenetratingWoundWeight},
-                {LowerBodyCase4, PerforeatinWoundWeight},
+                {LowerBodyCase4, PerforatingWoundWeight},
                 {LowerBodyCase5, AvulsiveWoundWeight},
             };
             
@@ -61,7 +61,7 @@ namespace GunshotWound2.Systems.DamageSystems
                 {ArmCase1, GrazeWoundWeight},
                 {ArmCase2, FleshWoundWeight},
                 {ArmCase3, PenetratingWoundWeight},
-                {ArmCase4, PerforeatinWoundWeight},
+                {ArmCase4, PerforatingWoundWeight},
                 {ArmCase5, AvulsiveWoundWeight},
             };
             
@@ -70,7 +70,7 @@ namespace GunshotWound2.Systems.DamageSystems
                 {LegCase1, GrazeWoundWeight},
                 {LegCase2, FleshWoundWeight},
                 {LegCase3, PenetratingWoundWeight},
-                {LegCase4, PerforeatinWoundWeight},
+                {LegCase4, PerforatingWoundWeight},
                 {LegCase5, AvulsiveWoundWeight},
             };
         }
@@ -184,12 +184,12 @@ namespace GunshotWound2.Systems.DamageSystems
         private void UpperBodyCase3(int entity)
         {
             CreatePenetratingWound("chest", entity, 0.2f, DamageTypes.NERVES_DAMAGED,
-                DamageTypes.LUNGS_DAMAGED, DamageTypes.HEART_DAMAGED, null, null);
+                DamageTypes.LUNGS_DAMAGED, DamageTypes.HEART_DAMAGED);
         }
         private void UpperBodyCase4(int entity)
         {
             CreatePerforatingWound("chest", entity, 0.2f, DamageTypes.NERVES_DAMAGED,
-                DamageTypes.LUNGS_DAMAGED, DamageTypes.HEART_DAMAGED, null, null);
+                DamageTypes.LUNGS_DAMAGED, DamageTypes.HEART_DAMAGED);
         }
         private void UpperBodyCase5(int entity)
         {
@@ -212,12 +212,12 @@ namespace GunshotWound2.Systems.DamageSystems
         private void LowerBodyCase3(int entity)
         {
             CreatePenetratingWound("lower body", entity, 0.2f, DamageTypes.NERVES_DAMAGED,
-                DamageTypes.STOMACH_DAMAGED, DamageTypes.GUTS_DAMAGED, null, null);
+                DamageTypes.STOMACH_DAMAGED, DamageTypes.GUTS_DAMAGED);
         }
         private void LowerBodyCase4(int entity)
         {
             CreatePerforatingWound("lower body", entity, 0.2f, DamageTypes.NERVES_DAMAGED,
-                DamageTypes.STOMACH_DAMAGED, DamageTypes.GUTS_DAMAGED, null, null);
+                DamageTypes.STOMACH_DAMAGED, DamageTypes.GUTS_DAMAGED);
         }
         private void LowerBodyCase5(int entity)
         {
@@ -235,19 +235,19 @@ namespace GunshotWound2.Systems.DamageSystems
         }
         private void ArmCase2(int entity)
         {
-            CreateFleshWound("arm", entity, 0.05f);
+            CreateFleshWound("arm", entity, 0.01f);
         }
         private void ArmCase3(int entity)
         {
-            CreatePenetratingWound("arm", entity, 0.1f, DamageTypes.ARMS_DAMAGED);
+            CreatePenetratingWound("arm", entity, 0.05f, DamageTypes.ARMS_DAMAGED);
         }
         private void ArmCase4(int entity)
         {
-            CreatePerforatingWound("arm", entity, 0.1f, DamageTypes.ARMS_DAMAGED);
+            CreatePerforatingWound("arm", entity, 0.05f, DamageTypes.ARMS_DAMAGED);
         }
         private void ArmCase5(int entity)
         {
-            CreateAvulsiveWound("arm", entity, 0.2f, DamageTypes.ARMS_DAMAGED);
+            CreateAvulsiveWound("arm", entity, 0.1f, DamageTypes.ARMS_DAMAGED);
         }
 
         #endregion

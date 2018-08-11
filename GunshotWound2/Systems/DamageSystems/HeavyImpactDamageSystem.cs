@@ -9,53 +9,55 @@ namespace GunshotWound2.Systems.DamageSystems
     [EcsInject]
     public class HeavyImpactDamageSystem : BaseImpactDamageSystem<HeavyImpactHitComponent>
     {
-        public HeavyImpactDamageSystem()
+        public override void Initialize()
         {
-            WeaponClass = "Heavy Impact";
+            WeaponClass = "HeavyImpact";
 
             HelmetSafeChance = 0.8f;
             ArmorDamage = 0;
+
+            CritChance = 0.7f;
             
             DefaultAction = DefaultGrazeWound;
             
             HeadActions = new StaticWeightedRandomizer<Action<int>>
             {
-                {HeadCase1, 3},
+                {HeadCase1, 2},
                 {HeadCase2, 2},
                 {HeadCase3, 1},
             };
             
             NeckActions = new StaticWeightedRandomizer<Action<int>>
             {
-                {NeckCase1, 3},
+                {NeckCase1, 2},
                 {NeckCase2, 2},
                 {NeckCase3, 1},
             };
             
             UpperBodyActions = new StaticWeightedRandomizer<Action<int>>
             {
-                {UpperCase1, 3},
+                {UpperCase1, 2},
                 {UpperCase2, 2},
                 {UpperCase3, 1},
             };
             
             LowerBodyActions = new StaticWeightedRandomizer<Action<int>>
             {
-                {LowerCase1, 3},
+                {LowerCase1, 2},
                 {LowerCase2, 2},
                 {LowerCase3, 1},
             };
             
             ArmActions = new StaticWeightedRandomizer<Action<int>>
             {
-                {ArmCase1, 3},
+                {ArmCase1, 2},
                 {ArmCase2, 2},
                 {ArmCase3, 1},
             };
             
             LegActions = new StaticWeightedRandomizer<Action<int>>
             {
-                {LegCase1, 3},
+                {LegCase1, 2},
                 {LegCase2, 2},
                 {LegCase3, 1},
             };
@@ -85,7 +87,7 @@ namespace GunshotWound2.Systems.DamageSystems
         private void BrokenNeck(int entity)
         {
             CreateWound("Broken neck", entity, DamageMultiplier * 50f,
-                0f, 0f, 50f, DamageTypes.NERVES_DAMAGED, DamageTypes.NERVES_DAMAGED, DamageTypes.NERVES_DAMAGED);
+                0f, 0f, 50f, DamageTypes.NERVES_DAMAGED);
         }
         
         
@@ -170,7 +172,7 @@ namespace GunshotWound2.Systems.DamageSystems
 
         private void ArmCase3(int entity)
         {
-            HeavyBruiseWound("arm", entity, DamageTypes.ARMS_DAMAGED, DamageTypes.ARMS_DAMAGED);
+            HeavyBruiseWound("arm", entity, DamageTypes.ARMS_DAMAGED);
         }
 
 
@@ -187,7 +189,7 @@ namespace GunshotWound2.Systems.DamageSystems
 
         private void LegCase3(int entity)
         {
-            HeavyBruiseWound("leg", entity, DamageTypes.LEGS_DAMAGED, DamageTypes.LEGS_DAMAGED);
+            HeavyBruiseWound("leg", entity, DamageTypes.LEGS_DAMAGED);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using GTA;
@@ -221,9 +222,21 @@ namespace GunshotWound2
                 BleedingDeviation = 0.2f,
                 PainDeviation = 0.2f
             };
-            
-            var doc = XDocument.Load("scripts/GSW2/GSW2Config.xml").Root;
 
+            bool configInGsw = new FileInfo("scripts/GSW2/GSW2Config.xml").Exists;
+            bool config = new FileInfo("scripts/GSW2Config.xml").Exists;
+            
+            if(!configInGsw && !config)
+            {
+                UI.Notify("GSW2 can't find config file, was loaded default values");
+                UI.ShowSubtitle("GSW2 can't find config file, was loaded default values");
+                return;
+            }
+            
+            var doc = configInGsw
+                ? XDocument.Load("scripts/GSW2/GSW2Config.xml").Root
+                : XDocument.Load("scripts/GSW2Config.xml").Root;
+            
             LastSystem = "Hotkeys";
             var buttonNode = doc.Element("Hotkeys");
             if (buttonNode != null)
@@ -280,8 +293,8 @@ namespace GunshotWound2
             var npcNode = doc.Element("Peds");
             if (npcNode != null)
             {
-                var woundedPedsEnabled = npcNode.Element("WoundedPedsEnabled").Value;
-                _mainConfig.NpcConfig.AddingPedRange = bool.Parse(woundedPedsEnabled) ? 50f : 0f;
+                var woundedPedsRange = npcNode.Element("StartWoundedPedRange").Value;
+                _mainConfig.NpcConfig.AddingPedRange = float.Parse(woundedPedsRange, CultureInfo.InvariantCulture);
 
                 var minimalHealth = npcNode.Element("MinimalStartHealth").Value;
                 _mainConfig.NpcConfig.MinimalStartHealth = int.Parse(minimalHealth);
@@ -318,19 +331,19 @@ namespace GunshotWound2
                 var nervesDamage = woundsNode.Element("RealisticNervesDamage").Value;
                 _mainConfig.WoundConfig.RealisticNervesDamage = bool.Parse(nervesDamage);
 
-                var damageMult = woundsNode.Element("DamageMult").Value;
+                var damageMult = woundsNode.Element("OverallDamageMult").Value;
                 _mainConfig.WoundConfig.DamageMultiplier = float.Parse(damageMult, CultureInfo.InvariantCulture);
 
                 var damageDev = woundsNode.Element("DamageDeviation").Value;
                 _mainConfig.WoundConfig.DamageDeviation = float.Parse(damageDev, CultureInfo.InvariantCulture);
 
-                var painMult = woundsNode.Element("PainMult").Value;
+                var painMult = woundsNode.Element("OverallPainMult").Value;
                 _mainConfig.WoundConfig.PainMultiplier = float.Parse(painMult, CultureInfo.InvariantCulture);
 
                 var painDev = woundsNode.Element("PainDeviation").Value;
                 _mainConfig.WoundConfig.PainDeviation = float.Parse(painDev, CultureInfo.InvariantCulture);
 
-                var bleedMult = woundsNode.Element("BleedingMult").Value;
+                var bleedMult = woundsNode.Element("OverallBleedingMult").Value;
                 _mainConfig.WoundConfig.BleedingMultiplier = float.Parse(bleedMult, CultureInfo.InvariantCulture);
 
                 var bleedDev = woundsNode.Element("BleedingDeviation").Value;
@@ -359,19 +372,30 @@ namespace GunshotWound2
             if (weaponNode != null)
             {
                 var dictionary = new Dictionary<string, float?[]>();
-                
+
                 foreach (XElement element in weaponNode.Elements())
                 {
-                    var mults = new float?[3];
+                    var mults = new float?[4];
+
+                    var damageString = element.Attribute("DamageMult");
+                    mults[0] = damageString != null
+                        ? (float?) float.Parse(damageString.Value, CultureInfo.InvariantCulture)
+                        : null;
+
+                    var bleedingString = element.Attribute("BleedingMult");
+                    mults[1] = bleedingString != null
+                        ? (float?) float.Parse(bleedingString.Value, CultureInfo.InvariantCulture)
+                        : null;
                     
-                    var damageString = element.Attribute("DamageMult").Value;
-                    mults[0] = float.Parse(damageString, CultureInfo.InvariantCulture);
+                    var painString = element.Attribute("PainMult");
+                    mults[2] = painString != null
+                        ? (float?) float.Parse(painString.Value, CultureInfo.InvariantCulture)
+                        : null;
                     
-                    var bleedingString = element.Attribute("BleedingMult").Value;
-                    mults[1] = float.Parse(bleedingString, CultureInfo.InvariantCulture);
-                    
-                    var painString = element.Attribute("PainMult").Value;
-                    mults[2] = float.Parse(painString, CultureInfo.InvariantCulture);
+                    var critString = element.Attribute("CritChance");
+                    mults[3] = critString != null
+                        ? (float?) float.Parse(critString.Value, CultureInfo.InvariantCulture)
+                        : null;
                     
                     dictionary.Add(element.Name.LocalName, mults);
                 }
@@ -399,8 +423,9 @@ namespace GunshotWound2
             {
                 if (_warningMessageWasShown) return;
                 
-                SendMessage("Perfomance drop!\nYou better to reduce adding range " +
-                            "or turn off WoundedPeds at all!", NotifyLevels.WARNING);
+                SendMessage("Performance drop!\nYou'd better to reduce adding range with help PageDown-button.\n" +
+                            "You also can turn off WoundedPeds at all, " +
+                            "just change StartWoundedPedRange to 0 in GSW2Config.xml", NotifyLevels.WARNING);
                 _warningMessageWasShown = true;
             }
         }

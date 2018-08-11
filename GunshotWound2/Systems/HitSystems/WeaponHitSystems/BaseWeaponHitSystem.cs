@@ -9,7 +9,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
 {
     [EcsInject]
-    public abstract class BaseWeaponHitSystem : IEcsRunSystem
+    public abstract class BaseWeaponHitSystem : IEcsInitSystem, IEcsRunSystem
     {
         protected EcsWorld EcsWorld;
         protected EcsFilter<WoundedPedComponent> Peds;
@@ -30,6 +30,8 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
                 CreateComponent(pedEntity);
             }
         }
+
+        protected abstract uint[] GetWeaponHashes();
 
         protected abstract void CreateComponent(int pedEntity);
         
@@ -59,6 +61,16 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
             notification.Level = NotifyLevels.DEBUG;
             notification.StringToShow = message;
 #endif
+        }
+
+        public virtual void Initialize()
+        {
+            WeaponHashes = GetWeaponHashes();
+        }
+
+        public void Destroy()
+        {
+            
         }
     }
 }

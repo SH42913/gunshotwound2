@@ -1,3 +1,4 @@
 [submodule "leoEcs"]
 	path = leoEcs
-	url = https://github.com/Leopotam/ecs
+	url = https://github.com/Leopotam/ecs.git
+	branch = develop

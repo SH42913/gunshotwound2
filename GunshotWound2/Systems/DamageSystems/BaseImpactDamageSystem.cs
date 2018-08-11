@@ -5,7 +5,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Systems.DamageSystems
 {
     [EcsInject]
-    public class BaseImpactDamageSystem<T> : BaseDamageSystem<T>
+    public abstract class BaseImpactDamageSystem<T> : BaseDamageSystem<T>
         where T : BaseWeaponHitComponent, new()
     {
         protected void DefaultGrazeWound(int entity)
@@ -34,8 +34,8 @@ namespace GunshotWound2.Systems.DamageSystems
 
         protected void HeavyBruiseWound(string position, int entity, params DamageTypes?[] crits)
         {
-            CreateWound($"Heavy bruise on {position}", entity, DamageMultiplier * 20f,
-                -1f, PainMultiplier * 50f, -1, crits);
+            CreateWound($"Heavy bruise on {position}", entity, DamageMultiplier * 15f,
+                -1f, PainMultiplier * 45f, -1, crits);
         }
 
         protected void WindedFromImpact(int entity)
