@@ -280,8 +280,8 @@ namespace GunshotWound2
             var npcNode = doc.Element("Peds");
             if (npcNode != null)
             {
-                var woundedPedsEnabled = npcNode.Element("WoundedPedsEnabled").Value;
-                _mainConfig.NpcConfig.AddingPedRange = bool.Parse(woundedPedsEnabled) ? 50f : 0f;
+                var woundedPedsRange = npcNode.Element("StartWoundedPedRange").Value;
+                _mainConfig.NpcConfig.AddingPedRange = float.Parse(woundedPedsRange, CultureInfo.InvariantCulture);
 
                 var minimalHealth = npcNode.Element("MinimalStartHealth").Value;
                 _mainConfig.NpcConfig.MinimalStartHealth = int.Parse(minimalHealth);

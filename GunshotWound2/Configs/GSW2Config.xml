@@ -8,33 +8,40 @@
 		<!-- If TRUE - cops will can forget you, when you fall unconscious -->
 		
 		<MaximalPain>100.0</MaximalPain>
+		<!-- 100 mean when pain will more than 100 you'll fall unconscious -->
 		
 		<PainRecoverySpeed>2.0</PainRecoverySpeed>
+		<!-- 2.0 mean 2 pain points will be restored in 1 sec -->
 		
 		<BleedHealSpeed>0.002</BleedHealSpeed>
+		<!-- How quickly bleedings will heal -->
 		
 		<Animations NoPain="move_m@generic" MildPain="move_m@gangster@a" AvgPain="move_m@drunk@moderatedrunk" IntensePain="move_m@drunk@verydrunk"/>
+		<!-- You can change pain animations by yourself.
+		There is 4 states: No Pain, Mild(<30%, currentPain/maximalPain), Average(<70%) and Intense(<100%) -->
 	</Player>
 	
 	<Peds>
-		<WoundedPedsEnabled>true</WoundedPedsEnabled>
-		<!-- It can strike on performance!!! Especially in big city, where a lot of people!
-		Use it carefully, it also possibly can create troubles in mission, when you has friendly ped! -->
+		<StartWoundedPedRange>50</StartWoundedPedRange>
+		<!-- It is start range where script detects other peds. You also can change range in game with PageUp/PageDown.
+		It can performance strike!!! Especially in big city, where a lot of people!
+		Use it carefully, it also possibly can create troubles in mission, when you has friendly ped!
+		If you have low FPS or want to disable WoundedPed, just set range to 0. -->
 		
 		<CriticalMessages>true</CriticalMessages>
 		<!-- Set TRUE if you want to see message about critical wound of other peds -->
 		
 		<MinimalStartHealth>50</MinimalStartHealth>
-		
 		<MaximalStartHealth>80</MaximalStartHealth>
+		<!-- NonPlayable Peds will be spawn with health range between Minimal and Maximal -->
 		
 		<PainRecoverySpeed>1.0</PainRecoverySpeed>
-		
 		<BleedHealSpeed>0.001</BleedHealSpeed>
-		
 		<MaximalPain>80.0</MaximalPain>
+		<!-- Same as for player -->
 		
 		<Animations NoPain="" MildPain="" AvgPain="" IntensePain=""/>
+		<!-- Same as for player, but i don't have any ideas which animation add here -->
 	</Peds>
 	
 	<Notifications>
@@ -45,7 +52,7 @@
 		<!-- Warning notifications like CriticalDamage or PerformanceHit -->
 		
 		<Alert>true</Alert>
-		<!-- Alert notifications like LightWounds -->
+		<!-- Alert notifications like LightWounds/MediumWounds -->
 		
 		<Emergency>true</Emergency>
 		<!-- Emergency notifications like HeavyWounds -->
@@ -53,11 +60,14 @@
 	
 	<Wounds>
 		<RealisticNervesDamage>true</RealisticNervesDamage>
-		<!-- If true, peds will set to ragdoll on spine damage -->
+		<!-- If true, peds will set to permanent ragdoll on spine damage.
+		 Else ped will get just legs and arm critical damage-->
 		
 		<MoveRateOnFullPain>0.7</MoveRateOnFullPain>
+		<!-- Move rate on 100% of pain, for other percents will be MoveRate * currentPain/maximalPain -->
 		
 		<OverallDamageMult>1.0</OverallDamageMult>
+		<!-- Overall damage multiplier, 2.0 mean every wound will get x2 damage for ped -->
 		<DamageDeviation>0.3</DamageDeviation>
 		<!-- 0.3 mean +-30% random damage -->
 		
