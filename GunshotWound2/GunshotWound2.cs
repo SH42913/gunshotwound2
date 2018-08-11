@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using GTA;
@@ -221,9 +222,21 @@ namespace GunshotWound2
                 BleedingDeviation = 0.2f,
                 PainDeviation = 0.2f
             };
-            
-            var doc = XDocument.Load("scripts/GSW2/GSW2Config.xml").Root;
 
+            bool configInGsw = new FileInfo("scripts/GSW2/GSW2Config.xml").Exists;
+            bool config = new FileInfo("scripts/GSW2Config.xml").Exists;
+            
+            if(!configInGsw && !config)
+            {
+                UI.Notify("GSW2 can't find config file, was loaded default values");
+                UI.ShowSubtitle("GSW2 can't find config file, was loaded default values");
+                return;
+            }
+            
+            var doc = configInGsw
+                ? XDocument.Load("scripts/GSW2/GSW2Config.xml").Root
+                : XDocument.Load("scripts/GSW2Config.xml").Root;
+            
             LastSystem = "Hotkeys";
             var buttonNode = doc.Element("Hotkeys");
             if (buttonNode != null)
@@ -399,8 +412,9 @@ namespace GunshotWound2
             {
                 if (_warningMessageWasShown) return;
                 
-                SendMessage("Perfomance drop!\nYou better to reduce adding range " +
-                            "or turn off WoundedPeds at all!", NotifyLevels.WARNING);
+                SendMessage("Performance drop!\nYou'd better to reduce adding range with help PageDown-button.\n" +
+                            "You also can turn off WoundedPeds at all, " +
+                            "just change StartWoundedPedRange to 0 in GSW2Config.xml", NotifyLevels.WARNING);
                 _warningMessageWasShown = true;
             }
         }
