@@ -12,6 +12,8 @@ namespace GunshotWound2.Systems.DamageSystems
 
             HelmetSafeChance = 0;
             ArmorDamage = 100;
+
+            CritChance = 1f;
             
             DefaultAction = DefaultGrazeWound;
             

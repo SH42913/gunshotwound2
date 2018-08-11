@@ -26,7 +26,7 @@ namespace GunshotWound2.Systems.WoundSystems
                 int pedEntity = component.PedEntity;
                 var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
 
-                if (woundedPed != null)
+                if (woundedPed != null && component.PainAmount > 0f)
                 {
                     var additionalPain = component.PainAmount;
                     

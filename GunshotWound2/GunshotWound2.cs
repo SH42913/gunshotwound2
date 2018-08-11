@@ -372,19 +372,30 @@ namespace GunshotWound2
             if (weaponNode != null)
             {
                 var dictionary = new Dictionary<string, float?[]>();
-                
+
                 foreach (XElement element in weaponNode.Elements())
                 {
-                    var mults = new float?[3];
+                    var mults = new float?[4];
+
+                    var damageString = element.Attribute("DamageMult");
+                    mults[0] = damageString != null
+                        ? (float?) float.Parse(damageString.Value, CultureInfo.InvariantCulture)
+                        : null;
+
+                    var bleedingString = element.Attribute("BleedingMult");
+                    mults[1] = bleedingString != null
+                        ? (float?) float.Parse(bleedingString.Value, CultureInfo.InvariantCulture)
+                        : null;
                     
-                    var damageString = element.Attribute("DamageMult").Value;
-                    mults[0] = float.Parse(damageString, CultureInfo.InvariantCulture);
+                    var painString = element.Attribute("PainMult");
+                    mults[2] = painString != null
+                        ? (float?) float.Parse(painString.Value, CultureInfo.InvariantCulture)
+                        : null;
                     
-                    var bleedingString = element.Attribute("BleedingMult").Value;
-                    mults[1] = float.Parse(bleedingString, CultureInfo.InvariantCulture);
-                    
-                    var painString = element.Attribute("PainMult").Value;
-                    mults[2] = float.Parse(painString, CultureInfo.InvariantCulture);
+                    var critString = element.Attribute("CritChance");
+                    mults[3] = critString != null
+                        ? (float?) float.Parse(critString.Value, CultureInfo.InvariantCulture)
+                        : null;
                     
                     dictionary.Add(element.Name.LocalName, mults);
                 }

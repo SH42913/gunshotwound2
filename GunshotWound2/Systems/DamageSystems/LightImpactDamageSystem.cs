@@ -15,6 +15,8 @@ namespace GunshotWound2.Systems.DamageSystems
 
             HelmetSafeChance = 0.9f;
             ArmorDamage = 0;
+
+            CritChance = 0.3f;
             
             DefaultAction = DefaultGrazeWound;
             
@@ -27,36 +29,36 @@ namespace GunshotWound2.Systems.DamageSystems
             
             NeckActions = new StaticWeightedRandomizer<Action<int>>
             {
-                {NeckCase1, 5},
-                {NeckCase2, 3},
+                {NeckCase1, 8},
+                {NeckCase2, 5},
                 {NeckCase3, 1},
             };
             
             UpperBodyActions = new StaticWeightedRandomizer<Action<int>>
             {
-                {UpperCase1, 5},
-                {UpperCase2, 3},
+                {UpperCase1, 8},
+                {UpperCase2, 5},
                 {UpperCase3, 1},
             };
             
             LowerBodyActions = new StaticWeightedRandomizer<Action<int>>
             {
-                {LowerCase1, 5},
-                {LowerCase2, 3},
+                {LowerCase1, 8},
+                {LowerCase2, 5},
                 {LowerCase3, 1},
             };
             
             ArmActions = new StaticWeightedRandomizer<Action<int>>
             {
-                {ArmCase1, 5},
-                {ArmCase2, 3},
+                {ArmCase1, 8},
+                {ArmCase2, 5},
                 {ArmCase3, 1},
             };
             
             LegActions = new StaticWeightedRandomizer<Action<int>>
             {
-                {LegCase1, 5},
-                {LegCase2, 3},
+                {LegCase1, 8},
+                {LegCase2, 5},
                 {LegCase3, 1},
             };
             

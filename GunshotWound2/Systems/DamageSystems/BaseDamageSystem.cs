@@ -23,6 +23,7 @@ namespace GunshotWound2.Systems.DamageSystems
         protected float DamageMultiplier = 1f;
         protected float BleeedingMultiplier = 1f;
         protected float PainMultiplier = 1f;
+        protected float CritChance = 0.5f;
 
         protected Action<int> DefaultAction;
         protected IWeightedRandomizer<Action<int>> HeadActions;
@@ -94,7 +95,7 @@ namespace GunshotWound2.Systems.DamageSystems
                 case BodyParts.UPPER_BODY:
                     if (!CheckArmorPenetration(woundedPed, pedEntity))
                     {
-                        SendMessage("Armor saved your upper body", pedEntity, NotifyLevels.WARNING);
+                        SendMessage("Armor saved your chest", pedEntity, NotifyLevels.WARNING);
                         CreatePain(pedEntity, ArmorDamage/5f);
                         return;
                     }
@@ -103,7 +104,7 @@ namespace GunshotWound2.Systems.DamageSystems
                 case BodyParts.LOWER_BODY:
                     if (!CheckArmorPenetration(woundedPed, pedEntity))
                     {
-                        SendMessage("Armor saved your upper body", pedEntity, NotifyLevels.WARNING);
+                        SendMessage("Armor saved your lower body", pedEntity, NotifyLevels.WARNING);
                         CreatePain(pedEntity, ArmorDamage/5f);
                         return;
                     }
@@ -138,20 +139,18 @@ namespace GunshotWound2.Systems.DamageSystems
             wound.Pain = pain;
             wound.BleedSeverity = bleeding;
 
-            if (possibleCrits.Length == 0)
+            if (arteryDamageChance > 0) wound.ArterySevered = Random.IsTrueWithProbability(arteryDamageChance);
+
+            if (possibleCrits.Length <= 0)
             {
                 wound.CriticalDamage = null;
                 return;
             }
             
-            int critIndex = Random.Next(-1, possibleCrits.Length);
-            var crit = critIndex == -1
-                ? null
-                : possibleCrits[critIndex];
+            if(!Random.IsTrueWithProbability(CritChance)) return;
+            int critIndex = Random.Next(0, possibleCrits.Length);
+            var crit = possibleCrits[critIndex];
             wound.CriticalDamage = crit;
-            
-            if(arteryDamageChance <= 0) return;
-            wound.ArterySevered = Random.IsTrueWithProbability(arteryDamageChance);
         }
 
         private bool CheckArmorPenetration(WoundedPedComponent woundedPed, int pedEntity)
@@ -183,7 +182,7 @@ namespace GunshotWound2.Systems.DamageSystems
             if(!woundConfig.DamageSystemConfigs.ContainsKey(WeaponClass)) return;
             
             var multsArray = woundConfig.DamageSystemConfigs[WeaponClass];
-            if(multsArray.Length < 3) return;
+            if(multsArray.Length < 4) return;
             
             var damage = multsArray[0];
             if (damage.HasValue) DamageMultiplier = damage.Value;
@@ -193,6 +192,9 @@ namespace GunshotWound2.Systems.DamageSystems
 
             var pain = multsArray[2];
             if (pain.HasValue) PainMultiplier = pain.Value;
+
+            var critChance = multsArray[3];
+            if (critChance.HasValue) CritChance = critChance.Value;
         }
 
         private void SendDebug(string message)
