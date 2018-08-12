@@ -139,7 +139,7 @@ namespace GunshotWound2.Systems.DamageSystems
             wound.Pain = pain;
             wound.BleedSeverity = bleeding;
 
-            if (arteryDamageChance > 0) wound.ArterySevered = Random.IsTrueWithProbability(arteryDamageChance);
+            wound.ArterySevered = arteryDamageChance > 0 && Random.IsTrueWithProbability(arteryDamageChance);
 
             if (possibleCrits.Length <= 0)
             {

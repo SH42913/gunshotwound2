@@ -35,7 +35,7 @@ namespace GunshotWound2.Systems.DamageSystems
         protected void HeavyBruiseWound(string position, int entity, params DamageTypes?[] crits)
         {
             CreateWound($"Heavy bruise on {position}", entity, DamageMultiplier * 15f,
-                -1f, PainMultiplier * 45f, -1, crits);
+                -1f, PainMultiplier * 45f, 0.1f, crits);
         }
 
         protected void WindedFromImpact(int entity)
