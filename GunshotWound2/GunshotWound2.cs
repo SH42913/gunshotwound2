@@ -203,10 +203,11 @@ namespace GunshotWound2
                 AddingPedRange = 50f,
                 RemovePedRange = 100f,
                 ShowEnemyCriticalMessages = true,
-                MinimalStartHealth = 50,
-                MaximalStartHealth = 100,
+                LowerStartHealth = 50,
+                UpperStartHealth = 100,
                 MaximalBleedStopSpeed = 0.001f,
-                MaximalPain = 80,
+                LowerMaximalPain = 50,
+                UpperMaximalPain = 80,
                 MaximalPainRecoverSpeed = 1f
             };
 
@@ -299,14 +300,25 @@ namespace GunshotWound2
                 var woundedPedsRange = npcNode.Element("StartWoundedPedRange").Value;
                 _mainConfig.NpcConfig.AddingPedRange = float.Parse(woundedPedsRange, CultureInfo.InvariantCulture);
 
-                var minimalHealth = npcNode.Element("MinimalStartHealth").Value;
-                _mainConfig.NpcConfig.MinimalStartHealth = int.Parse(minimalHealth);
+                var healthNode = npcNode.Element("StartHealth");
+                if (healthNode != null)
+                {
+                    var minimalHealth = healthNode.Attribute("Lower").Value;
+                    _mainConfig.NpcConfig.LowerStartHealth = int.Parse(minimalHealth);
 
-                var maximalHealth = npcNode.Element("MaximalStartHealth").Value;
-                _mainConfig.NpcConfig.MinimalStartHealth = int.Parse(maximalHealth);
+                    var maximalHealth = healthNode.Attribute("Upper").Value;
+                    _mainConfig.NpcConfig.UpperStartHealth = int.Parse(maximalHealth);
+                }
 
-                var maximalPain = float.Parse(npcNode.Element("MaximalPain").Value, CultureInfo.InvariantCulture);
-                _mainConfig.NpcConfig.MaximalPain = maximalPain;
+                var painNode = npcNode.Element("MaximalPain");
+                if (painNode != null)
+                {
+                    var minimalPain = float.Parse(painNode.Attribute("Lower").Value, CultureInfo.InvariantCulture);
+                    _mainConfig.NpcConfig.LowerMaximalPain = minimalPain;
+                
+                    var maximalPain = float.Parse(painNode.Attribute("Upper").Value, CultureInfo.InvariantCulture);
+                    _mainConfig.NpcConfig.UpperMaximalPain = maximalPain;
+                }
 
                 var painSpd = float.Parse(npcNode.Element("PainRecoverySpeed").Value, CultureInfo.InvariantCulture);
                 _mainConfig.NpcConfig.MaximalPainRecoverSpeed = painSpd;

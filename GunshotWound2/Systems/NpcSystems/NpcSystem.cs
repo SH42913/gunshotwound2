@@ -59,8 +59,8 @@ namespace GunshotWound2.Systems.NpcSystems
                 woundedPed.ThisPed = nearbyPed;
 
                 var newHealth = Random.Next(
-                    _config.Data.NpcConfig.MinimalStartHealth,
-                    _config.Data.NpcConfig.MaximalStartHealth);
+                    _config.Data.NpcConfig.LowerStartHealth,
+                    _config.Data.NpcConfig.UpperStartHealth);
                 woundedPed.Health = newHealth;
                 woundedPed.Armor = nearbyPed.Armor;
                 woundedPed.ThisPed.MaxHealth = newHealth;
@@ -82,8 +82,8 @@ namespace GunshotWound2.Systems.NpcSystems
                 
                 woundedPed.PainMeter = 0;
                 woundedPed.MaximalPain = Random.NextFloat(
-                    _config.Data.NpcConfig.MaximalPain/2,
-                    _config.Data.NpcConfig.MaximalPain);
+                    _config.Data.NpcConfig.LowerMaximalPain,
+                    _config.Data.NpcConfig.UpperMaximalPain);
                 woundedPed.PainRecoverSpeed = Random.NextFloat(
                     _config.Data.NpcConfig.MaximalPainRecoverSpeed/2,
                     _config.Data.NpcConfig.MaximalPainRecoverSpeed);

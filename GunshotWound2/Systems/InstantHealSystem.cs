@@ -42,7 +42,7 @@ namespace GunshotWound2.Systems
                     }
                     else
                     {
-                        woundedPed.Health = _random.Next(50, _mainConfig.Data.NpcConfig.MaximalStartHealth);
+                        woundedPed.Health = _random.Next(50, _mainConfig.Data.NpcConfig.UpperStartHealth);
                         woundedPed.ThisPed.Accuracy = woundedPed.DefaultAccuracy;
                     }
 
