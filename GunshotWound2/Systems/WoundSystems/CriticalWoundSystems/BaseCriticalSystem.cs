@@ -11,28 +11,30 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
     public abstract class BaseCriticalSystem<T> : IEcsRunSystem where T : ComponentWithPedEntity, new()
     {
         protected EcsWorld EcsWorld;
-        protected EcsFilter<T> Components;
+        protected EcsFilter<T> Events;
         protected EcsFilterSingle<MainConfig> Config;
         protected DamageTypes Damage;
         
         public void Run()
         {
+#if DEBUG
             GunshotWound2.LastSystem = nameof(BaseCriticalSystem<T>);
+#endif
             
-            for (int i = 0; i < Components.EntitiesCount; i++)
+            for (int i = 0; i < Events.EntitiesCount; i++)
             {
-                int pedEntity = Components.Components1[i].PedEntity;
+                int pedEntity = Events.Components1[i].PedEntity;
                 var woundedPed = EcsWorld.GetComponent<WoundedPedComponent>(pedEntity);
 
                 if (woundedPed == null)
                 {
-                    EcsWorld.RemoveEntity(Components.Entities[i]);
+                    EcsWorld.RemoveEntity(Events.Entities[i]);
                     continue;
                 }
 
                 if (woundedPed.DamagedParts.HasFlag(Damage))
                 {
-                    EcsWorld.RemoveEntity(Components.Entities[i]);
+                    EcsWorld.RemoveEntity(Events.Entities[i]);
                     continue;
                 }
 
@@ -46,7 +48,7 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
                     ActionForNpc(woundedPed, pedEntity);
                 }
                 
-                EcsWorld.RemoveEntity(Components.Entities[i]);
+                EcsWorld.RemoveEntity(Events.Entities[i]);
             }
         }
 

@@ -16,7 +16,9 @@ namespace GunshotWound2.Systems.GuiSystems
         
         public void Run()
         {
+#if DEBUG
             GunshotWound2.LastSystem = nameof(CheckSystem);
+#endif
             
             for (int i = 0; i < _components.EntitiesCount; i++)
             {

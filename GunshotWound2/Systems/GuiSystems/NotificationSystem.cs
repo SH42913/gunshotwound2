@@ -15,7 +15,9 @@ namespace GunshotWound2.Systems.GuiSystems
 
         public void Run()
         {
-            GunshotWound2.LastSystem = nameof(NotificationSystem);
+#if DEBUG
+            GunshotWound2.LastSystem = nameof(NotificationSystem);   
+#endif
             
             string commonNotification = "";
             string warnNotification = "";

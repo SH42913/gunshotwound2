@@ -1,5 +1,4 @@
-﻿using GTA;
-using GTA.Native;
+﻿using GTA.Native;
 using GunshotWound2.Components.Events.PedEvents;
 using GunshotWound2.Components.Events.WoundEvents.ChangePainStateEvents;
 using GunshotWound2.Components.StateComponents;

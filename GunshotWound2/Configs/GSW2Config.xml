@@ -28,6 +28,10 @@
 		Use it carefully, it also possibly can create troubles in mission, when you has friendly ped!
 		If you have low FPS or want to disable WoundedPed, just set range to 0. -->
 		
+		<TickToRefresh>5</TickToRefresh>
+		<!-- 5 mean every 5 call mod will check range for new peds.
+		 1 is best variant, mod will update ped-list every frame, but it will hit on performance.-->
+		
 		<CriticalMessages>true</CriticalMessages>
 		<!-- Set TRUE if you want to see message about critical wound of other peds -->
 		

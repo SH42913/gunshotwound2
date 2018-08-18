@@ -7,13 +7,11 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 using GTA;
 using GTA.Native;
-using GunshotWound2.Components;
 using GunshotWound2.Components.Events.GuiEvents;
 using GunshotWound2.Components.Events.PedEvents;
 using GunshotWound2.Components.Events.PlayerEvents;
 using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
-using GunshotWound2.Systems;
 using GunshotWound2.Systems.DamageProcessingSystems;
 using GunshotWound2.Systems.EffectSystems;
 using GunshotWound2.Systems.GuiSystems;
@@ -32,7 +30,8 @@ namespace GunshotWound2
     public class GunshotWound2 : Script
     {
         private EcsWorld _ecsWorld;
-        private EcsSystems _updateSystems;
+        private EcsSystems _everyFrameSystems;
+        private EcsSystems _commonSystems;
         
         private bool _warningMessageWasShown;
         private MainConfig _mainConfig;
@@ -106,47 +105,46 @@ namespace GunshotWound2
             _mainConfig = EcsFilterSingle<MainConfig>.Create(_ecsWorld);
             LoadConfigsFromXml();
             
-            _updateSystems = new EcsSystems(_ecsWorld);
+            _everyFrameSystems = new EcsSystems(_ecsWorld);
+            _commonSystems = new MultiTickEcsSystems(_ecsWorld, MultiTickEcsSystems.RestrictionModes.MILLISECONDS, 16);
 
-            LastSystem = "AddNpcSystem";
             if (_mainConfig.NpcConfig.AddingPedRange > 1f)
             {
-                _updateSystems
-                    .Add(new NpcSystem());
+                _commonSystems
+                    .Add(new NpcFindSystem())
+                    .Add(new ConvertNpcToWoundedPedSystem())
+                    .Add(new RemoveWoundedPedSystem());
             }
 
-            LastSystem = "AddPlayerSystem";
             if (_mainConfig.PlayerConfig.WoundedPlayerEnabled)
             {
-                _updateSystems
+                _everyFrameSystems
                     .Add(new PlayerSystem());
             }
 
-            LastSystem = "AddAdrenalineSystem";
             if (_mainConfig.PlayerConfig.AdrenalineSlowMotion)
             {
-                _updateSystems
+                _everyFrameSystems
                     .Add(new AdrenalineSystem());
             }
 
-            LastSystem = "AddOtherSystems";
-            _updateSystems
+            _everyFrameSystems
                 .Add(new InstantHealSystem())
+                .Add(new HelmetRequestSystem())
+                .Add(new DebugInfoSystem())
+                .Add(new CheckSystem())
+                .Add(new NotificationSystem());
+            _commonSystems
+                .Add(new ArmorSystem())
                 .AddHitSystems()
                 .AddDamageSystems()
                 .AddWoundSystems()
                 .AddPainSystems()
-                .Add(new HitCleanSystem())
-                .Add(new HelmetRequestSystem())
-                .Add(new DebugInfoSystem())
-                .Add(new CheckSystem())
-                .Add(new NotificationSystem())
-                .Add(new ArmorSystem())
                 .Add(new RagdollSystem())
                 .Add(new SwitchAnimationSystem());
             
-            LastSystem = "OnInit";
-            _updateSystems.Initialize();
+            _everyFrameSystems.Initialize();
+            _commonSystems.Initialize();
             
             Tick += OnTick;
             KeyUp += OnKeyUp;
@@ -154,20 +152,20 @@ namespace GunshotWound2
             Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, Game.Player, 0.00001f);
             Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, Game.Player, 0f);
             
-            LastSystem = "Stopwatch";
             _debugStopwatch = new Stopwatch();
         }
 
         private void GunshotWoundTick()
         {
             _debugStopwatch.Restart();
-            _updateSystems.Run();
+            _everyFrameSystems.Run();
+            _commonSystems.Run();
             _debugStopwatch.Stop();
             
             CheckTime(_debugStopwatch.ElapsedMilliseconds);
 
 #if DEBUG
-            string debugSubtitles = $"ActiveEntities: {_ecsWorld.GetStats().ActiveEntities}/{_mainConfig.TicksToRefresh}\n" +
+            string debugSubtitles = $"ActiveEntities: {_ecsWorld.GetStats().ActiveEntities}\n" +
                                     $"Peds: {_ecsWorld.GetFilter<EcsFilter<WoundedPedComponent>>().EntitiesCount}\n" +
                                     $"Ms: {_debugStopwatch.ElapsedMilliseconds}";
             UI.ShowSubtitle(debugSubtitles);
@@ -176,7 +174,6 @@ namespace GunshotWound2
 
         private void LoadConfigsFromXml()
         {
-            _mainConfig.TicksToRefresh = 30;
             _mainConfig.CheckKey = null;
             _mainConfig.HelmetKey = null;
             _mainConfig.HealKey = null;
@@ -209,7 +206,8 @@ namespace GunshotWound2
                 MaximalBleedStopSpeed = 0.001f,
                 LowerMaximalPain = 50,
                 UpperMaximalPain = 80,
-                MaximalPainRecoverSpeed = 1f
+                MaximalPainRecoverSpeed = 1f,
+                TickToUpdate = 5
             };
 
             _mainConfig.WoundConfig = new WoundConfig
@@ -300,6 +298,9 @@ namespace GunshotWound2
             {
                 var woundedPedsRange = npcNode.Element("StartWoundedPedRange").Value;
                 _mainConfig.NpcConfig.AddingPedRange = float.Parse(woundedPedsRange, CultureInfo.InvariantCulture);
+
+                var tickToRefresh = npcNode.Element("TickToRefresh").Value;
+                _mainConfig.NpcConfig.TickToUpdate = int.Parse(tickToRefresh);
 
                 var healthNode = npcNode.Element("StartHealth");
                 if (healthNode != null)
@@ -429,23 +430,19 @@ namespace GunshotWound2
         
         private void CheckTime(long timeInMs)
         {
-            if (_mainConfig.TicksToRefresh < 90 && timeInMs > 40)
-            {
-                _mainConfig.TicksToRefresh++;
-            }
-            else if(_mainConfig.TicksToRefresh > 3 && timeInMs < 20)
-            {
-                _mainConfig.TicksToRefresh--;
-                _warningMessageWasShown = false;
-            }
-            else if(_mainConfig.TicksToRefresh == 90)
+            if(timeInMs > 40)
             {
                 if (_warningMessageWasShown) return;
                 
                 SendMessage("Performance drop!\nYou'd better to reduce adding range with help PageDown-button.\n" +
                             "You also can turn off WoundedPeds at all, " +
                             "just change StartWoundedPedRange to 0 in GSW2Config.xml", NotifyLevels.WARNING);
+                SendMessage("TooMuchTime in " + LastSystem, NotifyLevels.DEBUG);
                 _warningMessageWasShown = true;
+            }
+            else
+            {
+                _warningMessageWasShown = false;
             }
         }
 
@@ -506,20 +503,21 @@ namespace GunshotWound2
                 .Add(new ShotgunHitSystem())
                 .Add(new MediumCaliberHitSystem())
                 .Add(new HighCaliberHitSystem())
-                .Add(new ExplosionHitSystem());
+                .Add(new ExplosionHitSystem())
+                .Add(new BodyHitSystem())
+                .Add(new HitCleanSystem());
         }
         
         public static EcsSystems AddDamageSystems(this EcsSystems systems)
         {
             return systems
-                .Add(new BodyHitSystem())
-                .Add(new LightImpactDamageSystem())
-                .Add(new CuttingDamageSystem())
-                .Add(new HeavyImpactDamageSystem())
                 .Add(new SmallCaliberDamageSystem())
                 .Add(new ShotgunDamageSystem())
+                .Add(new LightImpactDamageSystem())
+                .Add(new HeavyImpactDamageSystem())
                 .Add(new MediumCaliberDamageSystem())
                 .Add(new HighCaliberDamageSystem())
+                .Add(new CuttingDamageSystem())
                 .Add(new ExplosionDamageSystem());
         }
         

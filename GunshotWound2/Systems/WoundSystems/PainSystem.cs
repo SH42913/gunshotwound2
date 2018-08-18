@@ -1,6 +1,5 @@
 ﻿using System;
 using GTA.Native;
-using GunshotWound2.Components;
 using GunshotWound2.Components.Events.PedEvents;
 using GunshotWound2.Components.Events.PlayerEvents;
 using GunshotWound2.Components.Events.WoundEvents;
@@ -53,9 +52,7 @@ namespace GunshotWound2.Systems.WoundSystems
                             SetPedToRagdollEvent ragdoll;
                             _ecsWorld.CreateEntityWith(out ragdoll);
                             ragdoll.PedEntity = pedEntity;
-                            ragdoll.RagdollState = Random.IsTrueWithProbability(0.8f)
-                                ? RagdollStates.SHORT
-                                : RagdollStates.LONG;
+                            ragdoll.RagdollState = RagdollStates.SHORT;
                         }
                         
                         if (woundedPed.IsPlayer)

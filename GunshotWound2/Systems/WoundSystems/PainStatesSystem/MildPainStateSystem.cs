@@ -1,4 +1,5 @@
-﻿using GunshotWound2.Components.Events.PedEvents;
+﻿using GTA.Native;
+using GunshotWound2.Components.Events.PedEvents;
 using GunshotWound2.Components.Events.WoundEvents.ChangePainStateEvents;
 using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
@@ -23,6 +24,8 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
             anim.AnimationName = woundedPed.IsPlayer 
                 ? Config.Data.PlayerConfig.MildPainAnim
                 : Config.Data.NpcConfig.MildPainAnim;
+            
+            Function.Call(Hash._SET_CAM_EFFECT, 0);
         }
     }
 }

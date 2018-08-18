@@ -44,7 +44,9 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
         public void Run()
         {
+#if DEBUG
             GunshotWound2.LastSystem = nameof(BaseDamageSystem<T>);
+#endif
             
             for (int damageIndex = 0; damageIndex < HitComponents.EntitiesCount; damageIndex++)
             {

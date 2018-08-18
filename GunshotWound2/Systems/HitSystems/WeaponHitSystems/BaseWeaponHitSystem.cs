@@ -17,7 +17,9 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
 
         public void Run()
         {
+#if DEBUG
             GunshotWound2.LastSystem = nameof(BaseWeaponHitSystem);
+#endif
             
             for (int i = 0; i < Peds.EntitiesCount; i++)
             {
@@ -69,8 +71,6 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
         }
 
         public void Destroy()
-        {
-            
-        }
+        {}
     }
 }

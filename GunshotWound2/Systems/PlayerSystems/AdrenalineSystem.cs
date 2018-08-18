@@ -19,6 +19,10 @@ namespace GunshotWound2.Systems.PlayerSystems
         
         public void Run()
         {
+#if DEBUG
+            GunshotWound2.LastSystem = nameof(AdrenalineSystem);
+#endif
+            
             for (int i = 0; i < _components.EntitiesCount; i++)
             {
                 if (_components.Components1[i].RestoreState) _currentTimeScale = 1f;

@@ -18,7 +18,9 @@ namespace GunshotWound2.Systems.EffectSystems
         
         public void Run()
         {
+#if DEBUG
             GunshotWound2.LastSystem = nameof(RagdollSystem);
+#endif
 
             for (int i = 0; i < _requests.EntitiesCount; i++)
             {
@@ -67,7 +69,7 @@ namespace GunshotWound2.Systems.EffectSystems
                         if (!woundedPed.ThisPed.IsRagdoll)
                         {
                             SendDebug($"Set {pedEntity} to long ragdoll");
-                            Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, 5000, 5000, 0, 0, 0, 0);
+                            Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, 4000, 4000, 0, 0, 0, 0);
                         }
 
                         _ecsWorld.RemoveEntity(_requests.Entities[i]);
@@ -85,7 +87,7 @@ namespace GunshotWound2.Systems.EffectSystems
                         if (!woundedPed.ThisPed.IsRagdoll)
                         {
                             SendDebug($"Set {pedEntity} to heart-damage ragdoll");
-                            Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, 6000, 6000, 2, 0, 0, 0);
+                            Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, 6000, 6000, 1, 0, 0, 0);
                         }
 
                         _ecsWorld.RemoveEntity(_requests.Entities[i]);

@@ -1,4 +1,5 @@
-﻿using GunshotWound2.Components.Events.PedEvents;
+﻿using GTA.Native;
+using GunshotWound2.Components.Events.PedEvents;
 using GunshotWound2.Components.Events.WoundEvents.ChangePainStateEvents;
 using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
@@ -28,6 +29,8 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
             EcsWorld.CreateEntityWith(out request);
             request.PedEntity = pedEntity;
             request.RagdollState = RagdollStates.WAKE_UP;
+            
+            Function.Call(Hash._SET_CAM_EFFECT, 0);
         }
     }
 }

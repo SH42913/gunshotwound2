@@ -7,21 +7,23 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
 {
     [EcsInject]
-    public abstract class BasePainStateSystem<TState> : IEcsRunSystem
-        where TState : BaseChangePainStateEvent, new ()
+    public abstract class BasePainStateSystem<TStateEvent> : IEcsRunSystem
+        where TStateEvent : BaseChangePainStateEvent, new ()
     {   
         protected EcsWorld EcsWorld;
-        protected EcsFilter<TState> States;
+        protected EcsFilter<TStateEvent> Events;
         protected EcsFilterSingle<MainConfig> Config;
         protected PainStates CurrentState;
         
         public void Run()
         {
-            GunshotWound2.LastSystem = nameof(BasePainStateSystem<TState>);
+#if DEBUG
+            GunshotWound2.LastSystem = nameof(BasePainStateSystem<TStateEvent>);
+#endif
             
-            for (int i = 0; i < States.EntitiesCount; i++)
+            for (int i = 0; i < Events.EntitiesCount; i++)
             {
-                var pedEntity = States.Components1[i].PedEntity;
+                var pedEntity = Events.Components1[i].PedEntity;
                 var woundedPed = EcsWorld.GetComponent<WoundedPedComponent>(pedEntity);
 
                 if (woundedPed != null)
@@ -30,7 +32,7 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
                     woundedPed.PainState = CurrentState;
                 }
                 
-                EcsWorld.RemoveEntity(States.Entities[i]);
+                EcsWorld.RemoveEntity(Events.Entities[i]);
             }
         }
 

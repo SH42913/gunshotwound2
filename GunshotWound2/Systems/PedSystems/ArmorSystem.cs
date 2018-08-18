@@ -13,10 +13,9 @@ namespace GunshotWound2.Systems.PedSystems
         
         public void Run()
         {
+#if DEBUG
             GunshotWound2.LastSystem = nameof(ArmorSystem);
-            
-            var ticksToRefresh = _config.Data.TicksToRefresh;
-            if((++_ticks + 1) % ticksToRefresh != 0) return;
+#endif
             
             for (int i = 0; i < _peds.EntitiesCount; i++)
             {

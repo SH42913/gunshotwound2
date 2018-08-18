@@ -23,7 +23,9 @@ namespace GunshotWound2.Systems.PedSystems
         
         public void Run()
         {
+#if DEBUG
             GunshotWound2.LastSystem = nameof(InstantHealSystem);
+#endif
             
             for (int i = 0; i < _components.EntitiesCount; i++)
             {

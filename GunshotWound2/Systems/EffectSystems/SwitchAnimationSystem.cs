@@ -14,6 +14,10 @@ namespace GunshotWound2.Systems.EffectSystems
         
         public void Run()
         {
+#if DEBUG
+            GunshotWound2.LastSystem = nameof(SwitchAnimationSystem);
+#endif
+            
             for (int i = 0; i < _components.EntitiesCount; i++)
             {
                 var woundedPed = _ecsWorld

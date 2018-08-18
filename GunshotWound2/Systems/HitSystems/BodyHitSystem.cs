@@ -16,7 +16,9 @@ namespace GunshotWound2.Systems.HitSystems
         
         public void Run()
         {
+#if DEBUG
             GunshotWound2.LastSystem = nameof(BodyHitSystem);
+#endif
             
             for (int i = 0; i < _requests.EntitiesCount; i++)
             {

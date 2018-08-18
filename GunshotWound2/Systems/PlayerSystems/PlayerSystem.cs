@@ -1,9 +1,7 @@
 ﻿using System;
 using GTA;
-using GunshotWound2.Components;
 using GunshotWound2.Components.Events.GuiEvents;
 using GunshotWound2.Components.Events.PedEvents;
-using GunshotWound2.Components.Events.WoundEvents;
 using GunshotWound2.Components.Events.WoundEvents.ChangePainStateEvents;
 using GunshotWound2.Components.MarkComponents;
 using GunshotWound2.Components.StateComponents;
@@ -57,6 +55,10 @@ namespace GunshotWound2.Systems.PlayerSystems
         
         public void Run()
         {
+#if DEBUG
+            GunshotWound2.LastSystem = nameof(PlayerSystem);
+#endif
+            
             for (int i = 0; i < _players.EntitiesCount; i++)
             {
                 var woundedPed = _players.Components1[i];
@@ -70,8 +72,8 @@ namespace GunshotWound2.Systems.PlayerSystems
                     woundedPed.IsDead = true;
                     woundedPed.PainRecoverSpeed = 0;
                 
-                    var pain = _ecsWorld.CreateEntityWith<AddPainEvent>();
-                    pain.PainAmount = int.MaxValue;
+                    var pain = _ecsWorld.CreateEntityWith<SetPedToRagdollEvent>();
+                    pain.RagdollState = RagdollStates.PERMANENT;
                     pain.PedEntity = _players.Entities[i];
 
                     _ecsWorld.CreateEntityWith<ShowHealthStateEvent>().PedEntity = _players.Entities[i];

@@ -19,7 +19,9 @@ namespace GunshotWound2.Systems.PlayerSystems
         
         public void Run()
         {
+#if DEBUG
             GunshotWound2.LastSystem = nameof(HelmetRequestSystem);
+#endif
             
             if(_requests.EntitiesCount == 0) return;
 

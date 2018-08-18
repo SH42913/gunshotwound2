@@ -48,7 +48,7 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
 
         private void SendPedToRagdoll(WoundedPedComponent pedComponent, int pedEntity)
         {
-            if (!pedComponent.ThisPed.IsWalking && !pedComponent.ThisPed.IsRunning) return;
+            if (!pedComponent.ThisPed.IsRunning) return;
             
             SetPedToRagdollEvent ragdoll;
             EcsWorld.CreateEntityWith(out ragdoll);

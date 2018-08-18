@@ -4,6 +4,7 @@
     {
         public float AddingPedRange;
         public float RemovePedRange;
+        public int TickToUpdate;
         
         public bool ShowEnemyCriticalMessages;
         public int LowerStartHealth;
