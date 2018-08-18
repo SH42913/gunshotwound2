@@ -1,9 +1,9 @@
 ﻿using System;
 using GTA;
 using GTA.Native;
-using GunshotWound2.Components.EffectComponents;
-using GunshotWound2.Components.UiComponents;
-using GunshotWound2.Components.WoundComponents;
+using GunshotWound2.Components.Events.GuiEvents;
+using GunshotWound2.Components.Events.PedEvents;
+using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
 using Leopotam.Ecs;
 
@@ -13,7 +13,7 @@ namespace GunshotWound2.Systems.EffectSystems
     public class RagdollSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
-        private EcsFilter<RagdollRequestComponent> _requests;
+        private EcsFilter<SetPedToRagdollEvent> _requests;
         private EcsFilterSingle<MainConfig> _config;
         
         public void Run()
@@ -99,7 +99,7 @@ namespace GunshotWound2.Systems.EffectSystems
         private void SendDebug(string message)
         {
 #if DEBUG
-            var notification = _ecsWorld.CreateEntityWith<NotificationComponent>();
+            var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
             notification.Level = NotifyLevels.DEBUG;
             notification.StringToShow = message;
 #endif

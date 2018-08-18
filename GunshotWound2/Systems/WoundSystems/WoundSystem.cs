@@ -1,7 +1,8 @@
 ﻿using System;
-using GunshotWound2.Components.UiComponents;
-using GunshotWound2.Components.WoundComponents;
-using GunshotWound2.Components.WoundComponents.CriticalWoundComponents;
+using GunshotWound2.Components.Events.GuiEvents;
+using GunshotWound2.Components.Events.WoundEvents;
+using GunshotWound2.Components.Events.WoundEvents.CriticalWoundEvents;
+using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
 using Leopotam.Ecs;
 
@@ -12,7 +13,7 @@ namespace GunshotWound2.Systems.WoundSystems
     {
         private EcsWorld _ecsWorld;
         private EcsFilterSingle<MainConfig> _config;
-        private EcsFilter<WoundComponent> _components;
+        private EcsFilter<ProcessWoundEvent> _components;
         
         private static readonly Random Random = new Random();
         
@@ -45,7 +46,7 @@ namespace GunshotWound2.Systems.WoundSystems
                         CreateBleeding(pedEntity, 1f, "Severed artery");
                     }
                     
-                    _ecsWorld.CreateEntityWith<DebugInfoRequestComponent>().PedEntity = pedEntity;
+                    _ecsWorld.CreateEntityWith<ShowDebugInfoEvent>().PedEntity = pedEntity;
                     SendWoundInfo(component, woundedPed);
                 }
                 
@@ -60,25 +61,25 @@ namespace GunshotWound2.Systems.WoundSystems
             switch (damage)
             {
                 case DamageTypes.LEGS_DAMAGED:
-                    _ecsWorld.CreateEntityWith<LegsCriticalComponent>().PedEntity = pedEntity;
+                    _ecsWorld.CreateEntityWith<LegsCriticalWoundEvent>().PedEntity = pedEntity;
                     break;
                 case DamageTypes.ARMS_DAMAGED:
-                    _ecsWorld.CreateEntityWith<ArmsCriticalComponent>().PedEntity = pedEntity;
+                    _ecsWorld.CreateEntityWith<ArmsCriticalWoundEvent>().PedEntity = pedEntity;
                     break;
                 case DamageTypes.NERVES_DAMAGED:
-                    _ecsWorld.CreateEntityWith<NervesCriticalComponent>().PedEntity = pedEntity;
+                    _ecsWorld.CreateEntityWith<NervesCriticalWoundEvent>().PedEntity = pedEntity;
                     break;
                 case DamageTypes.GUTS_DAMAGED:
-                    _ecsWorld.CreateEntityWith<GutsCritcalComponent>().PedEntity = pedEntity;
+                    _ecsWorld.CreateEntityWith<GutsCritcalWoundEvent>().PedEntity = pedEntity;
                     break;
                 case DamageTypes.STOMACH_DAMAGED:
-                    _ecsWorld.CreateEntityWith<StomachCriticalComponent>().PedEntity = pedEntity;
+                    _ecsWorld.CreateEntityWith<StomachCriticalWoundEvent>().PedEntity = pedEntity;
                     break;
                 case DamageTypes.LUNGS_DAMAGED:
-                    _ecsWorld.CreateEntityWith<LungsCriticalComponent>().PedEntity = pedEntity;
+                    _ecsWorld.CreateEntityWith<LungsCriticalWoundEvent>().PedEntity = pedEntity;
                     break;
                 case DamageTypes.HEART_DAMAGED:
-                    _ecsWorld.CreateEntityWith<HeartCriticalComponent>().PedEntity = pedEntity;
+                    _ecsWorld.CreateEntityWith<HeartCriticalWoundEvent>().PedEntity = pedEntity;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -95,19 +96,19 @@ namespace GunshotWound2.Systems.WoundSystems
 
         private void CreatePain(int pedEntity, float painAmount)
         {
-            var painComponent = _ecsWorld.CreateEntityWith<PainComponent>();
+            var painComponent = _ecsWorld.CreateEntityWith<AddPainEvent>();
             painComponent.PedEntity = pedEntity;
             painComponent.PainAmount = _config.Data.WoundConfig.PainMultiplier * painAmount;
         }
 
-        private void SendWoundInfo(WoundComponent component, WoundedPedComponent woundedPed)
+        private void SendWoundInfo(ProcessWoundEvent component, WoundedPedComponent woundedPed)
         {
 #if !DEBUG
             if(_config.Data.PlayerConfig.PlayerEntity != component.PedEntity) return;
 #endif
             if(woundedPed.IsDead) return;
             
-            var notification = _ecsWorld.CreateEntityWith<NotificationComponent>();
+            var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
 
             var message = $"{component.Name}";
             if (component.ArterySevered)

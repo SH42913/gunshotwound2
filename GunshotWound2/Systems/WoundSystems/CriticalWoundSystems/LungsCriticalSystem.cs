@@ -1,14 +1,14 @@
 ﻿using GTA;
 using GTA.Native;
-using GunshotWound2.Components.UiComponents;
-using GunshotWound2.Components.WoundComponents;
-using GunshotWound2.Components.WoundComponents.CriticalWoundComponents;
+using GunshotWound2.Components.Events.GuiEvents;
+using GunshotWound2.Components.Events.WoundEvents.CriticalWoundEvents;
+using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
 {
     [EcsInject]
-    public class LungsCriticalSystem : BaseCriticalSystem<HeartCriticalComponent>
+    public class LungsCriticalSystem : BaseCriticalSystem<HeartCriticalWoundEvent>
     {
         public LungsCriticalSystem()
         {

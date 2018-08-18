@@ -1,6 +1,6 @@
 ﻿using GTA.Native;
-using GunshotWound2.Components.HitComponents.BodyDamageComponents;
-using GunshotWound2.Components.WoundComponents;
+using GunshotWound2.Components.Events.BodyHitEvents;
+using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Systems.HitSystems
@@ -9,7 +9,7 @@ namespace GunshotWound2.Systems.HitSystems
     public class HitCleanSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
-        private EcsFilter<RequestBodyHitComponent> _requestsToClean;
+        private EcsFilter<CheckBodyHitEvent> _requestsToClean;
         
         public void Run()
         {

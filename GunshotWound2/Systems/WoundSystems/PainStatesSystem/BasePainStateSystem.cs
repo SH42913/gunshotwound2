@@ -1,6 +1,6 @@
-﻿using GunshotWound2.Components.UiComponents;
-using GunshotWound2.Components.WoundComponents;
-using GunshotWound2.Components.WoundComponents.PainStateComponents;
+﻿using GunshotWound2.Components.Events.GuiEvents;
+using GunshotWound2.Components.Events.WoundEvents.ChangePainStateEvents;
+using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
 using Leopotam.Ecs;
 
@@ -8,7 +8,7 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
 {
     [EcsInject]
     public abstract class BasePainStateSystem<TState> : IEcsRunSystem
-        where TState : BasePainStateComponent, new ()
+        where TState : BaseChangePainStateEvent, new ()
     {   
         protected EcsWorld EcsWorld;
         protected EcsFilter<TState> States;
@@ -41,7 +41,7 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
         
         protected void SendMessage(string message, NotifyLevels level = NotifyLevels.COMMON)
         {
-            var notification = EcsWorld.CreateEntityWith<NotificationComponent>();
+            var notification = EcsWorld.CreateEntityWith<ShowNotificationEvent>();
             notification.Level = level;
             notification.StringToShow = message;
         }

@@ -1,14 +1,14 @@
 ﻿using GTA.Native;
-using GunshotWound2.Components.EffectComponents;
-using GunshotWound2.Components.UiComponents;
-using GunshotWound2.Components.WoundComponents;
-using GunshotWound2.Components.WoundComponents.CriticalWoundComponents;
+using GunshotWound2.Components.Events.GuiEvents;
+using GunshotWound2.Components.Events.PedEvents;
+using GunshotWound2.Components.Events.WoundEvents.CriticalWoundEvents;
+using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
 {
     [EcsInject]
-    public class HeartCriticalSystem : BaseCriticalSystem<HeartCriticalComponent>
+    public class HeartCriticalSystem : BaseCriticalSystem<HeartCriticalWoundEvent>
     {
         public HeartCriticalSystem()
         {
@@ -36,7 +36,7 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
 
         private void SendPedToRagdoll(WoundedPedComponent pedComponent, int pedEntity)
         {
-            RagdollRequestComponent ragdoll;
+            SetPedToRagdollEvent ragdoll;
             EcsWorld.CreateEntityWith(out ragdoll);
             ragdoll.PedEntity = pedEntity;
             ragdoll.RagdollState = RagdollStates.HEART_DAMAGE;

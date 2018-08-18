@@ -1,8 +1,10 @@
 ﻿using System;
 using GTA.Native;
 using GunshotWound2.Components;
-using GunshotWound2.Components.EffectComponents;
-using GunshotWound2.Components.WoundComponents;
+using GunshotWound2.Components.Events.PedEvents;
+using GunshotWound2.Components.Events.PlayerEvents;
+using GunshotWound2.Components.Events.WoundEvents;
+using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
 using Leopotam.Ecs;
 
@@ -13,7 +15,7 @@ namespace GunshotWound2.Systems.WoundSystems
     {
         private EcsWorld _ecsWorld;
         private EcsFilterSingle<MainConfig> _config;
-        private EcsFilter<PainComponent> _components;
+        private EcsFilter<AddPainEvent> _components;
         
         private static readonly Random Random = new Random();
         
@@ -48,7 +50,7 @@ namespace GunshotWound2.Systems.WoundSystems
                     {
                         if (_config.Data.WoundConfig.RagdollOnPainfulWound)
                         {
-                            RagdollRequestComponent ragdoll;
+                            SetPedToRagdollEvent ragdoll;
                             _ecsWorld.CreateEntityWith(out ragdoll);
                             ragdoll.PedEntity = pedEntity;
                             ragdoll.RagdollState = Random.IsTrueWithProbability(0.8f)
@@ -59,7 +61,7 @@ namespace GunshotWound2.Systems.WoundSystems
                         if (woundedPed.IsPlayer)
                         {
                             Function.Call(Hash.SET_FLASH, 0, 0, 100, 500, 100);
-                            _ecsWorld.CreateEntityWith<AdrenalineComponent>();
+                            _ecsWorld.CreateEntityWith<AddPlayerAdrenalineEffectEvent>();
                         }
                     }
                 }

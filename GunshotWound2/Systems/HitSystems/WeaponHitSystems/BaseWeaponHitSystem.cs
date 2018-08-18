@@ -1,9 +1,9 @@
 ﻿using System;
 using GTA;
 using GTA.Native;
-using GunshotWound2.Components.HitComponents.BodyDamageComponents;
-using GunshotWound2.Components.UiComponents;
-using GunshotWound2.Components.WoundComponents;
+using GunshotWound2.Components.Events.BodyHitEvents;
+using GunshotWound2.Components.Events.GuiEvents;
+using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
@@ -25,7 +25,7 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
 
                 int pedEntity = Peds.Entities[i];
                 EcsWorld
-                    .CreateEntityWith<RequestBodyHitComponent>()
+                    .CreateEntityWith<CheckBodyHitEvent>()
                     .PedEntity = pedEntity;
                 CreateComponent(pedEntity);
             }
@@ -57,7 +57,7 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
         private void SendDebug(string message)
         {
 #if DEBUG
-            var notification = EcsWorld.CreateEntityWith<NotificationComponent>();
+            var notification = EcsWorld.CreateEntityWith<ShowNotificationEvent>();
             notification.Level = NotifyLevels.DEBUG;
             notification.StringToShow = message;
 #endif

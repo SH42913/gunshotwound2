@@ -1,6 +1,7 @@
 ﻿using GunshotWound2.Components;
-using GunshotWound2.Components.UiComponents;
-using GunshotWound2.Components.WoundComponents;
+using GunshotWound2.Components.Events.GuiEvents;
+using GunshotWound2.Components.Events.WoundEvents;
+using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
 using Leopotam.Ecs;
 
@@ -54,14 +55,14 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
 
         protected void SendMessage(string message, NotifyLevels level = NotifyLevels.COMMON)
         {
-            var notification = EcsWorld.CreateEntityWith<NotificationComponent>();
+            var notification = EcsWorld.CreateEntityWith<ShowNotificationEvent>();
             notification.Level = level;
             notification.StringToShow = message;
         }
 
         protected void CreatePain(int entity, float amount)
         {
-            var pain = EcsWorld.CreateEntityWith<PainComponent>();
+            var pain = EcsWorld.CreateEntityWith<AddPainEvent>();
             pain.PedEntity = entity;
             pain.PainAmount = amount;
         }

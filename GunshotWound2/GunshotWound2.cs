@@ -8,19 +8,20 @@ using System.Xml.Linq;
 using GTA;
 using GTA.Native;
 using GunshotWound2.Components;
-using GunshotWound2.Components.EffectComponents;
-using GunshotWound2.Components.PlayerComponents;
-using GunshotWound2.Components.UiComponents;
-using GunshotWound2.Components.WoundComponents;
+using GunshotWound2.Components.Events.GuiEvents;
+using GunshotWound2.Components.Events.PedEvents;
+using GunshotWound2.Components.Events.PlayerEvents;
+using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
 using GunshotWound2.Systems;
-using GunshotWound2.Systems.DamageSystems;
+using GunshotWound2.Systems.DamageProcessingSystems;
 using GunshotWound2.Systems.EffectSystems;
+using GunshotWound2.Systems.GuiSystems;
 using GunshotWound2.Systems.HitSystems;
 using GunshotWound2.Systems.HitSystems.WeaponHitSystems;
 using GunshotWound2.Systems.NpcSystems;
+using GunshotWound2.Systems.PedSystems;
 using GunshotWound2.Systems.PlayerSystems;
-using GunshotWound2.Systems.UiSystems;
 using GunshotWound2.Systems.WoundSystems;
 using GunshotWound2.Systems.WoundSystems.CriticalWoundSystems;
 using GunshotWound2.Systems.WoundSystems.PainStatesSystem;
@@ -57,7 +58,7 @@ namespace GunshotWound2
         {
             if (_mainConfig.HelmetKey != null && eventArgs.KeyCode == _mainConfig.HelmetKey)
             {
-                _ecsWorld.CreateEntityWith<HelmetRequestComponent>();
+                _ecsWorld.CreateEntityWith<AddHelmetToPlayerEvent>();
                 return;
             }
             
@@ -474,7 +475,7 @@ namespace GunshotWound2
             int playerEntity = _mainConfig.PlayerConfig.PlayerEntity;
             if(playerEntity < 0) return;
             
-            _ecsWorld.CreateEntityWith<CheckPedComponent>().PedEntity = playerEntity;
+            _ecsWorld.CreateEntityWith<ShowHealthStateEvent>().PedEntity = playerEntity;
         }
 
         private void HealPlayer()
@@ -482,12 +483,12 @@ namespace GunshotWound2
             int playerEntity = _mainConfig.PlayerConfig.PlayerEntity;
             if(playerEntity < 0) return;
             
-            _ecsWorld.CreateEntityWith<InstantHealComponent>().PedEntity = playerEntity;
+            _ecsWorld.CreateEntityWith<InstantHealEvent>().PedEntity = playerEntity;
         }
 
         private void SendMessage(string message, NotifyLevels level = NotifyLevels.COMMON)
         {
-            var notification = _ecsWorld.CreateEntityWith<NotificationComponent>();
+            var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
             notification.Level = level;
             notification.StringToShow = message;
         }

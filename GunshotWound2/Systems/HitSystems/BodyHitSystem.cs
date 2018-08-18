@@ -1,9 +1,9 @@
 ﻿using System;
 using GTA;
 using GTA.Native;
-using GunshotWound2.Components.HitComponents.BodyDamageComponents;
-using GunshotWound2.Components.UiComponents;
-using GunshotWound2.Components.WoundComponents;
+using GunshotWound2.Components.Events.BodyHitEvents;
+using GunshotWound2.Components.Events.GuiEvents;
+using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Systems.HitSystems
@@ -12,7 +12,7 @@ namespace GunshotWound2.Systems.HitSystems
     public class BodyHitSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
-        private EcsFilter<RequestBodyHitComponent> _requests;
+        private EcsFilter<CheckBodyHitEvent> _requests;
         
         public void Run()
         {
@@ -28,7 +28,7 @@ namespace GunshotWound2.Systems.HitSystems
                 var bodyPart = GetDamagedBodyPart(woundedPed.ThisPed);
                 if (bodyPart == BodyParts.NOTHING) continue;
 
-                var bodyDamage = _ecsWorld.CreateEntityWith<BodyHitComponent>();
+                var bodyDamage = _ecsWorld.CreateEntityWith<BodyPartWasHitEvent>();
                 bodyDamage.PedEntity = pedEntity;
                 bodyDamage.DamagedPart = bodyPart;
             }
@@ -98,7 +98,7 @@ namespace GunshotWound2.Systems.HitSystems
         private void SendDebug(string message)
         {
 #if DEBUG
-            var notification = _ecsWorld.CreateEntityWith<NotificationComponent>();
+            var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
             notification.Level = NotifyLevels.DEBUG;
             notification.StringToShow = message;
 #endif

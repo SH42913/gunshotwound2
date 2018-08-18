@@ -1,8 +1,8 @@
 ﻿using System;
 using GTA;
-using GunshotWound2.Components.NpcComponents;
-using GunshotWound2.Components.UiComponents;
-using GunshotWound2.Components.WoundComponents;
+using GunshotWound2.Components.Events.GuiEvents;
+using GunshotWound2.Components.MarkComponents;
+using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
 using Leopotam.Ecs;
 
@@ -13,7 +13,7 @@ namespace GunshotWound2.Systems.NpcSystems
     {
         private EcsWorld _ecsWorld;
         private EcsFilterSingle<MainConfig> _config;
-        private EcsFilter<WoundedPedComponent, NpcComponent> _npcs;
+        private EcsFilter<WoundedPedComponent, NpcMarkComponent> _npcs;
         
         private int _ticks;
         private static readonly Random Random = new Random();
@@ -52,7 +52,7 @@ namespace GunshotWound2.Systems.NpcSystems
                 }
                 if(componentExist) continue;
 
-                NpcComponent npcComponent;
+                NpcMarkComponent npcComponent;
                 WoundedPedComponent woundedPed;
                  _ecsWorld.CreateEntityWith(out npcComponent, out woundedPed);
                 
@@ -125,7 +125,7 @@ namespace GunshotWound2.Systems.NpcSystems
         private void SendDebug(string message)
         {
 #if DEBUG
-            var notification = _ecsWorld.CreateEntityWith<NotificationComponent>();
+            var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
             notification.Level = NotifyLevels.DEBUG;
             notification.StringToShow = message;
 #endif

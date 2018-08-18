@@ -1,5 +1,5 @@
 ﻿using GTA;
-using GunshotWound2.Components.WoundComponents;
+using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Systems.WoundSystems
@@ -8,21 +8,26 @@ namespace GunshotWound2.Systems.WoundSystems
     public class BleedingSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
-        private EcsFilter<BleedingComponent> _components;
+        private EcsFilter<BleedingComponent> _bleedings;
         
         public void Run()
         {
             GunshotWound2.LastSystem = nameof(BleedingSystem);
             
-            for (int i = 0; i < _components.EntitiesCount; i++)
+            ProcessBleedings();
+        }
+
+        private void ProcessBleedings()
+        {
+            for (int i = 0; i < _bleedings.EntitiesCount; i++)
             {
-                var component = _components.Components1[i];
-                int pedEntity = _components.Components1[i].PedEntity;
+                var component = _bleedings.Components1[i];
+                int pedEntity = _bleedings.Components1[i].PedEntity;
                 var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
 
                 if (woundedPed == null || component.BleedSeverity <= 0f)
                 {
-                    _ecsWorld.RemoveEntity(_components.Entities[i]);
+                    _ecsWorld.RemoveEntity(_bleedings.Entities[i]);
                     continue;
                 }
                 
