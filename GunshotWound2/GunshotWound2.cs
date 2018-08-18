@@ -8,6 +8,7 @@ using System.Xml.Linq;
 using GTA;
 using GTA.Native;
 using GunshotWound2.Components;
+using GunshotWound2.Components.EffectComponents;
 using GunshotWound2.Components.PlayerComponents;
 using GunshotWound2.Components.UiComponents;
 using GunshotWound2.Components.WoundComponents;
@@ -220,7 +221,9 @@ namespace GunshotWound2
                 PainMultiplier = 1,
                 DamageDeviation = 0.2f,
                 BleedingDeviation = 0.2f,
-                PainDeviation = 0.2f
+                PainDeviation = 0.2f,
+                RagdollOnPainfulWound = true,
+                PainfulWoundValue = 50
             };
 
             bool configInGsw = new FileInfo("scripts/GSW2/GSW2Config.xml").Exists;
@@ -348,6 +351,9 @@ namespace GunshotWound2
 
                 var bleedDev = woundsNode.Element("BleedingDeviation").Value;
                 _mainConfig.WoundConfig.BleedingDeviation = float.Parse(bleedDev, CultureInfo.InvariantCulture);
+
+                var ragdollOnPain = woundsNode.Element("RagdollOnPainfulWound").Value;
+                _mainConfig.WoundConfig.RagdollOnPainfulWound = bool.Parse(ragdollOnPain);
             }
 
             LastSystem = "Notifications";

@@ -17,35 +17,30 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
         protected override void ActionForPlayer(WoundedPedComponent pedComponent, int pedEntity)
         {
             SendMessage("You feel you can\'t control arms and legs anymore", NotifyLevels.WARNING);
-            if (Config.Data.WoundConfig.RealisticNervesDamage)
-            {
-                RagdollRequestComponent request;
-                EcsWorld.CreateEntityWith(out request);
-                request.PedEntity = pedEntity;
-                request.Enable = true;
-            }
-            else
-            {
-                SendArmsLegsDamage(pedEntity);
-            }
+            SendToRagdollOrArmLegsDamage(pedEntity);
         }
 
         protected override void ActionForNpc(WoundedPedComponent pedComponent, int pedEntity)
+        {
+            SendToRagdollOrArmLegsDamage(pedEntity);
+            
+            if(!Config.Data.NpcConfig.ShowEnemyCriticalMessages) return;
+            SendMessage($"{pedComponent.HeShe} looks {pedComponent.HisHer.ToLower()} spine damaged");
+        }
+
+        private void SendToRagdollOrArmLegsDamage(int pedEntity)
         {
             if (Config.Data.WoundConfig.RealisticNervesDamage)
             {
                 RagdollRequestComponent request;
                 EcsWorld.CreateEntityWith(out request);
                 request.PedEntity = pedEntity;
-                request.Enable = true;
+                request.RagdollState = RagdollStates.PERMANENT;
             }
             else
             {
                 SendArmsLegsDamage(pedEntity);
             }
-            
-            if(!Config.Data.NpcConfig.ShowEnemyCriticalMessages) return;
-            SendMessage($"{pedComponent.HeShe} looks {pedComponent.HisHer.ToLower()} spine damaged");
         }
 
         private void SendArmsLegsDamage(int pedEntity)

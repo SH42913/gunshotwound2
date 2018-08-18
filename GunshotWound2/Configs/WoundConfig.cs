@@ -19,6 +19,9 @@ namespace GunshotWound2.Configs
         public float MoveRateOnFullPain;
         public float MoveRateOnNervesDamage;
 
+        public bool RagdollOnPainfulWound;
+        public float PainfulWoundValue;
+
         public Dictionary<string, float?[]> DamageSystemConfigs;
 
         public override string ToString()
@@ -28,7 +31,8 @@ namespace GunshotWound2.Configs
                    $"D/P/B Mults: {DamageMultiplier}/{PainMultiplier}/{BleedingMultiplier}\n" +
                    $"D/P/B Deviations: {DamageDeviation}/{PainDeviation}/{BleedingDeviation}\n" +
                    $"MoveRateOnFullPain: {MoveRateOnFullPain}\n" +
-                   $"MoveRateOnNervesDamage: {MoveRateOnNervesDamage}\n";
+                   $"MoveRateOnNervesDamage: {MoveRateOnNervesDamage}\n" +
+                   $"RagdollOnPainfulWound: {RagdollOnPainfulWound}";
         }
     }
 }

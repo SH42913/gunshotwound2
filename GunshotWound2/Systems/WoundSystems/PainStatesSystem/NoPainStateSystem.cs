@@ -27,7 +27,7 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
             RagdollRequestComponent request;
             EcsWorld.CreateEntityWith(out request);
             request.PedEntity = pedEntity;
-            request.Enable = false;
+            request.RagdollState = RagdollStates.WAKE_UP;
         }
     }
 }

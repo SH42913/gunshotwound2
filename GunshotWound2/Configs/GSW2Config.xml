@@ -63,6 +63,10 @@
 		<!-- If true, peds will set to permanent ragdoll on spine damage.
 		 Else ped will get just legs and arm critical damage-->
 		
+		<RagdollOnPainfulWound>true</RagdollOnPainfulWound>
+		<!-- If true, peds will set to short ragdoll on painful(>50 pain) wounds.
+		 Include player's ped!-->
+		
 		<MoveRateOnFullPain>0.7</MoveRateOnFullPain>
 		<!-- Move rate on 100% of pain, for other percents will be MoveRate * currentPain/maximalPain -->
 		

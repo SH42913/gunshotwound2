@@ -1,6 +1,7 @@
 ﻿using System;
 using GTA.Native;
 using GunshotWound2.Components;
+using GunshotWound2.Components.EffectComponents;
 using GunshotWound2.Components.WoundComponents;
 using GunshotWound2.Configs;
 using Leopotam.Ecs;
@@ -34,15 +35,28 @@ namespace GunshotWound2.Systems.WoundSystems
                         -_config.Data.WoundConfig.PainDeviation, 
                         _config.Data.WoundConfig.PainDeviation);
                     woundedPed.PainMeter += _config.Data.WoundConfig.PainMultiplier * additionalPain + painDeviation;
-
-                    if (woundedPed.IsPlayer)
+                    
+                    if (additionalPain > _config.Data.WoundConfig.PainfulWoundValue/2)
                     {
-                        if (additionalPain > 30)
+                        if (woundedPed.IsPlayer)
                         {
                             Function.Call(Hash._SET_CAM_EFFECT, 1);
                         }
+                    }
                         
-                        if (additionalPain > 60)
+                    if (additionalPain > _config.Data.WoundConfig.PainfulWoundValue)
+                    {
+                        if (_config.Data.WoundConfig.RagdollOnPainfulWound)
+                        {
+                            RagdollRequestComponent ragdoll;
+                            _ecsWorld.CreateEntityWith(out ragdoll);
+                            ragdoll.PedEntity = pedEntity;
+                            ragdoll.RagdollState = Random.IsTrueWithProbability(0.8f)
+                                ? RagdollStates.SHORT
+                                : RagdollStates.LONG;
+                        }
+                        
+                        if (woundedPed.IsPlayer)
                         {
                             Function.Call(Hash.SET_FLASH, 0, 0, 100, 500, 100);
                             _ecsWorld.CreateEntityWith<AdrenalineComponent>();
