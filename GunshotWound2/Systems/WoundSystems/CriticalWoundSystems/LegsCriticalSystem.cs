@@ -1,14 +1,15 @@
 ﻿using GTA;
 using GTA.Native;
-using GunshotWound2.Components.UiComponents;
-using GunshotWound2.Components.WoundComponents;
-using GunshotWound2.Components.WoundComponents.CriticalWoundComponents;
+using GunshotWound2.Components.Events.GuiEvents;
+using GunshotWound2.Components.Events.PedEvents;
+using GunshotWound2.Components.Events.WoundEvents.CriticalWoundEvents;
+using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
 {
     [EcsInject]
-    public class LegsCriticalSystem : BaseCriticalSystem<LegsCriticalComponent>
+    public class LegsCriticalSystem : BaseCriticalSystem<LegsCriticalWoundEvent>
     {
         public LegsCriticalSystem()
         {
@@ -22,11 +23,12 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
                 Hash.SET_PED_MOVE_RATE_OVERRIDE,
                 pedComponent.ThisPed, 
                 Config.Data.WoundConfig.MoveRateOnNervesDamage);
+            
+            SendPedToRagdoll(pedComponent, pedEntity);
 
-            if (!pedComponent.DamagedParts.HasFlag(DamageTypes.NERVES_DAMAGED))
-            {
-                SendMessage("You feel awful pain in your leg", NotifyLevels.WARNING);
-            }
+            if (pedComponent.DamagedParts.HasFlag(DamageTypes.NERVES_DAMAGED)) return;
+            
+            SendMessage("You feel awful pain in your leg", NotifyLevels.WARNING);
         }
 
         protected override void ActionForNpc(WoundedPedComponent pedComponent, int pedEntity)
@@ -36,10 +38,22 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
                 pedComponent.ThisPed, 
                 Config.Data.WoundConfig.MoveRateOnNervesDamage);
             
+            SendPedToRagdoll(pedComponent, pedEntity);
+            
             if(!Config.Data.NpcConfig.ShowEnemyCriticalMessages ||
                pedComponent.DamagedParts.HasFlag(DamageTypes.NERVES_DAMAGED)) return;
             
             SendMessage($"{pedComponent.HisHer} leg looks very bad");
+        }
+
+        private void SendPedToRagdoll(WoundedPedComponent pedComponent, int pedEntity)
+        {
+            if (!pedComponent.ThisPed.IsRunning) return;
+            
+            SetPedToRagdollEvent ragdoll;
+            EcsWorld.CreateEntityWith(out ragdoll);
+            ragdoll.PedEntity = pedEntity;
+            ragdoll.RagdollState = RagdollStates.LEG_DAMAGE;
         }
     }
 }

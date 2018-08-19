@@ -1,7 +1,9 @@
 ﻿using System;
 using GTA.Native;
-using GunshotWound2.Components;
-using GunshotWound2.Components.WoundComponents;
+using GunshotWound2.Components.Events.PedEvents;
+using GunshotWound2.Components.Events.PlayerEvents;
+using GunshotWound2.Components.Events.WoundEvents;
+using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
 using Leopotam.Ecs;
 
@@ -12,7 +14,7 @@ namespace GunshotWound2.Systems.WoundSystems
     {
         private EcsWorld _ecsWorld;
         private EcsFilterSingle<MainConfig> _config;
-        private EcsFilter<PainComponent> _components;
+        private EcsFilter<AddPainEvent> _components;
         
         private static readonly Random Random = new Random();
         
@@ -34,18 +36,29 @@ namespace GunshotWound2.Systems.WoundSystems
                         -_config.Data.WoundConfig.PainDeviation, 
                         _config.Data.WoundConfig.PainDeviation);
                     woundedPed.PainMeter += _config.Data.WoundConfig.PainMultiplier * additionalPain + painDeviation;
-
-                    if (woundedPed.IsPlayer)
+                    
+                    if (additionalPain > _config.Data.WoundConfig.PainfulWoundValue/2)
                     {
-                        if (additionalPain > 30)
+                        if (woundedPed.IsPlayer)
                         {
                             Function.Call(Hash._SET_CAM_EFFECT, 1);
                         }
+                    }
                         
-                        if (additionalPain > 60)
+                    if (additionalPain > _config.Data.WoundConfig.PainfulWoundValue)
+                    {
+                        if (_config.Data.WoundConfig.RagdollOnPainfulWound)
+                        {
+                            SetPedToRagdollEvent ragdoll;
+                            _ecsWorld.CreateEntityWith(out ragdoll);
+                            ragdoll.PedEntity = pedEntity;
+                            ragdoll.RagdollState = RagdollStates.SHORT;
+                        }
+                        
+                        if (woundedPed.IsPlayer)
                         {
                             Function.Call(Hash.SET_FLASH, 0, 0, 100, 500, 100);
-                            _ecsWorld.CreateEntityWith<AdrenalineComponent>();
+                            _ecsWorld.CreateEntityWith<AddPlayerAdrenalineEffectEvent>();
                         }
                     }
                 }

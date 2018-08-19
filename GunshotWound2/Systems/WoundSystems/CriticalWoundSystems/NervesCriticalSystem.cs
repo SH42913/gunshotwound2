@@ -1,13 +1,13 @@
-﻿using GunshotWound2.Components.EffectComponents;
-using GunshotWound2.Components.UiComponents;
-using GunshotWound2.Components.WoundComponents;
-using GunshotWound2.Components.WoundComponents.CriticalWoundComponents;
+﻿using GunshotWound2.Components.Events.GuiEvents;
+using GunshotWound2.Components.Events.PedEvents;
+using GunshotWound2.Components.Events.WoundEvents.CriticalWoundEvents;
+using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
 {
     [EcsInject]
-    public class NervesCriticalSystem : BaseCriticalSystem<NervesCriticalComponent>
+    public class NervesCriticalSystem : BaseCriticalSystem<NervesCriticalWoundEvent>
     {
         public NervesCriticalSystem()
         {
@@ -17,41 +17,36 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
         protected override void ActionForPlayer(WoundedPedComponent pedComponent, int pedEntity)
         {
             SendMessage("You feel you can\'t control arms and legs anymore", NotifyLevels.WARNING);
-            if (Config.Data.WoundConfig.RealisticNervesDamage)
-            {
-                RagdollRequestComponent request;
-                EcsWorld.CreateEntityWith(out request);
-                request.PedEntity = pedEntity;
-                request.Enable = true;
-            }
-            else
-            {
-                SendArmsLegsDamage(pedEntity);
-            }
+            SendToRagdollOrArmLegsDamage(pedEntity);
         }
 
         protected override void ActionForNpc(WoundedPedComponent pedComponent, int pedEntity)
         {
-            if (Config.Data.WoundConfig.RealisticNervesDamage)
-            {
-                RagdollRequestComponent request;
-                EcsWorld.CreateEntityWith(out request);
-                request.PedEntity = pedEntity;
-                request.Enable = true;
-            }
-            else
-            {
-                SendArmsLegsDamage(pedEntity);
-            }
+            SendToRagdollOrArmLegsDamage(pedEntity);
             
             if(!Config.Data.NpcConfig.ShowEnemyCriticalMessages) return;
             SendMessage($"{pedComponent.HeShe} looks {pedComponent.HisHer.ToLower()} spine damaged");
         }
 
+        private void SendToRagdollOrArmLegsDamage(int pedEntity)
+        {
+            if (Config.Data.WoundConfig.RealisticNervesDamage)
+            {
+                SetPedToRagdollEvent request;
+                EcsWorld.CreateEntityWith(out request);
+                request.PedEntity = pedEntity;
+                request.RagdollState = RagdollStates.PERMANENT;
+            }
+            else
+            {
+                SendArmsLegsDamage(pedEntity);
+            }
+        }
+
         private void SendArmsLegsDamage(int pedEntity)
         {
-            EcsWorld.CreateEntityWith<ArmsCriticalComponent>().PedEntity = pedEntity;
-            EcsWorld.CreateEntityWith<LegsCriticalComponent>().PedEntity = pedEntity;
+            EcsWorld.CreateEntityWith<ArmsCriticalWoundEvent>().PedEntity = pedEntity;
+            EcsWorld.CreateEntityWith<LegsCriticalWoundEvent>().PedEntity = pedEntity;
         }
     }
 }

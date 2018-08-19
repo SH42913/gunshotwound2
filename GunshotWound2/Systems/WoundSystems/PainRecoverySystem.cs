@@ -1,29 +1,35 @@
-﻿using GTA;
+﻿using System;
 using GTA.Native;
-using GunshotWound2.Components.UiComponents;
-using GunshotWound2.Components.WoundComponents;
-using GunshotWound2.Components.WoundComponents.PainStateComponents;
+using GunshotWound2.Components.Events.WoundEvents.ChangePainStateEvents;
+using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Systems.WoundSystems
 {
     [EcsInject]
-    public class PainRecoverySystem : IEcsRunSystem
+    public class PainRecoverySystem : IEcsInitSystem, IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
         private EcsFilter<WoundedPedComponent> _peds;
         private EcsFilterSingle<MainConfig> _config;
         private uint _ticks;
-        private float _lastTime;
+        private DateTime _lastUpdateTime;
+
+        public void Initialize()
+        {
+            _lastUpdateTime = DateTime.Now;
+        }
         
         public void Run()
         {
+#if DEBUG
             GunshotWound2.LastSystem = nameof(PainRecoverySystem);
+#endif
             
-            var ticksToRefresh = _config.Data.TicksToRefresh;
-            _lastTime += Game.LastFrameTime;
-            if(++_ticks % ticksToRefresh != 0) return;
+            var timeBetweenFrames = DateTime.Now - _lastUpdateTime;
+            _lastUpdateTime = DateTime.Now;
+            var frameTimeInSeconds = (float) timeBetweenFrames.TotalSeconds;
             
             for (int i = 0; i < _peds.EntitiesCount; i++)
             {
@@ -31,7 +37,7 @@ namespace GunshotWound2.Systems.WoundSystems
                 int pedEntity = _peds.Entities[i];
                 if(woundedPed.PainMeter <= 0.05f) continue;
                 
-                woundedPed.PainMeter -= woundedPed.PainRecoverSpeed * _lastTime;
+                woundedPed.PainMeter -= woundedPed.PainRecoverSpeed * frameTimeInSeconds;
                 var painPercent = woundedPed.PainMeter / woundedPed.MaximalPain;
                 var backPercent = painPercent > 1
                     ? 0
@@ -50,7 +56,7 @@ namespace GunshotWound2.Systems.WoundSystems
                     if(woundedPed.PainState == PainStates.UNBEARABLE) continue;
 
                     _ecsWorld
-                        .CreateEntityWith<UnbearablePainStateComponent>()
+                        .CreateEntityWith<UnbearableChangePainStateEvent>()
                         .PedEntity = pedEntity;
                 }
                 else if(painPercent > 0.7f)
@@ -58,7 +64,7 @@ namespace GunshotWound2.Systems.WoundSystems
                     if(woundedPed.PainState == PainStates.INTENSE) continue;
 
                     _ecsWorld
-                        .CreateEntityWith<IntensePainStateComponent>()
+                        .CreateEntityWith<IntenseChangePainStateEvent>()
                         .PedEntity = pedEntity;
                 }
                 else if (painPercent > 0.3f)
@@ -66,7 +72,7 @@ namespace GunshotWound2.Systems.WoundSystems
                     if(woundedPed.PainState == PainStates.AVERAGE) continue;
 
                     _ecsWorld
-                        .CreateEntityWith<AveragePainStateComponent>()
+                        .CreateEntityWith<AverageChangePainStateEvent>()
                         .PedEntity = pedEntity;
                 }
                 else if (painPercent > 0.1f)
@@ -74,7 +80,7 @@ namespace GunshotWound2.Systems.WoundSystems
                     if (woundedPed.PainState == PainStates.MILD) continue;
 
                     _ecsWorld
-                        .CreateEntityWith<MildPainStateComponent>()
+                        .CreateEntityWith<MildChangePainStateEvent>()
                         .PedEntity = pedEntity;
                 }
                 else
@@ -82,7 +88,7 @@ namespace GunshotWound2.Systems.WoundSystems
                     if(woundedPed.PainState == PainStates.NONE) continue;
 
                     _ecsWorld
-                        .CreateEntityWith<NoPainStateComponent>()
+                        .CreateEntityWith<NoChangePainStateEvent>()
                         .PedEntity = pedEntity;
                 }
 
@@ -92,8 +98,9 @@ namespace GunshotWound2.Systems.WoundSystems
                                (1 - _config.Data.WoundConfig.MoveRateOnFullPain) * backPercent;
                 Function.Call(Hash.SET_PED_MOVE_RATE_OVERRIDE, woundedPed.ThisPed, moveRate);
             }
-
-            _lastTime = 0;
         }
+
+        public void Destroy()
+        {}
     }
 }

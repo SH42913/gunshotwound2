@@ -1,10 +1,10 @@
 ﻿using System;
 using GTA;
-using GunshotWound2.Components;
-using GunshotWound2.Components.PlayerComponents;
-using GunshotWound2.Components.UiComponents;
-using GunshotWound2.Components.WoundComponents;
-using GunshotWound2.Components.WoundComponents.PainStateComponents;
+using GunshotWound2.Components.Events.GuiEvents;
+using GunshotWound2.Components.Events.PedEvents;
+using GunshotWound2.Components.Events.WoundEvents.ChangePainStateEvents;
+using GunshotWound2.Components.MarkComponents;
+using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
 using Leopotam.Ecs;
 
@@ -15,7 +15,7 @@ namespace GunshotWound2.Systems.PlayerSystems
     {
         private EcsWorld _ecsWorld;
         private EcsFilterSingle<MainConfig> _config;
-        private EcsFilter<WoundedPedComponent, PlayerComponent> _playerComponents;
+        private EcsFilter<WoundedPedComponent, PlayerMarkComponent> _players;
 
         public void Initialize()
         {
@@ -23,7 +23,7 @@ namespace GunshotWound2.Systems.PlayerSystems
 
             var ped = Game.Player.Character;
 
-            PlayerComponent playerComponent;
+            PlayerMarkComponent playerComponent;
             WoundedPedComponent woundPed;
             var entity = _ecsWorld.CreateEntityWith(out playerComponent, out woundPed);
             woundPed.PainState = PainStates.DEADLY;
@@ -50,14 +50,18 @@ namespace GunshotWound2.Systems.PlayerSystems
             _config.Data.PlayerConfig.PlayerEntity = entity;
             FindDeadlyWound();
 
-            _ecsWorld.CreateEntityWith<NoPainStateComponent>().PedEntity = entity;
+            _ecsWorld.CreateEntityWith<NoChangePainStateEvent>().PedEntity = entity;
         }
         
         public void Run()
         {
-            for (int i = 0; i < _playerComponents.EntitiesCount; i++)
+#if DEBUG
+            GunshotWound2.LastSystem = nameof(PlayerSystem);
+#endif
+            
+            for (int i = 0; i < _players.EntitiesCount; i++)
             {
-                var woundedPed = _playerComponents.Components1[i];
+                var woundedPed = _players.Components1[i];
                 woundedPed.ThisPed = Game.Player.Character;
                 woundedPed.Armor = woundedPed.ThisPed.Armor;
                 
@@ -68,15 +72,15 @@ namespace GunshotWound2.Systems.PlayerSystems
                     woundedPed.IsDead = true;
                     woundedPed.PainRecoverSpeed = 0;
                 
-                    var pain = _ecsWorld.CreateEntityWith<PainComponent>();
-                    pain.PainAmount = int.MaxValue;
-                    pain.PedEntity = _playerComponents.Entities[i];
+                    var pain = _ecsWorld.CreateEntityWith<SetPedToRagdollEvent>();
+                    pain.RagdollState = RagdollStates.PERMANENT;
+                    pain.PedEntity = _players.Entities[i];
 
-                    _ecsWorld.CreateEntityWith<CheckPedComponent>().PedEntity = _playerComponents.Entities[i];
+                    _ecsWorld.CreateEntityWith<ShowHealthStateEvent>().PedEntity = _players.Entities[i];
                 }
                 else if(woundedPed.ThisPed.Health > _config.Data.PlayerConfig.MaximalHealth)
                 {
-                    _ecsWorld.CreateEntityWith<InstantHealComponent>().PedEntity = _playerComponents.Entities[i];
+                    _ecsWorld.CreateEntityWith<InstantHealEvent>().PedEntity = _players.Entities[i];
                 }
             }
         }

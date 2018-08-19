@@ -1,13 +1,14 @@
 ﻿using GTA.Native;
-using GunshotWound2.Components.UiComponents;
-using GunshotWound2.Components.WoundComponents;
-using GunshotWound2.Components.WoundComponents.CriticalWoundComponents;
+using GunshotWound2.Components.Events.GuiEvents;
+using GunshotWound2.Components.Events.PedEvents;
+using GunshotWound2.Components.Events.WoundEvents.CriticalWoundEvents;
+using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
 {
     [EcsInject]
-    public class HeartCriticalSystem : BaseCriticalSystem<HeartCriticalComponent>
+    public class HeartCriticalSystem : BaseCriticalSystem<HeartCriticalWoundEvent>
     {
         public HeartCriticalSystem()
         {
@@ -18,20 +19,27 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
         {
             CreatePain(pedEntity, 25f);
             CreateInternalBleeding(pedEntity, 2f);
+            SendPedToRagdoll(pedComponent, pedEntity);
             Function.Call(Hash._START_SCREEN_EFFECT, "DrugsDrivingIn", 5000, true);
-            SendMessage("You feel like life leaving you", NotifyLevels.WARNING);
+            SendMessage("You feel awful pain in your chest", NotifyLevels.WARNING);
         }
 
         protected override void ActionForNpc(WoundedPedComponent pedComponent, int pedEntity)
         {
             CreatePain(pedEntity, 25f);
             CreateInternalBleeding(pedEntity, 2f);
-            
-            pedComponent.ThisPed.Task.ClearAllImmediately();
-            pedComponent.ThisPed.Task.StandStill(5);
+            SendPedToRagdoll(pedComponent, pedEntity);
             
             if(!Config.Data.NpcConfig.ShowEnemyCriticalMessages) return;
             SendMessage($"{(pedComponent.HeShe)} coughs up blood");
+        }
+
+        private void SendPedToRagdoll(WoundedPedComponent pedComponent, int pedEntity)
+        {
+            SetPedToRagdollEvent ragdoll;
+            EcsWorld.CreateEntityWith(out ragdoll);
+            ragdoll.PedEntity = pedEntity;
+            ragdoll.RagdollState = RagdollStates.HEART_DAMAGE;
         }
     }
 }

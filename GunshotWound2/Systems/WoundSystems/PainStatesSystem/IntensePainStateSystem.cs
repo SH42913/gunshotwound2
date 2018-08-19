@@ -1,14 +1,13 @@
-﻿using GTA;
-using GTA.Native;
-using GunshotWound2.Components.EffectComponents;
-using GunshotWound2.Components.WoundComponents;
-using GunshotWound2.Components.WoundComponents.PainStateComponents;
+﻿using GTA.Native;
+using GunshotWound2.Components.Events.PedEvents;
+using GunshotWound2.Components.Events.WoundEvents.ChangePainStateEvents;
+using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
 {
     [EcsInject]
-    public class IntensePainStateSystem : BasePainStateSystem<IntensePainStateComponent>
+    public class IntensePainStateSystem : BasePainStateSystem<IntenseChangePainStateEvent>
     {
         public IntensePainStateSystem()
         {
@@ -19,7 +18,7 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
         {
             base.ExecuteState(woundedPed, pedEntity);
 
-            SwitchAnimationComponent anim;
+            ChangeWalkAnimationEvent anim;
             EcsWorld.CreateEntityWith(out anim);
             anim.PedEntity = pedEntity;
             anim.AnimationName = woundedPed.IsPlayer 

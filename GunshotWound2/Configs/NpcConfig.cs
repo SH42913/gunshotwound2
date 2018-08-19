@@ -4,13 +4,15 @@
     {
         public float AddingPedRange;
         public float RemovePedRange;
+        public int TickToUpdate;
         
         public bool ShowEnemyCriticalMessages;
-        public int MinimalStartHealth;
-        public int MaximalStartHealth;
+        public int LowerStartHealth;
+        public int UpperStartHealth;
         public float MaximalBleedStopSpeed;
         
-        public float MaximalPain;
+        public float LowerMaximalPain;
+        public float UpperMaximalPain;
         public float MaximalPainRecoverSpeed;
 
         public string NoPainAnim;
@@ -25,8 +27,8 @@
                    $"RemovePedRange: {RemovePedRange}\n" +
                    $"EnemyCritical: {ShowEnemyCriticalMessages}\n" +
                    $"BleedStop: {MaximalBleedStopSpeed}\n" +
-                   $"MaximalStartHealth: {MaximalStartHealth}\n" +
-                   $"MaximalPain: {MaximalPain}\n" +
+                   $"StartHealth: {LowerStartHealth} - {UpperStartHealth}\n" +
+                   $"MaximalPain: {LowerMaximalPain} - {UpperMaximalPain}\n" +
                    $"PainRecoverSpeed: {MaximalPainRecoverSpeed}\n";
         }
     }

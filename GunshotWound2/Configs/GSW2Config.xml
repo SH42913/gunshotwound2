@@ -28,16 +28,21 @@
 		Use it carefully, it also possibly can create troubles in mission, when you has friendly ped!
 		If you have low FPS or want to disable WoundedPed, just set range to 0. -->
 		
+		<TickToRefresh>5</TickToRefresh>
+		<!-- 5 mean every 5 call mod will check range for new peds.
+		 1 is best variant, mod will update ped-list every frame, but it will hit on performance.-->
+		
 		<CriticalMessages>true</CriticalMessages>
 		<!-- Set TRUE if you want to see message about critical wound of other peds -->
 		
-		<MinimalStartHealth>50</MinimalStartHealth>
-		<MaximalStartHealth>80</MaximalStartHealth>
-		<!-- NonPlayable Peds will be spawn with health range between Minimal and Maximal -->
+		<StartHealth Lower="50" Upper="100"/>
+		<!-- NonPlayable Peds will be spawn with health range between Lower and Upper -->
+		
+		<MaximalPain Lower="50.0" Upper="80.0"/>
+		<!-- Same as for player, but NonPlayable Peds will spawn with MaxPain between Lower and Upper -->
 		
 		<PainRecoverySpeed>1.0</PainRecoverySpeed>
 		<BleedHealSpeed>0.001</BleedHealSpeed>
-		<MaximalPain>80.0</MaximalPain>
 		<!-- Same as for player -->
 		
 		<Animations NoPain="" MildPain="" AvgPain="" IntensePain=""/>
@@ -62,6 +67,10 @@
 		<RealisticNervesDamage>true</RealisticNervesDamage>
 		<!-- If true, peds will set to permanent ragdoll on spine damage.
 		 Else ped will get just legs and arm critical damage-->
+		
+		<RagdollOnPainfulWound>true</RagdollOnPainfulWound>
+		<!-- If true, peds will set to short ragdoll on painful(>50 pain) wounds.
+		 Include player's ped!-->
 		
 		<MoveRateOnFullPain>0.7</MoveRateOnFullPain>
 		<!-- Move rate on 100% of pain, for other percents will be MoveRate * currentPain/maximalPain -->

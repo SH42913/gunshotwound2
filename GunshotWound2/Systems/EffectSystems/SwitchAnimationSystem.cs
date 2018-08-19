@@ -1,7 +1,7 @@
 ﻿using GTA.Native;
-using GunshotWound2.Components.EffectComponents;
-using GunshotWound2.Components.UiComponents;
-using GunshotWound2.Components.WoundComponents;
+using GunshotWound2.Components.Events.GuiEvents;
+using GunshotWound2.Components.Events.PedEvents;
+using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Systems.EffectSystems
@@ -10,10 +10,14 @@ namespace GunshotWound2.Systems.EffectSystems
     public class SwitchAnimationSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
-        private EcsFilter<SwitchAnimationComponent> _components;
+        private EcsFilter<ChangeWalkAnimationEvent> _components;
         
         public void Run()
         {
+#if DEBUG
+            GunshotWound2.LastSystem = nameof(SwitchAnimationSystem);
+#endif
+            
             for (int i = 0; i < _components.EntitiesCount; i++)
             {
                 var woundedPed = _ecsWorld
@@ -39,7 +43,7 @@ namespace GunshotWound2.Systems.EffectSystems
         private void SendMessage(string message)
         {
 #if DEBUG
-            var notification = _ecsWorld.CreateEntityWith<NotificationComponent>();
+            var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
             notification.Level = NotifyLevels.DEBUG;
             notification.StringToShow = message;
 #endif

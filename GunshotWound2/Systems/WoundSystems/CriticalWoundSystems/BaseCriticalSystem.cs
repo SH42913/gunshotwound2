@@ -1,6 +1,7 @@
 ﻿using GunshotWound2.Components;
-using GunshotWound2.Components.UiComponents;
-using GunshotWound2.Components.WoundComponents;
+using GunshotWound2.Components.Events.GuiEvents;
+using GunshotWound2.Components.Events.WoundEvents;
+using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
 using Leopotam.Ecs;
 
@@ -10,28 +11,30 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
     public abstract class BaseCriticalSystem<T> : IEcsRunSystem where T : ComponentWithPedEntity, new()
     {
         protected EcsWorld EcsWorld;
-        protected EcsFilter<T> Components;
+        protected EcsFilter<T> Events;
         protected EcsFilterSingle<MainConfig> Config;
         protected DamageTypes Damage;
         
         public void Run()
         {
+#if DEBUG
             GunshotWound2.LastSystem = nameof(BaseCriticalSystem<T>);
+#endif
             
-            for (int i = 0; i < Components.EntitiesCount; i++)
+            for (int i = 0; i < Events.EntitiesCount; i++)
             {
-                int pedEntity = Components.Components1[i].PedEntity;
+                int pedEntity = Events.Components1[i].PedEntity;
                 var woundedPed = EcsWorld.GetComponent<WoundedPedComponent>(pedEntity);
 
                 if (woundedPed == null)
                 {
-                    EcsWorld.RemoveEntity(Components.Entities[i]);
+                    EcsWorld.RemoveEntity(Events.Entities[i]);
                     continue;
                 }
 
                 if (woundedPed.DamagedParts.HasFlag(Damage))
                 {
-                    EcsWorld.RemoveEntity(Components.Entities[i]);
+                    EcsWorld.RemoveEntity(Events.Entities[i]);
                     continue;
                 }
 
@@ -45,7 +48,7 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
                     ActionForNpc(woundedPed, pedEntity);
                 }
                 
-                EcsWorld.RemoveEntity(Components.Entities[i]);
+                EcsWorld.RemoveEntity(Events.Entities[i]);
             }
         }
 
@@ -54,14 +57,14 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
 
         protected void SendMessage(string message, NotifyLevels level = NotifyLevels.COMMON)
         {
-            var notification = EcsWorld.CreateEntityWith<NotificationComponent>();
+            var notification = EcsWorld.CreateEntityWith<ShowNotificationEvent>();
             notification.Level = level;
             notification.StringToShow = message;
         }
 
         protected void CreatePain(int entity, float amount)
         {
-            var pain = EcsWorld.CreateEntityWith<PainComponent>();
+            var pain = EcsWorld.CreateEntityWith<AddPainEvent>();
             pain.PedEntity = entity;
             pain.PainAmount = amount;
         }
