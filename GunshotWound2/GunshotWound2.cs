@@ -31,7 +31,7 @@ namespace GunshotWound2
     {
         private EcsWorld _ecsWorld;
         private EcsSystems _everyFrameSystems;
-        private EcsSystems _commonSystems;
+        private MultiTickEcsSystems _commonSystems;
         
         private bool _warningMessageWasShown;
         private MainConfig _mainConfig;
@@ -493,7 +493,7 @@ namespace GunshotWound2
         
     internal static class Extensions
     {
-        public static EcsSystems AddHitSystems(this EcsSystems systems)
+        public static MultiTickEcsSystems AddHitSystems(this MultiTickEcsSystems systems)
         {
             return systems
                 .Add(new LightImpactHitSystem())
@@ -508,7 +508,7 @@ namespace GunshotWound2
                 .Add(new HitCleanSystem());
         }
         
-        public static EcsSystems AddDamageSystems(this EcsSystems systems)
+        public static MultiTickEcsSystems AddDamageSystems(this MultiTickEcsSystems systems)
         {
             return systems
                 .Add(new SmallCaliberDamageSystem())
@@ -521,7 +521,7 @@ namespace GunshotWound2
                 .Add(new ExplosionDamageSystem());
         }
         
-        public static EcsSystems AddWoundSystems(this EcsSystems systems)
+        public static MultiTickEcsSystems AddWoundSystems(this MultiTickEcsSystems systems)
         {
             return systems
                 .Add(new WoundSystem())
@@ -535,7 +535,7 @@ namespace GunshotWound2
                 .Add(new BleedingSystem());
         }
 
-        public static EcsSystems AddPainSystems(this EcsSystems systems)
+        public static MultiTickEcsSystems AddPainSystems(this MultiTickEcsSystems systems)
         {
             return systems
                 .Add(new PainSystem())

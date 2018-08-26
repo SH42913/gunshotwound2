@@ -96,6 +96,7 @@
     <Compile Include="Configs\PlayerConfig.cs" />
     <Compile Include="Configs\WoundConfig.cs" />
     <Compile Include="GunshotWound2.cs" />
+    <Compile Include="MultiTickEcsSystems.cs" />
     <Compile Include="RandomExtensions.cs" />
     <Compile Include="Systems\NpcSystems\ConvertNpcToWoundedPedSystem.cs" />
     <Compile Include="Systems\NpcSystems\RemoveWoundedPedSystem.cs" />
