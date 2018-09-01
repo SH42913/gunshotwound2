@@ -2,11 +2,13 @@
 {
     public class PlayerConfig
     {
+        public int PlayerEntity = -1;
+        
         public bool AdrenalineSlowMotion;
         public bool WoundedPlayerEnabled;
         public bool PoliceCanForgetYou;
+        public bool CanDropWeapon;
         
-        public int PlayerEntity = -1;
         public int MoneyForHelmet;
         
         public int MaximalHealth;

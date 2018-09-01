@@ -191,6 +191,7 @@ namespace GunshotWound2
             _mainConfig.PlayerConfig = new PlayerConfig
             {
                 WoundedPlayerEnabled = true,
+                CanDropWeapon = true,
                 MoneyForHelmet = 30,
                 MaximalHealth = 99,
                 MinimalHealth = 0,
@@ -276,7 +277,7 @@ namespace GunshotWound2
                 var woundedPlayerEnabled = playerNode.Element("WoundedPlayerEnabled").Value;
                 _mainConfig.PlayerConfig.WoundedPlayerEnabled = bool.Parse(woundedPlayerEnabled);
 
-                var wyd = false;//bool.Parse(playerNode.Element("WYDCompatible").Value);
+                var wyd = true;//bool.Parse(playerNode.Element("WYDCompatible").Value);
                 if (!wyd)
                 {
                     _mainConfig.PlayerConfig.MinimalHealth = 0;
@@ -299,6 +300,9 @@ namespace GunshotWound2
 
                 var policeForget = bool.Parse(playerNode.Element("PoliceCanForget").Value);
                 _mainConfig.PlayerConfig.PoliceCanForgetYou = policeForget;
+
+                var canDropWeapon = bool.Parse(playerNode.Element("CanDropWeapon").Value);
+                _mainConfig.PlayerConfig.CanDropWeapon = canDropWeapon;
 
                 var animationNode = playerNode.Element("Animations");
                 _mainConfig.PlayerConfig.NoPainAnim = animationNode.Attribute("NoPain").Value;

@@ -20,7 +20,14 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
             base.ExecuteState(woundedPed, pedEntity);
 
             SendPedToRagdoll(pedEntity, RagdollStates.PERMANENT);
-            woundedPed.ThisPed.Weapons.Drop();
+            if (woundedPed.IsPlayer && Config.Data.PlayerConfig.CanDropWeapon)
+            {
+                woundedPed.ThisPed.Weapons.Drop();
+            }
+            else if(!woundedPed.IsPlayer)
+            {
+                woundedPed.ThisPed.Weapons.Drop();
+            }
             
             if (!woundedPed.IsPlayer) return;
             Game.Player.IgnoredByEveryone = true;

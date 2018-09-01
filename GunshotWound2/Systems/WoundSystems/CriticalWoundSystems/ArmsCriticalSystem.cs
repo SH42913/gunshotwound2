@@ -19,7 +19,10 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
             CreatePain(pedEntity, 25f);
             
             Function.Call(Hash._SET_CAM_EFFECT, 2);
-            pedComponent.ThisPed.Weapons.Drop();
+            if (Config.Data.PlayerConfig.CanDropWeapon)
+            {
+                pedComponent.ThisPed.Weapons.Drop();
+            }
 
             if (pedComponent.DamagedParts.HasFlag(DamageTypes.NERVES_DAMAGED)) return;
             SendMessage(Locale.Data.PlayerArmsCritMessage, NotifyLevels.WARNING);

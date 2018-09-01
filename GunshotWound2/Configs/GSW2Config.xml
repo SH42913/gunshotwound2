@@ -7,6 +7,9 @@
 		<PoliceCanForget>true</PoliceCanForget>
 		<!-- If TRUE - cops will can forget you, when you fall unconscious -->
 		
+		<CanDropWeapon>true</CanDropWeapon>
+		<!-- If TRUE - you will lose weapon on arm crits and when you fall unconscious -->
+		
 		<MaximalPain>100.0</MaximalPain>
 		<!-- 100 mean when pain will more than 100 you'll fall unconscious -->
 		
