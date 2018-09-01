@@ -50,43 +50,43 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
         private void HeadCase1(int obj)
         {
-            CreateBlownWound("Head", obj);
+            CreateBlownWound(Locale.Data.HeadBlown, obj);
         }
 
         private void NeckCase1(int obj)
         {
-            CreateBlownWound("Neck", obj);
+            CreateBlownWound(Locale.Data.NeckBlown, obj);
         }
 
         private void UpperCase1(int obj)
         {
-            CreateBlownWound("Chest", obj);
+            CreateBlownWound(Locale.Data.ChestBlown, obj);
         }
 
         private void LowerCase1(int obj)
         {
-            CreateBlownWound("Lower body", obj);
+            CreateBlownWound(Locale.Data.LowerBodyBlown, obj);
         }
 
         private void ArmCase1(int obj)
         {
-            CreateBlownWound("Arm", obj);
+            CreateBlownWound(Locale.Data.ArmBlown, obj);
         }
 
         private void LegCase1(int obj)
         {
-            CreateBlownWound("Leg", obj);
+            CreateBlownWound(Locale.Data.LegBlown, obj);
         }
 
         private void DefaultGrazeWound(int entity)
         {
-            CreateWound("Body blown", entity, DamageMultiplier * 80f,
+            CreateWound(Locale.Data.BodyBlown, entity, DamageMultiplier * 80f,
                 2f, PainMultiplier * 80f);
         }
 
         private void CreateBlownWound(string position, int entity)
         {
-            CreateWound($"{position} blown", entity, DamageMultiplier * 80f,
+            CreateWound(position, entity, DamageMultiplier * 80f,
                 BleeedingMultiplier * 2f, PainMultiplier * 80f);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using GTA.Native;
 using GunshotWound2.Components.Events.PedEvents;
+using GunshotWound2.Components.Events.PlayerEvents;
 using GunshotWound2.Components.Events.WoundEvents.ChangePainStateEvents;
 using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
@@ -7,7 +8,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
 {
     [EcsInject]
-    public class NoPainStateSystem : BasePainStateSystem<NoChangePainStateEvent>
+    public class NoPainStateSystem : BasePainStateSystem<NoPainChangeStateEvent>
     {
         public NoPainStateSystem()
         {
@@ -18,19 +19,13 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
         {
             base.ExecuteState(woundedPed, pedEntity);
 
-            ChangeWalkAnimationEvent anim;
-            EcsWorld.CreateEntityWith(out anim);
-            anim.PedEntity = pedEntity;
-            anim.AnimationName = woundedPed.IsPlayer 
+            SendPedToRagdoll(pedEntity, RagdollStates.WAKE_UP);
+            ChangeWalkingAnimation(pedEntity, woundedPed.IsPlayer 
                 ? Config.Data.PlayerConfig.NoPainAnim
-                : Config.Data.NpcConfig.NoPainAnim;
+                : Config.Data.NpcConfig.NoPainAnim);
             
-            SetPedToRagdollEvent request;
-            EcsWorld.CreateEntityWith(out request);
-            request.PedEntity = pedEntity;
-            request.RagdollState = RagdollStates.WAKE_UP;
-            
-            Function.Call(Hash._SET_CAM_EFFECT, 0);
+            if(!woundedPed.IsPlayer) return;
+            EcsWorld.CreateEntityWith<AddCameraShakeEvent>().Length = CameraShakeLength.CLEAR;
         }
     }
 }

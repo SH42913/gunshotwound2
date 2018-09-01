@@ -12,7 +12,8 @@ namespace GunshotWound2.Systems.NpcSystems
     public class ConvertNpcToWoundedPedSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
-        private EcsFilter<ConvertPedsToWoundedPedsEvent> _requests;
+        private EcsFilter<ConvertPedToWoundedPedEvent> _requests;
+        
         private EcsFilterSingle<MainConfig> _config;
         
         private static readonly Random Random = new Random();
@@ -31,17 +32,16 @@ namespace GunshotWound2.Systems.NpcSystems
             }
         }
 
-        private void ProcessRequest(ConvertPedsToWoundedPedsEvent request)
+        private void ProcessRequest(ConvertPedToWoundedPedEvent request)
         {
             for (int i = 0; i < request.PedsInRange.Length; i++)
             {
                 Ped pedToConvert = request.PedsInRange[i];
-                
-                NpcMarkComponent npcComponent;
-                WoundedPedComponent woundedPed;
-                _ecsWorld.CreateEntityWith(out npcComponent, out woundedPed);
+
+                _ecsWorld.CreateEntityWith(out NpcMarkComponent _, out WoundedPedComponent woundedPed);
                 
                 woundedPed.ThisPed = pedToConvert;
+                woundedPed.IsMale = pedToConvert.Gender == Gender.Male;
 
                 var newHealth = Random.Next(
                     _config.Data.NpcConfig.LowerStartHealth,
@@ -57,13 +57,6 @@ namespace GunshotWound2.Systems.NpcSystems
                     _config.Data.NpcConfig.MaximalBleedStopSpeed/2,
                     _config.Data.NpcConfig.MaximalBleedStopSpeed);
                 woundedPed.DefaultAccuracy = pedToConvert.Accuracy;
-                
-                woundedPed.HeShe = pedToConvert.Gender == Gender.Male
-                    ? "He"
-                    : "She";
-                woundedPed.HisHer = pedToConvert.Gender == Gender.Male
-                    ? "His"
-                    : "Her";
                 
                 woundedPed.PainMeter = 0;
                 woundedPed.MaximalPain = Random.NextFloat(

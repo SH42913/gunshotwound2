@@ -12,7 +12,7 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
     {
         public LungsCriticalSystem()
         {
-            Damage = DamageTypes.LUNGS_DAMAGED;
+            CurrentCrit = CritTypes.LUNGS_DAMAGED;
         }
 
         protected override void ActionForPlayer(WoundedPedComponent pedComponent, int pedEntity)
@@ -22,7 +22,8 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
             
             Function.Call(Hash._START_SCREEN_EFFECT, "DrugsDrivingIn", 5000, true);
             Function.Call(Hash.SET_PLAYER_SPRINT, Game.Player, false);
-            SendMessage("It\'s very hard for you to breathe", NotifyLevels.WARNING);
+            
+            SendMessage(Locale.Data.PlayerLungsCritMessage, NotifyLevels.WARNING);
         }
 
         protected override void ActionForNpc(WoundedPedComponent pedComponent, int pedEntity)
@@ -31,7 +32,9 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
             CreateInternalBleeding(pedEntity, 0.5f);
             
             if(!Config.Data.NpcConfig.ShowEnemyCriticalMessages) return;
-            SendMessage($"{(pedComponent.HeShe)} coughs up blood");
+            SendMessage(pedComponent.IsMale 
+                ? Locale.Data.ManLungsCritMessage 
+                : Locale.Data.WomanLungsCritMessage);
         }
     }
 }

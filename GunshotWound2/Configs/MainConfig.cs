@@ -7,6 +7,8 @@ namespace GunshotWound2.Configs
         public WoundConfig WoundConfig;
         public NpcConfig NpcConfig;
         public PlayerConfig PlayerConfig;
+
+        public string Language;
         
         public Keys? HelmetKey;
         public Keys? CheckKey;

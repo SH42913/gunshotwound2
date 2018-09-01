@@ -22,6 +22,8 @@ namespace GunshotWound2.Configs
         public bool RagdollOnPainfulWound;
         public float PainfulWoundValue;
 
+        public float MinimalChanceForArmorSave;
+
         public Dictionary<string, float?[]> DamageSystemConfigs;
 
         public override string ToString()
@@ -32,7 +34,9 @@ namespace GunshotWound2.Configs
                    $"D/P/B Deviations: {DamageDeviation}/{PainDeviation}/{BleedingDeviation}\n" +
                    $"MoveRateOnFullPain: {MoveRateOnFullPain}\n" +
                    $"MoveRateOnNervesDamage: {MoveRateOnNervesDamage}\n" +
-                   $"RagdollOnPainfulWound: {RagdollOnPainfulWound}";
+                   $"RagdollOnPainfulWound: {RagdollOnPainfulWound}\n" +
+                   $"PainfulWoundValue: {PainfulWoundValue}\n" +
+                   $"MinimalChanceForArmorSave: {MinimalChanceForArmorSave}";
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using GTA;
 using GTA.Native;
+using GunshotWound2.Components.Events.NpcEvents;
 using GunshotWound2.Components.Events.PedEvents;
 using GunshotWound2.Components.Events.PlayerEvents;
 using GunshotWound2.Components.Events.WoundEvents.ChangePainStateEvents;
@@ -19,7 +20,7 @@ namespace GunshotWound2.Systems.PedSystems
         private EcsFilter<InstantHealEvent> _components;
         private EcsFilter<BleedingComponent> _bleedingComponents;
         
-        private static Random _random = new Random();
+        private static readonly Random _random = new Random();
         
         public void Run()
         {
@@ -36,12 +37,16 @@ namespace GunshotWound2.Systems.PedSystems
                 {
                     if (woundedPed.IsPlayer)
                     {
-                        Function.Call(Hash._SET_CAM_EFFECT, 0);
+                        _ecsWorld.CreateEntityWith<AddCameraShakeEvent>().Length = CameraShakeLength.CLEAR;
                         Function.Call(Hash.SET_PLAYER_SPRINT, Game.Player, true);
                         Function.Call(Hash._STOP_ALL_SCREEN_EFFECTS);
                         woundedPed.Health = _mainConfig.Data.PlayerConfig.MaximalHealth;
-                        _ecsWorld.CreateEntityWith<AddPlayerAdrenalineEffectEvent>().RestoreState = true;
                         Game.Player.IgnoredByEveryone = false;
+
+                        if (_mainConfig.Data.PlayerConfig.AdrenalineSlowMotion)
+                        {
+                            _ecsWorld.CreateEntityWith<AddPlayerAdrenalineEffectEvent>().RestoreState = true;
+                        }
                     }
                     else
                     {
@@ -50,14 +55,17 @@ namespace GunshotWound2.Systems.PedSystems
                     }
 
                     woundedPed.IsDead = false;
-                    woundedPed.DamagedParts = 0;
+                    woundedPed.Crits = 0;
                     woundedPed.PainMeter = 0;
-                    Function.Call(Hash.CLEAR_PED_BLOOD_DAMAGE, woundedPed.ThisPed);
-                    Function.Call(Hash.SET_PED_MOVE_RATE_OVERRIDE, woundedPed.ThisPed, 1f);
                     woundedPed.ThisPed.Health = (int) woundedPed.Health;
                     woundedPed.Armor = woundedPed.ThisPed.Armor;
+                    
+                    Function.Call(Hash.CLEAR_PED_BLOOD_DAMAGE, woundedPed.ThisPed);
+                    Function.Call(Hash.SET_PED_MOVE_RATE_OVERRIDE, woundedPed.ThisPed, 1f);
 
-                    _ecsWorld.CreateEntityWith<NoChangePainStateEvent>().PedEntity = pedEntity;
+                    _ecsWorld.CreateEntityWith(out NoPainChangeStateEvent noPainEvent);
+                    noPainEvent.PedEntity = pedEntity;
+                    noPainEvent.ForceUpdate = true;
                 }
 
                 for (int bleedIndex = 0; bleedIndex < _bleedingComponents.EntitiesCount; bleedIndex++)

@@ -13,7 +13,6 @@ namespace GunshotWound2.Systems.WoundSystems
         private EcsWorld _ecsWorld;
         private EcsFilter<WoundedPedComponent> _peds;
         private EcsFilterSingle<MainConfig> _config;
-        private uint _ticks;
         private DateTime _lastUpdateTime;
 
         public void Initialize()
@@ -48,51 +47,53 @@ namespace GunshotWound2.Systems.WoundSystems
                 {
                     if(woundedPed.PainState == PainStates.DEADLY) continue;
 
-                    _ecsWorld.AddComponent<DeadlyPainStateComponent>(pedEntity);
+                    _ecsWorld.CreateEntityWith(out UnbearablePainChangeStateEvent unbearablePainEvent);
+                    unbearablePainEvent.PedEntity = pedEntity;
+                    unbearablePainEvent.ForceUpdate = false;
                 }
                 else */
                 if (painPercent > 1f)
                 {
                     if(woundedPed.PainState == PainStates.UNBEARABLE) continue;
 
-                    _ecsWorld
-                        .CreateEntityWith<UnbearableChangePainStateEvent>()
-                        .PedEntity = pedEntity;
+                    _ecsWorld.CreateEntityWith(out UnbearablePainChangeStateEvent unbearablePainEvent);
+                    unbearablePainEvent.PedEntity = pedEntity;
+                    unbearablePainEvent.ForceUpdate = false;
                 }
                 else if(painPercent > 0.7f)
                 {
                     if(woundedPed.PainState == PainStates.INTENSE) continue;
 
-                    _ecsWorld
-                        .CreateEntityWith<IntenseChangePainStateEvent>()
-                        .PedEntity = pedEntity;
+                    _ecsWorld.CreateEntityWith(out IntensePainChangeStateEvent intensePainEvent);
+                    intensePainEvent.PedEntity = pedEntity;
+                    intensePainEvent.ForceUpdate = false;
                 }
                 else if (painPercent > 0.3f)
                 {
                     if(woundedPed.PainState == PainStates.AVERAGE) continue;
 
-                    _ecsWorld
-                        .CreateEntityWith<AverageChangePainStateEvent>()
-                        .PedEntity = pedEntity;
+                    _ecsWorld.CreateEntityWith(out AveragePainChangeStateEvent averagePainEvent);
+                    averagePainEvent.PedEntity = pedEntity;
+                    averagePainEvent.ForceUpdate = false;
                 }
                 else if (painPercent > 0.1f)
                 {
                     if (woundedPed.PainState == PainStates.MILD) continue;
 
-                    _ecsWorld
-                        .CreateEntityWith<MildChangePainStateEvent>()
-                        .PedEntity = pedEntity;
+                    _ecsWorld.CreateEntityWith(out MildPainChangeStateEvent mildPainEvent);
+                    mildPainEvent.PedEntity = pedEntity;
+                    mildPainEvent.ForceUpdate = false;
                 }
                 else
                 {
                     if(woundedPed.PainState == PainStates.NONE) continue;
 
-                    _ecsWorld
-                        .CreateEntityWith<NoChangePainStateEvent>()
-                        .PedEntity = pedEntity;
+                    _ecsWorld.CreateEntityWith(out NoPainChangeStateEvent noPainEvent);
+                    noPainEvent.PedEntity = pedEntity;
+                    noPainEvent.ForceUpdate = false;
                 }
 
-                if (woundedPed.DamagedParts.HasFlag(DamageTypes.LEGS_DAMAGED)) continue;
+                if (woundedPed.Crits.HasFlag(CritTypes.LEGS_DAMAGED)) continue;
                 
                 var moveRate = _config.Data.WoundConfig.MoveRateOnFullPain +
                                (1 - _config.Data.WoundConfig.MoveRateOnFullPain) * backPercent;
@@ -101,6 +102,8 @@ namespace GunshotWound2.Systems.WoundSystems
         }
 
         public void Destroy()
-        {}
+        {
+            
+        }
     }
 }

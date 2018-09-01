@@ -12,8 +12,10 @@ namespace GunshotWound2.Systems.WoundSystems
     public class WoundSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
-        private EcsFilterSingle<MainConfig> _config;
         private EcsFilter<ProcessWoundEvent> _components;
+        
+        private EcsFilterSingle<MainConfig> _config;
+        private EcsFilterSingle<LocaleConfig> _locale;
         
         private static readonly Random Random = new Random();
         
@@ -31,7 +33,7 @@ namespace GunshotWound2.Systems.WoundSystems
                 {
                     var damageDeviation = _config.Data.WoundConfig.DamageDeviation;
                     var bleedingDeviation = _config.Data.WoundConfig.BleedingDeviation;
-                    
+
                     woundedPed.Health -= _config.Data.WoundConfig.DamageMultiplier * component.Damage +
                                          Random.NextFloat(-damageDeviation, damageDeviation);
                     woundedPed.ThisPed.Health = (int) woundedPed.Health;
@@ -39,11 +41,11 @@ namespace GunshotWound2.Systems.WoundSystems
                     CreateBleeding(pedEntity, component.BleedSeverity +
                                               Random.NextFloat(-bleedingDeviation, bleedingDeviation), component.Name);
                     CreatePain(pedEntity, component.Pain);
-                    CreateCritical(pedEntity, component.CriticalDamage);
+                    CreateCritical(pedEntity, component.Crits);
 
                     if (component.ArterySevered)
                     {
-                        CreateBleeding(pedEntity, 1f, "Severed artery");
+                        CreateBleeding(pedEntity, 1f, _locale.Data.SeveredArtery);
                     }
                     
                     _ecsWorld.CreateEntityWith<ShowDebugInfoEvent>().PedEntity = pedEntity;
@@ -54,31 +56,31 @@ namespace GunshotWound2.Systems.WoundSystems
             }
         }
 
-        private void CreateCritical(int pedEntity, DamageTypes? damage)
+        private void CreateCritical(int pedEntity, CritTypes? crit)
         {
-            if(damage == null) return;
+            if(crit == null) return;
             
-            switch (damage)
+            switch (crit)
             {
-                case DamageTypes.LEGS_DAMAGED:
+                case CritTypes.LEGS_DAMAGED:
                     _ecsWorld.CreateEntityWith<LegsCriticalWoundEvent>().PedEntity = pedEntity;
                     break;
-                case DamageTypes.ARMS_DAMAGED:
+                case CritTypes.ARMS_DAMAGED:
                     _ecsWorld.CreateEntityWith<ArmsCriticalWoundEvent>().PedEntity = pedEntity;
                     break;
-                case DamageTypes.NERVES_DAMAGED:
+                case CritTypes.NERVES_DAMAGED:
                     _ecsWorld.CreateEntityWith<NervesCriticalWoundEvent>().PedEntity = pedEntity;
                     break;
-                case DamageTypes.GUTS_DAMAGED:
+                case CritTypes.GUTS_DAMAGED:
                     _ecsWorld.CreateEntityWith<GutsCritcalWoundEvent>().PedEntity = pedEntity;
                     break;
-                case DamageTypes.STOMACH_DAMAGED:
+                case CritTypes.STOMACH_DAMAGED:
                     _ecsWorld.CreateEntityWith<StomachCriticalWoundEvent>().PedEntity = pedEntity;
                     break;
-                case DamageTypes.LUNGS_DAMAGED:
+                case CritTypes.LUNGS_DAMAGED:
                     _ecsWorld.CreateEntityWith<LungsCriticalWoundEvent>().PedEntity = pedEntity;
                     break;
-                case DamageTypes.HEART_DAMAGED:
+                case CritTypes.HEART_DAMAGED:
                     _ecsWorld.CreateEntityWith<HeartCriticalWoundEvent>().PedEntity = pedEntity;
                     break;
                 default:
@@ -113,10 +115,10 @@ namespace GunshotWound2.Systems.WoundSystems
             var message = $"{component.Name}";
             if (component.ArterySevered)
             {
-                message += "\nArtery was severed!";
+                message += $"\n{_locale.Data.SeveredArteryMessage}";
             }
             
-            if (component.CriticalDamage != null || component.ArterySevered ||
+            if (component.Crits != null || component.ArterySevered ||
                 component.BleedSeverity > _config.Data.WoundConfig.EmergencyBleedingLevel)
             {
                 notification.Level = NotifyLevels.EMERGENCY;

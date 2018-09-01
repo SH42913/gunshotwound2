@@ -61,6 +61,7 @@ namespace GunshotWound2.Systems.HitSystems
                 case Bone.SKEL_Neck_1:
                     SendDebug($"You got {BodyParts.NECK}");
                     return BodyParts.NECK;
+                case Bone.SKEL_Spine1:
                 case Bone.SKEL_Spine2:
                 case Bone.SKEL_Spine3:
                     SendDebug($"You got {BodyParts.UPPER_BODY}");
@@ -68,7 +69,6 @@ namespace GunshotWound2.Systems.HitSystems
                 case Bone.SKEL_Pelvis:
                 case Bone.SKEL_Spine_Root:
                 case Bone.SKEL_Spine0:
-                case Bone.SKEL_Spine1:
                 case Bone.SKEL_ROOT:
                     SendDebug($"You got {BodyParts.LOWER_BODY}");
                     return BodyParts.LOWER_BODY;

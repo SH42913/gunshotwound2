@@ -2,7 +2,7 @@
 
 namespace GunshotWound2.Components.Events.NpcEvents
 {
-    public class ConvertPedsToWoundedPedsEvent
+    public class ConvertPedToWoundedPedEvent
     {
         public Ped[] PedsInRange;
     }

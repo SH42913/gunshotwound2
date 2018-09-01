@@ -26,7 +26,7 @@ namespace GunshotWound2.Systems.EffectSystems
                 var animationName = _components.Components1[i].AnimationName;
                 if (woundedPed != null && !string.IsNullOrEmpty(animationName) && woundedPed.ThisPed.IsAlive)
                 {
-                    SendMessage($"New animation is {animationName}");
+                    SendDebug($"New animation is {animationName}");
                     Function.Call(Hash.REQUEST_ANIM_SET, animationName);
             
                     if (!Function.Call<bool>(Hash.HAS_ANIM_SET_LOADED, animationName))
@@ -40,7 +40,7 @@ namespace GunshotWound2.Systems.EffectSystems
             }
         }
 
-        private void SendMessage(string message)
+        private void SendDebug(string message)
         {
 #if DEBUG
             var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();

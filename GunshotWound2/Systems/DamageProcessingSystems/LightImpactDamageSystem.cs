@@ -67,12 +67,12 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
         private void HeadCase1(int entity)
         {
-            LightBruiseWound("head", entity);
+            LightBruiseWound(Locale.Data.BodyPartHead, entity);
         }
 
         private void HeadCase2(int entity)
         {
-            MediumBruiseWound("head", entity);
+            MediumBruiseWound(Locale.Data.BodyPartHead, entity);
         }
 
         private void HeadCase3(int entity)
@@ -84,85 +84,85 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
         private void NeckCase1(int entity)
         {
-            LightBruiseWound("neck", entity);
+            LightBruiseWound(Locale.Data.BodyPartNeck, entity);
         }
 
         private void NeckCase2(int entity)
         {
-            MediumBruiseWound("neck", entity);
+            MediumBruiseWound(Locale.Data.BodyPartNeck, entity);
         }
 
         private void NeckCase3(int entity)
         {
-            HeavyBruiseWound("neck", entity, DamageTypes.NERVES_DAMAGED);
+            HeavyBruiseWound(Locale.Data.BodyPartNeck, entity, CritTypes.NERVES_DAMAGED);
         }
 
 
 
         private void UpperCase1(int entity)
         {
-            LightBruiseWound("upper body", entity);
+            LightBruiseWound(Locale.Data.BodyPartChest, entity);
         }
 
         private void UpperCase2(int entity)
         {
-            MediumBruiseWound("upper body", entity);
+            MediumBruiseWound(Locale.Data.BodyPartChest, entity);
         }
 
         private void UpperCase3(int entity)
         {
-            HeavyBruiseWound("upper body", entity, DamageTypes.HEART_DAMAGED, DamageTypes.LUNGS_DAMAGED);
+            HeavyBruiseWound(Locale.Data.BodyPartChest, entity, CritTypes.HEART_DAMAGED, CritTypes.LUNGS_DAMAGED);
         }
 
         
 
         private void LowerCase1(int entity)
         {
-            LightBruiseWound("lower body", entity);
+            LightBruiseWound(Locale.Data.BodyPartLowerBody, entity);
         }
 
         private void LowerCase2(int entity)
         {
-            MediumBruiseWound("lower body", entity);
+            MediumBruiseWound(Locale.Data.BodyPartLowerBody, entity);
         }
 
         private void LowerCase3(int entity)
         {
-            HeavyBruiseWound("lower body", entity, DamageTypes.STOMACH_DAMAGED, DamageTypes.GUTS_DAMAGED);
+            HeavyBruiseWound(Locale.Data.BodyPartLowerBody, entity, CritTypes.STOMACH_DAMAGED, CritTypes.GUTS_DAMAGED);
         }
 
 
 
         private void ArmCase1(int entity)
         {
-            LightBruiseWound("arm", entity);
+            LightBruiseWound(Locale.Data.BodyPartArm, entity);
         }
 
         private void ArmCase2(int entity)
         {
-            MediumBruiseWound("arm", entity);
+            MediumBruiseWound(Locale.Data.BodyPartArm, entity);
         }
 
         private void ArmCase3(int entity)
         {
-            HeavyBruiseWound("arm", entity, DamageTypes.ARMS_DAMAGED);
+            HeavyBruiseWound(Locale.Data.BodyPartArm, entity, CritTypes.ARMS_DAMAGED);
         }
 
 
 
         private void LegCase1(int entity)
         {
-            LightBruiseWound("leg", entity);
+            LightBruiseWound(Locale.Data.BodyPartLeg, entity);
         }
 
         private void LegCase2(int entity)
         {
-            MediumBruiseWound("leg", entity);
+            MediumBruiseWound(Locale.Data.BodyPartLeg, entity);
         }
 
         private void LegCase3(int entity)
         {
-            HeavyBruiseWound("leg", entity, DamageTypes.LEGS_DAMAGED);
+            HeavyBruiseWound(Locale.Data.BodyPartLeg, entity, CritTypes.LEGS_DAMAGED);
         }
     }
 }

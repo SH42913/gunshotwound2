@@ -23,34 +23,38 @@ using GunshotWound2.Systems.PlayerSystems;
 using GunshotWound2.Systems.WoundSystems;
 using GunshotWound2.Systems.WoundSystems.CriticalWoundSystems;
 using GunshotWound2.Systems.WoundSystems.PainStatesSystem;
+using GunshotWound2.Utils;
 using Leopotam.Ecs;
 
 namespace GunshotWound2
 {
     public class GunshotWound2 : Script
     {
+        public static string LastSystem = "Nothing";
+        
+        public const float MINIMAL_RANGE_FOR_WOUNDED_PEDS = 5;
+        private const float ADDING_TO_REMOVING_MULTIPLIER = 2;
+        
         private EcsWorld _ecsWorld;
         private EcsSystems _everyFrameSystems;
-        private EcsSystems _commonSystems;
+        private MultiTickEcsSystems _commonSystems;
         
         private bool _warningMessageWasShown;
         private MainConfig _mainConfig;
-        private Stopwatch _debugStopwatch;
-        public static string LastSystem = "Nothing";
-        
+        private LocaleConfig _localeConfig;
+        private Stopwatch _mainCycleStopwatch;
+
+        private bool _isInited;
+        private bool _configLoaded;
+        private string _configReason;
+        private bool _localizationLoaded;
+        private string _localizationReason;
+        private bool _exceptionInRuntime;
+        private int _ticks;
         
         public GunshotWound2()
         {
-            try
-            {
-                GunshotWoundInit();
-            }
-            catch (Exception exception)
-            {
-                UI.Notify("~r~Error on initialization: \n" +
-                          $"In {LastSystem}\n" +
-                          $"{exception.Message}");
-            }
+            GunshotWoundInit();
         }
 
         private void OnKeyUp(object sender, KeyEventArgs eventArgs)
@@ -76,25 +80,49 @@ namespace GunshotWound2
             switch (eventArgs.KeyCode)
             {
                 case Keys.PageDown:
-                    ReduceRange(5);
+                    ReduceRange(MINIMAL_RANGE_FOR_WOUNDED_PEDS);
                     break;
                 case Keys.PageUp:
-                    IncreaseRange(5);
+                    IncreaseRange(MINIMAL_RANGE_FOR_WOUNDED_PEDS);
                     break;
             }
         }
 
         private void OnTick(object sender, EventArgs eventArgs)
         {
+            if (!_isInited && _ticks++ == 400)
+            {
+                UI.Notify(!_exceptionInRuntime
+                    ? $"{_localeConfig.ThanksForUsing}\n~g~GunShot Wound ~r~2~s~\nby SH42913"
+                    : $"~r~{_localeConfig.GswStopped}");
+
+                if (!_configLoaded)
+                {
+                    UI.Notify("GSW2 couldn't load config, default config was loaded.\n" +
+                              $"You need to check {_configReason}");
+                }
+
+                if (!_localizationLoaded)
+                {
+                    UI.Notify("GSW2 couldn't load localization, default localization was loaded.\n" +
+                              "You need to check or change localization\n" +
+                              "Possible reason: ~r~" + _localizationReason);
+                }
+                
+                _isInited = true;
+            }
+            
+            if(_exceptionInRuntime) return;
+            
             try
             {
                 GunshotWoundTick();
             }
             catch (Exception exception)
             {
-                UI.Notify("~r~Error on tick: \n" +
-                          $"In {LastSystem}\n" +
+                UI.Notify("~r~GSW2 error in runtime:\n" +
                           $"{exception.Message}");
+                _exceptionInRuntime = true;
             }
         }
 
@@ -103,12 +131,35 @@ namespace GunshotWound2
             _ecsWorld = new EcsWorld();
 
             _mainConfig = EcsFilterSingle<MainConfig>.Create(_ecsWorld);
-            LoadConfigsFromXml();
+            _localeConfig = EcsFilterSingle<LocaleConfig>.Create(_ecsWorld);
+
+            try
+            {
+                TryToLoadConfigsFromXml();
+                _configLoaded = true;
+            }
+            catch (Exception e)
+            {
+                LoadDefaultConfigs();
+                _configLoaded = false;
+            }
+
+            try
+            {
+                TryToLoadLocalization();
+                _localizationLoaded = true;
+            }
+            catch (Exception e)
+            {
+                LoadDefaultLocalization();
+                _localizationReason = e.Message;
+                _localizationLoaded = false;
+            }
             
             _everyFrameSystems = new EcsSystems(_ecsWorld);
-            _commonSystems = new MultiTickEcsSystems(_ecsWorld, MultiTickEcsSystems.RestrictionModes.MILLISECONDS, 16);
+            _commonSystems = new MultiTickEcsSystems(_ecsWorld, MultiTickEcsSystems.RestrictionModes.MILLISECONDS, 10);
 
-            if (_mainConfig.NpcConfig.AddingPedRange > 1f)
+            if (_mainConfig.NpcConfig.AddingPedRange > MINIMAL_RANGE_FOR_WOUNDED_PEDS)
             {
                 _commonSystems
                     .Add(new NpcFindSystem())
@@ -131,17 +182,19 @@ namespace GunshotWound2
             _everyFrameSystems
                 .Add(new InstantHealSystem())
                 .Add(new HelmetRequestSystem())
+                .Add(new RagdollSystem())
+                .Add(new SwitchAnimationSystem())
                 .Add(new DebugInfoSystem())
                 .Add(new CheckSystem())
-                .Add(new NotificationSystem());
+                .Add(new NotificationSystem())
+                .Add(new CameraShakeSystem());
+            
             _commonSystems
                 .Add(new ArmorSystem())
                 .AddHitSystems()
                 .AddDamageSystems()
                 .AddWoundSystems()
-                .AddPainSystems()
-                .Add(new RagdollSystem())
-                .Add(new SwitchAnimationSystem());
+                .AddPainSystems();
             
             _everyFrameSystems.Initialize();
             _commonSystems.Initialize();
@@ -152,40 +205,42 @@ namespace GunshotWound2
             Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, Game.Player, 0.00001f);
             Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, Game.Player, 0f);
             
-            _debugStopwatch = new Stopwatch();
+            _mainCycleStopwatch = new Stopwatch();
         }
 
         private void GunshotWoundTick()
         {
-            _debugStopwatch.Restart();
+            _mainCycleStopwatch.Restart();
+            
             _everyFrameSystems.Run();
             _commonSystems.Run();
-            _debugStopwatch.Stop();
             
-            CheckTime(_debugStopwatch.ElapsedMilliseconds);
+            _mainCycleStopwatch.Stop();
+            CheckTime(_mainCycleStopwatch.ElapsedMilliseconds);
 
 #if DEBUG
             string debugSubtitles = $"ActiveEntities: {_ecsWorld.GetStats().ActiveEntities}\n" +
                                     $"Peds: {_ecsWorld.GetFilter<EcsFilter<WoundedPedComponent>>().EntitiesCount}\n" +
-                                    $"Ms: {_debugStopwatch.ElapsedMilliseconds}";
+                                    $"Ms: {_mainCycleStopwatch.ElapsedMilliseconds}";
             UI.ShowSubtitle(debugSubtitles);
 #endif
         }
 
-        private void LoadConfigsFromXml()
+        private void LoadDefaultConfigs()
         {
-            _mainConfig.CheckKey = null;
-            _mainConfig.HelmetKey = null;
-            _mainConfig.HealKey = null;
+            _mainConfig.CheckKey = Keys.L;
+            _mainConfig.HealKey = Keys.K;
+            _mainConfig.HelmetKey = Keys.J;
 
             _mainConfig.PlayerConfig = new PlayerConfig
             {
                 WoundedPlayerEnabled = true,
-                MoneyForHelmet = 30,
+                CanDropWeapon = true,
+                MoneyForHelmet = 40,
                 MaximalHealth = 99,
                 MinimalHealth = 0,
                 MaximalPain = 100,
-                PainRecoverSpeed = 2f,
+                PainRecoverSpeed = 1.5f,
                 BleedHealingSpeed = 0.001f,
                 PlayerEntity = -1,
                 AdrenalineSlowMotion = false,
@@ -207,7 +262,7 @@ namespace GunshotWound2
                 LowerMaximalPain = 50,
                 UpperMaximalPain = 80,
                 MaximalPainRecoverSpeed = 1f,
-                TickToUpdate = 5
+                UpperBoundForFindInMs = 10
             };
 
             _mainConfig.WoundConfig = new WoundConfig
@@ -223,45 +278,71 @@ namespace GunshotWound2
                 BleedingDeviation = 0.2f,
                 PainDeviation = 0.2f,
                 RagdollOnPainfulWound = true,
-                PainfulWoundValue = 50
+                PainfulWoundValue = 50,
+                MinimalChanceForArmorSave = 0.6f
             };
+        }
 
-            bool configInGsw = new FileInfo("scripts/GSW2/GSW2Config.xml").Exists;
+        private void TryToLoadConfigsFromXml()
+        {
+            LoadDefaultConfigs();
+            
+            bool configInGswFolder = new FileInfo("scripts/GSW2/GSW2Config.xml").Exists;
             bool config = new FileInfo("scripts/GSW2Config.xml").Exists;
             
-            if(!configInGsw && !config)
+            if(!configInGswFolder && !config)
             {
-                UI.Notify("GSW2 can't find config file, was loaded default values");
-                UI.ShowSubtitle("GSW2 can't find config file, was loaded default values");
-                return;
+                _configReason = "Config doesn't exist";
+                throw new Exception("Config doesn't exist");
             }
             
-            var doc = configInGsw
+            var doc = configInGswFolder
                 ? XDocument.Load("scripts/GSW2/GSW2Config.xml").Root
                 : XDocument.Load("scripts/GSW2Config.xml").Root;
             
-            LastSystem = "Hotkeys";
+            _configReason = "Hotkeys section";
             var buttonNode = doc.Element("Hotkeys");
             if (buttonNode != null)
             {
                 var helmetString = buttonNode.Element("GetHelmetKey").Value;
-                if(!string.IsNullOrEmpty(helmetString)) _mainConfig.HelmetKey = (Keys) int.Parse(helmetString);
+                if (!string.IsNullOrEmpty(helmetString))
+                {
+                    _mainConfig.HelmetKey = (Keys) int.Parse(helmetString);
+                }
+                else
+                {
+                    _mainConfig.HelmetKey = null;
+                }
                 
                 var checkString = buttonNode.Element("CheckKey").Value;
-                if(!string.IsNullOrEmpty(checkString)) _mainConfig.CheckKey = (Keys) int.Parse(checkString);
+                if (!string.IsNullOrEmpty(checkString))
+                {
+                    _mainConfig.CheckKey = (Keys) int.Parse(checkString);
+                }
+                else
+                {
+                    _mainConfig.CheckKey = null;
+                }
                 
                 var healString = buttonNode.Element("HealKey").Value;
-                if(!string.IsNullOrEmpty(healString)) _mainConfig.HealKey = (Keys) int.Parse(healString);
+                if (!string.IsNullOrEmpty(healString))
+                {
+                    _mainConfig.HealKey = (Keys) int.Parse(healString);
+                }
+                else
+                {
+                    _mainConfig.HealKey = null;
+                }
             }
 
-            LastSystem = "Player";
+            _configReason = "Player section";
             var playerNode = doc.Element("Player");
             if (playerNode != null)
             {
                 var woundedPlayerEnabled = playerNode.Element("WoundedPlayerEnabled").Value;
                 _mainConfig.PlayerConfig.WoundedPlayerEnabled = bool.Parse(woundedPlayerEnabled);
 
-                var wyd = false;//bool.Parse(playerNode.Element("WYDCompatible").Value);
+                var wyd = bool.Parse(playerNode.Element("WYDCompatibility").Value);
                 if (!wyd)
                 {
                     _mainConfig.PlayerConfig.MinimalHealth = 0;
@@ -285,6 +366,9 @@ namespace GunshotWound2
                 var policeForget = bool.Parse(playerNode.Element("PoliceCanForget").Value);
                 _mainConfig.PlayerConfig.PoliceCanForgetYou = policeForget;
 
+                var canDropWeapon = bool.Parse(playerNode.Element("CanDropWeapon").Value);
+                _mainConfig.PlayerConfig.CanDropWeapon = canDropWeapon;
+
                 var animationNode = playerNode.Element("Animations");
                 _mainConfig.PlayerConfig.NoPainAnim = animationNode.Attribute("NoPain").Value;
                 _mainConfig.PlayerConfig.MildPainAnim = animationNode.Attribute("MildPain").Value;
@@ -292,15 +376,13 @@ namespace GunshotWound2
                 _mainConfig.PlayerConfig.IntensePainAnim = animationNode.Attribute("IntensePain").Value;
             }
             
-            LastSystem = "Peds";
+            _configReason = "Peds section";
             var npcNode = doc.Element("Peds");
             if (npcNode != null)
             {
                 var woundedPedsRange = npcNode.Element("StartWoundedPedRange").Value;
                 _mainConfig.NpcConfig.AddingPedRange = float.Parse(woundedPedsRange, CultureInfo.InvariantCulture);
-
-                var tickToRefresh = npcNode.Element("TickToRefresh").Value;
-                _mainConfig.NpcConfig.TickToUpdate = int.Parse(tickToRefresh);
+                _mainConfig.NpcConfig.RemovePedRange = _mainConfig.NpcConfig.AddingPedRange * ADDING_TO_REMOVING_MULTIPLIER;
 
                 var healthNode = npcNode.Element("StartHealth");
                 if (healthNode != null)
@@ -338,7 +420,7 @@ namespace GunshotWound2
                 _mainConfig.NpcConfig.IntensePainAnim = animationNode.Attribute("IntensePain").Value;
             }
 
-            LastSystem = "Wounds";
+            _configReason = "Wounds section";
             var woundsNode = doc.Element("Wounds");
             if (woundsNode != null)
             {
@@ -368,12 +450,20 @@ namespace GunshotWound2
 
                 var ragdollOnPain = woundsNode.Element("RagdollOnPainfulWound").Value;
                 _mainConfig.WoundConfig.RagdollOnPainfulWound = bool.Parse(ragdollOnPain);
+
+                var painfulWoundValue = woundsNode.Element("PainfulWoundValue").Value;
+                _mainConfig.WoundConfig.PainfulWoundValue = float.Parse(painfulWoundValue, CultureInfo.InvariantCulture);
+
+                var minimalChance = woundsNode.Element("MinimalChanceForArmorSave").Value;
+                _mainConfig.WoundConfig.MinimalChanceForArmorSave = float.Parse(minimalChance, CultureInfo.InvariantCulture);
             }
 
-            LastSystem = "Notifications";
+            _configReason = "Notifications section";
             var noteNode = doc.Element("Notifications");
             if (noteNode != null)
             {
+                _mainConfig.Language = noteNode.Element("Language").Value;
+                
                 var commonString = noteNode.Element("Common").Value;
                 _mainConfig.CommonMessages = bool.Parse(commonString);
                 
@@ -387,7 +477,7 @@ namespace GunshotWound2
                 _mainConfig.EmergencyMessages = bool.Parse(emergencyString);
             }
 
-            LastSystem = "Weapons";
+            _configReason = "Weapons section";
             var weaponNode = doc.Element("Weapons");
             if (weaponNode != null)
             {
@@ -427,42 +517,290 @@ namespace GunshotWound2
             UI.Notify($"{_mainConfig}");
 #endif
         }
+
+        private void LoadDefaultLocalization()
+        {
+            _localeConfig.HelmetSavedYourHead = "Helmet saved your head";
+            _localeConfig.ArmorSavedYourChest = "Armor saved your chest";
+            _localeConfig.ArmorSavedYourLowerBody = "Armor saved your lower body";
+            _localeConfig.ArmorPenetrated = "Your armor was penetrated";
+            
+            _localeConfig.BodyPartHead = "head";
+            _localeConfig.BodyPartNeck = "neck";
+            _localeConfig.BodyPartChest = "chest";
+            _localeConfig.BodyPartLowerBody = "lower body";
+            _localeConfig.BodyPartArm = "arm";
+            _localeConfig.BodyPartLeg = "leg";
+            
+            _localeConfig.GrazeWound = "Graze wound";
+            
+            _localeConfig.GrazeGswOn = "Graze GSW on";
+            _localeConfig.FleshGswOn = "Flesh GSW on";
+            _localeConfig.PenetratingGswOn = "Penetrating GSW on";
+            _localeConfig.PerforatingGswOn = "Perforating GSW on";
+            _localeConfig.AvulsiveGswOn = "Avulsive GSW on";
+
+            _localeConfig.EarFlyAway = "Part of ear sails off away";
+            _localeConfig.HeavyBrainDamage = "Heavy brain damage";
+            _localeConfig.BulletFlyThroughYourHead = "Bullet fly through your head";
+            _localeConfig.BulletTornApartYourBrain = "Bullet torn apart your brain";
+
+            _localeConfig.LightBruise = "Light bruise";
+            _localeConfig.LightBruiseOn = "Light bruise on";
+            _localeConfig.MediumBruiseOn = "Medium bruise on";
+            _localeConfig.HeavyBruiseOn = "Heavy bruise on";
+            _localeConfig.AbrazionWoundOn = "Abrazion wound on";
+            _localeConfig.WindedFromImpact = "Winded from impact";
+
+            _localeConfig.IncisionWoundOn = "Incision wound on";
+            _localeConfig.LacerationWoundOn = "Laceration wound on";
+            _localeConfig.StabWoundOn = "Stab wound on";
+
+            _localeConfig.BodyBlown = "Body blown";
+            _localeConfig.HeadBlown = "Head blown";
+            _localeConfig.NeckBlown = "Neck blown";
+            _localeConfig.ChestBlown = "Chest blown";
+            _localeConfig.LowerBodyBlown = "Lower body blown";
+            _localeConfig.ArmBlown = "Arm blown";
+            _localeConfig.LegBlown = "Leg blown";
+
+            _localeConfig.Blackout = "Blackout possible";
+            _localeConfig.BleedingInHead = "Bleeding in the head";
+            _localeConfig.TraumaticBrainInjury = "Traumatic brain injury";
+            _localeConfig.BrokenNeck = "Broken neck";
+
+            _localeConfig.Health = "Health";
+            _localeConfig.YouAreDead = "You are dead!";
+            _localeConfig.Pain = "Pain";
+
+            _localeConfig.ArmorLooksGreat = "Your armor looks great";
+            _localeConfig.ScratchesOnArmor = "Your armor has some scratches";
+            _localeConfig.DentsOnArmor = "Your armor has large dents";
+            _localeConfig.ArmorLooksAwful = "Your armor looks awful";
+
+            _localeConfig.Crits = "Critical damaged";
+            _localeConfig.NervesCrit = "nerves";
+            _localeConfig.HeartCrit = "heart";
+            _localeConfig.LungsCrit = "lungs";
+            _localeConfig.StomachCrit = "stomach";
+            _localeConfig.GutsCrit = "guts";
+            _localeConfig.ArmsCrit = "arms";
+            _localeConfig.LegsCrit = "legs";
+
+            _localeConfig.Wounds = "Wounds";
+            _localeConfig.HaveNoWounds = "You have no wounds";
+
+            _localeConfig.DontHaveMoneyForHelmet = "You don't have enough money to buy helmet";
+
+            _localeConfig.InternalBleeding = "Internal bleeding";
+            _localeConfig.SeveredArtery = "Severed artery";
+            _localeConfig.SeveredArteryMessage = "Artery was severed!";
+
+            _localeConfig.PlayerNervesCritMessage = "You feel you can't control your arms and legs anymore";
+            _localeConfig.ManNervesCritMessage = "He looks like his spine was damaged";
+            _localeConfig.WomanNervesCritMessage = "She looks like her spine was damaged";
+
+            _localeConfig.PlayerHeartCritMessage = "You feel awful pain in your chest";
+            _localeConfig.ManHeartCritMessage = "He coughs up blood";
+            _localeConfig.WomanHeartCritMessage = "She coughs up blood";
+
+            _localeConfig.PlayerLungsCritMessage = "It's very hard for you to breathe";
+            _localeConfig.ManLungsCritMessage = "He coughs up blood";
+            _localeConfig.WomanLungsCritMessage = "She coughs up blood";
+
+            _localeConfig.PlayerStomachCritMessage = "You feel yourself very sick";
+            _localeConfig.ManStomachCritMessage = "He looks very sick";
+            _localeConfig.WomanStomachCritMessage = "She looks very sick";
+
+            _localeConfig.PlayerGutsCritMessage = "You feel yourself very sick";
+            _localeConfig.ManGutsCritMessage = "He looks very sick";
+            _localeConfig.WomanGutsCritMessage = "She looks very sick";
+
+            _localeConfig.PlayerArmsCritMessage = "It's looks like arm bone was broken";
+            _localeConfig.ManArmsCritMessage = "His arm looks very bad";
+            _localeConfig.WomanArmsCritMessage = "Her arm looks very bad";
+
+            _localeConfig.PlayerLegsCritMessage = "It's looks like leg bone was broken";
+            _localeConfig.ManLegsCritMessage = "His leg looks very bad";
+            _localeConfig.WomanLegsCritMessage = "Her leg looks very bad";
+
+            _localeConfig.UnbearablePainMessage = "You got a pain shock! You lose consciousness!";
+
+            _localeConfig.AddingRange = "Adding range";
+            _localeConfig.RemovingRange = "Removing range";
+            
+            _localeConfig.PerformanceDropMessage = "Performance drop!\n" +
+                                                  "You'd better to reduce adding range with help PageDown-button.\n" +
+                                                  "You also can turn off WoundedPed at all in GSW2Config.xml";
+
+            _localeConfig.ThanksForUsing = "Thanks for using";
+            _localeConfig.GswStopped = "GSW2 stopped, sorry :(";
+        }
+
+        private void TryToLoadLocalization()
+        {
+            bool configInGswFolder = new FileInfo("scripts/GSW2/GSW2Localization.csv").Exists;
+            bool config = new FileInfo("scripts/GSW2Localization.csv").Exists;
+            if(!configInGswFolder && !config)
+            {
+                throw new Exception("Localization doesn't exist");
+            }
+            
+            var doc = configInGswFolder
+                ? new FileInfo("scripts/GSW2/GSW2Localization.csv")
+                : new FileInfo("scripts/GSW2Localization.csv");
+
+            var manager = new LocalizationManager(doc.OpenRead());
+            manager.SetLanguage(_mainConfig.Language);
+            
+            _localeConfig.HelmetSavedYourHead = manager.GetWord("HelmetSavedYourHead");
+            _localeConfig.ArmorSavedYourChest = manager.GetWord("ArmorSavedYourChest");
+            _localeConfig.ArmorSavedYourLowerBody = manager.GetWord("ArmorSavedYourLowerBody");
+            _localeConfig.ArmorPenetrated = manager.GetWord("ArmorPenetrated");
+            
+            _localeConfig.BodyPartHead = manager.GetWord("BodyPartHead");
+            _localeConfig.BodyPartNeck = manager.GetWord("BodyPartNeck");
+            _localeConfig.BodyPartChest = manager.GetWord("BodyPartChest");
+            _localeConfig.BodyPartLowerBody = manager.GetWord("BodyPartLowerBody");
+            _localeConfig.BodyPartArm = manager.GetWord("BodyPartArm");
+            _localeConfig.BodyPartLeg = manager.GetWord("BodyPartLeg");
+            
+            _localeConfig.GrazeWound = manager.GetWord("GrazeWound");
+            
+            _localeConfig.GrazeGswOn = manager.GetWord("GrazeGswOn");
+            _localeConfig.FleshGswOn = manager.GetWord("FleshGswOn");
+            _localeConfig.PenetratingGswOn = manager.GetWord("PenetratingGswOn");
+            _localeConfig.PerforatingGswOn = manager.GetWord("PerforatingGswOn");
+            _localeConfig.AvulsiveGswOn = manager.GetWord("AvulsiveGswOn");
+
+            _localeConfig.EarFlyAway = manager.GetWord("EarFlyAway");
+            _localeConfig.HeavyBrainDamage = manager.GetWord("HeavyBrainDamage");
+            _localeConfig.BulletFlyThroughYourHead = manager.GetWord("BulletFlyThroughYourHead");
+            _localeConfig.BulletTornApartYourBrain = manager.GetWord("BulletTornApartYourBrain");
+
+            _localeConfig.LightBruise = manager.GetWord("LightBruise");
+            _localeConfig.LightBruiseOn = manager.GetWord("LightBruiseOn");
+            _localeConfig.MediumBruiseOn = manager.GetWord("MediumBruiseOn");
+            _localeConfig.HeavyBruiseOn = manager.GetWord("HeavyBruiseOn");
+            _localeConfig.AbrazionWoundOn = manager.GetWord("AbrazionWoundOn");
+            _localeConfig.WindedFromImpact = manager.GetWord("WindedFromImpact");
+
+            _localeConfig.IncisionWoundOn = manager.GetWord("IncisionWoundOn");
+            _localeConfig.LacerationWoundOn = manager.GetWord("LacerationWoundOn");
+            _localeConfig.StabWoundOn = manager.GetWord("StabWoundOn");
+
+            _localeConfig.BodyBlown = manager.GetWord("BodyBlown");
+            _localeConfig.HeadBlown = manager.GetWord("HeadBlown");
+            _localeConfig.NeckBlown = manager.GetWord("NeckBlown");
+            _localeConfig.ChestBlown = manager.GetWord("ChestBlown");
+            _localeConfig.LowerBodyBlown = manager.GetWord("LowerBodyBlown");
+            _localeConfig.ArmBlown = manager.GetWord("ArmBlown");
+            _localeConfig.LegBlown = manager.GetWord("LegBlown");
+
+            _localeConfig.Blackout = manager.GetWord("Blackout");
+            _localeConfig.BleedingInHead = manager.GetWord("BleedingInHead");
+            _localeConfig.TraumaticBrainInjury = manager.GetWord("TraumaticBrainInjury");
+            _localeConfig.BrokenNeck = manager.GetWord("BrokenNeck");
+
+            _localeConfig.Health = manager.GetWord("Health");
+            _localeConfig.YouAreDead = manager.GetWord("YouAreDead");
+            _localeConfig.Pain = manager.GetWord("Pain");
+
+            _localeConfig.ArmorLooksGreat = manager.GetWord("ArmorLooksGreat");
+            _localeConfig.ScratchesOnArmor = manager.GetWord("ScratchesOnArmor");
+            _localeConfig.DentsOnArmor = manager.GetWord("DentsOnArmor");
+            _localeConfig.ArmorLooksAwful = manager.GetWord("ArmorLooksAwful");
+
+            _localeConfig.Crits = manager.GetWord("Crits");
+            _localeConfig.NervesCrit = manager.GetWord("NervesCrit");
+            _localeConfig.HeartCrit = manager.GetWord("HeartCrit");
+            _localeConfig.LungsCrit = manager.GetWord("LungsCrit");
+            _localeConfig.StomachCrit = manager.GetWord("StomachCrit");
+            _localeConfig.GutsCrit = manager.GetWord("GutsCrit");
+            _localeConfig.ArmsCrit = manager.GetWord("ArmsCrit");
+            _localeConfig.LegsCrit = manager.GetWord("LegsCrit");
+
+            _localeConfig.Wounds = manager.GetWord("Wounds");
+            _localeConfig.HaveNoWounds = manager.GetWord("HaveNoWounds");
+
+            _localeConfig.DontHaveMoneyForHelmet = manager.GetWord("DontHaveMoneyForHelmet");
+
+            _localeConfig.InternalBleeding = manager.GetWord("InternalBleeding");
+            _localeConfig.SeveredArtery = manager.GetWord("SeveredArtery");
+            _localeConfig.SeveredArteryMessage = manager.GetWord("SeveredArteryMessage");
+
+            _localeConfig.PlayerNervesCritMessage = manager.GetWord("PlayerNervesCritMessage");
+            _localeConfig.ManNervesCritMessage = manager.GetWord("ManNervesCritMessage");
+            _localeConfig.WomanNervesCritMessage = manager.GetWord("WomanNervesCritMessage");
+
+            _localeConfig.PlayerHeartCritMessage = manager.GetWord("PlayerHeartCritMessage");
+            _localeConfig.ManHeartCritMessage = manager.GetWord("ManHeartCritMessage");
+            _localeConfig.WomanHeartCritMessage = manager.GetWord("WomanHeartCritMessage");
+
+            _localeConfig.PlayerLungsCritMessage = manager.GetWord("PlayerLungsCritMessage");
+            _localeConfig.ManLungsCritMessage = manager.GetWord("ManLungsCritMessage");
+            _localeConfig.WomanLungsCritMessage = manager.GetWord("WomanLungsCritMessage");
+
+            _localeConfig.PlayerStomachCritMessage = manager.GetWord("PlayerStomachCritMessage");
+            _localeConfig.ManStomachCritMessage = manager.GetWord("ManStomachCritMessage");
+            _localeConfig.WomanStomachCritMessage = manager.GetWord("WomanStomachCritMessage");
+
+            _localeConfig.PlayerGutsCritMessage = manager.GetWord("PlayerGutsCritMessage");
+            _localeConfig.ManGutsCritMessage = manager.GetWord("ManGutsCritMessage");
+            _localeConfig.WomanGutsCritMessage = manager.GetWord("WomanGutsCritMessage");
+
+            _localeConfig.PlayerArmsCritMessage = manager.GetWord("PlayerArmsCritMessage");
+            _localeConfig.ManArmsCritMessage = manager.GetWord("ManArmsCritMessage");
+            _localeConfig.WomanArmsCritMessage = manager.GetWord("WomanArmsCritMessage");
+
+            _localeConfig.PlayerLegsCritMessage = manager.GetWord("PlayerLegsCritMessage");
+            _localeConfig.ManLegsCritMessage = manager.GetWord("ManLegsCritMessage");
+            _localeConfig.WomanLegsCritMessage = manager.GetWord("WomanLegsCritMessage");
+
+            _localeConfig.UnbearablePainMessage = manager.GetWord("UnbearablePainMessage");
+
+            _localeConfig.AddingRange = manager.GetWord("AddingRange");
+            _localeConfig.RemovingRange = manager.GetWord("RemovingRange");
+            
+            _localeConfig.PerformanceDropMessage = manager.GetWord("PerformanceDropMessage");
+
+            _localeConfig.ThanksForUsing = manager.GetWord("ThanksForUsing");
+            _localeConfig.GswStopped = manager.GetWord("GswStopped");
+        }
         
         private void CheckTime(long timeInMs)
         {
-            if(timeInMs > 40)
-            {
-                if (_warningMessageWasShown) return;
+            if(!_isInited) return;
+            if (timeInMs <= 50) return;
+            if (_warningMessageWasShown) return;
                 
-                SendMessage("Performance drop!\nYou'd better to reduce adding range with help PageDown-button.\n" +
-                            "You also can turn off WoundedPeds at all, " +
-                            "just change StartWoundedPedRange to 0 in GSW2Config.xml", NotifyLevels.WARNING);
-                SendMessage("TooMuchTime in " + LastSystem, NotifyLevels.DEBUG);
-                _warningMessageWasShown = true;
-            }
-            else
-            {
-                _warningMessageWasShown = false;
-            }
+            SendMessage(_localeConfig.PerformanceDropMessage, NotifyLevels.WARNING);
+            SendMessage("TooMuchTime in " + LastSystem, NotifyLevels.DEBUG);
+            _warningMessageWasShown = true;
         }
 
         private void ReduceRange(float value)
         {
             if(_mainConfig.NpcConfig.AddingPedRange <= value) return;
-            _mainConfig.NpcConfig.AddingPedRange -= value;
-            _mainConfig.NpcConfig.RemovePedRange = _mainConfig.NpcConfig.AddingPedRange * 2f;
             
-            SendMessage($"Adding Range: {_mainConfig.NpcConfig.AddingPedRange}\n" +
-                        $"Removing Range: {_mainConfig.NpcConfig.RemovePedRange}");
+            _mainConfig.NpcConfig.AddingPedRange -= value;
+            _mainConfig.NpcConfig.RemovePedRange = _mainConfig.NpcConfig.AddingPedRange * ADDING_TO_REMOVING_MULTIPLIER;
+            
+            SendMessage($"{_localeConfig.AddingRange}: {_mainConfig.NpcConfig.AddingPedRange}\n" +
+                        $"{_localeConfig.RemovingRange}: {_mainConfig.NpcConfig.RemovePedRange}");
+            _warningMessageWasShown = false;
         }
 
         private void IncreaseRange(float value)
         {
-            _mainConfig.NpcConfig.AddingPedRange += value;
-            _mainConfig.NpcConfig.RemovePedRange = _mainConfig.NpcConfig.AddingPedRange * 2f;
+            if(_mainConfig.NpcConfig.AddingPedRange <= MINIMAL_RANGE_FOR_WOUNDED_PEDS) return;
             
-            SendMessage($"Adding Range: {_mainConfig.NpcConfig.AddingPedRange}\n" +
-                        $"Removing Range: {_mainConfig.NpcConfig.RemovePedRange}");
+            _mainConfig.NpcConfig.AddingPedRange += value;
+            _mainConfig.NpcConfig.RemovePedRange = _mainConfig.NpcConfig.AddingPedRange * ADDING_TO_REMOVING_MULTIPLIER;
+            
+            SendMessage($"{_localeConfig.AddingRange}: {_mainConfig.NpcConfig.AddingPedRange}\n" +
+                        $"{_localeConfig.RemovingRange}: {_mainConfig.NpcConfig.RemovePedRange}");
+            _warningMessageWasShown = false;
         }
         
         
@@ -485,6 +823,10 @@ namespace GunshotWound2
 
         private void SendMessage(string message, NotifyLevels level = NotifyLevels.COMMON)
         {
+#if !DEBUG
+            if(level == NotifyLevels.DEBUG) return;
+#endif
+            
             var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
             notification.Level = level;
             notification.StringToShow = message;
@@ -493,7 +835,7 @@ namespace GunshotWound2
         
     internal static class Extensions
     {
-        public static EcsSystems AddHitSystems(this EcsSystems systems)
+        public static MultiTickEcsSystems AddHitSystems(this MultiTickEcsSystems systems)
         {
             return systems
                 .Add(new LightImpactHitSystem())
@@ -508,7 +850,7 @@ namespace GunshotWound2
                 .Add(new HitCleanSystem());
         }
         
-        public static EcsSystems AddDamageSystems(this EcsSystems systems)
+        public static MultiTickEcsSystems AddDamageSystems(this MultiTickEcsSystems systems)
         {
             return systems
                 .Add(new SmallCaliberDamageSystem())
@@ -521,7 +863,7 @@ namespace GunshotWound2
                 .Add(new ExplosionDamageSystem());
         }
         
-        public static EcsSystems AddWoundSystems(this EcsSystems systems)
+        public static MultiTickEcsSystems AddWoundSystems(this MultiTickEcsSystems systems)
         {
             return systems
                 .Add(new WoundSystem())
@@ -535,7 +877,7 @@ namespace GunshotWound2
                 .Add(new BleedingSystem());
         }
 
-        public static EcsSystems AddPainSystems(this EcsSystems systems)
+        public static MultiTickEcsSystems AddPainSystems(this MultiTickEcsSystems systems)
         {
             return systems
                 .Add(new PainSystem())

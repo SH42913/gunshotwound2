@@ -5,6 +5,7 @@ using GunshotWound2.Components.Events.WeaponHitEvents;
 using GunshotWound2.Components.Events.WoundEvents;
 using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
+using GunshotWound2.Utils;
 using Leopotam.Ecs;
 using Weighted_Randomizer;
 
@@ -16,6 +17,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
     {
         protected EcsWorld EcsWorld;
         protected EcsFilterSingle<MainConfig> Config;
+        protected EcsFilterSingle<LocaleConfig> Locale;
         
         protected EcsFilter<T> HitComponents;
         protected EcsFilter<BodyPartWasHitEvent> BodyHitComponents;
@@ -69,7 +71,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
             }
         }
 
-        protected virtual void ProcessWound(BodyPartWasHitEvent bodyHit, int pedEntity)
+        private void ProcessWound(BodyPartWasHitEvent bodyHit, int pedEntity)
         {
             SendDebug($"{WeaponClass} processing");
             
@@ -87,7 +89,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
                 case BodyParts.HEAD:
                     if (woundedPed.ThisPed.IsWearingHelmet && Random.IsTrueWithProbability(HelmetSafeChance))
                     {
-                        SendMessage("Helmet saved your head", pedEntity, NotifyLevels.WARNING);
+                        SendMessage(Locale.Data.HelmetSavedYourHead, pedEntity, NotifyLevels.WARNING);
                         return;
                     }
                     HeadActions?.NextWithReplacement()(pedEntity);
@@ -98,7 +100,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
                 case BodyParts.UPPER_BODY:
                     if (!CheckArmorPenetration(woundedPed, pedEntity))
                     {
-                        SendMessage("Armor saved your chest", pedEntity, NotifyLevels.WARNING);
+                        SendMessage(Locale.Data.ArmorSavedYourChest, pedEntity, NotifyLevels.WARNING);
                         CreatePain(pedEntity, ArmorDamage/5f);
                         return;
                     }
@@ -107,7 +109,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
                 case BodyParts.LOWER_BODY:
                     if (!CheckArmorPenetration(woundedPed, pedEntity))
                     {
-                        SendMessage("Armor saved your lower body", pedEntity, NotifyLevels.WARNING);
+                        SendMessage(Locale.Data.ArmorSavedYourLowerBody, pedEntity, NotifyLevels.WARNING);
                         CreatePain(pedEntity, ArmorDamage/5f);
                         return;
                     }
@@ -133,7 +135,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
             float bleeding, 
             float pain, 
             float arteryDamageChance = -1,
-            params DamageTypes?[] possibleCrits)
+            params CritTypes?[] possibleCrits)
         {
             var wound = EcsWorld.CreateEntityWith<ProcessWoundEvent>();
             wound.Name = name;
@@ -146,14 +148,19 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
             if (possibleCrits.Length <= 0)
             {
-                wound.CriticalDamage = null;
+                wound.Crits = null;
                 return;
             }
             
             if(!Random.IsTrueWithProbability(CritChance)) return;
             int critIndex = Random.Next(0, possibleCrits.Length);
             var crit = possibleCrits[critIndex];
-            wound.CriticalDamage = crit;
+            wound.Crits = crit;
+        }
+
+        protected void CreateHeavyBrainDamage(string name, int pedEntity)
+        {
+            CreateWound(name, pedEntity, DamageMultiplier * 70f, BleeedingMultiplier * 3f, PainMultiplier * 100f);
         }
 
         private bool CheckArmorPenetration(WoundedPedComponent woundedPed, int pedEntity)
@@ -166,16 +173,19 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
                 return true;
             }
 
+            float chanceToSave = Config.Data.WoundConfig.MinimalChanceForArmorSave;
             if (!CanPenetrateArmor) return false;
+            if (chanceToSave >= 1f) return false;
             
             float armorPercent = woundedPed.Armor / 100f;
-            bool penetration = Random.IsTrueWithProbability(1 - (0.6f + 0.4f * armorPercent));
-            if (penetration)
+            float chanceForArmorPercent = 1f - Config.Data.WoundConfig.MinimalChanceForArmorSave;
+            bool saved = Random.IsTrueWithProbability(Config.Data.WoundConfig.MinimalChanceForArmorSave + chanceForArmorPercent * armorPercent);
+            if (!saved)
             {
-                SendMessage("Your armor was penetrated", pedEntity, NotifyLevels.WARNING);
+                SendMessage(Locale.Data.ArmorPenetrated, pedEntity, NotifyLevels.WARNING);
             }
 
-            return penetration;
+            return !saved;
         }
 
         protected void LoadMultsFromConfig()
@@ -212,6 +222,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
         private void SendMessage(string message, int pedEntity, NotifyLevels level = NotifyLevels.COMMON)
         {  
 #if !DEBUG
+            if(level == NotifyLevels.DEBUG) return;
             if(Config.Data.PlayerConfig.PlayerEntity != pedEntity) return;
 #endif
             

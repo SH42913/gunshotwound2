@@ -37,9 +37,11 @@ namespace GunshotWound2.Systems.GuiSystems
 
         private void SendDebug(string message)
         {
+#if DEBUG
             var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
             notification.Level = NotifyLevels.DEBUG;
             notification.StringToShow = message;
+#endif
         }
     }
 }

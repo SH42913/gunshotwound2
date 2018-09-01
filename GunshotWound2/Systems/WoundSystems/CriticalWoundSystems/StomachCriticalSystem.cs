@@ -10,21 +10,25 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
     {
         public StomachCriticalSystem()
         {
-            Damage = DamageTypes.STOMACH_DAMAGED;
+            CurrentCrit = CritTypes.STOMACH_DAMAGED;
         }
         
         protected override void ActionForPlayer(WoundedPedComponent pedComponent, int pedEntity)
         {
             CreatePain(pedEntity, 25f);
             CreateInternalBleeding(pedEntity, 0.5f);
-            SendMessage("You feel yourself very sick", NotifyLevels.WARNING);
+            
+            SendMessage(Locale.Data.PlayerStomachCritMessage, NotifyLevels.WARNING);
         }
 
         protected override void ActionForNpc(WoundedPedComponent pedComponent, int pedEntity)
         {
             CreatePain(pedEntity, 25f);
             CreateInternalBleeding(pedEntity, 0.5f);
-            SendMessage($"{pedComponent.HeShe} looks very sick");
+            
+            SendMessage(pedComponent.IsMale 
+                ? Locale.Data.ManStomachCritMessage 
+                : Locale.Data.WomanStomachCritMessage);
         }
     }
 }

@@ -29,18 +29,13 @@ namespace GunshotWound2.Systems.PlayerSystems
             woundPed.PainState = PainStates.DEADLY;
             
             woundPed.IsPlayer = true;
+            woundPed.IsMale = ped.Gender == Gender.Male;
             woundPed.ThisPed = ped;
             
             woundPed.Armor = ped.Armor;
             woundPed.Health = _config.Data.PlayerConfig.MaximalHealth;
+            woundPed.ThisPed.MaxHealth = (int) woundPed.Health + 101;
             woundPed.ThisPed.Health = (int) woundPed.Health;
-            
-            woundPed.HeShe = ped.Gender == Gender.Male
-                ? "He"
-                : "She";
-            woundPed.HisHer = ped.Gender == Gender.Male
-                ? "His"
-                : "Her";
 
             woundPed.PainMeter = 0;
             woundPed.MaximalPain = _config.Data.PlayerConfig.MaximalPain;
@@ -50,7 +45,7 @@ namespace GunshotWound2.Systems.PlayerSystems
             _config.Data.PlayerConfig.PlayerEntity = entity;
             FindDeadlyWound();
 
-            _ecsWorld.CreateEntityWith<NoChangePainStateEvent>().PedEntity = entity;
+            _ecsWorld.CreateEntityWith<NoPainChangeStateEvent>().PedEntity = entity;
         }
         
         public void Run()
@@ -70,7 +65,8 @@ namespace GunshotWound2.Systems.PlayerSystems
                 {
                     woundedPed.Health = woundedPed.ThisPed.Health;
                     woundedPed.IsDead = true;
-                    woundedPed.PainRecoverSpeed = 0;
+                    woundedPed.InPermanentRagdoll = true;
+                    Game.Player.WantedLevel = -1;
                 
                     var pain = _ecsWorld.CreateEntityWith<SetPedToRagdollEvent>();
                     pain.RagdollState = RagdollStates.PERMANENT;
@@ -85,14 +81,16 @@ namespace GunshotWound2.Systems.PlayerSystems
             }
         }
 
-        public void Destroy()
-        {}
-
         private void FindDeadlyWound()
         {
             var totalHealth = _config.Data.PlayerConfig.MaximalHealth - _config.Data.PlayerConfig.MinimalHealth;
             var critical = (float) Math.Sqrt(totalHealth * _config.Data.PlayerConfig.BleedHealingSpeed);
             _config.Data.WoundConfig.EmergencyBleedingLevel = critical;
+        }
+
+        public void Destroy()
+        {
+            
         }
     }
 }

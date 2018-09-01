@@ -13,8 +13,9 @@ namespace GunshotWound2.Systems.WoundSystems
     public class PainSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
-        private EcsFilterSingle<MainConfig> _config;
         private EcsFilter<AddPainEvent> _components;
+        
+        private EcsFilterSingle<MainConfig> _config;
         
         private static readonly Random Random = new Random();
         
@@ -41,7 +42,7 @@ namespace GunshotWound2.Systems.WoundSystems
                     {
                         if (woundedPed.IsPlayer)
                         {
-                            Function.Call(Hash._SET_CAM_EFFECT, 1);
+                            _ecsWorld.CreateEntityWith<AddCameraShakeEvent>().Length = CameraShakeLength.ONE_TIME;
                         }
                     }
                         

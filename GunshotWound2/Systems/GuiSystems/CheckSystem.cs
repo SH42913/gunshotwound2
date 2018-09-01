@@ -10,6 +10,7 @@ namespace GunshotWound2.Systems.GuiSystems
     {
         private EcsWorld _ecsWorld;
         private EcsFilterSingle<MainConfig> _config;
+        private EcsFilterSingle<LocaleConfig> _locale;
         
         private EcsFilter<ShowHealthStateEvent> _components;
         private EcsFilter<BleedingComponent> _wounds;
@@ -34,108 +35,109 @@ namespace GunshotWound2.Systems.GuiSystems
                     
                     if (healthPercent >= 0.8f)
                     {
-                        SendMessage($"Health: ~g~{healthPercent * 100f:0.0}%~s~");
+                        SendMessage($"~s~{_locale.Data.Health}: ~g~{healthPercent * 100f:0.0}%~s~");
                     }
                     else if(healthPercent > 0.5f)
                     {
-                        SendMessage($"Health: ~y~{healthPercent * 100f:0.0}%~s~");
+                        SendMessage($"~s~{_locale.Data.Health}: ~y~{healthPercent * 100f:0.0}%~s~");
                     }
                     else if(healthPercent > 0.2f)
                     {
-                        SendMessage($"Health: ~o~{healthPercent * 100f:0.0}%~s~");
+                        SendMessage($"~s~{_locale.Data.Health}: ~o~{healthPercent * 100f:0.0}%~s~");
                     }
                     else if(healthPercent > 0f)
                     {
-                        SendMessage($"Health: ~r~{healthPercent * 100f:0.0}%~s~");
+                        SendMessage($"~s~{_locale.Data.Health}: ~r~{healthPercent * 100f:0.0}%~s~");
                     }
                     else
                     {
-                        SendMessage("~r~You are dead!~s~");
+                        SendMessage($"~r~{_locale.Data.YouAreDead}~s~");
                     }
-                    SendMessage($"Real health is {woundedPed.ThisPed.Health}/{healthPercent:0.0}%", NotifyLevels.DEBUG);
-                    
-                    var painPercent = woundedPed.PainMeter / woundedPed.MaximalPain;
-                    if (painPercent > 1.5f)
+
+                    if (healthPercent > 0)
                     {
-                        SendMessage("~s~Pain Level: ~r~>150%~s~");
+                        var painPercent = woundedPed.PainMeter / woundedPed.MaximalPain;
+                        if (painPercent > 1.5f)
+                        {
+                            SendMessage($"~s~{_locale.Data.Pain}: ~r~>150%~s~");
+                        }
+                        else if (painPercent > 1f)
+                        {
+                            SendMessage($"~s~{_locale.Data.Pain}: ~r~{painPercent * 100f:0.0}%~s~");
+                        }
+                        else if (painPercent > 0.5f)
+                        {
+                            SendMessage($"~s~{_locale.Data.Pain}: ~o~{painPercent * 100f:0.0}%~s~");
+                        }
+                        else if (painPercent > 0.2f)
+                        {
+                            SendMessage($"~s~{_locale.Data.Pain}: ~y~{painPercent * 100f:0.0}%~s~");
+                        }
+                        else if (painPercent > 0f)
+                        {
+                            SendMessage($"~s~{_locale.Data.Pain}: ~g~{painPercent * 100f:0.0}%~s~");
+                        }
                     }
-                    else if (painPercent > 1f)
-                    {
-                        SendMessage($"~s~Pain Level: ~r~{painPercent * 100f:0.0}%~s~");
-                    }
-                    else if (painPercent > 0.5f)
-                    {
-                        SendMessage($"~s~Pain Level: ~o~{painPercent * 100f:0.0}%~s~");
-                    }
-                    else if (painPercent > 0.2f)
-                    {
-                        SendMessage($"~s~Pain Level: ~y~{painPercent * 100f:0.0}%~s~");
-                    }
-                    else if (painPercent > 0f)
-                    {
-                        SendMessage($"~s~Pain Level: ~g~{painPercent * 100f:0.0}%~s~");
-                    }
-                    SendMessage($"Real pain is {woundedPed.PainMeter:0.0}/{painPercent:0.0}%", NotifyLevels.DEBUG);
                     
                     var armorPercent = woundedPed.Armor / 100f;
                     if (armorPercent > 0)
                     {
                         if (armorPercent > 0.6f)
                         {
-                            SendMessage("~g~Your armor looks great~s~");
+                            SendMessage($"~g~{_locale.Data.ArmorLooksGreat} ~s~");
                         }
-                        else if (armorPercent > 0.3f)
+                        else if (armorPercent > 0.4f)
                         {
-                            SendMessage("~y~Some scratches on your armor~s~");
+                            SendMessage($"~y~{_locale.Data.ScratchesOnArmor} ~s~");
                         }
-                        else if (armorPercent > 0.1f)
+                        else if (armorPercent > 0.2f)
                         {
-                            SendMessage("~o~Large dents on your armor~s~");
+                            SendMessage($"~o~{_locale.Data.DentsOnArmor} ~s~");
                         }
                         else
                         {
-                            SendMessage("~r~Your armor looks awful~s~");
+                            SendMessage($"~r~{_locale.Data.ArmorLooksAwful} ~s~");
                         }
                     }
 
                     string healthInfo = "";
-                    if (woundedPed.DamagedParts > 0)
+                    if (woundedPed.Crits > 0)
                     {
-                        healthInfo += "Damaged body parts: ";
+                        healthInfo += $"~s~{_locale.Data.Crits} ~r~";
                     
-                        if (woundedPed.DamagedParts.HasFlag(DamageTypes.NERVES_DAMAGED))
+                        if (woundedPed.Crits.HasFlag(CritTypes.NERVES_DAMAGED))
                         {
-                            healthInfo += "~r~Nerves ";
+                            healthInfo += $"{_locale.Data.NervesCrit} ";
                         }
                     
-                        if (woundedPed.DamagedParts.HasFlag(DamageTypes.HEART_DAMAGED))
+                        if (woundedPed.Crits.HasFlag(CritTypes.HEART_DAMAGED))
                         {
-                            healthInfo += "~r~Heart ";
+                            healthInfo += $"{_locale.Data.HeartCrit} ";
                         }
                     
-                        if (woundedPed.DamagedParts.HasFlag(DamageTypes.LUNGS_DAMAGED))
+                        if (woundedPed.Crits.HasFlag(CritTypes.LUNGS_DAMAGED))
                         {
-                            healthInfo += "~r~Lungs ";
+                            healthInfo += $"{_locale.Data.LungsCrit} ";
                         }
                     
-                        if (woundedPed.DamagedParts.HasFlag(DamageTypes.STOMACH_DAMAGED))
+                        if (woundedPed.Crits.HasFlag(CritTypes.STOMACH_DAMAGED))
                         {
-                            healthInfo += "~r~Stomach ";
+                            healthInfo += $"{_locale.Data.StomachCrit} ";
                         }
                     
-                        if(woundedPed.DamagedParts.HasFlag(DamageTypes.GUTS_DAMAGED))
+                        if(woundedPed.Crits.HasFlag(CritTypes.GUTS_DAMAGED))
                         {
-                            healthInfo += "~r~Guts ";
+                            healthInfo += $"{_locale.Data.GutsCrit} ";
                         }
                     
-                        if (woundedPed.DamagedParts.HasFlag(DamageTypes.ARMS_DAMAGED))
+                        if (woundedPed.Crits.HasFlag(CritTypes.ARMS_DAMAGED))
                         {
-                            healthInfo += "~r~Arms ";
+                            healthInfo += $"{_locale.Data.ArmsCrit} ";
                         }
                     
-                        if (woundedPed.DamagedParts.HasFlag(DamageTypes.LEGS_DAMAGED))
+                        if (woundedPed.Crits.HasFlag(CritTypes.LEGS_DAMAGED))
                         {
-                            healthInfo += "~r~Legs ";
+                            healthInfo += $"{_locale.Data.LegsCrit} ";
                         }
 
                         if (!string.IsNullOrEmpty(healthInfo))
@@ -169,8 +171,15 @@ namespace GunshotWound2.Systems.GuiSystems
                     }
                 }
 
-                if (string.IsNullOrEmpty(wounds)) wounds = "~g~You have no wounds~s~";
-                SendMessage($"Wounds:\n{wounds}");
+                if (string.IsNullOrEmpty(wounds))
+                {
+                    SendMessage($"~g~{_locale.Data.HaveNoWounds} ~s~");
+                }
+                else
+                {
+                    SendMessage($"~s~{_locale.Data.Wounds}:" +
+                                $"\n{wounds}");
+                }
                 
                 _ecsWorld.RemoveEntity(_components.Entities[i]);
             }
@@ -178,6 +187,10 @@ namespace GunshotWound2.Systems.GuiSystems
 
         private void SendMessage(string message, NotifyLevels level = NotifyLevels.COMMON)
         {
+#if !DEBUG
+            if(level == NotifyLevels.DEBUG) return;
+#endif
+            
             var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
             notification.Level = level;
             notification.StringToShow = message;

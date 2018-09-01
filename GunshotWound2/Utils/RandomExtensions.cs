@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GunshotWound2
+namespace GunshotWound2.Utils
 {
     public static class RandomExtensions
     {

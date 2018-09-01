@@ -2,6 +2,6 @@
 {
     public abstract class BaseChangePainStateEvent : ComponentWithPedEntity
     {
-        
+        public bool ForceUpdate;
     }
 }

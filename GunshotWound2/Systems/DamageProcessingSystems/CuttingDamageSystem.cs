@@ -65,131 +65,130 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
         
         private void DefaultGrazeWound(int entity)
         {
-            CreateWound("Graze wound", entity, DamageMultiplier * 10f,
+            CreateWound(Locale.Data.GrazeWound, entity, DamageMultiplier * 10f,
                 0.1f, PainMultiplier * 15f);
         }
 
         private void CreateIncisionWound(string position, int entity)
         {
-            CreateWound($"Incision wound on {position}", entity, DamageMultiplier * 10f,
+            CreateWound($"{Locale.Data.IncisionWoundOn} {position}", entity, DamageMultiplier * 10f,
                 BleeedingMultiplier * 0.3f, PainMultiplier * 20f);
         }
 
         private void CreateLacerationWound(string position, int entity, 
-            float arteryChance, params DamageTypes?[] crits)
+            float arteryChance, params CritTypes?[] crits)
         {
-            CreateWound($"Laceration wound on {position}", entity, DamageMultiplier * 20f,
+            CreateWound($"{Locale.Data.LacerationWoundOn} {position}", entity, DamageMultiplier * 20f,
                 BleeedingMultiplier * 0.8f, PainMultiplier * 30f, arteryChance, crits);
         }
 
         private void CreateStabWound(string position, int entity, 
-            float arteryChance, params DamageTypes?[] crits)
+            float arteryChance, params CritTypes?[] crits)
         {
-            CreateWound($"Stab wound on {position}", entity, DamageMultiplier * 30f,
-                BleeedingMultiplier * 0.8f, PainMultiplier * 40f, arteryChance, crits);
+            CreateWound($"{Locale.Data.StabWoundOn} {position}", entity, DamageMultiplier * 30f,
+                BleeedingMultiplier * 0.6f, PainMultiplier * 40f, arteryChance, crits);
         }
         
         
         
         private void HeadCase1(int entity)
         {
-            CreateIncisionWound("head", entity);
+            CreateIncisionWound(Locale.Data.BodyPartHead, entity);
         }
 
         private void HeadCase2(int entity)
         {
-            CreateLacerationWound("head", entity, 0f);
+            CreateLacerationWound(Locale.Data.BodyPartHead, entity, 0.05f);
         }
 
         private void HeadCase3(int entity)
         {
-            CreateWound("Heavy brain damage", entity, DamageMultiplier * 60f,
-                BleeedingMultiplier * 2f, PainMultiplier * 70f);
+            CreateHeavyBrainDamage(Locale.Data.HeavyBrainDamage, entity);
         }
 
         
 
         private void NeckCase1(int entity)
         {
-            CreateIncisionWound("neck", entity);
+            CreateIncisionWound(Locale.Data.BodyPartNeck, entity);
         }
 
         private void NeckCase2(int entity)
         {
-            CreateLacerationWound("neck", entity, 0.7f);
+            CreateLacerationWound(Locale.Data.BodyPartNeck, entity, 0.5f);
         }
 
         private void NeckCase3(int entity)
         {
-            CreateStabWound("neck", entity, 0.7f, DamageTypes.NERVES_DAMAGED);
+            CreateStabWound(Locale.Data.BodyPartNeck, entity, 0.7f, CritTypes.NERVES_DAMAGED);
         }
 
 
 
         private void UpperCase1(int entity)
         {
-            CreateIncisionWound("upper body", entity);
+            CreateIncisionWound(Locale.Data.BodyPartChest, entity);
         }
 
         private void UpperCase2(int entity)
         {
-            CreateLacerationWound("upper body", entity, 0.5f);
+            CreateLacerationWound(Locale.Data.BodyPartChest, entity, 0.3f);
         }
 
         private void UpperCase3(int entity)
         {
-            CreateStabWound("upper body", entity, 0.5f, DamageTypes.HEART_DAMAGED, DamageTypes.LEGS_DAMAGED);
+            CreateStabWound(Locale.Data.BodyPartChest, entity, 0.5f, CritTypes.HEART_DAMAGED, CritTypes.LEGS_DAMAGED);
         }
 
         
 
         private void LowerCase1(int entity)
         {
-            CreateIncisionWound("lower body", entity);
+            CreateIncisionWound(Locale.Data.BodyPartLowerBody, entity);
         }
 
         private void LowerCase2(int entity)
         {
-            CreateLacerationWound("lower body", entity, 0.3f, DamageTypes.STOMACH_DAMAGED, DamageTypes.GUTS_DAMAGED);
+            CreateLacerationWound(Locale.Data.BodyPartLowerBody, entity, 0.1f, CritTypes.STOMACH_DAMAGED, CritTypes.GUTS_DAMAGED);
         }
 
         private void LowerCase3(int entity)
         {
-            CreateStabWound("lower body", entity, 0.3f, DamageTypes.GUTS_DAMAGED, DamageTypes.STOMACH_DAMAGED);
+            CreateStabWound(Locale.Data.BodyPartLowerBody, entity, 0.3f, CritTypes.GUTS_DAMAGED, CritTypes.STOMACH_DAMAGED);
         }
 
 
 
         private void ArmCase1(int entity)
         {
-            CreateIncisionWound("arm", entity);
+            CreateIncisionWound(Locale.Data.BodyPartArm, entity);
         }
 
         private void ArmCase2(int entity)
         {
-            CreateLacerationWound("arm", entity, 0.3f, DamageTypes.ARMS_DAMAGED);
+            CreateLacerationWound(Locale.Data.BodyPartArm, entity, 0.1f, CritTypes.ARMS_DAMAGED);
         }
 
         private void ArmCase3(int entity)
         {
-            CreateStabWound("arm", entity, 0.3f, DamageTypes.ARMS_DAMAGED);
+            CreateStabWound(Locale.Data.BodyPartArm, entity, 0.3f, CritTypes.ARMS_DAMAGED);
         }
 
 
 
         private void LegCase1(int entity)
         {
-            CreateIncisionWound("leg", entity);
+            CreateIncisionWound(Locale.Data.BodyPartLeg, entity);
         }
 
         private void LegCase2(int entity)
         {
-            CreateLacerationWound("leg", entity, 0.5f, DamageTypes.LEGS_DAMAGED);
+            CreateLacerationWound(Locale.Data.BodyPartLeg, entity, 0.3f, CritTypes.LEGS_DAMAGED);
         }
 
         private void LegCase3(int entity)
         {
-            CreateStabWound("leg", entity, 0.5f, DamageTypes.LEGS_DAMAGED);
+            CreateStabWound(Locale.Data.BodyPartLeg, entity, 0.5f, CritTypes.LEGS_DAMAGED);
         }
     }
 }

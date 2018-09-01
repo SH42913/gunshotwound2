@@ -9,7 +9,6 @@ namespace GunshotWound2.Systems.PedSystems
     {
         private EcsFilter<WoundedPedComponent> _peds;
         private EcsFilterSingle<MainConfig> _config;
-        private uint _ticks;
         
         public void Run()
         {

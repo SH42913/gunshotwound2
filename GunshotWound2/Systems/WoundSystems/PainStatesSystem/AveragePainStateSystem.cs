@@ -7,7 +7,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
 {
     [EcsInject]
-    public class AveragePainStateSystem : BasePainStateSystem<AverageChangePainStateEvent>
+    public class AveragePainStateSystem : BasePainStateSystem<AveragePainChangeStateEvent>
     {
         public AveragePainStateSystem()
         {
@@ -18,17 +18,10 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
         {
             base.ExecuteState(woundedPed, pedEntity);
 
-            SetPedToRagdollEvent request;
-            EcsWorld.CreateEntityWith(out request);
-            request.PedEntity = pedEntity;
-            request.RagdollState = RagdollStates.WAKE_UP;
-
-            ChangeWalkAnimationEvent anim;
-            EcsWorld.CreateEntityWith(out anim);
-            anim.PedEntity = pedEntity;
-            anim.AnimationName = woundedPed.IsPlayer 
+            SendPedToRagdoll(pedEntity, RagdollStates.WAKE_UP);
+            ChangeWalkingAnimation(pedEntity, woundedPed.IsPlayer 
                 ? Config.Data.PlayerConfig.AvgPainAnim
-                : Config.Data.NpcConfig.AvgPainAnim;
+                : Config.Data.NpcConfig.AvgPainAnim);
             
             if (!woundedPed.IsPlayer) return;
             Game.Player.IgnoredByEveryone = false;

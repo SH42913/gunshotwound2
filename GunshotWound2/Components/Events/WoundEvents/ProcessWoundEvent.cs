@@ -8,7 +8,7 @@ namespace GunshotWound2.Components.Events.WoundEvents
         public float BleedSeverity;
         public float Pain;
         public bool ArterySevered;
-        public DamageTypes? CriticalDamage;
+        public CritTypes? Crits;
         public string Name;
     }
 }

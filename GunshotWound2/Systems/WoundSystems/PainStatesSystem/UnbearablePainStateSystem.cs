@@ -8,7 +8,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
 {
     [EcsInject]
-    public class UnbearablePainStateSystem : BasePainStateSystem<UnbearableChangePainStateEvent>
+    public class UnbearablePainStateSystem : BasePainStateSystem<UnbearablePainChangeStateEvent>
     {
         public UnbearablePainStateSystem()
         {
@@ -19,22 +19,23 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
         {
             base.ExecuteState(woundedPed, pedEntity);
 
-            SetPedToRagdollEvent request;
-            EcsWorld.CreateEntityWith(out request);
-            request.PedEntity = pedEntity;
-            request.RagdollState = RagdollStates.PERMANENT;
-            
-            woundedPed.ThisPed.Weapons.Drop();
+            SendPedToRagdoll(pedEntity, RagdollStates.PERMANENT);
+            if (woundedPed.IsPlayer && Config.Data.PlayerConfig.CanDropWeapon)
+            {
+                woundedPed.ThisPed.Weapons.Drop();
+            }
+            else if(!woundedPed.IsPlayer)
+            {
+                woundedPed.ThisPed.Weapons.Drop();
+            }
             
             if (!woundedPed.IsPlayer) return;
-
             Game.Player.IgnoredByEveryone = true;
+            
             if (Config.Data.PlayerConfig.PoliceCanForgetYou) Game.Player.WantedLevel = 0;
-            if (!woundedPed.DamagedParts.HasFlag(DamageTypes.NERVES_DAMAGED) && !woundedPed.IsDead)
-            {
-                SendMessage("You can't take this pain anymore!\n" +
-                            "You lose consciousness!", NotifyLevels.WARNING);
-            }
+            
+            if (woundedPed.Crits.HasFlag(CritTypes.NERVES_DAMAGED) || woundedPed.IsDead) return;
+            SendMessage(Locale.Data.UnbearablePainMessage, NotifyLevels.WARNING);
         }
     }
 }
