@@ -14,11 +14,11 @@ namespace GunshotWound2.Systems.NpcSystems
     {
         private EcsWorld _ecsWorld;
         private EcsFilter<WoundedPedComponent, NpcMarkComponent> _npcs;
-        private EcsFilter<ForceWorldPedUpdateEvent> _worldUpdateRequests;
+        private EcsFilter<ForceWorldPedUpdateEvent> _forceUpdates;
         
         private EcsFilterSingle<MainConfig> _config;
         
-        private Stopwatch _stopwatch = new Stopwatch();
+        private readonly Stopwatch _stopwatch = new Stopwatch();
         
         public void Run()
         {
@@ -32,12 +32,12 @@ namespace GunshotWound2.Systems.NpcSystems
         private void FindPeds()
         {
             float addRange = _config.Data.NpcConfig.AddingPedRange;
-            if(addRange <= GunshotWound2.MINIMAL_RANGE_FOR_WOUNDED_PEDS) return;
 
             if (CheckNeedToUpdateWorldPeds())
             {
                 _config.Data.NpcConfig.WorldPeds = World.GetNearbyPeds(Game.Player.Character, addRange);
                 _config.Data.NpcConfig.LastCheckedPedIndex = 0;
+                _forceUpdates.RemoveAllEntities();
             }
 
             Ped[] allPeds = _config.Data.NpcConfig.WorldPeds;
@@ -79,13 +79,8 @@ namespace GunshotWound2.Systems.NpcSystems
 
         private bool CheckNeedToUpdateWorldPeds()
         {
-            if (_worldUpdateRequests.EntitiesCount > 0 || _config.Data.NpcConfig.WorldPeds == null ||
-                _config.Data.NpcConfig.LastCheckedPedIndex == _config.Data.NpcConfig.WorldPeds.Length - 1)
-            {
-                _worldUpdateRequests.RemoveAllEntities();
-                return true;
-            }
-            return false;
+            return _forceUpdates.EntitiesCount > 0 || _config.Data.NpcConfig.WorldPeds == null ||
+                   _config.Data.NpcConfig.LastCheckedPedIndex + 1 >= _config.Data.NpcConfig.WorldPeds.Length - 1;
         }
     }
 }

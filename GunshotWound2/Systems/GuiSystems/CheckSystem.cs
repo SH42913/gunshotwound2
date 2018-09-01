@@ -1,5 +1,4 @@
-﻿using GTA;
-using GunshotWound2.Components.Events.GuiEvents;
+﻿using GunshotWound2.Components.Events.GuiEvents;
 using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
 using Leopotam.Ecs;
@@ -54,27 +53,30 @@ namespace GunshotWound2.Systems.GuiSystems
                     {
                         SendMessage($"~r~{_locale.Data.YouAreDead}~s~");
                     }
-                    
-                    var painPercent = woundedPed.PainMeter / woundedPed.MaximalPain;
-                    if (painPercent > 1.5f)
+
+                    if (healthPercent > 0)
                     {
-                        SendMessage($"~s~{_locale.Data.Pain}: ~r~>150%~s~");
-                    }
-                    else if (painPercent > 1f)
-                    {
-                        SendMessage($"~s~{_locale.Data.Pain}: ~r~{painPercent * 100f:0.0}%~s~");
-                    }
-                    else if (painPercent > 0.5f)
-                    {
-                        SendMessage($"~s~{_locale.Data.Pain}: ~o~{painPercent * 100f:0.0}%~s~");
-                    }
-                    else if (painPercent > 0.2f)
-                    {
-                        SendMessage($"~s~{_locale.Data.Pain}: ~y~{painPercent * 100f:0.0}%~s~");
-                    }
-                    else if (painPercent > 0f)
-                    {
-                        SendMessage($"~s~{_locale.Data.Pain}: ~g~{painPercent * 100f:0.0}%~s~");
+                        var painPercent = woundedPed.PainMeter / woundedPed.MaximalPain;
+                        if (painPercent > 1.5f)
+                        {
+                            SendMessage($"~s~{_locale.Data.Pain}: ~r~>150%~s~");
+                        }
+                        else if (painPercent > 1f)
+                        {
+                            SendMessage($"~s~{_locale.Data.Pain}: ~r~{painPercent * 100f:0.0}%~s~");
+                        }
+                        else if (painPercent > 0.5f)
+                        {
+                            SendMessage($"~s~{_locale.Data.Pain}: ~o~{painPercent * 100f:0.0}%~s~");
+                        }
+                        else if (painPercent > 0.2f)
+                        {
+                            SendMessage($"~s~{_locale.Data.Pain}: ~y~{painPercent * 100f:0.0}%~s~");
+                        }
+                        else if (painPercent > 0f)
+                        {
+                            SendMessage($"~s~{_locale.Data.Pain}: ~g~{painPercent * 100f:0.0}%~s~");
+                        }
                     }
                     
                     var armorPercent = woundedPed.Armor / 100f;
@@ -82,26 +84,26 @@ namespace GunshotWound2.Systems.GuiSystems
                     {
                         if (armorPercent > 0.6f)
                         {
-                            SendMessage($"~g~{_locale.Data.ArmorLooksGreat}~s~");
+                            SendMessage($"~g~{_locale.Data.ArmorLooksGreat} ~s~");
                         }
                         else if (armorPercent > 0.4f)
                         {
-                            SendMessage($"~y~{_locale.Data.ScratchesOnArmor}~s~");
+                            SendMessage($"~y~{_locale.Data.ScratchesOnArmor} ~s~");
                         }
                         else if (armorPercent > 0.2f)
                         {
-                            SendMessage($"~o~{_locale.Data.DentsOnArmor}~s~");
+                            SendMessage($"~o~{_locale.Data.DentsOnArmor} ~s~");
                         }
                         else
                         {
-                            SendMessage($"~r~{_locale.Data.ArmorLooksAwful}~s~");
+                            SendMessage($"~r~{_locale.Data.ArmorLooksAwful} ~s~");
                         }
                     }
 
                     string healthInfo = "";
                     if (woundedPed.Crits > 0)
                     {
-                        healthInfo += $"~s~{_locale.Data.Crits}: ~r~";
+                        healthInfo += $"~s~{_locale.Data.Crits} ~r~";
                     
                         if (woundedPed.Crits.HasFlag(CritTypes.NERVES_DAMAGED))
                         {
@@ -169,9 +171,15 @@ namespace GunshotWound2.Systems.GuiSystems
                     }
                 }
 
-                if (string.IsNullOrEmpty(wounds)) wounds = $"~g~{_locale.Data.HaveNoWounds}~s~";
-                SendMessage($"~s~{_locale.Data.Wounds}:" +
-                            $"\n{wounds}");
+                if (string.IsNullOrEmpty(wounds))
+                {
+                    SendMessage($"~g~{_locale.Data.HaveNoWounds} ~s~");
+                }
+                else
+                {
+                    SendMessage($"~s~{_locale.Data.Wounds}:" +
+                                $"\n{wounds}");
+                }
                 
                 _ecsWorld.RemoveEntity(_components.Entities[i]);
             }

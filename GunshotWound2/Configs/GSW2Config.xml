@@ -15,7 +15,7 @@
 		<!-- If TRUE - you will lose weapon on arm crits and when you fall unconscious -->
 		
 		<MaximalPain>100.0</MaximalPain>
-		<!-- 100 mean when pain will more than 100 you'll fall unconscious -->
+		<!-- 100 mean when pain will more than 100 points you'll fall unconscious -->
 		
 		<PainRecoverySpeed>1.5</PainRecoverySpeed>
 		<!-- 2.0 mean 2 pain points will be restored in 1 sec -->
@@ -41,7 +41,7 @@
 		<StartHealth Lower="50" Upper="100"/>
 		<!-- NonPlayable Peds will be spawn with health range between Lower and Upper -->
 		
-		<MaximalPain Lower="50.0" Upper="80.0"/>
+		<MaximalPain Lower="50.0" Upper="90.0"/>
 		<!-- Same as for player, but NonPlayable Peds will spawn with MaxPain between Lower and Upper -->
 		
 		<PainRecoverySpeed>1.0</PainRecoverySpeed>
@@ -53,6 +53,12 @@
 	</Peds>
 	
 	<Notifications>
+		<Language>EN</Language>
+		<!-- In this build available only EN and RU. RU is buggy :(
+		You can help to translate GSW2 to other languages here
+		https://docs.google.com/spreadsheets/d/1TY0nSEJMDmypkYrcVUBlMG3HIAEW075dCOtxXgW5UJ0/edit 
+		And more languages will be available in next build -->
+		
 		<Common>true</Common>
 		<!-- Common notifications like CheckSelf and OtherPedsCriticalWound -->
 		
@@ -75,7 +81,7 @@
 		<!-- If true, peds will set to short ragdoll on painful(>50 pain) wounds.
 		 Include player's ped!-->
 		
-		<PainfulWoundValue>50</PainfulWoundValue>
+		<PainfulWoundValue>50.0</PainfulWoundValue>
 		<!-- Any wound with pain more than PainfulWoundValue will add painfulwound effects -->
 		
 		<MinimalChanceForArmorSave>0.6</MinimalChanceForArmorSave>
@@ -99,8 +105,8 @@
     
     <Weapons>
 		<SmallCaliber DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.5"/>
-		<MediumCaliber DamageMult="1.2" BleedingMult="1.3" PainMult="1.5" CritChance="0.7"/>
-		<HighCaliber DamageMult="1.3" BleedingMult="1.7" PainMult="1.7" CritChance="0.8"/>
+		<MediumCaliber DamageMult="1.2" BleedingMult="1.3" PainMult="1.2" CritChance="0.7"/>
+		<HighCaliber DamageMult="1.3" BleedingMult="1.5" PainMult="1.5" CritChance="0.8"/>
 		<Shotgun DamageMult="0.7" BleedingMult="1.1" PainMult="1.2" CritChance="0.6"/>
 		
 		<LightImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.2"/>

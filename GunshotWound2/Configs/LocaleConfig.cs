@@ -110,6 +110,9 @@
         public string AddingRange;
         public string RemovingRange;
 
-        public string PerfomanceDropMessage;
+        public string PerformanceDropMessage;
+
+        public string ThanksForUsing;
+        public string GswStopped;
     }
 }

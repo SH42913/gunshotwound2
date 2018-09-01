@@ -1,6 +1,7 @@
 ﻿using System;
 using GTA;
 using GTA.Native;
+using GunshotWound2.Components.Events.NpcEvents;
 using GunshotWound2.Components.Events.PedEvents;
 using GunshotWound2.Components.Events.PlayerEvents;
 using GunshotWound2.Components.Events.WoundEvents.ChangePainStateEvents;
@@ -65,7 +66,6 @@ namespace GunshotWound2.Systems.PedSystems
                     _ecsWorld.CreateEntityWith(out NoPainChangeStateEvent noPainEvent);
                     noPainEvent.PedEntity = pedEntity;
                     noPainEvent.ForceUpdate = true;
-                    woundedPed.InPermanentRagdoll = true;
                 }
 
                 for (int bleedIndex = 0; bleedIndex < _bleedingComponents.EntitiesCount; bleedIndex++)

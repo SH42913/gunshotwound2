@@ -48,6 +48,7 @@ namespace GunshotWound2
         private bool _configLoaded;
         private string _configReason;
         private bool _localizationLoaded;
+        private string _localizationReason;
         private bool _exceptionInRuntime;
         private int _ticks;
         
@@ -89,11 +90,11 @@ namespace GunshotWound2
 
         private void OnTick(object sender, EventArgs eventArgs)
         {
-            if (_ticks < 600)
+            if (!_isInited && _ticks++ == 300)
             {
                 UI.Notify(!_exceptionInRuntime
-                    ? "~WS~Thank you for using ~g~GunShot Wound ~r~2~s~\n~WS~by SH42913"
-                    : "~r~GSW2 stopped, sorry :(");
+                    ? $"{_localeConfig.ThanksForUsing}\n~g~GunShot Wound ~r~2~s~\nSH42913"
+                    : $"~r~{_localeConfig.GswStopped}");
 
                 if (!_configLoaded)
                 {
@@ -104,13 +105,10 @@ namespace GunshotWound2
                 if (!_localizationLoaded)
                 {
                     UI.Notify("GSW2 couldn't load localization, default localization was loaded.\n" +
-                              "You need to check or change localization");
+                              "You need to check or change localization\n" +
+                              "Possible reason: ~r~" + _localizationReason);
                 }
                 
-                _ticks++;
-            }
-            else
-            {
                 _isInited = true;
             }
             
@@ -148,11 +146,13 @@ namespace GunshotWound2
 
             try
             {
-                LoadDefaultLocalization();
+                TryToLoadLocalization();
                 _localizationLoaded = true;
             }
             catch (Exception e)
             {
+                LoadDefaultLocalization();
+                _localizationReason = e.Message;
                 _localizationLoaded = false;
             }
             
@@ -182,6 +182,8 @@ namespace GunshotWound2
             _everyFrameSystems
                 .Add(new InstantHealSystem())
                 .Add(new HelmetRequestSystem())
+                .Add(new RagdollSystem())
+                .Add(new SwitchAnimationSystem())
                 .Add(new DebugInfoSystem())
                 .Add(new CheckSystem())
                 .Add(new NotificationSystem());
@@ -191,9 +193,7 @@ namespace GunshotWound2
                 .AddHitSystems()
                 .AddDamageSystems()
                 .AddWoundSystems()
-                .AddPainSystems()
-                .Add(new RagdollSystem())
-                .Add(new SwitchAnimationSystem());
+                .AddPainSystems();
             
             _everyFrameSystems.Initialize();
             _commonSystems.Initialize();
@@ -284,9 +284,7 @@ namespace GunshotWound2
 
         private void TryToLoadConfigsFromXml()
         {
-            _mainConfig.PlayerConfig = new PlayerConfig();
-            _mainConfig.NpcConfig = new NpcConfig();
-            _mainConfig.WoundConfig = new WoundConfig();
+            LoadDefaultConfigs();
             
             bool configInGswFolder = new FileInfo("scripts/GSW2/GSW2Config.xml").Exists;
             bool config = new FileInfo("scripts/GSW2Config.xml").Exists;
@@ -383,6 +381,7 @@ namespace GunshotWound2
             {
                 var woundedPedsRange = npcNode.Element("StartWoundedPedRange").Value;
                 _mainConfig.NpcConfig.AddingPedRange = float.Parse(woundedPedsRange, CultureInfo.InvariantCulture);
+                _mainConfig.NpcConfig.RemovePedRange = _mainConfig.NpcConfig.AddingPedRange * ADDING_TO_REMOVING_MULTIPLIER;
 
                 var healthNode = npcNode.Element("StartHealth");
                 if (healthNode != null)
@@ -462,6 +461,8 @@ namespace GunshotWound2
             var noteNode = doc.Element("Notifications");
             if (noteNode != null)
             {
+                _mainConfig.Language = noteNode.Element("Language").Value;
+                
                 var commonString = noteNode.Element("Common").Value;
                 _mainConfig.CommonMessages = bool.Parse(commonString);
                 
@@ -591,7 +592,7 @@ namespace GunshotWound2
             _localeConfig.DontHaveMoneyForHelmet = "You don't have enough money to buy helmet";
 
             _localeConfig.InternalBleeding = "Internal bleeding";
-            _localeConfig.SeveredArtery = "Artery severed";
+            _localeConfig.SeveredArtery = "Severed artery";
             _localeConfig.SeveredArteryMessage = "Artery was severed!";
 
             _localeConfig.PlayerNervesCritMessage = "You feel you can't control your arms and legs anymore";
@@ -622,14 +623,148 @@ namespace GunshotWound2
             _localeConfig.ManLegsCritMessage = "His leg looks very bad";
             _localeConfig.WomanLegsCritMessage = "Her leg looks very bad";
 
-            _localeConfig.UnbearablePainMessage = "You can't take this pain anymore!\nYou lose consciousness!";
+            _localeConfig.UnbearablePainMessage = "You got a pain shock! You lose consciousness!";
 
             _localeConfig.AddingRange = "Adding range";
             _localeConfig.RemovingRange = "Removing range";
             
-            _localeConfig.PerfomanceDropMessage = "Performance drop!\n" +
+            _localeConfig.PerformanceDropMessage = "Performance drop!\n" +
                                                   "You'd better to reduce adding range with help PageDown-button.\n" +
                                                   "You also can turn off WoundedPed at all in GSW2Config.xml";
+
+            _localeConfig.ThanksForUsing = "Thanks for using";
+            _localeConfig.GswStopped = "GSW2 stopped, sorry :(";
+        }
+
+        private void TryToLoadLocalization()
+        {
+            bool configInGswFolder = new FileInfo("scripts/GSW2/GSW2Localization.csv").Exists;
+            bool config = new FileInfo("scripts/GSW2Localization.csv").Exists;
+            if(!configInGswFolder && !config)
+            {
+                throw new Exception("Localization didn't exist");
+            }
+            
+            var doc = configInGswFolder
+                ? new FileInfo("scripts/GSW2/GSW2Localization.csv")
+                : new FileInfo("scripts/GSW2Localization.csv");
+
+            var manager = new LocalizationManager(doc.OpenRead());
+            manager.SetLanguage(_mainConfig.Language);
+            
+            _localeConfig.HelmetSavedYourHead = manager.GetWord("HelmetSavedYourHead");
+            _localeConfig.ArmorSavedYourChest = manager.GetWord("ArmorSavedYourChest");
+            _localeConfig.ArmorSavedYourLowerBody = manager.GetWord("ArmorSavedYourLowerBody");
+            _localeConfig.ArmorPenetrated = manager.GetWord("ArmorPenetrated");
+            
+            _localeConfig.BodyPartHead = manager.GetWord("BodyPartHead");
+            _localeConfig.BodyPartNeck = manager.GetWord("BodyPartNeck");
+            _localeConfig.BodyPartChest = manager.GetWord("BodyPartChest");
+            _localeConfig.BodyPartLowerBody = manager.GetWord("BodyPartLowerBody");
+            _localeConfig.BodyPartArm = manager.GetWord("BodyPartArm");
+            _localeConfig.BodyPartLeg = manager.GetWord("BodyPartLeg");
+            
+            _localeConfig.GrazeWound = manager.GetWord("GrazeWound");
+            
+            _localeConfig.GrazeGswOn = manager.GetWord("GrazeGswOn");
+            _localeConfig.FleshGswOn = manager.GetWord("FleshGswOn");
+            _localeConfig.PenetratingGswOn = manager.GetWord("PenetratingGswOn");
+            _localeConfig.PerforatingGswOn = manager.GetWord("PerforatingGswOn");
+            _localeConfig.AvulsiveGswOn = manager.GetWord("AvulsiveGswOn");
+
+            _localeConfig.EarFlyAway = manager.GetWord("EarFlyAway");
+            _localeConfig.HeavyBrainDamage = manager.GetWord("HeavyBrainDamage");
+            _localeConfig.BulletFlyThroughYourHead = manager.GetWord("BulletFlyThroughYourHead");
+            _localeConfig.BulletTornApartYourBrain = manager.GetWord("BulletTornApartYourBrain");
+
+            _localeConfig.LightBruise = manager.GetWord("LightBruise");
+            _localeConfig.LightBruiseOn = manager.GetWord("LightBruiseOn");
+            _localeConfig.MediumBruiseOn = manager.GetWord("MediumBruiseOn");
+            _localeConfig.HeavyBruiseOn = manager.GetWord("HeavyBruiseOn");
+            _localeConfig.AbrazionWoundOn = manager.GetWord("AbrazionWoundOn");
+            _localeConfig.WindedFromImpact = manager.GetWord("WindedFromImpact");
+
+            _localeConfig.IncisionWoundOn = manager.GetWord("IncisionWoundOn");
+            _localeConfig.LacerationWoundOn = manager.GetWord("LacerationWoundOn");
+            _localeConfig.StabWoundOn = manager.GetWord("StabWoundOn");
+
+            _localeConfig.BodyBlown = manager.GetWord("BodyBlown");
+            _localeConfig.HeadBlown = manager.GetWord("HeadBlown");
+            _localeConfig.NeckBlown = manager.GetWord("NeckBlown");
+            _localeConfig.ChestBlown = manager.GetWord("ChestBlown");
+            _localeConfig.LowerBodyBlown = manager.GetWord("LowerBodyBlown");
+            _localeConfig.ArmBlown = manager.GetWord("ArmBlown");
+            _localeConfig.LegBlown = manager.GetWord("LegBlown");
+
+            _localeConfig.Blackout = manager.GetWord("Blackout");
+            _localeConfig.BleedingInHead = manager.GetWord("BleedingInHead");
+            _localeConfig.TraumaticBrainInjury = manager.GetWord("TraumaticBrainInjury");
+            _localeConfig.BrokenNeck = manager.GetWord("BrokenNeck");
+
+            _localeConfig.Health = manager.GetWord("Health");
+            _localeConfig.YouAreDead = manager.GetWord("YouAreDead");
+            _localeConfig.Pain = manager.GetWord("Pain");
+
+            _localeConfig.ArmorLooksGreat = manager.GetWord("ArmorLooksGreat");
+            _localeConfig.ScratchesOnArmor = manager.GetWord("ScratchesOnArmor");
+            _localeConfig.DentsOnArmor = manager.GetWord("DentsOnArmor");
+            _localeConfig.ArmorLooksAwful = manager.GetWord("ArmorLooksAwful");
+
+            _localeConfig.Crits = manager.GetWord("Crits");
+            _localeConfig.NervesCrit = manager.GetWord("NervesCrit");
+            _localeConfig.HeartCrit = manager.GetWord("HeartCrit");
+            _localeConfig.LungsCrit = manager.GetWord("LungsCrit");
+            _localeConfig.StomachCrit = manager.GetWord("StomachCrit");
+            _localeConfig.GutsCrit = manager.GetWord("GutsCrit");
+            _localeConfig.ArmsCrit = manager.GetWord("ArmsCrit");
+            _localeConfig.LegsCrit = manager.GetWord("LegsCrit");
+
+            _localeConfig.Wounds = manager.GetWord("Wounds");
+            _localeConfig.HaveNoWounds = manager.GetWord("HaveNoWounds");
+
+            _localeConfig.DontHaveMoneyForHelmet = manager.GetWord("DontHaveMoneyForHelmet");
+
+            _localeConfig.InternalBleeding = manager.GetWord("InternalBleeding");
+            _localeConfig.SeveredArtery = manager.GetWord("SeveredArtery");
+            _localeConfig.SeveredArteryMessage = manager.GetWord("SeveredArteryMessage");
+
+            _localeConfig.PlayerNervesCritMessage = manager.GetWord("PlayerNervesCritMessage");
+            _localeConfig.ManNervesCritMessage = manager.GetWord("ManNervesCritMessage");
+            _localeConfig.WomanNervesCritMessage = manager.GetWord("WomanNervesCritMessage");
+
+            _localeConfig.PlayerHeartCritMessage = manager.GetWord("PlayerHeartCritMessage");
+            _localeConfig.ManHeartCritMessage = manager.GetWord("ManHeartCritMessage");
+            _localeConfig.WomanHeartCritMessage = manager.GetWord("WomanHeartCritMessage");
+
+            _localeConfig.PlayerLungsCritMessage = manager.GetWord("PlayerLungsCritMessage");
+            _localeConfig.ManLungsCritMessage = manager.GetWord("ManLungsCritMessage");
+            _localeConfig.WomanLungsCritMessage = manager.GetWord("WomanLungsCritMessage");
+
+            _localeConfig.PlayerStomachCritMessage = manager.GetWord("PlayerStomachCritMessage");
+            _localeConfig.ManStomachCritMessage = manager.GetWord("ManStomachCritMessage");
+            _localeConfig.WomanStomachCritMessage = manager.GetWord("WomanStomachCritMessage");
+
+            _localeConfig.PlayerGutsCritMessage = manager.GetWord("PlayerGutsCritMessage");
+            _localeConfig.ManGutsCritMessage = manager.GetWord("ManGutsCritMessage");
+            _localeConfig.WomanGutsCritMessage = manager.GetWord("WomanGutsCritMessage");
+
+            _localeConfig.PlayerArmsCritMessage = manager.GetWord("PlayerArmsCritMessage");
+            _localeConfig.ManArmsCritMessage = manager.GetWord("ManArmsCritMessage");
+            _localeConfig.WomanArmsCritMessage = manager.GetWord("WomanArmsCritMessage");
+
+            _localeConfig.PlayerLegsCritMessage = manager.GetWord("PlayerLegsCritMessage");
+            _localeConfig.ManLegsCritMessage = manager.GetWord("ManLegsCritMessage");
+            _localeConfig.WomanLegsCritMessage = manager.GetWord("WomanLegsCritMessage");
+
+            _localeConfig.UnbearablePainMessage = manager.GetWord("UnbearablePainMessage");
+
+            _localeConfig.AddingRange = manager.GetWord("AddingRange");
+            _localeConfig.RemovingRange = manager.GetWord("RemovingRange");
+            
+            _localeConfig.PerformanceDropMessage = manager.GetWord("PerformanceDropMessage");
+
+            _localeConfig.ThanksForUsing = manager.GetWord("ThanksForUsing");
+            _localeConfig.GswStopped = manager.GetWord("GswStopped");
         }
         
         private void CheckTime(long timeInMs)
@@ -638,7 +773,7 @@ namespace GunshotWound2
             if (timeInMs <= 40) return;
             if (_warningMessageWasShown) return;
                 
-            SendMessage(_localeConfig.PerfomanceDropMessage, NotifyLevels.WARNING);
+            SendMessage(_localeConfig.PerformanceDropMessage, NotifyLevels.WARNING);
             SendMessage("TooMuchTime in " + LastSystem, NotifyLevels.DEBUG);
             _warningMessageWasShown = true;
         }

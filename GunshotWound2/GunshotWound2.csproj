@@ -152,7 +152,7 @@
     <Compile Include="Systems\WoundSystems\WoundSystem.cs" />
     <Compile Include="Systems\WoundSystems\PainRecoverySystem.cs" />
     <Compile Include="Systems\WoundSystems\PainSystem.cs" />
-    <Compile Include="Utils\CsvToDictionaryParser.cs" />
+    <Compile Include="Utils\LocalizationManager.cs" />
     <Compile Include="Utils\MultiTickEcsSystems.cs" />
     <Compile Include="Utils\RandomExtensions.cs" />
   </ItemGroup>
