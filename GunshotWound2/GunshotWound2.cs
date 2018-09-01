@@ -157,7 +157,7 @@ namespace GunshotWound2
             }
             
             _everyFrameSystems = new EcsSystems(_ecsWorld);
-            _commonSystems = new MultiTickEcsSystems(_ecsWorld, MultiTickEcsSystems.RestrictionModes.MILLISECONDS, 16);
+            _commonSystems = new MultiTickEcsSystems(_ecsWorld, MultiTickEcsSystems.RestrictionModes.MILLISECONDS, 10);
 
             if (_mainConfig.NpcConfig.AddingPedRange > MINIMAL_RANGE_FOR_WOUNDED_PEDS)
             {
@@ -293,7 +293,7 @@ namespace GunshotWound2
             if(!configInGswFolder && !config)
             {
                 _configReason = "Config doesn't exist";
-                throw new Exception("Config didn't exist");
+                throw new Exception("Config doesn't exist");
             }
             
             var doc = configInGswFolder
@@ -643,7 +643,7 @@ namespace GunshotWound2
             bool config = new FileInfo("scripts/GSW2Localization.csv").Exists;
             if(!configInGswFolder && !config)
             {
-                throw new Exception("Localization didn't exist");
+                throw new Exception("Localization doesn't exist");
             }
             
             var doc = configInGswFolder
@@ -771,7 +771,7 @@ namespace GunshotWound2
         private void CheckTime(long timeInMs)
         {
             if(!_isInited) return;
-            if (timeInMs <= 40) return;
+            if (timeInMs <= 50) return;
             if (_warningMessageWasShown) return;
                 
             SendMessage(_localeConfig.PerformanceDropMessage, NotifyLevels.WARNING);
