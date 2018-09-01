@@ -59,6 +59,7 @@
     <Compile Include="Components\Events\PedEvents\ChangeWalkAnimationEvent.cs" />
     <Compile Include="Components\Events\PedEvents\InstantHealEvent.cs" />
     <Compile Include="Components\Events\PedEvents\SetPedToRagdollEvent.cs" />
+    <Compile Include="Components\Events\PlayerEvents\AddCameraShakeEvent.cs" />
     <Compile Include="Components\Events\PlayerEvents\AddPlayerAdrenalineEffectEvent.cs" />
     <Compile Include="Components\Events\PlayerEvents\AddHelmetToPlayerEvent.cs" />
     <Compile Include="Components\Events\WeaponHitEvents\BaseWeaponHitEvent.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Systems\HitSystems\WeaponHitSystems\SmallCaliberHitSystem.cs" />
     <Compile Include="Systems\NpcSystems\NpcFindSystem.cs" />
     <Compile Include="Systems\PlayerSystems\AdrenalineSystem.cs" />
+    <Compile Include="Systems\PlayerSystems\CameraShakeSystem.cs" />
     <Compile Include="Systems\PlayerSystems\HelmetRequestSystem.cs" />
     <Compile Include="Systems\PlayerSystems\PlayerSystem.cs" />
     <Compile Include="Systems\GuiSystems\CheckSystem.cs" />

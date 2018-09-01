@@ -23,6 +23,8 @@
         public string AvgPainAnim;
         public string IntensePainAnim;
 
+        public bool CameraIsShaking;
+
         public override string ToString()
         {
             return "PlayerConfig:\n" +

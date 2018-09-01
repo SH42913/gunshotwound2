@@ -1,5 +1,6 @@
 ﻿using GTA.Native;
 using GunshotWound2.Components.Events.GuiEvents;
+using GunshotWound2.Components.Events.PlayerEvents;
 using GunshotWound2.Components.Events.WoundEvents.CriticalWoundEvents;
 using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
@@ -17,8 +18,8 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
         protected override void ActionForPlayer(WoundedPedComponent pedComponent, int pedEntity)
         {
             CreatePain(pedEntity, 25f);
-            
-            Function.Call(Hash._SET_CAM_EFFECT, 2);
+
+            EcsWorld.CreateEntityWith<AddCameraShakeEvent>().Length = CameraShakeLength.PERMANENT;
             if (Config.Data.PlayerConfig.CanDropWeapon)
             {
                 pedComponent.ThisPed.Weapons.Drop();

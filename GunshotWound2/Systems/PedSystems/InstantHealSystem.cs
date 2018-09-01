@@ -37,7 +37,7 @@ namespace GunshotWound2.Systems.PedSystems
                 {
                     if (woundedPed.IsPlayer)
                     {
-                        Function.Call(Hash._SET_CAM_EFFECT, 0);
+                        _ecsWorld.CreateEntityWith<AddCameraShakeEvent>().Length = CameraShakeLength.CLEAR;
                         Function.Call(Hash.SET_PLAYER_SPRINT, Game.Player, true);
                         Function.Call(Hash._STOP_ALL_SCREEN_EFFECTS);
                         woundedPed.Health = _mainConfig.Data.PlayerConfig.MaximalHealth;

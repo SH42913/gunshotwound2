@@ -1,4 +1,5 @@
 ﻿using GTA.Native;
+using GunshotWound2.Components.Events.PlayerEvents;
 using GunshotWound2.Components.Events.WoundEvents.ChangePainStateEvents;
 using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
@@ -22,7 +23,7 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
                 : Config.Data.NpcConfig.MildPainAnim);
             
             if(!woundedPed.IsPlayer) return;
-            Function.Call(Hash._SET_CAM_EFFECT, 0);
+            EcsWorld.CreateEntityWith<AddCameraShakeEvent>().Length = CameraShakeLength.CLEAR;
         }
     }
 }

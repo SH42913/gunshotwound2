@@ -90,10 +90,10 @@ namespace GunshotWound2
 
         private void OnTick(object sender, EventArgs eventArgs)
         {
-            if (!_isInited && _ticks++ == 300)
+            if (!_isInited && _ticks++ == 400)
             {
                 UI.Notify(!_exceptionInRuntime
-                    ? $"{_localeConfig.ThanksForUsing}\n~g~GunShot Wound ~r~2~s~\nSH42913"
+                    ? $"{_localeConfig.ThanksForUsing}\n~g~GunShot Wound ~r~2~s~\nby SH42913"
                     : $"~r~{_localeConfig.GswStopped}");
 
                 if (!_configLoaded)
@@ -186,7 +186,8 @@ namespace GunshotWound2
                 .Add(new SwitchAnimationSystem())
                 .Add(new DebugInfoSystem())
                 .Add(new CheckSystem())
-                .Add(new NotificationSystem());
+                .Add(new NotificationSystem())
+                .Add(new CameraShakeSystem());
             
             _commonSystems
                 .Add(new ArmorSystem())

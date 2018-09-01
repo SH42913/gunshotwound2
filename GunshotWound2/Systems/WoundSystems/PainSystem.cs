@@ -42,7 +42,7 @@ namespace GunshotWound2.Systems.WoundSystems
                     {
                         if (woundedPed.IsPlayer)
                         {
-                            Function.Call(Hash._SET_CAM_EFFECT, 1);
+                            _ecsWorld.CreateEntityWith<AddCameraShakeEvent>().Length = CameraShakeLength.ONE_TIME;
                         }
                     }
                         
