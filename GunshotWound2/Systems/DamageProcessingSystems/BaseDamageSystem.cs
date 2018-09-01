@@ -5,6 +5,7 @@ using GunshotWound2.Components.Events.WeaponHitEvents;
 using GunshotWound2.Components.Events.WoundEvents;
 using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
+using GunshotWound2.Utils;
 using Leopotam.Ecs;
 using Weighted_Randomizer;
 

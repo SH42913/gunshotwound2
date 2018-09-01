@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Leopotam.Ecs;
 
-namespace GunshotWound2
+namespace GunshotWound2.Utils
 {
     /// <summary>
     /// Logical group of systems.

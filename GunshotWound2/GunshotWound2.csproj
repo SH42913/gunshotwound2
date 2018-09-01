@@ -98,8 +98,6 @@
     <Compile Include="Configs\PlayerConfig.cs" />
     <Compile Include="Configs\WoundConfig.cs" />
     <Compile Include="GunshotWound2.cs" />
-    <Compile Include="MultiTickEcsSystems.cs" />
-    <Compile Include="RandomExtensions.cs" />
     <Compile Include="Systems\NpcSystems\ConvertNpcToWoundedPedSystem.cs" />
     <Compile Include="Systems\NpcSystems\RemoveWoundedPedSystem.cs" />
     <Compile Include="Systems\PedSystems\ArmorSystem.cs" />
@@ -154,6 +152,9 @@
     <Compile Include="Systems\WoundSystems\WoundSystem.cs" />
     <Compile Include="Systems\WoundSystems\PainRecoverySystem.cs" />
     <Compile Include="Systems\WoundSystems\PainSystem.cs" />
+    <Compile Include="Utils\CsvToDictionaryParser.cs" />
+    <Compile Include="Utils\MultiTickEcsSystems.cs" />
+    <Compile Include="Utils\RandomExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

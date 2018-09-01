@@ -23,6 +23,7 @@ using GunshotWound2.Systems.PlayerSystems;
 using GunshotWound2.Systems.WoundSystems;
 using GunshotWound2.Systems.WoundSystems.CriticalWoundSystems;
 using GunshotWound2.Systems.WoundSystems.PainStatesSystem;
+using GunshotWound2.Utils;
 using Leopotam.Ecs;
 
 namespace GunshotWound2
