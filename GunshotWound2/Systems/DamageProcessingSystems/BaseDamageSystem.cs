@@ -172,16 +172,19 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
                 return true;
             }
 
+            float chanceToSave = Config.Data.WoundConfig.MinimalChanceForArmorSave;
             if (!CanPenetrateArmor) return false;
+            if (chanceToSave >= 1f) return false;
             
             float armorPercent = woundedPed.Armor / 100f;
-            bool penetration = Random.IsTrueWithProbability(1 - (0.6f + 0.4f * armorPercent));
-            if (penetration)
+            float chanceForArmorPercent = 1f - Config.Data.WoundConfig.MinimalChanceForArmorSave;
+            bool saved = Random.IsTrueWithProbability(Config.Data.WoundConfig.MinimalChanceForArmorSave + chanceForArmorPercent * armorPercent);
+            if (!saved)
             {
                 SendMessage(Locale.Data.ArmorPenetrated, pedEntity, NotifyLevels.WARNING);
             }
 
-            return penetration;
+            return !saved;
         }
 
         protected void LoadMultsFromConfig()

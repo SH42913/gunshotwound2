@@ -4,8 +4,9 @@
 		<WoundedPlayerEnabled>true</WoundedPlayerEnabled>
 		<!-- Change it to FALSE, if you don't want player-ped influenced by script -->
 		
-		<WYDCompatibility>true</WYDCompatibility>
-		<!-- Compatibility with WatchYourDeath mod -->
+		<WYDCompatibility>false</WYDCompatibility>
+		<!-- Compatibility with WatchYourDeath mod 
+		If TRUE you will not die instantly, you can use this option without WYD -->
 		
 		<PoliceCanForget>true</PoliceCanForget>
 		<!-- If TRUE - cops will can forget you, when you fall unconscious -->
@@ -16,7 +17,7 @@
 		<MaximalPain>100.0</MaximalPain>
 		<!-- 100 mean when pain will more than 100 you'll fall unconscious -->
 		
-		<PainRecoverySpeed>2.0</PainRecoverySpeed>
+		<PainRecoverySpeed>1.5</PainRecoverySpeed>
 		<!-- 2.0 mean 2 pain points will be restored in 1 sec -->
 		
 		<BleedHealSpeed>0.002</BleedHealSpeed>
@@ -74,6 +75,13 @@
 		<!-- If true, peds will set to short ragdoll on painful(>50 pain) wounds.
 		 Include player's ped!-->
 		
+		<PainfulWoundValue>50</PainfulWoundValue>
+		<!-- Any wound with pain more than PainfulWoundValue will add painfulwound effects -->
+		
+		<MinimalChanceForArmorSave>0.6</MinimalChanceForArmorSave>
+		<!-- 0.6 mean 60% chance to save your body on 1 armor point.
+		 100 armor points will always 100% chance to save-->
+		
 		<MoveRateOnFullPain>0.7</MoveRateOnFullPain>
 		<!-- Move rate on 100% of pain, for other percents will be MoveRate * currentPain/maximalPain -->
 		
@@ -95,7 +103,7 @@
 		<HighCaliber DamageMult="1.3" BleedingMult="1.7" PainMult="1.7" CritChance="0.8"/>
 		<Shotgun DamageMult="0.7" BleedingMult="1.1" PainMult="1.2" CritChance="0.6"/>
 		
-		<LightImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.3"/>
+		<LightImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.2"/>
 		<HeavyImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.7"/>
 
 		<Cutting DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.5"/>
@@ -104,8 +112,9 @@
     </Weapons>
 	
 	<Hotkeys>
+		<!-- If you don't want to use key, just remove value -->
 		<CheckKey>76</CheckKey>
-		<!-- Check Yourself. Show status-notifications one time, fine variant for realistic and not annoying gameplay.
+		<!-- Check Yourself. Show one time status-notifications, fine variant for realistic and not annoying gameplay.
 		Default: L on keyboard. -->
 		
 		<HealKey>75</HealKey>
@@ -113,8 +122,8 @@
 		Default: K on keyboard. -->
 		
 		<GetHelmetKey>74</GetHelmetKey>
-		<!-- Give to player ped motorbike helmet if you have $30.
-		Helmet can save your head from impacts and small caliber weapon.
+		<!-- Give to player ped motorbike helmet if you have $40.
+		Helmet can save your head from impacts and weapons.
 		If you have helmet, this hotkey will remove it.
 		Default: J on keyboard. -->
 	</Hotkeys>

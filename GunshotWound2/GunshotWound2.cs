@@ -34,7 +34,6 @@ namespace GunshotWound2
         public const float MINIMAL_RANGE_FOR_WOUNDED_PEDS = 5;
         private const float ADDING_TO_REMOVING_MULTIPLIER = 2;
         
-        
         private EcsWorld _ecsWorld;
         private EcsSystems _everyFrameSystems;
         private MultiTickEcsSystems _commonSystems;
@@ -43,19 +42,17 @@ namespace GunshotWound2
         private MainConfig _mainConfig;
         private LocaleConfig _localeConfig;
         private Stopwatch _mainCycleStopwatch;
+
+        private bool _isInited;
+        private bool _configLoaded;
+        private string _configReason;
+        private bool _localizationLoaded;
+        private bool _exceptionInRuntime;
+        private int _ticks;
         
         public GunshotWound2()
         {
-            try
-            {
-                GunshotWoundInit();
-            }
-            catch (Exception exception)
-            {
-                UI.Notify("~r~Error on initialization: \n" +
-                          $"In {LastSystem}\n" +
-                          $"{exception.Message}");
-            }
+            GunshotWoundInit();
         }
 
         private void OnKeyUp(object sender, KeyEventArgs eventArgs)
@@ -91,15 +88,42 @@ namespace GunshotWound2
 
         private void OnTick(object sender, EventArgs eventArgs)
         {
+            if (_ticks < 600)
+            {
+                UI.Notify(!_exceptionInRuntime
+                    ? "~WS~Thank you for using ~g~GunShot Wound ~r~2~s~\n~WS~by SH42913"
+                    : "~r~GSW2 stopped, sorry :(");
+
+                if (!_configLoaded)
+                {
+                    UI.Notify("GSW2 couldn't load config, default config was loaded.\n" +
+                              $"You need to check {_configReason}");
+                }
+
+                if (!_localizationLoaded)
+                {
+                    UI.Notify("GSW2 couldn't load localization, default localization was loaded.\n" +
+                              "You need to check or change localization");
+                }
+                
+                _ticks++;
+            }
+            else
+            {
+                _isInited = true;
+            }
+            
+            if(_exceptionInRuntime) return;
+            
             try
             {
                 GunshotWoundTick();
             }
             catch (Exception exception)
             {
-                UI.Notify("~r~Error on tick: \n" +
-                          $"In {LastSystem}\n" +
+                UI.Notify("~r~GSW2 error in runtime:\n" +
                           $"{exception.Message}");
+                _exceptionInRuntime = true;
             }
         }
 
@@ -109,9 +133,27 @@ namespace GunshotWound2
 
             _mainConfig = EcsFilterSingle<MainConfig>.Create(_ecsWorld);
             _localeConfig = EcsFilterSingle<LocaleConfig>.Create(_ecsWorld);
-            
-            TryToLoadConfigsFromXml();
-            LoadDefaultLocalization();
+
+            try
+            {
+                TryToLoadConfigsFromXml();
+                _configLoaded = true;
+            }
+            catch (Exception e)
+            {
+                LoadDefaultConfigs();
+                _configLoaded = false;
+            }
+
+            try
+            {
+                LoadDefaultLocalization();
+                _localizationLoaded = true;
+            }
+            catch (Exception e)
+            {
+                _localizationLoaded = false;
+            }
             
             _everyFrameSystems = new EcsSystems(_ecsWorld);
             _commonSystems = new MultiTickEcsSystems(_ecsWorld, MultiTickEcsSystems.RestrictionModes.MILLISECONDS, 16);
@@ -184,19 +226,19 @@ namespace GunshotWound2
 
         private void LoadDefaultConfigs()
         {
-            _mainConfig.CheckKey = null;
-            _mainConfig.HelmetKey = null;
-            _mainConfig.HealKey = null;
+            _mainConfig.CheckKey = Keys.L;
+            _mainConfig.HealKey = Keys.K;
+            _mainConfig.HelmetKey = Keys.J;
 
             _mainConfig.PlayerConfig = new PlayerConfig
             {
                 WoundedPlayerEnabled = true,
                 CanDropWeapon = true,
-                MoneyForHelmet = 30,
+                MoneyForHelmet = 40,
                 MaximalHealth = 99,
                 MinimalHealth = 0,
                 MaximalPain = 100,
-                PainRecoverSpeed = 2f,
+                PainRecoverSpeed = 1.5f,
                 BleedHealingSpeed = 0.001f,
                 PlayerEntity = -1,
                 AdrenalineSlowMotion = false,
@@ -234,43 +276,66 @@ namespace GunshotWound2
                 BleedingDeviation = 0.2f,
                 PainDeviation = 0.2f,
                 RagdollOnPainfulWound = true,
-                PainfulWoundValue = 50
+                PainfulWoundValue = 50,
+                MinimalChanceForArmorSave = 0.6f
             };
         }
 
         private void TryToLoadConfigsFromXml()
         {
-            LoadDefaultConfigs();
-
+            _mainConfig.PlayerConfig = new PlayerConfig();
+            _mainConfig.NpcConfig = new NpcConfig();
+            _mainConfig.WoundConfig = new WoundConfig();
+            
             bool configInGswFolder = new FileInfo("scripts/GSW2/GSW2Config.xml").Exists;
             bool config = new FileInfo("scripts/GSW2Config.xml").Exists;
             
             if(!configInGswFolder && !config)
             {
-                UI.Notify("GSW2 can't find config file, was loaded default values");
-                UI.ShowSubtitle("GSW2 can't find config file, was loaded default values");
-                return;
+                _configReason = "Config doesn't exist";
+                throw new Exception("Config didn't exist");
             }
             
             var doc = configInGswFolder
                 ? XDocument.Load("scripts/GSW2/GSW2Config.xml").Root
                 : XDocument.Load("scripts/GSW2Config.xml").Root;
             
-            LastSystem = "Hotkeys";
+            _configReason = "Hotkeys section";
             var buttonNode = doc.Element("Hotkeys");
             if (buttonNode != null)
             {
                 var helmetString = buttonNode.Element("GetHelmetKey").Value;
-                if(!string.IsNullOrEmpty(helmetString)) _mainConfig.HelmetKey = (Keys) int.Parse(helmetString);
+                if (!string.IsNullOrEmpty(helmetString))
+                {
+                    _mainConfig.HelmetKey = (Keys) int.Parse(helmetString);
+                }
+                else
+                {
+                    _mainConfig.HelmetKey = null;
+                }
                 
                 var checkString = buttonNode.Element("CheckKey").Value;
-                if(!string.IsNullOrEmpty(checkString)) _mainConfig.CheckKey = (Keys) int.Parse(checkString);
+                if (!string.IsNullOrEmpty(checkString))
+                {
+                    _mainConfig.CheckKey = (Keys) int.Parse(checkString);
+                }
+                else
+                {
+                    _mainConfig.CheckKey = null;
+                }
                 
                 var healString = buttonNode.Element("HealKey").Value;
-                if(!string.IsNullOrEmpty(healString)) _mainConfig.HealKey = (Keys) int.Parse(healString);
+                if (!string.IsNullOrEmpty(healString))
+                {
+                    _mainConfig.HealKey = (Keys) int.Parse(healString);
+                }
+                else
+                {
+                    _mainConfig.HealKey = null;
+                }
             }
 
-            LastSystem = "Player";
+            _configReason = "Player section";
             var playerNode = doc.Element("Player");
             if (playerNode != null)
             {
@@ -311,7 +376,7 @@ namespace GunshotWound2
                 _mainConfig.PlayerConfig.IntensePainAnim = animationNode.Attribute("IntensePain").Value;
             }
             
-            LastSystem = "Peds";
+            _configReason = "Peds section";
             var npcNode = doc.Element("Peds");
             if (npcNode != null)
             {
@@ -354,7 +419,7 @@ namespace GunshotWound2
                 _mainConfig.NpcConfig.IntensePainAnim = animationNode.Attribute("IntensePain").Value;
             }
 
-            LastSystem = "Wounds";
+            _configReason = "Wounds section";
             var woundsNode = doc.Element("Wounds");
             if (woundsNode != null)
             {
@@ -384,9 +449,15 @@ namespace GunshotWound2
 
                 var ragdollOnPain = woundsNode.Element("RagdollOnPainfulWound").Value;
                 _mainConfig.WoundConfig.RagdollOnPainfulWound = bool.Parse(ragdollOnPain);
+
+                var painfulWoundValue = woundsNode.Element("PainfulWoundValue").Value;
+                _mainConfig.WoundConfig.PainfulWoundValue = float.Parse(painfulWoundValue, CultureInfo.InvariantCulture);
+
+                var minimalChance = woundsNode.Element("MinimalChanceForArmorSave").Value;
+                _mainConfig.WoundConfig.MinimalChanceForArmorSave = float.Parse(minimalChance, CultureInfo.InvariantCulture);
             }
 
-            LastSystem = "Notifications";
+            _configReason = "Notifications section";
             var noteNode = doc.Element("Notifications");
             if (noteNode != null)
             {
@@ -403,7 +474,7 @@ namespace GunshotWound2
                 _mainConfig.EmergencyMessages = bool.Parse(emergencyString);
             }
 
-            LastSystem = "Weapons";
+            _configReason = "Weapons section";
             var weaponNode = doc.Element("Weapons");
             if (weaponNode != null)
             {
@@ -562,6 +633,7 @@ namespace GunshotWound2
         
         private void CheckTime(long timeInMs)
         {
+            if(!_isInited) return;
             if (timeInMs <= 40) return;
             if (_warningMessageWasShown) return;
                 

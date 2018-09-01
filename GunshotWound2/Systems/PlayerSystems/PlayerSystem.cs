@@ -67,6 +67,7 @@ namespace GunshotWound2.Systems.PlayerSystems
                     woundedPed.Health = woundedPed.ThisPed.Health;
                     woundedPed.IsDead = true;
                     woundedPed.InPermanentRagdoll = true;
+                    Game.Player.WantedLevel = -1;
                 
                     var pain = _ecsWorld.CreateEntityWith<SetPedToRagdollEvent>();
                     pain.RagdollState = RagdollStates.PERMANENT;
