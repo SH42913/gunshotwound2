@@ -54,7 +54,7 @@
     <Compile Include="Components\Events\GuiEvents\ShowDebugInfoEvent.cs" />
     <Compile Include="Components\Events\GuiEvents\ShowHealthStateEvent.cs" />
     <Compile Include="Components\Events\GuiEvents\ShowNotificationEvent.cs" />
-    <Compile Include="Components\Events\NpcEvents\ConvertPedsToWoundedPedsEvent.cs" />
+    <Compile Include="Components\Events\NpcEvents\ConvertPedToWoundedPedEvent.cs" />
     <Compile Include="Components\Events\PedEvents\ChangeWalkAnimationEvent.cs" />
     <Compile Include="Components\Events\PedEvents\InstantHealEvent.cs" />
     <Compile Include="Components\Events\PedEvents\SetPedToRagdollEvent.cs" />
@@ -91,6 +91,7 @@
     <Compile Include="Components\MarkComponents\PlayerMarkComponent.cs" />
     <Compile Include="Components\StateComponents\BleedingComponent.cs" />
     <Compile Include="Components\StateComponents\WoundedPedComponent.cs" />
+    <Compile Include="Configs\LocaleConfig.cs" />
     <Compile Include="Configs\MainConfig.cs" />
     <Compile Include="Configs\NpcConfig.cs" />
     <Compile Include="Configs\PlayerConfig.cs" />

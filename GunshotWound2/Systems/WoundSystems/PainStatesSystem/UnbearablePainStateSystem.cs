@@ -19,22 +19,16 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
         {
             base.ExecuteState(woundedPed, pedEntity);
 
-            SetPedToRagdollEvent request;
-            EcsWorld.CreateEntityWith(out request);
-            request.PedEntity = pedEntity;
-            request.RagdollState = RagdollStates.PERMANENT;
-            
+            SendPedToRagdoll(pedEntity, RagdollStates.PERMANENT);
             woundedPed.ThisPed.Weapons.Drop();
             
             if (!woundedPed.IsPlayer) return;
-
             Game.Player.IgnoredByEveryone = true;
+            
             if (Config.Data.PlayerConfig.PoliceCanForgetYou) Game.Player.WantedLevel = 0;
-            if (!woundedPed.DamagedParts.HasFlag(DamageTypes.NERVES_DAMAGED) && !woundedPed.IsDead)
-            {
-                SendMessage("You can't take this pain anymore!\n" +
-                            "You lose consciousness!", NotifyLevels.WARNING);
-            }
+            
+            if (woundedPed.DamagedParts.HasFlag(DamageTypes.NERVES_DAMAGED) || woundedPed.IsDead) return;
+            SendMessage(Locale.Data.UnbearablePainMessage, NotifyLevels.WARNING);
         }
     }
 }

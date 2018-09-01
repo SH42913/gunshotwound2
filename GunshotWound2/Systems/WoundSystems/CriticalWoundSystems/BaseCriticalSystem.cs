@@ -1,5 +1,6 @@
 ﻿using GunshotWound2.Components;
 using GunshotWound2.Components.Events.GuiEvents;
+using GunshotWound2.Components.Events.PedEvents;
 using GunshotWound2.Components.Events.WoundEvents;
 using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
@@ -12,7 +13,10 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
     {
         protected EcsWorld EcsWorld;
         protected EcsFilter<T> Events;
+        
         protected EcsFilterSingle<MainConfig> Config;
+        protected EcsFilterSingle<LocaleConfig> Locale;
+        
         protected DamageTypes Damage;
         
         public void Run()
@@ -57,6 +61,10 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
 
         protected void SendMessage(string message, NotifyLevels level = NotifyLevels.COMMON)
         {
+#if !DEBUG
+            if(level == NotifyLevels.DEBUG) return;
+#endif
+            
             var notification = EcsWorld.CreateEntityWith<ShowNotificationEvent>();
             notification.Level = level;
             notification.StringToShow = message;
@@ -74,7 +82,15 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
             var bleed = EcsWorld.CreateEntityWith<BleedingComponent>();
             bleed.PedEntity = entity;
             bleed.BleedSeverity = amount;
-            bleed.Name = "Internal bleeding";
+            bleed.Name = Locale.Data.InternalBleeding;
+        }
+
+        protected void SendPedToRagdoll(int pedEntity, RagdollStates ragdollType)
+        {
+            SetPedToRagdollEvent ragdoll;
+            EcsWorld.CreateEntityWith(out ragdoll);
+            ragdoll.PedEntity = pedEntity;
+            ragdoll.RagdollState = ragdollType;
         }
     }
 }

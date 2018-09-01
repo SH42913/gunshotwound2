@@ -18,15 +18,11 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
         {
             base.ExecuteState(woundedPed, pedEntity);
 
-            ChangeWalkAnimationEvent anim;
-            EcsWorld.CreateEntityWith(out anim);
-            anim.PedEntity = pedEntity;
-            anim.AnimationName = woundedPed.IsPlayer 
+            ChangeWalkingAnimation(pedEntity, woundedPed.IsPlayer 
                 ? Config.Data.PlayerConfig.IntensePainAnim
-                : Config.Data.NpcConfig.IntensePainAnim;
+                : Config.Data.NpcConfig.IntensePainAnim);
             
             if (woundedPed.DamagedParts.HasFlag(DamageTypes.ARMS_DAMAGED)) return;
-
             var backPercent = 1f - woundedPed.PainMeter / woundedPed.MaximalPain;
             if (woundedPed.IsPlayer)
             {

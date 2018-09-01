@@ -19,27 +19,24 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
         {
             CreatePain(pedEntity, 25f);
             CreateInternalBleeding(pedEntity, 2f);
-            SendPedToRagdoll(pedComponent, pedEntity);
+            
+            SendPedToRagdoll(pedEntity, RagdollStates.HEART_DAMAGE);
             Function.Call(Hash._START_SCREEN_EFFECT, "DrugsDrivingIn", 5000, true);
-            SendMessage("You feel awful pain in your chest", NotifyLevels.WARNING);
+            
+            SendMessage(Locale.Data.PlayerHeartCritMessage, NotifyLevels.WARNING);
         }
 
         protected override void ActionForNpc(WoundedPedComponent pedComponent, int pedEntity)
         {
             CreatePain(pedEntity, 25f);
             CreateInternalBleeding(pedEntity, 2f);
-            SendPedToRagdoll(pedComponent, pedEntity);
+            
+            SendPedToRagdoll(pedEntity, RagdollStates.HEART_DAMAGE);
             
             if(!Config.Data.NpcConfig.ShowEnemyCriticalMessages) return;
-            SendMessage($"{(pedComponent.HeShe)} coughs up blood");
-        }
-
-        private void SendPedToRagdoll(WoundedPedComponent pedComponent, int pedEntity)
-        {
-            SetPedToRagdollEvent ragdoll;
-            EcsWorld.CreateEntityWith(out ragdoll);
-            ragdoll.PedEntity = pedEntity;
-            ragdoll.RagdollState = RagdollStates.HEART_DAMAGE;
+            SendMessage(pedComponent.IsMale 
+                ? Locale.Data.ManHeartCritMessage 
+                : Locale.Data.WomanHeartCritMessage);
         }
     }
 }

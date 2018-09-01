@@ -18,6 +18,8 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
         
         protected override void ActionForPlayer(WoundedPedComponent pedComponent, int pedEntity)
         {
+            CreatePain(pedEntity, 20);
+            
             Function.Call(Hash.SET_PLAYER_SPRINT, Game.Player, false);
             Function.Call(
                 Hash.SET_PED_MOVE_RATE_OVERRIDE,
@@ -27,12 +29,13 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
             SendPedToRagdoll(pedComponent, pedEntity);
 
             if (pedComponent.DamagedParts.HasFlag(DamageTypes.NERVES_DAMAGED)) return;
-            
-            SendMessage("You feel awful pain in your leg", NotifyLevels.WARNING);
+            SendMessage(Locale.Data.PlayerLegsCritMessage, NotifyLevels.WARNING);
         }
 
         protected override void ActionForNpc(WoundedPedComponent pedComponent, int pedEntity)
         {
+            CreatePain(pedEntity, 20);
+            
             Function.Call(
                 Hash.SET_PED_MOVE_RATE_OVERRIDE,
                 pedComponent.ThisPed, 
@@ -40,20 +43,18 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
             
             SendPedToRagdoll(pedComponent, pedEntity);
             
-            if(!Config.Data.NpcConfig.ShowEnemyCriticalMessages ||
-               pedComponent.DamagedParts.HasFlag(DamageTypes.NERVES_DAMAGED)) return;
-            
-            SendMessage($"{pedComponent.HisHer} leg looks very bad");
+            if(!Config.Data.NpcConfig.ShowEnemyCriticalMessages) return;
+            if(pedComponent.DamagedParts.HasFlag(DamageTypes.NERVES_DAMAGED)) return;
+            SendMessage(pedComponent.IsMale 
+                ? Locale.Data.ManLegsCritMessage
+                : Locale.Data.WomanLegsCritMessage);
         }
 
         private void SendPedToRagdoll(WoundedPedComponent pedComponent, int pedEntity)
         {
-            if (!pedComponent.ThisPed.IsRunning) return;
+            if (!pedComponent.ThisPed.IsRunning && !pedComponent.ThisPed.IsSprinting) return;
             
-            SetPedToRagdollEvent ragdoll;
-            EcsWorld.CreateEntityWith(out ragdoll);
-            ragdoll.PedEntity = pedEntity;
-            ragdoll.RagdollState = RagdollStates.LEG_DAMAGE;
+            SendPedToRagdoll(pedEntity, RagdollStates.LEG_DAMAGE);
         }
     }
 }

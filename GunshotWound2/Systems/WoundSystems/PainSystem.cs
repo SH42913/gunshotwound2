@@ -13,8 +13,9 @@ namespace GunshotWound2.Systems.WoundSystems
     public class PainSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
-        private EcsFilterSingle<MainConfig> _config;
         private EcsFilter<AddPainEvent> _components;
+        
+        private EcsFilterSingle<MainConfig> _config;
         
         private static readonly Random Random = new Random();
         

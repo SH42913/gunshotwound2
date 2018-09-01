@@ -71,6 +71,8 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
         }
 
         public void Destroy()
-        {}
+        {
+            
+        }
     }
 }

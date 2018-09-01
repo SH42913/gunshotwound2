@@ -1,10 +1,11 @@
-﻿namespace GunshotWound2.Configs
+﻿using GTA;
+
+namespace GunshotWound2.Configs
 {
     public class NpcConfig
     {
         public float AddingPedRange;
         public float RemovePedRange;
-        public int TickToUpdate;
         
         public bool ShowEnemyCriticalMessages;
         public int LowerStartHealth;
@@ -19,6 +20,10 @@
         public string MildPainAnim;
         public string AvgPainAnim;
         public string IntensePainAnim;
+
+        public Ped[] WorldPeds;
+        public int LastCheckedPedIndex;
+        public int UpperBoundForFindInMs;
 
         public override string ToString()
         {

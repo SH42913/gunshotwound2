@@ -32,7 +32,7 @@ namespace GunshotWound2.Systems.PlayerSystems
                 if(_currentTimeScale > _minimalTimeScale)
                 {
                     _currentTimeScale -= _increaseStep;
-                    SendMessage($"New TIME scale: {_currentTimeScale}");
+                    SendDebug($"New TIME scale: {_currentTimeScale}");
                 }
                 else
                 {
@@ -46,7 +46,7 @@ namespace GunshotWound2.Systems.PlayerSystems
             _currentTimeScale += _stabSpeed * Game.LastFrameTime;
         }
 
-        private void SendMessage(string message)
+        private void SendDebug(string message)
         {
 #if DEBUG
             var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();

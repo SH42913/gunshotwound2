@@ -10,37 +10,37 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
     {
         protected void DefaultGrazeWound(int entity)
         {
-            CreateWound("Light bruise", entity, DamageMultiplier * 5f,
+            CreateWound(Locale.Data.LightBruise, entity, DamageMultiplier * 5f,
                 -1f, PainMultiplier * 15f);
         }
 
         protected void AbrasionWoundOn(string position, int entity)
         {
-            CreateWound($"Abrasion wound on {position}", entity, DamageMultiplier * 5f,
+            CreateWound($"{Locale.Data.AbrazionWoundOn} {position}", entity, DamageMultiplier * 5f,
                 BleeedingMultiplier * 0.2f, PainMultiplier * 15f);
         }
 
         protected void LightBruiseWound(string position, int entity)
         {
-            CreateWound($"Light bruise on {position}", entity, DamageMultiplier * 5f,
+            CreateWound($"{Locale.Data.LightBruiseOn} {position}", entity, DamageMultiplier * 5f,
                 -1f, PainMultiplier * 15f);
         }
 
         protected void MediumBruiseWound(string position, int entity)
         {
-            CreateWound($"Medium bruise on {position}", entity, DamageMultiplier * 10f,
-                -1f, PainMultiplier * 30f);
+            CreateWound($"{Locale.Data.MediumBruiseOn} {position}", entity, DamageMultiplier * 10f,
+                -1f, PainMultiplier * 30f, 0.05f);
         }
 
         protected void HeavyBruiseWound(string position, int entity, params DamageTypes?[] crits)
         {
-            CreateWound($"Heavy bruise on {position}", entity, DamageMultiplier * 15f,
+            CreateWound($"{Locale.Data.HeavyBruiseOn} {position}", entity, DamageMultiplier * 15f,
                 -1f, PainMultiplier * 45f, 0.1f, crits);
         }
 
         protected void WindedFromImpact(int entity)
         {
-            CreateWound("Winded from impact", entity, DamageMultiplier * 20f, -1, PainMultiplier * 40f);
+            CreateWound(Locale.Data.WindedFromImpact, entity, DamageMultiplier * 15f, -1, PainMultiplier * 40f);
         }
     }
 }

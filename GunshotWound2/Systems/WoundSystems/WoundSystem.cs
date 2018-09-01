@@ -12,8 +12,10 @@ namespace GunshotWound2.Systems.WoundSystems
     public class WoundSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
-        private EcsFilterSingle<MainConfig> _config;
         private EcsFilter<ProcessWoundEvent> _components;
+        
+        private EcsFilterSingle<MainConfig> _config;
+        private EcsFilterSingle<LocaleConfig> _locale;
         
         private static readonly Random Random = new Random();
         
@@ -43,7 +45,7 @@ namespace GunshotWound2.Systems.WoundSystems
 
                     if (component.ArterySevered)
                     {
-                        CreateBleeding(pedEntity, 1f, "Severed artery");
+                        CreateBleeding(pedEntity, 1f, _locale.Data.SeveredArtery);
                     }
                     
                     _ecsWorld.CreateEntityWith<ShowDebugInfoEvent>().PedEntity = pedEntity;
@@ -113,7 +115,7 @@ namespace GunshotWound2.Systems.WoundSystems
             var message = $"{component.Name}";
             if (component.ArterySevered)
             {
-                message += "\nArtery was severed!";
+                message += $"\n{_locale.Data.SeveredArteryMessage}";
             }
             
             if (component.CriticalDamage != null || component.ArterySevered ||

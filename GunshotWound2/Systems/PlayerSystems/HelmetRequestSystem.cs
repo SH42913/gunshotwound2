@@ -12,6 +12,7 @@ namespace GunshotWound2.Systems.PlayerSystems
     {
         private EcsWorld _ecsWorld;
         private EcsFilterSingle<MainConfig> _config;
+        private EcsFilterSingle<LocaleConfig> _locale;
         
         private EcsFilter<AddHelmetToPlayerEvent> _requests;
         
@@ -23,7 +24,7 @@ namespace GunshotWound2.Systems.PlayerSystems
             GunshotWound2.LastSystem = nameof(HelmetRequestSystem);
 #endif
             
-            if(_requests.EntitiesCount == 0) return;
+            if(_requests.EntitiesCount <= 0) return;
 
             var player = Game.Player;
             if (player.Character.IsWearingHelmet)
@@ -40,15 +41,12 @@ namespace GunshotWound2.Systems.PlayerSystems
                 else
                 {
                     var message = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
-                    message.StringToShow = "You don't have enough money to buy helmet";
+                    message.StringToShow = _locale.Data.DontHaveMoneyForHelmet;
                     message.Level = NotifyLevels.COMMON;
                 }
             }
 
-            for (int i = 0; i < _requests.EntitiesCount; i++)
-            {
-                _ecsWorld.RemoveEntity(_requests.Entities[i]);
-            }
+            _requests.RemoveAllEntities();
         }
     }
 }

@@ -29,8 +29,7 @@ namespace GunshotWound2.Components.StateComponents
     {
         public Ped ThisPed;
         public bool IsPlayer;
-        public string HeShe;
-        public string HisHer;
+        public bool IsMale;
 
         public int DefaultAccuracy;
         
@@ -49,7 +48,7 @@ namespace GunshotWound2.Components.StateComponents
 
         public override string ToString()
         {
-            return $"{HisHer} HP:{Health} Pain:{PainMeter / MaximalPain * 100:0.0}%";
+            return $"{(IsMale ? "His" : "Her")} HP:{Health} Pain:{PainMeter / MaximalPain * 100:0.0}%";
         }
     }
 }

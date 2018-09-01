@@ -18,18 +18,12 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
         {
             base.ExecuteState(woundedPed, pedEntity);
 
-            ChangeWalkAnimationEvent anim;
-            EcsWorld.CreateEntityWith(out anim);
-            anim.PedEntity = pedEntity;
-            anim.AnimationName = woundedPed.IsPlayer 
+            SendPedToRagdoll(pedEntity, RagdollStates.WAKE_UP);
+            ChangeWalkingAnimation(pedEntity, woundedPed.IsPlayer 
                 ? Config.Data.PlayerConfig.NoPainAnim
-                : Config.Data.NpcConfig.NoPainAnim;
+                : Config.Data.NpcConfig.NoPainAnim);
             
-            SetPedToRagdollEvent request;
-            EcsWorld.CreateEntityWith(out request);
-            request.PedEntity = pedEntity;
-            request.RagdollState = RagdollStates.WAKE_UP;
-            
+            if(!woundedPed.IsPlayer) return;
             Function.Call(Hash._SET_CAM_EFFECT, 0);
         }
     }

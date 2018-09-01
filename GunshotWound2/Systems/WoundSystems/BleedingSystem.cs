@@ -52,6 +52,8 @@ namespace GunshotWound2.Systems.WoundSystems
         }
 
         public void Destroy()
-        {}
+        {
+            
+        }
     }
 }

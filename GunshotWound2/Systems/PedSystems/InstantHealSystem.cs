@@ -1,6 +1,7 @@
 ﻿using System;
 using GTA;
 using GTA.Native;
+using GunshotWound2.Components.Events.GuiEvents;
 using GunshotWound2.Components.Events.PedEvents;
 using GunshotWound2.Components.Events.PlayerEvents;
 using GunshotWound2.Components.Events.WoundEvents.ChangePainStateEvents;
@@ -19,7 +20,7 @@ namespace GunshotWound2.Systems.PedSystems
         private EcsFilter<InstantHealEvent> _components;
         private EcsFilter<BleedingComponent> _bleedingComponents;
         
-        private static Random _random = new Random();
+        private static readonly Random _random = new Random();
         
         public void Run()
         {

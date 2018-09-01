@@ -17,14 +17,12 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
         protected override void ExecuteState(WoundedPedComponent woundedPed, int pedEntity)
         {
             base.ExecuteState(woundedPed, pedEntity);
-
-            ChangeWalkAnimationEvent anim;
-            EcsWorld.CreateEntityWith(out anim);
-            anim.PedEntity = pedEntity;
-            anim.AnimationName = woundedPed.IsPlayer 
-                ? Config.Data.PlayerConfig.MildPainAnim
-                : Config.Data.NpcConfig.MildPainAnim;
             
+            ChangeWalkingAnimation(pedEntity, woundedPed.IsPlayer 
+                ? Config.Data.PlayerConfig.MildPainAnim
+                : Config.Data.NpcConfig.MildPainAnim);
+            
+            if(!woundedPed.IsPlayer) return;
             Function.Call(Hash._SET_CAM_EFFECT, 0);
         }
     }

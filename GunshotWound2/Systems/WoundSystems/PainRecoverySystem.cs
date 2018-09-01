@@ -13,7 +13,6 @@ namespace GunshotWound2.Systems.WoundSystems
         private EcsWorld _ecsWorld;
         private EcsFilter<WoundedPedComponent> _peds;
         private EcsFilterSingle<MainConfig> _config;
-        private uint _ticks;
         private DateTime _lastUpdateTime;
 
         public void Initialize()
@@ -101,6 +100,8 @@ namespace GunshotWound2.Systems.WoundSystems
         }
 
         public void Destroy()
-        {}
+        {
+            
+        }
     }
 }
