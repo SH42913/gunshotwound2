@@ -12,7 +12,7 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
     {
         public LungsCriticalSystem()
         {
-            Damage = DamageTypes.LUNGS_DAMAGED;
+            CurrentCrit = CritTypes.LUNGS_DAMAGED;
         }
 
         protected override void ActionForPlayer(WoundedPedComponent pedComponent, int pedEntity)

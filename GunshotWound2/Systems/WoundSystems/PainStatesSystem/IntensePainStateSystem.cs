@@ -6,7 +6,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
 {
     [EcsInject]
-    public class IntensePainStateSystem : BasePainStateSystem<IntenseChangePainStateEvent>
+    public class IntensePainStateSystem : BasePainStateSystem<IntensePainChangeStateEvent>
     {
         public IntensePainStateSystem()
         {
@@ -21,7 +21,7 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
                 ? Config.Data.PlayerConfig.IntensePainAnim
                 : Config.Data.NpcConfig.IntensePainAnim);
             
-            if (woundedPed.DamagedParts.HasFlag(DamageTypes.ARMS_DAMAGED)) return;
+            if (woundedPed.Crits.HasFlag(CritTypes.ARMS_DAMAGED)) return;
             var backPercent = 1f - woundedPed.PainMeter / woundedPed.MaximalPain;
             if (woundedPed.IsPlayer)
             {

@@ -35,6 +35,7 @@ namespace GunshotWound2.Systems.PlayerSystems
             
             woundPed.Armor = ped.Armor;
             woundPed.Health = _config.Data.PlayerConfig.MaximalHealth;
+            woundPed.ThisPed.MaxHealth = (int) woundPed.Health + 101;
             woundPed.ThisPed.Health = (int) woundPed.Health;
 
             woundPed.PainMeter = 0;
@@ -45,7 +46,7 @@ namespace GunshotWound2.Systems.PlayerSystems
             _config.Data.PlayerConfig.PlayerEntity = entity;
             FindDeadlyWound();
 
-            _ecsWorld.CreateEntityWith<NoChangePainStateEvent>().PedEntity = entity;
+            _ecsWorld.CreateEntityWith<NoPainChangeStateEvent>().PedEntity = entity;
         }
         
         public void Run()
@@ -65,7 +66,7 @@ namespace GunshotWound2.Systems.PlayerSystems
                 {
                     woundedPed.Health = woundedPed.ThisPed.Health;
                     woundedPed.IsDead = true;
-                    woundedPed.PainRecoverSpeed = 0;
+                    woundedPed.InPermanentRagdoll = true;
                 
                     var pain = _ecsWorld.CreateEntityWith<SetPedToRagdollEvent>();
                     pain.RagdollState = RagdollStates.PERMANENT;

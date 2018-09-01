@@ -17,7 +17,7 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
         protected EcsFilterSingle<MainConfig> Config;
         protected EcsFilterSingle<LocaleConfig> Locale;
         
-        protected DamageTypes Damage;
+        protected CritTypes CurrentCrit;
         
         public void Run()
         {
@@ -36,13 +36,13 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
                     continue;
                 }
 
-                if (woundedPed.DamagedParts.HasFlag(Damage))
+                if (woundedPed.Crits.HasFlag(CurrentCrit))
                 {
                     EcsWorld.RemoveEntity(Events.Entities[i]);
                     continue;
                 }
 
-                woundedPed.DamagedParts = woundedPed.DamagedParts | Damage;
+                woundedPed.Crits = woundedPed.Crits | CurrentCrit;
                 if (woundedPed.IsPlayer)
                 {
                     ActionForPlayer(woundedPed, pedEntity);

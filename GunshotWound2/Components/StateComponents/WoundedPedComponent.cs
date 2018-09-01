@@ -4,7 +4,7 @@ using GTA;
 namespace GunshotWound2.Components.StateComponents
 {
     [Flags]
-    public enum DamageTypes
+    public enum CritTypes
     {
         LEGS_DAMAGED = 1,
         ARMS_DAMAGED = 2,
@@ -35,13 +35,13 @@ namespace GunshotWound2.Components.StateComponents
         
         public float Health;
         public bool IsDead;
-        public DamageTypes DamagedParts;
+        public CritTypes Crits;
         public float StopBleedingAmount;
         
         public float PainMeter;
         public float MaximalPain;
         public PainStates PainState;
-        public bool GivesInToPain;
+        public bool InPermanentRagdoll;
         public float PainRecoverSpeed;
         
         public int Armor;

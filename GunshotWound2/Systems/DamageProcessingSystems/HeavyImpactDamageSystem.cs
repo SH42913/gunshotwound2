@@ -86,7 +86,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
         private void BrokenNeck(int entity)
         {
             CreateWound(Locale.Data.BrokenNeck, entity, DamageMultiplier * 50f,
-                -1, -1, 70f, DamageTypes.NERVES_DAMAGED);
+                -1, -1, 70f, CritTypes.NERVES_DAMAGED);
         }
         
         
@@ -142,7 +142,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
         private void UpperCase3(int entity)
         {
-            HeavyBruiseWound(Locale.Data.BodyPartChest, entity, DamageTypes.LUNGS_DAMAGED, DamageTypes.HEART_DAMAGED);
+            HeavyBruiseWound(Locale.Data.BodyPartChest, entity, CritTypes.LUNGS_DAMAGED, CritTypes.HEART_DAMAGED);
         }
 
         
@@ -159,7 +159,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
         private void LowerCase3(int entity)
         {
-            HeavyBruiseWound(Locale.Data.BodyPartLowerBody, entity, DamageTypes.STOMACH_DAMAGED, DamageTypes.GUTS_DAMAGED);
+            HeavyBruiseWound(Locale.Data.BodyPartLowerBody, entity, CritTypes.STOMACH_DAMAGED, CritTypes.GUTS_DAMAGED);
         }
 
 
@@ -176,7 +176,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
         private void ArmCase3(int entity)
         {
-            HeavyBruiseWound(Locale.Data.BodyPartArm, entity, DamageTypes.ARMS_DAMAGED);
+            HeavyBruiseWound(Locale.Data.BodyPartArm, entity, CritTypes.ARMS_DAMAGED);
         }
 
 
@@ -193,7 +193,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
         private void LegCase3(int entity)
         {
-            HeavyBruiseWound(Locale.Data.BodyPartLeg, entity, DamageTypes.LEGS_DAMAGED);
+            HeavyBruiseWound(Locale.Data.BodyPartLeg, entity, CritTypes.LEGS_DAMAGED);
         }
     }
 }

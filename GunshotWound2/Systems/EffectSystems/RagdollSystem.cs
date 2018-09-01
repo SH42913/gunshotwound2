@@ -41,17 +41,16 @@ namespace GunshotWound2.Systems.EffectSystems
                     
                         SendDebug($"Set {pedEntity} to permanent ragdoll");
                         Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, -1, -1, 0, 0, 0, 0);
-                        woundedPed.GivesInToPain = true;
+                        woundedPed.InPermanentRagdoll = true;
 
                         _ecsWorld.RemoveEntity(_requests.Entities[i]);
                         break;
                     case RagdollStates.WAKE_UP:
-                        if(woundedPed.GivesInToPain)
+                        if(woundedPed.InPermanentRagdoll && !woundedPed.Crits.HasFlag(CritTypes.NERVES_DAMAGED))
                         {
                             SendDebug($"WakeUp {pedEntity} from ragdoll");
                             Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, 1, 1, 1, 0, 0, 0);
-                            woundedPed.GivesInToPain = false;
-                            if(woundedPed.ThisPed.IsPlayer) Game.Player.IgnoredByEveryone = false;
+                            woundedPed.InPermanentRagdoll = false;
                         }
 
                         _ecsWorld.RemoveEntity(_requests.Entities[i]);

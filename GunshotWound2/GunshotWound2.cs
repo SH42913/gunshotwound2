@@ -277,7 +277,7 @@ namespace GunshotWound2
                 var woundedPlayerEnabled = playerNode.Element("WoundedPlayerEnabled").Value;
                 _mainConfig.PlayerConfig.WoundedPlayerEnabled = bool.Parse(woundedPlayerEnabled);
 
-                var wyd = true;//bool.Parse(playerNode.Element("WYDCompatible").Value);
+                var wyd = bool.Parse(playerNode.Element("WYDCompatibility").Value);
                 if (!wyd)
                 {
                     _mainConfig.PlayerConfig.MinimalHealth = 0;
@@ -542,11 +542,11 @@ namespace GunshotWound2
             _localeConfig.ManGutsCritMessage = "He looks very sick";
             _localeConfig.WomanGutsCritMessage = "She looks very sick";
 
-            _localeConfig.PlayerArmsCritMessage = "You feel awful pain in your arm.\nIt's looks like bone was broken.";
+            _localeConfig.PlayerArmsCritMessage = "It's looks like arm bone was broken";
             _localeConfig.ManArmsCritMessage = "His arm looks very bad";
             _localeConfig.WomanArmsCritMessage = "Her arm looks very bad";
 
-            _localeConfig.PlayerLegsCritMessage = "You feel awful pain in your leg.\nIt's looks like bone was broken.";
+            _localeConfig.PlayerLegsCritMessage = "It's looks like leg bone was broken";
             _localeConfig.ManLegsCritMessage = "His leg looks very bad";
             _localeConfig.WomanLegsCritMessage = "Her leg looks very bad";
 
@@ -584,6 +584,8 @@ namespace GunshotWound2
 
         private void IncreaseRange(float value)
         {
+            if(_mainConfig.NpcConfig.AddingPedRange <= MINIMAL_RANGE_FOR_WOUNDED_PEDS) return;
+            
             _mainConfig.NpcConfig.AddingPedRange += value;
             _mainConfig.NpcConfig.RemovePedRange = _mainConfig.NpcConfig.AddingPedRange * ADDING_TO_REMOVING_MULTIPLIER;
             

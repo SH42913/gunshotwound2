@@ -8,7 +8,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
 {
     [EcsInject]
-    public class UnbearablePainStateSystem : BasePainStateSystem<UnbearableChangePainStateEvent>
+    public class UnbearablePainStateSystem : BasePainStateSystem<UnbearablePainChangeStateEvent>
     {
         public UnbearablePainStateSystem()
         {
@@ -34,7 +34,7 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
             
             if (Config.Data.PlayerConfig.PoliceCanForgetYou) Game.Player.WantedLevel = 0;
             
-            if (woundedPed.DamagedParts.HasFlag(DamageTypes.NERVES_DAMAGED) || woundedPed.IsDead) return;
+            if (woundedPed.Crits.HasFlag(CritTypes.NERVES_DAMAGED) || woundedPed.IsDead) return;
             SendMessage(Locale.Data.UnbearablePainMessage, NotifyLevels.WARNING);
         }
     }

@@ -29,10 +29,10 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
         protected void MediumBruiseWound(string position, int entity)
         {
             CreateWound($"{Locale.Data.MediumBruiseOn} {position}", entity, DamageMultiplier * 10f,
-                -1f, PainMultiplier * 30f, 0.05f);
+                -1f, PainMultiplier * 30f, 0.01f);
         }
 
-        protected void HeavyBruiseWound(string position, int entity, params DamageTypes?[] crits)
+        protected void HeavyBruiseWound(string position, int entity, params CritTypes?[] crits)
         {
             CreateWound($"{Locale.Data.HeavyBruiseOn} {position}", entity, DamageMultiplier * 15f,
                 -1f, PainMultiplier * 45f, 0.1f, crits);

@@ -134,7 +134,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
             float bleeding, 
             float pain, 
             float arteryDamageChance = -1,
-            params DamageTypes?[] possibleCrits)
+            params CritTypes?[] possibleCrits)
         {
             var wound = EcsWorld.CreateEntityWith<ProcessWoundEvent>();
             wound.Name = name;
@@ -147,14 +147,14 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
             if (possibleCrits.Length <= 0)
             {
-                wound.CriticalDamage = null;
+                wound.Crits = null;
                 return;
             }
             
             if(!Random.IsTrueWithProbability(CritChance)) return;
             int critIndex = Random.Next(0, possibleCrits.Length);
             var crit = possibleCrits[critIndex];
-            wound.CriticalDamage = crit;
+            wound.Crits = crit;
         }
 
         protected void CreateHeavyBrainDamage(string name, int pedEntity)

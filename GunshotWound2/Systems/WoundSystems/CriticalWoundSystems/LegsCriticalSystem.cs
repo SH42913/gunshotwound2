@@ -13,7 +13,7 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
     {
         public LegsCriticalSystem()
         {
-            Damage = DamageTypes.LEGS_DAMAGED;
+            CurrentCrit = CritTypes.LEGS_DAMAGED;
         }
         
         protected override void ActionForPlayer(WoundedPedComponent pedComponent, int pedEntity)
@@ -28,7 +28,7 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
             
             SendPedToRagdoll(pedComponent, pedEntity);
 
-            if (pedComponent.DamagedParts.HasFlag(DamageTypes.NERVES_DAMAGED)) return;
+            if (pedComponent.Crits.HasFlag(CritTypes.NERVES_DAMAGED)) return;
             SendMessage(Locale.Data.PlayerLegsCritMessage, NotifyLevels.WARNING);
         }
 
@@ -44,7 +44,7 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
             SendPedToRagdoll(pedComponent, pedEntity);
             
             if(!Config.Data.NpcConfig.ShowEnemyCriticalMessages) return;
-            if(pedComponent.DamagedParts.HasFlag(DamageTypes.NERVES_DAMAGED)) return;
+            if(pedComponent.Crits.HasFlag(CritTypes.NERVES_DAMAGED)) return;
             SendMessage(pedComponent.IsMale 
                 ? Locale.Data.ManLegsCritMessage
                 : Locale.Data.WomanLegsCritMessage);

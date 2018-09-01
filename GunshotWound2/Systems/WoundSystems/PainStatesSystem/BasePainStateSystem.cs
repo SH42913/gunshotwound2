@@ -27,10 +27,12 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
             
             for (int i = 0; i < Events.EntitiesCount; i++)
             {
-                var pedEntity = Events.Components1[i].PedEntity;
+                var changeEvent = Events.Components1[i];
+                var pedEntity = changeEvent.PedEntity;
                 var woundedPed = EcsWorld.GetComponent<WoundedPedComponent>(pedEntity);
 
-                if (woundedPed != null)
+                if (woundedPed != null && !woundedPed.IsDead && 
+                    (woundedPed.PainState != CurrentState || changeEvent.ForceUpdate))
                 {
                     ExecuteState(woundedPed, pedEntity);
                     woundedPed.PainState = CurrentState;

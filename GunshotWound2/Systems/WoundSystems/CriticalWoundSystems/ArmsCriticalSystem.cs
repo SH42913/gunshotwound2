@@ -11,7 +11,7 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
     {
         public ArmsCriticalSystem()
         {
-            Damage = DamageTypes.ARMS_DAMAGED;
+            CurrentCrit = CritTypes.ARMS_DAMAGED;
         }
         
         protected override void ActionForPlayer(WoundedPedComponent pedComponent, int pedEntity)
@@ -24,7 +24,7 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
                 pedComponent.ThisPed.Weapons.Drop();
             }
 
-            if (pedComponent.DamagedParts.HasFlag(DamageTypes.NERVES_DAMAGED)) return;
+            if (pedComponent.Crits.HasFlag(CritTypes.NERVES_DAMAGED)) return;
             SendMessage(Locale.Data.PlayerArmsCritMessage, NotifyLevels.WARNING);
         }
 
@@ -36,7 +36,7 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
             pedComponent.ThisPed.Weapons.Drop();
             
             if (!Config.Data.NpcConfig.ShowEnemyCriticalMessages) return;
-            if (pedComponent.DamagedParts.HasFlag(DamageTypes.NERVES_DAMAGED)) return;
+            if (pedComponent.Crits.HasFlag(CritTypes.NERVES_DAMAGED)) return;
             SendMessage(pedComponent.IsMale 
                             ? Locale.Data.ManArmsCritMessage
                             : Locale.Data.WomanArmsCritMessage);

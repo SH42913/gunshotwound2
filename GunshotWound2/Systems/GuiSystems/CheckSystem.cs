@@ -1,4 +1,5 @@
-﻿using GunshotWound2.Components.Events.GuiEvents;
+﻿using GTA;
+using GunshotWound2.Components.Events.GuiEvents;
 using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
 using Leopotam.Ecs;
@@ -98,41 +99,41 @@ namespace GunshotWound2.Systems.GuiSystems
                     }
 
                     string healthInfo = "";
-                    if (woundedPed.DamagedParts > 0)
+                    if (woundedPed.Crits > 0)
                     {
                         healthInfo += $"~s~{_locale.Data.Crits}: ~r~";
                     
-                        if (woundedPed.DamagedParts.HasFlag(DamageTypes.NERVES_DAMAGED))
+                        if (woundedPed.Crits.HasFlag(CritTypes.NERVES_DAMAGED))
                         {
                             healthInfo += $"{_locale.Data.NervesCrit} ";
                         }
                     
-                        if (woundedPed.DamagedParts.HasFlag(DamageTypes.HEART_DAMAGED))
+                        if (woundedPed.Crits.HasFlag(CritTypes.HEART_DAMAGED))
                         {
                             healthInfo += $"{_locale.Data.HeartCrit} ";
                         }
                     
-                        if (woundedPed.DamagedParts.HasFlag(DamageTypes.LUNGS_DAMAGED))
+                        if (woundedPed.Crits.HasFlag(CritTypes.LUNGS_DAMAGED))
                         {
                             healthInfo += $"{_locale.Data.LungsCrit} ";
                         }
                     
-                        if (woundedPed.DamagedParts.HasFlag(DamageTypes.STOMACH_DAMAGED))
+                        if (woundedPed.Crits.HasFlag(CritTypes.STOMACH_DAMAGED))
                         {
                             healthInfo += $"{_locale.Data.StomachCrit} ";
                         }
                     
-                        if(woundedPed.DamagedParts.HasFlag(DamageTypes.GUTS_DAMAGED))
+                        if(woundedPed.Crits.HasFlag(CritTypes.GUTS_DAMAGED))
                         {
                             healthInfo += $"{_locale.Data.GutsCrit} ";
                         }
                     
-                        if (woundedPed.DamagedParts.HasFlag(DamageTypes.ARMS_DAMAGED))
+                        if (woundedPed.Crits.HasFlag(CritTypes.ARMS_DAMAGED))
                         {
                             healthInfo += $"{_locale.Data.ArmsCrit} ";
                         }
                     
-                        if (woundedPed.DamagedParts.HasFlag(DamageTypes.LEGS_DAMAGED))
+                        if (woundedPed.Crits.HasFlag(CritTypes.LEGS_DAMAGED))
                         {
                             healthInfo += $"{_locale.Data.LegsCrit} ";
                         }

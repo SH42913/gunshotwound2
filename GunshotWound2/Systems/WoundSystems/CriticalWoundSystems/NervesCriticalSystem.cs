@@ -11,7 +11,7 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
     {
         public NervesCriticalSystem()
         {
-            Damage = DamageTypes.NERVES_DAMAGED;
+            CurrentCrit = CritTypes.NERVES_DAMAGED;
         }
         
         protected override void ActionForPlayer(WoundedPedComponent pedComponent, int pedEntity)

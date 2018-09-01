@@ -76,14 +76,14 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
         }
 
         private void CreateLacerationWound(string position, int entity, 
-            float arteryChance, params DamageTypes?[] crits)
+            float arteryChance, params CritTypes?[] crits)
         {
             CreateWound($"{Locale.Data.LacerationWoundOn} {position}", entity, DamageMultiplier * 20f,
                 BleeedingMultiplier * 0.8f, PainMultiplier * 30f, arteryChance, crits);
         }
 
         private void CreateStabWound(string position, int entity, 
-            float arteryChance, params DamageTypes?[] crits)
+            float arteryChance, params CritTypes?[] crits)
         {
             CreateWound($"{Locale.Data.StabWoundOn} {position}", entity, DamageMultiplier * 30f,
                 BleeedingMultiplier * 0.6f, PainMultiplier * 40f, arteryChance, crits);
@@ -120,7 +120,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
         private void NeckCase3(int entity)
         {
-            CreateStabWound(Locale.Data.BodyPartNeck, entity, 0.7f, DamageTypes.NERVES_DAMAGED);
+            CreateStabWound(Locale.Data.BodyPartNeck, entity, 0.7f, CritTypes.NERVES_DAMAGED);
         }
 
 
@@ -137,7 +137,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
         private void UpperCase3(int entity)
         {
-            CreateStabWound(Locale.Data.BodyPartChest, entity, 0.5f, DamageTypes.HEART_DAMAGED, DamageTypes.LEGS_DAMAGED);
+            CreateStabWound(Locale.Data.BodyPartChest, entity, 0.5f, CritTypes.HEART_DAMAGED, CritTypes.LEGS_DAMAGED);
         }
 
         
@@ -149,12 +149,12 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
         private void LowerCase2(int entity)
         {
-            CreateLacerationWound(Locale.Data.BodyPartLowerBody, entity, 0.1f, DamageTypes.STOMACH_DAMAGED, DamageTypes.GUTS_DAMAGED);
+            CreateLacerationWound(Locale.Data.BodyPartLowerBody, entity, 0.1f, CritTypes.STOMACH_DAMAGED, CritTypes.GUTS_DAMAGED);
         }
 
         private void LowerCase3(int entity)
         {
-            CreateStabWound(Locale.Data.BodyPartLowerBody, entity, 0.3f, DamageTypes.GUTS_DAMAGED, DamageTypes.STOMACH_DAMAGED);
+            CreateStabWound(Locale.Data.BodyPartLowerBody, entity, 0.3f, CritTypes.GUTS_DAMAGED, CritTypes.STOMACH_DAMAGED);
         }
 
 
@@ -166,12 +166,12 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
         private void ArmCase2(int entity)
         {
-            CreateLacerationWound(Locale.Data.BodyPartArm, entity, 0.1f, DamageTypes.ARMS_DAMAGED);
+            CreateLacerationWound(Locale.Data.BodyPartArm, entity, 0.1f, CritTypes.ARMS_DAMAGED);
         }
 
         private void ArmCase3(int entity)
         {
-            CreateStabWound(Locale.Data.BodyPartArm, entity, 0.3f, DamageTypes.ARMS_DAMAGED);
+            CreateStabWound(Locale.Data.BodyPartArm, entity, 0.3f, CritTypes.ARMS_DAMAGED);
         }
 
 
@@ -183,12 +183,12 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
         private void LegCase2(int entity)
         {
-            CreateLacerationWound(Locale.Data.BodyPartLeg, entity, 0.3f, DamageTypes.LEGS_DAMAGED);
+            CreateLacerationWound(Locale.Data.BodyPartLeg, entity, 0.3f, CritTypes.LEGS_DAMAGED);
         }
 
         private void LegCase3(int entity)
         {
-            CreateStabWound(Locale.Data.BodyPartLeg, entity, 0.5f, DamageTypes.LEGS_DAMAGED);
+            CreateStabWound(Locale.Data.BodyPartLeg, entity, 0.5f, CritTypes.LEGS_DAMAGED);
         }
     }
 }

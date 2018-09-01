@@ -10,7 +10,7 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
     {
         public StomachCriticalSystem()
         {
-            Damage = DamageTypes.STOMACH_DAMAGED;
+            CurrentCrit = CritTypes.STOMACH_DAMAGED;
         }
         
         protected override void ActionForPlayer(WoundedPedComponent pedComponent, int pedEntity)
