@@ -13,8 +13,11 @@ namespace GunshotWound2.Systems.NpcSystems
     public class NpcFindSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
-        private EcsFilterSingle<MainConfig> _config;
         private EcsFilter<WoundedPedComponent, NpcMarkComponent> _npcs;
+        private EcsFilter<ForceWorldPedUpdateEvent> _worldUpdateRequests;
+        
+        private EcsFilterSingle<MainConfig> _config;
+        
         private Stopwatch _stopwatch = new Stopwatch();
         
         public void Run()
@@ -76,8 +79,13 @@ namespace GunshotWound2.Systems.NpcSystems
 
         private bool CheckNeedToUpdateWorldPeds()
         {
-            return _config.Data.NpcConfig.WorldPeds == null ||
-                   _config.Data.NpcConfig.LastCheckedPedIndex == _config.Data.NpcConfig.WorldPeds.Length - 1;
+            if (_worldUpdateRequests.EntitiesCount > 0 || _config.Data.NpcConfig.WorldPeds == null ||
+                _config.Data.NpcConfig.LastCheckedPedIndex == _config.Data.NpcConfig.WorldPeds.Length - 1)
+            {
+                _worldUpdateRequests.RemoveAllEntities();
+                return true;
+            }
+            return false;
         }
     }
 }

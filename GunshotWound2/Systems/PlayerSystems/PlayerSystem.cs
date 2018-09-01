@@ -1,6 +1,7 @@
 ﻿using System;
 using GTA;
 using GunshotWound2.Components.Events.GuiEvents;
+using GunshotWound2.Components.Events.NpcEvents;
 using GunshotWound2.Components.Events.PedEvents;
 using GunshotWound2.Components.Events.WoundEvents.ChangePainStateEvents;
 using GunshotWound2.Components.MarkComponents;
@@ -75,6 +76,7 @@ namespace GunshotWound2.Systems.PlayerSystems
                 else if(woundedPed.ThisPed.Health > _config.Data.PlayerConfig.MaximalHealth)
                 {
                     _ecsWorld.CreateEntityWith<InstantHealEvent>().PedEntity = _players.Entities[i];
+                    _ecsWorld.CreateEntityWith<ForceWorldPedUpdateEvent>();
                 }
             }
         }

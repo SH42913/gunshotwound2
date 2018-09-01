@@ -55,6 +55,7 @@
     <Compile Include="Components\Events\GuiEvents\ShowHealthStateEvent.cs" />
     <Compile Include="Components\Events\GuiEvents\ShowNotificationEvent.cs" />
     <Compile Include="Components\Events\NpcEvents\ConvertPedToWoundedPedEvent.cs" />
+    <Compile Include="Components\Events\NpcEvents\ForceWorldPedUpdateEvent.cs" />
     <Compile Include="Components\Events\PedEvents\ChangeWalkAnimationEvent.cs" />
     <Compile Include="Components\Events\PedEvents\InstantHealEvent.cs" />
     <Compile Include="Components\Events\PedEvents\SetPedToRagdollEvent.cs" />
