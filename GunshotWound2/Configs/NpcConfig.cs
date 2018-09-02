@@ -6,6 +6,9 @@ namespace GunshotWound2.Configs
     {
         public float AddingPedRange;
         public float RemovePedRange;
+
+        public int MinAccuracy;
+        public int MaxAccuracy;
         
         public bool ShowEnemyCriticalMessages;
         public int LowerStartHealth;
@@ -34,6 +37,7 @@ namespace GunshotWound2.Configs
                    $"BleedStop: {MaximalBleedStopSpeed}\n" +
                    $"StartHealth: {LowerStartHealth} - {UpperStartHealth}\n" +
                    $"MaximalPain: {LowerMaximalPain} - {UpperMaximalPain}\n" +
+                   $"Accuracy: {MinAccuracy} - {MaxAccuracy}" +
                    $"PainRecoverSpeed: {MaximalPainRecoverSpeed}\n";
         }
     }
