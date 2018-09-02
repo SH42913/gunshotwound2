@@ -793,7 +793,7 @@ namespace GunshotWound2
 
         private void IncreaseRange(float value)
         {
-            if(_mainConfig.NpcConfig.AddingPedRange <= MINIMAL_RANGE_FOR_WOUNDED_PEDS) return;
+            if(_mainConfig.NpcConfig.AddingPedRange < MINIMAL_RANGE_FOR_WOUNDED_PEDS) return;
             
             _mainConfig.NpcConfig.AddingPedRange += value;
             _mainConfig.NpcConfig.RemovePedRange = _mainConfig.NpcConfig.AddingPedRange * ADDING_TO_REMOVING_MULTIPLIER;
