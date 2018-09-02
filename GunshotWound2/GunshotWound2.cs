@@ -262,7 +262,9 @@ namespace GunshotWound2
                 LowerMaximalPain = 50,
                 UpperMaximalPain = 80,
                 MaximalPainRecoverSpeed = 1f,
-                UpperBoundForFindInMs = 10
+                UpperBoundForFindInMs = 10,
+                MinAccuracy = 5,
+                MaxAccuracy = 50
             };
 
             _mainConfig.WoundConfig = new WoundConfig
@@ -402,6 +404,16 @@ namespace GunshotWound2
                 
                     var maximalPain = float.Parse(painNode.Attribute("Upper").Value, CultureInfo.InvariantCulture);
                     _mainConfig.NpcConfig.UpperMaximalPain = maximalPain;
+                }
+
+                var accuracyNode = npcNode.Element("Accuracy");
+                if (accuracyNode != null)
+                {
+                    var minAcc = int.Parse(accuracyNode.Attribute("Lower").Value);
+                    _mainConfig.NpcConfig.MinAccuracy = minAcc;
+                
+                    var maxAcc = int.Parse(accuracyNode.Attribute("Upper").Value);
+                    _mainConfig.NpcConfig.MaxAccuracy = maxAcc;
                 }
 
                 var painSpd = float.Parse(npcNode.Element("PainRecoverySpeed").Value, CultureInfo.InvariantCulture);
@@ -793,7 +805,7 @@ namespace GunshotWound2
 
         private void IncreaseRange(float value)
         {
-            if(_mainConfig.NpcConfig.AddingPedRange <= MINIMAL_RANGE_FOR_WOUNDED_PEDS) return;
+            if(_mainConfig.NpcConfig.AddingPedRange < MINIMAL_RANGE_FOR_WOUNDED_PEDS) return;
             
             _mainConfig.NpcConfig.AddingPedRange += value;
             _mainConfig.NpcConfig.RemovePedRange = _mainConfig.NpcConfig.AddingPedRange * ADDING_TO_REMOVING_MULTIPLIER;

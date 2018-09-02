@@ -1,5 +1,6 @@
 ﻿using System;
 using GTA;
+using GunshotWound2.Components.Events.GuiEvents;
 using GunshotWound2.Components.Events.NpcEvents;
 using GunshotWound2.Components.MarkComponents;
 using GunshotWound2.Components.StateComponents;
@@ -56,6 +57,13 @@ namespace GunshotWound2.Systems.NpcSystems
                 woundedPed.StopBleedingAmount = Random.NextFloat(
                     _config.Data.NpcConfig.MaximalBleedStopSpeed/2,
                     _config.Data.NpcConfig.MaximalBleedStopSpeed);
+
+                if (_config.Data.NpcConfig.MinAccuracy > 0 && _config.Data.NpcConfig.MaxAccuracy > 0)
+                {
+                    int old = pedToConvert.Accuracy;
+                    pedToConvert.Accuracy = Random.Next(_config.Data.NpcConfig.MinAccuracy, _config.Data.NpcConfig.MaxAccuracy + 1);
+                    SendDebug($"Ped got new accuracy {pedToConvert.Accuracy} where old was {old}");
+                }
                 woundedPed.DefaultAccuracy = pedToConvert.Accuracy;
                 
                 woundedPed.PainMeter = 0;
@@ -70,6 +78,15 @@ namespace GunshotWound2.Systems.NpcSystems
                 pedToConvert.AddBlip();       
 #endif
             }
+        }
+
+        private void SendDebug(string message)
+        {
+#if DEBUG
+            var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
+            notification.Level = NotifyLevels.DEBUG;
+            notification.StringToShow = message;
+#endif
         }
     }
 }
