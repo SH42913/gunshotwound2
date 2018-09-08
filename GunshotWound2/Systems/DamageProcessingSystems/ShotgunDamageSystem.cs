@@ -21,7 +21,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
             PainMultiplier = 1.2f;
 
             HelmetSafeChance = 0.5f;
-            ArmorDamage = 10;
+            ArmorDamage = 6;
             CritChance = 0.6f;
             
             LoadMultsFromConfig();

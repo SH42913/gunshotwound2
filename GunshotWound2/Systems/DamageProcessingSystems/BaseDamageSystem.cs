@@ -49,8 +49,9 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 #if DEBUG
             GunshotWound2.LastSystem = nameof(BaseDamageSystem<T>);
 #endif
-            
-            for (int damageIndex = 0; damageIndex < HitComponents.EntitiesCount; damageIndex++)
+
+            int maxCount = HitComponents.EntitiesCount;
+            for (int damageIndex = 0; damageIndex < maxCount; damageIndex++)
             {
                 var damage = HitComponents.Components1[damageIndex];
                 var pedEntity = damage.PedEntity;
@@ -195,7 +196,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
             if(!woundConfig.DamageSystemConfigs.ContainsKey(WeaponClass)) return;
             
             var multsArray = woundConfig.DamageSystemConfigs[WeaponClass];
-            if(multsArray.Length < 4) return;
+            if(multsArray.Length < 5) return;
             
             var damage = multsArray[0];
             if (damage.HasValue) DamageMultiplier = damage.Value;
@@ -208,6 +209,9 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
             var critChance = multsArray[3];
             if (critChance.HasValue) CritChance = critChance.Value;
+
+            var armorDamage = multsArray[4];
+            if (armorDamage.HasValue) ArmorDamage = (int) armorDamage.Value;
         }
 
         private void SendDebug(string message)

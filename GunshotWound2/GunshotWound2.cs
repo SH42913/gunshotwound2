@@ -263,8 +263,10 @@ namespace GunshotWound2
                 UpperMaximalPain = 80,
                 MaximalPainRecoverSpeed = 1f,
                 UpperBoundForFindInMs = 10,
-                MinAccuracy = 5,
-                MaxAccuracy = 50
+                MinAccuracy = 10,
+                MaxAccuracy = 50,
+                MinShootRate = 10,
+                MaxShootRate = 50
             };
 
             _mainConfig.WoundConfig = new WoundConfig
@@ -507,7 +509,7 @@ namespace GunshotWound2
 
                 foreach (XElement element in weaponNode.Elements())
                 {
-                    var mults = new float?[4];
+                    var mults = new float?[5];
 
                     var damageString = element.Attribute("DamageMult");
                     mults[0] = damageString != null
@@ -527,6 +529,11 @@ namespace GunshotWound2
                     var critString = element.Attribute("CritChance");
                     mults[3] = critString != null
                         ? (float?) float.Parse(critString.Value, CultureInfo.InvariantCulture)
+                        : null;
+                    
+                    var armorString = element.Attribute("ArmorDamage");
+                    mults[4] = armorString != null
+                        ? (float?) float.Parse(armorString.Value, CultureInfo.InvariantCulture)
                         : null;
                     
                     dictionary.Add(element.Name.LocalName, mults);

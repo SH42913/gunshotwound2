@@ -17,7 +17,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
             AvulsiveWoundWeight = 2;
 
             HelmetSafeChance = 0.7f;
-            ArmorDamage = 5;
+            ArmorDamage = 3;
             CanPenetrateArmor = true;
             CritChance = 0.5f;
             

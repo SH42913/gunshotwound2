@@ -82,15 +82,15 @@ namespace GunshotWound2.Systems.GuiSystems
                     var armorPercent = woundedPed.Armor / 100f;
                     if (armorPercent > 0)
                     {
-                        if (armorPercent > 0.6f)
+                        if (armorPercent > 0.8f)
                         {
                             SendMessage($"~g~{_locale.Data.ArmorLooksGreat} ~s~");
                         }
-                        else if (armorPercent > 0.4f)
+                        else if (armorPercent > 0.5f)
                         {
                             SendMessage($"~y~{_locale.Data.ScratchesOnArmor} ~s~");
                         }
-                        else if (armorPercent > 0.2f)
+                        else if (armorPercent > 0.15f)
                         {
                             SendMessage($"~o~{_locale.Data.DentsOnArmor} ~s~");
                         }

@@ -20,7 +20,7 @@ namespace GunshotWound2.Systems.EffectSystems
 #if DEBUG
             GunshotWound2.LastSystem = nameof(RagdollSystem);
 #endif
-
+            int maxCount = _requests.EntitiesCount;
             for (int i = 0; i < _requests.EntitiesCount; i++)
             {
                 int pedEntity = _requests.Components1[i].PedEntity;

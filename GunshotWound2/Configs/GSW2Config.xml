@@ -48,7 +48,7 @@
 		<!-- All NPCs will get accuracy between Min and Max
 		 If you want to use default game accuracy, set both to 0-->
 
-		<ShootRate Min="5" Max="20"/>
+		<ShootRate Min="10" Max="50"/>
 		<!-- All NPCs will get ShootRate between Min and Max
 		 If you want to use default game ShootRate, set both to 0-->
 		
@@ -112,10 +112,10 @@
 	</Wounds>
     
     <Weapons>
-		<SmallCaliber DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.5"/>
-		<MediumCaliber DamageMult="1.2" BleedingMult="1.3" PainMult="1.2" CritChance="0.7"/>
-		<HighCaliber DamageMult="1.3" BleedingMult="1.5" PainMult="1.5" CritChance="0.8"/>
-		<Shotgun DamageMult="0.7" BleedingMult="1.1" PainMult="1.2" CritChance="0.6"/>
+		<SmallCaliber DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.5" ArmorDamage="3"/>
+		<MediumCaliber DamageMult="1.2" BleedingMult="1.3" PainMult="1.2" CritChance="0.7" ArmorDamage="6"/>
+		<HighCaliber DamageMult="1.3" BleedingMult="1.5" PainMult="1.5" CritChance="0.8" ArmorDamage="9"/>
+		<Shotgun DamageMult="0.7" BleedingMult="1.1" PainMult="1.2" CritChance="0.6" ArmorDamage="6"/>
 		
 		<LightImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.2"/>
 		<HeavyImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.7"/>
