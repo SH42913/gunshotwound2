@@ -256,8 +256,8 @@ namespace GunshotWound2
                 AddingPedRange = 50f,
                 RemovePedRange = 100f,
                 ShowEnemyCriticalMessages = true,
-                LowerStartHealth = 50,
-                UpperStartHealth = 100,
+                MinStartHealth = 50,
+                MaxStartHealth = 100,
                 MaximalBleedStopSpeed = 0.001f,
                 LowerMaximalPain = 50,
                 UpperMaximalPain = 80,
@@ -389,31 +389,41 @@ namespace GunshotWound2
                 var healthNode = npcNode.Element("StartHealth");
                 if (healthNode != null)
                 {
-                    var minimalHealth = healthNode.Attribute("Lower").Value;
-                    _mainConfig.NpcConfig.LowerStartHealth = int.Parse(minimalHealth);
+                    var minimalHealth = healthNode.Attribute("Min").Value;
+                    _mainConfig.NpcConfig.MinStartHealth = int.Parse(minimalHealth);
 
-                    var maximalHealth = healthNode.Attribute("Upper").Value;
-                    _mainConfig.NpcConfig.UpperStartHealth = int.Parse(maximalHealth);
+                    var maximalHealth = healthNode.Attribute("Max").Value;
+                    _mainConfig.NpcConfig.MaxStartHealth = int.Parse(maximalHealth);
                 }
 
                 var painNode = npcNode.Element("MaximalPain");
                 if (painNode != null)
                 {
-                    var minimalPain = float.Parse(painNode.Attribute("Lower").Value, CultureInfo.InvariantCulture);
+                    var minimalPain = float.Parse(painNode.Attribute("Min").Value, CultureInfo.InvariantCulture);
                     _mainConfig.NpcConfig.LowerMaximalPain = minimalPain;
                 
-                    var maximalPain = float.Parse(painNode.Attribute("Upper").Value, CultureInfo.InvariantCulture);
+                    var maximalPain = float.Parse(painNode.Attribute("Max").Value, CultureInfo.InvariantCulture);
                     _mainConfig.NpcConfig.UpperMaximalPain = maximalPain;
                 }
 
                 var accuracyNode = npcNode.Element("Accuracy");
                 if (accuracyNode != null)
                 {
-                    var minAcc = int.Parse(accuracyNode.Attribute("Lower").Value);
+                    var minAcc = int.Parse(accuracyNode.Attribute("Min").Value);
                     _mainConfig.NpcConfig.MinAccuracy = minAcc;
                 
-                    var maxAcc = int.Parse(accuracyNode.Attribute("Upper").Value);
+                    var maxAcc = int.Parse(accuracyNode.Attribute("Max").Value);
                     _mainConfig.NpcConfig.MaxAccuracy = maxAcc;
+                }
+
+                var rateNode = npcNode.Element("ShootRate");
+                if (rateNode != null)
+                {
+                    var minRate = int.Parse(rateNode.Attribute("Min").Value);
+                    _mainConfig.NpcConfig.MinShootRate = minRate;
+                
+                    var maxRate = int.Parse(rateNode.Attribute("Max").Value);
+                    _mainConfig.NpcConfig.MaxShootRate = maxRate;
                 }
 
                 var painSpd = float.Parse(npcNode.Element("PainRecoverySpeed").Value, CultureInfo.InvariantCulture);

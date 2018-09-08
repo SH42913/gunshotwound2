@@ -9,10 +9,13 @@ namespace GunshotWound2.Configs
 
         public int MinAccuracy;
         public int MaxAccuracy;
+
+        public int MinShootRate;
+        public int MaxShootRate;
         
         public bool ShowEnemyCriticalMessages;
-        public int LowerStartHealth;
-        public int UpperStartHealth;
+        public int MinStartHealth;
+        public int MaxStartHealth;
         public float MaximalBleedStopSpeed;
         
         public float LowerMaximalPain;
@@ -35,10 +38,11 @@ namespace GunshotWound2.Configs
                    $"RemovePedRange: {RemovePedRange}\n" +
                    $"EnemyCritical: {ShowEnemyCriticalMessages}\n" +
                    $"BleedStop: {MaximalBleedStopSpeed}\n" +
-                   $"StartHealth: {LowerStartHealth} - {UpperStartHealth}\n" +
+                   $"StartHealth: {MinStartHealth} - {MaxStartHealth}\n" +
                    $"MaximalPain: {LowerMaximalPain} - {UpperMaximalPain}\n" +
-                   $"Accuracy: {MinAccuracy} - {MaxAccuracy}" +
-                   $"PainRecoverSpeed: {MaximalPainRecoverSpeed}\n";
+                   $"Accuracy: {MinAccuracy} - {MaxAccuracy}\n" +
+                   $"ShootRate: {MinShootRate} - {MaxShootRate}\n" +
+                   $"PainRecoverSpeed: {MaximalPainRecoverSpeed}";
         }
     }
 }

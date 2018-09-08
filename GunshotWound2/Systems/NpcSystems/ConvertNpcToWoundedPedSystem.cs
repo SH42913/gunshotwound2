@@ -45,8 +45,8 @@ namespace GunshotWound2.Systems.NpcSystems
                 woundedPed.IsMale = pedToConvert.Gender == Gender.Male;
 
                 var newHealth = Random.Next(
-                    _config.Data.NpcConfig.LowerStartHealth,
-                    _config.Data.NpcConfig.UpperStartHealth);
+                    _config.Data.NpcConfig.MinStartHealth,
+                    _config.Data.NpcConfig.MaxStartHealth);
                 woundedPed.Health = newHealth;
                 woundedPed.Armor = pedToConvert.Armor;
                 woundedPed.ThisPed.MaxHealth = newHealth;
@@ -63,6 +63,10 @@ namespace GunshotWound2.Systems.NpcSystems
                     int old = pedToConvert.Accuracy;
                     pedToConvert.Accuracy = Random.Next(_config.Data.NpcConfig.MinAccuracy, _config.Data.NpcConfig.MaxAccuracy + 1);
                     SendDebug($"Ped got new accuracy {pedToConvert.Accuracy} where old was {old}");
+                }
+                if (_config.Data.NpcConfig.MinShootRate > 0 && _config.Data.NpcConfig.MaxShootRate > 0)
+                {
+                    pedToConvert.ShootRate = Random.Next(_config.Data.NpcConfig.MinShootRate, _config.Data.NpcConfig.MaxShootRate);
                 }
                 woundedPed.DefaultAccuracy = pedToConvert.Accuracy;
                 
