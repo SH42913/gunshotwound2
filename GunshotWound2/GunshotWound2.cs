@@ -126,6 +126,9 @@ namespace GunshotWound2
                 UI.Notify("~r~GSW2 error in runtime:\n" +
                           $"{exception.Message}");
                 _exceptionInRuntime = true;
+#if DEBUG
+                UI.Notify("Last system is " + LastSystem);
+#endif
             }
         }
 
@@ -217,14 +220,15 @@ namespace GunshotWound2
 
 #if DEBUG
             string debugSubtitles = $"ActiveEntities: {_ecsWorld.GetStats().ActiveEntities}\n" +
-                                    $"Peds: {_ecsWorld.GetFilter<EcsFilter<WoundedPedComponent>>().EntitiesCount}\n" +
-                                    $"Ms: {_mainCycleStopwatch.ElapsedMilliseconds}";
+                                    $"Peds: {_ecsWorld.GetFilter<EcsFilter<WoundedPedComponent>>().EntitiesCount}";
             UI.ShowSubtitle(debugSubtitles);
 #endif
         }
 
         private void LoadDefaultConfigs()
         {
+            _mainConfig.Language = "EN";
+            
             _mainConfig.CheckKey = Keys.L;
             _mainConfig.HealKey = Keys.K;
             _mainConfig.HelmetKey = Keys.J;
@@ -265,7 +269,8 @@ namespace GunshotWound2
                 MinAccuracy = 10,
                 MaxAccuracy = 50,
                 MinShootRate = 10,
-                MaxShootRate = 50
+                MaxShootRate = 50,
+                Targets = GswTargets.ALL
             };
 
             _mainConfig.WoundConfig = new WoundConfig
@@ -362,38 +367,25 @@ namespace GunshotWound2
             var playerNode = doc.Element("Player");
             if (playerNode != null)
             {
-                var woundedPlayerEnabled = playerNode.Element("WoundedPlayerEnabled").Value;
-                _mainConfig.PlayerConfig.WoundedPlayerEnabled = bool.Parse(woundedPlayerEnabled);
+                _mainConfig.PlayerConfig.WoundedPlayerEnabled = playerNode.Element("GSWPlayerEnabled").GetBool();
 
-                var wyd = bool.Parse(playerNode.Element("WYDCompatibility").Value);
-                if (!wyd)
-                {
-                    _mainConfig.PlayerConfig.MinimalHealth = 0;
-                    _mainConfig.PlayerConfig.MaximalHealth = 99;
-                }
-                else
+                if (playerNode.Element("WYDCompatibility").GetBool())
                 {
                     _mainConfig.PlayerConfig.MinimalHealth = 1700;
                     _mainConfig.PlayerConfig.MaximalHealth = 1799;
                 }
+                else
+                {
+                    _mainConfig.PlayerConfig.MinimalHealth = 0;
+                    _mainConfig.PlayerConfig.MaximalHealth = 99;
+                }
 
-                var maximalPain = float.Parse(playerNode.Element("MaximalPain").Value, CultureInfo.InvariantCulture);
-                _mainConfig.PlayerConfig.MaximalPain = maximalPain;
-
-                var painSpd = float.Parse(playerNode.Element("PainRecoverySpeed").Value, CultureInfo.InvariantCulture);
-                _mainConfig.PlayerConfig.PainRecoverSpeed = painSpd;
-
-                var bleedSpd = float.Parse(playerNode.Element("BleedHealSpeed").Value, CultureInfo.InvariantCulture);
-                _mainConfig.PlayerConfig.BleedHealingSpeed = bleedSpd;
-
-                var policeForget = bool.Parse(playerNode.Element("PoliceCanForget").Value);
-                _mainConfig.PlayerConfig.PoliceCanForgetYou = policeForget;
-
-                var canDropWeapon = bool.Parse(playerNode.Element("CanDropWeapon").Value);
-                _mainConfig.PlayerConfig.CanDropWeapon = canDropWeapon;
-
-                var adrenalineSlowMo = float.Parse(playerNode.Element("MaximalSlowMo").Value, CultureInfo.InvariantCulture);
-                _mainConfig.PlayerConfig.MaximalSlowMo = adrenalineSlowMo;
+                _mainConfig.PlayerConfig.MaximalPain = playerNode.Element("MaximalPain").GetFloat();
+                _mainConfig.PlayerConfig.PainRecoverSpeed = playerNode.Element("PainRecoverySpeed").GetFloat();
+                _mainConfig.PlayerConfig.BleedHealingSpeed = playerNode.Element("BleedHealSpeed").GetFloat();
+                _mainConfig.PlayerConfig.PoliceCanForgetYou = playerNode.Element("PoliceCanForget").GetBool();
+                _mainConfig.PlayerConfig.CanDropWeapon = playerNode.Element("CanDropWeapon").GetBool();
+                _mainConfig.PlayerConfig.MaximalSlowMo = playerNode.Element("MaximalSlowMo").GetFloat();
 
                 var animationNode = playerNode.Element("Animations");
                 _mainConfig.PlayerConfig.NoPainAnim = animationNode.Attribute("NoPain").Value;
@@ -406,58 +398,76 @@ namespace GunshotWound2
             var npcNode = doc.Element("Peds");
             if (npcNode != null)
             {
-                var woundedPedsRange = npcNode.Element("StartWoundedPedRange").Value;
-                _mainConfig.NpcConfig.AddingPedRange = float.Parse(woundedPedsRange, CultureInfo.InvariantCulture);
+                _mainConfig.NpcConfig.AddingPedRange = npcNode.Element("GSWScanRange").GetFloat();
                 _mainConfig.NpcConfig.RemovePedRange = _mainConfig.NpcConfig.AddingPedRange * ADDING_TO_REMOVING_MULTIPLIER;
 
-                var healthNode = npcNode.Element("StartHealth");
-                if (healthNode != null)
-                {
-                    var minimalHealth = healthNode.Attribute("Min").Value;
-                    _mainConfig.NpcConfig.MinStartHealth = int.Parse(minimalHealth);
+                _mainConfig.NpcConfig.ShowEnemyCriticalMessages = npcNode.Element("CriticalMessages").GetBool();
 
-                    var maximalHealth = healthNode.Attribute("Max").Value;
-                    _mainConfig.NpcConfig.MaxStartHealth = int.Parse(maximalHealth);
+                var targetsNode = npcNode.Element("Targets");
+                bool all = targetsNode.GetBool("ALL");
+                GswTargets targets = 0;
+                if (all)
+                {
+                    _mainConfig.NpcConfig.Targets = GswTargets.ALL;
                 }
+                else
+                {
+                    if (targetsNode.GetBool("COMPANION"))
+                    {
+                        targets = targets | GswTargets.COMPANION;
+                    }
+                    
+                    if (targetsNode.GetBool("DISLIKE"))
+                    {
+                        targets = targets | GswTargets.DISLIKE;
+                    }
+                    
+                    if (targetsNode.GetBool("HATE"))
+                    {
+                        targets = targets | GswTargets.HATE;
+                    }
+                    
+                    if (targetsNode.GetBool("LIKE"))
+                    {
+                        targets = targets | GswTargets.LIKE;
+                    }
+                    
+                    if (targetsNode.GetBool("NEUTRAL"))
+                    {
+                        targets = targets | GswTargets.NEUTRAL;
+                    }
+                    
+                    if (targetsNode.GetBool("PEDESTRIAN"))
+                    {
+                        targets = targets | GswTargets.PEDESTRIAN;
+                    }
+                    
+                    if (targetsNode.GetBool("RESPECT"))
+                    {
+                        targets = targets | GswTargets.RESPECT;
+                    }
+
+                    _mainConfig.NpcConfig.Targets = targets;
+                }
+
+                var healthNode = npcNode.Element("PedHealth");
+                _mainConfig.NpcConfig.MinStartHealth = healthNode.GetInt("Min");
+                _mainConfig.NpcConfig.MaxStartHealth = healthNode.GetInt("Max");
 
                 var painNode = npcNode.Element("MaximalPain");
-                if (painNode != null)
-                {
-                    var minimalPain = float.Parse(painNode.Attribute("Min").Value, CultureInfo.InvariantCulture);
-                    _mainConfig.NpcConfig.LowerMaximalPain = minimalPain;
-                
-                    var maximalPain = float.Parse(painNode.Attribute("Max").Value, CultureInfo.InvariantCulture);
-                    _mainConfig.NpcConfig.UpperMaximalPain = maximalPain;
-                }
+                _mainConfig.NpcConfig.LowerMaximalPain = painNode.GetFloat("Min");
+                _mainConfig.NpcConfig.UpperMaximalPain = painNode.GetFloat("Max");
 
                 var accuracyNode = npcNode.Element("Accuracy");
-                if (accuracyNode != null)
-                {
-                    var minAcc = int.Parse(accuracyNode.Attribute("Min").Value);
-                    _mainConfig.NpcConfig.MinAccuracy = minAcc;
-                
-                    var maxAcc = int.Parse(accuracyNode.Attribute("Max").Value);
-                    _mainConfig.NpcConfig.MaxAccuracy = maxAcc;
-                }
+                _mainConfig.NpcConfig.MinAccuracy = accuracyNode.GetInt("Min");
+                _mainConfig.NpcConfig.MaxAccuracy = accuracyNode.GetInt("Max");
 
                 var rateNode = npcNode.Element("ShootRate");
-                if (rateNode != null)
-                {
-                    var minRate = int.Parse(rateNode.Attribute("Min").Value);
-                    _mainConfig.NpcConfig.MinShootRate = minRate;
-                
-                    var maxRate = int.Parse(rateNode.Attribute("Max").Value);
-                    _mainConfig.NpcConfig.MaxShootRate = maxRate;
-                }
+                _mainConfig.NpcConfig.MinShootRate = rateNode.GetInt("Min");
+                _mainConfig.NpcConfig.MaxShootRate = rateNode.GetInt("Max");
 
-                var painSpd = float.Parse(npcNode.Element("PainRecoverySpeed").Value, CultureInfo.InvariantCulture);
-                _mainConfig.NpcConfig.MaximalPainRecoverSpeed = painSpd;
-
-                var bleedSpd = float.Parse(npcNode.Element("BleedHealSpeed").Value, CultureInfo.InvariantCulture);
-                _mainConfig.NpcConfig.MaximalBleedStopSpeed = bleedSpd;
-
-                var messages = bool.Parse(npcNode.Element("CriticalMessages").Value);
-                _mainConfig.NpcConfig.ShowEnemyCriticalMessages = messages;
+                _mainConfig.NpcConfig.MaximalPainRecoverSpeed = npcNode.Element("PainRecoverySpeed").GetFloat();
+                _mainConfig.NpcConfig.MaximalBleedStopSpeed = npcNode.Element("BleedHealSpeed").GetFloat();
 
                 var animationNode = npcNode.Element("Animations");
                 _mainConfig.NpcConfig.NoPainAnim = animationNode.Attribute("NoPain").Value;
@@ -466,61 +476,32 @@ namespace GunshotWound2
                 _mainConfig.NpcConfig.IntensePainAnim = animationNode.Attribute("IntensePain").Value;
             }
 
-            _configReason = "Wounds section";
-            var woundsNode = doc.Element("Wounds");
-            if (woundsNode != null)
-            {
-                var moveRate = woundsNode.Element("MoveRateOnFullPain").Value;
-                _mainConfig.WoundConfig.MoveRateOnFullPain = float.Parse(moveRate, CultureInfo.InvariantCulture);
-
-                var nervesDamage = woundsNode.Element("RealisticNervesDamage").Value;
-                _mainConfig.WoundConfig.RealisticNervesDamage = bool.Parse(nervesDamage);
-
-                var damageMult = woundsNode.Element("OverallDamageMult").Value;
-                _mainConfig.WoundConfig.DamageMultiplier = float.Parse(damageMult, CultureInfo.InvariantCulture);
-
-                var damageDev = woundsNode.Element("DamageDeviation").Value;
-                _mainConfig.WoundConfig.DamageDeviation = float.Parse(damageDev, CultureInfo.InvariantCulture);
-
-                var painMult = woundsNode.Element("OverallPainMult").Value;
-                _mainConfig.WoundConfig.PainMultiplier = float.Parse(painMult, CultureInfo.InvariantCulture);
-
-                var painDev = woundsNode.Element("PainDeviation").Value;
-                _mainConfig.WoundConfig.PainDeviation = float.Parse(painDev, CultureInfo.InvariantCulture);
-
-                var bleedMult = woundsNode.Element("OverallBleedingMult").Value;
-                _mainConfig.WoundConfig.BleedingMultiplier = float.Parse(bleedMult, CultureInfo.InvariantCulture);
-
-                var bleedDev = woundsNode.Element("BleedingDeviation").Value;
-                _mainConfig.WoundConfig.BleedingDeviation = float.Parse(bleedDev, CultureInfo.InvariantCulture);
-
-                var ragdollOnPain = woundsNode.Element("RagdollOnPainfulWound").Value;
-                _mainConfig.WoundConfig.RagdollOnPainfulWound = bool.Parse(ragdollOnPain);
-
-                var painfulWoundValue = woundsNode.Element("PainfulWoundValue").Value;
-                _mainConfig.WoundConfig.PainfulWoundValue = float.Parse(painfulWoundValue, CultureInfo.InvariantCulture);
-
-                var minimalChance = woundsNode.Element("MinimalChanceForArmorSave").Value;
-                _mainConfig.WoundConfig.MinimalChanceForArmorSave = float.Parse(minimalChance, CultureInfo.InvariantCulture);
-            }
-
             _configReason = "Notifications section";
             var noteNode = doc.Element("Notifications");
             if (noteNode != null)
             {
-                _mainConfig.Language = noteNode.Element("Language").Value;
-                
-                var commonString = noteNode.Element("Common").Value;
-                _mainConfig.CommonMessages = bool.Parse(commonString);
-                
-                var warningString = noteNode.Element("Warning").Value;
-                _mainConfig.WarningMessages = bool.Parse(warningString);
-                
-                var alertString = noteNode.Element("Alert").Value;
-                _mainConfig.AlertMessages = bool.Parse(alertString);
-                
-                var emergencyString = noteNode.Element("Emergency").Value;
-                _mainConfig.EmergencyMessages = bool.Parse(emergencyString);
+                _mainConfig.Language = noteNode.Element("Language").Attribute("Value").Value;
+                _mainConfig.CommonMessages = noteNode.Element("Common").GetBool();
+                _mainConfig.WarningMessages = noteNode.Element("Warning").GetBool();
+                _mainConfig.AlertMessages = noteNode.Element("Alert").GetBool();
+                _mainConfig.EmergencyMessages = noteNode.Element("Emergency").GetBool();
+            }
+
+            _configReason = "Wounds section";
+            var woundsNode = doc.Element("Wounds");
+            if (woundsNode != null)
+            {
+                _mainConfig.WoundConfig.MoveRateOnFullPain = woundsNode.Element("MoveRateOnFullPain").GetFloat();
+                _mainConfig.WoundConfig.RealisticNervesDamage = woundsNode.Element("RealisticNervesDamage").GetBool();
+                _mainConfig.WoundConfig.DamageMultiplier = woundsNode.Element("OverallDamageMult").GetFloat();
+                _mainConfig.WoundConfig.DamageDeviation = woundsNode.Element("DamageDeviation").GetFloat();
+                _mainConfig.WoundConfig.PainMultiplier = woundsNode.Element("OverallPainMult").GetFloat();
+                _mainConfig.WoundConfig.PainDeviation = woundsNode.Element("PainDeviation").GetFloat();
+                _mainConfig.WoundConfig.BleedingMultiplier = woundsNode.Element("OverallBleedingMult").GetFloat();
+                _mainConfig.WoundConfig.BleedingDeviation = woundsNode.Element("BleedingDeviation").GetFloat();
+                _mainConfig.WoundConfig.RagdollOnPainfulWound = woundsNode.Element("RagdollOnPainfulWound").GetBool();
+                _mainConfig.WoundConfig.PainfulWoundValue = woundsNode.Element("PainfulWoundValue").GetFloat();
+                _mainConfig.WoundConfig.MinimalChanceForArmorSave = woundsNode.Element("MinimalChanceForArmorSave").GetFloat();
             }
 
             _configReason = "Weapons section";
@@ -942,6 +923,33 @@ namespace GunshotWound2
             for (var i = 0; i < filter.EntitiesCount; i++) {
                 world.RemoveEntity (filter.Entities[i]);
             }
+        }
+
+        public static bool GetBool(this XElement node, string attributeName = "Value")
+        {
+            string value = string.IsNullOrEmpty(attributeName) 
+                ? node.Value 
+                : node.Attribute(attributeName).Value;
+            
+            return !string.IsNullOrEmpty(value) && bool.Parse(value);
+        }
+
+        public static int GetInt(this XElement node, string attributeName = "Value")
+        {
+            string value = string.IsNullOrEmpty(attributeName) 
+                ? node.Value 
+                : node.Attribute(attributeName).Value;
+            
+            return int.Parse(value);
+        }
+
+        public static float GetFloat(this XElement node, string attributeName = "Value")
+        {
+            string value = string.IsNullOrEmpty(attributeName) 
+                ? node.Value 
+                : node.Attribute(attributeName).Value;
+            
+            return float.Parse(value, CultureInfo.InvariantCulture);
         }
     }
 }

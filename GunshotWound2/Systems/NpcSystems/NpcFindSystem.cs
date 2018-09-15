@@ -32,11 +32,12 @@ namespace GunshotWound2.Systems.NpcSystems
         private void FindPeds()
         {
             float addRange = _config.Data.NpcConfig.AddingPedRange;
-            if(addRange < GunshotWound2.MINIMAL_RANGE_FOR_WOUNDED_PEDS) return;
+            if(addRange <= GunshotWound2.MINIMAL_RANGE_FOR_WOUNDED_PEDS) return;
+            Ped playerPed = Game.Player.Character;
 
             if (CheckNeedToUpdateWorldPeds())
             {
-                _config.Data.NpcConfig.WorldPeds = World.GetNearbyPeds(Game.Player.Character, addRange);
+                _config.Data.NpcConfig.WorldPeds = World.GetNearbyPeds(playerPed, addRange);
                 _config.Data.NpcConfig.LastCheckedPedIndex = 0;
                 _forceUpdates.RemoveAllEntities();
             }
@@ -52,7 +53,8 @@ namespace GunshotWound2.Systems.NpcSystems
                 _config.Data.NpcConfig.LastCheckedPedIndex = worldPedIndex;
                 Ped pedToCheck = allPeds[worldPedIndex];
                 
-                if(pedToCheck.IsDead || !pedToCheck.IsHuman) continue;
+                if(!pedToCheck.IsHuman || pedToCheck.IsDead) continue;
+                if(!PedInTargetList(playerPed, pedToCheck)) continue;
                 if(CheckWoundedPedExist(pedToCheck)) continue;
                 
                 pedsToAdd.Add(pedToCheck);
@@ -61,6 +63,52 @@ namespace GunshotWound2.Systems.NpcSystems
 
             if(pedsToAdd.Count <= 0) return;
             _ecsWorld.CreateEntityWith<ConvertPedToWoundedPedEvent>().PedsInRange = pedsToAdd.ToArray();
+        }
+
+        private bool PedInTargetList(Ped playerPed, Ped pedToCheck)
+        {
+            var targets = _config.Data.NpcConfig.Targets;
+            if (targets.HasFlag(GswTargets.ALL)) return true;
+            
+            var pedToPlayerRelationship = pedToCheck.GetRelationshipWithPed(playerPed);
+            var playerToPedRelationship = playerPed.GetRelationshipWithPed(pedToCheck);
+            
+            if (!targets.HasFlag(GswTargets.PEDESTRIAN))
+            {
+                if(pedToPlayerRelationship == Relationship.Pedestrians || playerToPedRelationship == Relationship.Pedestrians) return false;
+            }
+            
+            if (!targets.HasFlag(GswTargets.COMPANION))
+            {
+                if(pedToPlayerRelationship == Relationship.Companion || playerToPedRelationship == Relationship.Companion) return false;
+            }
+            
+            if (!targets.HasFlag(GswTargets.NEUTRAL))
+            {
+                if(pedToPlayerRelationship == Relationship.Neutral || playerToPedRelationship == Relationship.Neutral) return false;
+            }
+            
+            if (!targets.HasFlag(GswTargets.DISLIKE))
+            {
+                if(pedToPlayerRelationship == Relationship.Dislike || playerToPedRelationship == Relationship.Dislike) return false;
+            }
+            
+            if (!targets.HasFlag(GswTargets.HATE))
+            {
+                if(pedToPlayerRelationship == Relationship.Hate || playerToPedRelationship == Relationship.Hate) return false;
+            }
+            
+            if (!targets.HasFlag(GswTargets.LIKE))
+            {
+                if(pedToPlayerRelationship == Relationship.Like || playerToPedRelationship == Relationship.Like) return false;
+            }
+            
+            if (!targets.HasFlag(GswTargets.RESPECT))
+            {
+                if(pedToPlayerRelationship == Relationship.Respect || playerToPedRelationship == Relationship.Respect) return false;
+            }
+
+            return true;
         }
 
         private bool CheckWoundedPedExist(Ped pedToCheck)

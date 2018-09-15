@@ -1,11 +1,27 @@
-﻿using GTA;
+﻿using System;
+using GTA;
 
 namespace GunshotWound2.Configs
 {
+    [Flags]
+    public enum GswTargets
+    {
+        COMPANION = 1,
+        DISLIKE = 2,
+        HATE = 4,
+        LIKE = 8,
+        NEUTRAL = 16,
+        PEDESTRIAN = 32,
+        RESPECT = 64,
+        ALL = 128
+    }
+    
     public class NpcConfig
     {
         public float AddingPedRange;
         public float RemovePedRange;
+
+        public GswTargets Targets;
 
         public int MinAccuracy;
         public int MaxAccuracy;
