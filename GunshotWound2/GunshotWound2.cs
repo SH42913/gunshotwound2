@@ -125,6 +125,7 @@ namespace GunshotWound2
             {
                 UI.Notify("~r~GSW2 error in runtime:\n" +
                           $"{exception.Message}");
+                UI.Notify(_localeConfig.GswStopped);
                 _exceptionInRuntime = true;
 #if DEBUG
                 UI.Notify("Last system is " + LastSystem);
@@ -270,7 +271,8 @@ namespace GunshotWound2
                 MaxAccuracy = 50,
                 MinShootRate = 10,
                 MaxShootRate = 50,
-                Targets = GswTargets.ALL
+                Targets = GswTargets.ALL,
+                ScanOnlyDamaged = false
             };
 
             _mainConfig.WoundConfig = new WoundConfig
@@ -402,6 +404,7 @@ namespace GunshotWound2
                 _mainConfig.NpcConfig.RemovePedRange = _mainConfig.NpcConfig.AddingPedRange * ADDING_TO_REMOVING_MULTIPLIER;
 
                 _mainConfig.NpcConfig.ShowEnemyCriticalMessages = npcNode.Element("CriticalMessages").GetBool();
+                _mainConfig.NpcConfig.ScanOnlyDamaged = npcNode.Element("ScanOnlyDamaged").GetBool();
 
                 var targetsNode = npcNode.Element("Targets");
                 bool all = targetsNode.GetBool("ALL");

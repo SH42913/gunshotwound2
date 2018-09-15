@@ -20,6 +20,7 @@ namespace GunshotWound2.Systems.PlayerSystems
                 }
                 else
                 {
+                    Function.Call(Hash._0xD6A953C6D1492057, Game.Player.Character.Model.Hash);
                     Function.Call(Hash._0xF145F3BE2EFA9A3B, Game.Player.Character.Model.Hash);
                 }
             }

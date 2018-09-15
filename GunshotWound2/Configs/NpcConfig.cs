@@ -22,6 +22,7 @@ namespace GunshotWound2.Configs
         public float RemovePedRange;
 
         public GswTargets Targets;
+        public bool ScanOnlyDamaged;
 
         public int MinAccuracy;
         public int MaxAccuracy;
@@ -50,6 +51,7 @@ namespace GunshotWound2.Configs
         public override string ToString()
         {
             return "NpcConfig:\n" +
+                   $"ScanOnlyDamage: {ScanOnlyDamaged}\n" +
                    $"AddingPedRange: {AddingPedRange}\n" +
                    $"RemovePedRange: {RemovePedRange}\n" +
                    $"EnemyCritical: {ShowEnemyCriticalMessages}\n" +

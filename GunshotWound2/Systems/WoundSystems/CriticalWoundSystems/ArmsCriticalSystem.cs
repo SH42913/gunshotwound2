@@ -1,4 +1,5 @@
-﻿using GunshotWound2.Components.Events.GuiEvents;
+﻿using GTA;
+using GunshotWound2.Components.Events.GuiEvents;
 using GunshotWound2.Components.Events.PlayerEvents;
 using GunshotWound2.Components.Events.WoundEvents.CriticalWoundEvents;
 using GunshotWound2.Components.StateComponents;
@@ -33,6 +34,7 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
             CreatePain(pedEntity, 25f);
             
             pedComponent.ThisPed.Accuracy = (int) (0.1f * pedComponent.DefaultAccuracy);
+
             pedComponent.ThisPed.Weapons.Drop();
             
             if (!Config.Data.NpcConfig.ShowEnemyCriticalMessages) return;

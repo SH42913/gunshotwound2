@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using GTA;
+using GTA.Native;
 using GunshotWound2.Components.Events.NpcEvents;
 using GunshotWound2.Components.MarkComponents;
 using GunshotWound2.Components.StateComponents;
@@ -55,6 +56,7 @@ namespace GunshotWound2.Systems.NpcSystems
                 
                 if(!pedToCheck.IsHuman || pedToCheck.IsDead) continue;
                 if(!PedInTargetList(playerPed, pedToCheck)) continue;
+                if (_config.Data.NpcConfig.ScanOnlyDamaged && !Function.Call<bool>(Hash.HAS_ENTITY_BEEN_DAMAGED_BY_ANY_PED, pedToCheck)) continue;
                 if(CheckWoundedPedExist(pedToCheck)) continue;
                 
                 pedsToAdd.Add(pedToCheck);
