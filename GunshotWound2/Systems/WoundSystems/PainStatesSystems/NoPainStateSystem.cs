@@ -24,7 +24,10 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystems
                 : Config.Data.NpcConfig.NoPainAnim);
             
             if(!woundedPed.IsPlayer) return;
-            EcsWorld.CreateEntityWith<AddCameraShakeEvent>().Length = CameraShakeLength.CLEAR;
+            if (!woundedPed.Crits.HasFlag(CritTypes.ARMS_DAMAGED))
+            {
+                EcsWorld.CreateEntityWith<AddCameraShakeEvent>().Length = CameraShakeLength.CLEAR;
+            }
             EcsWorld.CreateEntityWith<ChangeSpecialAbilityEvent>().Lock = false;
         }
     }
