@@ -145,5 +145,13 @@
 		Helmet can save your head from impacts and weapons.
 		If you have helmet, this hotkey will remove it.
 		Default: J on keyboard. -->
+
+		<IncreaseRangeKey>33</IncreaseRangeKey>
+		<!-- Increase GSW2 scan range.
+		Default: PageUp on keyboard. -->
+
+		<ReduceRangeKey>34</ReduceRangeKey>
+		<!-- Reduce GSW2 scan range.
+		Default: PageDown on keyboard. -->
 	</Hotkeys>
 </GunshotWoundMod>

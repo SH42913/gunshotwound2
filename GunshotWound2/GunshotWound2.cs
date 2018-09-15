@@ -77,14 +77,16 @@ namespace GunshotWound2
                 return;
             }
             
-            switch (eventArgs.KeyCode)
+            if (_mainConfig.IncreaseRangeKey != null && eventArgs.KeyCode == _mainConfig.IncreaseRangeKey)
             {
-                case Keys.PageDown:
-                    ReduceRange(5);
-                    break;
-                case Keys.PageUp:
-                    IncreaseRange(5);
-                    break;
+                IncreaseRange(5);
+                return;
+            }
+            
+            if (_mainConfig.ReduceRangeKey != null && eventArgs.KeyCode == _mainConfig.ReduceRangeKey)
+            {
+                ReduceRange(5);
+                return;
             }
         }
 
@@ -232,6 +234,8 @@ namespace GunshotWound2
             _mainConfig.CheckKey = Keys.L;
             _mainConfig.HealKey = Keys.K;
             _mainConfig.HelmetKey = Keys.J;
+            _mainConfig.IncreaseRangeKey = Keys.PageUp;
+            _mainConfig.ReduceRangeKey = Keys.PageDown;
 
             _mainConfig.PlayerConfig = new PlayerConfig
             {
@@ -337,6 +341,26 @@ namespace GunshotWound2
                 else
                 {
                     _mainConfig.HealKey = null;
+                }
+                
+                var increaseString = buttonNode.Element("IncreaseRangeKey").Value;
+                if (!string.IsNullOrEmpty(increaseString))
+                {
+                    _mainConfig.IncreaseRangeKey = (Keys) int.Parse(increaseString);
+                }
+                else
+                {
+                    _mainConfig.IncreaseRangeKey = null;
+                }
+                
+                var reduceString = buttonNode.Element("ReduceRangeKey").Value;
+                if (!string.IsNullOrEmpty(reduceString))
+                {
+                    _mainConfig.ReduceRangeKey = (Keys) int.Parse(reduceString);
+                }
+                else
+                {
+                    _mainConfig.ReduceRangeKey = null;
                 }
             }
 
