@@ -62,7 +62,6 @@ namespace GunshotWound2.Systems.NpcSystems
                 {
                     int old = pedToConvert.Accuracy;
                     pedToConvert.Accuracy = Random.Next(_config.Data.NpcConfig.MinAccuracy, _config.Data.NpcConfig.MaxAccuracy + 1);
-                    SendDebug($"Ped got new accuracy {pedToConvert.Accuracy} where old was {old}");
                 }
                 if (_config.Data.NpcConfig.MinShootRate > 0 && _config.Data.NpcConfig.MaxShootRate > 0)
                 {

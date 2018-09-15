@@ -1,5 +1,4 @@
 ﻿using GunshotWound2.Components.StateComponents;
-using GunshotWound2.Configs;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Systems.PedSystems
@@ -8,7 +7,6 @@ namespace GunshotWound2.Systems.PedSystems
     public class ArmorSystem : IEcsRunSystem
     {
         private EcsFilter<WoundedPedComponent> _peds;
-        private EcsFilterSingle<MainConfig> _config;
         
         public void Run()
         {

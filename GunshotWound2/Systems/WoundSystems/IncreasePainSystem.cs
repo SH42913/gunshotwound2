@@ -10,10 +10,10 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Systems.WoundSystems
 {
     [EcsInject]
-    public class PainSystem : IEcsRunSystem
+    public class IncreasePainSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
-        private EcsFilter<AddPainEvent> _components;
+        private EcsFilter<IncreasePainEvent> _events;
         
         private EcsFilterSingle<MainConfig> _config;
         
@@ -21,11 +21,13 @@ namespace GunshotWound2.Systems.WoundSystems
         
         public void Run()
         {
-            GunshotWound2.LastSystem = nameof(PainSystem);
+#if DEBUG
+            GunshotWound2.LastSystem = nameof(IncreasePainSystem);
+#endif
             
-            for (int i = 0; i < _components.EntitiesCount; i++)
+            for (int i = 0; i < _events.EntitiesCount; i++)
             {
-                var component = _components.Components1[i];
+                var component = _events.Components1[i];
                 int pedEntity = component.PedEntity;
                 var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
 
@@ -59,12 +61,11 @@ namespace GunshotWound2.Systems.WoundSystems
                         if (woundedPed.IsPlayer)
                         {
                             Function.Call(Hash.SET_FLASH, 0, 0, 100, 500, 100);
-                            _ecsWorld.CreateEntityWith<AddPlayerAdrenalineEffectEvent>();
                         }
                     }
                 }
                 
-                _ecsWorld.RemoveEntity(_components.Entities[i]);
+                _ecsWorld.RemoveEntity(_events.Entities[i]);
             }
         }
     }

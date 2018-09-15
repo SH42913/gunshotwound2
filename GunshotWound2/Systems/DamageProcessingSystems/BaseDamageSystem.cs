@@ -237,7 +237,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
         private void CreatePain(int pedEntity, float amount)
         {
-            var pain = EcsWorld.CreateEntityWith<AddPainEvent>();
+            var pain = EcsWorld.CreateEntityWith<IncreasePainEvent>();
             pain.PedEntity = pedEntity;
             pain.PainAmount = amount;
         }

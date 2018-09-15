@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <GunshotWoundMod>
 	<Player>
 		<WoundedPlayerEnabled>true</WoundedPlayerEnabled>
@@ -13,6 +13,10 @@
 		
 		<CanDropWeapon>true</CanDropWeapon>
 		<!-- If TRUE - you will lose weapon on arm crits and when you fall unconscious -->
+
+		<MaximalSlowMo>0.5</MaximalSlowMo>
+		<!-- 0.5 mean if TimeScale never be less that 0.5.
+		 If you want to disable slowmo, set it more than 1.0 -->
 		
 		<MaximalPain>100.0</MaximalPain>
 		<!-- 100 mean when pain will more than 100 points you'll fall unconscious -->

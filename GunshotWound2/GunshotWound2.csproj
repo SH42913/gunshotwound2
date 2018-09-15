@@ -60,7 +60,6 @@
     <Compile Include="Components\Events\PedEvents\InstantHealEvent.cs" />
     <Compile Include="Components\Events\PedEvents\SetPedToRagdollEvent.cs" />
     <Compile Include="Components\Events\PlayerEvents\AddCameraShakeEvent.cs" />
-    <Compile Include="Components\Events\PlayerEvents\AddPlayerAdrenalineEffectEvent.cs" />
     <Compile Include="Components\Events\PlayerEvents\AddHelmetToPlayerEvent.cs" />
     <Compile Include="Components\Events\PlayerEvents\ChangeSpecialAbilityEvent.cs" />
     <Compile Include="Components\Events\WeaponHitEvents\BaseWeaponHitEvent.cs" />
@@ -73,7 +72,7 @@
     <Compile Include="Components\Events\WeaponHitEvents\OtherHitEvent.cs" />
     <Compile Include="Components\Events\WeaponHitEvents\ShotgunHitEvent.cs" />
     <Compile Include="Components\Events\WeaponHitEvents\SmallCaliberHitEvent.cs" />
-    <Compile Include="Components\Events\WoundEvents\AddPainEvent.cs" />
+    <Compile Include="Components\Events\WoundEvents\IncreasePainEvent.cs" />
     <Compile Include="Components\Events\WoundEvents\ChangePainStateEvents\AveragePainChangeStateEvent.cs" />
     <Compile Include="Components\Events\WoundEvents\ChangePainStateEvents\BaseChangePainStateEvent.cs" />
     <Compile Include="Components\Events\WoundEvents\ChangePainStateEvents\DeadlyPainChangeStateEvent.cs" />
@@ -155,7 +154,7 @@
     <Compile Include="Systems\WoundSystems\PainStatesSystems\UnbearablePainStateSystem.cs" />
     <Compile Include="Systems\WoundSystems\WoundSystem.cs" />
     <Compile Include="Systems\WoundSystems\PainRecoverySystem.cs" />
-    <Compile Include="Systems\WoundSystems\PainSystem.cs" />
+    <Compile Include="Systems\WoundSystems\IncreasePainSystem.cs" />
     <Compile Include="Utils\LocalizationManager.cs" />
     <Compile Include="Utils\MultiTickEcsSystems.cs" />
     <Compile Include="Utils\RandomExtensions.cs" />

@@ -98,7 +98,7 @@ namespace GunshotWound2.Systems.WoundSystems
 
         private void CreatePain(int pedEntity, float painAmount)
         {
-            var painComponent = _ecsWorld.CreateEntityWith<AddPainEvent>();
+            var painComponent = _ecsWorld.CreateEntityWith<IncreasePainEvent>();
             painComponent.PedEntity = pedEntity;
             painComponent.PainAmount = _config.Data.WoundConfig.PainMultiplier * painAmount;
         }

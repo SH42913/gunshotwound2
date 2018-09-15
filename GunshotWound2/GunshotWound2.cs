@@ -138,7 +138,7 @@ namespace GunshotWound2
                 TryToLoadConfigsFromXml();
                 _configLoaded = true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 LoadDefaultConfigs();
                 _configLoaded = false;
@@ -172,12 +172,12 @@ namespace GunshotWound2
                 _everyFrameSystems
                     .Add(new PlayerSystem())
                     .Add(new SpecialAbilityLockSystem());
-            }
 
-            if (_mainConfig.PlayerConfig.AdrenalineSlowMotion)
-            {
-                _everyFrameSystems
-                    .Add(new AdrenalineSystem());
+                if (_mainConfig.PlayerConfig.MaximalSlowMo < 1f)
+                {
+                    _everyFrameSystems
+                        .Add(new AdrenalineSystem());
+                }
             }
 
             _everyFrameSystems
@@ -244,7 +244,7 @@ namespace GunshotWound2
                 PainRecoverSpeed = 1.5f,
                 BleedHealingSpeed = 0.001f,
                 PlayerEntity = -1,
-                AdrenalineSlowMotion = false,
+                MaximalSlowMo = 0.5f,
                 PoliceCanForgetYou = true,
                 NoPainAnim = "move_m@generic",
                 MildPainAnim = "move_m@gangster@a",
@@ -373,6 +373,9 @@ namespace GunshotWound2
 
                 var canDropWeapon = bool.Parse(playerNode.Element("CanDropWeapon").Value);
                 _mainConfig.PlayerConfig.CanDropWeapon = canDropWeapon;
+
+                var adrenalineSlowMo = float.Parse(playerNode.Element("MaximalSlowMo").Value, CultureInfo.InvariantCulture);
+                _mainConfig.PlayerConfig.MaximalSlowMo = adrenalineSlowMo;
 
                 var animationNode = playerNode.Element("Animations");
                 _mainConfig.PlayerConfig.NoPainAnim = animationNode.Attribute("NoPain").Value;
@@ -910,7 +913,7 @@ namespace GunshotWound2
         public static MultiTickEcsSystems AddPainSystems(this MultiTickEcsSystems systems)
         {
             return systems
-                .Add(new PainSystem())
+                .Add(new IncreasePainSystem())
                 .Add(new PainRecoverySystem())
                 .Add(new NoPainStateSystem())
                 .Add(new MildPainStateSystem())
