@@ -32,6 +32,7 @@ namespace GunshotWound2.Systems.NpcSystems
         private void FindPeds()
         {
             float addRange = _config.Data.NpcConfig.AddingPedRange;
+            if(addRange < GunshotWound2.MINIMAL_RANGE_FOR_WOUNDED_PEDS) return;
 
             if (CheckNeedToUpdateWorldPeds())
             {

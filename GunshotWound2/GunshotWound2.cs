@@ -32,7 +32,7 @@ namespace GunshotWound2
     {
         public static string LastSystem = "Nothing";
         
-        public const float MINIMAL_RANGE_FOR_WOUNDED_PEDS = 5;
+        public const float MINIMAL_RANGE_FOR_WOUNDED_PEDS = 0;
         private const float ADDING_TO_REMOVING_MULTIPLIER = 2;
         
         private EcsWorld _ecsWorld;
@@ -80,10 +80,10 @@ namespace GunshotWound2
             switch (eventArgs.KeyCode)
             {
                 case Keys.PageDown:
-                    ReduceRange(MINIMAL_RANGE_FOR_WOUNDED_PEDS);
+                    ReduceRange(5);
                     break;
                 case Keys.PageUp:
-                    IncreaseRange(MINIMAL_RANGE_FOR_WOUNDED_PEDS);
+                    IncreaseRange(5);
                     break;
             }
         }
@@ -814,7 +814,7 @@ namespace GunshotWound2
 
         private void ReduceRange(float value)
         {
-            if(_mainConfig.NpcConfig.AddingPedRange <= value) return;
+            if(_mainConfig.NpcConfig.AddingPedRange - value < MINIMAL_RANGE_FOR_WOUNDED_PEDS) return;
             
             _mainConfig.NpcConfig.AddingPedRange -= value;
             _mainConfig.NpcConfig.RemovePedRange = _mainConfig.NpcConfig.AddingPedRange * ADDING_TO_REMOVING_MULTIPLIER;
