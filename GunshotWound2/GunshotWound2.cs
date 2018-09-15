@@ -94,8 +94,11 @@ namespace GunshotWound2
         {
             if (!_isInited && _ticks++ == 400)
             {
+                string translationAuthor = string.IsNullOrEmpty(_localeConfig.LocalizationAuthor) 
+                    ? "GSW2-community" 
+                    : _localeConfig.LocalizationAuthor;
                 UI.Notify(!_exceptionInRuntime
-                    ? $"{_localeConfig.ThanksForUsing}\n~g~GunShot Wound ~r~2~s~\nby SH42913"
+                    ? $"{_localeConfig.ThanksForUsing}\n~g~GunShot Wound ~r~2~s~\nby SH42913\nTranslated by {translationAuthor}"
                     : $"~r~{_localeConfig.GswStopped}");
 
                 if (!_configLoaded)
@@ -205,7 +208,7 @@ namespace GunshotWound2
             Tick += OnTick;
             KeyUp += OnKeyUp;
             
-            Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, Game.Player, 0.00001f);
+            Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, Game.Player, 0.0001f);
             Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, Game.Player, 0f);
             
             _mainCycleStopwatch = new Stopwatch();
@@ -692,6 +695,8 @@ namespace GunshotWound2
 
             _localeConfig.ThanksForUsing = "Thanks for using";
             _localeConfig.GswStopped = "GSW2 stopped, sorry :(";
+
+            _localeConfig.LocalizationAuthor = "~r~SH42913";
         }
 
         private void TryToLoadLocalization()
@@ -823,6 +828,8 @@ namespace GunshotWound2
 
             _localeConfig.ThanksForUsing = manager.GetWord("ThanksForUsing");
             _localeConfig.GswStopped = manager.GetWord("GswStopped");
+
+            _localeConfig.LocalizationAuthor = manager.GetWord("TranslationAuthor");
         }
         
         private void CheckTime(long timeInMs)

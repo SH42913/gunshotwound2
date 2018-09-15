@@ -114,5 +114,7 @@
 
         public string ThanksForUsing;
         public string GswStopped;
+
+        public string LocalizationAuthor;
     }
 }
