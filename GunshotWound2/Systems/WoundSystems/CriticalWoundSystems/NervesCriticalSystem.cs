@@ -1,4 +1,5 @@
-﻿using GunshotWound2.Components.Events.GuiEvents;
+﻿using GTA;
+using GunshotWound2.Components.Events.GuiEvents;
 using GunshotWound2.Components.Events.PedEvents;
 using GunshotWound2.Components.Events.WoundEvents.CriticalWoundEvents;
 using GunshotWound2.Components.StateComponents;
@@ -18,6 +19,11 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
         {
             SendMessage(Locale.Data.PlayerNervesCritMessage, NotifyLevels.WARNING);
             SendToRagdollOrArmLegsDamage(pedEntity);
+
+            if (Config.Data.WoundConfig.RealisticNervesDamage)
+            {
+                Game.Player.CanControlCharacter = false;
+            }
         }
 
         protected override void ActionForNpc(WoundedPedComponent pedComponent, int pedEntity)

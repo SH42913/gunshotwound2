@@ -32,6 +32,7 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystems
             
             if (!woundedPed.IsPlayer) return;
             Game.Player.IgnoredByEveryone = true;
+            Game.Player.CanControlCharacter = false;
             EcsWorld.CreateEntityWith<ChangeSpecialAbilityEvent>().Lock = true;
             
             if (Config.Data.PlayerConfig.PoliceCanForgetYou) Game.Player.WantedLevel = 0;

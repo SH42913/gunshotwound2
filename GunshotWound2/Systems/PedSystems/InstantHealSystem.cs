@@ -41,6 +41,7 @@ namespace GunshotWound2.Systems.PedSystems
                         Function.Call(Hash._STOP_ALL_SCREEN_EFFECTS);
                         woundedPed.Health = _mainConfig.Data.PlayerConfig.MaximalHealth;
                         Game.Player.IgnoredByEveryone = false;
+                        Game.Player.CanControlCharacter = true;
                     }
                     else
                     {
