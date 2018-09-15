@@ -18,11 +18,11 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
             
             DamageMultiplier = 0.7f;
             BleeedingMultiplier = 1.1f;
-            PainMultiplier = 1.2f;
+            PainMultiplier = 1.1f;
 
             HelmetSafeChance = 0.5f;
             ArmorDamage = 6;
-            CritChance = 0.6f;
+            CritChance = 0.4f;
             
             LoadMultsFromConfig();
             FillWithDefaultGunActions();

@@ -9,13 +9,13 @@
 		If TRUE you will not die instantly, you can use this option without WYD -->
 		
 		<PoliceCanForget>true</PoliceCanForget>
-		<!-- If TRUE - cops will can forget you, when you fall unconscious -->
+		<!-- If TRUE - cops can forget you, when you fall unconscious -->
 		
 		<CanDropWeapon>true</CanDropWeapon>
 		<!-- If TRUE - you will lose weapon on arm crits and when you fall unconscious -->
 
 		<MaximalSlowMo>0.5</MaximalSlowMo>
-		<!-- 0.5 mean if TimeScale never be less that 0.5.
+		<!-- 0.5 mean if TimeScale never be less than 0.5.
 		 If you want to disable slowmo, set it more than 1.0 -->
 		
 		<MaximalPain>100.0</MaximalPain>
@@ -45,14 +45,14 @@
 		<StartHealth Min="50" Max="100"/>
 		<!-- NonPlayable Peds will be spawn with health range between Min and Max -->
 		
-		<MaximalPain Min="50.0" Max="90.0"/>
+		<MaximalPain Min="70.0" Max="100.0"/>
 		<!-- Same as for player, but NonPlayable Peds will spawn with MaxPain between Min and Max -->
 
-		<Accuracy Min="10" Max="50"/>
+		<Accuracy Min="5" Max="30"/>
 		<!-- All NPCs will get accuracy between Min and Max
 		 If you want to use default game accuracy, set both to 0-->
 
-		<ShootRate Min="10" Max="50"/>
+		<ShootRate Min="5" Max="30"/>
 		<!-- All NPCs will get ShootRate between Min and Max
 		 If you want to use default game ShootRate, set both to 0-->
 		
@@ -66,7 +66,8 @@
 	
 	<Notifications>
 		<Language>EN</Language>
-		<!-- In this build available only EN and RU. RU is buggy :(
+		<!-- In this build available only EN, RU and PL. RU is buggy :(
+		Partially translated DE and FR.
 		You can help to translate GSW2 to other languages here
 		https://docs.google.com/spreadsheets/d/1TY0nSEJMDmypkYrcVUBlMG3HIAEW075dCOtxXgW5UJ0/edit 
 		And more languages will be available in next build -->
@@ -105,21 +106,21 @@
 		
 		<OverallDamageMult>1.0</OverallDamageMult>
 		<!-- Overall damage multiplier, 2.0 mean every wound will get x2 damage for ped -->
-		<DamageDeviation>0.3</DamageDeviation>
-		<!-- 0.3 mean +-30% random damage -->
+		<DamageDeviation>0.2</DamageDeviation>
+		<!-- 0.2 mean +-20% random damage -->
 		
 		<OverallBleedingMult>1.0</OverallBleedingMult>
-		<BleedingDeviation>0.3</BleedingDeviation>
+		<BleedingDeviation>0.2</BleedingDeviation>
 		
 		<OverallPainMult>1.0</OverallPainMult>
-		<PainDeviation>0.3</PainDeviation>
+		<PainDeviation>0.2</PainDeviation>
 	</Wounds>
     
     <Weapons>
-		<SmallCaliber DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.5" ArmorDamage="3"/>
-		<MediumCaliber DamageMult="1.2" BleedingMult="1.3" PainMult="1.2" CritChance="0.7" ArmorDamage="6"/>
+		<SmallCaliber DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.3" ArmorDamage="3"/>
+		<MediumCaliber DamageMult="1.2" BleedingMult="1.3" PainMult="1.2" CritChance="0.6" ArmorDamage="6"/>
 		<HighCaliber DamageMult="1.3" BleedingMult="1.5" PainMult="1.5" CritChance="0.8" ArmorDamage="9"/>
-		<Shotgun DamageMult="0.7" BleedingMult="1.1" PainMult="1.2" CritChance="0.6" ArmorDamage="6"/>
+		<Shotgun DamageMult="0.7" BleedingMult="1.1" PainMult="1.1" CritChance="0.5" ArmorDamage="6"/>
 		
 		<LightImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.2"/>
 		<HeavyImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.7"/>

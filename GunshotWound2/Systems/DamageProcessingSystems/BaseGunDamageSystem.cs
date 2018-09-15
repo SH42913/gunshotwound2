@@ -204,11 +204,11 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
         }
         private void LowerBodyCase2(int entity)
         {
-            CreateFleshWound(Locale.Data.BodyPartChest, entity, 0.1f);
+            CreateFleshWound(Locale.Data.BodyPartChest, entity, 0.05f);
         }
         private void LowerBodyCase3(int entity)
         {
-            CreatePenetratingWound(Locale.Data.BodyPartChest, entity, 0.2f, CritTypes.NERVES_DAMAGED,
+            CreatePenetratingWound(Locale.Data.BodyPartChest, entity, 0.1f, CritTypes.NERVES_DAMAGED,
                 CritTypes.STOMACH_DAMAGED, CritTypes.GUTS_DAMAGED);
         }
         private void LowerBodyCase4(int entity)
@@ -218,7 +218,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
         }
         private void LowerBodyCase5(int entity)
         {
-            CreateAvulsiveWound(Locale.Data.BodyPartChest, entity, 0.3f, CritTypes.NERVES_DAMAGED,
+            CreateAvulsiveWound(Locale.Data.BodyPartChest, entity, 0.2f, CritTypes.NERVES_DAMAGED,
                 CritTypes.STOMACH_DAMAGED, CritTypes.GUTS_DAMAGED);
         }
 
@@ -257,19 +257,19 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
         }
         private void LegCase2(int entity)
         {
-            CreateFleshWound(Locale.Data.BodyPartLeg, entity, 0.1f);
+            CreateFleshWound(Locale.Data.BodyPartLeg, entity, 0.05f);
         }
         private void LegCase3(int entity)
         {
-            CreatePenetratingWound(Locale.Data.BodyPartLeg, entity, 0.2f, CritTypes.LEGS_DAMAGED);
+            CreatePenetratingWound(Locale.Data.BodyPartLeg, entity, 0.1f, CritTypes.LEGS_DAMAGED);
         }
         private void LegCase4(int entity)
         {
-            CreatePerforatingWound(Locale.Data.BodyPartLeg, entity, 0.2f, CritTypes.LEGS_DAMAGED);
+            CreatePerforatingWound(Locale.Data.BodyPartLeg, entity, 0.1f, CritTypes.LEGS_DAMAGED);
         }
         private void LegCase5(int entity)
         {
-            CreateAvulsiveWound(Locale.Data.BodyPartLeg, entity, 0.3f, CritTypes.LEGS_DAMAGED);
+            CreateAvulsiveWound(Locale.Data.BodyPartLeg, entity, 0.2f, CritTypes.LEGS_DAMAGED);
         }
 
         #endregion

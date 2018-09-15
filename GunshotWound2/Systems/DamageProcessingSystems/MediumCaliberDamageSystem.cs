@@ -23,7 +23,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
             HelmetSafeChance = 0.3f;
             ArmorDamage = 6;
             CanPenetrateArmor = true;
-            CritChance = 0.7f;
+            CritChance = 0.6f;
             
             LoadMultsFromConfig();
             FillWithDefaultGunActions();
