@@ -39,10 +39,8 @@ namespace GunshotWound2
         private EcsSystems _everyFrameSystems;
         private MultiTickEcsSystems _commonSystems;
         
-        private bool _warningMessageWasShown;
         private MainConfig _mainConfig;
         private LocaleConfig _localeConfig;
-        private Stopwatch _mainCycleStopwatch;
 
         private bool _isInited;
         private bool _configLoaded;
@@ -210,19 +208,12 @@ namespace GunshotWound2
             
             Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, Game.Player, 0.0001f);
             Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, Game.Player, 0f);
-            
-            _mainCycleStopwatch = new Stopwatch();
         }
 
         private void GunshotWoundTick()
         {
-            _mainCycleStopwatch.Restart();
-            
             _everyFrameSystems.Run();
             _commonSystems.Run();
-            
-            _mainCycleStopwatch.Stop();
-            CheckTime(_mainCycleStopwatch.ElapsedMilliseconds);
 
 #if DEBUG
             string debugSubtitles = $"ActiveEntities: {_ecsWorld.GetStats().ActiveEntities}\n" +
@@ -688,10 +679,6 @@ namespace GunshotWound2
 
             _localeConfig.AddingRange = "Adding range";
             _localeConfig.RemovingRange = "Removing range";
-            
-            _localeConfig.PerformanceDropMessage = "Performance drop!\n" +
-                                                  "You'd better to reduce adding range with help PageDown-button.\n" +
-                                                  "You also can turn off WoundedPed at all in GSW2Config.xml";
 
             _localeConfig.ThanksForUsing = "Thanks for using";
             _localeConfig.GswStopped = "GSW2 stopped, sorry :(";
@@ -823,24 +810,11 @@ namespace GunshotWound2
 
             _localeConfig.AddingRange = manager.GetWord("AddingRange");
             _localeConfig.RemovingRange = manager.GetWord("RemovingRange");
-            
-            _localeConfig.PerformanceDropMessage = manager.GetWord("PerformanceDropMessage");
 
             _localeConfig.ThanksForUsing = manager.GetWord("ThanksForUsing");
             _localeConfig.GswStopped = manager.GetWord("GswStopped");
 
             _localeConfig.LocalizationAuthor = manager.GetWord("TranslationAuthor");
-        }
-        
-        private void CheckTime(long timeInMs)
-        {
-            if(!_isInited) return;
-            if (timeInMs <= 50) return;
-            if (_warningMessageWasShown) return;
-                
-            SendMessage(_localeConfig.PerformanceDropMessage, NotifyLevels.WARNING);
-            SendMessage("TooMuchTime in " + LastSystem, NotifyLevels.DEBUG);
-            _warningMessageWasShown = true;
         }
 
         private void ReduceRange(float value)
@@ -852,7 +826,6 @@ namespace GunshotWound2
             
             SendMessage($"{_localeConfig.AddingRange}: {_mainConfig.NpcConfig.AddingPedRange}\n" +
                         $"{_localeConfig.RemovingRange}: {_mainConfig.NpcConfig.RemovePedRange}");
-            _warningMessageWasShown = false;
         }
 
         private void IncreaseRange(float value)
@@ -864,7 +837,6 @@ namespace GunshotWound2
             
             SendMessage($"{_localeConfig.AddingRange}: {_mainConfig.NpcConfig.AddingPedRange}\n" +
                         $"{_localeConfig.RemovingRange}: {_mainConfig.NpcConfig.RemovePedRange}");
-            _warningMessageWasShown = false;
         }
         
         
