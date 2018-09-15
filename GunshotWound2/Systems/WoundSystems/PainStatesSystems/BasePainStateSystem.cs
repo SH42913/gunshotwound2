@@ -5,7 +5,7 @@ using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
 using Leopotam.Ecs;
 
-namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
+namespace GunshotWound2.Systems.WoundSystems.PainStatesSystems
 {
     [EcsInject]
     public abstract class BasePainStateSystem<TStateEvent> : IEcsRunSystem

@@ -1,10 +1,11 @@
 ﻿using GTA;
 using GunshotWound2.Components.Events.PedEvents;
+using GunshotWound2.Components.Events.PlayerEvents;
 using GunshotWound2.Components.Events.WoundEvents.ChangePainStateEvents;
 using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
 
-namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
+namespace GunshotWound2.Systems.WoundSystems.PainStatesSystems
 {
     [EcsInject]
     public class AveragePainStateSystem : BasePainStateSystem<AveragePainChangeStateEvent>
@@ -25,6 +26,7 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
             
             if (!woundedPed.IsPlayer) return;
             Game.Player.IgnoredByEveryone = false;
+            EcsWorld.CreateEntityWith<ChangeSpecialAbilityEvent>().Lock = true;
         }
     }
 }

@@ -1,31 +1,31 @@
-﻿using GTA.Native;
-using GunshotWound2.Components.Events.PedEvents;
+﻿using GTA;
+using GTA.Native;
 using GunshotWound2.Components.Events.PlayerEvents;
 using GunshotWound2.Components.Events.WoundEvents.ChangePainStateEvents;
 using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
 
-namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
+namespace GunshotWound2.Systems.WoundSystems.PainStatesSystems
 {
     [EcsInject]
-    public class NoPainStateSystem : BasePainStateSystem<NoPainChangeStateEvent>
+    public class MildPainStateSystem : BasePainStateSystem<MildPainChangeStateEvent>
     {
-        public NoPainStateSystem()
+        public MildPainStateSystem()
         {
-            CurrentState = PainStates.NONE;
+            CurrentState = PainStates.MILD;
         }
 
         protected override void ExecuteState(WoundedPedComponent woundedPed, int pedEntity)
         {
             base.ExecuteState(woundedPed, pedEntity);
-
-            SendPedToRagdoll(pedEntity, RagdollStates.WAKE_UP);
+            
             ChangeWalkingAnimation(pedEntity, woundedPed.IsPlayer 
-                ? Config.Data.PlayerConfig.NoPainAnim
-                : Config.Data.NpcConfig.NoPainAnim);
+                ? Config.Data.PlayerConfig.MildPainAnim
+                : Config.Data.NpcConfig.MildPainAnim);
             
             if(!woundedPed.IsPlayer) return;
             EcsWorld.CreateEntityWith<AddCameraShakeEvent>().Length = CameraShakeLength.CLEAR;
+            EcsWorld.CreateEntityWith<ChangeSpecialAbilityEvent>().Lock = false;
         }
     }
 }

@@ -22,7 +22,7 @@ using GunshotWound2.Systems.PedSystems;
 using GunshotWound2.Systems.PlayerSystems;
 using GunshotWound2.Systems.WoundSystems;
 using GunshotWound2.Systems.WoundSystems.CriticalWoundSystems;
-using GunshotWound2.Systems.WoundSystems.PainStatesSystem;
+using GunshotWound2.Systems.WoundSystems.PainStatesSystems;
 using GunshotWound2.Utils;
 using Leopotam.Ecs;
 
@@ -170,7 +170,8 @@ namespace GunshotWound2
             if (_mainConfig.PlayerConfig.WoundedPlayerEnabled)
             {
                 _everyFrameSystems
-                    .Add(new PlayerSystem());
+                    .Add(new PlayerSystem())
+                    .Add(new SpecialAbilityLockSystem());
             }
 
             if (_mainConfig.PlayerConfig.AdrenalineSlowMotion)
@@ -927,6 +928,14 @@ namespace GunshotWound2
                 throw new ArgumentException("min must be less than max");
             }
             return (float)rand.NextDouble() * (max - min) + min;
+        }
+
+        public static void RemoveAllEntities(this EcsFilter filter)
+        {
+            var world = filter.GetWorld();
+            for (var i = 0; i < filter.EntitiesCount; i++) {
+                world.RemoveEntity (filter.Entities[i]);
+            }
         }
     }
 }

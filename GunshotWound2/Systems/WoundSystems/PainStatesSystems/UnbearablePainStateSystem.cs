@@ -1,11 +1,12 @@
 ﻿using GTA;
 using GunshotWound2.Components.Events.GuiEvents;
 using GunshotWound2.Components.Events.PedEvents;
+using GunshotWound2.Components.Events.PlayerEvents;
 using GunshotWound2.Components.Events.WoundEvents.ChangePainStateEvents;
 using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
 
-namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
+namespace GunshotWound2.Systems.WoundSystems.PainStatesSystems
 {
     [EcsInject]
     public class UnbearablePainStateSystem : BasePainStateSystem<UnbearablePainChangeStateEvent>
@@ -31,6 +32,7 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
             
             if (!woundedPed.IsPlayer) return;
             Game.Player.IgnoredByEveryone = true;
+            EcsWorld.CreateEntityWith<ChangeSpecialAbilityEvent>().Lock = true;
             
             if (Config.Data.PlayerConfig.PoliceCanForgetYou) Game.Player.WantedLevel = 0;
             

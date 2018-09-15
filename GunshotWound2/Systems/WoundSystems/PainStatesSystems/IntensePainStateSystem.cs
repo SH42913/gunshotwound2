@@ -1,10 +1,9 @@
-﻿using GTA.Native;
-using GunshotWound2.Components.Events.PlayerEvents;
+﻿using GunshotWound2.Components.Events.PlayerEvents;
 using GunshotWound2.Components.Events.WoundEvents.ChangePainStateEvents;
 using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
 
-namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
+namespace GunshotWound2.Systems.WoundSystems.PainStatesSystems
 {
     [EcsInject]
     public class IntensePainStateSystem : BasePainStateSystem<IntensePainChangeStateEvent>
@@ -27,6 +26,7 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
             if (woundedPed.IsPlayer)
             {
                 EcsWorld.CreateEntityWith<AddCameraShakeEvent>().Length = CameraShakeLength.PERMANENT;
+                EcsWorld.CreateEntityWith<ChangeSpecialAbilityEvent>().Lock = true;
             }
             else
             {
