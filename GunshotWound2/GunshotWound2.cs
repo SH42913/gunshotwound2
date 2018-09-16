@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
@@ -190,19 +189,26 @@ namespace GunshotWound2
             _everyFrameSystems
                 .Add(new InstantHealSystem())
                 .Add(new HelmetRequestSystem())
+                
                 .Add(new RagdollSystem())
                 .Add(new SwitchAnimationSystem())
+                
                 .Add(new DebugInfoSystem())
                 .Add(new CheckSystem())
                 .Add(new NotificationSystem())
-                .Add(new CameraShakeSystem());
+                
+                .Add(new CameraShakeSystem())
+                .Add(new FlashSystem())
+                
+                .Add(new PainRecoverySystem())
+                .Add(new BleedingSystem());
             
             _commonSystems
                 .Add(new ArmorSystem())
-                .AddHitSystems()
-                .AddDamageSystems()
+                .AddHitDetectSystems()
+                .AddDamageProcessingSystems()
                 .AddWoundSystems()
-                .AddPainSystems();
+                .AddPainStateSystems();
             
             _everyFrameSystems.Initialize();
             _commonSystems.Initialize();
@@ -855,7 +861,7 @@ namespace GunshotWound2
         
     internal static class Extensions
     {
-        public static MultiTickEcsSystems AddHitSystems(this MultiTickEcsSystems systems)
+        public static MultiTickEcsSystems AddHitDetectSystems(this MultiTickEcsSystems systems)
         {
             return systems
                 .Add(new LightImpactHitSystem())
@@ -870,7 +876,7 @@ namespace GunshotWound2
                 .Add(new HitCleanSystem());
         }
         
-        public static MultiTickEcsSystems AddDamageSystems(this MultiTickEcsSystems systems)
+        public static MultiTickEcsSystems AddDamageProcessingSystems(this MultiTickEcsSystems systems)
         {
             return systems
                 .Add(new SmallCaliberDamageSystem())
@@ -893,15 +899,13 @@ namespace GunshotWound2
                 .Add(new ArmsCriticalSystem())
                 .Add(new LegsCriticalSystem())
                 .Add(new GutsCriticalSystem())
-                .Add(new StomachCriticalSystem())
-                .Add(new BleedingSystem());
+                .Add(new StomachCriticalSystem());
         }
 
-        public static MultiTickEcsSystems AddPainSystems(this MultiTickEcsSystems systems)
+        public static MultiTickEcsSystems AddPainStateSystems(this MultiTickEcsSystems systems)
         {
             return systems
                 .Add(new IncreasePainSystem())
-                .Add(new PainRecoverySystem())
                 .Add(new NoPainStateSystem())
                 .Add(new MildPainStateSystem())
                 .Add(new AveragePainStateSystem())

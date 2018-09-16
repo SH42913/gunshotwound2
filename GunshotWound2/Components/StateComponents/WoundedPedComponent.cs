@@ -38,7 +38,6 @@ namespace GunshotWound2.Components.StateComponents
         public CritTypes Crits;
         public float StopBleedingAmount;
         
-        public float PainMeter;
         public float MaximalPain;
         public PainStates PainState;
         public bool InPermanentRagdoll;
@@ -48,7 +47,7 @@ namespace GunshotWound2.Components.StateComponents
 
         public override string ToString()
         {
-            return $"{(IsMale ? "His" : "Her")} HP:{Health} Pain:{PainMeter / MaximalPain * 100:0.0}%";
+            return $"{(IsMale ? "His" : "Her")} HP:{Health}";
         }
     }
 }

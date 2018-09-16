@@ -29,17 +29,16 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystems
             {
                 var changeEvent = Events.Components1[i];
                 var pedEntity = changeEvent.PedEntity;
-                var woundedPed = EcsWorld.GetComponent<WoundedPedComponent>(pedEntity);
-
-                if (woundedPed != null && !woundedPed.IsDead && 
-                    (woundedPed.PainState != CurrentState || changeEvent.ForceUpdate))
-                {
-                    ExecuteState(woundedPed, pedEntity);
-                    woundedPed.PainState = CurrentState;
-                }
+                if(!EcsWorld.IsEntityExists(pedEntity)) continue;
                 
-                EcsWorld.RemoveEntity(Events.Entities[i]);
+                var woundedPed = EcsWorld.GetComponent<WoundedPedComponent>(pedEntity);
+                if (woundedPed == null || woundedPed.IsDead ||
+                    woundedPed.PainState == CurrentState && !changeEvent.ForceUpdate) continue;
+                
+                ExecuteState(woundedPed, pedEntity);
+                woundedPed.PainState = CurrentState;
             }
+            Events.RemoveAllEntities();
         }
 
         protected virtual void ExecuteState(WoundedPedComponent woundedPed, int pedEntity)
@@ -49,8 +48,7 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystems
 
         protected void SendPedToRagdoll(int pedEntity, RagdollStates ragdollType)
         {
-            SetPedToRagdollEvent ragdoll;
-            EcsWorld.CreateEntityWith(out ragdoll);
+            EcsWorld.CreateEntityWith(out SetPedToRagdollEvent ragdoll);
             ragdoll.PedEntity = pedEntity;
             ragdoll.RagdollState = ragdollType;
         }

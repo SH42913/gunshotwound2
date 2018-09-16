@@ -2,7 +2,6 @@
 using GTA;
 using GTA.Native;
 using GunshotWound2.Components.Events.BodyHitEvents;
-using GunshotWound2.Components.Events.GuiEvents;
 using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
 
@@ -12,7 +11,7 @@ namespace GunshotWound2.Systems.HitSystems
     public class BodyHitSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
-        private EcsFilter<CheckBodyHitEvent> _requests;
+        private EcsFilter<CheckBodyHitEvent> _events;
         
         public void Run()
         {
@@ -20,11 +19,12 @@ namespace GunshotWound2.Systems.HitSystems
             GunshotWound2.LastSystem = nameof(BodyHitSystem);
 #endif
             
-            for (int i = 0; i < _requests.EntitiesCount; i++)
+            for (int i = 0; i < _events.EntitiesCount; i++)
             {
-                int pedEntity = _requests.Components1[i].PedEntity;
-                var woundedPed = _ecsWorld
-                    .GetComponent<WoundedPedComponent>(pedEntity);
+                int pedEntity = _events.Components1[i].PedEntity;
+                if(!_ecsWorld.IsEntityExists(pedEntity)) continue;
+                
+                var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
                 if(woundedPed == null) continue;
 
                 var bodyPart = GetDamagedBodyPart(woundedPed.ThisPed);
@@ -40,7 +40,6 @@ namespace GunshotWound2.Systems.HitSystems
         {
             if (target == null)
             {
-                SendDebug("Ped is null, can't find bone");
                 return BodyParts.NOTHING;
             }
             
@@ -51,26 +50,21 @@ namespace GunshotWound2.Systems.HitSystems
             if (damagedBoneNum == 0) return BodyParts.NOTHING;
             
             Enum.TryParse(damagedBoneNum.ToString(), out Bone damagedBone);
-            SendDebug($"It was {damagedBone}");
 
             switch (damagedBone)
             {
                 case Bone.SKEL_Head:
-                    SendDebug($"You got {BodyParts.HEAD}");
                     return BodyParts.HEAD;
                 case Bone.SKEL_Neck_1:
-                    SendDebug($"You got {BodyParts.NECK}");
                     return BodyParts.NECK;
                 case Bone.SKEL_Spine1:
                 case Bone.SKEL_Spine2:
                 case Bone.SKEL_Spine3:
-                    SendDebug($"You got {BodyParts.UPPER_BODY}");
                     return BodyParts.UPPER_BODY;
                 case Bone.SKEL_Pelvis:
                 case Bone.SKEL_Spine_Root:
                 case Bone.SKEL_Spine0:
                 case Bone.SKEL_ROOT:
-                    SendDebug($"You got {BodyParts.LOWER_BODY}");
                     return BodyParts.LOWER_BODY;
                 case Bone.SKEL_L_Thigh:
                 case Bone.SKEL_R_Thigh:
@@ -80,7 +74,6 @@ namespace GunshotWound2.Systems.HitSystems
                 case Bone.SKEL_L_Foot:
                 case Bone.SKEL_L_Calf:
                 case Bone.SKEL_R_Calf:
-                    SendDebug($"You got {BodyParts.LEG}");
                     return BodyParts.LEG;
                 case Bone.SKEL_L_UpperArm:
                 case Bone.SKEL_R_UpperArm:
@@ -90,20 +83,10 @@ namespace GunshotWound2.Systems.HitSystems
                 case Bone.SKEL_R_Forearm:
                 case Bone.SKEL_L_Hand:
                 case Bone.SKEL_R_Hand:
-                    SendDebug($"You got {BodyParts.ARM}");
                     return BodyParts.ARM;
             }
 
             return BodyParts.NOTHING;
-        }
-
-        private void SendDebug(string message)
-        {
-#if DEBUG
-            var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
-            notification.Level = NotifyLevels.DEBUG;
-            notification.StringToShow = message;
-#endif
         }
     }
 }

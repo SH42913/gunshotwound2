@@ -9,14 +9,15 @@
 		If TRUE you will not die instantly, you can use this option without WYD -->
 		
 		<PoliceCanForget Value="TRUE"/>
-		<!-- If TRUE - cops can forget you, when you fall unconscious -->
+		<!-- If TRUE - cops can forget you, when you fall unconscious.
+		If you use Realism Dispatch Enhanced, better to set FALSE-->
 		
 		<CanDropWeapon Value="TRUE"/>
 		<!-- If TRUE - you will lose weapon on arm crits and when you fall unconscious -->
 
 		<MaximalSlowMo Value="0.5"/>
 		<!-- 0.5 mean if TimeScale never be less than 0.5.
-		TimeScale will 0.5 + painPercent(pain/maxPain)
+		TimeScale will 0.5 + painPercent(pain/maxPain).
 		If you want to disable slowmo, set it to 1.1 -->
 		
 		<MaximalPain Value="100.0"/>
@@ -35,16 +36,17 @@
 	
 	<Peds>
 		<GSWScanRange Value="50"/>
-		<!-- It is start range where script scan other peds. 
-		You also can change range in game, check in Hotkey section.
+		<!-- It is start range where script scan other peds to convert them to GSWPeds. 
+		You also can change range in game, using Increase/ReduceRange keys, check in Hotkey section.
 		If you have low FPS or want to disable GSWPeds, just set range as -1. -->
 
 		<ScanOnlyDamaged Value="FALSE"/>
 		<!-- If TRUE GSW will mark ped as GSWPed only after first damage.
-		It will increase performance, but it can have bugs. -->
+		It will increase performance, but it can have bugs.
+		PedHealth, new Accuracy and ShootRate will applied only after first damage! -->
 		
 		<CriticalMessages Value="TRUE"/>
-		<!-- If TRUE you will see messages with critical wound of NonPlayable Peds -->
+		<!-- If TRUE you will see messages with critical wound of NonPlayable GSWPeds -->
 
 		<Targets ALL="TRUE" COMPANION="TRUE" DISLIKE="TRUE" HATE="TRUE" LIKE="TRUE" NEUTRAL="TRUE" PEDESTRIAN="TRUE" RESPECT="TRUE"/>
 		<!-- You can select which types of NonPlayable Peds can be affected by GSW.
@@ -52,18 +54,18 @@
 		If ALL is TRUE, other variants will not be checked. -->
 		
 		<PedHealth Min="50" Max="100"/>
-		<!-- NonPlayable Peds will spawn with health between Min and Max -->
+		<!-- GSWPeds will have health between Min and Max -->
 		
 		<MaximalPain Min="70.0" Max="100.0"/>
-		<!-- Same as for player, but NonPlayable Peds will spawn with MaxPain between Min and Max -->
+		<!-- Same as for player, but GSWPeds will have MaximalPain between Min and Max -->
 
 		<Accuracy Min="5" Max="30"/>
-		<!-- All NonPlayable Peds will get accuracy between Min and Max
-		If you want to use default game accuracy, set both to 0-->
+		<!-- GSWPeds will get accuracy between Min and Max.
+		If you want to use default game Accuracy, set both to 0. -->
 
 		<ShootRate Min="5" Max="30"/>
-		<!-- All NonPlayable Peds will get ShootRate between Min and Max
-		If you want to use default game ShootRate, set both to 0-->
+		<!-- GSWPeds will get ShootRate between Min and Max.
+		If you want to use default game ShootRate, set both to 0. -->
 		
 		<PainRecoverySpeed Value="1.0"/>
 		<BleedHealSpeed Value="0.001"/>

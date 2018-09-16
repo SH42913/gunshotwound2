@@ -16,10 +16,10 @@ namespace GunshotWound2.Systems.PedSystems
         private EcsWorld _ecsWorld;
         private EcsFilterSingle<MainConfig> _mainConfig;
         
-        private EcsFilter<InstantHealEvent> _components;
+        private EcsFilter<InstantHealEvent> _events;
         private EcsFilter<BleedingComponent> _bleedingComponents;
         
-        private static readonly Random _random = new Random();
+        private static readonly Random Random = new Random();
         
         public void Run()
         {
@@ -27,11 +27,15 @@ namespace GunshotWound2.Systems.PedSystems
             GunshotWound2.LastSystem = nameof(InstantHealSystem);
 #endif
             
-            for (int i = 0; i < _components.EntitiesCount; i++)
+            for (int i = 0; i < _events.EntitiesCount; i++)
             {
-                int pedEntity = _components.Components1[i].PedEntity;
+                int pedEntity = _events.Components1[i].PedEntity;
+                if (!_ecsWorld.IsEntityExists(pedEntity))
+                {
+                    continue;
+                }
+                
                 var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
-
                 if (woundedPed != null)
                 {
                     if (woundedPed.IsPlayer)
@@ -45,15 +49,19 @@ namespace GunshotWound2.Systems.PedSystems
                     }
                     else
                     {
-                        woundedPed.Health = _random.Next(50, _mainConfig.Data.NpcConfig.MaxStartHealth);
+                        woundedPed.Health = Random.Next(50, _mainConfig.Data.NpcConfig.MaxStartHealth);
                         woundedPed.ThisPed.Accuracy = woundedPed.DefaultAccuracy;
                     }
 
                     woundedPed.IsDead = false;
                     woundedPed.Crits = 0;
-                    woundedPed.PainMeter = 0;
                     woundedPed.ThisPed.Health = (int) woundedPed.Health;
                     woundedPed.Armor = woundedPed.ThisPed.Armor;
+
+                    if (_ecsWorld.GetComponent<PainComponent>(pedEntity) != null)
+                    {
+                        _ecsWorld.RemoveComponent<PainComponent>(pedEntity);
+                    }
                     
                     Function.Call(Hash.CLEAR_PED_BLOOD_DAMAGE, woundedPed.ThisPed);
                     Function.Call(Hash.SET_PED_MOVE_RATE_OVERRIDE, woundedPed.ThisPed, 1f);
@@ -69,9 +77,9 @@ namespace GunshotWound2.Systems.PedSystems
                     
                     _ecsWorld.RemoveEntity(_bleedingComponents.Entities[bleedIndex]);
                 }
-                
-                _ecsWorld.RemoveEntity(_components.Entities[i]);
             }
+            
+            _events.RemoveAllEntities();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace GunshotWound2.Systems.GuiSystems
     {
         private EcsWorld _ecsWorld;
         private EcsFilterSingle<MainConfig> _mainConfig;
-        private EcsFilter<ShowNotificationEvent> _components;
+        private EcsFilter<ShowNotificationEvent> _events;
 
         public void Run()
         {
@@ -25,9 +25,9 @@ namespace GunshotWound2.Systems.GuiSystems
             string emergencyNotification = "";
             string debugNotification = "";
             
-            for (int i = 0; i < _components.EntitiesCount; i++)
+            for (int i = 0; i < _events.EntitiesCount; i++)
             {
-                var needToShow = _components.Components1[i];
+                var needToShow = _events.Components1[i];
 
                 switch (needToShow.Level)
                 {
@@ -50,7 +50,7 @@ namespace GunshotWound2.Systems.GuiSystems
                         throw new ArgumentOutOfRangeException();
                 }
                 
-                _ecsWorld.RemoveEntity(_components.Entities[i]);
+                _ecsWorld.RemoveEntity(_events.Entities[i]);
             }
             
             if (_mainConfig.Data.EmergencyMessages && !string.IsNullOrEmpty(emergencyNotification))

@@ -1,5 +1,4 @@
-﻿using GTA;
-using GunshotWound2.Components.Events.GuiEvents;
+﻿using GunshotWound2.Components.Events.GuiEvents;
 using GunshotWound2.Components.Events.PlayerEvents;
 using GunshotWound2.Components.Events.WoundEvents.CriticalWoundEvents;
 using GunshotWound2.Components.StateComponents;

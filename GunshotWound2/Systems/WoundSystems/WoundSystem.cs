@@ -27,33 +27,32 @@ namespace GunshotWound2.Systems.WoundSystems
             {
                 var component = _components.Components1[i];
                 int pedEntity = component.PedEntity;
-                var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
-
-                if (woundedPed != null)
-                {
-                    var damageDeviation = _config.Data.WoundConfig.DamageDeviation;
-                    var bleedingDeviation = _config.Data.WoundConfig.BleedingDeviation;
-
-                    woundedPed.Health -= _config.Data.WoundConfig.DamageMultiplier * component.Damage +
-                                         Random.NextFloat(-damageDeviation, damageDeviation);
-                    woundedPed.ThisPed.Health = (int) woundedPed.Health;
-                    
-                    CreateBleeding(pedEntity, component.BleedSeverity +
-                                              Random.NextFloat(-bleedingDeviation, bleedingDeviation), component.Name);
-                    CreatePain(pedEntity, component.Pain);
-                    CreateCritical(pedEntity, component.Crits);
-
-                    if (component.ArterySevered)
-                    {
-                        CreateBleeding(pedEntity, 1f, _locale.Data.SeveredArtery);
-                    }
-                    
-                    _ecsWorld.CreateEntityWith<ShowDebugInfoEvent>().PedEntity = pedEntity;
-                    SendWoundInfo(component, woundedPed);
-                }
+                if(!_ecsWorld.IsEntityExists(pedEntity)) continue;
                 
-                _ecsWorld.RemoveEntity(_components.Entities[i]);
+                var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
+                if (woundedPed == null) continue;
+                
+                var damageDeviation = _config.Data.WoundConfig.DamageDeviation;
+                var bleedingDeviation = _config.Data.WoundConfig.BleedingDeviation;
+
+                woundedPed.Health -= _config.Data.WoundConfig.DamageMultiplier * component.Damage +
+                                     Random.NextFloat(-damageDeviation, damageDeviation);
+                woundedPed.ThisPed.Health = (int) woundedPed.Health;
+                    
+                CreateBleeding(pedEntity, component.BleedSeverity +
+                                          Random.NextFloat(-bleedingDeviation, bleedingDeviation), component.Name);
+                CreatePain(pedEntity, component.Pain);
+                CreateCritical(pedEntity, component.Crits);
+
+                if (component.ArterySevered)
+                {
+                    CreateBleeding(pedEntity, 1f, _locale.Data.SeveredArtery);
+                }
+                    
+                _ecsWorld.CreateEntityWith<ShowDebugInfoEvent>().PedEntity = pedEntity;
+                SendWoundInfo(component, woundedPed);
             }
+            _components.RemoveAllEntities();
         }
 
         private void CreateCritical(int pedEntity, CritTypes? crit)

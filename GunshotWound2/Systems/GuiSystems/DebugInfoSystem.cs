@@ -10,29 +10,28 @@ namespace GunshotWound2.Systems.GuiSystems
     {
         private EcsWorld _ecsWorld;
         private EcsFilterSingle<MainConfig> _mainConfig;
-        private EcsFilter<ShowDebugInfoEvent> _components;
-        
+        private EcsFilter<ShowDebugInfoEvent> _events;
+
         public void Run()
         {
 #if DEBUG
             GunshotWound2.LastSystem = nameof(DebugInfoSystem);
 #endif
-            
-            for (int i = 0; i < _components.EntitiesCount; i++)
+
+            for (int i = 0; i < _events.EntitiesCount; i++)
             {
 #if DEBUG
-                int pedEntity = _components.Components1[i].PedEntity;
-                var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
+                int pedEntity = _events.Components1[i].PedEntity;
+                if (!_ecsWorld.IsEntityExists(pedEntity)) continue;
 
-                if (woundedPed != null)
-                {
-                    SendDebug($"{woundedPed}");
-                    _ecsWorld.CreateEntityWith<ShowHealthStateEvent>().PedEntity = pedEntity;
-                }
-#endif
+                var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
+                if (woundedPed == null) continue;
                 
-                _ecsWorld.RemoveEntity(_components.Entities[i]);
+                SendDebug($"{woundedPed}");
+                _ecsWorld.CreateEntityWith<ShowHealthStateEvent>().PedEntity = pedEntity;
+#endif
             }
+            _events.RemoveAllEntities();
         }
 
         private void SendDebug(string message)

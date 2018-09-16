@@ -1,6 +1,4 @@
 ﻿using GTA;
-using GunshotWound2.Components.Events.GuiEvents;
-using GunshotWound2.Components.Events.PlayerEvents;
 using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
 using Leopotam.Ecs;
@@ -19,10 +17,18 @@ namespace GunshotWound2.Systems.PlayerSystems
             GunshotWound2.LastSystem = nameof(AdrenalineSystem);
 #endif
 
-            var playerPed = _ecsWorld.GetComponent<WoundedPedComponent>(_config.Data.PlayerConfig.PlayerEntity);
-            if (playerPed == null) return;
+            int playerEntity = _config.Data.PlayerConfig.PlayerEntity;
+            if(!_ecsWorld.IsEntityExists(playerEntity)) return;
+            
+            var playerPed = _ecsWorld.GetComponent<WoundedPedComponent>(playerEntity);
+            var pain = _ecsWorld.GetComponent<PainComponent>(playerEntity);
+            if (playerPed == null || pain == null || playerPed.InPermanentRagdoll)
+            {
+                Game.TimeScale = 1f;
+                return;
+            }
 
-            var painPercent = playerPed.PainMeter / playerPed.MaximalPain;
+            var painPercent = pain.CurrentPain / playerPed.MaximalPain;
             var adjustable = 1f - _config.Data.PlayerConfig.MaximalSlowMo;
             Game.TimeScale = painPercent <= 1f 
                 ? 1f - adjustable * painPercent 

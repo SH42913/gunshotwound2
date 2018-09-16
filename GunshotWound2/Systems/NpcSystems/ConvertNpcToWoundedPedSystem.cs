@@ -1,6 +1,5 @@
 ﻿using System;
 using GTA;
-using GunshotWound2.Components.Events.GuiEvents;
 using GunshotWound2.Components.Events.NpcEvents;
 using GunshotWound2.Components.MarkComponents;
 using GunshotWound2.Components.StateComponents;
@@ -69,7 +68,6 @@ namespace GunshotWound2.Systems.NpcSystems
                 }
                 woundedPed.DefaultAccuracy = pedToConvert.Accuracy;
                 
-                woundedPed.PainMeter = 0;
                 woundedPed.MaximalPain = Random.NextFloat(
                     _config.Data.NpcConfig.LowerMaximalPain,
                     _config.Data.NpcConfig.UpperMaximalPain);
@@ -81,15 +79,6 @@ namespace GunshotWound2.Systems.NpcSystems
                 pedToConvert.AddBlip();       
 #endif
             }
-        }
-
-        private void SendDebug(string message)
-        {
-#if DEBUG
-            var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
-            notification.Level = NotifyLevels.DEBUG;
-            notification.StringToShow = message;
-#endif
         }
     }
 }

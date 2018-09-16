@@ -23,9 +23,7 @@ namespace GunshotWound2.Systems.PlayerSystems
 
             var ped = Game.Player.Character;
 
-            PlayerMarkComponent playerComponent;
-            WoundedPedComponent woundPed;
-            var entity = _ecsWorld.CreateEntityWith(out playerComponent, out woundPed);
+            var entity = _ecsWorld.CreateEntityWith(out PlayerMarkComponent playerComponent, out WoundedPedComponent woundPed);
             woundPed.PainState = PainStates.DEADLY;
             
             woundPed.IsPlayer = true;
@@ -37,7 +35,6 @@ namespace GunshotWound2.Systems.PlayerSystems
             woundPed.ThisPed.MaxHealth = (int) woundPed.Health + 101;
             woundPed.ThisPed.Health = (int) woundPed.Health;
 
-            woundPed.PainMeter = 0;
             woundPed.MaximalPain = _config.Data.PlayerConfig.MaximalPain;
             woundPed.PainRecoverSpeed = _config.Data.PlayerConfig.PainRecoverSpeed;
             woundPed.StopBleedingAmount = _config.Data.PlayerConfig.BleedHealingSpeed;

@@ -74,8 +74,6 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
         private void ProcessWound(BodyPartWasHitEvent bodyHit, int pedEntity)
         {
-            SendDebug($"{WeaponClass} processing");
-            
             if (bodyHit == null || bodyHit.DamagedPart == BodyParts.NOTHING)
             {
                 DefaultAction?.Invoke(pedEntity);
@@ -212,15 +210,6 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
             var armorDamage = multsArray[4];
             if (armorDamage.HasValue) ArmorDamage = (int) armorDamage.Value;
-        }
-
-        private void SendDebug(string message)
-        {
-#if DEBUG
-            var notification = EcsWorld.CreateEntityWith<ShowNotificationEvent>();
-            notification.Level = NotifyLevels.DEBUG;
-            notification.StringToShow = message;
-#endif
         }
         
         private void SendMessage(string message, int pedEntity, NotifyLevels level = NotifyLevels.COMMON)

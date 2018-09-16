@@ -12,7 +12,7 @@ namespace GunshotWound2.Systems.EffectSystems
     public class RagdollSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
-        private EcsFilter<SetPedToRagdollEvent> _requests;
+        private EcsFilter<SetPedToRagdollEvent> _events;
         private EcsFilterSingle<MainConfig> _config;
         
         public void Run()
@@ -20,89 +20,84 @@ namespace GunshotWound2.Systems.EffectSystems
 #if DEBUG
             GunshotWound2.LastSystem = nameof(RagdollSystem);
 #endif
-            int maxCount = _requests.EntitiesCount;
-            for (int i = 0; i < _requests.EntitiesCount; i++)
+            int maxCount = _events.EntitiesCount;
+            for (int i = 0; i < maxCount; i++)
             {
-                int pedEntity = _requests.Components1[i].PedEntity;
-                var woundedPed = _ecsWorld
-                    .GetComponent<WoundedPedComponent>(pedEntity);
-
-                if (woundedPed == null)
+                int pedEntity = _events.Components1[i].PedEntity;
+                if (!_ecsWorld.IsEntityExists(pedEntity))
                 {
-                    _ecsWorld.RemoveEntity(_requests.Entities[i]);
+                    _ecsWorld.RemoveEntity(_events.Entities[i]);
+                    continue;
+                }
+                
+                var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
+                if (woundedPed == null || woundedPed.ThisPed.IsDead)
+                {
+                    _ecsWorld.RemoveEntity(_events.Entities[i]);
                     continue;
                 }
 
-                switch (_requests.Components1[i].RagdollState)
+                switch (_events.Components1[i].RagdollState)
                 {
                     case RagdollStates.PERMANENT:
                         if(woundedPed.ThisPed.IsRagdoll) continue;
                     
-                        SendDebug($"Set {pedEntity} to permanent ragdoll");
                         Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, -1, -1, 0, 0, 0, 0);
                         woundedPed.InPermanentRagdoll = true;
-
-                        _ecsWorld.RemoveEntity(_requests.Entities[i]);
+                        _ecsWorld.RemoveEntity(_events.Entities[i]);
                         break;
                     case RagdollStates.WAKE_UP:
                         if(woundedPed.InPermanentRagdoll && !woundedPed.Crits.HasFlag(CritTypes.NERVES_DAMAGED))
                         {
-                            SendDebug($"WakeUp {pedEntity} from ragdoll");
                             Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, 1, 1, 1, 0, 0, 0);
                             woundedPed.InPermanentRagdoll = false;
                         }
-
-                        _ecsWorld.RemoveEntity(_requests.Entities[i]);
+                        _ecsWorld.RemoveEntity(_events.Entities[i]);
                         break;
                     case RagdollStates.SHORT:
-                        if (!woundedPed.ThisPed.IsRagdoll)
+                        if (woundedPed.InPermanentRagdoll)
                         {
-                            SendDebug($"Set {pedEntity} to short ragdoll");
-                            Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, 2000, 2000, 0, 0, 0, 0);
+                            _ecsWorld.RemoveEntity(_events.Entities[i]);
                         }
-
-                        _ecsWorld.RemoveEntity(_requests.Entities[i]);
+                        if(woundedPed.ThisPed.IsRagdoll) continue;
+                        
+                        Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, 2000, 2000, 0, 0, 0, 0);
+                        _ecsWorld.RemoveEntity(_events.Entities[i]);
                         break;
                     case RagdollStates.LONG:
-                        if (!woundedPed.ThisPed.IsRagdoll)
+                        if (woundedPed.InPermanentRagdoll)
                         {
-                            SendDebug($"Set {pedEntity} to long ragdoll");
-                            Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, 4000, 4000, 0, 0, 0, 0);
+                            _ecsWorld.RemoveEntity(_events.Entities[i]);
                         }
-
-                        _ecsWorld.RemoveEntity(_requests.Entities[i]);
+                        if(woundedPed.ThisPed.IsRagdoll) continue;
+                        
+                        Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, 4000, 4000, 0, 0, 0, 0);
+                        _ecsWorld.RemoveEntity(_events.Entities[i]);
                         break;
                     case RagdollStates.LEG_DAMAGE:
-                        if (!woundedPed.ThisPed.IsRagdoll)
+                        if (woundedPed.InPermanentRagdoll)
                         {
-                            SendDebug($"Set {pedEntity} to leg-damage ragdoll");
-                            Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, 3000, 3000, 4, 0, 0, 0);
+                            _ecsWorld.RemoveEntity(_events.Entities[i]);
                         }
-
-                        _ecsWorld.RemoveEntity(_requests.Entities[i]);
+                        if(woundedPed.ThisPed.IsRagdoll) continue;
+                        
+                        Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, 3000, 3000, 4, 0, 0, 0);
+                        _ecsWorld.RemoveEntity(_events.Entities[i]);
                         break;
                     case RagdollStates.HEART_DAMAGE:
-                        if (!woundedPed.ThisPed.IsRagdoll)
+                        if (woundedPed.InPermanentRagdoll)
                         {
-                            SendDebug($"Set {pedEntity} to heart-damage ragdoll");
-                            Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, 6000, 6000, 1, 0, 0, 0);
+                            _ecsWorld.RemoveEntity(_events.Entities[i]);
                         }
-
-                        _ecsWorld.RemoveEntity(_requests.Entities[i]);
+                        if(woundedPed.ThisPed.IsRagdoll) continue;
+                        
+                        Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, 6000, 6000, 1, 0, 0, 0);
+                        _ecsWorld.RemoveEntity(_events.Entities[i]);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
             }
-        }
-
-        private void SendDebug(string message)
-        {
-#if DEBUG
-            var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
-            notification.Level = NotifyLevels.DEBUG;
-            notification.StringToShow = message;
-#endif
         }
     }
 }

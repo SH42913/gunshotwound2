@@ -60,6 +60,7 @@
     <Compile Include="Components\Events\PedEvents\InstantHealEvent.cs" />
     <Compile Include="Components\Events\PedEvents\SetPedToRagdollEvent.cs" />
     <Compile Include="Components\Events\PlayerEvents\AddCameraShakeEvent.cs" />
+    <Compile Include="Components\Events\PlayerEvents\AddFlashEvent.cs" />
     <Compile Include="Components\Events\PlayerEvents\AddHelmetToPlayerEvent.cs" />
     <Compile Include="Components\Events\PlayerEvents\ChangeSpecialAbilityEvent.cs" />
     <Compile Include="Components\Events\WeaponHitEvents\BaseWeaponHitEvent.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="Components\MarkComponents\NpcMarkComponent.cs" />
     <Compile Include="Components\MarkComponents\PlayerMarkComponent.cs" />
     <Compile Include="Components\StateComponents\BleedingComponent.cs" />
+    <Compile Include="Components\StateComponents\PainComponent.cs" />
     <Compile Include="Components\StateComponents\WoundedPedComponent.cs" />
     <Compile Include="Configs\LocaleConfig.cs" />
     <Compile Include="Configs\MainConfig.cs" />
@@ -130,6 +132,7 @@
     <Compile Include="Systems\NpcSystems\NpcFindSystem.cs" />
     <Compile Include="Systems\PlayerSystems\AdrenalineSystem.cs" />
     <Compile Include="Systems\PlayerSystems\CameraShakeSystem.cs" />
+    <Compile Include="Systems\PlayerSystems\FlashSystem.cs" />
     <Compile Include="Systems\PlayerSystems\HelmetRequestSystem.cs" />
     <Compile Include="Systems\PlayerSystems\PlayerSystem.cs" />
     <Compile Include="Systems\GuiSystems\CheckSystem.cs" />
