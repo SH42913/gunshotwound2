@@ -19,11 +19,6 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
         {
             SendMessage(Locale.Data.PlayerNervesCritMessage, NotifyLevels.WARNING);
             SendToRagdollOrArmLegsDamage(pedEntity);
-
-            if (Config.Data.WoundConfig.RealisticNervesDamage)
-            {
-                Game.Player.CanControlCharacter = false;
-            }
         }
 
         protected override void ActionForNpc(WoundedPedComponent pedComponent, int pedEntity)

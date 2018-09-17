@@ -30,7 +30,6 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystems
                 EcsWorld.CreateEntityWith<AddCameraShakeEvent>().Length = CameraShakeLength.CLEAR;
             }
             EcsWorld.CreateEntityWith<ChangeSpecialAbilityEvent>().Lock = false;
-            Game.Player.CanControlCharacter = true;
         }
     }
 }

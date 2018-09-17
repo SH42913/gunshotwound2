@@ -150,16 +150,22 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
                 wound.Crits = null;
                 return;
             }
-            
-            if(!Random.IsTrueWithProbability(CritChance)) return;
-            int critIndex = Random.Next(0, possibleCrits.Length);
-            var crit = possibleCrits[critIndex];
-            wound.Crits = crit;
+
+            if (Random.IsTrueWithProbability(CritChance))
+            {
+                int critIndex = Random.Next(0, possibleCrits.Length);
+                var crit = possibleCrits[critIndex];
+                wound.Crits = crit;
+            }
+            else
+            {
+                wound.Crits = null;
+            }
         }
 
         protected void CreateHeavyBrainDamage(string name, int pedEntity)
         {
-            CreateWound(name, pedEntity, DamageMultiplier * 70f, BleeedingMultiplier * 3f, PainMultiplier * 100f);
+            CreateWound(name, pedEntity, DamageMultiplier * 70f, BleeedingMultiplier * 3f, PainMultiplier * 110f);
         }
 
         private bool CheckArmorPenetration(WoundedPedComponent woundedPed, int pedEntity)

@@ -4,9 +4,12 @@
 		<GSWPlayerEnabled Value="TRUE"/>
 		<!-- If TRUE - player ped will be affected by GSW -->
 		
-		<WYDCompatibility Value="FALSE"/>
-		<!-- Compatibility with WatchYourDeath mod 
-		If TRUE you will not die instantly, you can use this option without WYD -->
+		<MinimalHealth Value="0"/>
+		<!-- If ped's health less that MinimalHealth, GSW will think player is died.
+		Maximal health always will MinimalHealth + 100.
+		Use it for compatibility with other mods:
+		 - WatchYourDeath mod, set to 1700 
+		 - REAL Rage Weapons And Damage, set to -20 -->
 		
 		<PoliceCanForget Value="TRUE"/>
 		<!-- If TRUE - cops can forget you, when you fall unconscious.
@@ -18,7 +21,8 @@
 		<MaximalSlowMo Value="0.5"/>
 		<!-- 0.5 mean if TimeScale never be less than 0.5.
 		TimeScale will 0.5 + painPercent(pain/maxPain).
-		If you want to disable slowmo, set it to 1.1 -->
+		Be carefully, it will disable other SlowMo-mods.
+		If you want to disable slowmo, set it to 1.1. -->
 		
 		<MaximalPain Value="100.0"/>
 		<!-- 100 mean when pain will more than 100 points you'll fall unconscious -->
@@ -77,8 +81,8 @@
 	
 	<Notifications>
 		<Language Value="EN"/>
-		<!-- In this build available only EN, RU and PL. RU is buggy :(
-		Partially translated DE and FR.
+		<!-- In this build available only EN, DE, RU and PL. RU is buggy :(
+		Partially translated FR.
 		You can help to translate GSW2 to other languages here
 		https://docs.google.com/spreadsheets/d/1TY0nSEJMDmypkYrcVUBlMG3HIAEW075dCOtxXgW5UJ0/edit 
 		And more languages will be available in next build -->
@@ -107,12 +111,12 @@
 		<RagdollOnPainfulWound Value="TRUE"/>
 		<!-- If TRUE - peds(including player) will set to short ragdoll on painful wounds -->
 		
-		<MinimalChanceForArmorSave Value="0.6"/>
+		<MinimalChanceForArmorSave Value="0.2"/>
 		<!-- 0.6 mean 60% chance to save your body on 1 armor point.
 		100 armor points will always 100% chance to save. -->
 		
 		<MoveRateOnFullPain Value="0.7"/>
-		<!-- Move rate on 100% of pain, for other percents will be MoveRate * pain/maxPain -->
+		<!-- Move rate on 100% of pain -->
 		
 		<OverallDamageMult Value="1.0"/>
 		<!-- Overall damage multiplier, 2.0 mean every wound will get x2 damage for ped -->
@@ -128,10 +132,10 @@
 	</Wounds>
     
     <Weapons>
-		<SmallCaliber DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.3" ArmorDamage="3"/>
-		<MediumCaliber DamageMult="1.2" BleedingMult="1.3" PainMult="1.2" CritChance="0.6" ArmorDamage="6"/>
-		<HighCaliber DamageMult="1.3" BleedingMult="1.5" PainMult="1.5" CritChance="0.8" ArmorDamage="9"/>
-		<Shotgun DamageMult="0.7" BleedingMult="1.1" PainMult="1.1" CritChance="0.5" ArmorDamage="6"/>
+		<SmallCaliber DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.3" ArmorDamage="2"/>
+		<MediumCaliber DamageMult="1.2" BleedingMult="1.3" PainMult="1.2" CritChance="0.6" ArmorDamage="4"/>
+		<HighCaliber DamageMult="1.3" BleedingMult="1.5" PainMult="1.5" CritChance="0.8" ArmorDamage="6"/>
+		<Shotgun DamageMult="0.7" BleedingMult="1.1" PainMult="1.1" CritChance="0.5" ArmorDamage="3"/>
 		
 		<LightImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.2"/>
 		<HeavyImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.7"/>

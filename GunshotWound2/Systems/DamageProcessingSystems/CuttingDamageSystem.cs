@@ -14,7 +14,8 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
             WeaponClass = "Cutting";
 
             HelmetSafeChance = 0.5f;
-            ArmorDamage = 3;
+            ArmorDamage = 1;
+            CanPenetrateArmor = false;
             
             DefaultAction = DefaultGrazeWound;
             

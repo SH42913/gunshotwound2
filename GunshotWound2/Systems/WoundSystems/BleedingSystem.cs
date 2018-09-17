@@ -39,16 +39,13 @@ namespace GunshotWound2.Systems.WoundSystems
                     _ecsWorld.RemoveEntity(_bleedings.Entities[i]);
                     continue;
                 }
-
-                if (woundedPed.IsDead)
-                {
-                    _ecsWorld.RemoveEntity(_bleedings.Entities[i]);
-                    continue;
-                }
                 
                 woundedPed.Health -= component.BleedSeverity * frameTimeInSeconds;
                 component.BleedSeverity -= woundedPed.StopBleedingAmount * frameTimeInSeconds;
                 woundedPed.ThisPed.Health = (int) woundedPed.Health;
+
+                if (!woundedPed.ThisPed.IsDead) continue;
+                _ecsWorld.RemoveEntity(_bleedings.Entities[i]);
             }
         }
     }

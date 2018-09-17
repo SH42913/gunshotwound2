@@ -2,6 +2,7 @@
 using GTA;
 using GTA.Native;
 using GunshotWound2.Components.Events.BodyHitEvents;
+using GunshotWound2.Components.Events.GuiEvents;
 using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
 
@@ -49,7 +50,9 @@ namespace GunshotWound2.Systems.HitSystems
 
             if (damagedBoneNum == 0) return BodyParts.NOTHING;
             
+            SendMessage("Damaged int " + damagedBoneNum, NotifyLevels.DEBUG);
             Enum.TryParse(damagedBoneNum.ToString(), out Bone damagedBone);
+            SendMessage("Bone is " + damagedBone, NotifyLevels.DEBUG);
 
             switch (damagedBone)
             {
@@ -85,8 +88,20 @@ namespace GunshotWound2.Systems.HitSystems
                 case Bone.SKEL_R_Hand:
                     return BodyParts.ARM;
             }
+            SendMessage("WARNING! Nothing bone is " + damagedBone, NotifyLevels.ALERT);
 
             return BodyParts.NOTHING;
+        }
+
+        private void SendMessage(string message, NotifyLevels level = NotifyLevels.COMMON)
+        {
+#if !DEBUG
+            if(level == NotifyLevels.DEBUG) return;
+#endif
+            
+            var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
+            notification.Level = level;
+            notification.StringToShow = message;
         }
     }
 }

@@ -377,16 +377,8 @@ namespace GunshotWound2
             {
                 _mainConfig.PlayerConfig.WoundedPlayerEnabled = playerNode.Element("GSWPlayerEnabled").GetBool();
 
-                if (playerNode.Element("WYDCompatibility").GetBool())
-                {
-                    _mainConfig.PlayerConfig.MinimalHealth = 1700;
-                    _mainConfig.PlayerConfig.MaximalHealth = 1799;
-                }
-                else
-                {
-                    _mainConfig.PlayerConfig.MinimalHealth = 0;
-                    _mainConfig.PlayerConfig.MaximalHealth = 99;
-                }
+                _mainConfig.PlayerConfig.MinimalHealth = playerNode.Element("MinimalHealth").GetInt();
+                _mainConfig.PlayerConfig.MaximalHealth = _mainConfig.PlayerConfig.MinimalHealth + 99;
 
                 _mainConfig.PlayerConfig.MaximalPain = playerNode.Element("MaximalPain").GetFloat();
                 _mainConfig.PlayerConfig.PainRecoverSpeed = playerNode.Element("PainRecoverySpeed").GetFloat();
