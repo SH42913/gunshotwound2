@@ -26,7 +26,7 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
                 int pedEntity = Peds.Entities[i];
                 EcsWorld
                     .CreateEntityWith<CheckBodyHitEvent>()
-                    .PedEntity = pedEntity;
+                    .Entity = pedEntity;
                 CreateComponent(pedEntity);
             }
         }

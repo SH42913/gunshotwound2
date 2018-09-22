@@ -27,7 +27,7 @@ namespace GunshotWound2.Systems.WoundSystems
             for (int i = 0; i < _events.EntitiesCount; i++)
             {
                 var component = _events.Components1[i];
-                int pedEntity = component.PedEntity;
+                int pedEntity = component.Entity;
                 if (!_ecsWorld.IsEntityExists(pedEntity))
                 {
                     _ecsWorld.RemoveEntity(_events.Entities[i]);
@@ -62,7 +62,7 @@ namespace GunshotWound2.Systems.WoundSystems
                         if (_config.Data.WoundConfig.RagdollOnPainfulWound)
                         {
                             _ecsWorld.CreateEntityWith(out SetPedToRagdollEvent ragdoll);
-                            ragdoll.PedEntity = pedEntity;
+                            ragdoll.Entity = pedEntity;
                             ragdoll.RagdollState = RagdollStates.SHORT;
                         }
 

@@ -1,6 +1,6 @@
 ﻿namespace GunshotWound2.Components.Events.PedEvents
 {
-    public class ChangeWalkAnimationEvent : ComponentWithPedEntity
+    public class ChangeWalkAnimationEvent : ComponentWithEntity
     {
         public string AnimationName;
     }

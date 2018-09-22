@@ -9,7 +9,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
 {
     [EcsInject]
-    public abstract class BaseCriticalSystem<T> : IEcsRunSystem where T : ComponentWithPedEntity, new()
+    public abstract class BaseCriticalSystem<T> : IEcsRunSystem where T : ComponentWithEntity, new()
     {
         protected EcsWorld EcsWorld;
         protected EcsFilter<T> Events;
@@ -27,7 +27,7 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
             
             for (int i = 0; i < Events.EntitiesCount; i++)
             {
-                int pedEntity = Events.Components1[i].PedEntity;
+                int pedEntity = Events.Components1[i].Entity;
                 var woundedPed = EcsWorld.GetComponent<WoundedPedComponent>(pedEntity);
 
                 if (woundedPed == null)
@@ -73,14 +73,14 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
         protected void CreatePain(int entity, float amount)
         {
             var pain = EcsWorld.CreateEntityWith<IncreasePainEvent>();
-            pain.PedEntity = entity;
+            pain.Entity = entity;
             pain.PainAmount = amount;
         }
 
         protected void CreateInternalBleeding(int entity, float amount)
         {
             var bleed = EcsWorld.CreateEntityWith<BleedingComponent>();
-            bleed.PedEntity = entity;
+            bleed.Entity = entity;
             bleed.BleedSeverity = amount;
             bleed.Name = Locale.Data.InternalBleeding;
         }
@@ -89,7 +89,7 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
         {
             SetPedToRagdollEvent ragdoll;
             EcsWorld.CreateEntityWith(out ragdoll);
-            ragdoll.PedEntity = pedEntity;
+            ragdoll.Entity = pedEntity;
             ragdoll.RagdollState = ragdollType;
         }
     }

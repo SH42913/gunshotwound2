@@ -24,6 +24,8 @@ namespace GunshotWound2.Configs
 
         public float MinimalChanceForArmorSave;
 
+        public int BandageCost;
+
         public Dictionary<string, float?[]> DamageSystemConfigs;
 
         public override string ToString()

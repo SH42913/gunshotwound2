@@ -22,7 +22,7 @@ namespace GunshotWound2.Systems.HitSystems
             
             for (int i = 0; i < _events.EntitiesCount; i++)
             {
-                int pedEntity = _events.Components1[i].PedEntity;
+                int pedEntity = _events.Components1[i].Entity;
                 if(!_ecsWorld.IsEntityExists(pedEntity)) continue;
                 
                 var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
@@ -31,7 +31,7 @@ namespace GunshotWound2.Systems.HitSystems
                 var bodyPart = GetDamagedBodyPart(woundedPed.ThisPed);
 
                 var bodyDamage = _ecsWorld.CreateEntityWith<BodyPartWasHitEvent>();
-                bodyDamage.PedEntity = pedEntity;
+                bodyDamage.Entity = pedEntity;
                 bodyDamage.DamagedPart = bodyPart;
             }
         }

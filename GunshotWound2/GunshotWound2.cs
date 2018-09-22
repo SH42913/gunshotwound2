@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using GTA;
 using GTA.Native;
 using GunshotWound2.Components.Events.GuiEvents;
+using GunshotWound2.Components.Events.HealingEvents;
 using GunshotWound2.Components.Events.PedEvents;
 using GunshotWound2.Components.Events.PlayerEvents;
 using GunshotWound2.Components.StateComponents;
@@ -73,6 +74,12 @@ namespace GunshotWound2
             if (_mainConfig.HealKey != null && eventArgs.KeyCode == _mainConfig.HealKey)
             {
                 HealPlayer();
+                return;
+            }
+            
+            if (_mainConfig.BandageKey != null && eventArgs.KeyCode == _mainConfig.BandageKey)
+            {
+                ApplyBandageToPlayer();
                 return;
             }
             
@@ -225,6 +232,7 @@ namespace GunshotWound2
             
             _commonSystems
                 .Add(new ArmorSystem())
+                .Add(new BandageSystem())
                 .AddHitDetectSystems()
                 .AddDamageProcessingSystems()
                 .AddWoundSystems()
@@ -260,12 +268,13 @@ namespace GunshotWound2
         {
             _mainConfig.Language = "EN";
             
-            _mainConfig.CheckKey = Keys.L;
-            _mainConfig.HealKey = Keys.K;
             _mainConfig.HelmetKey = Keys.J;
+            _mainConfig.BandageKey = Keys.K;
+            _mainConfig.CheckKey = Keys.L;
             _mainConfig.IncreaseRangeKey = Keys.PageUp;
             _mainConfig.ReduceRangeKey = Keys.PageDown;
             _mainConfig.PauseKey = Keys.End;
+            _mainConfig.HealKey = null;
 
             _mainConfig.PlayerConfig = new PlayerConfig
             {
@@ -320,7 +329,8 @@ namespace GunshotWound2
                 PainDeviation = 0.2f,
                 RagdollOnPainfulWound = true,
                 PainfulWoundValue = 50,
-                MinimalChanceForArmorSave = 0.6f
+                MinimalChanceForArmorSave = 0.6f,
+                BandageCost = 15
             };
         }
 
@@ -350,7 +360,7 @@ namespace GunshotWound2
                 _mainConfig.HealKey = buttonNode.GetKey("HealKey");
                 _mainConfig.IncreaseRangeKey = buttonNode.GetKey("IncreaseRangeKey");
                 _mainConfig.ReduceRangeKey = buttonNode.GetKey("ReduceRangeKey");
-                _mainConfig.HelmetKey = buttonNode.GetKey("GetHelmetKey");
+                _mainConfig.BandageKey = buttonNode.GetKey("BandageKey");
                 _mainConfig.PauseKey = buttonNode.GetKey("PauseKey");
             }
 
@@ -811,7 +821,7 @@ namespace GunshotWound2
             int playerEntity = _mainConfig.PlayerConfig.PlayerEntity;
             if(playerEntity < 0) return;
             
-            _ecsWorld.CreateEntityWith<ShowHealthStateEvent>().PedEntity = playerEntity;
+            _ecsWorld.CreateEntityWith<ShowHealthStateEvent>().Entity = playerEntity;
         }
 
         private void HealPlayer()
@@ -819,7 +829,15 @@ namespace GunshotWound2
             int playerEntity = _mainConfig.PlayerConfig.PlayerEntity;
             if(playerEntity < 0) return;
             
-            _ecsWorld.CreateEntityWith<InstantHealEvent>().PedEntity = playerEntity;
+            _ecsWorld.CreateEntityWith<InstantHealEvent>().Entity = playerEntity;
+        }
+
+        private void ApplyBandageToPlayer()
+        {
+            int playerEntity = _mainConfig.PlayerConfig.PlayerEntity;
+            if(playerEntity < 0) return;
+            
+            _ecsWorld.CreateEntityWith<ApplyBandageEvent>().Entity = playerEntity;
         }
 
         private void SendMessage(string message, NotifyLevels level = NotifyLevels.COMMON)

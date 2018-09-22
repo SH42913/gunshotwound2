@@ -28,7 +28,7 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystems
             for (int i = 0; i < Events.EntitiesCount; i++)
             {
                 var changeEvent = Events.Components1[i];
-                var pedEntity = changeEvent.PedEntity;
+                var pedEntity = changeEvent.Entity;
                 if(!EcsWorld.IsEntityExists(pedEntity)) continue;
                 
                 var woundedPed = EcsWorld.GetComponent<WoundedPedComponent>(pedEntity);
@@ -49,14 +49,14 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystems
         protected void SendPedToRagdoll(int pedEntity, RagdollStates ragdollType)
         {
             EcsWorld.CreateEntityWith(out SetPedToRagdollEvent ragdoll);
-            ragdoll.PedEntity = pedEntity;
+            ragdoll.Entity = pedEntity;
             ragdoll.RagdollState = ragdollType;
         }
 
         protected void ChangeWalkingAnimation(int pedEntity, string animationName)
         {
             EcsWorld.CreateEntityWith(out ChangeWalkAnimationEvent anim);
-            anim.PedEntity = pedEntity;
+            anim.Entity = pedEntity;
             anim.AnimationName = animationName;
         }
         

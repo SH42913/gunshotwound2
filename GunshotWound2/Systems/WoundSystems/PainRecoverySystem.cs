@@ -53,7 +53,7 @@ namespace GunshotWound2.Systems.WoundSystems
                     if(woundedPed.PainState == PainStates.UNBEARABLE) continue;
 
                     _ecsWorld.CreateEntityWith(out UnbearablePainChangeStateEvent unbearablePainEvent);
-                    unbearablePainEvent.PedEntity = pedEntity;
+                    unbearablePainEvent.Entity = pedEntity;
                     unbearablePainEvent.ForceUpdate = false;
                 }
                 else if(painPercent > 0.7f)
@@ -61,7 +61,7 @@ namespace GunshotWound2.Systems.WoundSystems
                     if(woundedPed.PainState == PainStates.INTENSE) continue;
 
                     _ecsWorld.CreateEntityWith(out IntensePainChangeStateEvent intensePainEvent);
-                    intensePainEvent.PedEntity = pedEntity;
+                    intensePainEvent.Entity = pedEntity;
                     intensePainEvent.ForceUpdate = false;
                 }
                 else if (painPercent > 0.3f)
@@ -69,7 +69,7 @@ namespace GunshotWound2.Systems.WoundSystems
                     if(woundedPed.PainState == PainStates.AVERAGE) continue;
 
                     _ecsWorld.CreateEntityWith(out AveragePainChangeStateEvent averagePainEvent);
-                    averagePainEvent.PedEntity = pedEntity;
+                    averagePainEvent.Entity = pedEntity;
                     averagePainEvent.ForceUpdate = false;
                 }
                 else if (painPercent > 0.1f)
@@ -77,7 +77,7 @@ namespace GunshotWound2.Systems.WoundSystems
                     if (woundedPed.PainState == PainStates.MILD) continue;
 
                     _ecsWorld.CreateEntityWith(out MildPainChangeStateEvent mildPainEvent);
-                    mildPainEvent.PedEntity = pedEntity;
+                    mildPainEvent.Entity = pedEntity;
                     mildPainEvent.ForceUpdate = false;
                 }
                 else
@@ -85,7 +85,7 @@ namespace GunshotWound2.Systems.WoundSystems
                     if(woundedPed.PainState == PainStates.NONE) continue;
 
                     _ecsWorld.CreateEntityWith(out NoPainChangeStateEvent noPainEvent);
-                    noPainEvent.PedEntity = pedEntity;
+                    noPainEvent.Entity = pedEntity;
                     noPainEvent.ForceUpdate = false;
                 }
 

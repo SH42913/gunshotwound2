@@ -1,6 +1,7 @@
 ﻿using System;
 using GTA;
 using GTA.Native;
+using GunshotWound2.Components.Events.GuiEvents;
 using GunshotWound2.Components.Events.PedEvents;
 using GunshotWound2.Components.Events.PlayerEvents;
 using GunshotWound2.Components.Events.WoundEvents.ChangePainStateEvents;
@@ -29,7 +30,7 @@ namespace GunshotWound2.Systems.PedSystems
             
             for (int i = 0; i < _events.EntitiesCount; i++)
             {
-                int pedEntity = _events.Components1[i].PedEntity;
+                int pedEntity = _events.Components1[i].Entity;
                 if (!_ecsWorld.IsEntityExists(pedEntity))
                 {
                     continue;
@@ -56,7 +57,8 @@ namespace GunshotWound2.Systems.PedSystems
                     woundedPed.Crits = 0;
                     woundedPed.ThisPed.Health = (int) woundedPed.Health;
                     woundedPed.Armor = woundedPed.ThisPed.Armor;
-                    woundedPed.WoundCount = 0;
+                    woundedPed.BleedingCount = 0;
+                    woundedPed.MostDangerBleedingEntity = null;
 
                     _ecsWorld.RemoveComponent<PainComponent>(pedEntity, true);
                     
@@ -64,13 +66,13 @@ namespace GunshotWound2.Systems.PedSystems
                     Function.Call(Hash.SET_PED_MOVE_RATE_OVERRIDE, woundedPed.ThisPed, 1f);
 
                     _ecsWorld.CreateEntityWith(out NoPainChangeStateEvent noPainEvent);
-                    noPainEvent.PedEntity = pedEntity;
+                    noPainEvent.Entity = pedEntity;
                     noPainEvent.ForceUpdate = true;
                 }
 
                 for (int bleedIndex = 0; bleedIndex < _bleedingComponents.EntitiesCount; bleedIndex++)
                 {
-                    if(_bleedingComponents.Components1[bleedIndex].PedEntity != pedEntity) continue;
+                    if(_bleedingComponents.Components1[bleedIndex].Entity != pedEntity) continue;
                     
                     _ecsWorld.RemoveEntity(_bleedingComponents.Entities[bleedIndex]);
                 }

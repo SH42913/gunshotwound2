@@ -23,28 +23,29 @@ namespace GunshotWound2.Systems.PlayerSystems
 
             var ped = Game.Player.Character;
 
-            var entity = _ecsWorld.CreateEntityWith(out PlayerMarkComponent playerComponent, out WoundedPedComponent woundPed);
-            woundPed.PainState = PainStates.DEADLY;
+            var entity = _ecsWorld.CreateEntityWith(out PlayerMarkComponent _, out WoundedPedComponent woundedPed);
+            woundedPed.PainState = PainStates.DEADLY;
             
-            woundPed.IsPlayer = true;
-            woundPed.IsMale = ped.Gender == Gender.Male;
-            woundPed.ThisPed = ped;
+            woundedPed.IsPlayer = true;
+            woundedPed.IsMale = ped.Gender == Gender.Male;
+            woundedPed.ThisPed = ped;
             
-            woundPed.Armor = ped.Armor;
-            woundPed.Health = _config.Data.PlayerConfig.MaximalHealth;
-            woundPed.ThisPed.MaxHealth = (int) woundPed.Health + 101;
-            woundPed.ThisPed.Health = (int) woundPed.Health;
+            woundedPed.Armor = ped.Armor;
+            woundedPed.Health = _config.Data.PlayerConfig.MaximalHealth;
+            woundedPed.ThisPed.MaxHealth = (int) woundedPed.Health + 101;
+            woundedPed.ThisPed.Health = (int) woundedPed.Health;
 
-            woundPed.MaximalPain = _config.Data.PlayerConfig.MaximalPain;
-            woundPed.PainRecoverSpeed = _config.Data.PlayerConfig.PainRecoverSpeed;
-            woundPed.StopBleedingAmount = _config.Data.PlayerConfig.BleedHealingSpeed;
+            woundedPed.MaximalPain = _config.Data.PlayerConfig.MaximalPain;
+            woundedPed.PainRecoverSpeed = _config.Data.PlayerConfig.PainRecoverSpeed;
+            woundedPed.StopBleedingAmount = _config.Data.PlayerConfig.BleedHealingSpeed;
 
-            woundPed.WoundCount = 0;
+            woundedPed.BleedingCount = 0;
+            woundedPed.MostDangerBleedingEntity = null;
 
             _config.Data.PlayerConfig.PlayerEntity = entity;
             FindDeadlyWound();
 
-            _ecsWorld.CreateEntityWith<NoPainChangeStateEvent>().PedEntity = entity;
+            _ecsWorld.CreateEntityWith<NoPainChangeStateEvent>().Entity = entity;
         }
         
         public void Run()
@@ -69,13 +70,13 @@ namespace GunshotWound2.Systems.PlayerSystems
                 
                     var pain = _ecsWorld.CreateEntityWith<SetPedToRagdollEvent>();
                     pain.RagdollState = RagdollStates.PERMANENT;
-                    pain.PedEntity = _players.Entities[i];
+                    pain.Entity = _players.Entities[i];
 
-                    _ecsWorld.CreateEntityWith<ShowHealthStateEvent>().PedEntity = _players.Entities[i];
+                    _ecsWorld.CreateEntityWith<ShowHealthStateEvent>().Entity = _players.Entities[i];
                 }
                 else if(woundedPed.ThisPed.Health > _config.Data.PlayerConfig.MaximalHealth)
                 {
-                    _ecsWorld.CreateEntityWith<InstantHealEvent>().PedEntity = _players.Entities[i];
+                    _ecsWorld.CreateEntityWith<InstantHealEvent>().Entity = _players.Entities[i];
                 }
             }
         }

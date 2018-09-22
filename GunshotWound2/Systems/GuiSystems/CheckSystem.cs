@@ -23,7 +23,7 @@ namespace GunshotWound2.Systems.GuiSystems
             
             for (int i = 0; i < _events.EntitiesCount; i++)
             {
-                int pedEntity = _events.Components1[i].PedEntity;
+                int pedEntity = _events.Components1[i].Entity;
                 if (!_ecsWorld.IsEntityExists(pedEntity)) continue;
 
                 var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
@@ -148,34 +148,40 @@ namespace GunshotWound2.Systems.GuiSystems
                     }
                 }
 
-                if (woundedPed.WoundCount <= 0) continue;
+                if (woundedPed.BleedingCount <= 0) continue;
                 
-                string wounds = "";
+                string woundList = "";
                 for (int woundIndex = 0; woundIndex < _wounds.EntitiesCount; woundIndex++)
                 {
-                    var wound = _wounds.Components1[woundIndex];
-                    if (pedEntity != wound.PedEntity) continue;
+                    BleedingComponent wound = _wounds.Components1[woundIndex];
+                    if (pedEntity != wound.Entity) continue;
+                    
+                    if (woundedPed.MostDangerBleedingEntity != null && woundedPed.MostDangerBleedingEntity == _wounds.Entities[woundIndex])
+                    {
+                        woundList += "~g~->~s~";
+                    }
 
                     if (wound.BleedSeverity > _config.Data.WoundConfig.EmergencyBleedingLevel)
                     {
-                        wounds += $"~r~{wound.Name}~s~\n";
+                        woundList += $"~r~{wound.Name}~s~\n";
                     }
                     else if (wound.BleedSeverity > _config.Data.WoundConfig.EmergencyBleedingLevel / 2)
                     {
-                        wounds += $"~o~{wound.Name}~s~\n";
+                        woundList += $"~o~{wound.Name}~s~\n";
                     }
                     else if (wound.BleedSeverity > _config.Data.WoundConfig.EmergencyBleedingLevel / 4)
                     {
-                        wounds += $"~y~{wound.Name}\n";
+                        woundList += $"~y~{wound.Name}\n";
                     }
                     else
                     {
-                        wounds += $"~s~{wound.Name}\n";
+                        woundList += $"~s~{wound.Name}\n";
                     }
                 }
                     
-                SendMessage($"~s~{_locale.Data.Wounds}:\n{wounds}");
+                SendMessage($"~s~{_locale.Data.Wounds}:\n{woundList}");
             }
+            
             _events.RemoveAllEntities();
         }
 

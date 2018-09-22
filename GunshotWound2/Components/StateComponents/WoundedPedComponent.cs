@@ -36,14 +36,15 @@ namespace GunshotWound2.Components.StateComponents
         public float Health;
         public bool IsDead;
         public CritTypes Crits;
-        public float StopBleedingAmount;
         
         public float MaximalPain;
         public PainStates PainState;
         public bool InPermanentRagdoll;
         public float PainRecoverSpeed;
 
-        public int WoundCount;
+        public float StopBleedingAmount;
+        public int BleedingCount;
+        public int? MostDangerBleedingEntity;
         
         public int Armor;
 

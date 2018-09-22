@@ -25,7 +25,7 @@ namespace GunshotWound2.Systems.HealingSystems
                     ? (float) woundedPed.ThisPed.Health / woundedPed.ThisPed.MaxHealth
                     : (woundedPed.Health - _config.Data.PlayerConfig.MinimalHealth) /
                       (_config.Data.PlayerConfig.MaximalHealth - _config.Data.PlayerConfig.MinimalHealth);
-                if(woundedPed.WoundCount > 0 || healthPercent > 0.95f) continue;
+                if(woundedPed.BleedingCount > 0 || healthPercent > 0.95f) continue;
 
                 woundedPed.Health += 0.01f * Game.LastFrameTime;
                 woundedPed.ThisPed.Health = (int) woundedPed.Health;

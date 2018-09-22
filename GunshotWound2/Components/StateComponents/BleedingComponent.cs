@@ -1,9 +1,11 @@
 ﻿namespace GunshotWound2.Components.StateComponents
 {
-    public class BleedingComponent : ComponentWithPedEntity
+    public class BleedingComponent : ComponentWithEntity
     {
+        public const float MAX_SEVERITY_FOR_HEAL = 1f;
+        
         public float BleedSeverity;
-        public float DelayedDamage;
         public string Name;
+        public bool CanBeHealed;
     }
 }

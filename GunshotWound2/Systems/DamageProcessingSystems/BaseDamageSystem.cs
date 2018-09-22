@@ -53,13 +53,13 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
             for (int damageIndex = 0; damageIndex < HitComponents.EntitiesCount; damageIndex++)
             {
                 var damage = HitComponents.Components1[damageIndex];
-                var pedEntity = damage.PedEntity;
+                var pedEntity = damage.Entity;
 
                 BodyPartWasHitEvent bodyHitComponent = null;
                 for (int bodyIndex = 0; bodyIndex < BodyHitComponents.EntitiesCount; bodyIndex++)
                 {
                     var bodyDamage = BodyHitComponents.Components1[bodyIndex];
-                    if(bodyDamage.PedEntity != pedEntity) continue;
+                    if(bodyDamage.Entity != pedEntity) continue;
 
                     bodyHitComponent = bodyDamage;
                     EcsWorld.RemoveEntity(BodyHitComponents.Entities[bodyIndex]);
@@ -138,7 +138,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
         {
             var wound = EcsWorld.CreateEntityWith<ProcessWoundEvent>();
             wound.Name = name;
-            wound.PedEntity = pedEntity;
+            wound.Entity = pedEntity;
             wound.Damage = damage;
             wound.Pain = pain;
             wound.BleedSeverity = bleeding;
@@ -233,7 +233,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
         private void CreatePain(int pedEntity, float amount)
         {
             var pain = EcsWorld.CreateEntityWith<IncreasePainEvent>();
-            pain.PedEntity = pedEntity;
+            pain.Entity = pedEntity;
             pain.PainAmount = amount;
         }
 

@@ -74,7 +74,8 @@ namespace GunshotWound2.Systems.NpcSystems
                     _config.Data.NpcConfig.MaximalPainRecoverSpeed/2,
                     _config.Data.NpcConfig.MaximalPainRecoverSpeed);
 
-                woundedPed.WoundCount = 0;
+                woundedPed.BleedingCount = 0;
+                woundedPed.MostDangerBleedingEntity = null;
 
 #if DEBUG
                 pedToConvert.AddBlip();       

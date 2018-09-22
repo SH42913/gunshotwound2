@@ -147,19 +147,19 @@
 	
 	<Hotkeys>
 		<!-- If you don't want to use key, just remove value -->
-		<CheckKey>76</CheckKey>
-		<!-- Check Yourself. Show one time status-notifications, fine variant for realistic and not annoying gameplay.
-		Default: L on keyboard. -->
-		
-		<HealKey>75</HealKey>
-		<!-- Totally heal player ped.
-		Default: K on keyboard. -->
-		
 		<GetHelmetKey>74</GetHelmetKey>
 		<!-- Give to player ped motorbike helmet if you have $40.
 		Helmet can save your head from impacts and weapons.
 		If you have helmet, this hotkey will remove it.
 		Default: J on keyboard. -->
+
+		<BandageKey>75</BandageKey>
+		<!-- Applied bandages to you. It will cost $15.
+		Default: K on keyboard. -->
+		
+		<CheckKey>76</CheckKey>
+		<!-- Check Yourself. Show one time status-notifications about your wounds and health.
+		Default: L on keyboard. -->
 
 		<IncreaseRangeKey>33</IncreaseRangeKey>
 		<!-- Increase GSW2 scan range.

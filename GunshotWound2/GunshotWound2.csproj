@@ -48,12 +48,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\ComponentWithPedEntity.cs" />
+    <Compile Include="Components\ComponentWithEntity.cs" />
     <Compile Include="Components\Events\BodyHitEvents\BodyPartWasHitEvent.cs" />
     <Compile Include="Components\Events\BodyHitEvents\CheckBodyHitEvent.cs" />
     <Compile Include="Components\Events\GuiEvents\ShowDebugInfoEvent.cs" />
     <Compile Include="Components\Events\GuiEvents\ShowHealthStateEvent.cs" />
     <Compile Include="Components\Events\GuiEvents\ShowNotificationEvent.cs" />
+    <Compile Include="Components\Events\HealingEvents\ApplyBandageEvent.cs" />
     <Compile Include="Components\Events\NpcEvents\ConvertPedToWoundedPedEvent.cs" />
     <Compile Include="Components\Events\NpcEvents\ForceWorldPedUpdateEvent.cs" />
     <Compile Include="Components\Events\PedEvents\ChangeWalkAnimationEvent.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Configs\PlayerConfig.cs" />
     <Compile Include="Configs\WoundConfig.cs" />
     <Compile Include="GunshotWound2.cs" />
+    <Compile Include="Systems\HealingSystems\BandageSystem.cs" />
     <Compile Include="Systems\HealingSystems\SelfHealingSystem.cs" />
     <Compile Include="Systems\NpcSystems\ConvertNpcToWoundedPedSystem.cs" />
     <Compile Include="Systems\NpcSystems\RemoveWoundedPedSystem.cs" />

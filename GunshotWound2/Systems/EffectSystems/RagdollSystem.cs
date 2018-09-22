@@ -21,7 +21,7 @@ namespace GunshotWound2.Systems.EffectSystems
 #endif
             for (int i = 0; i < _events.EntitiesCount; i++)
             {
-                int pedEntity = _events.Components1[i].PedEntity;
+                int pedEntity = _events.Components1[i].Entity;
                 if (!_ecsWorld.IsEntityExists(pedEntity))
                 {
                     _ecsWorld.RemoveEntity(_events.Entities[i]);

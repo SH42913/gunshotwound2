@@ -21,14 +21,14 @@ namespace GunshotWound2.Systems.GuiSystems
             for (int i = 0; i < _events.EntitiesCount; i++)
             {
 #if DEBUG
-                int pedEntity = _events.Components1[i].PedEntity;
+                int pedEntity = _events.Components1[i].Entity;
                 if (!_ecsWorld.IsEntityExists(pedEntity)) continue;
 
                 var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
                 if (woundedPed == null) continue;
                 
                 SendDebug($"{woundedPed}");
-                _ecsWorld.CreateEntityWith<ShowHealthStateEvent>().PedEntity = pedEntity;
+                _ecsWorld.CreateEntityWith<ShowHealthStateEvent>().Entity = pedEntity;
 #endif
             }
             _events.RemoveAllEntities();

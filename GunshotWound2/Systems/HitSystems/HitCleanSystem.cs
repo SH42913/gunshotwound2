@@ -19,7 +19,7 @@ namespace GunshotWound2.Systems.HitSystems
             
             for (int i = 0; i < _requestsToClean.EntitiesCount; i++)
             {
-                int pedEntity = _requestsToClean.Components1[i].PedEntity;
+                int pedEntity = _requestsToClean.Components1[i].Entity;
                 var ped = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity).ThisPed;
 
                 if (ped != null)
