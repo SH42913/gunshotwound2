@@ -58,10 +58,7 @@ namespace GunshotWound2.Systems.PedSystems
                     woundedPed.Armor = woundedPed.ThisPed.Armor;
                     woundedPed.WoundCount = 0;
 
-                    if (_ecsWorld.GetComponent<PainComponent>(pedEntity) != null)
-                    {
-                        _ecsWorld.RemoveComponent<PainComponent>(pedEntity);
-                    }
+                    _ecsWorld.RemoveComponent<PainComponent>(pedEntity, true);
                     
                     Function.Call(Hash.CLEAR_PED_BLOOD_DAMAGE, woundedPed.ThisPed);
                     Function.Call(Hash.SET_PED_MOVE_RATE_OVERRIDE, woundedPed.ThisPed, 1f);

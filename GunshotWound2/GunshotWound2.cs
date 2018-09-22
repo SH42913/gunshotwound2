@@ -34,6 +34,7 @@ namespace GunshotWound2
         
         public const float MINIMAL_RANGE_FOR_WOUNDED_PEDS = 0;
         private const float ADDING_TO_REMOVING_MULTIPLIER = 2;
+        private bool _isPaused;
         
         private EcsWorld _ecsWorld;
         private EcsSystems _everyFrameSystems;
@@ -84,6 +85,15 @@ namespace GunshotWound2
             if (_mainConfig.ReduceRangeKey != null && eventArgs.KeyCode == _mainConfig.ReduceRangeKey)
             {
                 ReduceRange(5);
+                return;
+            }
+            
+            if (_mainConfig.PauseKey != null && eventArgs.KeyCode == _mainConfig.PauseKey)
+            {
+                _isPaused = !_isPaused;
+                UI.Notify(_isPaused 
+                    ? "~r~GSW2 is paused" 
+                    : "~g~GSW2 is working");
                 return;
             }
         }
@@ -145,10 +155,14 @@ namespace GunshotWound2
                 TryToLoadConfigsFromXml();
                 _configLoaded = true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 LoadDefaultConfigs();
                 _configLoaded = false;
+
+#if DEBUG
+                UI.Notify(e.ToString());
+#endif
             }
 
             try
@@ -161,6 +175,10 @@ namespace GunshotWound2
                 LoadDefaultLocalization();
                 _localizationReason = e.Message;
                 _localizationLoaded = false;
+
+#if DEBUG
+                UI.Notify(e.ToString());
+#endif
             }
             
             _everyFrameSystems = new EcsSystems(_ecsWorld);
@@ -220,10 +238,14 @@ namespace GunshotWound2
             
             Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, Game.Player, 0.0001f);
             Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, Game.Player, 0f);
+
+            _isPaused = false;
         }
 
         private void GunshotWoundTick()
         {
+            if(_isPaused) return;
+            
             _everyFrameSystems.Run();
             _commonSystems.Run();
 
@@ -243,6 +265,7 @@ namespace GunshotWound2
             _mainConfig.HelmetKey = Keys.J;
             _mainConfig.IncreaseRangeKey = Keys.PageUp;
             _mainConfig.ReduceRangeKey = Keys.PageDown;
+            _mainConfig.PauseKey = Keys.End;
 
             _mainConfig.PlayerConfig = new PlayerConfig
             {
@@ -322,55 +345,13 @@ namespace GunshotWound2
             var buttonNode = doc.Element("Hotkeys");
             if (buttonNode != null)
             {
-                var helmetString = buttonNode.Element("GetHelmetKey").Value;
-                if (!string.IsNullOrEmpty(helmetString))
-                {
-                    _mainConfig.HelmetKey = (Keys) int.Parse(helmetString);
-                }
-                else
-                {
-                    _mainConfig.HelmetKey = null;
-                }
-                
-                var checkString = buttonNode.Element("CheckKey").Value;
-                if (!string.IsNullOrEmpty(checkString))
-                {
-                    _mainConfig.CheckKey = (Keys) int.Parse(checkString);
-                }
-                else
-                {
-                    _mainConfig.CheckKey = null;
-                }
-                
-                var healString = buttonNode.Element("HealKey").Value;
-                if (!string.IsNullOrEmpty(healString))
-                {
-                    _mainConfig.HealKey = (Keys) int.Parse(healString);
-                }
-                else
-                {
-                    _mainConfig.HealKey = null;
-                }
-                
-                var increaseString = buttonNode.Element("IncreaseRangeKey").Value;
-                if (!string.IsNullOrEmpty(increaseString))
-                {
-                    _mainConfig.IncreaseRangeKey = (Keys) int.Parse(increaseString);
-                }
-                else
-                {
-                    _mainConfig.IncreaseRangeKey = null;
-                }
-                
-                var reduceString = buttonNode.Element("ReduceRangeKey").Value;
-                if (!string.IsNullOrEmpty(reduceString))
-                {
-                    _mainConfig.ReduceRangeKey = (Keys) int.Parse(reduceString);
-                }
-                else
-                {
-                    _mainConfig.ReduceRangeKey = null;
-                }
+                _mainConfig.HelmetKey = buttonNode.GetKey("GetHelmetKey");
+                _mainConfig.CheckKey = buttonNode.GetKey("CheckKey");
+                _mainConfig.HealKey = buttonNode.GetKey("HealKey");
+                _mainConfig.IncreaseRangeKey = buttonNode.GetKey("IncreaseRangeKey");
+                _mainConfig.ReduceRangeKey = buttonNode.GetKey("ReduceRangeKey");
+                _mainConfig.HelmetKey = buttonNode.GetKey("GetHelmetKey");
+                _mainConfig.PauseKey = buttonNode.GetKey("PauseKey");
             }
 
             _configReason = "Player section";
@@ -951,6 +932,13 @@ namespace GunshotWound2
                 : node.Attribute(attributeName).Value;
             
             return float.Parse(value, CultureInfo.InvariantCulture);
+        }
+
+        public static Keys? GetKey(this XElement node, string name)
+        {
+            if (string.IsNullOrEmpty(node?.Element(name)?.Value)) return null;
+
+            return (Keys) int.Parse(node.Element(name).Value);
         }
     }
 }

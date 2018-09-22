@@ -57,14 +57,14 @@ namespace GunshotWound2.Systems.HitSystems
                     return BodyParts.HEAD;
                 case Bone.SKEL_Neck_1:
                     return BodyParts.NECK;
-                case Bone.SKEL_Spine1:
                 case Bone.SKEL_Spine2:
                 case Bone.SKEL_Spine3:
                     return BodyParts.UPPER_BODY;
-                case Bone.SKEL_Pelvis:
+                case Bone.SKEL_ROOT:
                 case Bone.SKEL_Spine_Root:
                 case Bone.SKEL_Spine0:
-                case Bone.SKEL_ROOT:
+                case Bone.SKEL_Spine1:
+                case Bone.SKEL_Pelvis:
                     return BodyParts.LOWER_BODY;
                 case Bone.SKEL_L_Thigh:
                 case Bone.SKEL_R_Thigh:
