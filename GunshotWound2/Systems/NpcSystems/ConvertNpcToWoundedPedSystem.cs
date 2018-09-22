@@ -59,7 +59,6 @@ namespace GunshotWound2.Systems.NpcSystems
 
                 if (_config.Data.NpcConfig.MinAccuracy > 0 && _config.Data.NpcConfig.MaxAccuracy > 0)
                 {
-                    int old = pedToConvert.Accuracy;
                     pedToConvert.Accuracy = Random.Next(_config.Data.NpcConfig.MinAccuracy, _config.Data.NpcConfig.MaxAccuracy + 1);
                 }
                 if (_config.Data.NpcConfig.MinShootRate > 0 && _config.Data.NpcConfig.MaxShootRate > 0)
@@ -74,6 +73,8 @@ namespace GunshotWound2.Systems.NpcSystems
                 woundedPed.PainRecoverSpeed = Random.NextFloat(
                     _config.Data.NpcConfig.MaximalPainRecoverSpeed/2,
                     _config.Data.NpcConfig.MaximalPainRecoverSpeed);
+
+                woundedPed.WoundCount = 0;
 
 #if DEBUG
                 pedToConvert.AddBlip();       

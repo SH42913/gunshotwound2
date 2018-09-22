@@ -148,6 +148,8 @@ namespace GunshotWound2.Systems.GuiSystems
                     }
                 }
 
+                if (woundedPed.WoundCount <= 0) continue;
+                
                 string wounds = "";
                 for (int woundIndex = 0; woundIndex < _wounds.EntitiesCount; woundIndex++)
                 {
@@ -171,16 +173,8 @@ namespace GunshotWound2.Systems.GuiSystems
                         wounds += $"~s~{wound.Name}\n";
                     }
                 }
-
-                if (string.IsNullOrEmpty(wounds))
-                {
-                    SendMessage($"~g~{_locale.Data.HaveNoWounds} ~s~");
-                }
-                else
-                {
-                    SendMessage($"~s~{_locale.Data.Wounds}:" +
-                                $"\n{wounds}");
-                }
+                    
+                SendMessage($"~s~{_locale.Data.Wounds}:\n{wounds}");
             }
             _events.RemoveAllEntities();
         }

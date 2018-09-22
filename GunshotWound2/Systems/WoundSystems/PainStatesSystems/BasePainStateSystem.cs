@@ -32,9 +32,9 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystems
                 if(!EcsWorld.IsEntityExists(pedEntity)) continue;
                 
                 var woundedPed = EcsWorld.GetComponent<WoundedPedComponent>(pedEntity);
-                if (woundedPed == null || woundedPed.IsDead ||
-                    woundedPed.PainState == CurrentState && !changeEvent.ForceUpdate) continue;
-                
+                if (woundedPed == null || woundedPed.IsDead) continue;
+                if (woundedPed.PainState == CurrentState && !changeEvent.ForceUpdate) continue;
+
                 ExecuteState(woundedPed, pedEntity);
                 woundedPed.PainState = CurrentState;
             }

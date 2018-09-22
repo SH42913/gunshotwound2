@@ -29,7 +29,6 @@ namespace GunshotWound2.Systems.HitSystems
                 if(woundedPed == null) continue;
 
                 var bodyPart = GetDamagedBodyPart(woundedPed.ThisPed);
-                if (bodyPart == BodyParts.NOTHING) continue;
 
                 var bodyDamage = _ecsWorld.CreateEntityWith<BodyPartWasHitEvent>();
                 bodyDamage.PedEntity = pedEntity;
@@ -41,18 +40,16 @@ namespace GunshotWound2.Systems.HitSystems
         {
             if (target == null)
             {
+                SendMessage("Target is null", NotifyLevels.DEBUG);
                 return BodyParts.NOTHING;
             }
             
             int damagedBoneNum = 0;
             int* x = &damagedBoneNum;
             Function.Call(Hash.GET_PED_LAST_DAMAGE_BONE, target, x);
-
-            if (damagedBoneNum == 0) return BodyParts.NOTHING;
             
-            SendMessage("Damaged int " + damagedBoneNum, NotifyLevels.DEBUG);
             Enum.TryParse(damagedBoneNum.ToString(), out Bone damagedBone);
-            SendMessage("Bone is " + damagedBone, NotifyLevels.DEBUG);
+            SendMessage("Damaged bone is " + damagedBone, NotifyLevels.DEBUG);
 
             switch (damagedBone)
             {

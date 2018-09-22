@@ -42,6 +42,8 @@ namespace GunshotWound2.Components.StateComponents
         public PainStates PainState;
         public bool InPermanentRagdoll;
         public float PainRecoverSpeed;
+
+        public int WoundCount;
         
         public int Armor;
 

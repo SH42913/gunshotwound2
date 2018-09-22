@@ -21,19 +21,25 @@ namespace GunshotWound2.Systems.WoundSystems
         
         public void Run()
         {
+#if DEBUG
             GunshotWound2.LastSystem = nameof(WoundSystem);
+#endif
             
             for (int i = 0; i < _components.EntitiesCount; i++)
             {
-                var component = _components.Components1[i];
+                ProcessWoundEvent component = _components.Components1[i];
                 int pedEntity = component.PedEntity;
                 if(!_ecsWorld.IsEntityExists(pedEntity)) continue;
                 
                 var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
                 if (woundedPed == null) continue;
                 
-                var damageDeviation = _config.Data.WoundConfig.DamageDeviation;
-                var bleedingDeviation = _config.Data.WoundConfig.BleedingDeviation;
+                float damageDeviation = component.Damage > 0 
+                    ? _config.Data.WoundConfig.DamageDeviation * component.Damage 
+                    : 0;
+                float bleedingDeviation = component.BleedSeverity > 0 
+                    ? _config.Data.WoundConfig.BleedingDeviation * component.BleedSeverity 
+                    : 0;
 
                 woundedPed.Health -= _config.Data.WoundConfig.DamageMultiplier * component.Damage +
                                      Random.NextFloat(-damageDeviation, damageDeviation);
@@ -41,6 +47,8 @@ namespace GunshotWound2.Systems.WoundSystems
                     
                 CreateBleeding(pedEntity, component.BleedSeverity +
                                           Random.NextFloat(-bleedingDeviation, bleedingDeviation), component.Name);
+                woundedPed.WoundCount++;
+                
                 CreatePain(pedEntity, component.Pain);
                 CreateCritical(pedEntity, component.Crits);
 
@@ -48,8 +56,10 @@ namespace GunshotWound2.Systems.WoundSystems
                 {
                     CreateBleeding(pedEntity, 1f, _locale.Data.SeveredArtery);
                 }
-                    
+
+#if DEBUG
                 _ecsWorld.CreateEntityWith<ShowDebugInfoEvent>().PedEntity = pedEntity;
+#endif
                 SendWoundInfo(component, woundedPed);
             }
             _components.RemoveAllEntities();

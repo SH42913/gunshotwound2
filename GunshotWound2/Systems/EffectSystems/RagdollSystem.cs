@@ -1,6 +1,5 @@
 ﻿using System;
 using GTA.Native;
-using GunshotWound2.Components.Events.GuiEvents;
 using GunshotWound2.Components.Events.PedEvents;
 using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
@@ -20,8 +19,7 @@ namespace GunshotWound2.Systems.EffectSystems
 #if DEBUG
             GunshotWound2.LastSystem = nameof(RagdollSystem);
 #endif
-            int maxCount = _events.EntitiesCount;
-            for (int i = 0; i < maxCount; i++)
+            for (int i = 0; i < _events.EntitiesCount; i++)
             {
                 int pedEntity = _events.Components1[i].PedEntity;
                 if (!_ecsWorld.IsEntityExists(pedEntity))
@@ -31,7 +29,7 @@ namespace GunshotWound2.Systems.EffectSystems
                 }
                 
                 var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
-                if (woundedPed == null || woundedPed.ThisPed.IsDead)
+                if (woundedPed == null || woundedPed.IsDead || woundedPed.ThisPed.IsDead)
                 {
                     _ecsWorld.RemoveEntity(_events.Entities[i]);
                     continue;
@@ -45,7 +43,7 @@ namespace GunshotWound2.Systems.EffectSystems
                         Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, -1, -1, 0, 0, 0, 0);
                         woundedPed.InPermanentRagdoll = true;
                         _ecsWorld.RemoveEntity(_events.Entities[i]);
-                        break;
+                        continue;
                     case RagdollStates.WAKE_UP:
                         if(woundedPed.InPermanentRagdoll && !woundedPed.Crits.HasFlag(CritTypes.NERVES_DAMAGED))
                         {
@@ -53,7 +51,7 @@ namespace GunshotWound2.Systems.EffectSystems
                             woundedPed.InPermanentRagdoll = false;
                         }
                         _ecsWorld.RemoveEntity(_events.Entities[i]);
-                        break;
+                        continue;
                     case RagdollStates.SHORT:
                         if (woundedPed.InPermanentRagdoll)
                         {
@@ -63,7 +61,7 @@ namespace GunshotWound2.Systems.EffectSystems
                         
                         Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, 2000, 2000, 0, 0, 0, 0);
                         _ecsWorld.RemoveEntity(_events.Entities[i]);
-                        break;
+                        continue;
                     case RagdollStates.LONG:
                         if (woundedPed.InPermanentRagdoll)
                         {
@@ -73,7 +71,7 @@ namespace GunshotWound2.Systems.EffectSystems
                         
                         Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, 4000, 4000, 0, 0, 0, 0);
                         _ecsWorld.RemoveEntity(_events.Entities[i]);
-                        break;
+                        continue;
                     case RagdollStates.LEG_DAMAGE:
                         if (woundedPed.InPermanentRagdoll)
                         {
@@ -83,7 +81,7 @@ namespace GunshotWound2.Systems.EffectSystems
                         
                         Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, 3000, 3000, 4, 0, 0, 0);
                         _ecsWorld.RemoveEntity(_events.Entities[i]);
-                        break;
+                        continue;
                     case RagdollStates.HEART_DAMAGE:
                         if (woundedPed.InPermanentRagdoll)
                         {
@@ -93,7 +91,7 @@ namespace GunshotWound2.Systems.EffectSystems
                         
                         Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, 6000, 6000, 1, 0, 0, 0);
                         _ecsWorld.RemoveEntity(_events.Entities[i]);
-                        break;
+                        continue;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }

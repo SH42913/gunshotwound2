@@ -50,8 +50,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
             GunshotWound2.LastSystem = nameof(BaseDamageSystem<T>);
 #endif
 
-            int maxCount = HitComponents.EntitiesCount;
-            for (int damageIndex = 0; damageIndex < maxCount; damageIndex++)
+            for (int damageIndex = 0; damageIndex < HitComponents.EntitiesCount; damageIndex++)
             {
                 var damage = HitComponents.Components1[damageIndex];
                 var pedEntity = damage.PedEntity;
@@ -76,6 +75,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
         {
             if (bodyHit == null || bodyHit.DamagedPart == BodyParts.NOTHING)
             {
+                SendMessage("BodyHit is null " + (bodyHit == null), pedEntity, NotifyLevels.DEBUG);
                 DefaultAction?.Invoke(pedEntity);
                 return;
             }

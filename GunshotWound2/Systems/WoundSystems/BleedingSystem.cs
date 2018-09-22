@@ -25,8 +25,9 @@ namespace GunshotWound2.Systems.WoundSystems
             
             for (int i = 0; i < _bleedings.EntitiesCount; i++)
             {
-                var component = _bleedings.Components1[i];
+                BleedingComponent component = _bleedings.Components1[i];
                 int pedEntity = _bleedings.Components1[i].PedEntity;
+                
                 if (!_ecsWorld.IsEntityExists(pedEntity))
                 {
                     _ecsWorld.RemoveEntity(_bleedings.Entities[i]);
@@ -34,8 +35,15 @@ namespace GunshotWound2.Systems.WoundSystems
                 }
                 
                 var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
-                if (woundedPed == null || component.BleedSeverity <= 0f)
+                if (woundedPed == null)
                 {
+                    _ecsWorld.RemoveEntity(_bleedings.Entities[i]);
+                    continue;
+                }
+                
+                if (component.BleedSeverity <= 0f)
+                {
+                    woundedPed.WoundCount--;
                     _ecsWorld.RemoveEntity(_bleedings.Entities[i]);
                     continue;
                 }

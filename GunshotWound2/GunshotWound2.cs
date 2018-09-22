@@ -14,6 +14,7 @@ using GunshotWound2.Configs;
 using GunshotWound2.Systems.DamageProcessingSystems;
 using GunshotWound2.Systems.EffectSystems;
 using GunshotWound2.Systems.GuiSystems;
+using GunshotWound2.Systems.HealingSystems;
 using GunshotWound2.Systems.HitSystems;
 using GunshotWound2.Systems.HitSystems.WeaponHitSystems;
 using GunshotWound2.Systems.NpcSystems;
@@ -201,7 +202,8 @@ namespace GunshotWound2
                 .Add(new FlashSystem())
                 
                 .Add(new PainRecoverySystem())
-                .Add(new BleedingSystem());
+                .Add(new BleedingSystem())
+                .Add(new SelfHealingSystem());
             
             _commonSystems
                 .Add(new ArmorSystem())

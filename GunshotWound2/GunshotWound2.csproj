@@ -101,6 +101,7 @@
     <Compile Include="Configs\PlayerConfig.cs" />
     <Compile Include="Configs\WoundConfig.cs" />
     <Compile Include="GunshotWound2.cs" />
+    <Compile Include="Systems\HealingSystems\SelfHealingSystem.cs" />
     <Compile Include="Systems\NpcSystems\ConvertNpcToWoundedPedSystem.cs" />
     <Compile Include="Systems\NpcSystems\RemoveWoundedPedSystem.cs" />
     <Compile Include="Systems\PedSystems\ArmorSystem.cs" />

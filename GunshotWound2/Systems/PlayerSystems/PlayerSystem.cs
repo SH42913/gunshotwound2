@@ -39,6 +39,8 @@ namespace GunshotWound2.Systems.PlayerSystems
             woundPed.PainRecoverSpeed = _config.Data.PlayerConfig.PainRecoverSpeed;
             woundPed.StopBleedingAmount = _config.Data.PlayerConfig.BleedHealingSpeed;
 
+            woundPed.WoundCount = 0;
+
             _config.Data.PlayerConfig.PlayerEntity = entity;
             FindDeadlyWound();
 

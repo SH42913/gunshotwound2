@@ -56,6 +56,7 @@ namespace GunshotWound2.Systems.PedSystems
                     woundedPed.Crits = 0;
                     woundedPed.ThisPed.Health = (int) woundedPed.Health;
                     woundedPed.Armor = woundedPed.ThisPed.Armor;
+                    woundedPed.WoundCount = 0;
 
                     if (_ecsWorld.GetComponent<PainComponent>(pedEntity) != null)
                     {
