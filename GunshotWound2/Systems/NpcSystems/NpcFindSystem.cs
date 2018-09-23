@@ -18,6 +18,7 @@ namespace GunshotWound2.Systems.NpcSystems
         private EcsFilter<ForceWorldPedUpdateEvent> _forceUpdates;
         
         private EcsFilterSingle<MainConfig> _config;
+        private EcsFilterSingle<GswWorld> _world;
         
         private readonly Stopwatch _stopwatch = new Stopwatch();
         
@@ -115,17 +116,7 @@ namespace GunshotWound2.Systems.NpcSystems
 
         private bool CheckWoundedPedExist(Ped pedToCheck)
         {
-            bool woundedPedExist = false;
-            for (int pedIndex = 0; pedIndex < _npcs.EntitiesCount; pedIndex++)
-            {
-                var ped = _npcs.Components1[pedIndex].ThisPed;
-                if (!ped.Position.Equals(pedToCheck.Position)) continue;
-
-                woundedPedExist = true;
-                break;
-            }
-
-            return woundedPedExist;
+            return _world.Data.GswPeds.Contains(pedToCheck);
         }
 
         private bool CheckNeedToUpdateWorldPeds()

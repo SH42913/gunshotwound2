@@ -1,5 +1,6 @@
 ﻿using GTA.Native;
 using GunshotWound2.Components.Events.BodyHitEvents;
+using GunshotWound2.Components.MarkComponents;
 using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
 
@@ -9,6 +10,7 @@ namespace GunshotWound2.Systems.HitSystems
     public class HitCleanSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
+        private EcsFilter<WoundedPedComponent, HaveDamageMarkComponent> _peds;
         private EcsFilter<CheckBodyHitEvent> _requestsToClean;
         
         public void Run()
@@ -29,6 +31,11 @@ namespace GunshotWound2.Systems.HitSystems
                 }
                 
                 _ecsWorld.RemoveEntity(_requestsToClean.Entities[i]);
+            }
+
+            for (int i = 0; i < _peds.EntitiesCount; i++)
+            {
+                _ecsWorld.RemoveComponent<HaveDamageMarkComponent>(_peds.Entities[i]);
             }
         }
     }

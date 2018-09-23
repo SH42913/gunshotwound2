@@ -43,6 +43,7 @@ namespace GunshotWound2
         
         private MainConfig _mainConfig;
         private LocaleConfig _localeConfig;
+        private GswWorld _gswWorld;
 
         private bool _isInited;
         private bool _configLoaded;
@@ -156,6 +157,8 @@ namespace GunshotWound2
 
             _mainConfig = EcsFilterSingle<MainConfig>.Create(_ecsWorld);
             _localeConfig = EcsFilterSingle<LocaleConfig>.Create(_ecsWorld);
+            _gswWorld = EcsFilterSingle<GswWorld>.Create(_ecsWorld);
+            _gswWorld.GswPeds = new HashSet<Ped>();
 
             try
             {
@@ -259,7 +262,7 @@ namespace GunshotWound2
 
 #if DEBUG
             string debugSubtitles = $"ActiveEntities: {_ecsWorld.GetStats().ActiveEntities}\n" +
-                                    $"Peds: {_ecsWorld.GetFilter<EcsFilter<WoundedPedComponent>>().EntitiesCount}";
+                                    $"Peds in GSW: {_gswWorld.GswPeds.Count}";
             UI.ShowSubtitle(debugSubtitles);
 #endif
         }
@@ -857,6 +860,7 @@ namespace GunshotWound2
         public static MultiTickEcsSystems AddHitDetectSystems(this MultiTickEcsSystems systems)
         {
             return systems
+                .Add(new HitDetectSystem())
                 .Add(new LightImpactHitSystem())
                 .Add(new CuttingHitSystem())
                 .Add(new HeavyImpactHitSystem())

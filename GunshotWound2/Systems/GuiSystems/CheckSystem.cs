@@ -34,7 +34,7 @@ namespace GunshotWound2.Systems.GuiSystems
                     : (woundedPed.Health - _config.Data.PlayerConfig.MinimalHealth) /
                       (_config.Data.PlayerConfig.MaximalHealth - _config.Data.PlayerConfig.MinimalHealth);
 
-                if (healthPercent >= 0.8f)
+                if (healthPercent >= 0.7f)
                 {
                     SendMessage($"~s~{_locale.Data.Health}: ~g~{healthPercent * 100f:0.0}%~s~");
                 }
@@ -84,11 +84,11 @@ namespace GunshotWound2.Systems.GuiSystems
                 var armorPercent = woundedPed.Armor / 100f;
                 if (armorPercent > 0)
                 {
-                    if (armorPercent > 0.8f)
+                    if (armorPercent > 0.7f)
                     {
                         SendMessage($"~g~{_locale.Data.ArmorLooksGreat} ~s~");
                     }
-                    else if (armorPercent > 0.5f)
+                    else if (armorPercent > 0.4f)
                     {
                         SendMessage($"~y~{_locale.Data.ScratchesOnArmor} ~s~");
                     }

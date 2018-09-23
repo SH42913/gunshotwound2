@@ -1,6 +1,7 @@
 ﻿using GTA;
 using GTA.Native;
 using GunshotWound2.Components.Events.BodyHitEvents;
+using GunshotWound2.Components.MarkComponents;
 using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
 
@@ -10,7 +11,7 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
     public abstract class BaseWeaponHitSystem : IEcsInitSystem, IEcsRunSystem
     {
         protected EcsWorld EcsWorld;
-        protected EcsFilter<WoundedPedComponent> Peds;
+        protected EcsFilter<WoundedPedComponent, HaveDamageMarkComponent> Peds;
         protected uint[] WeaponHashes;
 
         public void Run()

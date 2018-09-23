@@ -14,15 +14,15 @@ namespace GunshotWound2.Systems.PlayerSystems
         {
             for (int i = 0; i < _events.EntitiesCount; i++)
             {
-                if (_events.Components1[i].Lock)
+                if (Function.Call<bool>(Hash.IS_SPECIAL_ABILITY_ACTIVE, Game.Player))
                 {
-                    Function.Call(Hash._0x6A09D0D590A47D13, Game.Player.Character.Model.Hash);
+                    Function.Call(Hash.SPECIAL_ABILITY_DEACTIVATE_FAST, Game.Player);
                 }
-                else
-                {
-                    Function.Call(Hash._0xD6A953C6D1492057, Game.Player.Character.Model.Hash);
-                    Function.Call(Hash._0xF145F3BE2EFA9A3B, Game.Player.Character.Model.Hash);
-                }
+
+                Function.Call(_events.Components1[i].Lock 
+                        ? Hash.SPECIAL_ABILITY_LOCK 
+                        : Hash.SPECIAL_ABILITY_UNLOCK,
+                    Game.Player.Character.Model.Hash);
             }
             
             _events.RemoveAllEntities();

@@ -56,6 +56,7 @@ namespace GunshotWound2.Systems.EffectSystems
                         if (woundedPed.InPermanentRagdoll)
                         {
                             _ecsWorld.RemoveEntity(_events.Entities[i]);
+                            continue;
                         }
                         if(woundedPed.ThisPed.IsRagdoll) continue;
                         
@@ -66,6 +67,7 @@ namespace GunshotWound2.Systems.EffectSystems
                         if (woundedPed.InPermanentRagdoll)
                         {
                             _ecsWorld.RemoveEntity(_events.Entities[i]);
+                            continue;
                         }
                         if(woundedPed.ThisPed.IsRagdoll) continue;
                         
@@ -76,6 +78,7 @@ namespace GunshotWound2.Systems.EffectSystems
                         if (woundedPed.InPermanentRagdoll)
                         {
                             _ecsWorld.RemoveEntity(_events.Entities[i]);
+                            continue;
                         }
                         if(woundedPed.ThisPed.IsRagdoll) continue;
                         
@@ -86,6 +89,7 @@ namespace GunshotWound2.Systems.EffectSystems
                         if (woundedPed.InPermanentRagdoll)
                         {
                             _ecsWorld.RemoveEntity(_events.Entities[i]);
+                            continue;
                         }
                         if(woundedPed.ThisPed.IsRagdoll) continue;
                         

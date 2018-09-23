@@ -15,6 +15,7 @@ namespace GunshotWound2.Systems.NpcSystems
         private EcsFilter<ConvertPedToWoundedPedEvent> _requests;
         
         private EcsFilterSingle<MainConfig> _config;
+        private EcsFilterSingle<GswWorld> _world;
         
         private static readonly Random Random = new Random();
         
@@ -76,6 +77,8 @@ namespace GunshotWound2.Systems.NpcSystems
 
                 woundedPed.BleedingCount = 0;
                 woundedPed.MostDangerBleedingEntity = null;
+
+                _world.Data.GswPeds.Add(pedToConvert);
 
 #if DEBUG
                 pedToConvert.AddBlip();       
