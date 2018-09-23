@@ -231,11 +231,11 @@ namespace GunshotWound2
                 
                 .Add(new PainRecoverySystem())
                 .Add(new BleedingSystem())
+                .Add(new BandageSystem())
                 .Add(new SelfHealingSystem());
             
             _commonSystems
                 .Add(new ArmorSystem())
-                .Add(new BandageSystem())
                 .AddHitDetectSystems()
                 .AddDamageProcessingSystems()
                 .AddWoundSystems()
@@ -333,7 +333,8 @@ namespace GunshotWound2
                 RagdollOnPainfulWound = true,
                 PainfulWoundValue = 50,
                 MinimalChanceForArmorSave = 0.6f,
-                BandageCost = 15
+                BandageCost = 15,
+                ApplyBandageTime = 5
             };
         }
 

@@ -55,6 +55,7 @@
     <Compile Include="Components\Events\GuiEvents\ShowHealthStateEvent.cs" />
     <Compile Include="Components\Events\GuiEvents\ShowNotificationEvent.cs" />
     <Compile Include="Components\Events\HealingEvents\ApplyBandageEvent.cs" />
+    <Compile Include="Components\Events\HealingEvents\SuccessfulBandageEvent.cs" />
     <Compile Include="Components\Events\NpcEvents\ConvertPedToWoundedPedEvent.cs" />
     <Compile Include="Components\Events\NpcEvents\ForceWorldPedUpdateEvent.cs" />
     <Compile Include="Components\Events\PedEvents\ChangeWalkAnimationEvent.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Components\MarkComponents\HaveDamageMarkComponent.cs" />
     <Compile Include="Components\MarkComponents\NpcMarkComponent.cs" />
     <Compile Include="Components\MarkComponents\PlayerMarkComponent.cs" />
+    <Compile Include="Components\StateComponents\BandageInProgressComponent.cs" />
     <Compile Include="Components\StateComponents\BleedingComponent.cs" />
     <Compile Include="Components\StateComponents\GswWorld.cs" />
     <Compile Include="Components\StateComponents\PainComponent.cs" />

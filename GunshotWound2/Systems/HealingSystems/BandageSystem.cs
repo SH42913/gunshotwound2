@@ -12,37 +12,78 @@ namespace GunshotWound2.Systems.HealingSystems
     {
         private EcsWorld _ecsWorld;
         private EcsFilterSingle<MainConfig> _config;
-        private EcsFilter<ApplyBandageEvent> _events;
+        
+        private EcsFilter<ApplyBandageEvent> _requestEvents;
+        private EcsFilter<SuccessfulBandageEvent> _successfulEvents;
+        private EcsFilter<WoundedPedComponent, BandageInProgressComponent> _pedsWithBandageInProgress;
         private EcsFilter<BleedingComponent> _bleedings;
         
         public void Run()
         {
-            for (int i = 0; i < _events.EntitiesCount; i++)
+            for (int i = 0; i < _requestEvents.EntitiesCount; i++)
             {
-                int pedEntity = _events.Components1[i].Entity;
+                int pedEntity = _requestEvents.Components1[i].Entity;
+                if(!_ecsWorld.IsEntityExists(pedEntity)) continue;
+
+                var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
+                if(woundedPed.InPermanentRagdoll) continue;
+                if(woundedPed?.MostDangerBleedingEntity == null) continue;
+
+                var progress = _ecsWorld.EnsureComponent<BandageInProgressComponent>(pedEntity, out bool isNew);
+                if(!isNew) continue;
+
+                if (woundedPed.IsPlayer)
+                {
+                    if(Game.Player.Money < _config.Data.WoundConfig.BandageCost) continue;
+                    Game.Player.Money -= _config.Data.WoundConfig.BandageCost;
+                }
+
+                float timeToBandage = _config.Data.WoundConfig.ApplyBandageTime;
+                progress.EstimateTime = timeToBandage;
+                SendMessage($"You try to bandage self. You need to stand still for {timeToBandage} seconds!", pedEntity, NotifyLevels.WARNING);
+            }
+            _requestEvents.RemoveAllEntities();
+
+            float frameTimeInSec = Game.LastFrameTime;
+            for (int i = 0; i < _pedsWithBandageInProgress.EntitiesCount; i++)
+            {
+                WoundedPedComponent woundedPed = _pedsWithBandageInProgress.Components1[i];
+                Ped thisPed = woundedPed.ThisPed;
+                BandageInProgressComponent progress = _pedsWithBandageInProgress.Components2[i];
+                int pedEntity = _pedsWithBandageInProgress.Entities[i];
+
+                if (thisPed.IsWalking || thisPed.IsRunning || thisPed.IsSprinting || thisPed.IsShooting || woundedPed.InPermanentRagdoll)
+                {
+                    SendMessage("~o~Bandaging is failed. You need to ~r~stand still~o~ for apply bandage!", pedEntity, NotifyLevels.WARNING);
+                    _ecsWorld.RemoveComponent<BandageInProgressComponent>(pedEntity);
+                    continue;
+                }
+                progress.EstimateTime -= frameTimeInSec;
+                
+                if(progress.EstimateTime > 0) continue;
+                _ecsWorld.RemoveComponent<BandageInProgressComponent>(pedEntity);
+                _ecsWorld.CreateEntityWith<SuccessfulBandageEvent>().Entity = pedEntity;
+            }
+            
+            for (int i = 0; i < _successfulEvents.EntitiesCount; i++)
+            {
+                int pedEntity = _successfulEvents.Components1[i].Entity;
                 if(!_ecsWorld.IsEntityExists(pedEntity)) continue;
 
                 var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
                 if(woundedPed?.MostDangerBleedingEntity == null) continue;
-                if(woundedPed.InPermanentRagdoll) continue;
 
                 int bleedingEntity = woundedPed.MostDangerBleedingEntity.Value;
                 if(!_ecsWorld.IsEntityExists(bleedingEntity)) continue;
                 
                 var bleeding = _ecsWorld.GetComponent<BleedingComponent>(woundedPed.MostDangerBleedingEntity.Value);
                 if(bleeding == null) continue;
-
-                if (woundedPed.IsPlayer && Game.Player.Money > _config.Data.WoundConfig.BandageCost)
-                {
-                    Game.Player.Money -= _config.Data.WoundConfig.BandageCost;
-                }
                 
                 bleeding.BleedSeverity = bleeding.BleedSeverity / 2;
                 UpdateMostDangerWound(woundedPed, pedEntity);
-                SendMessage($"~g~You applied bandage to {bleeding.Name}", pedEntity);
+                SendMessage($"~g~You applied bandage to {bleeding.Name}", pedEntity, NotifyLevels.WARNING);
             }
-            
-            _events.RemoveAllEntities();
+            _successfulEvents.RemoveAllEntities();
         }
         
         private void SendMessage(string message, int pedEntity, NotifyLevels level = NotifyLevels.COMMON)
