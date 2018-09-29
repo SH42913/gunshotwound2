@@ -5,6 +5,6 @@ namespace GunshotWound2.Components.StateComponents
 {
     public class GswWorld
     {
-        public HashSet<Ped> GswPeds;
+        public Dictionary<Ped, int> GswPeds;
     }
 }

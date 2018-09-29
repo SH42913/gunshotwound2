@@ -45,7 +45,7 @@ namespace GunshotWound2.Systems.NpcSystems
             }
 
             Ped[] allPeds = _config.Data.NpcConfig.WorldPeds;
-            List<Ped> pedsToAdd = new List<Ped>();
+            var pedsToAdd = new Queue<Ped>();
             
             _stopwatch.Restart();
             for (int worldPedIndex = _config.Data.NpcConfig.LastCheckedPedIndex; worldPedIndex < allPeds.Length; worldPedIndex++)
@@ -55,17 +55,17 @@ namespace GunshotWound2.Systems.NpcSystems
                 _config.Data.NpcConfig.LastCheckedPedIndex = worldPedIndex;
                 Ped pedToCheck = allPeds[worldPedIndex];
                 
-                if(!pedToCheck.IsHuman || pedToCheck.IsDead) continue;
+                if(!pedToCheck.IsHuman || pedToCheck.IsDead || pedToCheck.IsPlayer) continue;
                 if(!PedInTargetList(playerPed, pedToCheck)) continue;
                 if (_config.Data.NpcConfig.ScanOnlyDamaged && !Function.Call<bool>(Hash.HAS_ENTITY_BEEN_DAMAGED_BY_ANY_PED, pedToCheck)) continue;
                 if(CheckWoundedPedExist(pedToCheck)) continue;
                 
-                pedsToAdd.Add(pedToCheck);
+                pedsToAdd.Enqueue(pedToCheck);
             }
             _stopwatch.Stop();
 
             if(pedsToAdd.Count <= 0) return;
-            _ecsWorld.CreateEntityWith<ConvertPedToWoundedPedEvent>().PedsInRange = pedsToAdd.ToArray();
+            _ecsWorld.CreateEntityWith<ConvertPedToNpcGswPedEvent>().PedsToAdd = pedsToAdd;
         }
 
         private bool PedInTargetList(Ped playerPed, Ped pedToCheck)
@@ -116,7 +116,7 @@ namespace GunshotWound2.Systems.NpcSystems
 
         private bool CheckWoundedPedExist(Ped pedToCheck)
         {
-            return _world.Data.GswPeds.Contains(pedToCheck);
+            return _world.Data.GswPeds.ContainsKey(pedToCheck);
         }
 
         private bool CheckNeedToUpdateWorldPeds()

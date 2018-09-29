@@ -1,6 +1,8 @@
 ﻿using System;
 using GTA;
+using GTA.Native;
 using GunshotWound2.Components.Events.NpcEvents;
+using GunshotWound2.Components.Events.WoundEvents.ChangePainStateEvents;
 using GunshotWound2.Components.MarkComponents;
 using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
@@ -9,10 +11,10 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Systems.NpcSystems
 {
     [EcsInject]
-    public class ConvertNpcToWoundedPedSystem : IEcsRunSystem
+    public class ConvertPedToNpcGswPedSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
-        private EcsFilter<ConvertPedToWoundedPedEvent> _requests;
+        private EcsFilter<ConvertPedToNpcGswPedEvent> _requests;
         
         private EcsFilterSingle<MainConfig> _config;
         private EcsFilterSingle<GswWorld> _world;
@@ -22,37 +24,41 @@ namespace GunshotWound2.Systems.NpcSystems
         public void Run()
         {
 #if DEBUG
-            GunshotWound2.LastSystem = nameof(ConvertNpcToWoundedPedSystem);
+            GunshotWound2.LastSystem = nameof(ConvertPedToNpcGswPedSystem);
 #endif
 
             for (int i = 0; i < _requests.EntitiesCount; i++)
             {
                 ProcessRequest(_requests.Components1[i]);
-                _requests.Components1[i].PedsInRange = null;
+                _requests.Components1[i].PedsToAdd = null;
                 _ecsWorld.RemoveEntity(_requests.Entities[i]);
             }
         }
 
-        private void ProcessRequest(ConvertPedToWoundedPedEvent request)
+        private void ProcessRequest(ConvertPedToNpcGswPedEvent request)
         {
-            for (int i = 0; i < request.PedsInRange.Length; i++)
+            while (request.PedsToAdd.Count > 0)
             {
-                Ped pedToConvert = request.PedsInRange[i];
+                Ped pedToConvert = request.PedsToAdd.Dequeue();
 
-                _ecsWorld.CreateEntityWith(out NpcMarkComponent _, out WoundedPedComponent woundedPed);
+                int entity = _ecsWorld.CreateEntityWith(out NpcMarkComponent _, out WoundedPedComponent woundedPed);
                 
                 woundedPed.ThisPed = pedToConvert;
                 woundedPed.IsMale = pedToConvert.Gender == Gender.Male;
-
                 var newHealth = Random.Next(
                     _config.Data.NpcConfig.MinStartHealth,
                     _config.Data.NpcConfig.MaxStartHealth);
                 woundedPed.Health = newHealth;
                 woundedPed.Armor = pedToConvert.Armor;
                 woundedPed.ThisPed.MaxHealth = newHealth;
-                woundedPed.ThisPed.Health = newHealth;
+
                 woundedPed.ThisPed.CanWrithe = false;
-                woundedPed.ThisPed.AlwaysDiesOnLowHealth = false;
+                woundedPed.ThisPed.CanWearHelmet = true;
+                if (!Function.Call<bool>(Hash.IS_ENTITY_A_MISSION_ENTITY, pedToConvert))
+                {
+                    woundedPed.ThisPed.AlwaysDiesOnLowHealth = false;
+                    woundedPed.ThisPed.CanSufferCriticalHits = true;
+                }
 
                 woundedPed.StopBleedingAmount = Random.NextFloat(
                     _config.Data.NpcConfig.MaximalBleedStopSpeed/2,
@@ -66,6 +72,7 @@ namespace GunshotWound2.Systems.NpcSystems
                 {
                     pedToConvert.ShootRate = Random.Next(_config.Data.NpcConfig.MinShootRate, _config.Data.NpcConfig.MaxShootRate);
                 }
+                
                 woundedPed.DefaultAccuracy = pedToConvert.Accuracy;
                 
                 woundedPed.MaximalPain = Random.NextFloat(
@@ -75,10 +82,13 @@ namespace GunshotWound2.Systems.NpcSystems
                     _config.Data.NpcConfig.MaximalPainRecoverSpeed/2,
                     _config.Data.NpcConfig.MaximalPainRecoverSpeed);
 
+                woundedPed.Crits = 0;
                 woundedPed.BleedingCount = 0;
                 woundedPed.MostDangerBleedingEntity = null;
 
-                _world.Data.GswPeds.Add(pedToConvert);
+                _ecsWorld.CreateEntityWith<NoPainChangeStateEvent>().Entity = entity;
+
+                _world.Data.GswPeds.Add(pedToConvert, entity);
 
 #if DEBUG
                 pedToConvert.AddBlip();       

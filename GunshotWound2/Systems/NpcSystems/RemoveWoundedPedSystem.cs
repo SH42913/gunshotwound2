@@ -28,14 +28,15 @@ namespace GunshotWound2.Systems.NpcSystems
         {
             for (int pedIndex = 0; pedIndex < _npcs.EntitiesCount; pedIndex++)
             {
-                if(_npcs.Components1[pedIndex].IsPlayer) return;
+                WoundedPedComponent woundedPed = _npcs.Components1[pedIndex];
+                if(woundedPed.IsPlayer) return;
                 
-                var ped = _npcs.Components1[pedIndex].ThisPed;
+                var ped = woundedPed.ThisPed;
                 if(ped.IsAlive && !OutRemoveRange(ped)) continue;
 
-                _npcs.Components1[pedIndex].ThisPed = null;
-                _ecsWorld.RemoveEntity(_npcs.Entities[pedIndex]);
                 _world.Data.GswPeds.Remove(ped);
+                woundedPed.ThisPed = null;
+                _ecsWorld.RemoveEntity(_npcs.Entities[pedIndex]);
 
 #if DEBUG
                 ped.CurrentBlip.Remove();

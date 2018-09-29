@@ -85,7 +85,7 @@ namespace GunshotWound2.Systems.HitSystems
                 case Bone.SKEL_R_Hand:
                     return BodyParts.ARM;
             }
-            SendMessage("WARNING! Nothing bone is " + damagedBone, NotifyLevels.ALERT);
+            SendMessage("WARNING! Nothing bone is " + damagedBone, NotifyLevels.DEBUG);
 
             return BodyParts.NOTHING;
         }

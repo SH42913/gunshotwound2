@@ -158,7 +158,7 @@ namespace GunshotWound2
             _mainConfig = EcsFilterSingle<MainConfig>.Create(_ecsWorld);
             _localeConfig = EcsFilterSingle<LocaleConfig>.Create(_ecsWorld);
             _gswWorld = EcsFilterSingle<GswWorld>.Create(_ecsWorld);
-            _gswWorld.GswPeds = new HashSet<Ped>();
+            _gswWorld.GswPeds = new Dictionary<Ped, int>();
 
             try
             {
@@ -198,7 +198,7 @@ namespace GunshotWound2
             {
                 _commonSystems
                     .Add(new NpcFindSystem())
-                    .Add(new ConvertNpcToWoundedPedSystem())
+                    .Add(new ConvertPedToNpcGswPedSystem())
                     .Add(new RemoveWoundedPedSystem());
             }
 

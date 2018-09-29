@@ -31,35 +31,35 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
             
             NeckActions = new StaticWeightedRandomizer<Action<int>>
             {
-                {NeckCase1, 2},
+                {NeckCase1, 3},
                 {NeckCase2, 2},
                 {NeckCase3, 1},
             };
             
             UpperBodyActions = new StaticWeightedRandomizer<Action<int>>
             {
-                {UpperCase1, 2},
+                {UpperCase1, 3},
                 {UpperCase2, 2},
                 {UpperCase3, 1},
             };
             
             LowerBodyActions = new StaticWeightedRandomizer<Action<int>>
             {
-                {LowerCase1, 2},
+                {LowerCase1, 3},
                 {LowerCase2, 2},
                 {LowerCase3, 1},
             };
             
             ArmActions = new StaticWeightedRandomizer<Action<int>>
             {
-                {ArmCase1, 2},
+                {ArmCase1, 3},
                 {ArmCase2, 2},
                 {ArmCase3, 1},
             };
             
             LegActions = new StaticWeightedRandomizer<Action<int>>
             {
-                {LegCase1, 2},
+                {LegCase1, 3},
                 {LegCase2, 2},
                 {LegCase3, 1},
             };
