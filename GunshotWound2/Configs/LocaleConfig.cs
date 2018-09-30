@@ -119,6 +119,8 @@
         public string BandageFailed;
         public string BandageSuccess;
 
+        public string ArmorDestroyed;
+
         public string LocalizationAuthor;
     }
 }

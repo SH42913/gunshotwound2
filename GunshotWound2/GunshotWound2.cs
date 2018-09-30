@@ -223,8 +223,6 @@ namespace GunshotWound2
                 .Add(new SwitchAnimationSystem())
                 
                 .Add(new DebugInfoSystem())
-                .Add(new CheckSystem())
-                .Add(new NotificationSystem())
                 
                 .Add(new CameraShakeSystem())
                 .Add(new FlashSystem())
@@ -239,7 +237,9 @@ namespace GunshotWound2
                 .AddHitDetectSystems()
                 .AddDamageProcessingSystems()
                 .AddWoundSystems()
-                .AddPainStateSystems();
+                .AddPainStateSystems()
+                .Add(new CheckSystem())
+                .Add(new NotificationSystem());
             
             _everyFrameSystems.Initialize();
             _commonSystems.Initialize();
@@ -669,6 +669,8 @@ namespace GunshotWound2
             _localeConfig.BandageFailed = "Bandaging is failed. You need to stand still for apply bandage!";
             _localeConfig.BandageSuccess = "You applied bandage to {0}";
 
+            _localeConfig.ArmorDestroyed = "Your armor fall apart";
+
             _localeConfig.LocalizationAuthor = "~r~SH42913";
         }
 
@@ -805,6 +807,8 @@ namespace GunshotWound2
             _localeConfig.YouTryToBandage = manager.GetWord("YouTryToBandage");
             _localeConfig.BandageFailed = manager.GetWord("BandageFailed");
             _localeConfig.BandageSuccess = manager.GetWord("BandageSuccess");
+
+            _localeConfig.ArmorDestroyed = manager.GetWord("ArmorDestroyed");
 
             _localeConfig.LocalizationAuthor = manager.GetWord("TranslationAuthor");
         }

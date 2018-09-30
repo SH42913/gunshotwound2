@@ -45,6 +45,8 @@ namespace GunshotWound2.Systems.NpcSystems
                 
                 woundedPed.ThisPed = pedToConvert;
                 woundedPed.IsMale = pedToConvert.Gender == Gender.Male;
+                woundedPed.IsDead = false;
+                woundedPed.IsPlayer = false;
                 var newHealth = Random.Next(
                     _config.Data.NpcConfig.MinStartHealth,
                     _config.Data.NpcConfig.MaxStartHealth);

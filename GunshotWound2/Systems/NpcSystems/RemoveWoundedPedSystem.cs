@@ -36,6 +36,7 @@ namespace GunshotWound2.Systems.NpcSystems
 
                 _world.Data.GswPeds.Remove(ped);
                 woundedPed.ThisPed = null;
+                _ecsWorld.RemoveComponent<PainComponent>(_npcs.Entities[pedIndex], true);
                 _ecsWorld.RemoveEntity(_npcs.Entities[pedIndex]);
 
 #if DEBUG

@@ -71,12 +71,12 @@ namespace GunshotWound2.Systems.GuiSystems
         private void ShowPain(WoundedPedComponent woundedPed, int pedEntity)
         {
             var pain = _ecsWorld.GetComponent<PainComponent>(pedEntity);
-            if (pain == null) return;
+            if (pain == null || woundedPed.IsDead) return;
             
             var painPercent = pain.CurrentPain / woundedPed.MaximalPain;
-            if (painPercent > 1.5f)
+            if (painPercent > 3f)
             {
-                SendMessage($"~s~{_locale.Data.Pain}: ~r~>150%~s~");
+                SendMessage($"~s~{_locale.Data.Pain}: ~r~>300%~s~");
             }
             else if (painPercent > 1f)
             {

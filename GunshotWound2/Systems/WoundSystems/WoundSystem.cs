@@ -41,9 +41,12 @@ namespace GunshotWound2.Systems.WoundSystems
                     ? _config.Data.WoundConfig.BleedingDeviation * component.BleedSeverity 
                     : 0;
 
-                woundedPed.Health -= _config.Data.WoundConfig.DamageMultiplier * component.Damage +
-                                     Random.NextFloat(-damageDeviation, damageDeviation);
-                woundedPed.ThisPed.Health = (int) woundedPed.Health;
+                if (!woundedPed.IsDead)
+                {
+                    woundedPed.Health -= _config.Data.WoundConfig.DamageMultiplier * component.Damage +
+                                         Random.NextFloat(-damageDeviation, damageDeviation);
+                    woundedPed.ThisPed.Health = (int) woundedPed.Health;
+                }
                     
                 CreateBleeding(woundedPed, pedEntity, component.BleedSeverity +
                                           Random.NextFloat(-bleedingDeviation, bleedingDeviation), component.Name);

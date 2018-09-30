@@ -1,5 +1,6 @@
 ﻿using System;
 using GTA.Native;
+using GunshotWound2.Components.Events.GuiEvents;
 using GunshotWound2.Components.Events.PedEvents;
 using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
@@ -29,7 +30,7 @@ namespace GunshotWound2.Systems.EffectSystems
                 }
                 
                 var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
-                if (woundedPed == null || woundedPed.IsDead || woundedPed.ThisPed.IsDead)
+                if (woundedPed == null || woundedPed.ThisPed.IsDead)
                 {
                     _ecsWorld.RemoveEntity(_events.Entities[i]);
                     continue;
@@ -38,6 +39,11 @@ namespace GunshotWound2.Systems.EffectSystems
                 switch (_events.Components1[i].RagdollState)
                 {
                     case RagdollStates.PERMANENT:
+                        if (woundedPed.InPermanentRagdoll)
+                        {
+                            _ecsWorld.RemoveEntity(_events.Entities[i]);
+                            continue;
+                        }
                         if(woundedPed.ThisPed.IsRagdoll) continue;
                     
                         Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, -1, -1, 0, 0, 0, 0);
@@ -50,7 +56,9 @@ namespace GunshotWound2.Systems.EffectSystems
                             Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, 1, 1, 1, 0, 0, 0);
                             woundedPed.InPermanentRagdoll = false;
                         }
+                        
                         _ecsWorld.RemoveEntity(_events.Entities[i]);
+                        RemoveAllPermanentEventsForPed(pedEntity);
                         continue;
                     case RagdollStates.SHORT:
                         if (woundedPed.InPermanentRagdoll)
@@ -99,6 +107,17 @@ namespace GunshotWound2.Systems.EffectSystems
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
+            }
+        }
+
+        private void RemoveAllPermanentEventsForPed(int entity)
+        {
+            for (int i = 0; i < _events.EntitiesCount; i++)
+            {
+                SetPedToRagdollEvent ragdollEvent = _events.Components1[i];
+                if(ragdollEvent.RagdollState != RagdollStates.PERMANENT || ragdollEvent.Entity != entity) continue;
+                
+                _ecsWorld.RemoveEntity(_events.Entities[i]);
             }
         }
     }

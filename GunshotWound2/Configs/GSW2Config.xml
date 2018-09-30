@@ -8,7 +8,7 @@
 		<!-- If ped's health less that MinimalHealth, GSW will think player is died.
 		Maximal health always will MinimalHealth + 100.
 		Use it for compatibility with other mods:
-		 - WatchYourDeath mod, set to 1700 
+		 - WatchYourDeath mod, set to 1800 
 		 - REAL Rage Weapons And Damage, set to -20, but it still buggy -->
 		
 		<PoliceCanForget Value="TRUE"/>

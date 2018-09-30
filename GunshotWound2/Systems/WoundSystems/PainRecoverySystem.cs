@@ -27,9 +27,9 @@ namespace GunshotWound2.Systems.WoundSystems
                 PainComponent pain = _pedsWithPain.Components2[i];
                 
                 int pedEntity = _pedsWithPain.Entities[i];
-                if (pain.CurrentPain <= 0f)
+                if (pain.CurrentPain <= 0f || woundedPed.IsDead)
                 {
-                    _ecsWorld.RemoveComponent<PainComponent>(pedEntity);
+                    _ecsWorld.RemoveComponent<PainComponent>(pedEntity, true);
                     continue;
                 }
                 
@@ -39,16 +39,15 @@ namespace GunshotWound2.Systems.WoundSystems
                     ? 0
                     : 1 - painPercent;
 
-                /*if (painPercent > 3f)
+                if (painPercent > 3f)
                 {
                     if(woundedPed.PainState == PainStates.DEADLY) continue;
 
-                    _ecsWorld.CreateEntityWith(out UnbearablePainChangeStateEvent unbearablePainEvent);
-                    unbearablePainEvent.PedEntity = pedEntity;
-                    unbearablePainEvent.ForceUpdate = false;
+                    _ecsWorld.CreateEntityWith(out DeadlyPainChangeStateEvent deadlyPainEvent);
+                    deadlyPainEvent.Entity = pedEntity;
+                    deadlyPainEvent.ForceUpdate = false;
                 }
-                else */
-                if (painPercent > 1f)
+                else if (painPercent > 1f)
                 {
                     if(woundedPed.PainState == PainStates.UNBEARABLE) continue;
 

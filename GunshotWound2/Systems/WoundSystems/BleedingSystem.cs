@@ -41,6 +41,7 @@ namespace GunshotWound2.Systems.WoundSystems
                     RemoveBleeding(null, pedEntity, bleedingEntity);
                     continue;
                 }
+                if(woundedPed.IsDead) continue;
                 
                 if (component.BleedSeverity <= 0f)
                 {

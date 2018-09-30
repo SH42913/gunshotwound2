@@ -1,4 +1,5 @@
 ﻿using System;
+using GTA;
 using GunshotWound2.Components.Events.BodyHitEvents;
 using GunshotWound2.Components.Events.GuiEvents;
 using GunshotWound2.Components.Events.WeaponHitEvents;
@@ -170,11 +171,12 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
         private bool CheckArmorPenetration(WoundedPedComponent woundedPed, int pedEntity)
         {
-            if (woundedPed.Armor == 0) return true;
+            if (woundedPed.Armor <= 0) return true;
 
             woundedPed.Armor -= ArmorDamage;
             if (woundedPed.Armor < 0)
             {
+                SendMessage(Locale.Data.ArmorDestroyed, pedEntity, NotifyLevels.ALERT);
                 return true;
             }
 

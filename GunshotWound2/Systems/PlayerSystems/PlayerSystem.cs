@@ -53,7 +53,6 @@ namespace GunshotWound2.Systems.PlayerSystems
                     woundedPed.IsDead = true;
                     Game.Player.WantedLevel = 0;
                 
-                    woundedPed.InPermanentRagdoll = true;
                     var ragdollEvent = _ecsWorld.CreateEntityWith<SetPedToRagdollEvent>();
                     ragdollEvent.RagdollState = RagdollStates.PERMANENT;
                     ragdollEvent.Entity = playerEntity;
@@ -72,6 +71,7 @@ namespace GunshotWound2.Systems.PlayerSystems
             woundedPed.IsPlayer = true;
             woundedPed.IsMale = ped.Gender == Gender.Male;
             woundedPed.ThisPed = ped;
+            woundedPed.IsDead = false;
             
             woundedPed.Armor = ped.Armor;
             woundedPed.ThisPed.MaxHealth = _config.Data.PlayerConfig.MaximalHealth + 101;
