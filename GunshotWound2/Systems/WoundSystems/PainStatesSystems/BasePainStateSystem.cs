@@ -5,7 +5,7 @@ using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
 using Leopotam.Ecs;
 
-namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
+namespace GunshotWound2.Systems.WoundSystems.PainStatesSystems
 {
     [EcsInject]
     public abstract class BasePainStateSystem<TStateEvent> : IEcsRunSystem
@@ -28,18 +28,17 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
             for (int i = 0; i < Events.EntitiesCount; i++)
             {
                 var changeEvent = Events.Components1[i];
-                var pedEntity = changeEvent.PedEntity;
-                var woundedPed = EcsWorld.GetComponent<WoundedPedComponent>(pedEntity);
-
-                if (woundedPed != null && !woundedPed.IsDead && 
-                    (woundedPed.PainState != CurrentState || changeEvent.ForceUpdate))
-                {
-                    ExecuteState(woundedPed, pedEntity);
-                    woundedPed.PainState = CurrentState;
-                }
+                var pedEntity = changeEvent.Entity;
+                if(!EcsWorld.IsEntityExists(pedEntity)) continue;
                 
-                EcsWorld.RemoveEntity(Events.Entities[i]);
+                var woundedPed = EcsWorld.GetComponent<WoundedPedComponent>(pedEntity);
+                if (woundedPed == null || woundedPed.IsDead) continue;
+                if (woundedPed.PainState == CurrentState && !changeEvent.ForceUpdate) continue;
+
+                ExecuteState(woundedPed, pedEntity);
+                woundedPed.PainState = CurrentState;
             }
+            Events.RemoveAllEntities();
         }
 
         protected virtual void ExecuteState(WoundedPedComponent woundedPed, int pedEntity)
@@ -49,16 +48,15 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
 
         protected void SendPedToRagdoll(int pedEntity, RagdollStates ragdollType)
         {
-            SetPedToRagdollEvent ragdoll;
-            EcsWorld.CreateEntityWith(out ragdoll);
-            ragdoll.PedEntity = pedEntity;
+            EcsWorld.CreateEntityWith(out SetPedToRagdollEvent ragdoll);
+            ragdoll.Entity = pedEntity;
             ragdoll.RagdollState = ragdollType;
         }
 
         protected void ChangeWalkingAnimation(int pedEntity, string animationName)
         {
             EcsWorld.CreateEntityWith(out ChangeWalkAnimationEvent anim);
-            anim.PedEntity = pedEntity;
+            anim.Entity = pedEntity;
             anim.AnimationName = animationName;
         }
         

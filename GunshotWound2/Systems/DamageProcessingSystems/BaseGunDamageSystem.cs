@@ -77,27 +77,27 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
         private void DefaultGrazeWound(int entity)
         {
-            CreateWound(Locale.Data.GrazeWound, entity, DamageMultiplier * 10f,
-                BleeedingMultiplier * 0.05f, PainMultiplier * 20f);
+            CreateWound(Locale.Data.GrazeWound, entity, 
+                DamageMultiplier * 15f, BleeedingMultiplier * 0.05f, PainMultiplier * 15f);
         }
 
         private void CreateGrazeWound(string position, int entity)
         {
-            CreateWound($"{Locale.Data.GrazeGswOn} {position}", entity, DamageMultiplier * 10f,
-                BleeedingMultiplier * 0.05f, PainMultiplier * 20f);
+            CreateWound($"{Locale.Data.GrazeGswOn} {position}", entity, 
+                DamageMultiplier * 15f, BleeedingMultiplier * 0.05f, PainMultiplier * 15f);
         }
 
         private void CreateFleshWound(string position, int entity, float arteryDamageChance)
         {
-            CreateWound($"{Locale.Data.FleshGswOn} {position}", entity, DamageMultiplier * 15f,
-                BleeedingMultiplier * 0.1f, PainMultiplier * 30f, arteryDamageChance);
+            CreateWound($"{Locale.Data.FleshGswOn} {position}", entity, 
+                DamageMultiplier * 20f, BleeedingMultiplier * 0.1f, PainMultiplier * 30f, arteryDamageChance);
         }
 
         private void CreatePenetratingWound(string position, int entity, 
             float arteryDamageChance, params CritTypes?[] possibleCrits)
         {
             CreateWound($"{Locale.Data.PenetratingGswOn} {position}", entity, 
-                DamageMultiplier * 20f, BleeedingMultiplier * 0.2f, PainMultiplier * 40f,
+                DamageMultiplier * 25f, BleeedingMultiplier * 0.2f, PainMultiplier * 40f,
                 arteryDamageChance, possibleCrits);
         }
 
@@ -105,7 +105,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
             float arteryDamageChance, params CritTypes?[] possibleCrits)
         {
             CreateWound($"{Locale.Data.PerforatingGswOn} {position}", entity, 
-                DamageMultiplier * 20f, BleeedingMultiplier * 0.25f, PainMultiplier * 45f,
+                DamageMultiplier * 20f, BleeedingMultiplier * 0.25f, PainMultiplier * 40f,
                 arteryDamageChance, possibleCrits);
         }
 
@@ -113,7 +113,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
             float arteryDamageChance, params CritTypes?[] possibleCrits)
         {
             CreateWound($"{Locale.Data.AvulsiveGswOn} {position}", entity, 
-                DamageMultiplier * 30f, BleeedingMultiplier * 0.35f, PainMultiplier * 55f,
+                DamageMultiplier * 30f, BleeedingMultiplier * 0.30f, PainMultiplier * 50f,
                 arteryDamageChance, possibleCrits);
         }
 
@@ -125,8 +125,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
         }
         private void HeadCase2(int pedEntity)
         {
-            CreateWound(Locale.Data.EarFlyAway, pedEntity,
-                DamageMultiplier * 10f, BleeedingMultiplier * 0.5f, PainMultiplier * 10f);
+            CreateHeavyBrainDamage(Locale.Data.BulletFlyThroughYourHead, pedEntity);
         }
         private void HeadCase3(int pedEntity)
         {
@@ -200,25 +199,25 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
         private void LowerBodyCase1(int entity)
         {
-            CreateGrazeWound(Locale.Data.BodyPartChest, entity);
+            CreateGrazeWound(Locale.Data.BodyPartLowerBody, entity);
         }
         private void LowerBodyCase2(int entity)
         {
-            CreateFleshWound(Locale.Data.BodyPartChest, entity, 0.1f);
+            CreateFleshWound(Locale.Data.BodyPartLowerBody, entity, 0.05f);
         }
         private void LowerBodyCase3(int entity)
         {
-            CreatePenetratingWound(Locale.Data.BodyPartChest, entity, 0.2f, CritTypes.NERVES_DAMAGED,
+            CreatePenetratingWound(Locale.Data.BodyPartLowerBody, entity, 0.1f, CritTypes.NERVES_DAMAGED,
                 CritTypes.STOMACH_DAMAGED, CritTypes.GUTS_DAMAGED);
         }
         private void LowerBodyCase4(int entity)
         {
-            CreatePerforatingWound(Locale.Data.BodyPartChest, entity, 0.2f, CritTypes.NERVES_DAMAGED,
+            CreatePerforatingWound(Locale.Data.BodyPartLowerBody, entity, 0.2f, CritTypes.NERVES_DAMAGED,
                 CritTypes.STOMACH_DAMAGED, CritTypes.GUTS_DAMAGED);
         }
         private void LowerBodyCase5(int entity)
         {
-            CreateAvulsiveWound(Locale.Data.BodyPartChest, entity, 0.3f, CritTypes.NERVES_DAMAGED,
+            CreateAvulsiveWound(Locale.Data.BodyPartLowerBody, entity, 0.2f, CritTypes.NERVES_DAMAGED,
                 CritTypes.STOMACH_DAMAGED, CritTypes.GUTS_DAMAGED);
         }
 
@@ -257,19 +256,19 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
         }
         private void LegCase2(int entity)
         {
-            CreateFleshWound(Locale.Data.BodyPartLeg, entity, 0.1f);
+            CreateFleshWound(Locale.Data.BodyPartLeg, entity, 0.05f);
         }
         private void LegCase3(int entity)
         {
-            CreatePenetratingWound(Locale.Data.BodyPartLeg, entity, 0.2f, CritTypes.LEGS_DAMAGED);
+            CreatePenetratingWound(Locale.Data.BodyPartLeg, entity, 0.1f, CritTypes.LEGS_DAMAGED);
         }
         private void LegCase4(int entity)
         {
-            CreatePerforatingWound(Locale.Data.BodyPartLeg, entity, 0.2f, CritTypes.LEGS_DAMAGED);
+            CreatePerforatingWound(Locale.Data.BodyPartLeg, entity, 0.1f, CritTypes.LEGS_DAMAGED);
         }
         private void LegCase5(int entity)
         {
-            CreateAvulsiveWound(Locale.Data.BodyPartLeg, entity, 0.3f, CritTypes.LEGS_DAMAGED);
+            CreateAvulsiveWound(Locale.Data.BodyPartLeg, entity, 0.2f, CritTypes.LEGS_DAMAGED);
         }
 
         #endregion

@@ -10,19 +10,20 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
         {
             WeaponClass = "Shotgun";
 
-            GrazeWoundWeight = 0;
-            FleshWoundWeight = 0;
+            GrazeWoundWeight = 1;
+            FleshWoundWeight = 1;
             PenetratingWoundWeight = 5;
             PerforatingWoundWeight = 0;
-            AvulsiveWoundWeight = 1;
+            AvulsiveWoundWeight = 2;
             
-            DamageMultiplier = 0.7f;
+            DamageMultiplier = 0.8f;
             BleeedingMultiplier = 1.1f;
-            PainMultiplier = 1.2f;
+            PainMultiplier = 1.1f;
 
             HelmetSafeChance = 0.5f;
-            ArmorDamage = 10;
-            CritChance = 0.6f;
+            ArmorDamage = 6;
+            CritChance = 0.4f;
+            CanPenetrateArmor = false;
             
             LoadMultsFromConfig();
             FillWithDefaultGunActions();

@@ -12,16 +12,20 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
             return new []
             {
                 (uint) WeaponHash.Pistol, 
+                (uint) WeaponHash.PistolMk2,
                 (uint) WeaponHash.CombatPistol, 
+                (uint) WeaponHash.SNSPistol, 
+                (uint) WeaponHash.SNSPistolMk2,
+                (uint) WeaponHash.VintagePistol,
+                (uint) WeaponHash.MarksmanPistol,
+                (uint) WeaponHash.DoubleActionRevolver, 
                 (uint) WeaponHash.APPistol,
-                (uint) WeaponHash.CombatPDW,
-                (uint) WeaponHash.MachinePistol, 
                 (uint) WeaponHash.MicroSMG, 
                 (uint) WeaponHash.MiniSMG,
-                (uint) WeaponHash.PistolMk2,
-                (uint) WeaponHash.SNSPistol, 
-                (uint) WeaponHash.SNSPistolMk2, 
-                (uint) WeaponHash.VintagePistol,
+                (uint) WeaponHash.SMG, 
+                (uint) WeaponHash.SMGMk2, 
+                (uint) WeaponHash.CombatPDW,
+                (uint) WeaponHash.MachinePistol,  
             };
         }
 
@@ -29,7 +33,7 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
         {
             EcsWorld
                 .CreateEntityWith<SmallCaliberHitEvent>()
-                .PedEntity = pedEntity;
+                .Entity = pedEntity;
         }
     }
 }

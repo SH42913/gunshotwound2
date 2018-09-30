@@ -10,7 +10,7 @@
         HEART_DAMAGE
     }
     
-    public class SetPedToRagdollEvent : ComponentWithPedEntity
+    public class SetPedToRagdollEvent : ComponentWithEntity
     {
         public RagdollStates RagdollState;
     }

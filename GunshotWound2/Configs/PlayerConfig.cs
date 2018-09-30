@@ -4,7 +4,6 @@
     {
         public int PlayerEntity = -1;
         
-        public bool AdrenalineSlowMotion;
         public bool WoundedPlayerEnabled;
         public bool PoliceCanForgetYou;
         public bool CanDropWeapon;
@@ -17,6 +16,7 @@
         public float MaximalPain;
         public float PainRecoverSpeed;
         public float BleedHealingSpeed;
+        public float MaximalSlowMo;
 
         public string NoPainAnim;
         public string MildPainAnim;
@@ -33,7 +33,8 @@
                    $"Min/MaxHealth: {MinimalHealth}/{MaximalHealth}\n" +
                    $"MaxPain: {MaximalPain}\n" +
                    $"PainRecoverSpeed: {PainRecoverSpeed}\n" +
-                   $"BleedHealingSpeed: {BleedHealingSpeed}\n";
+                   $"BleedHealingSpeed: {BleedHealingSpeed}\n" +
+                   $"MaxSlowMo: {MaximalSlowMo}";
         }
     }
 }

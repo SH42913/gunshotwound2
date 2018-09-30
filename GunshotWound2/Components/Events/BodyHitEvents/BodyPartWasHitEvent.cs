@@ -11,7 +11,7 @@
         NOTHING
     }
     
-    public class BodyPartWasHitEvent : ComponentWithPedEntity
+    public class BodyPartWasHitEvent : ComponentWithEntity
     {
         public BodyParts DamagedPart;
     }

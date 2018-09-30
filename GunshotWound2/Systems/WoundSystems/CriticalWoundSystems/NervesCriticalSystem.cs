@@ -44,8 +44,8 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
 
         private void SendArmsLegsCrit(int pedEntity)
         {
-            EcsWorld.CreateEntityWith<ArmsCriticalWoundEvent>().PedEntity = pedEntity;
-            EcsWorld.CreateEntityWith<LegsCriticalWoundEvent>().PedEntity = pedEntity;
+            EcsWorld.CreateEntityWith<ArmsCriticalWoundEvent>().Entity = pedEntity;
+            EcsWorld.CreateEntityWith<LegsCriticalWoundEvent>().Entity = pedEntity;
         }
     }
 }

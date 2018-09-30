@@ -13,6 +13,10 @@ namespace GunshotWound2.Configs
         public Keys? HelmetKey;
         public Keys? CheckKey;
         public Keys? HealKey;
+        public Keys? IncreaseRangeKey;
+        public Keys? ReduceRangeKey;
+        public Keys? PauseKey;
+        public Keys? BandageKey;
 
         public bool CommonMessages = true;
         public bool WarningMessages = true;

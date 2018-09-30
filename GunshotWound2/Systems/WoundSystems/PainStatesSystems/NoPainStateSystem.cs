@@ -1,11 +1,10 @@
-﻿using GTA.Native;
-using GunshotWound2.Components.Events.PedEvents;
+﻿using GunshotWound2.Components.Events.PedEvents;
 using GunshotWound2.Components.Events.PlayerEvents;
 using GunshotWound2.Components.Events.WoundEvents.ChangePainStateEvents;
 using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
 
-namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
+namespace GunshotWound2.Systems.WoundSystems.PainStatesSystems
 {
     [EcsInject]
     public class NoPainStateSystem : BasePainStateSystem<NoPainChangeStateEvent>
@@ -25,7 +24,11 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystem
                 : Config.Data.NpcConfig.NoPainAnim);
             
             if(!woundedPed.IsPlayer) return;
-            EcsWorld.CreateEntityWith<AddCameraShakeEvent>().Length = CameraShakeLength.CLEAR;
+            if (!woundedPed.Crits.HasFlag(CritTypes.ARMS_DAMAGED))
+            {
+                EcsWorld.CreateEntityWith<AddCameraShakeEvent>().Length = CameraShakeLength.CLEAR;
+            }
+            EcsWorld.CreateEntityWith<ChangeSpecialAbilityEvent>().Lock = false;
         }
     }
 }

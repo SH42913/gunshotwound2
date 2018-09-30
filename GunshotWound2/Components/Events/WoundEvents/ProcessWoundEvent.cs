@@ -2,7 +2,7 @@
 
 namespace GunshotWound2.Components.Events.WoundEvents
 {
-    public class ProcessWoundEvent : ComponentWithPedEntity
+    public class ProcessWoundEvent : ComponentWithEntity
     {
         public float Damage;
         public float BleedSeverity;

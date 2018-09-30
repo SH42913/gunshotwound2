@@ -27,7 +27,7 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
         {
             EcsWorld
                 .CreateEntityWith<CuttingHitEvent>()
-                .PedEntity = pedEntity;
+                .Entity = pedEntity;
         }
     }
 }

@@ -25,6 +25,7 @@ namespace GunshotWound2.Systems.PlayerSystems
                     case CameraShakeLength.ONE_TIME:
                         if(_config.Data.PlayerConfig.CameraIsShaking) continue;
                         Function.Call(Hash._SET_CAM_EFFECT, 1);
+                        _config.Data.PlayerConfig.CameraIsShaking = false;
                         break;
                     case CameraShakeLength.PERMANENT:
                         if(_config.Data.PlayerConfig.CameraIsShaking) continue;
@@ -34,6 +35,7 @@ namespace GunshotWound2.Systems.PlayerSystems
                     case CameraShakeLength.CLEAR:
                         if(!_config.Data.PlayerConfig.CameraIsShaking) continue;
                         Function.Call(Hash._SET_CAM_EFFECT, 0);
+                        _config.Data.PlayerConfig.CameraIsShaking = false;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

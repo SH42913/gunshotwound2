@@ -11,7 +11,8 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
             WeaponClass = "Explosive";
 
             HelmetSafeChance = 0;
-            ArmorDamage = 100;
+            ArmorDamage = 200;
+            CanPenetrateArmor = true;
 
             CritChance = 1f;
             

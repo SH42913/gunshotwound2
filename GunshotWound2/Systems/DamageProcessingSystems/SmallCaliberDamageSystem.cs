@@ -13,13 +13,13 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
             GrazeWoundWeight = 1;
             FleshWoundWeight = 2;
             PenetratingWoundWeight = 6;
-            PerforatingWoundWeight = 0;
-            AvulsiveWoundWeight = 2;
+            PerforatingWoundWeight = 1;
+            AvulsiveWoundWeight = 1;
 
-            HelmetSafeChance = 0.7f;
-            ArmorDamage = 5;
+            HelmetSafeChance = 0.8f;
+            ArmorDamage = 3;
             CanPenetrateArmor = true;
-            CritChance = 0.5f;
+            CritChance = 0.4f;
             
             LoadMultsFromConfig();
             FillWithDefaultGunActions();

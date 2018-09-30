@@ -12,7 +12,7 @@ namespace GunshotWound2.Systems.HitSystems
     public class BodyHitSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
-        private EcsFilter<CheckBodyHitEvent> _requests;
+        private EcsFilter<CheckBodyHitEvent> _events;
         
         public void Run()
         {
@@ -20,18 +20,18 @@ namespace GunshotWound2.Systems.HitSystems
             GunshotWound2.LastSystem = nameof(BodyHitSystem);
 #endif
             
-            for (int i = 0; i < _requests.EntitiesCount; i++)
+            for (int i = 0; i < _events.EntitiesCount; i++)
             {
-                int pedEntity = _requests.Components1[i].PedEntity;
-                var woundedPed = _ecsWorld
-                    .GetComponent<WoundedPedComponent>(pedEntity);
+                int pedEntity = _events.Components1[i].Entity;
+                if(!_ecsWorld.IsEntityExists(pedEntity)) continue;
+                
+                var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
                 if(woundedPed == null) continue;
 
                 var bodyPart = GetDamagedBodyPart(woundedPed.ThisPed);
-                if (bodyPart == BodyParts.NOTHING) continue;
 
                 var bodyDamage = _ecsWorld.CreateEntityWith<BodyPartWasHitEvent>();
-                bodyDamage.PedEntity = pedEntity;
+                bodyDamage.Entity = pedEntity;
                 bodyDamage.DamagedPart = bodyPart;
             }
         }
@@ -40,37 +40,31 @@ namespace GunshotWound2.Systems.HitSystems
         {
             if (target == null)
             {
-                SendDebug("Ped is null, can't find bone");
+                SendMessage("Target is null", NotifyLevels.DEBUG);
                 return BodyParts.NOTHING;
             }
             
             int damagedBoneNum = 0;
             int* x = &damagedBoneNum;
             Function.Call(Hash.GET_PED_LAST_DAMAGE_BONE, target, x);
-
-            if (damagedBoneNum == 0) return BodyParts.NOTHING;
             
             Enum.TryParse(damagedBoneNum.ToString(), out Bone damagedBone);
-            SendDebug($"It was {damagedBone}");
+            SendMessage("Damaged bone is " + damagedBone, NotifyLevels.DEBUG);
 
             switch (damagedBone)
             {
                 case Bone.SKEL_Head:
-                    SendDebug($"You got {BodyParts.HEAD}");
                     return BodyParts.HEAD;
                 case Bone.SKEL_Neck_1:
-                    SendDebug($"You got {BodyParts.NECK}");
                     return BodyParts.NECK;
-                case Bone.SKEL_Spine1:
                 case Bone.SKEL_Spine2:
                 case Bone.SKEL_Spine3:
-                    SendDebug($"You got {BodyParts.UPPER_BODY}");
                     return BodyParts.UPPER_BODY;
-                case Bone.SKEL_Pelvis:
+                case Bone.SKEL_ROOT:
                 case Bone.SKEL_Spine_Root:
                 case Bone.SKEL_Spine0:
-                case Bone.SKEL_ROOT:
-                    SendDebug($"You got {BodyParts.LOWER_BODY}");
+                case Bone.SKEL_Spine1:
+                case Bone.SKEL_Pelvis:
                     return BodyParts.LOWER_BODY;
                 case Bone.SKEL_L_Thigh:
                 case Bone.SKEL_R_Thigh:
@@ -80,7 +74,6 @@ namespace GunshotWound2.Systems.HitSystems
                 case Bone.SKEL_L_Foot:
                 case Bone.SKEL_L_Calf:
                 case Bone.SKEL_R_Calf:
-                    SendDebug($"You got {BodyParts.LEG}");
                     return BodyParts.LEG;
                 case Bone.SKEL_L_UpperArm:
                 case Bone.SKEL_R_UpperArm:
@@ -90,20 +83,22 @@ namespace GunshotWound2.Systems.HitSystems
                 case Bone.SKEL_R_Forearm:
                 case Bone.SKEL_L_Hand:
                 case Bone.SKEL_R_Hand:
-                    SendDebug($"You got {BodyParts.ARM}");
                     return BodyParts.ARM;
             }
+            SendMessage("WARNING! Nothing bone is " + damagedBone, NotifyLevels.DEBUG);
 
             return BodyParts.NOTHING;
         }
 
-        private void SendDebug(string message)
+        private void SendMessage(string message, NotifyLevels level = NotifyLevels.COMMON)
         {
-#if DEBUG
-            var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
-            notification.Level = NotifyLevels.DEBUG;
-            notification.StringToShow = message;
+#if !DEBUG
+            if(level == NotifyLevels.DEBUG) return;
 #endif
+            
+            var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
+            notification.Level = level;
+            notification.StringToShow = message;
         }
     }
 }

@@ -10,8 +10,10 @@ namespace GunshotWound2.Systems.NpcSystems
     public class RemoveWoundedPedSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
-        private EcsFilterSingle<MainConfig> _config;
         private EcsFilter<WoundedPedComponent, NpcMarkComponent> _npcs;
+        
+        private EcsFilterSingle<MainConfig> _config;
+        private EcsFilterSingle<GswWorld> _world;
         
         public void Run()
         {
@@ -26,13 +28,17 @@ namespace GunshotWound2.Systems.NpcSystems
         {
             for (int pedIndex = 0; pedIndex < _npcs.EntitiesCount; pedIndex++)
             {
-                if(_npcs.Components1[pedIndex].IsPlayer) return;
+                WoundedPedComponent woundedPed = _npcs.Components1[pedIndex];
+                if(woundedPed.IsPlayer) return;
                 
-                var ped = _npcs.Components1[pedIndex].ThisPed;
+                var ped = woundedPed.ThisPed;
                 if(ped.IsAlive && !OutRemoveRange(ped)) continue;
 
-                _npcs.Components1[pedIndex].ThisPed = null;
+                _world.Data.GswPeds.Remove(ped);
+                woundedPed.ThisPed = null;
+                _ecsWorld.RemoveComponent<PainComponent>(_npcs.Entities[pedIndex], true);
                 _ecsWorld.RemoveEntity(_npcs.Entities[pedIndex]);
+
 #if DEBUG
                 ped.CurrentBlip.Remove();
 #endif

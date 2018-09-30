@@ -1,5 +1,4 @@
 ﻿using GTA.Native;
-using GunshotWound2.Components.Events.GuiEvents;
 using GunshotWound2.Components.Events.PedEvents;
 using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
@@ -10,7 +9,7 @@ namespace GunshotWound2.Systems.EffectSystems
     public class SwitchAnimationSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
-        private EcsFilter<ChangeWalkAnimationEvent> _components;
+        private EcsFilter<ChangeWalkAnimationEvent> _events;
         
         public void Run()
         {
@@ -18,35 +17,25 @@ namespace GunshotWound2.Systems.EffectSystems
             GunshotWound2.LastSystem = nameof(SwitchAnimationSystem);
 #endif
             
-            for (int i = 0; i < _components.EntitiesCount; i++)
+            for (int i = 0; i < _events.EntitiesCount; i++)
             {
-                var woundedPed = _ecsWorld
-                    .GetComponent<WoundedPedComponent>(_components.Components1[i].PedEntity);
-
-                var animationName = _components.Components1[i].AnimationName;
-                if (woundedPed != null && !string.IsNullOrEmpty(animationName) && woundedPed.ThisPed.IsAlive)
-                {
-                    SendDebug($"New animation is {animationName}");
-                    Function.Call(Hash.REQUEST_ANIM_SET, animationName);
-            
-                    if (!Function.Call<bool>(Hash.HAS_ANIM_SET_LOADED, animationName))
-                    {
-                        Function.Call(Hash.REQUEST_ANIM_SET, animationName);
-                    }
-                    Function.Call(Hash.SET_PED_MOVEMENT_CLIPSET, woundedPed.ThisPed, animationName, 1.0f);
-                }
+                int pedEntity = _events.Components1[i].Entity;
+                if(!_ecsWorld.IsEntityExists(pedEntity)) continue;
                 
-                _ecsWorld.RemoveEntity(_components.Entities[i]);
-            }
-        }
+                var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
+                if(woundedPed == null) continue;
 
-        private void SendDebug(string message)
-        {
-#if DEBUG
-            var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
-            notification.Level = NotifyLevels.DEBUG;
-            notification.StringToShow = message;
-#endif
+                var animationName = _events.Components1[i].AnimationName;
+                if (string.IsNullOrEmpty(animationName) || !woundedPed.ThisPed.IsAlive) continue;
+                
+                Function.Call(Hash.REQUEST_ANIM_SET, animationName);
+                if (!Function.Call<bool>(Hash.HAS_ANIM_SET_LOADED, animationName))
+                {
+                    Function.Call(Hash.REQUEST_ANIM_SET, animationName);
+                }
+                Function.Call(Hash.SET_PED_MOVEMENT_CLIPSET, woundedPed.ThisPed, animationName, 1.0f);
+            }
+            _events.RemoveAllEntities();
         }
     }
 }

@@ -29,7 +29,7 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
         {
             EcsWorld
                 .CreateEntityWith<HeavyImpactHitEvent>()
-                .PedEntity = pedEntity;
+                .Entity = pedEntity;
         }
     }
 }

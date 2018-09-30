@@ -1,7 +1,8 @@
 ﻿using System;
 using GTA;
-using GunshotWound2.Components.Events.GuiEvents;
+using GTA.Native;
 using GunshotWound2.Components.Events.NpcEvents;
+using GunshotWound2.Components.Events.WoundEvents.ChangePainStateEvents;
 using GunshotWound2.Components.MarkComponents;
 using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
@@ -10,49 +11,56 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Systems.NpcSystems
 {
     [EcsInject]
-    public class ConvertNpcToWoundedPedSystem : IEcsRunSystem
+    public class ConvertPedToNpcGswPedSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
-        private EcsFilter<ConvertPedToWoundedPedEvent> _requests;
+        private EcsFilter<ConvertPedToNpcGswPedEvent> _requests;
         
         private EcsFilterSingle<MainConfig> _config;
+        private EcsFilterSingle<GswWorld> _world;
         
         private static readonly Random Random = new Random();
         
         public void Run()
         {
 #if DEBUG
-            GunshotWound2.LastSystem = nameof(ConvertNpcToWoundedPedSystem);
+            GunshotWound2.LastSystem = nameof(ConvertPedToNpcGswPedSystem);
 #endif
 
             for (int i = 0; i < _requests.EntitiesCount; i++)
             {
                 ProcessRequest(_requests.Components1[i]);
-                _requests.Components1[i].PedsInRange = null;
+                _requests.Components1[i].PedsToAdd = null;
                 _ecsWorld.RemoveEntity(_requests.Entities[i]);
             }
         }
 
-        private void ProcessRequest(ConvertPedToWoundedPedEvent request)
+        private void ProcessRequest(ConvertPedToNpcGswPedEvent request)
         {
-            for (int i = 0; i < request.PedsInRange.Length; i++)
+            while (request.PedsToAdd.Count > 0)
             {
-                Ped pedToConvert = request.PedsInRange[i];
+                Ped pedToConvert = request.PedsToAdd.Dequeue();
 
-                _ecsWorld.CreateEntityWith(out NpcMarkComponent _, out WoundedPedComponent woundedPed);
+                int entity = _ecsWorld.CreateEntityWith(out NpcMarkComponent _, out WoundedPedComponent woundedPed);
                 
                 woundedPed.ThisPed = pedToConvert;
                 woundedPed.IsMale = pedToConvert.Gender == Gender.Male;
-
+                woundedPed.IsDead = false;
+                woundedPed.IsPlayer = false;
                 var newHealth = Random.Next(
-                    _config.Data.NpcConfig.LowerStartHealth,
-                    _config.Data.NpcConfig.UpperStartHealth);
+                    _config.Data.NpcConfig.MinStartHealth,
+                    _config.Data.NpcConfig.MaxStartHealth);
                 woundedPed.Health = newHealth;
                 woundedPed.Armor = pedToConvert.Armor;
                 woundedPed.ThisPed.MaxHealth = newHealth;
-                woundedPed.ThisPed.Health = newHealth;
+
                 woundedPed.ThisPed.CanWrithe = false;
-                woundedPed.ThisPed.AlwaysDiesOnLowHealth = false;
+                woundedPed.ThisPed.CanWearHelmet = true;
+                if (!Function.Call<bool>(Hash.IS_ENTITY_A_MISSION_ENTITY, pedToConvert))
+                {
+                    woundedPed.ThisPed.AlwaysDiesOnLowHealth = false;
+                    woundedPed.ThisPed.CanSufferCriticalHits = true;
+                }
 
                 woundedPed.StopBleedingAmount = Random.NextFloat(
                     _config.Data.NpcConfig.MaximalBleedStopSpeed/2,
@@ -60,13 +68,15 @@ namespace GunshotWound2.Systems.NpcSystems
 
                 if (_config.Data.NpcConfig.MinAccuracy > 0 && _config.Data.NpcConfig.MaxAccuracy > 0)
                 {
-                    int old = pedToConvert.Accuracy;
                     pedToConvert.Accuracy = Random.Next(_config.Data.NpcConfig.MinAccuracy, _config.Data.NpcConfig.MaxAccuracy + 1);
-                    SendDebug($"Ped got new accuracy {pedToConvert.Accuracy} where old was {old}");
                 }
+                if (_config.Data.NpcConfig.MinShootRate > 0 && _config.Data.NpcConfig.MaxShootRate > 0)
+                {
+                    pedToConvert.ShootRate = Random.Next(_config.Data.NpcConfig.MinShootRate, _config.Data.NpcConfig.MaxShootRate);
+                }
+                
                 woundedPed.DefaultAccuracy = pedToConvert.Accuracy;
                 
-                woundedPed.PainMeter = 0;
                 woundedPed.MaximalPain = Random.NextFloat(
                     _config.Data.NpcConfig.LowerMaximalPain,
                     _config.Data.NpcConfig.UpperMaximalPain);
@@ -74,19 +84,18 @@ namespace GunshotWound2.Systems.NpcSystems
                     _config.Data.NpcConfig.MaximalPainRecoverSpeed/2,
                     _config.Data.NpcConfig.MaximalPainRecoverSpeed);
 
+                woundedPed.Crits = 0;
+                woundedPed.BleedingCount = 0;
+                woundedPed.MostDangerBleedingEntity = null;
+
+                _ecsWorld.CreateEntityWith<NoPainChangeStateEvent>().Entity = entity;
+
+                _world.Data.GswPeds.Add(pedToConvert, entity);
+
 #if DEBUG
                 pedToConvert.AddBlip();       
 #endif
             }
-        }
-
-        private void SendDebug(string message)
-        {
-#if DEBUG
-            var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
-            notification.Level = NotifyLevels.DEBUG;
-            notification.StringToShow = message;
-#endif
         }
     }
 }

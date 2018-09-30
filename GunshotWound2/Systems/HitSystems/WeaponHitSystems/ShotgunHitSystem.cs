@@ -11,13 +11,13 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
         {
             return new[]
             {
-                (uint) WeaponHash.AssaultShotgun,
-                (uint) WeaponHash.BullpupShotgun,
-                (uint) WeaponHash.DoubleBarrelShotgun,
-                (uint) WeaponHash.HeavyShotgun,
                 (uint) WeaponHash.PumpShotgun,
                 (uint) WeaponHash.PumpShotgunMk2,
                 (uint) WeaponHash.SawnOffShotgun,
+                (uint) WeaponHash.BullpupShotgun,
+                (uint) WeaponHash.AssaultShotgun,
+                (uint) WeaponHash.HeavyShotgun,
+                (uint) WeaponHash.DoubleBarrelShotgun,
                 (uint) WeaponHash.SweeperShotgun,
             };
         }
@@ -26,7 +26,7 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
         {
             EcsWorld
                 .CreateEntityWith<ShotgunHitEvent>()
-                .PedEntity = pedEntity;
+                .Entity = pedEntity;
         }
     }
 }

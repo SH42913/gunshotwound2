@@ -8,25 +8,22 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
     public class MediumCaliberHitSystem : BaseWeaponHitSystem, IEcsRunSystem
     {
         protected override uint[] GetWeaponHashes()
-        {
+        { 
             return new []
             {
+                (uint) WeaponHash.HeavyPistol,
+                (uint) WeaponHash.Revolver,
+                (uint) WeaponHash.RevolverMk2,
+                (uint) WeaponHash.AssaultrifleMk2, 
                 (uint) WeaponHash.AdvancedRifle, 
                 (uint) WeaponHash.AssaultSMG,
                 (uint) WeaponHash.BullpupRifle, 
                 (uint) WeaponHash.BullpupRifleMk2, 
                 (uint) WeaponHash.CarbineRifle,
                 (uint) WeaponHash.CarbineRifleMk2,
+                (uint) WeaponHash.CombatMG, 
                 (uint) WeaponHash.CompactRifle, 
-                (uint) WeaponHash.DoubleActionRevolver, 
                 (uint) WeaponHash.Gusenberg,
-                (uint) WeaponHash.HeavyPistol,
-                (uint) WeaponHash.MarksmanPistol, 
-                (uint) WeaponHash.Pistol50, 
-                (uint) WeaponHash.Revolver,
-                (uint) WeaponHash.RevolverMk2,
-                (uint) WeaponHash.SMG, 
-                (uint) WeaponHash.SMGMk2, 
                 (uint) WeaponHash.SpecialCarbine,
                 (uint) WeaponHash.SpecialCarbineMk2,
             };
@@ -36,7 +33,7 @@ namespace GunshotWound2.Systems.HitSystems.WeaponHitSystems
         {
             EcsWorld
                 .CreateEntityWith<MediumCaliberHitEvent>()
-                .PedEntity = pedEntity;
+                .Entity = pedEntity;
         }
     }
 }

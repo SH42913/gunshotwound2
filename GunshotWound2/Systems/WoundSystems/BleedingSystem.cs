@@ -1,20 +1,14 @@
-﻿using System;
+﻿using GTA;
 using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Systems.WoundSystems
 {
     [EcsInject]
-    public class BleedingSystem : IEcsInitSystem, IEcsRunSystem
+    public class BleedingSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
         private EcsFilter<BleedingComponent> _bleedings;
-        private DateTime _lastUpdateTime;
-
-        public void Initialize()
-        {
-            _lastUpdateTime = DateTime.Now;
-        }
 
         public void Run()
         {
@@ -27,33 +21,71 @@ namespace GunshotWound2.Systems.WoundSystems
 
         private void ProcessBleedings()
         {
-            var timeBetweenFrames = DateTime.Now - _lastUpdateTime;
-            _lastUpdateTime = DateTime.Now;
-            var frameTimeInSeconds = (float) timeBetweenFrames.TotalSeconds;
+            var frameTimeInSeconds = Game.LastFrameTime;
             
             for (int i = 0; i < _bleedings.EntitiesCount; i++)
             {
-                var component = _bleedings.Components1[i];
-                int pedEntity = _bleedings.Components1[i].PedEntity;
-                var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
-
-                if (woundedPed == null || component.BleedSeverity <= 0f)
+                BleedingComponent component = _bleedings.Components1[i];
+                int pedEntity = _bleedings.Components1[i].Entity;
+                int bleedingEntity = _bleedings.Entities[i];
+                
+                if (!_ecsWorld.IsEntityExists(pedEntity))
                 {
-                    _ecsWorld.RemoveEntity(_bleedings.Entities[i]);
+                    RemoveBleeding(null, pedEntity, bleedingEntity);
                     continue;
                 }
                 
+                var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
+                if (woundedPed == null)
+                {
+                    RemoveBleeding(null, pedEntity, bleedingEntity);
+                    continue;
+                }
                 if(woundedPed.IsDead) continue;
+                
+                if (component.BleedSeverity <= 0f)
+                {
+                    RemoveBleeding(woundedPed, pedEntity, bleedingEntity);
+                    continue;
+                }
                 
                 woundedPed.Health -= component.BleedSeverity * frameTimeInSeconds;
                 component.BleedSeverity -= woundedPed.StopBleedingAmount * frameTimeInSeconds;
                 woundedPed.ThisPed.Health = (int) woundedPed.Health;
+
+                if (!woundedPed.ThisPed.IsDead) continue;
+                RemoveBleeding(woundedPed, pedEntity, bleedingEntity);
             }
         }
 
-        public void Destroy()
+        private void RemoveBleeding(WoundedPedComponent woundedPed, int pedEntity, int bleedingEntity)
         {
+            _ecsWorld.RemoveEntity(bleedingEntity);
+            if(woundedPed == null) return;
             
+            woundedPed.BleedingCount--;
+            UpdateMostDangerWound(woundedPed, pedEntity);
+        }
+
+        private void UpdateMostDangerWound(WoundedPedComponent woundedPed, int pedEntity)
+        {
+            if(woundedPed.ThisPed.IsDead) return;
+
+            float maxBleeding = 0;
+            int? mostDangerEntity = null;
+            
+            for (int i = 0; i < _bleedings.EntitiesCount; i++)
+            {
+                BleedingComponent bleeding = _bleedings.Components1[i];
+                if(!bleeding.CanBeHealed) continue;
+                if(bleeding.Entity != pedEntity) continue;
+                if(bleeding.BleedSeverity <= maxBleeding) continue;
+
+                maxBleeding = bleeding.BleedSeverity;
+                mostDangerEntity = _bleedings.Entities[i];
+            }
+
+            woundedPed.MostDangerBleedingEntity = mostDangerEntity;
         }
     }
 }

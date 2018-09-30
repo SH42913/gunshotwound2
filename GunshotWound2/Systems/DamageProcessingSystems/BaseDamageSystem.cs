@@ -1,4 +1,5 @@
 ﻿using System;
+using GTA;
 using GunshotWound2.Components.Events.BodyHitEvents;
 using GunshotWound2.Components.Events.GuiEvents;
 using GunshotWound2.Components.Events.WeaponHitEvents;
@@ -49,17 +50,17 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 #if DEBUG
             GunshotWound2.LastSystem = nameof(BaseDamageSystem<T>);
 #endif
-            
+
             for (int damageIndex = 0; damageIndex < HitComponents.EntitiesCount; damageIndex++)
             {
                 var damage = HitComponents.Components1[damageIndex];
-                var pedEntity = damage.PedEntity;
+                var pedEntity = damage.Entity;
 
                 BodyPartWasHitEvent bodyHitComponent = null;
                 for (int bodyIndex = 0; bodyIndex < BodyHitComponents.EntitiesCount; bodyIndex++)
                 {
                     var bodyDamage = BodyHitComponents.Components1[bodyIndex];
-                    if(bodyDamage.PedEntity != pedEntity) continue;
+                    if(bodyDamage.Entity != pedEntity) continue;
 
                     bodyHitComponent = bodyDamage;
                     EcsWorld.RemoveEntity(BodyHitComponents.Entities[bodyIndex]);
@@ -73,10 +74,9 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
         private void ProcessWound(BodyPartWasHitEvent bodyHit, int pedEntity)
         {
-            SendDebug($"{WeaponClass} processing");
-            
             if (bodyHit == null || bodyHit.DamagedPart == BodyParts.NOTHING)
             {
+                SendMessage("BodyHit is null " + (bodyHit == null), pedEntity, NotifyLevels.DEBUG);
                 DefaultAction?.Invoke(pedEntity);
                 return;
             }
@@ -139,7 +139,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
         {
             var wound = EcsWorld.CreateEntityWith<ProcessWoundEvent>();
             wound.Name = name;
-            wound.PedEntity = pedEntity;
+            wound.Entity = pedEntity;
             wound.Damage = damage;
             wound.Pain = pain;
             wound.BleedSeverity = bleeding;
@@ -151,25 +151,32 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
                 wound.Crits = null;
                 return;
             }
-            
-            if(!Random.IsTrueWithProbability(CritChance)) return;
-            int critIndex = Random.Next(0, possibleCrits.Length);
-            var crit = possibleCrits[critIndex];
-            wound.Crits = crit;
+
+            if (Random.IsTrueWithProbability(CritChance))
+            {
+                int critIndex = Random.Next(0, possibleCrits.Length);
+                var crit = possibleCrits[critIndex];
+                wound.Crits = crit;
+            }
+            else
+            {
+                wound.Crits = null;
+            }
         }
 
         protected void CreateHeavyBrainDamage(string name, int pedEntity)
         {
-            CreateWound(name, pedEntity, DamageMultiplier * 70f, BleeedingMultiplier * 3f, PainMultiplier * 100f);
+            CreateWound(name, pedEntity, DamageMultiplier * 70f, BleeedingMultiplier * 3f, PainMultiplier * 110f);
         }
 
         private bool CheckArmorPenetration(WoundedPedComponent woundedPed, int pedEntity)
         {
-            if (woundedPed.Armor == 0) return true;
+            if (woundedPed.Armor <= 0) return true;
 
             woundedPed.Armor -= ArmorDamage;
             if (woundedPed.Armor < 0)
             {
+                SendMessage(Locale.Data.ArmorDestroyed, pedEntity, NotifyLevels.ALERT);
                 return true;
             }
 
@@ -195,7 +202,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
             if(!woundConfig.DamageSystemConfigs.ContainsKey(WeaponClass)) return;
             
             var multsArray = woundConfig.DamageSystemConfigs[WeaponClass];
-            if(multsArray.Length < 4) return;
+            if(multsArray.Length < 5) return;
             
             var damage = multsArray[0];
             if (damage.HasValue) DamageMultiplier = damage.Value;
@@ -208,15 +215,9 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
             var critChance = multsArray[3];
             if (critChance.HasValue) CritChance = critChance.Value;
-        }
 
-        private void SendDebug(string message)
-        {
-#if DEBUG
-            var notification = EcsWorld.CreateEntityWith<ShowNotificationEvent>();
-            notification.Level = NotifyLevels.DEBUG;
-            notification.StringToShow = message;
-#endif
+            var armorDamage = multsArray[4];
+            if (armorDamage.HasValue) ArmorDamage = (int) armorDamage.Value;
         }
         
         private void SendMessage(string message, int pedEntity, NotifyLevels level = NotifyLevels.COMMON)
@@ -233,8 +234,8 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
 
         private void CreatePain(int pedEntity, float amount)
         {
-            var pain = EcsWorld.CreateEntityWith<AddPainEvent>();
-            pain.PedEntity = pedEntity;
+            var pain = EcsWorld.CreateEntityWith<IncreasePainEvent>();
+            pain.Entity = pedEntity;
             pain.PainAmount = amount;
         }
 

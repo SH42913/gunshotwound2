@@ -1,7 +1,6 @@
 ﻿using System;
 using GTA;
 using GTA.Native;
-using GunshotWound2.Components.Events.NpcEvents;
 using GunshotWound2.Components.Events.PedEvents;
 using GunshotWound2.Components.Events.PlayerEvents;
 using GunshotWound2.Components.Events.WoundEvents.ChangePainStateEvents;
@@ -17,10 +16,10 @@ namespace GunshotWound2.Systems.PedSystems
         private EcsWorld _ecsWorld;
         private EcsFilterSingle<MainConfig> _mainConfig;
         
-        private EcsFilter<InstantHealEvent> _components;
+        private EcsFilter<InstantHealEvent> _events;
         private EcsFilter<BleedingComponent> _bleedingComponents;
         
-        private static readonly Random _random = new Random();
+        private static readonly Random Random = new Random();
         
         public void Run()
         {
@@ -28,11 +27,15 @@ namespace GunshotWound2.Systems.PedSystems
             GunshotWound2.LastSystem = nameof(InstantHealSystem);
 #endif
             
-            for (int i = 0; i < _components.EntitiesCount; i++)
+            for (int i = 0; i < _events.EntitiesCount; i++)
             {
-                int pedEntity = _components.Components1[i].PedEntity;
+                int pedEntity = _events.Components1[i].Entity;
+                if (!_ecsWorld.IsEntityExists(pedEntity))
+                {
+                    continue;
+                }
+                
                 var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
-
                 if (woundedPed != null)
                 {
                     if (woundedPed.IsPlayer)
@@ -42,41 +45,39 @@ namespace GunshotWound2.Systems.PedSystems
                         Function.Call(Hash._STOP_ALL_SCREEN_EFFECTS);
                         woundedPed.Health = _mainConfig.Data.PlayerConfig.MaximalHealth;
                         Game.Player.IgnoredByEveryone = false;
-
-                        if (_mainConfig.Data.PlayerConfig.AdrenalineSlowMotion)
-                        {
-                            _ecsWorld.CreateEntityWith<AddPlayerAdrenalineEffectEvent>().RestoreState = true;
-                        }
                     }
                     else
                     {
-                        woundedPed.Health = _random.Next(50, _mainConfig.Data.NpcConfig.UpperStartHealth);
+                        woundedPed.Health = Random.Next(50, _mainConfig.Data.NpcConfig.MaxStartHealth);
                         woundedPed.ThisPed.Accuracy = woundedPed.DefaultAccuracy;
                     }
 
                     woundedPed.IsDead = false;
                     woundedPed.Crits = 0;
-                    woundedPed.PainMeter = 0;
                     woundedPed.ThisPed.Health = (int) woundedPed.Health;
                     woundedPed.Armor = woundedPed.ThisPed.Armor;
+                    woundedPed.BleedingCount = 0;
+                    woundedPed.MostDangerBleedingEntity = null;
+
+                    _ecsWorld.RemoveComponent<PainComponent>(pedEntity, true);
                     
                     Function.Call(Hash.CLEAR_PED_BLOOD_DAMAGE, woundedPed.ThisPed);
                     Function.Call(Hash.SET_PED_MOVE_RATE_OVERRIDE, woundedPed.ThisPed, 1f);
 
                     _ecsWorld.CreateEntityWith(out NoPainChangeStateEvent noPainEvent);
-                    noPainEvent.PedEntity = pedEntity;
+                    noPainEvent.Entity = pedEntity;
                     noPainEvent.ForceUpdate = true;
                 }
 
                 for (int bleedIndex = 0; bleedIndex < _bleedingComponents.EntitiesCount; bleedIndex++)
                 {
-                    if(_bleedingComponents.Components1[bleedIndex].PedEntity != pedEntity) continue;
+                    if(_bleedingComponents.Components1[bleedIndex].Entity != pedEntity) continue;
                     
                     _ecsWorld.RemoveEntity(_bleedingComponents.Entities[bleedIndex]);
                 }
-                
-                _ecsWorld.RemoveEntity(_components.Entities[i]);
             }
+            
+            _events.RemoveAllEntities();
         }
     }
 }
