@@ -100,8 +100,8 @@ namespace GunshotWound2
             {
                 _isPaused = !_isPaused;
                 UI.Notify(_isPaused 
-                    ? "~r~GSW2 is paused" 
-                    : "~g~GSW2 is working");
+                    ? $"~r~{_localeConfig.GswIsPaused}" 
+                    : $"~g~{_localeConfig.GswIsWorking}");
                 return;
             }
         }
@@ -570,7 +570,6 @@ namespace GunshotWound2
             _localeConfig.PerforatingGswOn = "Perforating GSW on";
             _localeConfig.AvulsiveGswOn = "Avulsive GSW on";
 
-            _localeConfig.EarFlyAway = "Part of ear sails off away";
             _localeConfig.HeavyBrainDamage = "Heavy brain damage";
             _localeConfig.BulletFlyThroughYourHead = "Bullet fly through your head";
             _localeConfig.BulletTornApartYourBrain = "Bullet torn apart your brain";
@@ -618,7 +617,6 @@ namespace GunshotWound2
             _localeConfig.LegsCrit = "legs";
 
             _localeConfig.Wounds = "Wounds";
-            _localeConfig.HaveNoWounds = "You have no wounds";
 
             _localeConfig.DontHaveMoneyForHelmet = "You don't have enough money to buy helmet";
 
@@ -661,6 +659,14 @@ namespace GunshotWound2
 
             _localeConfig.ThanksForUsing = "Thanks for using";
             _localeConfig.GswStopped = "GSW2 stopped, sorry :(";
+            _localeConfig.GswIsPaused = "GSW2 is paused";
+            _localeConfig.GswIsWorking = "GSW2 is working";
+
+            _localeConfig.AlreadyBandaging = "You're already bandaging";
+            _localeConfig.DontHaveMoneyForBandage = "You don't have enough money for bandage";
+            _localeConfig.YouTryToBandage = "You try to bandage self. You need to stand still for {0} seconds!";
+            _localeConfig.BandageFailed = "Bandaging is failed. You need to stand still for apply bandage!";
+            _localeConfig.BandageSuccess = "You applied bandage to {0}";
 
             _localeConfig.LocalizationAuthor = "~r~SH42913";
         }
@@ -701,7 +707,6 @@ namespace GunshotWound2
             _localeConfig.PerforatingGswOn = manager.GetWord("PerforatingGswOn");
             _localeConfig.AvulsiveGswOn = manager.GetWord("AvulsiveGswOn");
 
-            _localeConfig.EarFlyAway = manager.GetWord("EarFlyAway");
             _localeConfig.HeavyBrainDamage = manager.GetWord("HeavyBrainDamage");
             _localeConfig.BulletFlyThroughYourHead = manager.GetWord("BulletFlyThroughYourHead");
             _localeConfig.BulletTornApartYourBrain = manager.GetWord("BulletTornApartYourBrain");
@@ -749,7 +754,6 @@ namespace GunshotWound2
             _localeConfig.LegsCrit = manager.GetWord("LegsCrit");
 
             _localeConfig.Wounds = manager.GetWord("Wounds");
-            _localeConfig.HaveNoWounds = manager.GetWord("HaveNoWounds");
 
             _localeConfig.DontHaveMoneyForHelmet = manager.GetWord("DontHaveMoneyForHelmet");
 
@@ -792,6 +796,14 @@ namespace GunshotWound2
 
             _localeConfig.ThanksForUsing = manager.GetWord("ThanksForUsing");
             _localeConfig.GswStopped = manager.GetWord("GswStopped");
+            _localeConfig.GswIsPaused = manager.GetWord("GswIsPaused");
+            _localeConfig.GswIsWorking = manager.GetWord("GswIsWorking");
+
+            _localeConfig.AlreadyBandaging = manager.GetWord("AlreadyBandaging");
+            _localeConfig.DontHaveMoneyForBandage = manager.GetWord("DontHaveMoneyForBandage");
+            _localeConfig.YouTryToBandage = manager.GetWord("YouTryToBandage");
+            _localeConfig.BandageFailed = manager.GetWord("BandageFailed");
+            _localeConfig.BandageSuccess = manager.GetWord("BandageSuccess");
 
             _localeConfig.LocalizationAuthor = manager.GetWord("TranslationAuthor");
         }

@@ -21,7 +21,6 @@
         public string PerforatingGswOn;
         public string AvulsiveGswOn;
 
-        public string EarFlyAway;
         public string HeavyBrainDamage;
         public string BulletFlyThroughYourHead;
         public string BulletTornApartYourBrain;
@@ -69,7 +68,6 @@
         public string LegsCrit;
 
         public string Wounds;
-        public string HaveNoWounds;
 
         public string DontHaveMoneyForHelmet;
 
@@ -112,6 +110,14 @@
 
         public string ThanksForUsing;
         public string GswStopped;
+        public string GswIsPaused;
+        public string GswIsWorking;
+
+        public string AlreadyBandaging;
+        public string DontHaveMoneyForBandage;
+        public string YouTryToBandage;
+        public string BandageFailed;
+        public string BandageSuccess;
 
         public string LocalizationAuthor;
     }

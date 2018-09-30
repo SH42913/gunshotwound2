@@ -12,6 +12,7 @@ namespace GunshotWound2.Systems.HealingSystems
     {
         private EcsWorld _ecsWorld;
         private EcsFilterSingle<MainConfig> _config;
+        private EcsFilterSingle<LocaleConfig> _localeConfig;
         
         private EcsFilter<ApplyBandageEvent> _requestEvents;
         private EcsFilter<SuccessfulBandageEvent> _successfulEvents;
@@ -32,19 +33,23 @@ namespace GunshotWound2.Systems.HealingSystems
                 var progress = _ecsWorld.EnsureComponent<BandageInProgressComponent>(pedEntity, out bool isNew);
                 if (!isNew)
                 {
-                    SendMessage("You're already bandaging", pedEntity);
+                    SendMessage(_localeConfig.Data.AlreadyBandaging, pedEntity);
                     continue;
                 }
 
                 if (woundedPed.IsPlayer)
                 {
-                    if(Game.Player.Money < _config.Data.WoundConfig.BandageCost) continue;
+                    if (Game.Player.Money < _config.Data.WoundConfig.BandageCost)
+                    {
+                        SendMessage(_localeConfig.Data.DontHaveMoneyForBandage, pedEntity);
+                        continue;
+                    }
                     Game.Player.Money -= _config.Data.WoundConfig.BandageCost;
                 }
 
                 float timeToBandage = _config.Data.WoundConfig.ApplyBandageTime;
                 progress.EstimateTime = timeToBandage;
-                SendMessage($"You try to bandage self. You need to stand still for {timeToBandage} seconds!", pedEntity);
+                SendMessage(string.Format(_localeConfig.Data.YouTryToBandage, timeToBandage), pedEntity);
             }
             _requestEvents.RemoveAllEntities();
 
@@ -59,7 +64,7 @@ namespace GunshotWound2.Systems.HealingSystems
                 if (woundedPed.InPermanentRagdoll || thisPed.IsWalking || thisPed.IsRunning || 
                     thisPed.IsSprinting || thisPed.IsShooting || thisPed.IsRagdoll)
                 {
-                    SendMessage("~s~Bandaging is failed. You need to ~r~stand still~s~ for apply bandage!", pedEntity);
+                    SendMessage($"~r~{_localeConfig.Data.BandageFailed}", pedEntity);
                     _ecsWorld.RemoveComponent<BandageInProgressComponent>(pedEntity);
                     continue;
                 }
@@ -86,7 +91,7 @@ namespace GunshotWound2.Systems.HealingSystems
                 
                 bleeding.BleedSeverity = bleeding.BleedSeverity / 2;
                 UpdateMostDangerWound(woundedPed, pedEntity);
-                SendMessage($"~g~You applied bandage to {bleeding.Name}", pedEntity);
+                SendMessage(string.Format("~g~" + _localeConfig.Data.BandageSuccess, bleeding.Name), pedEntity);
             }
             _successfulEvents.RemoveAllEntities();
         }
