@@ -19,10 +19,10 @@
 		<!-- If TRUE - you will lose weapon on arm crits and when you fall unconscious -->
 
 		<MaximalSlowMo Value="0.5"/>
-		<!-- 0.5 mean if TimeScale never be less than 0.5.
+		<!-- 0.5 mean TimeScale never be less than 0.5.
 		TimeScale will 0.5 + painPercent(pain/maxPain).
 		Be carefully, it will disable other SlowMo-mods.
-		If you want to disable slowmo, set it to 1.1. -->
+		If you want to disable this option, set it to 1.1. -->
 		
 		<MaximalPain Value="100.0"/>
 		<!-- 100 mean when pain will more than 100 points you'll fall unconscious -->
@@ -110,6 +110,9 @@
 		
 		<RagdollOnPainfulWound Value="TRUE"/>
 		<!-- If TRUE - peds(including player) will set to short ragdoll on painful wounds -->
+		
+		<ApplyBandageTime Value="5.0"/>
+		<!-- 5.0 mean you need to stay still 5 seconds for bandaging -->
 		
 		<MinimalChanceForArmorSave Value="0.2"/>
 		<!-- 0.6 mean 60% chance to save your body on 1 armor point.

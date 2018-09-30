@@ -500,6 +500,7 @@ namespace GunshotWound2
                 _mainConfig.WoundConfig.RagdollOnPainfulWound = woundsNode.Element("RagdollOnPainfulWound").GetBool();
                 _mainConfig.WoundConfig.PainfulWoundValue = woundsNode.Element("PainfulWoundValue").GetFloat();
                 _mainConfig.WoundConfig.MinimalChanceForArmorSave = woundsNode.Element("MinimalChanceForArmorSave").GetFloat();
+                _mainConfig.WoundConfig.ApplyBandageTime = woundsNode.Element("ApplyBandageTime").GetFloat();
             }
 
             _configReason = "Weapons section";
