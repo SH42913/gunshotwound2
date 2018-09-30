@@ -58,6 +58,7 @@ namespace GunshotWound2.Systems.WoundSystems
                 if (component.ArterySevered)
                 {
                     CreateBleeding(woundedPed, pedEntity, 1f, _locale.Data.SeveredArtery);
+                    woundedPed.BleedingCount++;
                 }
 
 #if DEBUG

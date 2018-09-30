@@ -98,8 +98,8 @@ namespace GunshotWound2.Systems.GuiSystems
 
         private void ShowArmor(WoundedPedComponent woundedPed)
         {
+            if (woundedPed.Armor <= 0) return;
             var armorPercent = woundedPed.Armor / 100f;
-            if (!(armorPercent > 0)) return;
             
             if (armorPercent > 0.7f)
             {

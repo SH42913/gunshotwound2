@@ -18,7 +18,7 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystems
             if (woundedPed.IsPlayer)
             {
                 woundedPed.ThisPed.Health = Config.Data.PlayerConfig.MinimalHealth - 1;
-                SendMessage("You are dead from pain shock", NotifyLevels.EMERGENCY);
+                SendMessage(Locale.Data.PainShockDeath, NotifyLevels.EMERGENCY);
             }
             else
             {

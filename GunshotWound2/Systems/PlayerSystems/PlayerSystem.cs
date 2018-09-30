@@ -47,7 +47,7 @@ namespace GunshotWound2.Systems.PlayerSystems
                 {
                     _ecsWorld.CreateEntityWith<InstantHealEvent>().Entity = playerEntity;
                 }
-                else if (woundedPed.ThisPed.Health <= _config.Data.PlayerConfig.MinimalHealth && !woundedPed.IsDead)
+                else if (woundedPed.ThisPed.Health < _config.Data.PlayerConfig.MinimalHealth && !woundedPed.IsDead)
                 {
                     woundedPed.Health = woundedPed.ThisPed.Health;
                     woundedPed.IsDead = true;
@@ -124,6 +124,7 @@ namespace GunshotWound2.Systems.PlayerSystems
                 
                 var newPed = _ecsWorld.GetComponent<WoundedPedComponent>(newEntity);
                 newPed.IsPlayer = true;
+                newPed.IsDead = false;
                 newPed.Health = _config.Data.PlayerConfig.MinimalHealth + newPed.Health;
                 newPed.ThisPed.MaxHealth = _config.Data.PlayerConfig.MaximalHealth + 101;
                 newPed.ThisPed.Health = (int) newPed.Health;

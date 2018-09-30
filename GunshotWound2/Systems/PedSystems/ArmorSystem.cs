@@ -17,7 +17,15 @@ namespace GunshotWound2.Systems.PedSystems
             for (int i = 0; i < _peds.EntitiesCount; i++)
             {
                 var ped = _peds.Components1[i];
-                if(ped.Armor == 0) continue;
+
+                if (ped.Armor == 0)
+                {
+                    if (ped.ThisPed.Armor > 0)
+                    {
+                        ped.Armor = ped.ThisPed.Armor;
+                    }
+                    continue;
+                }
                 if (ped.Armor < 0)
                 {
                     ped.Armor = 0;

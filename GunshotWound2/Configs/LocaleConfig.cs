@@ -121,6 +121,8 @@
 
         public string ArmorDestroyed;
 
+        public string PainShockDeath;
+
         public string LocalizationAuthor;
     }
 }

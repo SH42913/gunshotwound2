@@ -246,9 +246,6 @@ namespace GunshotWound2
             
             Tick += OnTick;
             KeyUp += OnKeyUp;
-            
-            Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, Game.Player, 0.0001f);
-            Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, Game.Player, 0f);
 
             _isPaused = false;
         }
@@ -256,6 +253,9 @@ namespace GunshotWound2
         private void GunshotWoundTick()
         {
             if(_isPaused) return;
+            
+            Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, Game.Player, 0.01f);
+            Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, Game.Player, 0f);
             
             _everyFrameSystems.Run();
             _commonSystems.Run();
@@ -670,6 +670,8 @@ namespace GunshotWound2
             _localeConfig.BandageSuccess = "You applied bandage to {0}";
 
             _localeConfig.ArmorDestroyed = "Your armor fall apart";
+
+            _localeConfig.PainShockDeath = "You have dead from pain shock";
 
             _localeConfig.LocalizationAuthor = "~r~SH42913";
         }

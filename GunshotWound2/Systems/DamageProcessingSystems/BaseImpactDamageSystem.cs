@@ -17,7 +17,7 @@ namespace GunshotWound2.Systems.DamageProcessingSystems
         protected void AbrasionWoundOn(string position, int entity)
         {
             CreateWound($"{Locale.Data.AbrazionWoundOn} {position}", entity, DamageMultiplier * 5f,
-                BleeedingMultiplier * 0.2f, PainMultiplier * 15f);
+                BleeedingMultiplier * 0.15f, PainMultiplier * 15f);
         }
 
         protected void LightBruiseWound(string position, int entity)
