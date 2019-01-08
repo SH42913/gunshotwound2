@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using GTA;
@@ -45,7 +46,7 @@ namespace GunshotWound2
         private LocaleConfig _localeConfig;
         private GswWorld _gswWorld;
 
-        private bool _isInited;
+        private bool _isInit;
         private bool _configLoaded;
         private string _configReason;
         private bool _localizationLoaded;
@@ -55,6 +56,7 @@ namespace GunshotWound2
         
         public GunshotWound2()
         {
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
             GunshotWoundInit();
         }
 
@@ -108,7 +110,7 @@ namespace GunshotWound2
 
         private void OnTick(object sender, EventArgs eventArgs)
         {
-            if (!_isInited && _ticks++ == 400)
+            if (!_isInit && _ticks++ == 400)
             {
                 string translationAuthor = string.IsNullOrEmpty(_localeConfig.LocalizationAuthor) 
                     ? "GSW2-community" 
@@ -130,7 +132,7 @@ namespace GunshotWound2
                               "Possible reason: ~r~" + _localizationReason);
                 }
                 
-                _isInited = true;
+                _isInit = true;
             }
             
             if(_exceptionInRuntime) return;

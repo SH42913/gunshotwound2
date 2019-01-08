@@ -1,4 +1,4 @@
-Localization,En,Ru,De,Fr,Pl,kr,PT-BR
+Localization,En,Ru,De,Fr,Pl,Kr,Pt-Br
 Green color is a new strings,,,,,,,
 HelmetSavedYourHead,Helmet saved your head,Шлем спас вашу голову,Helm rettete dein Leben,Le Casque a sauvé votre tête,Hełm uratował ci głowe,헬멧이 당신의 머리를 구했다,Capacete salvou sua cabeça
 ArmorSavedYourChest,Armor saved your chest,Бронежилет защитил вашу грудь,Rüstung rettete deine Brust,L'armure a sauvé votre poitrine,Kamizelka uratowała ci klatkę piersiową,갑옷이 당신의 가슴을 구했다,Armadura salvou seu peito
@@ -77,8 +77,7 @@ SeveredArteryMessage,Artery was severed!,Артерия была поврежд�
 ,,,,,,,
 PlayerNervesCritMessage,You feel you can't control your arms and legs anymore,Вы не чувствуете свои ноги и руки,Es scheint als könntest du deine Arme und Beine nicht mehr kontrollieren,Vous ne maîtrisez plus vos jambes ni vos bras,Czujesz jak tracisz kontrole nad rękami i nogami,당신은  더 이상 팔과 다리를 움직일수 없다는걸 느꼇다,You feel you can't control your arms and legs anymore
 ManNervesCritMessage,He looks like his spine was damaged,Похоже у него поврежден позвоночник,Er sieht aus als ob sein Rückgrat verletzt wurde,On dirait que sa colonne vertébrale a été touchée,Wygląda na to że nerwy mu padły,그의 척추가 손상된 것처럼 보인다,He looks like his spine was damaged
-WomanNervesCritMessage,She looks like her spine was damaged,Похоже у нее поврежден позвоночник,Sie sieht aus als ob ihr Rückgrat verletzt wurde,"On dirait que sa colonne vertébrale a été touchée
-",Wygląda na to że nerwy jej padły,그녀의 척추가 손상된 것처럼 보인다,She looks like her spine was damaged
+WomanNervesCritMessage,She looks like her spine was damaged,Похоже у нее поврежден позвоночник,Sie sieht aus als ob ihr Rückgrat verletzt wurde,On dirait que sa colonne vertébrale a été touchée,Wygląda na to że nerwy jej padły,그녀의 척추가 손상된 것처럼 보인다,She looks like her spine was damaged
 ,,,,,,,
 PlayerHeartCritMessage,You feel awful pain in your chest,Вы чувствуете ужасную боль в груди,Du fühlst heftigen Schmerz in deiner Brust,Vous resentez une terrible douleur dans votre torse,Czyjesz olbrzymi ból w klatce piersiowej,당신은 끔찍한 통증을 가슴에서 느꼇다,You feel awful pain in your chest
 ManHeartCritMessage,He coughs up blood,Он кашляет кровью,Er hustet Blut,Il crache du sang,On kaszle krwią,그는 피를 기침한다,He coughs up blood
@@ -86,8 +85,7 @@ WomanHeartCritMessage,She coughs up blood,Она кашляет кровью,Sie
 ,,,,,,,
 PlayerLungsCritMessage,It's very hard for you to breathe,Вам очень трудно дышать,Du kannst nur noch schwer atmen,Vous avez du mal à repsirer,Trudnio ci się oddycha,당신이 숨을 쉬는 것은 매우 어렵다,It's very hard for you to breathe
 ManLungsCritMessage,He coughs up blood,Он кашляет кровью,Er hustet Blut,Il crache du sang ,On kaszle krwią,그는 피를 기침한다,He coughs up blood
-WomanLungsCritMessage,She coughs up blood,Она кашляет кровью,Sie hustet Blut,"Elle crache du sang
-",Ona kaszle krwią,그녀는 피를 기침한다,She coughs up blood
+WomanLungsCritMessage,She coughs up blood,Она кашляет кровью,Sie hustet Blut,Elle crache du sang,Ona kaszle krwią,그녀는 피를 기침한다,She coughs up blood
 ,,,,,,,
 PlayerStomachCritMessage,You feel yourself very sick,Вас сильно тошнит,Du fühlst dich sehr schlecht,Vous vous sentez très malade,Czujesz ból żołądka,당신은 매우 아프다,You feel yourself very sick
 ManStomachCritMessage,He looks very sick,Он выглядит будто его тошнит,Er sieht sehr schlecht aus,Il a l'air très malade,Boli go brzuch,그는 매우 아픈것 처럼 보여진다,He looks very sick
@@ -98,8 +96,7 @@ ManGutsCritMessage,He looks very sick,Его кишечник лезет нар�
 WomanGutsCritMessage,She looks very sick,Ее кишечник лезет наружу,Sie sieht sehr schlecht aus,She looks very sick,Jej wnętrzności są zepsute,그녀는 매우 아픈것 처럼 보여진다,She looks very sick
 ,,,,,,,
 PlayerArmsCritMessage,It's looks like arm bone was broken,Похоже рука сломана,Sieht so aus als wäre ein Arm gebrochen,It's looks like arm bone was broken,Złamałeś ręke.,팔 뼈가 부러진 것 같다,It's looks like arm bone was broken
-ManArmsCritMessage,His arm looks very bad,Его рука выглядит плохо,Sein Arm sieht sehr schlecht aus,"Son bras n'a pas l'air d'aller
-",Złamał ręke,그의 팔의 상태가 매우 않 좋다,His arm looks very bad
+ManArmsCritMessage,His arm looks very bad,Его рука выглядит плохо,Sein Arm sieht sehr schlecht aus,Son bras n'a pas l'air d'aller,Złamał ręke,그의 팔의 상태가 매우 않 좋다,His arm looks very bad
 WomanArmsCritMessage,Her arm looks very bad,Ее рука выглядит плохо,Ihr Arm sieht sehr schlecht aus,Son bras n'a pas l'air d'aller,Złamała ręke,그녀의 팔의 상태가 매우 않 좋다,Her arm looks very bad
 ,,,,,,,
 PlayerLegsCritMessage,It's looks like leg bone was broken,Похоже нога сломана,Sieht so aus als wäre ein Bein gebrochen,On dirait que l'os de la jambe est cassé,Złamałeś nogi,다리 뼈가 부러진 것 같다,It's looks like leg bone was broken
