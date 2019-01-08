@@ -18,7 +18,7 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
         protected override void ActionForPlayer(WoundedPedComponent pedComponent, int pedEntity)
         {
             CreatePain(pedEntity, 25f);
-            CreateInternalBleeding(pedEntity, 2f);
+            CreateInternalBleeding(pedEntity, 2.5f);
             
             SendPedToRagdoll(pedEntity, RagdollStates.HEART_DAMAGE);
             Function.Call(Hash._START_SCREEN_EFFECT, "DrugsDrivingIn", 5000, true);
