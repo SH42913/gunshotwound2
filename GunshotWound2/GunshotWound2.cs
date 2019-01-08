@@ -57,6 +57,7 @@ namespace GunshotWound2
         public GunshotWound2()
         {
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
+            Function.Call(Hash._SET_CAM_EFFECT, 0);
             GunshotWoundInit();
         }
 
@@ -381,7 +382,7 @@ namespace GunshotWound2
 
                 _mainConfig.PlayerConfig.MaximalPain = playerNode.Element("MaximalPain").GetFloat();
                 _mainConfig.PlayerConfig.PainRecoverSpeed = playerNode.Element("PainRecoverySpeed").GetFloat();
-                _mainConfig.PlayerConfig.BleedHealingSpeed = playerNode.Element("BleedHealSpeed").GetFloat();
+                _mainConfig.PlayerConfig.BleedHealingSpeed = playerNode.Element("BleedHealSpeed").GetFloat() / 1000f;
                 _mainConfig.PlayerConfig.PoliceCanForgetYou = playerNode.Element("PoliceCanForget").GetBool();
                 _mainConfig.PlayerConfig.CanDropWeapon = playerNode.Element("CanDropWeapon").GetBool();
                 _mainConfig.PlayerConfig.MaximalSlowMo = playerNode.Element("MaximalSlowMo").GetFloat();
@@ -467,7 +468,7 @@ namespace GunshotWound2
                 _mainConfig.NpcConfig.MaxShootRate = rateNode.GetInt("Max");
 
                 _mainConfig.NpcConfig.MaximalPainRecoverSpeed = npcNode.Element("PainRecoverySpeed").GetFloat();
-                _mainConfig.NpcConfig.MaximalBleedStopSpeed = npcNode.Element("BleedHealSpeed").GetFloat();
+                _mainConfig.NpcConfig.MaximalBleedStopSpeed = npcNode.Element("BleedHealSpeed").GetFloat() / 1000f;
 
                 var animationNode = npcNode.Element("Animations");
                 _mainConfig.NpcConfig.NoPainAnim = animationNode.Attribute("NoPain").Value;

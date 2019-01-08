@@ -30,7 +30,7 @@
 		<PainRecoverySpeed Value="1.5"/>
 		<!-- 1.5 mean 1.5 pain points will be restored per 1 sec -->
 
-		<BleedHealSpeed Value="0.002"/>
+		<BleedHealSpeed Value="2.0"/>
 		<!-- How quickly bleedings will heal -->
 
 		<Animations NoPain="move_m@generic" MildPain="move_m@gangster@a" AvgPain="move_m@drunk@moderatedrunk" IntensePain="move_m@drunk@verydrunk"/>
@@ -72,7 +72,7 @@
 		If you want to use default game ShootRate, set both to 0. -->
 
 		<PainRecoverySpeed Value="1.0"/>
-		<BleedHealSpeed Value="0.001"/>
+		<BleedHealSpeed Value="1.0"/>
 		<!-- Same as for player -->
 
 		<Animations NoPain="" MildPain="" AvgPain="" IntensePain=""/>
