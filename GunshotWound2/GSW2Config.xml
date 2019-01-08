@@ -114,6 +114,9 @@
 		<ApplyBandageTime Value="5.0"/>
 		<!-- 5.0 mean you need to stay still 5 seconds for bandaging -->
 		
+		<BandageCost Value="15"/>
+		<!-- 15 mean you need $15 for use bandages. If you're using skin changer, you need to set it to 0. -->
+		
 		<MinimalChanceForArmorSave Value="0.2"/>
 		<!-- 0.6 mean 60% chance to save your body on 1 armor point.
 		100 armor points will always 100% chance to save. -->
