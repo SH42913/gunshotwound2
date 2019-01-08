@@ -57,17 +57,17 @@
 		Its based on Relationship between ped and player. Useful if you have low FPS or play missions.
 		If ALL is TRUE, other variants will not be checked. -->
 
-		<PedHealth Min="60" Max="100"/>
+		<PedHealth Min="50" Max="100"/>
 		<!-- GSWPeds will have health between Min and Max -->
 
-		<MaximalPain Min="60.0" Max="100.0"/>
+		<MaximalPain Min="50.0" Max="100.0"/>
 		<!-- Same as for player, but GSWPeds will have MaximalPain between Min and Max -->
 
-		<Accuracy Min="5" Max="30"/>
+		<Accuracy Min="5" Max="15"/>
 		<!-- GSWPeds will get accuracy between Min and Max.
 		If you want to use default game Accuracy, set both to 0. -->
 
-		<ShootRate Min="5" Max="30"/>
+		<ShootRate Min="5" Max="15"/>
 		<!-- GSWPeds will get ShootRate between Min and Max.
 		If you want to use default game ShootRate, set both to 0. -->
 
