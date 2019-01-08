@@ -3,18 +3,18 @@
 	<Player>
 		<GSWPlayerEnabled Value="TRUE"/>
 		<!-- If TRUE - player ped will be affected by GSW -->
-		
+
 		<MinimalHealth Value="0"/>
 		<!-- If ped's health less that MinimalHealth, GSW will think player is died.
 		Maximal health always will MinimalHealth + 100.
 		Use it for compatibility with other mods:
 		 - WatchYourDeath mod, set to 1800 
-		 - REAL Rage Weapons And Damage, set to -20, but it still buggy -->
-		
+		 - REAL Rage Weapons And Damage, set to -20, but it still can work wrong -->
+
 		<PoliceCanForget Value="TRUE"/>
 		<!-- If TRUE - cops can forget you, when you fall unconscious.
-		If you use Realism Dispatch Enhanced, better to set FALSE-->
-		
+		If you use Realism Dispatch Enhanced, better to set it FALSE-->
+
 		<CanDropWeapon Value="TRUE"/>
 		<!-- If TRUE - you will lose weapon on arm crits and when you fall unconscious -->
 
@@ -23,21 +23,21 @@
 		TimeScale will 0.5 + painPercent(pain/maxPain).
 		Be carefully, it will disable other SlowMo-mods.
 		If you want to disable this option, set it to 1.1. -->
-		
+
 		<MaximalPain Value="100.0"/>
 		<!-- 100 mean when pain will more than 100 points you'll fall unconscious -->
-		
+
 		<PainRecoverySpeed Value="1.5"/>
 		<!-- 1.5 mean 1.5 pain points will be restored per 1 sec -->
-		
-		<BleedHealSpeed Value="0.002"/>
+
+		<BleedHealSpeed Value="2.0"/>
 		<!-- How quickly bleedings will heal -->
-		
+
 		<Animations NoPain="move_m@generic" MildPain="move_m@gangster@a" AvgPain="move_m@drunk@moderatedrunk" IntensePain="move_m@drunk@verydrunk"/>
 		<!-- You can change pain animations by yourself.
 		There is 4 states: No Pain, Mild(<30%, currentPain/maximalPain), Average(<70%) and Intense(<100%) -->
 	</Player>
-	
+
 	<Peds>
 		<GSWScanRange Value="50"/>
 		<!-- It is start range where script scan other peds to convert them to GSWPeds. 
@@ -48,7 +48,7 @@
 		<!-- If TRUE GSW will mark ped as GSWPed only after first damage.
 		It will increase performance, but it can have bugs.
 		PedHealth, new Accuracy and ShootRate will applied only after first damage! -->
-		
+
 		<CriticalMessages Value="TRUE"/>
 		<!-- If TRUE you will see messages with critical wound of NonPlayable GSWPeds -->
 
@@ -56,50 +56,50 @@
 		<!-- You can select which types of NonPlayable Peds can be affected by GSW.
 		Its based on Relationship between ped and player. Useful if you have low FPS or play missions.
 		If ALL is TRUE, other variants will not be checked. -->
-		
-		<PedHealth Min="60" Max="100"/>
+
+		<PedHealth Min="50" Max="100"/>
 		<!-- GSWPeds will have health between Min and Max -->
-		
-		<MaximalPain Min="60.0" Max="100.0"/>
+
+		<MaximalPain Min="50.0" Max="100.0"/>
 		<!-- Same as for player, but GSWPeds will have MaximalPain between Min and Max -->
 
-		<Accuracy Min="5" Max="30"/>
+		<Accuracy Min="5" Max="15"/>
 		<!-- GSWPeds will get accuracy between Min and Max.
 		If you want to use default game Accuracy, set both to 0. -->
 
-		<ShootRate Min="5" Max="30"/>
+		<ShootRate Min="5" Max="15"/>
 		<!-- GSWPeds will get ShootRate between Min and Max.
 		If you want to use default game ShootRate, set both to 0. -->
-		
+
 		<PainRecoverySpeed Value="1.0"/>
-		<BleedHealSpeed Value="0.001"/>
+		<BleedHealSpeed Value="1.0"/>
 		<!-- Same as for player -->
-		
+
 		<Animations NoPain="" MildPain="" AvgPain="" IntensePain=""/>
 		<!-- Same as for player, but i don't have any ideas which animations add here -->
 	</Peds>
-	
+
 	<Notifications>
 		<Language Value="EN"/>
-		<!-- In this build available only EN, DE, RU and PL. RU is buggy :(
-		Partially translated FR.
+		<!-- Available languages: EN, PL, DE, RU, FR and KR. RU is buggy :(
+		Partially translated PT-BR.
 		You can help to translate GSW2 to other languages here
 		https://docs.google.com/spreadsheets/d/1TY0nSEJMDmypkYrcVUBlMG3HIAEW075dCOtxXgW5UJ0/edit 
-		And more languages will be available in next build -->
-		
+		And more languages will be available in next build! -->
+
 		<Common Value="TRUE"/>
 		<!-- Common(white) notifications like CheckSelf and OtherPedsCriticalWound -->
-		
+
 		<Warning Value="TRUE"/>
 		<!-- Warning(yellow) notifications like CriticalDamage -->
-		
+
 		<Alert Value="TRUE"/>
 		<!-- Alert(orange) notifications like LightWounds/MediumWounds -->
-		
+
 		<Emergency Value="TRUE"/>
 		<!-- Emergency(red) notifications like HeavyWounds -->
 	</Notifications>
-	
+
 	<Wounds>
 		<RealisticNervesDamage Value="TRUE"/>
 		<!-- If TRUE - peds(including player) will set to permanent ragdoll on spine damage.
@@ -107,47 +107,50 @@
 
 		<PainfulWoundValue Value="50.0"/>
 		<!-- Any wound with pain more than PainfulWoundValue will add painfulwound effects -->
-		
+
 		<RagdollOnPainfulWound Value="TRUE"/>
 		<!-- If TRUE - peds(including player) will set to short ragdoll on painful wounds -->
-		
+
 		<ApplyBandageTime Value="5.0"/>
 		<!-- 5.0 mean you need to stay still 5 seconds for bandaging -->
-		
+
+		<BandageCost Value="15"/>
+		<!-- 15 mean you need $15 for use bandages. If you're using skin changer, you need to set it to 0. -->
+
 		<MinimalChanceForArmorSave Value="0.2"/>
 		<!-- 0.6 mean 60% chance to save your body on 1 armor point.
 		100 armor points will always 100% chance to save. -->
-		
+
 		<MoveRateOnFullPain Value="0.7"/>
 		<!-- Move rate on 100% of pain -->
-		
+
 		<OverallDamageMult Value="1.0"/>
 		<!-- Overall damage multiplier, 2.0 mean every wound will get x2 damage for ped -->
-		
+
 		<DamageDeviation Value="0.2"/>
 		<!-- 0.2 mean +-20% random damage -->
-		
+
 		<OverallBleedingMult Value="1.0"/>
 		<BleedingDeviation Value="0.2"/>
 
 		<OverallPainMult Value="1.0"/>
 		<PainDeviation Value="0.2"/>
 	</Wounds>
-    
-    <Weapons>
+
+	<Weapons>
 		<SmallCaliber DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.4" ArmorDamage="2"/>
 		<MediumCaliber DamageMult="1.2" BleedingMult="1.3" PainMult="1.2" CritChance="0.6" ArmorDamage="4"/>
 		<HighCaliber DamageMult="1.3" BleedingMult="1.5" PainMult="1.5" CritChance="0.8" ArmorDamage="6"/>
 		<Shotgun DamageMult="0.8" BleedingMult="1.1" PainMult="1.1" CritChance="0.4" ArmorDamage="3"/>
-		
+
 		<LightImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.2"/>
 		<HeavyImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.7"/>
 
 		<Cutting DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.5"/>
-		
+
 		<Explosive DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="1.0"/>
-    </Weapons>
-	
+	</Weapons>
+
 	<Hotkeys>
 		<!-- If you don't want to use key, just remove value -->
 		<GetHelmetKey>74</GetHelmetKey>
@@ -159,7 +162,7 @@
 		<BandageKey>75</BandageKey>
 		<!-- Applied bandages to you. It will cost $15.
 		Default: K on keyboard. -->
-		
+
 		<CheckKey>76</CheckKey>
 		<!-- Check Yourself. Show one time status-notifications about your wounds and health.
 		Default: L on keyboard. -->

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using GTA;
@@ -45,7 +46,7 @@ namespace GunshotWound2
         private LocaleConfig _localeConfig;
         private GswWorld _gswWorld;
 
-        private bool _isInited;
+        private bool _isInit;
         private bool _configLoaded;
         private string _configReason;
         private bool _localizationLoaded;
@@ -55,6 +56,8 @@ namespace GunshotWound2
         
         public GunshotWound2()
         {
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
+            Function.Call(Hash._SET_CAM_EFFECT, 0);
             GunshotWoundInit();
         }
 
@@ -108,7 +111,7 @@ namespace GunshotWound2
 
         private void OnTick(object sender, EventArgs eventArgs)
         {
-            if (!_isInited && _ticks++ == 400)
+            if (!_isInit && _ticks++ == 400)
             {
                 string translationAuthor = string.IsNullOrEmpty(_localeConfig.LocalizationAuthor) 
                     ? "GSW2-community" 
@@ -130,7 +133,7 @@ namespace GunshotWound2
                               "Possible reason: ~r~" + _localizationReason);
                 }
                 
-                _isInited = true;
+                _isInit = true;
             }
             
             if(_exceptionInRuntime) return;
@@ -142,7 +145,7 @@ namespace GunshotWound2
             catch (Exception exception)
             {
                 UI.Notify("~r~GSW2 error in runtime:\n" +
-                          $"{exception.Message}");
+                          $"{exception}");
                 UI.Notify(_localeConfig.GswStopped);
                 _exceptionInRuntime = true;
 #if DEBUG
@@ -379,7 +382,7 @@ namespace GunshotWound2
 
                 _mainConfig.PlayerConfig.MaximalPain = playerNode.Element("MaximalPain").GetFloat();
                 _mainConfig.PlayerConfig.PainRecoverSpeed = playerNode.Element("PainRecoverySpeed").GetFloat();
-                _mainConfig.PlayerConfig.BleedHealingSpeed = playerNode.Element("BleedHealSpeed").GetFloat();
+                _mainConfig.PlayerConfig.BleedHealingSpeed = playerNode.Element("BleedHealSpeed").GetFloat() / 1000f;
                 _mainConfig.PlayerConfig.PoliceCanForgetYou = playerNode.Element("PoliceCanForget").GetBool();
                 _mainConfig.PlayerConfig.CanDropWeapon = playerNode.Element("CanDropWeapon").GetBool();
                 _mainConfig.PlayerConfig.MaximalSlowMo = playerNode.Element("MaximalSlowMo").GetFloat();
@@ -465,7 +468,7 @@ namespace GunshotWound2
                 _mainConfig.NpcConfig.MaxShootRate = rateNode.GetInt("Max");
 
                 _mainConfig.NpcConfig.MaximalPainRecoverSpeed = npcNode.Element("PainRecoverySpeed").GetFloat();
-                _mainConfig.NpcConfig.MaximalBleedStopSpeed = npcNode.Element("BleedHealSpeed").GetFloat();
+                _mainConfig.NpcConfig.MaximalBleedStopSpeed = npcNode.Element("BleedHealSpeed").GetFloat() / 1000f;
 
                 var animationNode = npcNode.Element("Animations");
                 _mainConfig.NpcConfig.NoPainAnim = animationNode.Attribute("NoPain").Value;
@@ -501,6 +504,7 @@ namespace GunshotWound2
                 _mainConfig.WoundConfig.PainfulWoundValue = woundsNode.Element("PainfulWoundValue").GetFloat();
                 _mainConfig.WoundConfig.MinimalChanceForArmorSave = woundsNode.Element("MinimalChanceForArmorSave").GetFloat();
                 _mainConfig.WoundConfig.ApplyBandageTime = woundsNode.Element("ApplyBandageTime").GetFloat();
+                _mainConfig.WoundConfig.BandageCost = woundsNode.Element("BandageCost").GetInt();
             }
 
             _configReason = "Weapons section";
