@@ -142,7 +142,7 @@ namespace GunshotWound2
             catch (Exception exception)
             {
                 UI.Notify("~r~GSW2 error in runtime:\n" +
-                          $"{exception.Message}");
+                          $"{exception}");
                 UI.Notify(_localeConfig.GswStopped);
                 _exceptionInRuntime = true;
 #if DEBUG

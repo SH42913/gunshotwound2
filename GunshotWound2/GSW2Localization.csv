@@ -1,0 +1,127 @@
+Localization,En,Ru,De,Fr,Pl,kr,PT-BR
+Green color is a new strings,,,,,,,
+HelmetSavedYourHead,Helmet saved your head,Шлем спас вашу голову,Helm rettete dein Leben,Le Casque a sauvé votre tête,Hełm uratował ci głowe,헬멧이 당신의 머리를 구했다,Capacete salvou sua cabeça
+ArmorSavedYourChest,Armor saved your chest,Бронежилет защитил вашу грудь,Rüstung rettete deine Brust,L'armure a sauvé votre poitrine,Kamizelka uratowała ci klatkę piersiową,갑옷이 당신의 가슴을 구했다,Armadura salvou seu peito
+ArmorSavedYourLowerBody,Armor saved your lower body,Бронежилет защитил ваш живот,Rüstung rettete dein Unterkörper,L'armure a sauvé le bas de votre corps,Kamizelka uratowała ci dolną część ciała,갑옷이 당신의 하체를 구했다,Armadura salvou seu corpo inferior
+ArmorPenetrated,Your armor was penetrated,Бронежилет был пробит,Rüstung wurde durchdrungen,Votre armure a été pénétrée,Kamizelka została przebita,당신의 갑옷이 뚫렸다,Sua armadura foi penetrada
+,"Write body parts correctly! Eg, ""Flesh wound on head""",,,,,,
+BodyPartHead,head,голове,kopf,tête,głowie,머리,cabeça
+BodyPartNeck,neck,шее,hals,cou,szyji,목,pescoço
+BodyPartChest,chest,груди,brust,poitrine,klatki piersiowej,가슴,peito
+BodyPartLowerBody,lower body,животе,unterkörper,bas du corps,dolna część ciała,하체,corpo inferior
+BodyPartArm,arm,руке,arm,bras,ręce,팔,braço
+BodyPartLeg,leg,ноге,bein,jambe,nodze,다리,Perna
+,,,,,,,
+GrazeWound,Graze wound,Поверхностное ранение,Hautabschürfung,Écorchure,Rana,볼 상처,Raspão
+GrazeGswOn,Graze GSW on,Поверхностное огнестрельное ранение на,Streifschuss an,Graze GSW on,Zranienie na,볼 총상 어디에,Graze GSW on
+FleshGswOn,Flesh GSW on,Касательное огнестрельное ранение на,Fleischwunde an,Flesh GSW on,Zadrapanie na,육체 총상 어디에,Flesh GSW on
+PenetratingGswOn,Penetrating GSW on,Слепое огнестрельное ранение на,Schutz-durchdringende Schussverletzung an,Penetrating GSW on,Przebicie ciała na,침투하는 총상 어디에,Penetrating GSW on
+PerforatingGswOn,Perforating GSW on,Сквозное огнестрельное ранение на,Durchschuss an,Perforating GSW on,Zniekształcenia na,관통 총상 어디에,Perforating GSW on
+AvulsiveGswOn,Avulsive GSW on,Рваное огнестрельное ранение на,Fleisch-reissende Schussverletzung an,Avulsive GSW on,Oderwana skóra na,격렬한 총상 어디에,Avulsive GSW on
+,,,,,,,
+,,,,,,,
+HeavyBrainDamage,Heavy brain damage,Тяжелое повреждение мозга,Schwerer Hirnschaden,Lourds dégâts cérébraux,Poważne uszkodzenie mózgu,심각한 뇌 손상,Dano cerebral pesado
+BulletFlyThroughYourHead,Bullet fly through your head,Пуля прошла вашу голову насквозь,Durchschuss des Kopfes,Une balle traverse votre crâne,Pocisk przeleciał ci przez głowe,총알이 당신의 머리를 통해 난다,Bala voôu pela sua cabeça
+BulletTornApartYourBrain,Bullet torn apart your brain,Пуля разорвала ваш мозг на куски,Kugel durchdringt das Hirn,Une balle vous a déchiré le cerveau,Pocisk uszkodził ci mózg,총알이 당신의 두뇌를 찢어 버렸습니다,bala explodiu sua cabeça
+,,,,,,,
+LightBruise,Light bruise,Легкий ушиб,Leichte Prellung,Léger bleu,Lekkie zacięcie,가벼운 타박상,ferimento leve
+LightBruiseOn,Light bruise on,Легкий ушиб на,Leichte Prellung an,Léger bleu activé,Lekkie zacięcie na,가벼운 타박상 ,Light bruise on
+MediumBruiseOn,Medium bruise on,Средний ушиб на,Mittlere Prellung an,Bleu activé,Średnie zacięcie na,중간 타박상 켜짐,Medium bruise on
+HeavyBruiseOn,Heavy bruise on,Серьезный ушиб на,Schwere Prellung an,Gros bleu activé,Poważne zacięcie na,심각한 타박상 켜짐,Heavy bruise on
+AbrazionWoundOn,Abrazion wound on,Содрана кожа на,Schürfwunde an,Éraflure,Przetarcie rany na,마모 상처 켜짐,Abrazion wound on
+WindedFromImpact,Winded from impact,Головокружение от удара,Außer Atem durch Treffer,Winded from impact,Powalenie po uderzeniu,충격 때문에 숨이 헐떡임,Winded from impact
+,,,,,,,
+IncisionWoundOn,Incision wound on,Поверхностное ранение на,Schnittwunde an,Incision wound on,Naciencię na,절개 상처 어디에,Incision wound on
+LacerationWoundOn,Laceration wound on,Рваная рана на,Reisswunde an,Laceration wound on,Skaleczenie na,열상 상처 어디에,Laceration wound on
+StabWoundOn,Stab wound on,Колотое ранение на,Stichwunde an,Stab wound on,Rana kłuta na,찌린 상처 어디에,Stab wound on
+,,,,,,,
+BodyBlown,Body blown,Тело разорвано на куски,Körper zerstört,Corps touché,Wysadzone ciało,신체가 헐떡임 ,Body blown
+HeadBlown,Head blown,Голова разорвана на куски,Kopf zerstört,Tête touchée,Wysadzona głowa,머리가 헐떡임,Head blown
+NeckBlown,Neck blown,Шея разорвана на куски,Hals zerstört,Nuque touchée,Wysadzona szyja,목이 헐떡임,Neck blown
+ChestBlown,Chest blown,Грудь разорвана на куски,Brust zerstört,Poitrine touchée,Wysadzona klatka piersiowa,가슴이 헐떡임,Chest blown
+LowerBodyBlown,Lower body blown,Живот разорван на куски,Unterkörper zerstört,Bas du crops touché,Wysadzona dolna część ciała,하체가 헐떡임,Lower body blown
+ArmBlown,Arm blown,Рука разорвана на куски,Arm zerstört,Bras touché,Wysadzona ręka,팔이 헐떡임,Arm blown
+LegBlown,Leg blown,Нога разорвана на куски,Bein zerstört,Jambe touchée,Wysadzona noga,다리가 헐떡임,Leg blown
+,,,,,,,
+Blackout,Blackout possible,Возможна потеря сознания,Möglicher Gedächtnisverlust,Risque d'évanouïssement,Zamroczenie,의식 상실 가능성이 있다,Blackout possible
+BleedingInHead,Bleeding in the head,Кровотечение в мозг,Kopfblutung,Saignement à la tête,Krwawienie głowy,머리에서 출혈,Bleeding in the head
+TraumaticBrainInjury,Traumatic brain injury,Тяжелая травма головного мозга,Schädeltrauma,Lésion cérébrale traumatique,Traumatyczne uszkodzenie mózgu,외상성 뇌 손상,Traumatic brain injury
+BrokenNeck,Broken neck,Сломана шея,Gebrochenes Genick,Nuque brisée,Skręcony kręgosłup,목이 부러짐,Broken neck
+,,,,,,,
+Health,Health,Здоровье,Gesundheit,Santé,Zdrowie,체력 ,Health
+YouAreDead,You are dead!,Ты мертв!,Du bist tot!,Vous êtes mort !,Umarłeś,당신은 죽었다!,You are dead!
+Pain,Pain,Боль,Schmerz,Douleur,Ból,통증,Pain
+,,,,,,,
+ArmorLooksGreat,Your armor looks great,Бронежилет как новый,Deine Rüstung sieht gut aus,Votre blindage est en bon état,Hełm i kamizelka wyglądają dobrze,당신의 갑옷은 훌룡해 보인다,Your armor looks great
+ScratchesOnArmor,Your armor has some scratches,На бронежилете видны царапины,Deine Rüstung hat ein paar Kratzer,Votre blindage a des égratinures,Hełm i kamizelka mają rysy,당신의 갑옷은 약간의 스크래치가 있다,Your armor has some scratches
+DentsOnArmor,Your armor has large dents,На бронежилете видны серьезные вмятины,Deine Rüstung hat grosse Dellen,Votre blindage a de larges entailles,Hełm i kamizelka mają dziury,당신의 갑옷은 크게 찌그려 졋다,Your armor has large dents
+ArmorLooksAwful,Your armor looks awful,Бронежилет выглядит хуже некуда,Deine Rüstung sieht sehr schlecht aus,Votre blindage est en très mauvais état,Hełm i kamizelka wyglądają okropnie,당신은 갑옷은 끔찍한 보인다,Your armor looks awful
+,"Write correctly! Eg, ""Critical damaged nerves heart legs""",,,,,,
+Crits,Critical damaged,Критически повреждены,Kritischer Schaden,Dégât critique,Krytyczne obrażenia,치명적인 손상,dano critico
+NervesCrit,nerves,нервы,Nerven,les nerfs,Nerwy,신경,nerves
+HeartCrit,heart,сердце,Herz,le coeur,Serce,심장,heart
+LungsCrit,lungs,легкие,Lungen,les poumons,Płuca,폐,lungs
+StomachCrit,stomach,желудок,Bauch,l'estomac,Żołądek,복부,stomach
+GutsCrit,guts,кишечник,Innereien,l'intestin,Wnętrzności,창자,guts
+ArmsCrit,arms,руки,Arme, les bras,Ręce,팔,arms
+LegsCrit,legs,ноги,Beine, les jambes,Nogi,다리,legs
+,,,,,,,
+Wounds,Wounds,Ранения,Wunden,Blessures,Rany,상처,Wounds
+,,,,,,,
+,,,,,,,
+DontHaveMoneyForHelmet,You don't have enough money to buy helmet,Недостаточно денег для покупки шлема,Du hast nicht genug Geld für einen Helm,Vous n'avez pas assez d'argent pour acheter un casque,Nie masz wystarczających pieniędzy aby kupić hełm,당신은 헬멧을 사기에 충분한 돈을 가지고 있지 않다,You don't have enough money to buy helmet
+,,,,,,,
+InternalBleeding,Internal bleeding,Внутреннее кровотечение,Innere Blutungen,Hémorragie interne,Krwawienie wewnętrzne,내부 출혈,Internal bleeding
+SeveredArtery,Severed artery,Разорванная артерия,Verletzte Arterie,Artère touchée,Przecięta tętnica,절단 동맥,Severed artery
+SeveredArteryMessage,Artery was severed!,Артерия была повреждена,Arterie wurde verletzt!,L'artère a été touchée,Masz przeciętą tętnice!,동맥이 절단되었다!,Artery was severed!
+,,,,,,,
+PlayerNervesCritMessage,You feel you can't control your arms and legs anymore,Вы не чувствуете свои ноги и руки,Es scheint als könntest du deine Arme und Beine nicht mehr kontrollieren,Vous ne maîtrisez plus vos jambes ni vos bras,Czujesz jak tracisz kontrole nad rękami i nogami,당신은  더 이상 팔과 다리를 움직일수 없다는걸 느꼇다,You feel you can't control your arms and legs anymore
+ManNervesCritMessage,He looks like his spine was damaged,Похоже у него поврежден позвоночник,Er sieht aus als ob sein Rückgrat verletzt wurde,On dirait que sa colonne vertébrale a été touchée,Wygląda na to że nerwy mu padły,그의 척추가 손상된 것처럼 보인다,He looks like his spine was damaged
+WomanNervesCritMessage,She looks like her spine was damaged,Похоже у нее поврежден позвоночник,Sie sieht aus als ob ihr Rückgrat verletzt wurde,"On dirait que sa colonne vertébrale a été touchée
+",Wygląda na to że nerwy jej padły,그녀의 척추가 손상된 것처럼 보인다,She looks like her spine was damaged
+,,,,,,,
+PlayerHeartCritMessage,You feel awful pain in your chest,Вы чувствуете ужасную боль в груди,Du fühlst heftigen Schmerz in deiner Brust,Vous resentez une terrible douleur dans votre torse,Czyjesz olbrzymi ból w klatce piersiowej,당신은 끔찍한 통증을 가슴에서 느꼇다,You feel awful pain in your chest
+ManHeartCritMessage,He coughs up blood,Он кашляет кровью,Er hustet Blut,Il crache du sang,On kaszle krwią,그는 피를 기침한다,He coughs up blood
+WomanHeartCritMessage,She coughs up blood,Она кашляет кровью,Sie hustet Blut,Elle crache du sang,Ona kaszle krwią,그녀는 피를 기침한다,She coughs up blood
+,,,,,,,
+PlayerLungsCritMessage,It's very hard for you to breathe,Вам очень трудно дышать,Du kannst nur noch schwer atmen,Vous avez du mal à repsirer,Trudnio ci się oddycha,당신이 숨을 쉬는 것은 매우 어렵다,It's very hard for you to breathe
+ManLungsCritMessage,He coughs up blood,Он кашляет кровью,Er hustet Blut,Il crache du sang ,On kaszle krwią,그는 피를 기침한다,He coughs up blood
+WomanLungsCritMessage,She coughs up blood,Она кашляет кровью,Sie hustet Blut,"Elle crache du sang
+",Ona kaszle krwią,그녀는 피를 기침한다,She coughs up blood
+,,,,,,,
+PlayerStomachCritMessage,You feel yourself very sick,Вас сильно тошнит,Du fühlst dich sehr schlecht,Vous vous sentez très malade,Czujesz ból żołądka,당신은 매우 아프다,You feel yourself very sick
+ManStomachCritMessage,He looks very sick,Он выглядит будто его тошнит,Er sieht sehr schlecht aus,Il a l'air très malade,Boli go brzuch,그는 매우 아픈것 처럼 보여진다,He looks very sick
+WomanStomachCritMessage,She looks very sick,Она выглядит будто ее тошнит,Sie sieht sehr schlecht aus,Elle a l'air très malade,Boli ją brzuch,그녀는 매우 아픈것 처럼 보여진다,She looks very sick
+,,,,,,,
+PlayerGutsCritMessage,You feel yourself very sick,Ваш кишечник лезет наружу,Du fühlst dich sehr schlecht,You feel yourself very sick,Wnętrzności ci się psują,당신은 매우 아프다,You feel yourself very sick
+ManGutsCritMessage,He looks very sick,Его кишечник лезет наружу,Er sieht sehr schlecht aus,He looks very sick,Jego wnętrzności są zepsute,그는 매우 아픈것 처럼 보여진다 ,He looks very sick
+WomanGutsCritMessage,She looks very sick,Ее кишечник лезет наружу,Sie sieht sehr schlecht aus,She looks very sick,Jej wnętrzności są zepsute,그녀는 매우 아픈것 처럼 보여진다,She looks very sick
+,,,,,,,
+PlayerArmsCritMessage,It's looks like arm bone was broken,Похоже рука сломана,Sieht so aus als wäre ein Arm gebrochen,It's looks like arm bone was broken,Złamałeś ręke.,팔 뼈가 부러진 것 같다,It's looks like arm bone was broken
+ManArmsCritMessage,His arm looks very bad,Его рука выглядит плохо,Sein Arm sieht sehr schlecht aus,"Son bras n'a pas l'air d'aller
+",Złamał ręke,그의 팔의 상태가 매우 않 좋다,His arm looks very bad
+WomanArmsCritMessage,Her arm looks very bad,Ее рука выглядит плохо,Ihr Arm sieht sehr schlecht aus,Son bras n'a pas l'air d'aller,Złamała ręke,그녀의 팔의 상태가 매우 않 좋다,Her arm looks very bad
+,,,,,,,
+PlayerLegsCritMessage,It's looks like leg bone was broken,Похоже нога сломана,Sieht so aus als wäre ein Bein gebrochen,On dirait que l'os de la jambe est cassé,Złamałeś nogi,다리 뼈가 부러진 것 같다,It's looks like leg bone was broken
+ManLegsCritMessage,His leg looks very bad,Его нога выглядит плохо,Sein Bein sieht sehr schlecht aus,Sa jambe n'a pas l'air d'aller,Złamał nogi,그의 다리의 상태가 매우 않 좋다,His leg looks very bad
+WomanLegsCritMessage,Her leg looks very bad,Ее нога выглядит плохо,Ihr Bein sieht sehr schlecht aus,Sa jambe n'a pas l'air d'aller,Złamała nogi,그녀의 다리의 상태가 매우 않 좋다,Her leg looks very bad
+,,,,,,,
+UnbearablePainMessage,You got a pain shock! You lose consciousness!,У вас болевой шок! Вы теряете сознание!,Du bist im Schock und verlierst das Bewusstsein!,"Vous avez un choc de douleur, vous perdez conscience !",Boli cię zbyt mocno! Tracisz przytomność,당신은 통증 쇼크를 얻었다! 당신은 의식을 읽었다!,You got a pain shock! You lose consciousness!
+,,,,,,,
+AddingRange,Adding range,Радиус добавления,Reichweite erweitert,Adding range,Zwiększono odległość,범위 추가,Adding range
+RemovingRange,Removing range,Радиус удаления,Reichweite verringert,Removing range,Zmniejszono odległość,범위 삭제,Removing range
+,,,,,,,
+ThanksForUsing,Thanks for using,Спасибо за использование,Danke für die Verwendung von,Merci pour votre utilisation,Dziękuje za użycie moda!,사용해 주어서 고맙다,Thanks for using
+GswStopped,"GSW2 stopped, sorry :(","К сожалению, GSW2 поломался, извини уж :(","GSW2 funktioniert nicht mehr, tut mir leid :(","GSW2 s'est arrêté, désolé :(","GSW2 przestało działać, Przepraszamy :(","GSW2는 멈추었다, 미안하다 :(","GSW2 stopped, sorry :("
+GswIsPaused,GSW2 is paused,Работа GSW2 приостановлена,GSW2 ist pausiert,GSW2 est en pause,GSW2 zostało zatrzymane,GSW2가 중지되었다,GSW2 is paused
+GswIsWorking,GSW2 is working,Работа GSW2 продолжается,GSW2 ist bereit,GSW2 fonctionne,GSW2 działa,GSW2가 작둥중이다,GSW2 is working
+,,,,,,,
+AlreadyBandaging,You're already bandaging,Вы уже перевязываетесь,Du bist bereits verbunden,Vous appliquez déjà un bandage,Właśnie się bandażujesz,당신은 이미 붕대를 감고 있다,You're already bandaging
+DontHaveMoneyForBandage,You don't have enough money for bandage,Недостаточно денег на перевязку,Du hast nicht genug Geld für Verband,Vous n'avez pas assez d'argent pour acheter un bandage,Nie masz wystarczającej ilości pieniędzy na opatrunek,당신은 붕대를 사기에 충분한 돈을 가지고 있지 않다,You don't have enough money for bandage
+YouTryToBandage,You try to bandage self. You need to stand still for {0} seconds!,Вы пробуете перевязаться. Нужно постоять без движения {0} секунд!,Du versuchst dich selbst zu verbinden. Du must für {0} sekunden stillstehen!,Vous essayez de vous soigner. Vous ne devez pas bouger pendant {0} secondes !,Próbujesz zabandażować się samemu. Nie ruszaj się przez {0} sekund!,당신은 붕대 감기를 시도했다. 당신은 {0} 초 동안 가만히 서있어야 한다,You try to bandage self. You need to stand still for {0} seconds!
+BandageFailed,Bandaging is failed. You need to stand still for apply bandage!,Перевязка не удалась. Нужно стоять без движения!,Verbinden schlug fehl. Du must stillstehen zum verbinden!,Vous n'avez pas réussi à vous mettre un bandage. Vous ne devez pas bouger pour appliquer un bandage !,Bandażowanie nie udało się. Podczas nakładania opatrunku nie ruszaj się!,붕대 감기가 실패했다 붕대를 감을때 까지 서있어야 한다,Bandaging is failed. You need to stand still for apply bandage!
+BandageSuccess,You applied bandage to {0},Вы наложили бинт на {0},Du hast {0} verbunden,Vous avez appliqué un bandage à {0},Założyłeś bandaż na {0},당신은 {0} 에 붕대를 감았다,You applied bandage to {0}
+ArmorDestroyed,Your armor fall apart,Ваш бронежилет развалился на куски,Deine Rüstung ist kaputt,Votre blindage tombe en morceaux,Twoja zbroja została zniszczona!,당신의 갑옷이 떨어졌다,Your armor fall apart
+PainShockDeath,You have dead from pain shock,Вы погибли от болевого шока,Du bist an einem Schock gestorben,Vous êtes mort du choc de douleur,Umarłeś z powodu nadmiaru bólu (Wstrząs bólowy),당신은 통증 때문에 죽었다,You have dead from pain shock
+,,,,,,,
+TranslationAuthor,SH42913,SH42913,gand,JaminFR,MicroPanda123,kim GI,
