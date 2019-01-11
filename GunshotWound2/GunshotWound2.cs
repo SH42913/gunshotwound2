@@ -144,9 +144,8 @@ namespace GunshotWound2
             }
             catch (Exception exception)
             {
-                UI.Notify("~r~GSW2 error in runtime:\n" +
-                          $"{exception}");
                 UI.Notify(_localeConfig.GswStopped);
+                UI.Notify($"~r~GSW2 error in runtime:{exception}");
                 _exceptionInRuntime = true;
 #if DEBUG
                 UI.Notify("Last system is " + LastSystem);
