@@ -1,4 +1,5 @@
 ﻿using GTA;
+using GTA.Native;
 using GunshotWound2.Components.Events.GuiEvents;
 using GunshotWound2.Components.Events.PedEvents;
 using GunshotWound2.Components.Events.PlayerEvents;
@@ -21,6 +22,7 @@ namespace GunshotWound2.Systems.WoundSystems.PainStatesSystems
             base.ExecuteState(woundedPed, pedEntity);
 
             SendPedToRagdoll(pedEntity, RagdollStates.PERMANENT);
+            
             if (woundedPed.IsPlayer && Config.Data.PlayerConfig.CanDropWeapon)
             {
                 woundedPed.ThisPed.Weapons.Drop();

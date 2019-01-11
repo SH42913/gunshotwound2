@@ -1,5 +1,4 @@
 ﻿using System;
-using GTA;
 using GunshotWound2.Components.Events.BodyHitEvents;
 using GunshotWound2.Components.Events.GuiEvents;
 using GunshotWound2.Components.Events.WeaponHitEvents;

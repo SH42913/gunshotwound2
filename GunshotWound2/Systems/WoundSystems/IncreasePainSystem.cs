@@ -1,4 +1,6 @@
 ﻿using System;
+using GTA;
+using GTA.Native;
 using GunshotWound2.Components.Events.PedEvents;
 using GunshotWound2.Components.Events.PlayerEvents;
 using GunshotWound2.Components.Events.WoundEvents;
@@ -48,6 +50,16 @@ namespace GunshotWound2.Systems.WoundSystems
                         -_config.Data.WoundConfig.PainDeviation * newPain,
                         _config.Data.WoundConfig.PainDeviation * newPain);
                     pain.CurrentPain += _config.Data.WoundConfig.PainMultiplier * newPain + painDeviation;
+
+                    int painAnimIndex = Random.Next(1, 6);
+                    if (woundedPed.IsMale)
+                    {
+                        Function.Call(Hash.PLAY_FACIAL_ANIM, woundedPed.ThisPed, "pain_" + painAnimIndex, "facials@gen_male@base");
+                    }
+                    else
+                    {
+                        Function.Call(Hash.PLAY_FACIAL_ANIM, woundedPed.ThisPed, "pain_" + painAnimIndex, "facials@gen_female@base");
+                    }
 
                     if (newPain > _config.Data.WoundConfig.PainfulWoundValue / 2)
                     {

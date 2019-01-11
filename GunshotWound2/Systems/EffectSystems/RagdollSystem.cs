@@ -1,6 +1,5 @@
 ﻿using System;
 using GTA.Native;
-using GunshotWound2.Components.Events.GuiEvents;
 using GunshotWound2.Components.Events.PedEvents;
 using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
