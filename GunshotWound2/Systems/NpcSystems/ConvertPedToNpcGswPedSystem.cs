@@ -57,7 +57,7 @@ namespace GunshotWound2.Systems.NpcSystems
                 woundedPed.ThisPed.CanWrithe = false;
                 woundedPed.ThisPed.CanWearHelmet = true;
                 woundedPed.ThisPed.AlwaysDiesOnLowHealth = false;
-                woundedPed.ThisPed.CanSufferCriticalHits = false;
+                woundedPed.ThisPed.CanSufferCriticalHits = true;
                 woundedPed.ThisPed.CanSwitchWeapons = true;
                 woundedPed.ThisPed.CanBeShotInVehicle = true;
                 if (Function.Call<bool>(Hash.IS_ENTITY_A_MISSION_ENTITY, pedToConvert))
