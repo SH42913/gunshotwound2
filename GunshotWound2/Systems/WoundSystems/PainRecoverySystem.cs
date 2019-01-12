@@ -49,14 +49,30 @@ namespace GunshotWound2.Systems.WoundSystems
                 }
                 else if (painPercent > 1f)
                 {
+                    if (woundedPed.IsMale)
+                    {
+                        Function.Call(Hash.PLAY_FACIAL_ANIM, woundedPed.ThisPed, "dead_1", "facials@gen_male@base");
+                    }
+                    else
+                    {
+                        Function.Call(Hash.PLAY_FACIAL_ANIM, woundedPed.ThisPed, "dead_1", "facials@gen_female@base");
+                    }
                     if(woundedPed.PainState == PainStates.UNBEARABLE) continue;
 
                     _ecsWorld.CreateEntityWith(out UnbearablePainChangeStateEvent unbearablePainEvent);
                     unbearablePainEvent.Entity = pedEntity;
                     unbearablePainEvent.ForceUpdate = false;
                 }
-                else if(painPercent > 0.7f)
+                else if(painPercent > 0.8f)
                 {
+                    if (woundedPed.IsMale)
+                    {
+                        Function.Call(Hash.PLAY_FACIAL_ANIM, woundedPed.ThisPed, "mood_injured_1", "facials@gen_male@base");
+                    }
+                    else
+                    {
+                        Function.Call(Hash.PLAY_FACIAL_ANIM, woundedPed.ThisPed, "mood_injured_1", "facials@gen_female@base");
+                    }
                     if(woundedPed.PainState == PainStates.INTENSE) continue;
 
                     _ecsWorld.CreateEntityWith(out IntensePainChangeStateEvent intensePainEvent);

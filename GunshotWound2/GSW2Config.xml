@@ -35,7 +35,7 @@
 
 		<Animations NoPain="move_m@generic" MildPain="move_m@gangster@a" AvgPain="move_m@drunk@moderatedrunk" IntensePain="move_m@drunk@verydrunk"/>
 		<!-- You can change pain animations by yourself.
-		There is 4 states: No Pain, Mild(<30%, currentPain/maximalPain), Average(<70%) and Intense(<100%) -->
+		There is 4 states: No Pain, Mild(<30%, currentPain/maximalPain), Average(<80%) and Intense(<100%) -->
 	</Player>
 
 	<Peds>

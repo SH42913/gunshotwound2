@@ -1,4 +1,5 @@
-﻿using GunshotWound2.Components.Events.GuiEvents;
+﻿using GTA.Native;
+using GunshotWound2.Components.Events.GuiEvents;
 using GunshotWound2.Components.Events.PlayerEvents;
 using GunshotWound2.Components.Events.WoundEvents.CriticalWoundEvents;
 using GunshotWound2.Components.StateComponents;
@@ -35,6 +36,10 @@ namespace GunshotWound2.Systems.WoundSystems.CriticalWoundSystems
             pedComponent.ThisPed.Accuracy = (int) (0.1f * pedComponent.DefaultAccuracy);
 
             pedComponent.ThisPed.Weapons.Drop();
+            Function.Call(Hash.CREATE_NM_MESSAGE, true, 0);
+            Function.Call(Hash.GIVE_PED_NM_MESSAGE, pedComponent.ThisPed);
+            Function.Call(Hash.CREATE_NM_MESSAGE, true, 1024);
+            Function.Call(Hash.GIVE_PED_NM_MESSAGE, pedComponent.ThisPed);
             
             if (!Config.Data.NpcConfig.ShowEnemyCriticalMessages) return;
             if (pedComponent.Crits.HasFlag(CritTypes.NERVES_DAMAGED)) return;

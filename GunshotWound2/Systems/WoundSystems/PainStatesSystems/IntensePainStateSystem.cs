@@ -1,4 +1,6 @@
-﻿using GunshotWound2.Components.Events.PlayerEvents;
+﻿using GTA;
+using GTA.Native;
+using GunshotWound2.Components.Events.PlayerEvents;
 using GunshotWound2.Components.Events.WoundEvents.ChangePainStateEvents;
 using GunshotWound2.Components.StateComponents;
 using Leopotam.Ecs;

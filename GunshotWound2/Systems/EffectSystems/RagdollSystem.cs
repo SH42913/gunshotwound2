@@ -1,6 +1,5 @@
 ﻿using System;
 using GTA.Native;
-using GunshotWound2.Components.Events.GuiEvents;
 using GunshotWound2.Components.Events.PedEvents;
 using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
@@ -91,6 +90,10 @@ namespace GunshotWound2.Systems.EffectSystems
                         if(woundedPed.ThisPed.IsRagdoll) continue;
                         
                         Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, 3000, 3000, 4, 0, 0, 0);
+                        Function.Call(Hash.CREATE_NM_MESSAGE, true, 0);
+                        Function.Call(Hash.GIVE_PED_NM_MESSAGE, woundedPed.ThisPed);
+                        Function.Call(Hash.CREATE_NM_MESSAGE, true, 1025);
+                        Function.Call(Hash.GIVE_PED_NM_MESSAGE, woundedPed.ThisPed);
                         Function.Call(Hash.CREATE_NM_MESSAGE, true, 169);
                         Function.Call(Hash.GIVE_PED_NM_MESSAGE, woundedPed.ThisPed);
                         _ecsWorld.RemoveEntity(_events.Entities[i]);
@@ -104,7 +107,6 @@ namespace GunshotWound2.Systems.EffectSystems
                         if(woundedPed.ThisPed.IsRagdoll) continue;
                         
                         Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, 6000, 6000, 1, 0, 0, 0);
-                        Function.Call(Hash.CREATE_NM_MESSAGE, true, 1119);
                         Function.Call(Hash.CREATE_NM_MESSAGE, true, 1083);
                         Function.Call(Hash.GIVE_PED_NM_MESSAGE, woundedPed.ThisPed);
                         _ecsWorld.RemoveEntity(_events.Entities[i]);
