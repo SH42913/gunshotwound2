@@ -80,8 +80,8 @@
 
 	<Notifications>
 		<Language Value="EN"/>
-		<!-- Available languages: EN, PL, DE, RU, FR and KR. RU is buggy :(
-		Partially translated PT-BR.
+		<!-- Available languages: EN, PL, DE, RU, FR, PT-BR and KR. RU is buggy :(
+		Partially translated Spa and Swe.
 		You can help to translate GSW2 to other languages here
 		https://docs.google.com/spreadsheets/d/1TY0nSEJMDmypkYrcVUBlMG3HIAEW075dCOtxXgW5UJ0/edit 
 		And more languages will be available in next build! -->
