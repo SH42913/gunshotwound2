@@ -34,8 +34,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ScriptHookVDotNet2, Version=2.10.6.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\ScriptHookVDotNet2.2.10.7\lib\net452\ScriptHookVDotNet2.dll</HintPath>
+    <Reference Include="ScriptHookVDotNet2, Version=2.10.9.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\ScriptHookVDotNet2.2.10.9\lib\net40\ScriptHookVDotNet2.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
