@@ -115,6 +115,9 @@
 
 		<BandageCost Value="15"/>
 		<!-- 15 mean you need $15 for use bandages. If you're using skin changer, you need to set it to 0. -->
+		
+		<SelfHealingRate Value="0.01"/>
+		<!-- How fast you will heal, if you have no bleedings -->
 
 		<MinimalChanceForArmorSave Value="0.2"/>
 		<!-- 0.6 mean 60% chance to save your body on 1 armor point.
