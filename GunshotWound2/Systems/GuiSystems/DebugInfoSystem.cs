@@ -1,4 +1,5 @@
 ﻿using GunshotWound2.Components.Events.GuiEvents;
+using GunshotWound2.Components.StateComponents;
 using GunshotWound2.Configs;
 using Leopotam.Ecs;
 
