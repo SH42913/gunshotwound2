@@ -87,7 +87,7 @@ namespace GunshotWound2.Systems.WoundSystems
                     averagePainEvent.Entity = pedEntity;
                     averagePainEvent.ForceUpdate = false;
                 }
-                else if (painPercent > 0.1f)
+                else if (painPercent > 0.01f)
                 {
                     if (woundedPed.PainState == PainStates.MILD) continue;
 
@@ -102,6 +102,12 @@ namespace GunshotWound2.Systems.WoundSystems
                     _ecsWorld.CreateEntityWith(out NoPainChangeStateEvent noPainEvent);
                     noPainEvent.Entity = pedEntity;
                     noPainEvent.ForceUpdate = false;
+
+                    if (!_config.Data.PlayerConfig.CameraIsShaking)
+                    {
+                        Function.Call(Hash._SET_CAM_EFFECT, 0);
+                        Function.Call(Hash._STOP_ALL_SCREEN_EFFECTS);
+                    }
                 }
 
                 if (woundedPed.Crits.HasFlag(CritTypes.LEGS_DAMAGED)) continue;

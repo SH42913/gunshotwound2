@@ -62,7 +62,6 @@ namespace GunshotWound2.Utils
                 foreach (Match m in _csvParseRegex.Matches(data))
                 {
                     var part = m.Value.Trim();
-                    lastAddedPart = part;
                     if (part.Length > 0)
                     {
                         if (part[0] == '"' && part[part.Length - 1] == '"')
@@ -73,6 +72,7 @@ namespace GunshotWound2.Utils
                         part = part.Replace("\"\"", "\"");
                     }
 
+                    lastAddedPart = part;
                     _csvBuffer.Add(part);
                 }
             }

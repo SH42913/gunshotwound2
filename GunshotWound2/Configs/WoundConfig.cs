@@ -26,6 +26,7 @@ namespace GunshotWound2.Configs
 
         public int BandageCost;
         public float ApplyBandageTime;
+        public float SelfHealingRate;
 
         public Dictionary<string, float?[]> DamageSystemConfigs;
 

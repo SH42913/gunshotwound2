@@ -62,7 +62,8 @@ namespace GunshotWound2.Systems.HealingSystems
                 int pedEntity = _pedsWithBandageInProgress.Entities[i];
 
                 if (woundedPed.InPermanentRagdoll || thisPed.IsWalking || thisPed.IsRunning || 
-                    thisPed.IsSprinting || thisPed.IsShooting || thisPed.IsRagdoll)
+                    thisPed.IsSprinting || thisPed.IsShooting || thisPed.IsRagdoll || 
+                    thisPed.IsJumping || thisPed.IsReloading || thisPed.IsSwimming)
                 {
                     SendMessage($"~r~{_localeConfig.Data.BandageFailed}", pedEntity);
                     _ecsWorld.RemoveComponent<BandageInProgressComponent>(pedEntity);

@@ -336,7 +336,8 @@ namespace GunshotWound2
                 PainfulWoundValue = 50,
                 MinimalChanceForArmorSave = 0.6f,
                 BandageCost = 15,
-                ApplyBandageTime = 5
+                ApplyBandageTime = 5,
+                SelfHealingRate = 0.01f
             };
         }
 
@@ -504,6 +505,7 @@ namespace GunshotWound2
                 _mainConfig.WoundConfig.MinimalChanceForArmorSave = woundsNode.Element("MinimalChanceForArmorSave").GetFloat();
                 _mainConfig.WoundConfig.ApplyBandageTime = woundsNode.Element("ApplyBandageTime").GetFloat();
                 _mainConfig.WoundConfig.BandageCost = woundsNode.Element("BandageCost").GetInt();
+                _mainConfig.WoundConfig.SelfHealingRate = woundsNode.Element("SelfHealingRate").GetFloat();
             }
 
             _configReason = "Weapons section";
