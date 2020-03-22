@@ -162,7 +162,7 @@ namespace GunshotWound2
             }
             catch (Exception e)
             {
-                LoadDefaultConfigs();
+                MainConfig.LoadDefaultValues(_mainConfig);
                 _configLoaded = false;
 
 #if DEBUG
@@ -177,7 +177,7 @@ namespace GunshotWound2
             }
             catch (Exception e)
             {
-                LoadDefaultLocalization();
+                LocaleConfig.FillWithDefaultValues(_localeConfig);
                 _localizationReason = e.Message;
                 _localizationLoaded = false;
 
@@ -258,81 +258,9 @@ namespace GunshotWound2
 #endif
         }
 
-        private void LoadDefaultConfigs()
-        {
-            _mainConfig.Language = "EN";
-
-            _mainConfig.HelmetKey = Keys.J;
-            _mainConfig.BandageKey = Keys.K;
-            _mainConfig.CheckKey = Keys.L;
-            _mainConfig.IncreaseRangeKey = Keys.PageUp;
-            _mainConfig.ReduceRangeKey = Keys.PageDown;
-            _mainConfig.PauseKey = Keys.End;
-            _mainConfig.HealKey = null;
-
-            _mainConfig.PlayerConfig = new PlayerConfig
-            {
-                WoundedPlayerEnabled = true,
-                CanDropWeapon = true,
-                MoneyForHelmet = 40,
-                MaximalHealth = 99,
-                MinimalHealth = 0,
-                MaximalPain = 100,
-                PainRecoverSpeed = 1.5f,
-                BleedHealingSpeed = 0.001f,
-                PlayerEntity = -1,
-                MaximalSlowMo = 0.5f,
-                PoliceCanForgetYou = true,
-                NoPainAnim = "move_m@generic",
-                MildPainAnim = "move_m@gangster@a",
-                AvgPainAnim = "move_m@drunk@moderatedrunk",
-                IntensePainAnim = "move_m@drunk@verydrunk"
-            };
-
-            _mainConfig.NpcConfig = new NpcConfig
-            {
-                AddingPedRange = 50f,
-                RemovePedRange = 100f,
-                ShowEnemyCriticalMessages = true,
-                MinStartHealth = 50,
-                MaxStartHealth = 100,
-                MaximalBleedStopSpeed = 0.001f,
-                LowerMaximalPain = 50,
-                UpperMaximalPain = 80,
-                MaximalPainRecoverSpeed = 1f,
-                UpperBoundForFindInMs = 10,
-                MinAccuracy = 10,
-                MaxAccuracy = 50,
-                MinShootRate = 10,
-                MaxShootRate = 50,
-                Targets = GswTargets.ALL,
-                ScanOnlyDamaged = false
-            };
-
-            _mainConfig.WoundConfig = new WoundConfig
-            {
-                MoveRateOnNervesDamage = 0.7f,
-                MoveRateOnFullPain = 0.8f,
-                EmergencyBleedingLevel = 1.5f,
-                RealisticNervesDamage = true,
-                DamageMultiplier = 1,
-                BleedingMultiplier = 1,
-                PainMultiplier = 1,
-                DamageDeviation = 0.2f,
-                BleedingDeviation = 0.2f,
-                PainDeviation = 0.2f,
-                RagdollOnPainfulWound = true,
-                PainfulWoundValue = 50,
-                MinimalChanceForArmorSave = 0.6f,
-                BandageCost = 15,
-                ApplyBandageTime = 5,
-                SelfHealingRate = 0.01f
-            };
-        }
-
         private void TryToLoadConfigsFromXml()
         {
-            LoadDefaultConfigs();
+            MainConfig.LoadDefaultValues(_mainConfig);
 
             bool configInGswFolder = new FileInfo("scripts/GSW2/GSW2Config.xml").Exists;
             bool config = new FileInfo("scripts/GSW2Config.xml").Exists;
@@ -543,133 +471,6 @@ namespace GunshotWound2
 #if DEBUG
             UI.Notify($"{_mainConfig}");
 #endif
-        }
-
-        private void LoadDefaultLocalization()
-        {
-            _localeConfig.HelmetSavedYourHead = "Helmet saved your head";
-            _localeConfig.ArmorSavedYourChest = "Armor saved your chest";
-            _localeConfig.ArmorSavedYourLowerBody = "Armor saved your lower body";
-            _localeConfig.ArmorPenetrated = "Your armor was penetrated";
-
-            _localeConfig.BodyPartHead = "head";
-            _localeConfig.BodyPartNeck = "neck";
-            _localeConfig.BodyPartChest = "chest";
-            _localeConfig.BodyPartLowerBody = "lower body";
-            _localeConfig.BodyPartArm = "arm";
-            _localeConfig.BodyPartLeg = "leg";
-
-            _localeConfig.GrazeWound = "Graze wound";
-
-            _localeConfig.GrazeGswOn = "Graze GSW on";
-            _localeConfig.FleshGswOn = "Flesh GSW on";
-            _localeConfig.PenetratingGswOn = "Penetrating GSW on";
-            _localeConfig.PerforatingGswOn = "Perforating GSW on";
-            _localeConfig.AvulsiveGswOn = "Avulsive GSW on";
-
-            _localeConfig.HeavyBrainDamage = "Heavy brain damage";
-            _localeConfig.BulletFlyThroughYourHead = "Bullet fly through your head";
-            _localeConfig.BulletTornApartYourBrain = "Bullet torn apart your brain";
-
-            _localeConfig.LightBruise = "Light bruise";
-            _localeConfig.LightBruiseOn = "Light bruise on";
-            _localeConfig.MediumBruiseOn = "Medium bruise on";
-            _localeConfig.HeavyBruiseOn = "Heavy bruise on";
-            _localeConfig.AbrazionWoundOn = "Abrazion wound on";
-            _localeConfig.WindedFromImpact = "Winded from impact";
-
-            _localeConfig.IncisionWoundOn = "Incision wound on";
-            _localeConfig.LacerationWoundOn = "Laceration wound on";
-            _localeConfig.StabWoundOn = "Stab wound on";
-
-            _localeConfig.BodyBlown = "Body blown";
-            _localeConfig.HeadBlown = "Head blown";
-            _localeConfig.NeckBlown = "Neck blown";
-            _localeConfig.ChestBlown = "Chest blown";
-            _localeConfig.LowerBodyBlown = "Lower body blown";
-            _localeConfig.ArmBlown = "Arm blown";
-            _localeConfig.LegBlown = "Leg blown";
-
-            _localeConfig.Blackout = "Blackout possible";
-            _localeConfig.BleedingInHead = "Bleeding in the head";
-            _localeConfig.TraumaticBrainInjury = "Traumatic brain injury";
-            _localeConfig.BrokenNeck = "Broken neck";
-
-            _localeConfig.Health = "Health";
-            _localeConfig.YouAreDead = "You are dead!";
-            _localeConfig.Pain = "Pain";
-
-            _localeConfig.ArmorLooksGreat = "Your armor looks great";
-            _localeConfig.ScratchesOnArmor = "Your armor has some scratches";
-            _localeConfig.DentsOnArmor = "Your armor has large dents";
-            _localeConfig.ArmorLooksAwful = "Your armor looks awful";
-
-            _localeConfig.Crits = "Critical damaged";
-            _localeConfig.NervesCrit = "nerves";
-            _localeConfig.HeartCrit = "heart";
-            _localeConfig.LungsCrit = "lungs";
-            _localeConfig.StomachCrit = "stomach";
-            _localeConfig.GutsCrit = "guts";
-            _localeConfig.ArmsCrit = "arms";
-            _localeConfig.LegsCrit = "legs";
-
-            _localeConfig.Wounds = "Wounds";
-
-            _localeConfig.DontHaveMoneyForHelmet = "You don't have enough money to buy helmet";
-
-            _localeConfig.InternalBleeding = "Internal bleeding";
-            _localeConfig.SeveredArtery = "Severed artery";
-            _localeConfig.SeveredArteryMessage = "Artery was severed!";
-
-            _localeConfig.PlayerNervesCritMessage = "You feel you can't control your arms and legs anymore";
-            _localeConfig.ManNervesCritMessage = "He looks like his spine was damaged";
-            _localeConfig.WomanNervesCritMessage = "She looks like her spine was damaged";
-
-            _localeConfig.PlayerHeartCritMessage = "You feel awful pain in your chest";
-            _localeConfig.ManHeartCritMessage = "He coughs up blood";
-            _localeConfig.WomanHeartCritMessage = "She coughs up blood";
-
-            _localeConfig.PlayerLungsCritMessage = "It's very hard for you to breathe";
-            _localeConfig.ManLungsCritMessage = "He coughs up blood";
-            _localeConfig.WomanLungsCritMessage = "She coughs up blood";
-
-            _localeConfig.PlayerStomachCritMessage = "You feel yourself very sick";
-            _localeConfig.ManStomachCritMessage = "He looks very sick";
-            _localeConfig.WomanStomachCritMessage = "She looks very sick";
-
-            _localeConfig.PlayerGutsCritMessage = "You feel yourself very sick";
-            _localeConfig.ManGutsCritMessage = "He looks very sick";
-            _localeConfig.WomanGutsCritMessage = "She looks very sick";
-
-            _localeConfig.PlayerArmsCritMessage = "It's looks like arm bone was broken";
-            _localeConfig.ManArmsCritMessage = "His arm looks very bad";
-            _localeConfig.WomanArmsCritMessage = "Her arm looks very bad";
-
-            _localeConfig.PlayerLegsCritMessage = "It's looks like leg bone was broken";
-            _localeConfig.ManLegsCritMessage = "His leg looks very bad";
-            _localeConfig.WomanLegsCritMessage = "Her leg looks very bad";
-
-            _localeConfig.UnbearablePainMessage = "You got a pain shock! You lose consciousness!";
-
-            _localeConfig.AddingRange = "Adding range";
-            _localeConfig.RemovingRange = "Removing range";
-
-            _localeConfig.ThanksForUsing = "Thanks for using";
-            _localeConfig.GswStopped = "GSW2 stopped, sorry :(";
-            _localeConfig.GswIsPaused = "GSW2 is paused";
-            _localeConfig.GswIsWorking = "GSW2 is working";
-
-            _localeConfig.AlreadyBandaging = "You're already bandaging";
-            _localeConfig.DontHaveMoneyForBandage = "You don't have enough money for bandage";
-            _localeConfig.YouTryToBandage = "You try to bandage self. You need to stand still for {0} seconds!";
-            _localeConfig.BandageFailed = "Bandaging is failed. You need to stand still for apply bandage!";
-            _localeConfig.BandageSuccess = "You applied bandage to {0}";
-
-            _localeConfig.ArmorDestroyed = "Your armor fall apart";
-
-            _localeConfig.PainShockDeath = "You have dead from pain shock";
-
-            _localeConfig.LocalizationAuthor = "~r~SH42913";
         }
 
         private void TryToLoadLocalization()

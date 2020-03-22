@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using GTA;
 
 namespace GunshotWound2.Configs
@@ -48,19 +49,42 @@ namespace GunshotWound2.Configs
         public int LastCheckedPedIndex;
         public int UpperBoundForFindInMs;
 
+        public static NpcConfig CreateDefault()
+        {
+            return new NpcConfig
+            {
+                AddingPedRange = 50f,
+                RemovePedRange = 100f,
+                ShowEnemyCriticalMessages = true,
+                MinStartHealth = 50,
+                MaxStartHealth = 100,
+                MaximalBleedStopSpeed = 0.001f,
+                LowerMaximalPain = 50,
+                UpperMaximalPain = 80,
+                MaximalPainRecoverSpeed = 1f,
+                UpperBoundForFindInMs = 10,
+                MinAccuracy = 10,
+                MaxAccuracy = 50,
+                MinShootRate = 10,
+                MaxShootRate = 50,
+                Targets = GswTargets.ALL,
+                ScanOnlyDamaged = false
+            };
+        }
+
         public override string ToString()
         {
-            return "NpcConfig:\n" +
-                   $"ScanOnlyDamage: {ScanOnlyDamaged}\n" +
-                   $"AddingPedRange: {AddingPedRange}\n" +
-                   $"RemovePedRange: {RemovePedRange}\n" +
-                   $"EnemyCritical: {ShowEnemyCriticalMessages}\n" +
-                   $"BleedStop: {MaximalBleedStopSpeed}\n" +
-                   $"StartHealth: {MinStartHealth} - {MaxStartHealth}\n" +
-                   $"MaximalPain: {LowerMaximalPain} - {UpperMaximalPain}\n" +
-                   $"Accuracy: {MinAccuracy} - {MaxAccuracy}\n" +
-                   $"ShootRate: {MinShootRate} - {MaxShootRate}\n" +
-                   $"PainRecoverSpeed: {MaximalPainRecoverSpeed}";
+            return $"{nameof(NpcConfig)}:\n" +
+                   $"{nameof(ScanOnlyDamaged)}: {ScanOnlyDamaged.ToString()}\n" +
+                   $"{nameof(AddingPedRange)}: {AddingPedRange.ToString(CultureInfo.InvariantCulture)}\n" +
+                   $"{nameof(RemovePedRange)}: {RemovePedRange.ToString(CultureInfo.InvariantCulture)}\n" +
+                   $"{nameof(ShowEnemyCriticalMessages)}: {ShowEnemyCriticalMessages.ToString()}\n" +
+                   $"BleedStop: {MaximalBleedStopSpeed.ToString(CultureInfo.InvariantCulture)}\n" +
+                   $"StartHealth: {MinStartHealth.ToString()} - {MaxStartHealth.ToString()}\n" +
+                   $"MaximalPain: {LowerMaximalPain.ToString(CultureInfo.InvariantCulture)} - {UpperMaximalPain.ToString(CultureInfo.InvariantCulture)}\n" +
+                   $"Accuracy: {MinAccuracy.ToString()} - {MaxAccuracy.ToString()}\n" +
+                   $"ShootRate: {MinShootRate.ToString()} - {MaxShootRate.ToString()}\n" +
+                   $"PainRecoverSpeed: {MaximalPainRecoverSpeed.ToString(CultureInfo.InvariantCulture)}";
         }
     }
 }

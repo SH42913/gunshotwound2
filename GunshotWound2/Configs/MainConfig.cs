@@ -29,5 +29,22 @@ namespace GunshotWound2.Configs
                    $"{NpcConfig}\n" +
                    $"{PlayerConfig}";
         }
+
+        public static void LoadDefaultValues(MainConfig config)
+        {
+            config.Language = "EN";
+
+            config.HelmetKey = Keys.J;
+            config.BandageKey = Keys.K;
+            config.CheckKey = Keys.L;
+            config.IncreaseRangeKey = Keys.PageUp;
+            config.ReduceRangeKey = Keys.PageDown;
+            config.PauseKey = Keys.End;
+            config.HealKey = null;
+
+            config.PlayerConfig = PlayerConfig.CreateDefault();
+            config.WoundConfig = WoundConfig.CreateDefault();
+            config.NpcConfig = NpcConfig.CreateDefault();
+        }
     }
 }

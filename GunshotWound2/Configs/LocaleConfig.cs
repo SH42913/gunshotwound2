@@ -124,5 +124,132 @@
         public string PainShockDeath;
 
         public string LocalizationAuthor;
+
+        public static void FillWithDefaultValues(LocaleConfig config)
+        {
+            config.HelmetSavedYourHead = "Helmet saved your head";
+            config.ArmorSavedYourChest = "Armor saved your chest";
+            config.ArmorSavedYourLowerBody = "Armor saved your lower body";
+            config.ArmorPenetrated = "Your armor was penetrated";
+
+            config.BodyPartHead = "head";
+            config.BodyPartNeck = "neck";
+            config.BodyPartChest = "chest";
+            config.BodyPartLowerBody = "lower body";
+            config.BodyPartArm = "arm";
+            config.BodyPartLeg = "leg";
+
+            config.GrazeWound = "Graze wound";
+
+            config.GrazeGswOn = "Graze GSW on";
+            config.FleshGswOn = "Flesh GSW on";
+            config.PenetratingGswOn = "Penetrating GSW on";
+            config.PerforatingGswOn = "Perforating GSW on";
+            config.AvulsiveGswOn = "Avulsive GSW on";
+
+            config.HeavyBrainDamage = "Heavy brain damage";
+            config.BulletFlyThroughYourHead = "Bullet fly through your head";
+            config.BulletTornApartYourBrain = "Bullet torn apart your brain";
+
+            config.LightBruise = "Light bruise";
+            config.LightBruiseOn = "Light bruise on";
+            config.MediumBruiseOn = "Medium bruise on";
+            config.HeavyBruiseOn = "Heavy bruise on";
+            config.AbrazionWoundOn = "Abrazion wound on";
+            config.WindedFromImpact = "Winded from impact";
+
+            config.IncisionWoundOn = "Incision wound on";
+            config.LacerationWoundOn = "Laceration wound on";
+            config.StabWoundOn = "Stab wound on";
+
+            config.BodyBlown = "Body blown";
+            config.HeadBlown = "Head blown";
+            config.NeckBlown = "Neck blown";
+            config.ChestBlown = "Chest blown";
+            config.LowerBodyBlown = "Lower body blown";
+            config.ArmBlown = "Arm blown";
+            config.LegBlown = "Leg blown";
+
+            config.Blackout = "Blackout possible";
+            config.BleedingInHead = "Bleeding in the head";
+            config.TraumaticBrainInjury = "Traumatic brain injury";
+            config.BrokenNeck = "Broken neck";
+
+            config.Health = "Health";
+            config.YouAreDead = "You are dead!";
+            config.Pain = "Pain";
+
+            config.ArmorLooksGreat = "Your armor looks great";
+            config.ScratchesOnArmor = "Your armor has some scratches";
+            config.DentsOnArmor = "Your armor has large dents";
+            config.ArmorLooksAwful = "Your armor looks awful";
+
+            config.Crits = "Critical damaged";
+            config.NervesCrit = "nerves";
+            config.HeartCrit = "heart";
+            config.LungsCrit = "lungs";
+            config.StomachCrit = "stomach";
+            config.GutsCrit = "guts";
+            config.ArmsCrit = "arms";
+            config.LegsCrit = "legs";
+
+            config.Wounds = "Wounds";
+
+            config.DontHaveMoneyForHelmet = "You don't have enough money to buy helmet";
+
+            config.InternalBleeding = "Internal bleeding";
+            config.SeveredArtery = "Severed artery";
+            config.SeveredArteryMessage = "Artery was severed!";
+
+            config.PlayerNervesCritMessage = "You feel you can't control your arms and legs anymore";
+            config.ManNervesCritMessage = "He looks like his spine was damaged";
+            config.WomanNervesCritMessage = "She looks like her spine was damaged";
+
+            config.PlayerHeartCritMessage = "You feel awful pain in your chest";
+            config.ManHeartCritMessage = "He coughs up blood";
+            config.WomanHeartCritMessage = "She coughs up blood";
+
+            config.PlayerLungsCritMessage = "It's very hard for you to breathe";
+            config.ManLungsCritMessage = "He coughs up blood";
+            config.WomanLungsCritMessage = "She coughs up blood";
+
+            config.PlayerStomachCritMessage = "You feel yourself very sick";
+            config.ManStomachCritMessage = "He looks very sick";
+            config.WomanStomachCritMessage = "She looks very sick";
+
+            config.PlayerGutsCritMessage = "You feel yourself very sick";
+            config.ManGutsCritMessage = "He looks very sick";
+            config.WomanGutsCritMessage = "She looks very sick";
+
+            config.PlayerArmsCritMessage = "It's looks like arm bone was broken";
+            config.ManArmsCritMessage = "His arm looks very bad";
+            config.WomanArmsCritMessage = "Her arm looks very bad";
+
+            config.PlayerLegsCritMessage = "It's looks like leg bone was broken";
+            config.ManLegsCritMessage = "His leg looks very bad";
+            config.WomanLegsCritMessage = "Her leg looks very bad";
+
+            config.UnbearablePainMessage = "You got a pain shock! You lose consciousness!";
+
+            config.AddingRange = "Adding range";
+            config.RemovingRange = "Removing range";
+
+            config.ThanksForUsing = "Thanks for using";
+            config.GswStopped = "GSW2 stopped, sorry :(";
+            config.GswIsPaused = "GSW2 is paused";
+            config.GswIsWorking = "GSW2 is working";
+
+            config.AlreadyBandaging = "You're already bandaging";
+            config.DontHaveMoneyForBandage = "You don't have enough money for bandage";
+            config.YouTryToBandage = "You try to bandage self. You need to stand still for {0} seconds!";
+            config.BandageFailed = "Bandaging is failed. You need to stand still for apply bandage!";
+            config.BandageSuccess = "You applied bandage to {0}";
+
+            config.ArmorDestroyed = "Your armor fall apart";
+
+            config.PainShockDeath = "You have dead from pain shock";
+
+            config.LocalizationAuthor = "~r~SH42913";
+        }
     }
 }

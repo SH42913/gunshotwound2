@@ -1,4 +1,6 @@
-﻿namespace GunshotWound2.Configs
+﻿using System.Globalization;
+
+namespace GunshotWound2.Configs
 {
     public class PlayerConfig
     {
@@ -25,16 +27,38 @@
 
         public bool CameraIsShaking;
 
+        public static PlayerConfig CreateDefault()
+        {
+            return new PlayerConfig
+            {
+                WoundedPlayerEnabled = true,
+                CanDropWeapon = true,
+                MoneyForHelmet = 40,
+                MaximalHealth = 99,
+                MinimalHealth = 0,
+                MaximalPain = 100,
+                PainRecoverSpeed = 1.5f,
+                BleedHealingSpeed = 0.001f,
+                PlayerEntity = -1,
+                MaximalSlowMo = 0.5f,
+                PoliceCanForgetYou = true,
+                NoPainAnim = "move_m@generic",
+                MildPainAnim = "move_m@gangster@a",
+                AvgPainAnim = "move_m@drunk@moderatedrunk",
+                IntensePainAnim = "move_m@drunk@verydrunk"
+            };
+        }
+
         public override string ToString()
         {
-            return "PlayerConfig:\n" +
-                   $"WoundedPlayer: {WoundedPlayerEnabled}\n" +
-                   $"HelmetCost: {MoneyForHelmet}\n" +
-                   $"Min/MaxHealth: {MinimalHealth}/{MaximalHealth}\n" +
-                   $"MaxPain: {MaximalPain}\n" +
-                   $"PainRecoverSpeed: {PainRecoverSpeed}\n" +
-                   $"BleedHealingSpeed: {BleedHealingSpeed}\n" +
-                   $"MaxSlowMo: {MaximalSlowMo}";
+            return $"{nameof(PlayerConfig)}:\n" +
+                   $"{nameof(WoundedPlayerEnabled)}: {WoundedPlayerEnabled.ToString()}\n" +
+                   $"{nameof(MoneyForHelmet)}: {MoneyForHelmet.ToString()}\n" +
+                   $"Min/MaxHealth: {MinimalHealth.ToString()}/{MaximalHealth.ToString()}\n" +
+                   $"{nameof(MaximalPain)}: {MaximalPain.ToString(CultureInfo.InvariantCulture)}\n" +
+                   $"{nameof(PainRecoverSpeed)}: {PainRecoverSpeed.ToString(CultureInfo.InvariantCulture)}\n" +
+                   $"{nameof(BleedHealingSpeed)}: {BleedHealingSpeed.ToString(CultureInfo.InvariantCulture)}\n" +
+                   $"{nameof(MaximalSlowMo)}: {MaximalSlowMo.ToString(CultureInfo.InvariantCulture)}";
         }
     }
 }
