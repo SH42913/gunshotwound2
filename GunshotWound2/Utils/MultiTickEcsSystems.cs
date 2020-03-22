@@ -29,8 +29,9 @@ namespace GunshotWound2.Utils
         public MultiTickEcsSystems(EcsWorld world, RestrictionModes mode, int restriction)
         {
 #if DEBUG
-            if (world == null) {
-                throw new ArgumentNullException ();
+            if (world == null)
+            {
+                throw new ArgumentNullException();
             }
 #endif
             _world = world;
@@ -39,7 +40,7 @@ namespace GunshotWound2.Utils
             _nextSystemIndex = 0;
             _stopwatch = new Stopwatch();
         }
-        
+
 #if DEBUG
         /// <summary>
         /// List of all debug listeners.
@@ -166,7 +167,7 @@ namespace GunshotWound2.Utils
                 _initSystems[_initSystemsCount++] = initSystem;
             }
 #if !LEOECS_DISABLE_INJECT
-            EcsInjections.Inject (system, _world);
+            EcsInjections.Inject(system, _world);
 #endif
 
             var runSystem = system as IEcsRunSystem;

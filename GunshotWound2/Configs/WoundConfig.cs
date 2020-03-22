@@ -11,11 +11,11 @@ namespace GunshotWound2.Configs
         public float DamageDeviation;
         public float PainDeviation;
         public float BleedingDeviation;
-        
+
         public bool RealisticNervesDamage;
 
         public float EmergencyBleedingLevel;
-        
+
         public float MoveRateOnFullPain;
         public float MoveRateOnNervesDamage;
 

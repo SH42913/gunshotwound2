@@ -9,7 +9,7 @@ namespace GunshotWound2.Configs
         public PlayerConfig PlayerConfig;
 
         public string Language;
-        
+
         public Keys? HelmetKey;
         public Keys? CheckKey;
         public Keys? HealKey;

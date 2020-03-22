@@ -15,7 +15,7 @@ namespace GunshotWound2.Configs
         RESPECT = 64,
         ALL = 128
     }
-    
+
     public class NpcConfig
     {
         public float AddingPedRange;
@@ -29,12 +29,12 @@ namespace GunshotWound2.Configs
 
         public int MinShootRate;
         public int MaxShootRate;
-        
+
         public bool ShowEnemyCriticalMessages;
         public int MinStartHealth;
         public int MaxStartHealth;
         public float MaximalBleedStopSpeed;
-        
+
         public float LowerMaximalPain;
         public float UpperMaximalPain;
         public float MaximalPainRecoverSpeed;

@@ -3,13 +3,13 @@
     public class PlayerConfig
     {
         public int PlayerEntity = -1;
-        
+
         public bool WoundedPlayerEnabled;
         public bool PoliceCanForgetYou;
         public bool CanDropWeapon;
-        
+
         public int MoneyForHelmet;
-        
+
         public int MaximalHealth;
         public int MinimalHealth;
 

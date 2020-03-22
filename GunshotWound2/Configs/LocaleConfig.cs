@@ -74,7 +74,7 @@
         public string InternalBleeding;
         public string SeveredArtery;
         public string SeveredArteryMessage;
-        
+
         public string PlayerNervesCritMessage;
         public string ManNervesCritMessage;
         public string WomanNervesCritMessage;
@@ -82,23 +82,23 @@
         public string PlayerHeartCritMessage;
         public string ManHeartCritMessage;
         public string WomanHeartCritMessage;
-        
+
         public string PlayerLungsCritMessage;
         public string ManLungsCritMessage;
         public string WomanLungsCritMessage;
-        
+
         public string PlayerStomachCritMessage;
         public string ManStomachCritMessage;
         public string WomanStomachCritMessage;
-        
+
         public string PlayerGutsCritMessage;
         public string ManGutsCritMessage;
         public string WomanGutsCritMessage;
-        
+
         public string PlayerArmsCritMessage;
         public string ManArmsCritMessage;
         public string WomanArmsCritMessage;
-        
+
         public string PlayerLegsCritMessage;
         public string ManLegsCritMessage;
         public string WomanLegsCritMessage;
