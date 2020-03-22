@@ -5,7 +5,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Damage
 {
     [EcsInject]
-    public class BleedingSystem : IEcsRunSystem
+    public sealed class BleedingSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
         private EcsFilter<BleedingComponent> _bleedings;

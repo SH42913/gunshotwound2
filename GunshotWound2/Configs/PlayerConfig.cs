@@ -2,7 +2,7 @@
 
 namespace GunshotWound2.Configs
 {
-    public class PlayerConfig
+    public sealed class PlayerConfig
     {
         public int PlayerEntity = -1;
 

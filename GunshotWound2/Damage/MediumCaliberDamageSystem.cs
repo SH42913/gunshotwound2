@@ -4,7 +4,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Damage
 {
     [EcsInject]
-    public class MediumCaliberDamageSystem : BaseGunDamageSystem<MediumCaliberHitEvent>
+    public sealed class MediumCaliberDamageSystem : BaseGunDamageSystem<MediumCaliberHitEvent>
     {
         public override void Initialize()
         {

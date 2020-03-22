@@ -4,7 +4,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.HitDetection.WeaponHitSystems
 {
     [EcsInject]
-    public class LightImpactHitSystem : BaseWeaponHitSystem
+    public sealed class LightImpactHitSystem : BaseWeaponHitSystem
     {
         protected override uint[] GetWeaponHashes()
         {

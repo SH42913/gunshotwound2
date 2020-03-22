@@ -6,7 +6,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Crits
 {
     [EcsInject]
-    public class GutsCriticalSystem : BaseCriticalSystem<GutsCritcalWoundEvent>
+    public sealed class GutsCriticalSystem : BaseCriticalSystem<GutsCritcalWoundEvent>
     {
         public GutsCriticalSystem()
         {

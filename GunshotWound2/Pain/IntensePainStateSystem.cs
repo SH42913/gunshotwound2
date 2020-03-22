@@ -5,7 +5,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Pain
 {
     [EcsInject]
-    public class IntensePainStateSystem : BasePainStateSystem<IntensePainChangeStateEvent>
+    public sealed class IntensePainStateSystem : BasePainStateSystem<IntensePainChangeStateEvent>
     {
         public IntensePainStateSystem()
         {

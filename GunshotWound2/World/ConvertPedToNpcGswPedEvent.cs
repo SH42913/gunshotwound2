@@ -3,7 +3,7 @@ using GTA;
 
 namespace GunshotWound2.World
 {
-    public class ConvertPedToNpcGswPedEvent
+    public sealed class ConvertPedToNpcGswPedEvent
     {
         public Queue<Ped> PedsToAdd;
     }

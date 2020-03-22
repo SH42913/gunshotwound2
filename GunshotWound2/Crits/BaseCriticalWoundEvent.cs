@@ -2,7 +2,7 @@
 
 namespace GunshotWound2.Crits
 {
-    public class BaseCriticalWoundEvent : ComponentWithEntity
+    public abstract class BaseCriticalWoundEvent : ComponentWithEntity
     {
     }
 }

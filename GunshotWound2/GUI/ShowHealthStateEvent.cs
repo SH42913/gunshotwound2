@@ -2,7 +2,7 @@
 
 namespace GunshotWound2.GUI
 {
-    public class ShowHealthStateEvent : ComponentWithEntity
+    public sealed class ShowHealthStateEvent : ComponentWithEntity
     {
     }
 }

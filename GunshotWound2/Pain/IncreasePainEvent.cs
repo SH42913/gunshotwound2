@@ -2,7 +2,7 @@
 
 namespace GunshotWound2.Pain
 {
-    public class IncreasePainEvent : ComponentWithEntity
+    public sealed class IncreasePainEvent : ComponentWithEntity
     {
         public float PainAmount;
     }

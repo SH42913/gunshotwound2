@@ -25,7 +25,7 @@ namespace GunshotWound2.HitDetection
         DEADLY
     }
 
-    public class WoundedPedComponent
+    public sealed class WoundedPedComponent
     {
         public Ped ThisPed;
         public bool IsPlayer;

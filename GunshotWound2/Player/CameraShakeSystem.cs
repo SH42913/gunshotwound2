@@ -6,7 +6,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Player
 {
     [EcsInject]
-    public class CameraShakeSystem : IEcsRunSystem
+    public sealed class CameraShakeSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
         private EcsFilter<AddCameraShakeEvent> _events;

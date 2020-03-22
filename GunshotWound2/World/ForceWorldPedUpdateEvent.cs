@@ -3,7 +3,7 @@
 namespace GunshotWound2.World
 {
     [EcsIgnoreInFilter]
-    public class ForceWorldPedUpdateEvent
+    public sealed class ForceWorldPedUpdateEvent
     {
     }
 }

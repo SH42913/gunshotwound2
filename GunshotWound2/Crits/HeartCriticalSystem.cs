@@ -7,7 +7,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Crits
 {
     [EcsInject]
-    public class HeartCriticalSystem : BaseCriticalSystem<HeartCriticalWoundEvent>
+    public sealed class HeartCriticalSystem : BaseCriticalSystem<HeartCriticalWoundEvent>
     {
         public HeartCriticalSystem()
         {

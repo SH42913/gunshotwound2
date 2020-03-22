@@ -7,7 +7,7 @@
         CLEAR
     }
 
-    public class AddCameraShakeEvent
+    public sealed class AddCameraShakeEvent
     {
         public CameraShakeLength Length;
     }

@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace GunshotWound2.Configs
 {
-    public class WoundConfig
+    public sealed class WoundConfig
     {
         public float DamageMultiplier;
         public float PainMultiplier;

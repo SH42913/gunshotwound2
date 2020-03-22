@@ -7,7 +7,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Pain
 {
     [EcsInject]
-    public class NoPainStateSystem : BasePainStateSystem<NoPainChangeStateEvent>
+    public sealed class NoPainStateSystem : BasePainStateSystem<NoPainChangeStateEvent>
     {
         public NoPainStateSystem()
         {

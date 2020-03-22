@@ -12,7 +12,7 @@ namespace GunshotWound2.Effects
         HEART_DAMAGE
     }
 
-    public class SetPedToRagdollEvent : ComponentWithEntity
+    public sealed class SetPedToRagdollEvent : ComponentWithEntity
     {
         public RagdollStates RagdollState;
     }

@@ -4,7 +4,7 @@ using Weighted_Randomizer;
 
 namespace GunshotWound2.Damage
 {
-    public class ExplosionDamageSystem : BaseDamageSystem<ExplosionHitEvent>
+    public sealed class ExplosionDamageSystem : BaseDamageSystem<ExplosionHitEvent>
     {
         public override void Initialize()
         {

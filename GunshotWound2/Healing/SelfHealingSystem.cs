@@ -6,7 +6,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Healing
 {
     [EcsInject]
-    public class SelfHealingSystem : IEcsRunSystem
+    public sealed class SelfHealingSystem : IEcsRunSystem
     {
         private EcsFilter<WoundedPedComponent> _woundedPeds;
         private EcsFilterSingle<MainConfig> _config;

@@ -13,7 +13,7 @@ namespace GunshotWound2.HitDetection
         NOTHING
     }
 
-    public class BodyPartWasHitEvent : ComponentWithEntity
+    public sealed class BodyPartWasHitEvent : ComponentWithEntity
     {
         public BodyParts DamagedPart;
     }

@@ -7,7 +7,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Pain
 {
     [EcsInject]
-    public class PainRecoverySystem : IEcsRunSystem
+    public sealed class PainRecoverySystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
         private EcsFilter<WoundedPedComponent, PainComponent> _pedsWithPain;

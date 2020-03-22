@@ -1,6 +1,6 @@
 ﻿namespace GunshotWound2.Pain
 {
-    public class UnbearablePainChangeStateEvent : BaseChangePainStateEvent
+    public sealed class UnbearablePainChangeStateEvent : BaseChangePainStateEvent
     {
     }
 }

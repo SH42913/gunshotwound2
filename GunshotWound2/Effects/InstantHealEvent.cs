@@ -2,7 +2,7 @@
 
 namespace GunshotWound2.Effects
 {
-    public class InstantHealEvent : ComponentWithEntity
+    public sealed class InstantHealEvent : ComponentWithEntity
     {
     }
 }

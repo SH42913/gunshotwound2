@@ -3,7 +3,7 @@
 namespace GunshotWound2.Player
 {
     [EcsIgnoreInFilter]
-    public class PlayerMarkComponent
+    public sealed class PlayerMarkComponent
     {
     }
 }

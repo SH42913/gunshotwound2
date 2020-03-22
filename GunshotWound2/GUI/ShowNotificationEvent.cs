@@ -9,7 +9,7 @@
         DEBUG
     }
 
-    public class ShowNotificationEvent
+    public sealed class ShowNotificationEvent
     {
         public NotifyLevels Level;
         public string StringToShow;

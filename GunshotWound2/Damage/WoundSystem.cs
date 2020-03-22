@@ -9,7 +9,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Damage
 {
     [EcsInject]
-    public class WoundSystem : IEcsRunSystem
+    public sealed class WoundSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
         private EcsFilter<ProcessWoundEvent> _components;

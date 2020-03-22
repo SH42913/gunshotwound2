@@ -7,7 +7,7 @@ using Weighted_Randomizer;
 namespace GunshotWound2.Damage
 {
     [EcsInject]
-    public class HeavyImpactDamageSystem : BaseImpactDamageSystem<HeavyImpactHitEvent>
+    public sealed class HeavyImpactDamageSystem : BaseImpactDamageSystem<HeavyImpactHitEvent>
     {
         public override void Initialize()
         {

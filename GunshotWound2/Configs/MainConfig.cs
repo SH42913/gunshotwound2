@@ -2,7 +2,7 @@
 
 namespace GunshotWound2.Configs
 {
-    public class MainConfig
+    public sealed class MainConfig
     {
         public WoundConfig WoundConfig;
         public NpcConfig NpcConfig;

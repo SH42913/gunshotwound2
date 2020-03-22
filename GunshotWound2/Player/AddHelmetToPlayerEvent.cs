@@ -3,7 +3,7 @@
 namespace GunshotWound2.Player
 {
     [EcsIgnoreInFilter]
-    public class AddHelmetToPlayerEvent
+    public sealed class AddHelmetToPlayerEvent
     {
     }
 }

@@ -7,7 +7,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Pain
 {
     [EcsInject]
-    public class AveragePainStateSystem : BasePainStateSystem<AveragePainChangeStateEvent>
+    public sealed class AveragePainStateSystem : BasePainStateSystem<AveragePainChangeStateEvent>
     {
         public AveragePainStateSystem()
         {

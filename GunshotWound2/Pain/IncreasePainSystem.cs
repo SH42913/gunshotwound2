@@ -9,7 +9,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Pain
 {
     [EcsInject]
-    public class IncreasePainSystem : IEcsRunSystem
+    public sealed class IncreasePainSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
         private EcsFilter<IncreasePainEvent> _events;

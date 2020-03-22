@@ -3,7 +3,7 @@
 namespace GunshotWound2.Damage
 {
     [EcsIgnoreInFilter]
-    public class HaveDamageMarkComponent
+    public sealed class HaveDamageMarkComponent
     {
     }
 }

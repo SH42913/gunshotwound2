@@ -7,7 +7,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Player
 {
     [EcsInject]
-    public class HelmetRequestSystem : IEcsRunSystem
+    public sealed class HelmetRequestSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
         private EcsFilterSingle<MainConfig> _config;

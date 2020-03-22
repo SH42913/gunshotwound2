@@ -1,6 +1,6 @@
 ﻿namespace GunshotWound2.Healing
 {
-    public class BandageInProgressComponent
+    public sealed class BandageInProgressComponent
     {
         public float EstimateTime;
     }

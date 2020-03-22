@@ -1,6 +1,6 @@
 ﻿namespace GunshotWound2.Crits
 {
-    public class LegsCriticalWoundEvent : BaseCriticalWoundEvent
+    public sealed class LegsCriticalWoundEvent : BaseCriticalWoundEvent
     {
     }
 }

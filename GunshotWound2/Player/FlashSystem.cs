@@ -4,7 +4,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Player
 {
     [EcsInject]
-    public class FlashSystem : IEcsRunSystem
+    public sealed class FlashSystem : IEcsRunSystem
     {
         private EcsFilter<AddFlashEvent> _events;
 

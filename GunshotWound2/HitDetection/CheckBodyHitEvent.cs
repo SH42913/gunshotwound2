@@ -2,7 +2,7 @@
 
 namespace GunshotWound2.HitDetection
 {
-    public class CheckBodyHitEvent : ComponentWithEntity
+    public sealed class CheckBodyHitEvent : ComponentWithEntity
     {
     }
 }

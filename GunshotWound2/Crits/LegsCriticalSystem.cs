@@ -8,7 +8,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Crits
 {
     [EcsInject]
-    public class LegsCriticalSystem : BaseCriticalSystem<LegsCriticalWoundEvent>
+    public sealed class LegsCriticalSystem : BaseCriticalSystem<LegsCriticalWoundEvent>
     {
         public LegsCriticalSystem()
         {

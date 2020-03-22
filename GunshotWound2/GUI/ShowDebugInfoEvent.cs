@@ -2,7 +2,7 @@
 
 namespace GunshotWound2.GUI
 {
-    public class ShowDebugInfoEvent : ComponentWithEntity
+    public sealed class ShowDebugInfoEvent : ComponentWithEntity
     {
     }
 }

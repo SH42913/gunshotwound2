@@ -2,7 +2,7 @@
 
 namespace GunshotWound2.Damage
 {
-    public class BleedingComponent : ComponentWithEntity
+    public sealed class BleedingComponent : ComponentWithEntity
     {
         public const float MAX_SEVERITY_FOR_HEAL = 1f;
 

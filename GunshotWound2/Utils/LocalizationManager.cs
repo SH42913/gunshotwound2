@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace GunshotWound2.Utils
 {
-    public class LocalizationManager
+    public sealed class LocalizationManager
     {
         private readonly Regex _csvMultilineFixRegex = new Regex("\"([^\"]|\"\"|\\n)*\"");
         private readonly Regex _csvParseRegex = new Regex("(?<=^|,)(\"(?:[^\"]|\"\")*\"|[^,]*)");

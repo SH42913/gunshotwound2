@@ -7,7 +7,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.HitDetection
 {
     [EcsInject]
-    public class BodyHitSystem : IEcsRunSystem
+    public sealed class BodyHitSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
         private EcsFilter<CheckBodyHitEvent> _events;

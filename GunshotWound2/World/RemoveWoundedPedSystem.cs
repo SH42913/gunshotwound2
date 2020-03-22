@@ -7,7 +7,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.World
 {
     [EcsInject]
-    public class RemoveWoundedPedSystem : IEcsRunSystem
+    public sealed class RemoveWoundedPedSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
         private EcsFilter<WoundedPedComponent, NpcMarkComponent> _npcs;

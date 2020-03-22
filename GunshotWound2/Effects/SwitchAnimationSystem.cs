@@ -5,7 +5,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Effects
 {
     [EcsInject]
-    public class SwitchAnimationSystem : IEcsRunSystem
+    public sealed class SwitchAnimationSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
         private EcsFilter<ChangeWalkAnimationEvent> _events;

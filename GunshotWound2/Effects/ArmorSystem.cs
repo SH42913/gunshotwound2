@@ -4,7 +4,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Effects
 {
     [EcsInject]
-    public class ArmorSystem : IEcsRunSystem
+    public sealed class ArmorSystem : IEcsRunSystem
     {
         private EcsFilter<WoundedPedComponent> _peds;
 

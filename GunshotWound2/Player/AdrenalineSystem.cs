@@ -7,7 +7,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Player
 {
     [EcsInject]
-    public class AdrenalineSystem : IEcsRunSystem
+    public sealed class AdrenalineSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
         private EcsFilterSingle<MainConfig> _config;

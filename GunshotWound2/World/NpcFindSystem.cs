@@ -9,7 +9,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.World
 {
     [EcsInject]
-    public class NpcFindSystem : IEcsRunSystem
+    public sealed class NpcFindSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
         private EcsFilter<WoundedPedComponent, NpcMarkComponent> _npcs;

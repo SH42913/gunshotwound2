@@ -2,7 +2,7 @@
 
 namespace GunshotWound2.Damage
 {
-    public class HighCaliberDamageSystem : BaseGunDamageSystem<HighCaliberHitEvent>
+    public sealed class HighCaliberDamageSystem : BaseGunDamageSystem<HighCaliberHitEvent>
     {
         public override void Initialize()
         {

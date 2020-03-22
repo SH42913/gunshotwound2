@@ -11,7 +11,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Effects
 {
     [EcsInject]
-    public class InstantHealSystem : IEcsRunSystem
+    public sealed class InstantHealSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
         private EcsFilterSingle<MainConfig> _mainConfig;

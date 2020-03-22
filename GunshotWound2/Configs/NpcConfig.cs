@@ -17,7 +17,7 @@ namespace GunshotWound2.Configs
         ALL = 128
     }
 
-    public class NpcConfig
+    public sealed class NpcConfig
     {
         public float AddingPedRange;
         public float RemovePedRange;

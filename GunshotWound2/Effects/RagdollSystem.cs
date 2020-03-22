@@ -7,7 +7,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Effects
 {
     [EcsInject]
-    public class RagdollSystem : IEcsRunSystem
+    public sealed class RagdollSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
         private EcsFilter<SetPedToRagdollEvent> _events;

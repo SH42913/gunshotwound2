@@ -1,6 +1,6 @@
 ﻿namespace GunshotWound2.HitDetection.WeaponHitSystems
 {
-    public class ExplosionHitEvent : BaseWeaponHitEvent
+    public sealed class ExplosionHitEvent : BaseWeaponHitEvent
     {
     }
 }

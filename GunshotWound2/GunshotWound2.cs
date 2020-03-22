@@ -23,7 +23,7 @@ using Leopotam.Ecs;
 
 namespace GunshotWound2
 {
-    public class GunshotWound2 : Script
+    public sealed class GunshotWound2 : Script
     {
         public static string LastSystem = "Nothing";
 

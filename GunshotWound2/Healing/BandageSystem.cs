@@ -8,7 +8,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Healing
 {
     [EcsInject]
-    public class BandageSystem : IEcsRunSystem
+    public sealed class BandageSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
         private EcsFilterSingle<MainConfig> _config;

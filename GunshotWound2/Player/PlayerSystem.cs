@@ -11,7 +11,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Player
 {
     [EcsInject]
-    public class PlayerSystem : IEcsInitSystem, IEcsRunSystem
+    public sealed class PlayerSystem : IEcsInitSystem, IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
         private EcsFilter<WoundedPedComponent, PlayerMarkComponent> _players;

@@ -2,7 +2,7 @@
 
 namespace GunshotWound2.Healing
 {
-    public class SuccessfulBandageEvent : ComponentWithEntity
+    public sealed class SuccessfulBandageEvent : ComponentWithEntity
     {
     }
 }

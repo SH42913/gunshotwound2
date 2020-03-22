@@ -5,7 +5,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Player
 {
     [EcsInject]
-    public class SpecialAbilityLockSystem : IEcsRunSystem
+    public sealed class SpecialAbilityLockSystem : IEcsRunSystem
     {
         private EcsFilter<ChangeSpecialAbilityEvent> _events;
 

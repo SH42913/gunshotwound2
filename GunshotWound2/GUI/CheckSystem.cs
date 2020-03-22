@@ -7,7 +7,7 @@ using Leopotam.Ecs;
 namespace GunshotWound2.GUI
 {
     [EcsInject]
-    public class CheckSystem : IEcsRunSystem
+    public sealed class CheckSystem : IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
         private EcsFilterSingle<MainConfig> _config;

@@ -1,6 +1,6 @@
 ﻿namespace GunshotWound2.Configs
 {
-    public class LocaleConfig
+    public sealed class LocaleConfig
     {
         public string HelmetSavedYourHead;
         public string ArmorSavedYourChest;
