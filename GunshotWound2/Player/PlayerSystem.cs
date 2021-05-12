@@ -88,7 +88,7 @@ namespace GunshotWound2.Player
             woundedPed.MostDangerBleedingEntity = null;
 
             woundedPed.ThisPed.CanWrithe = false;
-            woundedPed.ThisPed.AlwaysDiesOnLowHealth = false;
+            woundedPed.ThisPed.DiesOnLowHealth = false;
             woundedPed.ThisPed.CanWearHelmet = true;
             woundedPed.ThisPed.CanSufferCriticalHits = false;
 
@@ -140,7 +140,7 @@ namespace GunshotWound2.Player
                 _config.Data.PlayerConfig.PlayerEntity = newEntity;
 #if DEBUG
                 SendMessage($"Switched to {newEntity}", newEntity, NotifyLevels.DEBUG);
-                newPed.ThisPed.CurrentBlip.Remove();
+                newPed.ThisPed.AttachedBlip.Delete();
 #endif
             }
             else

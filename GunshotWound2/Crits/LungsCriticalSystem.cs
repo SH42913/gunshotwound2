@@ -19,7 +19,7 @@ namespace GunshotWound2.Crits
             CreatePain(pedEntity, 10f);
             CreateInternalBleeding(pedEntity, 2f);
 
-            Function.Call(Hash._START_SCREEN_EFFECT, "DrugsDrivingIn", 5000, true);
+            Function.Call(Hash.ANIMPOSTFX_PLAY, "DrugsDrivingIn", 5000, true);
             Function.Call(Hash.SET_PLAYER_SPRINT, Game.Player, false);
 
             SendMessage(Locale.Data.PlayerLungsCritMessage, NotifyLevels.WARNING);

@@ -35,7 +35,7 @@ namespace GunshotWound2.Player
                 if (player.Money > _config.Data.PlayerConfig.MoneyForHelmet)
                 {
                     player.Money -= _config.Data.PlayerConfig.MoneyForHelmet;
-                    player.Character.GiveHelmet(false, HelmetType.RegularMotorcycleHelmet, Random.Next(0, 15));
+                    player.Character.GiveHelmet(false, Helmet.RegularMotorcycleHelmet, Random.Next(0, 15));
                 }
                 else
                 {

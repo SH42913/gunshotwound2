@@ -54,7 +54,7 @@ namespace GunshotWound2.World
 
                 woundedPed.ThisPed.CanWrithe = false;
                 woundedPed.ThisPed.CanWearHelmet = true;
-                woundedPed.ThisPed.AlwaysDiesOnLowHealth = false;
+                woundedPed.ThisPed.DiesOnLowHealth = false;
                 woundedPed.ThisPed.CanSufferCriticalHits = true;
                 woundedPed.ThisPed.CanSwitchWeapons = true;
                 woundedPed.ThisPed.CanBeShotInVehicle = true;

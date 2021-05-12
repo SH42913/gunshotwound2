@@ -1,5 +1,5 @@
 ﻿using System;
-using GTA;
+using GTA.UI;
 using GunshotWound2.Configs;
 using Leopotam.Ecs;
 
@@ -54,28 +54,28 @@ namespace GunshotWound2.GUI
 
             if (_mainConfig.Data.EmergencyMessages && !string.IsNullOrEmpty(emergencyNotification))
             {
-                UI.Notify("~r~" + emergencyNotification);
+                Notification.Show("~r~" + emergencyNotification);
             }
 
             if (_mainConfig.Data.AlertMessages && !string.IsNullOrEmpty(alertNotification))
             {
-                UI.Notify("~o~" + alertNotification);
+                Notification.Show("~o~" + alertNotification);
             }
 
             if (_mainConfig.Data.WarningMessages && !string.IsNullOrEmpty(warnNotification))
             {
-                UI.Notify("~y~" + warnNotification);
+                Notification.Show("~y~" + warnNotification);
             }
 
             if (_mainConfig.Data.CommonMessages && !string.IsNullOrEmpty(commonNotification))
             {
-                UI.Notify(commonNotification);
+                Notification.Show(commonNotification);
             }
 
 #if DEBUG
             if (!string.IsNullOrEmpty(debugNotification))
             {
-                UI.Notify("Debug:\n~c~" + debugNotification);
+                Notification.Show("Debug:\n~c~" + debugNotification);
             }
 #endif
         }

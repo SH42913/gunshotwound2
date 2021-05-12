@@ -51,36 +51,40 @@ namespace GunshotWound2.HitDetection
 
             switch (damagedBone)
             {
-                case Bone.SKEL_Head:
+                case Bone.SkelHead:
                     return BodyParts.HEAD;
-                case Bone.SKEL_Neck_1:
+                case Bone.SkelNeck1:
+                case Bone.SkelNeck2:
                     return BodyParts.NECK;
-                case Bone.SKEL_Spine2:
-                case Bone.SKEL_Spine3:
+                case Bone.SkelSpine2:
+                case Bone.SkelSpine3:
                     return BodyParts.UPPER_BODY;
-                case Bone.SKEL_ROOT:
-                case Bone.SKEL_Spine_Root:
-                case Bone.SKEL_Spine0:
-                case Bone.SKEL_Spine1:
-                case Bone.SKEL_Pelvis:
+                case Bone.SkelRoot:
+                case Bone.SkelSpineRoot:
+                case Bone.SkelSpine0:
+                case Bone.SkelSpine1:
+                case Bone.SkelPelvis:
+                case Bone.SkelPelvis1:
                     return BodyParts.LOWER_BODY;
-                case Bone.SKEL_L_Thigh:
-                case Bone.SKEL_R_Thigh:
-                case Bone.SKEL_L_Toe0:
-                case Bone.SKEL_R_Toe0:
-                case Bone.SKEL_R_Foot:
-                case Bone.SKEL_L_Foot:
-                case Bone.SKEL_L_Calf:
-                case Bone.SKEL_R_Calf:
+                case Bone.SkelLeftThigh:
+                case Bone.SkelRightThigh:
+                case Bone.SkelLeftToe0:
+                case Bone.SkelLeftToe1:
+                case Bone.SkelRightToe0:
+                case Bone.SkelRightToe1:
+                case Bone.SkelLeftFoot:
+                case Bone.SkelRightFoot:
+                case Bone.SkelLeftCalf:
+                case Bone.SkelRightCalf:
                     return BodyParts.LEG;
-                case Bone.SKEL_L_UpperArm:
-                case Bone.SKEL_R_UpperArm:
-                case Bone.SKEL_L_Clavicle:
-                case Bone.SKEL_R_Clavicle:
-                case Bone.SKEL_L_Forearm:
-                case Bone.SKEL_R_Forearm:
-                case Bone.SKEL_L_Hand:
-                case Bone.SKEL_R_Hand:
+                case Bone.SkelLeftUpperArm:
+                case Bone.SkelRightUpperArm:
+                case Bone.SkelLeftClavicle:
+                case Bone.SkelRightClavicle:
+                case Bone.SkelLeftForearm:
+                case Bone.SkelRightForearm:
+                case Bone.SkelLeftHand:
+                case Bone.SkelRightHand:
                     return BodyParts.ARM;
             }
 

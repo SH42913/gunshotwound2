@@ -109,7 +109,7 @@ namespace GunshotWound2.Pain
                     if (!_config.Data.PlayerConfig.CameraIsShaking)
                     {
                         Function.Call(Hash._SET_CAM_EFFECT, 0);
-                        Function.Call(Hash._STOP_ALL_SCREEN_EFFECTS);
+                        Function.Call(Hash.ANIMPOSTFX_STOP_ALL);
                     }
                 }
 

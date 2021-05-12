@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 using GTA;
 using GTA.Native;
+using GTA.UI;
 using GunshotWound2.Configs;
 using GunshotWound2.Crits;
 using GunshotWound2.Damage;
@@ -20,6 +21,7 @@ using GunshotWound2.Player;
 using GunshotWound2.Utils;
 using GunshotWound2.World;
 using Leopotam.Ecs;
+using Screen = GTA.UI.Screen;
 
 namespace GunshotWound2
 {
@@ -95,7 +97,7 @@ namespace GunshotWound2
             if (_mainConfig.PauseKey != null && eventArgs.KeyCode == _mainConfig.PauseKey)
             {
                 _isPaused = !_isPaused;
-                UI.Notify(_isPaused
+                Notification.Show(_isPaused
                     ? $"~r~{_localeConfig.GswIsPaused}"
                     : $"~g~{_localeConfig.GswIsWorking}");
                 return;
@@ -109,19 +111,19 @@ namespace GunshotWound2
                 string translationAuthor = string.IsNullOrEmpty(_localeConfig.LocalizationAuthor)
                     ? "GSW2-community"
                     : _localeConfig.LocalizationAuthor;
-                UI.Notify(!_exceptionInRuntime
+                Notification.Show(!_exceptionInRuntime
                     ? $"{_localeConfig.ThanksForUsing}\n~g~GunShot Wound ~r~2~s~\nby SH42913\nTranslated by {translationAuthor}"
                     : $"~r~{_localeConfig.GswStopped}");
 
                 if (!_configLoaded)
                 {
-                    UI.Notify("GSW2 couldn't load config, default config was loaded.\n" +
+                    Notification.Show("GSW2 couldn't load config, default config was loaded.\n" +
                               $"You need to check {_configReason}");
                 }
 
                 if (!_localizationLoaded)
                 {
-                    UI.Notify("GSW2 couldn't load localization, default localization was loaded.\n" +
+                    Notification.Show("GSW2 couldn't load localization, default localization was loaded.\n" +
                               "You need to check or change localization\n" +
                               "Possible reason: ~r~" + _localizationReason);
                 }
@@ -137,11 +139,11 @@ namespace GunshotWound2
             }
             catch (Exception exception)
             {
-                UI.Notify(_localeConfig.GswStopped);
-                UI.Notify($"~r~GSW2 error in runtime:{exception}");
+                Notification.Show(_localeConfig.GswStopped);
+                Notification.Show($"~r~GSW2 error in runtime:{exception}");
                 _exceptionInRuntime = true;
 #if DEBUG
-                UI.Notify("Last system is " + LastSystem);
+                Notification.Show("Last system is " + LastSystem);
 #endif
             }
         }
@@ -166,7 +168,7 @@ namespace GunshotWound2
                 _configLoaded = false;
 
 #if DEBUG
-                UI.Notify(e.ToString());
+                Notification.Show(e.ToString());
 #endif
             }
 
@@ -182,7 +184,7 @@ namespace GunshotWound2
                 _localizationLoaded = false;
 
 #if DEBUG
-                UI.Notify(e.ToString());
+                Notification.Show(e.ToString());
 #endif
             }
 
@@ -254,7 +256,7 @@ namespace GunshotWound2
 #if DEBUG
             string debugSubtitles = $"ActiveEntities: {_ecsWorld.GetStats().ActiveEntities}\n" +
                                     $"Peds in GSW: {_gswWorld.GswPeds.Count}";
-            UI.ShowSubtitle(debugSubtitles);
+            Screen.ShowSubtitle(debugSubtitles);
 #endif
         }
 
@@ -469,7 +471,7 @@ namespace GunshotWound2
             }
 
 #if DEBUG
-            UI.Notify($"{_mainConfig}");
+            Notification.Show($"{_mainConfig}");
 #endif
         }
 

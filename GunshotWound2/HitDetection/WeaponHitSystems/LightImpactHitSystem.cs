@@ -1,4 +1,4 @@
-﻿using GTA.Native;
+﻿using GTA;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.HitDetection.WeaponHitSystems

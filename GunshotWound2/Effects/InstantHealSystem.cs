@@ -43,7 +43,7 @@ namespace GunshotWound2.Effects
                         _ecsWorld.CreateEntityWith<AddCameraShakeEvent>().Length = CameraShakeLength.CLEAR;
                         Function.Call(Hash.SET_PLAYER_SPRINT, Game.Player, true);
                         Function.Call(Hash._SET_CAM_EFFECT, 0);
-                        Function.Call(Hash._STOP_ALL_SCREEN_EFFECTS);
+                        Function.Call(Hash.ANIMPOSTFX_STOP_ALL);
                         woundedPed.Health = _mainConfig.Data.PlayerConfig.MaximalHealth;
                         Game.Player.IgnoredByEveryone = false;
                     }

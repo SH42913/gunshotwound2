@@ -40,7 +40,7 @@ namespace GunshotWound2.World
                 _ecsWorld.RemoveEntity(_npcs.Entities[pedIndex]);
 
 #if DEBUG
-                ped.CurrentBlip.Remove();
+                ped.AttachedBlip.Delete();
 #endif
             }
         }
