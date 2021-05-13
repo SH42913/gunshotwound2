@@ -48,7 +48,7 @@ namespace GunshotWound2.World
                 var newHealth = Random.Next(
                     _config.Data.NpcConfig.MinStartHealth,
                     _config.Data.NpcConfig.MaxStartHealth);
-                woundedPed.Health = newHealth;
+                woundedPed.Health = newHealth + 100;
                 woundedPed.Armor = pedToConvert.Armor;
                 woundedPed.ThisPed.MaxHealth = newHealth;
 
