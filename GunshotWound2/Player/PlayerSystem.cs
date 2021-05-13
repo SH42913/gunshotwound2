@@ -1,5 +1,6 @@
 ﻿using System;
 using GTA;
+using GTA.Native;
 using GunshotWound2.Configs;
 using GunshotWound2.Effects;
 using GunshotWound2.GUI;
@@ -52,6 +53,8 @@ namespace GunshotWound2.Player
                     woundedPed.Health = woundedPed.ThisPed.Health;
                     woundedPed.IsDead = true;
                     Game.Player.WantedLevel = 0;
+                    Game.Player.IgnoredByEveryone = false;
+                    Function.Call(Hash.ANIMPOSTFX_STOP_ALL);
 
                     var ragdollEvent = _ecsWorld.CreateEntityWith<SetPedToRagdollEvent>();
                     ragdollEvent.RagdollState = RagdollStates.PERMANENT;
@@ -163,8 +166,8 @@ namespace GunshotWound2.Player
         private void SendMessage(string message, int pedEntity, NotifyLevels level = NotifyLevels.COMMON)
         {
 #if !DEBUG
-            if(level == NotifyLevels.DEBUG) return;
-            if(_config.Data.PlayerConfig.PlayerEntity != pedEntity) return;
+            if (level == NotifyLevels.DEBUG) return;
+            if (_config.Data.PlayerConfig.PlayerEntity != pedEntity) return;
 #endif
 
             var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();

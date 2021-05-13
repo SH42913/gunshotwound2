@@ -1,4 +1,5 @@
-﻿using GTA.Native;
+﻿using GTA;
+using GTA.Native;
 using GunshotWound2.Effects;
 using GunshotWound2.HitDetection;
 using GunshotWound2.Player;
@@ -22,14 +23,9 @@ namespace GunshotWound2.Pain
             ChangeWalkingAnimation(pedEntity, woundedPed.IsPlayer
                 ? Config.Data.PlayerConfig.NoPainAnim
                 : Config.Data.NpcConfig.NoPainAnim);
-            if (woundedPed.IsMale)
-            {
-                Function.Call(Hash.PLAY_FACIAL_ANIM, woundedPed.ThisPed, "mood_happy_1", "facials@gen_male@base");
-            }
-            else
-            {
-                Function.Call(Hash.PLAY_FACIAL_ANIM, woundedPed.ThisPed, "mood_happy_1", "facials@gen_female@base");
-            }
+
+            var animation = woundedPed.IsMale ? "facials@gen_male@base" : "facials@gen_female@base";
+            Function.Call(Hash.PLAY_FACIAL_ANIM, woundedPed.ThisPed, "mood_happy_1", animation);
 
             if (!woundedPed.IsPlayer) return;
             if (!woundedPed.Crits.HasFlag(CritTypes.ARMS_DAMAGED))
