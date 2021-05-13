@@ -74,7 +74,7 @@ namespace GunshotWound2.Player
             woundedPed.IsDead = false;
 
             woundedPed.Armor = ped.Armor;
-            woundedPed.ThisPed.MaxHealth = _config.Data.PlayerConfig.MaximalHealth + 101;
+            woundedPed.ThisPed.MaxHealth = _config.Data.PlayerConfig.MaximalHealth + 1;
 
             woundedPed.Health = _config.Data.PlayerConfig.MaximalHealth;
             woundedPed.ThisPed.Health = (int) woundedPed.Health;
@@ -127,7 +127,7 @@ namespace GunshotWound2.Player
                 newPed.IsPlayer = true;
                 newPed.IsDead = false;
                 newPed.Health = _config.Data.PlayerConfig.MinimalHealth + newPed.Health;
-                newPed.ThisPed.MaxHealth = _config.Data.PlayerConfig.MaximalHealth + 101;
+                newPed.ThisPed.MaxHealth = _config.Data.PlayerConfig.MaximalHealth + 1;
                 newPed.ThisPed.Health = (int) newPed.Health;
 
                 newPed.MaximalPain = _config.Data.PlayerConfig.MaximalPain;

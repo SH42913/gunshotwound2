@@ -296,7 +296,7 @@ namespace GunshotWound2
             {
                 _mainConfig.PlayerConfig.WoundedPlayerEnabled = playerNode.Element("GSWPlayerEnabled").GetBool();
 
-                _mainConfig.PlayerConfig.MinimalHealth = playerNode.Element("MinimalHealth").GetInt();
+                _mainConfig.PlayerConfig.MinimalHealth = playerNode.Element("MinimalHealth").GetInt() + 100;
                 _mainConfig.PlayerConfig.MaximalHealth = _mainConfig.PlayerConfig.MinimalHealth + 99;
 
                 _mainConfig.PlayerConfig.MaximalPain = playerNode.Element("MaximalPain").GetFloat();
