@@ -113,7 +113,7 @@ namespace GunshotWound2.Pain
                     }
                 }
 
-                if (woundedPed.Crits.HasFlag(CritTypes.LEGS_DAMAGED)) continue;
+                if (woundedPed.Crits.Has(CritTypes.LEGS_DAMAGED)) continue;
 
                 var adjustable = 1f - _config.Data.WoundConfig.MoveRateOnFullPain;
                 var moveRate = 1f - adjustable * backPercent;

@@ -36,7 +36,7 @@ namespace GunshotWound2.Pain
 
             if (Config.Data.PlayerConfig.PoliceCanForgetYou) Game.Player.WantedLevel = 0;
 
-            if (woundedPed.Crits.HasFlag(CritTypes.NERVES_DAMAGED) || woundedPed.IsDead) return;
+            if (woundedPed.Crits.Has(CritTypes.NERVES_DAMAGED) || woundedPed.IsDead) return;
             SendMessage(Locale.Data.UnbearablePainMessage, NotifyLevels.WARNING);
         }
     }

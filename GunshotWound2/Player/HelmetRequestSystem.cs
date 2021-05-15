@@ -1,5 +1,4 @@
-﻿using System;
-using GTA;
+﻿using GTA;
 using GunshotWound2.Configs;
 using GunshotWound2.GUI;
 using GunshotWound2.Utils;
@@ -14,8 +13,6 @@ namespace GunshotWound2.Player
         private readonly EcsFilterSingle<MainConfig> _config = null;
         private readonly EcsFilterSingle<LocaleConfig> _locale = null;
         private readonly EcsFilter<AddHelmetToPlayerEvent> _requests = null;
-
-        private static readonly Random Random = new Random();
 
         public void Run()
         {
@@ -35,7 +32,7 @@ namespace GunshotWound2.Player
                 if (player.Money > _config.Data.PlayerConfig.MoneyForHelmet)
                 {
                     player.Money -= _config.Data.PlayerConfig.MoneyForHelmet;
-                    player.Character.GiveHelmet(false, Helmet.RegularMotorcycleHelmet, Random.Next(0, 15));
+                    player.Character.GiveHelmet(false, Helmet.RegularMotorcycleHelmet, GunshotWound2.Random.Next(0, 15));
                 }
                 else
                 {

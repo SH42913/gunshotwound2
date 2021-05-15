@@ -27,7 +27,7 @@ namespace GunshotWound2.Pain
             Function.Call(Hash.PLAY_FACIAL_ANIM, woundedPed.ThisPed, "mood_happy_1", animation);
 
             if (!woundedPed.IsPlayer) return;
-            if (!woundedPed.Crits.HasFlag(CritTypes.ARMS_DAMAGED))
+            if (!woundedPed.Crits.Has(CritTypes.ARMS_DAMAGED))
             {
                 EcsWorld.CreateEntityWith<AddCameraShakeEvent>().Length = CameraShakeLength.CLEAR;
             }

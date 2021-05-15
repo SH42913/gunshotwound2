@@ -3,7 +3,6 @@ using System.Diagnostics;
 using GTA;
 using GTA.Native;
 using GunshotWound2.Configs;
-using GunshotWound2.HitDetection;
 using GunshotWound2.Utils;
 using Leopotam.Ecs;
 

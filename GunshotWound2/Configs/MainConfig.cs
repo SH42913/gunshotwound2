@@ -188,7 +188,7 @@ namespace GunshotWound2.Configs
             config.NpcConfig.IntensePainAnim = animationNode.Attribute("IntensePain").Value;
 
             var targetsNode = node.Element("Targets");
-            bool all = targetsNode.GetBool("ALL");
+            var all = targetsNode.GetBool("ALL");
             GswTargets targets = 0;
             if (all)
             {

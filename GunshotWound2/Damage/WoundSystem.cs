@@ -17,8 +17,6 @@ namespace GunshotWound2.Damage
         private readonly EcsFilterSingle<MainConfig> _config = null;
         private readonly EcsFilterSingle<LocaleConfig> _locale = null;
 
-        private static readonly Random Random = new Random();
-
         public void Run()
         {
 #if DEBUG
@@ -44,12 +42,12 @@ namespace GunshotWound2.Damage
                 if (!woundedPed.IsDead)
                 {
                     woundedPed.Health -= _config.Data.WoundConfig.DamageMultiplier * component.Damage +
-                                         Random.NextFloat(-damageDeviation, damageDeviation);
+                                         GunshotWound2.Random.NextFloat(-damageDeviation, damageDeviation);
                     woundedPed.ThisPed.Health = (int) woundedPed.Health;
                 }
 
                 CreateBleeding(woundedPed, pedEntity, component.BleedSeverity +
-                                                      Random.NextFloat(-bleedingDeviation, bleedingDeviation),
+                                                      GunshotWound2.Random.NextFloat(-bleedingDeviation, bleedingDeviation),
                     component.Name);
                 woundedPed.BleedingCount++;
 
@@ -87,7 +85,7 @@ namespace GunshotWound2.Damage
                     _ecsWorld.CreateEntityWith<NervesCriticalWoundEvent>().Entity = pedEntity;
                     break;
                 case CritTypes.GUTS_DAMAGED:
-                    _ecsWorld.CreateEntityWith<GutsCritcalWoundEvent>().Entity = pedEntity;
+                    _ecsWorld.CreateEntityWith<GutsCriticalWoundEvent>().Entity = pedEntity;
                     break;
                 case CritTypes.STOMACH_DAMAGED:
                     _ecsWorld.CreateEntityWith<StomachCriticalWoundEvent>().Entity = pedEntity;
@@ -110,7 +108,7 @@ namespace GunshotWound2.Damage
             bleedingComponent.Entity = pedEntity;
             bleedingComponent.BleedSeverity = mult * bleedSeverity;
             bleedingComponent.Name = name;
-            bleedingComponent.CanBeHealed = bleedSeverity <= mult * BleedingComponent.MAX_SEVERITY_FOR_HEAL;
+            bleedingComponent.CanBeHealed = bleedSeverity <= mult * BleedingComponent.MaxSeverityForHeal;
             if (!bleedingComponent.CanBeHealed) return;
 
             if (woundedPed.MostDangerBleedingEntity == null ||

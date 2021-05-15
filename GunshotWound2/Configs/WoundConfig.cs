@@ -58,8 +58,8 @@ namespace GunshotWound2.Configs
         {
             return $"{nameof(WoundConfig)}:\n" +
                    $"{nameof(RealisticNervesDamage)}: {RealisticNervesDamage.ToString()}\n" +
-                   $"D/P/B Mults: {DamageMultiplier.ToString()}/{PainMultiplier.ToString()}/{BleedingMultiplier.ToString()}\n" +
-                   $"D/P/B Deviations: {DamageDeviation.ToString()}/{PainDeviation.ToString()}/{BleedingDeviation.ToString()}\n" +
+                   $"D/P/B Mults: {DamageMultiplier.ToString("F2")}/{PainMultiplier.ToString("F2")}/{BleedingMultiplier.ToString("F2")}\n" +
+                   $"D/P/B Deviations: {DamageDeviation.ToString("F2")}/{PainDeviation.ToString("F2")}/{BleedingDeviation.ToString("F2")}\n" +
                    $"{nameof(MoveRateOnFullPain)}: {MoveRateOnFullPain.ToString(CultureInfo.InvariantCulture)}\n" +
                    $"{nameof(MoveRateOnNervesDamage)}: {MoveRateOnNervesDamage.ToString(CultureInfo.InvariantCulture)}\n" +
                    $"{nameof(RagdollOnPainfulWound)}: {RagdollOnPainfulWound.ToString()}\n" +

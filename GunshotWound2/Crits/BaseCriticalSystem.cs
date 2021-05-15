@@ -9,16 +9,19 @@ using Leopotam.Ecs;
 
 namespace GunshotWound2.Crits
 {
+    public abstract class BaseCriticalWoundEvent : ComponentWithEntity
+    {
+    }
+
     [EcsInject]
     public abstract class BaseCriticalSystem<T> : IEcsRunSystem where T : ComponentWithEntity, new()
     {
-        protected EcsWorld EcsWorld;
-        protected EcsFilter<T> Events;
+        protected readonly EcsWorld EcsWorld = null;
+        protected readonly EcsFilter<T> Events = null;
+        protected readonly EcsFilterSingle<MainConfig> Config = null;
+        protected readonly EcsFilterSingle<LocaleConfig> Locale = null;
 
-        protected EcsFilterSingle<MainConfig> Config;
-        protected EcsFilterSingle<LocaleConfig> Locale;
-
-        protected CritTypes CurrentCrit;
+        protected abstract CritTypes CurrentCrit { get; }
 
         public void Run()
         {
@@ -37,13 +40,13 @@ namespace GunshotWound2.Crits
                     continue;
                 }
 
-                if (woundedPed.Crits.HasFlag(CurrentCrit))
+                if (woundedPed.Crits.Has(CurrentCrit))
                 {
                     EcsWorld.RemoveEntity(Events.Entities[i]);
                     continue;
                 }
 
-                woundedPed.Crits = woundedPed.Crits | CurrentCrit;
+                woundedPed.Crits |= CurrentCrit;
                 if (woundedPed.IsPlayer)
                 {
                     ActionForPlayer(woundedPed, pedEntity);

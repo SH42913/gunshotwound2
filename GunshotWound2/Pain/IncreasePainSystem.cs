@@ -1,5 +1,4 @@
-﻿using System;
-using GTA.Native;
+﻿using GTA.Native;
 using GunshotWound2.Configs;
 using GunshotWound2.Effects;
 using GunshotWound2.HitDetection;
@@ -15,8 +14,6 @@ namespace GunshotWound2.Pain
         private readonly EcsWorld _ecsWorld = null;
         private readonly EcsFilter<IncreasePainEvent> _events = null;
         private readonly EcsFilterSingle<MainConfig> _config = null;
-
-        private static readonly Random Random = new Random();
 
         public void Run()
         {
@@ -44,22 +41,14 @@ namespace GunshotWound2.Pain
                     }
 
                     var newPain = component.PainAmount;
-                    var painDeviation = Random.NextFloat(
+                    var painDeviation = GunshotWound2.Random.NextFloat(
                         -_config.Data.WoundConfig.PainDeviation * newPain,
                         _config.Data.WoundConfig.PainDeviation * newPain);
                     pain.CurrentPain += _config.Data.WoundConfig.PainMultiplier * newPain + painDeviation;
 
-                    var painAnimIndex = Random.Next(1, 6);
-                    if (woundedPed.IsMale)
-                    {
-                        Function.Call(Hash.PLAY_FACIAL_ANIM, woundedPed.ThisPed, "pain_" + painAnimIndex,
-                            "facials@gen_male@base");
-                    }
-                    else
-                    {
-                        Function.Call(Hash.PLAY_FACIAL_ANIM, woundedPed.ThisPed, "pain_" + painAnimIndex,
-                            "facials@gen_female@base");
-                    }
+                    var painAnimIndex = GunshotWound2.Random.Next(1, 6);
+                    var animationDict = woundedPed.IsMale ? "facials@gen_male@base" : "facials@gen_female@base";
+                    Function.Call(Hash.PLAY_FACIAL_ANIM, woundedPed.ThisPed, $"pain_{painAnimIndex.ToString()}", animationDict);
 
                     if (newPain > _config.Data.WoundConfig.PainfulWoundValue / 2)
                     {

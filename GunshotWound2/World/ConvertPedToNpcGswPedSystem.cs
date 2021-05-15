@@ -1,5 +1,4 @@
-﻿using System;
-using GTA;
+﻿using GTA;
 using GTA.Native;
 using GunshotWound2.Configs;
 using GunshotWound2.HitDetection;
@@ -16,8 +15,6 @@ namespace GunshotWound2.World
         private readonly EcsFilter<ConvertPedToNpcGswPedEvent> _requests = null;
         private readonly EcsFilterSingle<MainConfig> _config = null;
         private readonly EcsFilterSingle<GswWorld> _world = null;
-
-        private static readonly Random Random = new Random();
 
         public void Run()
         {
@@ -45,7 +42,7 @@ namespace GunshotWound2.World
                 woundedPed.IsMale = pedToConvert.Gender == Gender.Male;
                 woundedPed.IsDead = false;
                 woundedPed.IsPlayer = false;
-                var newHealth = Random.Next(
+                var newHealth = GunshotWound2.Random.Next(
                     _config.Data.NpcConfig.MinStartHealth,
                     _config.Data.NpcConfig.MaxStartHealth);
                 woundedPed.Health = newHealth + 100;
@@ -62,28 +59,28 @@ namespace GunshotWound2.World
                 {
                 }
 
-                woundedPed.StopBleedingAmount = Random.NextFloat(
+                woundedPed.StopBleedingAmount = GunshotWound2.Random.NextFloat(
                     _config.Data.NpcConfig.MaximalBleedStopSpeed / 2,
                     _config.Data.NpcConfig.MaximalBleedStopSpeed);
 
                 if (_config.Data.NpcConfig.MinAccuracy > 0 && _config.Data.NpcConfig.MaxAccuracy > 0)
                 {
-                    pedToConvert.Accuracy = Random.Next(_config.Data.NpcConfig.MinAccuracy,
+                    pedToConvert.Accuracy = GunshotWound2.Random.Next(_config.Data.NpcConfig.MinAccuracy,
                         _config.Data.NpcConfig.MaxAccuracy + 1);
                 }
 
                 if (_config.Data.NpcConfig.MinShootRate > 0 && _config.Data.NpcConfig.MaxShootRate > 0)
                 {
-                    pedToConvert.ShootRate = Random.Next(_config.Data.NpcConfig.MinShootRate,
+                    pedToConvert.ShootRate = GunshotWound2.Random.Next(_config.Data.NpcConfig.MinShootRate,
                         _config.Data.NpcConfig.MaxShootRate);
                 }
 
                 woundedPed.DefaultAccuracy = pedToConvert.Accuracy;
 
-                woundedPed.MaximalPain = Random.NextFloat(
+                woundedPed.MaximalPain = GunshotWound2.Random.NextFloat(
                     _config.Data.NpcConfig.LowerMaximalPain,
                     _config.Data.NpcConfig.UpperMaximalPain);
-                woundedPed.PainRecoverSpeed = Random.NextFloat(
+                woundedPed.PainRecoverSpeed = GunshotWound2.Random.NextFloat(
                     _config.Data.NpcConfig.MaximalPainRecoverSpeed / 2,
                     _config.Data.NpcConfig.MaximalPainRecoverSpeed);
 

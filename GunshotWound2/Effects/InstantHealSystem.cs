@@ -1,5 +1,4 @@
-﻿using System;
-using GTA;
+﻿using GTA;
 using GTA.Native;
 using GunshotWound2.Configs;
 using GunshotWound2.Damage;
@@ -18,8 +17,6 @@ namespace GunshotWound2.Effects
         private readonly EcsFilterSingle<MainConfig> _mainConfig = null;
         private readonly EcsFilter<InstantHealEvent> _events = null;
         private readonly EcsFilter<BleedingComponent> _bleedingComponents = null;
-
-        private static readonly Random Random = new Random();
 
         public void Run()
         {
@@ -49,7 +46,7 @@ namespace GunshotWound2.Effects
                     }
                     else
                     {
-                        woundedPed.Health = Random.Next(50, _mainConfig.Data.NpcConfig.MaxStartHealth);
+                        woundedPed.Health = GunshotWound2.Random.Next(50, _mainConfig.Data.NpcConfig.MaxStartHealth);
                         woundedPed.ThisPed.Accuracy = woundedPed.DefaultAccuracy;
                     }
 

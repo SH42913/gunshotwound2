@@ -7,13 +7,14 @@ using Leopotam.Ecs;
 
 namespace GunshotWound2.Crits
 {
+    public sealed class LegsCriticalWoundEvent : BaseCriticalWoundEvent
+    {
+    }
+
     [EcsInject]
     public sealed class LegsCriticalSystem : BaseCriticalSystem<LegsCriticalWoundEvent>
     {
-        public LegsCriticalSystem()
-        {
-            CurrentCrit = CritTypes.LEGS_DAMAGED;
-        }
+        protected override CritTypes CurrentCrit => CritTypes.LEGS_DAMAGED;
 
         protected override void ActionForPlayer(WoundedPedComponent pedComponent, int pedEntity)
         {
@@ -27,7 +28,7 @@ namespace GunshotWound2.Crits
 
             SendPedToRagdoll(pedComponent, pedEntity);
 
-            if (pedComponent.Crits.HasFlag(CritTypes.NERVES_DAMAGED)) return;
+            if (pedComponent.Crits.Has(CritTypes.NERVES_DAMAGED)) return;
             SendMessage(Locale.Data.PlayerLegsCritMessage, NotifyLevels.WARNING);
         }
 
@@ -43,7 +44,7 @@ namespace GunshotWound2.Crits
             SendPedToRagdoll(pedComponent, pedEntity);
 
             if (!Config.Data.NpcConfig.ShowEnemyCriticalMessages) return;
-            if (pedComponent.Crits.HasFlag(CritTypes.NERVES_DAMAGED)) return;
+            if (pedComponent.Crits.Has(CritTypes.NERVES_DAMAGED)) return;
             SendMessage(pedComponent.IsMale
                 ? Locale.Data.ManLegsCritMessage
                 : Locale.Data.WomanLegsCritMessage);

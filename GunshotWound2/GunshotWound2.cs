@@ -30,6 +30,8 @@ namespace GunshotWound2
         public const float MinimalRangeForWoundedPeds = 0;
         public const float AddingToRemovingMultiplier = 2;
 
+        public static readonly Random Random = new Random();
+
         private bool _isPaused;
 
         private EcsWorld _ecsWorld;
@@ -123,43 +125,43 @@ namespace GunshotWound2
 
         private void OnKeyUp(object sender, KeyEventArgs eventArgs)
         {
-            if (_mainConfig.HelmetKey != null && eventArgs.KeyCode == _mainConfig.HelmetKey)
+            if (eventArgs.KeyCode == _mainConfig.HelmetKey)
             {
                 _ecsWorld.CreateEntityWith<AddHelmetToPlayerEvent>();
                 return;
             }
 
-            if (_mainConfig.CheckKey != null && eventArgs.KeyCode == _mainConfig.CheckKey)
+            if (eventArgs.KeyCode == _mainConfig.CheckKey)
             {
                 CheckPlayer();
                 return;
             }
 
-            if (_mainConfig.HealKey != null && eventArgs.KeyCode == _mainConfig.HealKey)
+            if (eventArgs.KeyCode == _mainConfig.HealKey)
             {
                 HealPlayer();
                 return;
             }
 
-            if (_mainConfig.BandageKey != null && eventArgs.KeyCode == _mainConfig.BandageKey)
+            if (eventArgs.KeyCode == _mainConfig.BandageKey)
             {
                 ApplyBandageToPlayer();
                 return;
             }
 
-            if (_mainConfig.IncreaseRangeKey != null && eventArgs.KeyCode == _mainConfig.IncreaseRangeKey)
+            if (eventArgs.KeyCode == _mainConfig.IncreaseRangeKey)
             {
                 IncreaseRange(5);
                 return;
             }
 
-            if (_mainConfig.ReduceRangeKey != null && eventArgs.KeyCode == _mainConfig.ReduceRangeKey)
+            if (eventArgs.KeyCode == _mainConfig.ReduceRangeKey)
             {
                 ReduceRange(5);
                 return;
             }
 
-            if (_mainConfig.PauseKey != null && eventArgs.KeyCode == _mainConfig.PauseKey)
+            if (eventArgs.KeyCode == _mainConfig.PauseKey)
             {
                 _isPaused = !_isPaused;
                 Notification.Show(_isPaused
@@ -239,8 +241,7 @@ namespace GunshotWound2
             _mainConfig.NpcConfig.AddingPedRange -= value;
             _mainConfig.NpcConfig.RemovePedRange = _mainConfig.NpcConfig.AddingPedRange * AddingToRemovingMultiplier;
 
-            SendMessage($"{_localeConfig.AddingRange}: {_mainConfig.NpcConfig.AddingPedRange}\n" +
-                        $"{_localeConfig.RemovingRange}: {_mainConfig.NpcConfig.RemovePedRange}");
+            ShowCurrentRanges();
         }
 
         private void IncreaseRange(float value)
@@ -250,10 +251,14 @@ namespace GunshotWound2
             _mainConfig.NpcConfig.AddingPedRange += value;
             _mainConfig.NpcConfig.RemovePedRange = _mainConfig.NpcConfig.AddingPedRange * AddingToRemovingMultiplier;
 
-            SendMessage($"{_localeConfig.AddingRange}: {_mainConfig.NpcConfig.AddingPedRange}\n" +
-                        $"{_localeConfig.RemovingRange}: {_mainConfig.NpcConfig.RemovePedRange}");
+            ShowCurrentRanges();
         }
 
+        private void ShowCurrentRanges()
+        {
+            SendMessage($"{_localeConfig.AddingRange}: {_mainConfig.NpcConfig.AddingPedRange.ToString("F0")}\n" +
+                        $"{_localeConfig.RemovingRange}: {_mainConfig.NpcConfig.RemovePedRange.ToString("F0")}");
+        }
 
         private void CheckPlayer()
         {

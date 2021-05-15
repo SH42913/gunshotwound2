@@ -5,13 +5,14 @@ using Leopotam.Ecs;
 
 namespace GunshotWound2.Crits
 {
-    [EcsInject]
-    public sealed class GutsCriticalSystem : BaseCriticalSystem<GutsCritcalWoundEvent>
+    public sealed class GutsCriticalWoundEvent : BaseCriticalWoundEvent
     {
-        public GutsCriticalSystem()
-        {
-            CurrentCrit = CritTypes.GUTS_DAMAGED;
-        }
+    }
+
+    [EcsInject]
+    public sealed class GutsCriticalSystem : BaseCriticalSystem<GutsCriticalWoundEvent>
+    {
+        protected override CritTypes CurrentCrit => CritTypes.GUTS_DAMAGED;
 
         protected override void ActionForPlayer(WoundedPedComponent pedComponent, int pedEntity)
         {

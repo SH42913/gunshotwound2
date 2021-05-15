@@ -6,13 +6,13 @@ namespace GunshotWound2.HitDetection
     [Flags]
     public enum CritTypes
     {
-        LEGS_DAMAGED = 1,
-        ARMS_DAMAGED = 2,
-        NERVES_DAMAGED = 4,
-        GUTS_DAMAGED = 8,
-        STOMACH_DAMAGED = 16,
-        LUNGS_DAMAGED = 32,
-        HEART_DAMAGED = 64,
+        LEGS_DAMAGED = 1 << 0,
+        ARMS_DAMAGED = 1 << 1,
+        NERVES_DAMAGED = 1 << 2,
+        GUTS_DAMAGED = 1 << 3,
+        STOMACH_DAMAGED = 1 << 4,
+        LUNGS_DAMAGED = 1 << 5,
+        HEART_DAMAGED = 1 << 6,
     }
 
     public enum PainStates
@@ -51,6 +51,14 @@ namespace GunshotWound2.HitDetection
         public override string ToString()
         {
             return $"{(IsMale ? "His" : "Her")} HP:{Health}";
+        }
+    }
+
+    public static class CritTypesExtension
+    {
+        public static bool Has(this CritTypes category, CritTypes value)
+        {
+            return (category & value) == value;
         }
     }
 }

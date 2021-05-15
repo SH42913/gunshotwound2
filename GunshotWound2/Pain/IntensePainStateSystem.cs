@@ -20,7 +20,7 @@ namespace GunshotWound2.Pain
                 ? Config.Data.PlayerConfig.IntensePainAnim
                 : Config.Data.NpcConfig.IntensePainAnim);
 
-            if (woundedPed.Crits.HasFlag(CritTypes.ARMS_DAMAGED)) return;
+            if (woundedPed.Crits.Has(CritTypes.ARMS_DAMAGED)) return;
             var pain = EcsWorld.GetComponent<PainComponent>(pedEntity);
             var backPercent = 1f - pain.CurrentPain / woundedPed.MaximalPain;
             if (woundedPed.IsPlayer)
