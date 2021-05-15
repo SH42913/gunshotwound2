@@ -7,8 +7,8 @@ namespace GunshotWound2.Damage
     [EcsInject]
     public sealed class BleedingSystem : IEcsRunSystem
     {
-        private EcsWorld _ecsWorld;
-        private EcsFilter<BleedingComponent> _bleedings;
+        private readonly EcsWorld _ecsWorld = null;
+        private readonly EcsFilter<BleedingComponent> _bleedings = null;
 
         public void Run()
         {
@@ -23,11 +23,11 @@ namespace GunshotWound2.Damage
         {
             var frameTimeInSeconds = Game.LastFrameTime;
 
-            for (int i = 0; i < _bleedings.EntitiesCount; i++)
+            for (var i = 0; i < _bleedings.EntitiesCount; i++)
             {
-                BleedingComponent component = _bleedings.Components1[i];
-                int pedEntity = _bleedings.Components1[i].Entity;
-                int bleedingEntity = _bleedings.Entities[i];
+                var component = _bleedings.Components1[i];
+                var pedEntity = _bleedings.Components1[i].Entity;
+                var bleedingEntity = _bleedings.Entities[i];
 
                 if (!_ecsWorld.IsEntityExists(pedEntity))
                 {
@@ -75,9 +75,9 @@ namespace GunshotWound2.Damage
             float maxBleeding = 0;
             int? mostDangerEntity = null;
 
-            for (int i = 0; i < _bleedings.EntitiesCount; i++)
+            for (var i = 0; i < _bleedings.EntitiesCount; i++)
             {
-                BleedingComponent bleeding = _bleedings.Components1[i];
+                var bleeding = _bleedings.Components1[i];
                 if (!bleeding.CanBeHealed) continue;
                 if (bleeding.Entity != pedEntity) continue;
                 if (bleeding.BleedSeverity <= maxBleeding) continue;

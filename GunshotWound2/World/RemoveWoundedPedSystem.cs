@@ -9,11 +9,10 @@ namespace GunshotWound2.World
     [EcsInject]
     public sealed class RemoveWoundedPedSystem : IEcsRunSystem
     {
-        private EcsWorld _ecsWorld;
-        private EcsFilter<WoundedPedComponent, NpcMarkComponent> _npcs;
-
-        private EcsFilterSingle<MainConfig> _config;
-        private EcsFilterSingle<GswWorld> _world;
+        private readonly EcsWorld _ecsWorld = null;
+        private readonly EcsFilter<WoundedPedComponent, NpcMarkComponent> _npcs = null;
+        private readonly EcsFilterSingle<MainConfig> _config = null;
+        private readonly EcsFilterSingle<GswWorld> _world = null;
 
         public void Run()
         {
@@ -26,9 +25,9 @@ namespace GunshotWound2.World
 
         private void RemovePeds()
         {
-            for (int pedIndex = 0; pedIndex < _npcs.EntitiesCount; pedIndex++)
+            for (var pedIndex = 0; pedIndex < _npcs.EntitiesCount; pedIndex++)
             {
-                WoundedPedComponent woundedPed = _npcs.Components1[pedIndex];
+                var woundedPed = _npcs.Components1[pedIndex];
                 if (woundedPed.IsPlayer) return;
 
                 var ped = woundedPed.ThisPed;

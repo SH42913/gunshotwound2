@@ -9,23 +9,23 @@ namespace GunshotWound2.Pain
     [EcsInject]
     public sealed class PainRecoverySystem : IEcsRunSystem
     {
-        private EcsWorld _ecsWorld;
-        private EcsFilter<WoundedPedComponent, PainComponent> _pedsWithPain;
-        private EcsFilterSingle<MainConfig> _config;
+        private readonly EcsWorld _ecsWorld = null;
+        private readonly EcsFilter<WoundedPedComponent, PainComponent> _pedsWithPain = null;
+        private readonly EcsFilterSingle<MainConfig> _config = null;
 
         public void Run()
         {
 #if DEBUG
             GunshotWound2.LastSystem = nameof(PainRecoverySystem);
 #endif
-            float frameTimeInSeconds = Game.LastFrameTime;
+            var frameTimeInSeconds = Game.LastFrameTime;
 
-            for (int i = 0; i < _pedsWithPain.EntitiesCount; i++)
+            for (var i = 0; i < _pedsWithPain.EntitiesCount; i++)
             {
-                WoundedPedComponent woundedPed = _pedsWithPain.Components1[i];
-                PainComponent pain = _pedsWithPain.Components2[i];
+                var woundedPed = _pedsWithPain.Components1[i];
+                var pain = _pedsWithPain.Components2[i];
 
-                int pedEntity = _pedsWithPain.Entities[i];
+                var pedEntity = _pedsWithPain.Entities[i];
                 if (pain.CurrentPain <= 0f || woundedPed.IsDead)
                 {
                     _ecsWorld.RemoveComponent<PainComponent>(pedEntity, true);

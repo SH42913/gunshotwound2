@@ -8,8 +8,8 @@ namespace GunshotWound2.Healing
     [EcsInject]
     public sealed class SelfHealingSystem : IEcsRunSystem
     {
-        private EcsFilter<WoundedPedComponent> _woundedPeds;
-        private EcsFilterSingle<MainConfig> _config;
+        private readonly EcsFilter<WoundedPedComponent> _woundedPeds = null;
+        private readonly EcsFilterSingle<MainConfig> _config = null;
 
         public void Run()
         {
@@ -17,11 +17,11 @@ namespace GunshotWound2.Healing
             GunshotWound2.LastSystem = nameof(SelfHealingSystem);
 #endif
 
-            for (int i = 0; i < _woundedPeds.EntitiesCount; i++)
+            for (var i = 0; i < _woundedPeds.EntitiesCount; i++)
             {
-                WoundedPedComponent woundedPed = _woundedPeds.Components1[i];
-                Ped ped = woundedPed.ThisPed;
-                bool needToHeal = woundedPed.IsPlayer
+                var woundedPed = _woundedPeds.Components1[i];
+                var ped = woundedPed.ThisPed;
+                var needToHeal = woundedPed.IsPlayer
                     ? ped.Health + 102 < ped.MaxHealth
                     : ped.Health < ped.MaxHealth;
                 if (woundedPed.IsDead || woundedPed.BleedingCount > 0 || !needToHeal) continue;

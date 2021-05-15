@@ -26,9 +26,9 @@ namespace GunshotWound2.Crits
             GunshotWound2.LastSystem = nameof(BaseCriticalSystem<T>);
 #endif
 
-            for (int i = 0; i < Events.EntitiesCount; i++)
+            for (var i = 0; i < Events.EntitiesCount; i++)
             {
-                int pedEntity = Events.Components1[i].Entity;
+                var pedEntity = Events.Components1[i].Entity;
                 var woundedPed = EcsWorld.GetComponent<WoundedPedComponent>(pedEntity);
 
                 if (woundedPed == null)

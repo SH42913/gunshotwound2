@@ -1,5 +1,5 @@
-﻿using GunshotWound2.Configs;
-using GunshotWound2.HitDetection;
+﻿using GunshotWound2.HitDetection;
+using GunshotWound2.Utils;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.GUI
@@ -7,9 +7,8 @@ namespace GunshotWound2.GUI
     [EcsInject]
     public sealed class DebugInfoSystem : IEcsRunSystem
     {
-        private EcsWorld _ecsWorld;
-        private EcsFilterSingle<MainConfig> _mainConfig;
-        private EcsFilter<ShowDebugInfoEvent> _events;
+        private readonly EcsWorld _ecsWorld = null;
+        private readonly EcsFilter<ShowDebugInfoEvent> _events = null;
 
         public void Run()
         {
@@ -17,10 +16,10 @@ namespace GunshotWound2.GUI
             GunshotWound2.LastSystem = nameof(DebugInfoSystem);
 #endif
 
-            for (int i = 0; i < _events.EntitiesCount; i++)
+            for (var i = 0; i < _events.EntitiesCount; i++)
             {
 #if DEBUG
-                int pedEntity = _events.Components1[i].Entity;
+                var pedEntity = _events.Components1[i].Entity;
                 if (!_ecsWorld.IsEntityExists(pedEntity)) continue;
 
                 var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
@@ -31,7 +30,7 @@ namespace GunshotWound2.GUI
 #endif
             }
 
-            _events.RemoveAllEntities();
+            _events.CleanFilter();
         }
 
         private void SendDebug(string message)

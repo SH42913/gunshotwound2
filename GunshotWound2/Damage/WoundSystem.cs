@@ -4,6 +4,7 @@ using GunshotWound2.Crits;
 using GunshotWound2.GUI;
 using GunshotWound2.HitDetection;
 using GunshotWound2.Pain;
+using GunshotWound2.Utils;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Damage
@@ -11,11 +12,10 @@ namespace GunshotWound2.Damage
     [EcsInject]
     public sealed class WoundSystem : IEcsRunSystem
     {
-        private EcsWorld _ecsWorld;
-        private EcsFilter<ProcessWoundEvent> _components;
-
-        private EcsFilterSingle<MainConfig> _config;
-        private EcsFilterSingle<LocaleConfig> _locale;
+        private readonly EcsWorld _ecsWorld = null;
+        private readonly EcsFilter<ProcessWoundEvent> _components = null;
+        private readonly EcsFilterSingle<MainConfig> _config = null;
+        private readonly EcsFilterSingle<LocaleConfig> _locale = null;
 
         private static readonly Random Random = new Random();
 
@@ -25,19 +25,19 @@ namespace GunshotWound2.Damage
             GunshotWound2.LastSystem = nameof(WoundSystem);
 #endif
 
-            for (int i = 0; i < _components.EntitiesCount; i++)
+            for (var i = 0; i < _components.EntitiesCount; i++)
             {
-                ProcessWoundEvent component = _components.Components1[i];
-                int pedEntity = component.Entity;
+                var component = _components.Components1[i];
+                var pedEntity = component.Entity;
                 if (!_ecsWorld.IsEntityExists(pedEntity)) continue;
 
                 var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
                 if (woundedPed == null) continue;
 
-                float damageDeviation = component.Damage > 0
+                var damageDeviation = component.Damage > 0
                     ? _config.Data.WoundConfig.DamageDeviation * component.Damage
                     : 0;
-                float bleedingDeviation = component.BleedSeverity > 0
+                var bleedingDeviation = component.BleedSeverity > 0
                     ? _config.Data.WoundConfig.BleedingDeviation * component.BleedSeverity
                     : 0;
 
@@ -68,7 +68,7 @@ namespace GunshotWound2.Damage
                 SendWoundInfo(component, woundedPed);
             }
 
-            _components.RemoveAllEntities();
+            _components.CleanFilter();
         }
 
         private void CreateCritical(int pedEntity, CritTypes? crit)
@@ -105,8 +105,8 @@ namespace GunshotWound2.Damage
 
         private void CreateBleeding(WoundedPedComponent woundedPed, int pedEntity, float bleedSeverity, string name)
         {
-            float mult = _config.Data.WoundConfig.BleedingMultiplier;
-            int entity = _ecsWorld.CreateEntityWith(out BleedingComponent bleedingComponent);
+            var mult = _config.Data.WoundConfig.BleedingMultiplier;
+            var entity = _ecsWorld.CreateEntityWith(out BleedingComponent bleedingComponent);
             bleedingComponent.Entity = pedEntity;
             bleedingComponent.BleedSeverity = mult * bleedSeverity;
             bleedingComponent.Name = name;

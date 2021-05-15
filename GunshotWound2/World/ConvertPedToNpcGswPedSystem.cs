@@ -4,6 +4,7 @@ using GTA.Native;
 using GunshotWound2.Configs;
 using GunshotWound2.HitDetection;
 using GunshotWound2.Pain;
+using GunshotWound2.Utils;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.World
@@ -11,11 +12,10 @@ namespace GunshotWound2.World
     [EcsInject]
     public sealed class ConvertPedToNpcGswPedSystem : IEcsRunSystem
     {
-        private EcsWorld _ecsWorld;
-        private EcsFilter<ConvertPedToNpcGswPedEvent> _requests;
-
-        private EcsFilterSingle<MainConfig> _config;
-        private EcsFilterSingle<GswWorld> _world;
+        private readonly EcsWorld _ecsWorld = null;
+        private readonly EcsFilter<ConvertPedToNpcGswPedEvent> _requests = null;
+        private readonly EcsFilterSingle<MainConfig> _config = null;
+        private readonly EcsFilterSingle<GswWorld> _world = null;
 
         private static readonly Random Random = new Random();
 
@@ -25,7 +25,7 @@ namespace GunshotWound2.World
             GunshotWound2.LastSystem = nameof(ConvertPedToNpcGswPedSystem);
 #endif
 
-            for (int i = 0; i < _requests.EntitiesCount; i++)
+            for (var i = 0; i < _requests.EntitiesCount; i++)
             {
                 ProcessRequest(_requests.Components1[i]);
                 _requests.Components1[i].PedsToAdd = null;
@@ -37,9 +37,9 @@ namespace GunshotWound2.World
         {
             while (request.PedsToAdd.Count > 0)
             {
-                Ped pedToConvert = request.PedsToAdd.Dequeue();
+                var pedToConvert = request.PedsToAdd.Dequeue();
 
-                int entity = _ecsWorld.CreateEntityWith(out NpcMarkComponent _, out WoundedPedComponent woundedPed);
+                var entity = _ecsWorld.CreateEntityWith(out NpcMarkComponent _, out WoundedPedComponent woundedPed);
 
                 woundedPed.ThisPed = pedToConvert;
                 woundedPed.IsMale = pedToConvert.Gender == Gender.Male;

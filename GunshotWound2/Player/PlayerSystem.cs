@@ -14,11 +14,10 @@ namespace GunshotWound2.Player
     [EcsInject]
     public sealed class PlayerSystem : IEcsInitSystem, IEcsRunSystem
     {
-        private EcsWorld _ecsWorld;
-        private EcsFilter<WoundedPedComponent, PlayerMarkComponent> _players;
-
-        private EcsFilterSingle<MainConfig> _config;
-        private EcsFilterSingle<GswWorld> _world;
+        private readonly EcsWorld _ecsWorld = null;
+        private readonly EcsFilter<WoundedPedComponent, PlayerMarkComponent> _players = null;
+        private readonly EcsFilterSingle<MainConfig> _config = null;
+        private readonly EcsFilterSingle<GswWorld> _world = null;
 
         public void Initialize()
         {
@@ -34,7 +33,7 @@ namespace GunshotWound2.Player
 #endif
             if (!_config.Data.PlayerConfig.WoundedPlayerEnabled) return;
 
-            for (int i = 0; i < _players.EntitiesCount; i++)
+            for (var i = 0; i < _players.EntitiesCount; i++)
             {
                 var woundedPed = _players.Components1[i];
                 var playerEntity = _players.Entities[i];
@@ -124,7 +123,7 @@ namespace GunshotWound2.Player
 
             if (_world.Data.GswPeds.ContainsKey(ped))
             {
-                int newEntity = _world.Data.GswPeds[ped];
+                var newEntity = _world.Data.GswPeds[ped];
 
                 var newPed = _ecsWorld.GetComponent<WoundedPedComponent>(newEntity);
                 newPed.IsPlayer = true;

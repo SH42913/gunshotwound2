@@ -9,8 +9,8 @@ namespace GunshotWound2.Player
     [EcsInject]
     public sealed class AdrenalineSystem : IEcsRunSystem
     {
-        private EcsWorld _ecsWorld;
-        private EcsFilterSingle<MainConfig> _config;
+        private readonly EcsWorld _ecsWorld = null;
+        private readonly EcsFilterSingle<MainConfig> _config = null;
 
         public void Run()
         {
@@ -18,7 +18,7 @@ namespace GunshotWound2.Player
             GunshotWound2.LastSystem = nameof(AdrenalineSystem);
 #endif
 
-            int playerEntity = _config.Data.PlayerConfig.PlayerEntity;
+            var playerEntity = _config.Data.PlayerConfig.PlayerEntity;
             if (!_ecsWorld.IsEntityExists(playerEntity)) return;
 
             var playerPed = _ecsWorld.GetComponent<WoundedPedComponent>(playerEntity);

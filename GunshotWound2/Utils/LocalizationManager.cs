@@ -24,9 +24,9 @@ namespace GunshotWound2.Utils
 
         public void SetLanguage(string desiredLanguage)
         {
-            string[] languages = _localizationDictionary["Localization"];
+            var languages = _localizationDictionary["Localization"];
 
-            for (int i = 0; i < languages.Length; i++)
+            for (var i = 0; i < languages.Length; i++)
             {
                 if (!string.Equals(languages[i], desiredLanguage, StringComparison.CurrentCultureIgnoreCase)) continue;
 
@@ -55,7 +55,7 @@ namespace GunshotWound2.Utils
         private void ParseCsvLine(string data)
         {
             _csvBuffer.Clear();
-            string lastAddedPart = "FirstLine";
+            var lastAddedPart = "FirstLine";
             try
             {
                 data = _csvMultilineFixRegex.Replace(data, m => m.Value.Replace("\n", "space"));

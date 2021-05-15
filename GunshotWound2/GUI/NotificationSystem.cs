@@ -8,9 +8,9 @@ namespace GunshotWound2.GUI
     [EcsInject]
     public sealed class NotificationSystem : IEcsRunSystem
     {
-        private EcsWorld _ecsWorld;
-        private EcsFilterSingle<MainConfig> _mainConfig;
-        private EcsFilter<ShowNotificationEvent> _events;
+        private readonly EcsWorld _ecsWorld = null;
+        private readonly EcsFilterSingle<MainConfig> _mainConfig = null;
+        private readonly EcsFilter<ShowNotificationEvent> _events = null;
 
         public void Run()
         {
@@ -18,13 +18,13 @@ namespace GunshotWound2.GUI
             GunshotWound2.LastSystem = nameof(NotificationSystem);
 #endif
 
-            string commonNotification = "";
-            string warnNotification = "";
-            string alertNotification = "";
-            string emergencyNotification = "";
-            string debugNotification = "";
+            var commonNotification = "";
+            var warnNotification = "";
+            var alertNotification = "";
+            var emergencyNotification = "";
+            var debugNotification = "";
 
-            for (int i = 0; i < _events.EntitiesCount; i++)
+            for (var i = 0; i < _events.EntitiesCount; i++)
             {
                 var needToShow = _events.Components1[i];
 

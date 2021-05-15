@@ -1,6 +1,7 @@
 ﻿using System;
 using GTA.Native;
 using GunshotWound2.Configs;
+using GunshotWound2.Utils;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Player
@@ -8,16 +9,14 @@ namespace GunshotWound2.Player
     [EcsInject]
     public sealed class CameraShakeSystem : IEcsRunSystem
     {
-        private EcsWorld _ecsWorld;
-        private EcsFilter<AddCameraShakeEvent> _events;
-
-        private EcsFilterSingle<MainConfig> _config;
+        private readonly EcsFilter<AddCameraShakeEvent> _events = null;
+        private readonly EcsFilterSingle<MainConfig> _config = null;
 
         public void Run()
         {
-            for (int i = 0; i < _events.EntitiesCount; i++)
+            for (var i = 0; i < _events.EntitiesCount; i++)
             {
-                AddCameraShakeEvent newEvent = _events.Components1[i];
+                var newEvent = _events.Components1[i];
 
                 switch (newEvent.Length)
                 {
@@ -41,7 +40,7 @@ namespace GunshotWound2.Player
                 }
             }
 
-            _events.RemoveAllEntities();
+            _events.CleanFilter();
         }
     }
 }

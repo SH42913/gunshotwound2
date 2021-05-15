@@ -1,5 +1,4 @@
-﻿using GTA;
-using GTA.Native;
+﻿using GTA.Native;
 using GunshotWound2.Effects;
 using GunshotWound2.HitDetection;
 using GunshotWound2.Player;

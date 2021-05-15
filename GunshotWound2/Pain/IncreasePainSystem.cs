@@ -4,6 +4,7 @@ using GunshotWound2.Configs;
 using GunshotWound2.Effects;
 using GunshotWound2.HitDetection;
 using GunshotWound2.Player;
+using GunshotWound2.Utils;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Pain
@@ -11,10 +12,9 @@ namespace GunshotWound2.Pain
     [EcsInject]
     public sealed class IncreasePainSystem : IEcsRunSystem
     {
-        private EcsWorld _ecsWorld;
-        private EcsFilter<IncreasePainEvent> _events;
-
-        private EcsFilterSingle<MainConfig> _config;
+        private readonly EcsWorld _ecsWorld = null;
+        private readonly EcsFilter<IncreasePainEvent> _events = null;
+        private readonly EcsFilterSingle<MainConfig> _config = null;
 
         private static readonly Random Random = new Random();
 
@@ -24,10 +24,10 @@ namespace GunshotWound2.Pain
             GunshotWound2.LastSystem = nameof(IncreasePainSystem);
 #endif
 
-            for (int i = 0; i < _events.EntitiesCount; i++)
+            for (var i = 0; i < _events.EntitiesCount; i++)
             {
                 var component = _events.Components1[i];
-                int pedEntity = component.Entity;
+                var pedEntity = component.Entity;
                 if (!_ecsWorld.IsEntityExists(pedEntity))
                 {
                     _ecsWorld.RemoveEntity(_events.Entities[i]);
@@ -43,13 +43,13 @@ namespace GunshotWound2.Pain
                         pain.CurrentPain = 0f;
                     }
 
-                    float newPain = component.PainAmount;
+                    var newPain = component.PainAmount;
                     var painDeviation = Random.NextFloat(
                         -_config.Data.WoundConfig.PainDeviation * newPain,
                         _config.Data.WoundConfig.PainDeviation * newPain);
                     pain.CurrentPain += _config.Data.WoundConfig.PainMultiplier * newPain + painDeviation;
 
-                    int painAnimIndex = Random.Next(1, 6);
+                    var painAnimIndex = Random.Next(1, 6);
                     if (woundedPed.IsMale)
                     {
                         Function.Call(Hash.PLAY_FACIAL_ANIM, woundedPed.ThisPed, "pain_" + painAnimIndex,

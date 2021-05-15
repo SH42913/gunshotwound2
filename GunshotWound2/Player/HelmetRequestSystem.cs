@@ -2,6 +2,7 @@
 using GTA;
 using GunshotWound2.Configs;
 using GunshotWound2.GUI;
+using GunshotWound2.Utils;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Player
@@ -9,11 +10,10 @@ namespace GunshotWound2.Player
     [EcsInject]
     public sealed class HelmetRequestSystem : IEcsRunSystem
     {
-        private EcsWorld _ecsWorld;
-        private EcsFilterSingle<MainConfig> _config;
-        private EcsFilterSingle<LocaleConfig> _locale;
-
-        private EcsFilter<AddHelmetToPlayerEvent> _requests;
+        private readonly EcsWorld _ecsWorld = null;
+        private readonly EcsFilterSingle<MainConfig> _config = null;
+        private readonly EcsFilterSingle<LocaleConfig> _locale = null;
+        private readonly EcsFilter<AddHelmetToPlayerEvent> _requests = null;
 
         private static readonly Random Random = new Random();
 
@@ -45,7 +45,7 @@ namespace GunshotWound2.Player
                 }
             }
 
-            _requests.RemoveAllEntities();
+            _requests.CleanFilter();
         }
     }
 }

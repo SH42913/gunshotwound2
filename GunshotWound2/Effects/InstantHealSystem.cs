@@ -6,6 +6,7 @@ using GunshotWound2.Damage;
 using GunshotWound2.HitDetection;
 using GunshotWound2.Pain;
 using GunshotWound2.Player;
+using GunshotWound2.Utils;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Effects
@@ -13,11 +14,10 @@ namespace GunshotWound2.Effects
     [EcsInject]
     public sealed class InstantHealSystem : IEcsRunSystem
     {
-        private EcsWorld _ecsWorld;
-        private EcsFilterSingle<MainConfig> _mainConfig;
-
-        private EcsFilter<InstantHealEvent> _events;
-        private EcsFilter<BleedingComponent> _bleedingComponents;
+        private readonly EcsWorld _ecsWorld = null;
+        private readonly EcsFilterSingle<MainConfig> _mainConfig = null;
+        private readonly EcsFilter<InstantHealEvent> _events = null;
+        private readonly EcsFilter<BleedingComponent> _bleedingComponents = null;
 
         private static readonly Random Random = new Random();
 
@@ -27,9 +27,9 @@ namespace GunshotWound2.Effects
             GunshotWound2.LastSystem = nameof(InstantHealSystem);
 #endif
 
-            for (int i = 0; i < _events.EntitiesCount; i++)
+            for (var i = 0; i < _events.EntitiesCount; i++)
             {
-                int pedEntity = _events.Components1[i].Entity;
+                var pedEntity = _events.Components1[i].Entity;
                 if (!_ecsWorld.IsEntityExists(pedEntity))
                 {
                     continue;
@@ -70,7 +70,7 @@ namespace GunshotWound2.Effects
                     noPainEvent.ForceUpdate = true;
                 }
 
-                for (int bleedIndex = 0; bleedIndex < _bleedingComponents.EntitiesCount; bleedIndex++)
+                for (var bleedIndex = 0; bleedIndex < _bleedingComponents.EntitiesCount; bleedIndex++)
                 {
                     if (_bleedingComponents.Components1[bleedIndex].Entity != pedEntity) continue;
 
@@ -78,7 +78,7 @@ namespace GunshotWound2.Effects
                 }
             }
 
-            _events.RemoveAllEntities();
+            _events.CleanFilter();
         }
     }
 }

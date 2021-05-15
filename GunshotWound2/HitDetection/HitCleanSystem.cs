@@ -7,9 +7,9 @@ namespace GunshotWound2.HitDetection
     [EcsInject]
     public sealed class HitCleanSystem : IEcsRunSystem
     {
-        private EcsWorld _ecsWorld;
-        private EcsFilter<WoundedPedComponent, HaveDamageMarkComponent> _peds;
-        private EcsFilter<CheckBodyHitEvent> _requestsToClean;
+        private readonly EcsWorld _ecsWorld = null;
+        private readonly EcsFilter<WoundedPedComponent, HaveDamageMarkComponent> _peds = null;
+        private readonly EcsFilter<CheckBodyHitEvent> _requestsToClean = null;
 
         public void Run()
         {
@@ -17,9 +17,9 @@ namespace GunshotWound2.HitDetection
             GunshotWound2.LastSystem = nameof(HitCleanSystem);
 #endif
 
-            for (int i = 0; i < _requestsToClean.EntitiesCount; i++)
+            for (var i = 0; i < _requestsToClean.EntitiesCount; i++)
             {
-                int pedEntity = _requestsToClean.Components1[i].Entity;
+                var pedEntity = _requestsToClean.Components1[i].Entity;
                 var ped = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity).ThisPed;
 
                 if (ped != null)
@@ -31,7 +31,7 @@ namespace GunshotWound2.HitDetection
                 _ecsWorld.RemoveEntity(_requestsToClean.Entities[i]);
             }
 
-            for (int i = 0; i < _peds.EntitiesCount; i++)
+            for (var i = 0; i < _peds.EntitiesCount; i++)
             {
                 _ecsWorld.RemoveComponent<HaveDamageMarkComponent>(_peds.Entities[i]);
             }

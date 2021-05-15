@@ -9,18 +9,17 @@ namespace GunshotWound2.Effects
     [EcsInject]
     public sealed class RagdollSystem : IEcsRunSystem
     {
-        private EcsWorld _ecsWorld;
-        private EcsFilter<SetPedToRagdollEvent> _events;
-        private EcsFilterSingle<MainConfig> _config;
+        private readonly EcsWorld _ecsWorld = null;
+        private readonly EcsFilter<SetPedToRagdollEvent> _events = null;
 
         public void Run()
         {
 #if DEBUG
             GunshotWound2.LastSystem = nameof(RagdollSystem);
 #endif
-            for (int i = 0; i < _events.EntitiesCount; i++)
+            for (var i = 0; i < _events.EntitiesCount; i++)
             {
-                int pedEntity = _events.Components1[i].Entity;
+                var pedEntity = _events.Components1[i].Entity;
                 if (!_ecsWorld.IsEntityExists(pedEntity))
                 {
                     _ecsWorld.RemoveEntity(_events.Entities[i]);
@@ -123,9 +122,9 @@ namespace GunshotWound2.Effects
 
         private void RemoveAllPermanentEventsForPed(int entity)
         {
-            for (int i = 0; i < _events.EntitiesCount; i++)
+            for (var i = 0; i < _events.EntitiesCount; i++)
             {
-                SetPedToRagdollEvent ragdollEvent = _events.Components1[i];
+                var ragdollEvent = _events.Components1[i];
                 if (ragdollEvent.RagdollState != RagdollStates.PERMANENT || ragdollEvent.Entity != entity) continue;
 
                 _ecsWorld.RemoveEntity(_events.Entities[i]);

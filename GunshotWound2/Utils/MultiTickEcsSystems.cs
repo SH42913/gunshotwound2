@@ -13,7 +13,7 @@ namespace GunshotWound2.Utils
     [Unity.IL2CPP.CompilerServices.Il2CppSetOption (Unity.IL2CPP.CompilerServices.Option.NullChecks, false)]
     [Unity.IL2CPP.CompilerServices.Il2CppSetOption (Unity.IL2CPP.CompilerServices.Option.ArrayBoundsChecks, false)]
 #endif
-    public sealed class MultiTickEcsSystems : IDisposable
+    public class MultiTickEcsSystems : IDisposable
     {
         public enum RestrictionModes
         {

@@ -6,7 +6,7 @@ namespace GunshotWound2.Effects
     [EcsInject]
     public sealed class ArmorSystem : IEcsRunSystem
     {
-        private EcsFilter<WoundedPedComponent> _peds;
+        private readonly EcsFilter<WoundedPedComponent> _peds = null;
 
         public void Run()
         {
@@ -14,7 +14,7 @@ namespace GunshotWound2.Effects
             GunshotWound2.LastSystem = nameof(ArmorSystem);
 #endif
 
-            for (int i = 0; i < _peds.EntitiesCount; i++)
+            for (var i = 0; i < _peds.EntitiesCount; i++)
             {
                 var ped = _peds.Components1[i];
 

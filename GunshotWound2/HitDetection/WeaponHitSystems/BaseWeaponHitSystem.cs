@@ -18,11 +18,11 @@ namespace GunshotWound2.HitDetection.WeaponHitSystems
             GunshotWound2.LastSystem = nameof(BaseWeaponHitSystem);
 #endif
 
-            for (int i = 0; i < Peds.EntitiesCount; i++)
+            for (var i = 0; i < Peds.EntitiesCount; i++)
             {
                 if (!PedWasDamaged(WeaponHashes, Peds.Components1[i].ThisPed)) continue;
 
-                int pedEntity = Peds.Entities[i];
+                var pedEntity = Peds.Entities[i];
                 EcsWorld
                     .CreateEntityWith<CheckBodyHitEvent>()
                     .Entity = pedEntity;

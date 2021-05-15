@@ -1,5 +1,6 @@
 ﻿using GTA;
 using GTA.Native;
+using GunshotWound2.Utils;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Player
@@ -7,11 +8,11 @@ namespace GunshotWound2.Player
     [EcsInject]
     public sealed class SpecialAbilityLockSystem : IEcsRunSystem
     {
-        private EcsFilter<ChangeSpecialAbilityEvent> _events;
+        private readonly EcsFilter<ChangeSpecialAbilityEvent> _events = null;
 
         public void Run()
         {
-            for (int i = 0; i < _events.EntitiesCount; i++)
+            for (var i = 0; i < _events.EntitiesCount; i++)
             {
                 if (Function.Call<bool>(Hash.IS_SPECIAL_ABILITY_ACTIVE, Game.Player))
                 {
@@ -24,7 +25,7 @@ namespace GunshotWound2.Player
                     Game.Player.Character.Model.Hash);
             }
 
-            _events.RemoveAllEntities();
+            _events.CleanFilter();
         }
     }
 }

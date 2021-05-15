@@ -4,6 +4,7 @@ using GTA;
 using GTA.Native;
 using GunshotWound2.Configs;
 using GunshotWound2.HitDetection;
+using GunshotWound2.Utils;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.World
@@ -11,12 +12,10 @@ namespace GunshotWound2.World
     [EcsInject]
     public sealed class NpcFindSystem : IEcsRunSystem
     {
-        private EcsWorld _ecsWorld;
-        private EcsFilter<WoundedPedComponent, NpcMarkComponent> _npcs;
-        private EcsFilter<ForceWorldPedUpdateEvent> _forceUpdates;
-
-        private EcsFilterSingle<MainConfig> _config;
-        private EcsFilterSingle<GswWorld> _world;
+        private readonly EcsWorld _ecsWorld = null;
+        private readonly EcsFilter<ForceWorldPedUpdateEvent> _forceUpdates = null;
+        private readonly EcsFilterSingle<MainConfig> _config = null;
+        private readonly EcsFilterSingle<GswWorld> _world = null;
 
         private readonly Stopwatch _stopwatch = new Stopwatch();
 
@@ -31,29 +30,29 @@ namespace GunshotWound2.World
 
         private void FindPeds()
         {
-            float addRange = _config.Data.NpcConfig.AddingPedRange;
-            if (addRange <= GunshotWound2.MINIMAL_RANGE_FOR_WOUNDED_PEDS) return;
-            Ped playerPed = Game.Player.Character;
+            var addRange = _config.Data.NpcConfig.AddingPedRange;
+            if (addRange <= GunshotWound2.MinimalRangeForWoundedPeds) return;
+            var playerPed = Game.Player.Character;
 
             if (CheckNeedToUpdateWorldPeds())
             {
                 _config.Data.NpcConfig.WorldPeds = GTA.World.GetNearbyPeds(playerPed, addRange);
                 _config.Data.NpcConfig.LastCheckedPedIndex = 0;
-                _forceUpdates.RemoveAllEntities();
+                _forceUpdates.CleanFilter();
             }
 
-            Ped[] allPeds = _config.Data.NpcConfig.WorldPeds;
+            var allPeds = _config.Data.NpcConfig.WorldPeds;
             var pedsToAdd = new Queue<Ped>();
 
             _stopwatch.Restart();
-            for (int worldPedIndex = _config.Data.NpcConfig.LastCheckedPedIndex;
+            for (var worldPedIndex = _config.Data.NpcConfig.LastCheckedPedIndex;
                 worldPedIndex < allPeds.Length;
                 worldPedIndex++)
             {
                 if (_stopwatch.ElapsedMilliseconds > _config.Data.NpcConfig.UpperBoundForFindInMs) break;
 
                 _config.Data.NpcConfig.LastCheckedPedIndex = worldPedIndex;
-                Ped pedToCheck = allPeds[worldPedIndex];
+                var pedToCheck = allPeds[worldPedIndex];
 
                 if (!pedToCheck.IsHuman || pedToCheck.IsDead || pedToCheck.IsPlayer) continue;
                 if (!PedInTargetList(playerPed, pedToCheck)) continue;

@@ -2,6 +2,7 @@
 using GunshotWound2.Effects;
 using GunshotWound2.GUI;
 using GunshotWound2.HitDetection;
+using GunshotWound2.Utils;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Pain
@@ -24,7 +25,7 @@ namespace GunshotWound2.Pain
             GunshotWound2.LastSystem = nameof(BasePainStateSystem<TStateEvent>);
 #endif
 
-            for (int i = 0; i < Events.EntitiesCount; i++)
+            for (var i = 0; i < Events.EntitiesCount; i++)
             {
                 var changeEvent = Events.Components1[i];
                 var pedEntity = changeEvent.Entity;
@@ -38,7 +39,7 @@ namespace GunshotWound2.Pain
                 woundedPed.PainState = CurrentState;
             }
 
-            Events.RemoveAllEntities();
+            Events.CleanFilter();
         }
 
         protected virtual void ExecuteState(WoundedPedComponent woundedPed, int pedEntity)

@@ -3,6 +3,7 @@ using GunshotWound2.Configs;
 using GunshotWound2.Damage;
 using GunshotWound2.GUI;
 using GunshotWound2.HitDetection;
+using GunshotWound2.Utils;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Healing
@@ -10,20 +11,19 @@ namespace GunshotWound2.Healing
     [EcsInject]
     public sealed class BandageSystem : IEcsRunSystem
     {
-        private EcsWorld _ecsWorld;
-        private EcsFilterSingle<MainConfig> _config;
-        private EcsFilterSingle<LocaleConfig> _localeConfig;
-
-        private EcsFilter<ApplyBandageEvent> _requestEvents;
-        private EcsFilter<SuccessfulBandageEvent> _successfulEvents;
-        private EcsFilter<WoundedPedComponent, BandageInProgressComponent> _pedsWithBandageInProgress;
-        private EcsFilter<BleedingComponent> _bleedings;
+        private readonly EcsWorld _ecsWorld = null;
+        private readonly EcsFilterSingle<MainConfig> _config = null;
+        private readonly EcsFilterSingle<LocaleConfig> _localeConfig = null;
+        private readonly EcsFilter<ApplyBandageEvent> _requestEvents = null;
+        private readonly EcsFilter<SuccessfulBandageEvent> _successfulEvents = null;
+        private readonly EcsFilter<WoundedPedComponent, BandageInProgressComponent> _pedsWithBandageInProgress = null;
+        private readonly EcsFilter<BleedingComponent> _bleedings = null;
 
         public void Run()
         {
-            for (int i = 0; i < _requestEvents.EntitiesCount; i++)
+            for (var i = 0; i < _requestEvents.EntitiesCount; i++)
             {
-                int pedEntity = _requestEvents.Components1[i].Entity;
+                var pedEntity = _requestEvents.Components1[i].Entity;
                 if (!_ecsWorld.IsEntityExists(pedEntity)) continue;
 
                 var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
@@ -41,27 +41,27 @@ namespace GunshotWound2.Healing
                     Game.Player.Money -= _config.Data.WoundConfig.BandageCost;
                 }
 
-                var progress = _ecsWorld.EnsureComponent<BandageInProgressComponent>(pedEntity, out bool isNew);
+                var progress = _ecsWorld.EnsureComponent<BandageInProgressComponent>(pedEntity, out var isNew);
                 if (!isNew)
                 {
                     SendMessage(_localeConfig.Data.AlreadyBandaging, pedEntity);
                     continue;
                 }
 
-                float timeToBandage = _config.Data.WoundConfig.ApplyBandageTime;
+                var timeToBandage = _config.Data.WoundConfig.ApplyBandageTime;
                 progress.EstimateTime = timeToBandage;
                 SendMessage(string.Format(_localeConfig.Data.YouTryToBandage, timeToBandage), pedEntity);
             }
 
-            _requestEvents.RemoveAllEntities();
+            _requestEvents.CleanFilter();
 
-            float frameTimeInSec = Game.LastFrameTime;
-            for (int i = 0; i < _pedsWithBandageInProgress.EntitiesCount; i++)
+            var frameTimeInSec = Game.LastFrameTime;
+            for (var i = 0; i < _pedsWithBandageInProgress.EntitiesCount; i++)
             {
-                WoundedPedComponent woundedPed = _pedsWithBandageInProgress.Components1[i];
-                Ped thisPed = woundedPed.ThisPed;
-                BandageInProgressComponent progress = _pedsWithBandageInProgress.Components2[i];
-                int pedEntity = _pedsWithBandageInProgress.Entities[i];
+                var woundedPed = _pedsWithBandageInProgress.Components1[i];
+                var thisPed = woundedPed.ThisPed;
+                var progress = _pedsWithBandageInProgress.Components2[i];
+                var pedEntity = _pedsWithBandageInProgress.Entities[i];
 
                 if (woundedPed.InPermanentRagdoll || thisPed.IsWalking || thisPed.IsRunning ||
                     thisPed.IsSprinting || thisPed.IsShooting || thisPed.IsRagdoll ||
@@ -79,15 +79,15 @@ namespace GunshotWound2.Healing
                 _ecsWorld.CreateEntityWith<SuccessfulBandageEvent>().Entity = pedEntity;
             }
 
-            for (int i = 0; i < _successfulEvents.EntitiesCount; i++)
+            for (var i = 0; i < _successfulEvents.EntitiesCount; i++)
             {
-                int pedEntity = _successfulEvents.Components1[i].Entity;
+                var pedEntity = _successfulEvents.Components1[i].Entity;
                 if (!_ecsWorld.IsEntityExists(pedEntity)) continue;
 
                 var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
                 if (woundedPed?.MostDangerBleedingEntity == null) continue;
 
-                int bleedingEntity = woundedPed.MostDangerBleedingEntity.Value;
+                var bleedingEntity = woundedPed.MostDangerBleedingEntity.Value;
                 if (!_ecsWorld.IsEntityExists(bleedingEntity)) continue;
 
                 var bleeding = _ecsWorld.GetComponent<BleedingComponent>(woundedPed.MostDangerBleedingEntity.Value);
@@ -98,7 +98,7 @@ namespace GunshotWound2.Healing
                 SendMessage(string.Format("~g~" + _localeConfig.Data.BandageSuccess, bleeding.Name), pedEntity);
             }
 
-            _successfulEvents.RemoveAllEntities();
+            _successfulEvents.CleanFilter();
         }
 
         private void SendMessage(string message, int pedEntity, NotifyLevels level = NotifyLevels.COMMON)
@@ -120,9 +120,9 @@ namespace GunshotWound2.Healing
             float maxBleeding = 0;
             int? mostDangerEntity = null;
 
-            for (int i = 0; i < _bleedings.EntitiesCount; i++)
+            for (var i = 0; i < _bleedings.EntitiesCount; i++)
             {
-                BleedingComponent bleeding = _bleedings.Components1[i];
+                var bleeding = _bleedings.Components1[i];
                 if (!bleeding.CanBeHealed) continue;
                 if (bleeding.Entity != pedEntity) continue;
                 if (bleeding.BleedSeverity <= maxBleeding) continue;

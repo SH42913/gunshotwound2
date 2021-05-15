@@ -49,13 +49,13 @@ namespace GunshotWound2.Damage
             GunshotWound2.LastSystem = nameof(BaseDamageSystem<T>);
 #endif
 
-            for (int damageIndex = 0; damageIndex < HitComponents.EntitiesCount; damageIndex++)
+            for (var damageIndex = 0; damageIndex < HitComponents.EntitiesCount; damageIndex++)
             {
                 var damage = HitComponents.Components1[damageIndex];
                 var pedEntity = damage.Entity;
 
                 BodyPartWasHitEvent bodyHitComponent = null;
-                for (int bodyIndex = 0; bodyIndex < BodyHitComponents.EntitiesCount; bodyIndex++)
+                for (var bodyIndex = 0; bodyIndex < BodyHitComponents.EntitiesCount; bodyIndex++)
                 {
                     var bodyDamage = BodyHitComponents.Components1[bodyIndex];
                     if (bodyDamage.Entity != pedEntity) continue;
@@ -155,7 +155,7 @@ namespace GunshotWound2.Damage
 
             if (Random.IsTrueWithProbability(CritChance))
             {
-                int critIndex = Random.Next(0, possibleCrits.Length);
+                var critIndex = Random.Next(0, possibleCrits.Length);
                 var crit = possibleCrits[critIndex];
                 wound.Crits = crit;
             }
@@ -181,14 +181,14 @@ namespace GunshotWound2.Damage
                 return true;
             }
 
-            float chanceToSave = Config.Data.WoundConfig.MinimalChanceForArmorSave;
+            var chanceToSave = Config.Data.WoundConfig.MinimalChanceForArmorSave;
             if (!CanPenetrateArmor) return false;
             if (chanceToSave >= 1f) return false;
 
-            float armorPercent = woundedPed.Armor / 100f;
-            float chanceForArmorPercent = 1f - Config.Data.WoundConfig.MinimalChanceForArmorSave;
-            bool saved = Random.IsTrueWithProbability(Config.Data.WoundConfig.MinimalChanceForArmorSave +
-                                                      chanceForArmorPercent * armorPercent);
+            var armorPercent = woundedPed.Armor / 100f;
+            var chanceForArmorPercent = 1f - Config.Data.WoundConfig.MinimalChanceForArmorSave;
+            var saved = Random.IsTrueWithProbability(Config.Data.WoundConfig.MinimalChanceForArmorSave +
+                                                     chanceForArmorPercent * armorPercent);
             if (!saved)
             {
                 SendMessage(Locale.Data.ArmorPenetrated, pedEntity, NotifyLevels.WARNING);

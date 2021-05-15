@@ -9,8 +9,8 @@ namespace GunshotWound2.HitDetection
     [EcsInject]
     public sealed class BodyHitSystem : IEcsRunSystem
     {
-        private EcsWorld _ecsWorld;
-        private EcsFilter<CheckBodyHitEvent> _events;
+        private readonly EcsWorld _ecsWorld = null;
+        private readonly EcsFilter<CheckBodyHitEvent> _events = null;
 
         public void Run()
         {
@@ -18,9 +18,9 @@ namespace GunshotWound2.HitDetection
             GunshotWound2.LastSystem = nameof(BodyHitSystem);
 #endif
 
-            for (int i = 0; i < _events.EntitiesCount; i++)
+            for (var i = 0; i < _events.EntitiesCount; i++)
             {
-                int pedEntity = _events.Components1[i].Entity;
+                var pedEntity = _events.Components1[i].Entity;
                 if (!_ecsWorld.IsEntityExists(pedEntity)) continue;
 
                 var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
@@ -42,8 +42,8 @@ namespace GunshotWound2.HitDetection
                 return BodyParts.NOTHING;
             }
 
-            int damagedBoneNum = 0;
-            int* x = &damagedBoneNum;
+            var damagedBoneNum = 0;
+            var x = &damagedBoneNum;
             Function.Call(Hash.GET_PED_LAST_DAMAGE_BONE, target, x);
 
             Enum.TryParse(damagedBoneNum.ToString(), out Bone damagedBone);

@@ -2,6 +2,7 @@
 using GunshotWound2.Damage;
 using GunshotWound2.HitDetection;
 using GunshotWound2.Pain;
+using GunshotWound2.Utils;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.GUI
@@ -9,12 +10,11 @@ namespace GunshotWound2.GUI
     [EcsInject]
     public sealed class CheckSystem : IEcsRunSystem
     {
-        private EcsWorld _ecsWorld;
-        private EcsFilterSingle<MainConfig> _config;
-        private EcsFilterSingle<LocaleConfig> _locale;
-
-        private EcsFilter<ShowHealthStateEvent> _events;
-        private EcsFilter<BleedingComponent> _wounds;
+        private readonly EcsWorld _ecsWorld = null;
+        private readonly EcsFilterSingle<MainConfig> _config = null;
+        private readonly EcsFilterSingle<LocaleConfig> _locale = null;
+        private readonly EcsFilter<ShowHealthStateEvent> _events = null;
+        private readonly EcsFilter<BleedingComponent> _wounds = null;
 
         public void Run()
         {
@@ -22,9 +22,9 @@ namespace GunshotWound2.GUI
             GunshotWound2.LastSystem = nameof(CheckSystem);
 #endif
 
-            for (int i = 0; i < _events.EntitiesCount; i++)
+            for (var i = 0; i < _events.EntitiesCount; i++)
             {
-                int pedEntity = _events.Components1[i].Entity;
+                var pedEntity = _events.Components1[i].Entity;
                 if (!_ecsWorld.IsEntityExists(pedEntity)) continue;
 
                 var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
@@ -37,7 +37,7 @@ namespace GunshotWound2.GUI
                 ShowBleedings(woundedPed, pedEntity);
             }
 
-            _events.RemoveAllEntities();
+            _events.CleanFilter();
         }
 
         private void ShowHealth(WoundedPedComponent woundedPed)
@@ -122,7 +122,7 @@ namespace GunshotWound2.GUI
 
         private void ShowCrits(WoundedPedComponent woundedPed)
         {
-            string healthInfo = "";
+            var healthInfo = "";
             if (woundedPed.Crits <= 0) return;
 
             healthInfo += $"~s~{_locale.Data.Crits} ~r~";
@@ -172,10 +172,10 @@ namespace GunshotWound2.GUI
         {
             if (woundedPed.BleedingCount <= 0) return;
 
-            string woundList = "";
-            for (int woundIndex = 0; woundIndex < _wounds.EntitiesCount; woundIndex++)
+            var woundList = "";
+            for (var woundIndex = 0; woundIndex < _wounds.EntitiesCount; woundIndex++)
             {
-                BleedingComponent wound = _wounds.Components1[woundIndex];
+                var wound = _wounds.Components1[woundIndex];
                 if (pedEntity != wound.Entity) continue;
 
                 if (woundedPed.MostDangerBleedingEntity != null &&

@@ -8,12 +8,12 @@ namespace GunshotWound2.HitDetection
     [EcsInject]
     public sealed class HitDetectSystem : IEcsRunSystem
     {
-        private EcsWorld _ecsWorld;
-        private EcsFilter<WoundedPedComponent> _peds;
+        private readonly EcsWorld _ecsWorld = null;
+        private readonly EcsFilter<WoundedPedComponent> _peds = null;
 
         public void Run()
         {
-            for (int i = 0; i < _peds.EntitiesCount; i++)
+            for (var i = 0; i < _peds.EntitiesCount; i++)
             {
                 if (!Function.Call<bool>(Hash.HAS_ENTITY_BEEN_DAMAGED_BY_ANY_PED, _peds.Components1[i].ThisPed))
                     continue;

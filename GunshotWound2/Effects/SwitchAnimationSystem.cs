@@ -1,5 +1,6 @@
 ﻿using GTA.Native;
 using GunshotWound2.HitDetection;
+using GunshotWound2.Utils;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Effects
@@ -7,8 +8,8 @@ namespace GunshotWound2.Effects
     [EcsInject]
     public sealed class SwitchAnimationSystem : IEcsRunSystem
     {
-        private EcsWorld _ecsWorld;
-        private EcsFilter<ChangeWalkAnimationEvent> _events;
+        private readonly EcsWorld _ecsWorld = null;
+        private readonly EcsFilter<ChangeWalkAnimationEvent> _events = null;
 
         public void Run()
         {
@@ -16,9 +17,9 @@ namespace GunshotWound2.Effects
             GunshotWound2.LastSystem = nameof(SwitchAnimationSystem);
 #endif
 
-            for (int i = 0; i < _events.EntitiesCount; i++)
+            for (var i = 0; i < _events.EntitiesCount; i++)
             {
-                int pedEntity = _events.Components1[i].Entity;
+                var pedEntity = _events.Components1[i].Entity;
                 if (!_ecsWorld.IsEntityExists(pedEntity)) continue;
 
                 var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
@@ -36,7 +37,7 @@ namespace GunshotWound2.Effects
                 Function.Call(Hash.SET_PED_MOVEMENT_CLIPSET, woundedPed.ThisPed, animationName, 1.0f);
             }
 
-            _events.RemoveAllEntities();
+            _events.CleanFilter();
         }
     }
 }
