@@ -22,7 +22,7 @@ namespace GunshotWound2.Healing
                 var woundedPed = _woundedPeds.Components1[i];
                 var ped = woundedPed.ThisPed;
                 var needToHeal = woundedPed.IsPlayer
-                    ? ped.Health + 102 < ped.MaxHealth
+                    ? ped.Health + 1 < ped.MaxHealth
                     : ped.Health < ped.MaxHealth;
                 if (woundedPed.IsDead || woundedPed.BleedingCount > 0 || !needToHeal) continue;
 
