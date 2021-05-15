@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using GunshotWound2.Utils;
@@ -31,6 +32,15 @@ namespace GunshotWound2.Configs
         public bool WarningMessages = true;
         public bool AlertMessages = true;
         public bool EmergencyMessages = true;
+
+        public uint[] SmallCaliberHashes;
+        public uint[] MediumCaliberHashes;
+        public uint[] HighCaliberHashes;
+        public uint[] LightImpactHashes;
+        public uint[] HeavyImpactHashes;
+        public uint[] ShotgunHashes;
+        public uint[] CuttingHashes;
+        public uint[] ExplosiveHashes;
 
         public override string ToString()
         {
@@ -284,7 +294,29 @@ namespace GunshotWound2.Configs
                 dictionary.Add(element.Name.LocalName, multipliers);
             }
 
+            config.SmallCaliberHashes = GetWeaponHashes("SmallCaliber");
+            config.MediumCaliberHashes = GetWeaponHashes("MediumCaliber");
+            config.HighCaliberHashes = GetWeaponHashes("HighCaliber");
+            config.LightImpactHashes = GetWeaponHashes("LightImpact");
+            config.HeavyImpactHashes = GetWeaponHashes("HeavyImpact");
+            config.ShotgunHashes = GetWeaponHashes("Shotgun");
+            config.CuttingHashes = GetWeaponHashes("Cutting");
+            config.ExplosiveHashes = GetWeaponHashes("Explosive");
             config.WoundConfig.DamageSystemConfigs = dictionary;
+
+            uint[] GetWeaponHashes(string weaponName)
+            {
+                var weaponNode = node.Element(weaponName);
+                if (weaponNode == null) throw new Exception($"{weaponName} node not found!");
+
+                const string name = "Hashes";
+                var hashes = weaponNode.Element(name)?.Attribute(name)?.Value;
+                if (string.IsNullOrEmpty(hashes)) throw new Exception($"{weaponName}'s hashes is empty");
+
+                return hashes.Split(';')
+                    .Where(x => !string.IsNullOrEmpty(x))
+                    .Select(uint.Parse).ToArray();
+            }
         }
 
         private static void WoundsSection(MainConfig config, XElement doc)

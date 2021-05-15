@@ -19,7 +19,6 @@ using GunshotWound2.Player;
 using GunshotWound2.Utils;
 using GunshotWound2.World;
 using Leopotam.Ecs;
-using Screen = GTA.UI.Screen;
 
 namespace GunshotWound2
 {
@@ -302,14 +301,7 @@ namespace GunshotWound2
         {
             return systems
                 .Add(new HitDetectSystem())
-                .Add(new LightImpactHitSystem())
-                .Add(new CuttingHitSystem())
-                .Add(new HeavyImpactHitSystem())
-                .Add(new SmallCaliberHitSystem())
-                .Add(new ShotgunHitSystem())
-                .Add(new MediumCaliberHitSystem())
-                .Add(new HighCaliberHitSystem())
-                .Add(new ExplosionHitSystem())
+                .Add(new BaseWeaponHitSystem())
                 .Add(new BodyHitSystem())
                 .Add(new HitCleanSystem());
         }

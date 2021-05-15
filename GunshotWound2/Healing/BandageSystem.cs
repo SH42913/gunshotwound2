@@ -1,5 +1,4 @@
 ﻿using GTA;
-using GTA.Native;
 using GunshotWound2.Configs;
 using GunshotWound2.Damage;
 using GunshotWound2.GUI;

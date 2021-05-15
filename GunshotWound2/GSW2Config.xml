@@ -141,17 +141,46 @@
 	</Wounds>
 
 	<Weapons>
-		<SmallCaliber DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.4" ArmorDamage="2"/>
-		<MediumCaliber DamageMult="1.2" BleedingMult="1.3" PainMult="1.2" CritChance="0.6" ArmorDamage="4"/>
-		<HighCaliber DamageMult="1.3" BleedingMult="1.5" PainMult="1.5" CritChance="0.8" ArmorDamage="6"/>
-		<Shotgun DamageMult="0.8" BleedingMult="1.1" PainMult="1.1" CritChance="0.4" ArmorDamage="3"/>
+		<SmallCaliber DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.4" ArmorDamage="2">
+			<!-- Here you can determine weapons in this WeaponGroup -->
+			<!-- Pistol;PistolMk2;CombatPistol;SNSPistol;SNSPistolMk2;VintagePistol;MarksmanPistol;DoubleActionRevolver;APPistol;MicroSMG;MiniSMG;SMG;SMGMk2;CombatPDW;MachinePistol;CeramicPistol;PericoPistol; -->
+			<Hashes Hashes="453432689;3219281620;1593441988;3218215474;2285322324;137902532;3696079510;2548703416;584646201;324215364;3173288789;736523883;2024373456;171789620;3675956304;727643628;3514013252;"/>
+		</SmallCaliber>
 
-		<LightImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.2"/>
-		<HeavyImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.7"/>
+		<MediumCaliber DamageMult="1.2" BleedingMult="1.3" PainMult="1.2" CritChance="0.6" ArmorDamage="4">
+			<!-- HeavyPistol;Revolver;RevolverMk2;AssaultRifleMk2;AdvancedRifle;AssaultSMG;BullpupRifle;BullpupRifleMk2;CarbineRifle;CarbineRifleMk2;CombatMG;CompactRifle;Gusenberg;SpecialCarbine;SpecialCarbineMk2;NavyRevolver;MilitaryRifle; -->
+			<Hashes Hashes="3523564046;3249783761;3415619887;961495388;2937143193;4024951519;2132975508;2228681469;2210333304;4208062921;2144741730;1649403952;1627465347;3231910285;2526821735;2441047180;2772307231;"/>
+		</MediumCaliber>
 
-		<Cutting DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.5"/>
+		<HighCaliber DamageMult="1.3" BleedingMult="1.5" PainMult="1.5" CritChance="0.8" ArmorDamage="6">
+			<!-- Pistol50;MG;CombatMGMk2;AssaultRifle;HeavySniper;HeavySniperMk2;MarksmanRifle;MarksmanRifleMk2;Minigun;Railgun;Musket;SniperRifle;UnholyHellbringer; -->
+			<Hashes Hashes="2578377531;2634544996;3686625920;3220176749;205991906;177293209;3342088282;1785463520;1119849093;1834241177;2828843422;100416529;1198256469;"/>
+		</HighCaliber>
 
-		<Explosive DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="1.0"/>
+		<Shotgun DamageMult="0.8" BleedingMult="1.1" PainMult="1.1" CritChance="0.4" ArmorDamage="3">
+			<!-- PumpShotgun;PumpShotgunMk2;SawnOffShotgun;BullpupShotgun;AssaultShotgun;HeavyShotgun;DoubleBarrelShotgun;SweeperShotgun;CombatShotgun; -->
+			<Hashes Hashes="487013001;1432025498;2017895192;2640438543;3800352039;984333226;4019527611;317205821;3514615361;"/>
+		</Shotgun>
+
+		<LightImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.2">
+			<!-- Unarmed;Parachute;NightVision;Snowball;Nightstick;KnuckleDuster;Flashlight;HitByWaterCannon;Fall;Rabbit;Briefcase;BirdCrap;Hen;Briefcase2;GarbageBag;SmallDog;StunGun;FlareGun; -->
+			<Hashes Hashes="2725352035;4222310262;2803906140;126349499;1737195953;3638508604;2343591895;600439132;3425972830;3452007600;2793925639;2294779575;1834887169;955837630;28811031;3794977420;3146768957;911657153;1198879012;"/>
+		</LightImpact>
+
+		<HeavyImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.1" CritChance="0.7">
+			<!-- RammedByCar;HelicopterCrash;Boar;Pig;Hammer;Crowbar;Bat;RunOverCar;FireExtinguisher;FireWork;GolfClub;PetrolCan;PoolCue;Wrench;Cow;Deer;StoneHatchet;Flare;GrenadeLauncherSmoke; -->
+			<Hashes Hashes="133987706;341774354;861723357;1205296881;1317494643;2227010557;2508868239;2741846334;101631238;2138347493;1141786504;883325847;2484171525;419712736;94548753;4106648222;940833800;1233104067;1305664598;"/>
+		</HeavyImpact>
+
+		<Cutting DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.5">
+			<!-- Cougar;TigerShark;BarbedWire;Knife;HammerHeadShark;Cat;AnimalRetriever;Animal;KillerWhale;BattleAxe;Bottle;Dagger;Hatchet;Machete;SwitchBlade; -->
+			<Hashes Hashes="148160082;743550225;1223143800;2578778090;3030980043;3799318422;3854032506;4194021054;4198358245;3441901897;4192643659;2460120199;4191993645;3713923289;3756226112;"/>
+		</Cutting>
+
+		<Explosive DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="1.0">
+			<!-- Explosion;Grenade;CompactGrenadeLauncher;StickyBomb;HomingLauncher;GrenadeLauncher;ProximityMine;UpNAtomizer;RPG;Widowmaker;PipeBomb;weapon_airstrike_rocket; -->
+			<Hashes Hashes="539292904;2481070269;125959754;741814745;1672152130;2726580491;2874559379;2939590305;2982836145;3056410471;3125143736;324506233;"/>
+		</Explosive>
 	</Weapons>
 
 	<Hotkeys>

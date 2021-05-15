@@ -1,5 +1,4 @@
-﻿using GunshotWound2.HitDetection;
-using GunshotWound2.Utils;
+﻿using GunshotWound2.Utils;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.GUI
