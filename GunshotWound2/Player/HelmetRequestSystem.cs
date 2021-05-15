@@ -23,16 +23,17 @@ namespace GunshotWound2.Player
             if (_requests.EntitiesCount <= 0) return;
 
             var player = Game.Player;
-            if (player.Character.IsWearingHelmet)
+            var ped = player.Character;
+            if (ped.IsWearingHelmet)
             {
-                player.Character.RemoveHelmet(false);
+                ped.RemoveHelmet(false);
             }
-            else
+            else if (!ped.IsRagdoll)
             {
                 if (player.Money > _config.Data.PlayerConfig.MoneyForHelmet)
                 {
                     player.Money -= _config.Data.PlayerConfig.MoneyForHelmet;
-                    player.Character.GiveHelmet(false, Helmet.RegularMotorcycleHelmet, GunshotWound2.Random.Next(0, 15));
+                    ped.GiveHelmet(false, Helmet.RegularMotorcycleHelmet, GunshotWound2.Random.Next(0, 15));
                 }
                 else
                 {

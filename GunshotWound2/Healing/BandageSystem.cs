@@ -1,4 +1,5 @@
 ﻿using GTA;
+using GTA.Native;
 using GunshotWound2.Configs;
 using GunshotWound2.Damage;
 using GunshotWound2.GUI;
@@ -50,7 +51,7 @@ namespace GunshotWound2.Healing
 
                 var timeToBandage = _config.Data.WoundConfig.ApplyBandageTime;
                 progress.EstimateTime = timeToBandage;
-                SendMessage(string.Format(_localeConfig.Data.YouTryToBandage, timeToBandage), pedEntity);
+                SendMessage(string.Format(_localeConfig.Data.YouTryToBandage, timeToBandage.ToString("F1")), pedEntity);
             }
 
             _requestEvents.CleanFilter();
@@ -104,8 +105,8 @@ namespace GunshotWound2.Healing
         private void SendMessage(string message, int pedEntity, NotifyLevels level = NotifyLevels.COMMON)
         {
 #if !DEBUG
-            if(level == NotifyLevels.DEBUG) return;
-            if(_config.Data.PlayerConfig.PlayerEntity != pedEntity) return;
+            if (level == NotifyLevels.DEBUG) return;
+            if (_config.Data.PlayerConfig.PlayerEntity != pedEntity) return;
 #endif
 
             var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();

@@ -3,6 +3,7 @@ using GunshotWound2.Effects;
 using GunshotWound2.GUI;
 using GunshotWound2.HitDetection;
 using GunshotWound2.Player;
+using GunshotWound2.Utils;
 using Leopotam.Ecs;
 
 namespace GunshotWound2.Pain
@@ -29,6 +30,9 @@ namespace GunshotWound2.Pain
             {
                 woundedPed.ThisPed.Weapons.Drop();
             }
+
+            var speech = GunshotWound2.Random.IsTrueWithProbability(0.5f) ? "DYING_HELP" : "DYING_MOAN";
+            woundedPed.ThisPed.PlayAmbientSpeech(speech, SpeechModifier.ShoutedClear);
 
             if (!woundedPed.IsPlayer) return;
             Game.Player.IgnoredByEveryone = true;

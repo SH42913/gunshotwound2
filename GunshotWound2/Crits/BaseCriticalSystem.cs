@@ -1,4 +1,6 @@
-﻿using GunshotWound2.Configs;
+﻿using GTA;
+using GTA.Native;
+using GunshotWound2.Configs;
 using GunshotWound2.Damage;
 using GunshotWound2.Effects;
 using GunshotWound2.GUI;
@@ -56,6 +58,9 @@ namespace GunshotWound2.Crits
                     ActionForNpc(woundedPed, pedEntity);
                 }
 
+                woundedPed.ThisPed.IsPainAudioEnabled = true;
+                var pain = GunshotWound2.Random.IsTrueWithProbability(0.5f) ? 6 : 7;
+                Function.Call(Hash.PLAY_PAIN, woundedPed.ThisPed, pain, 0, 0);
                 EcsWorld.RemoveEntity(Events.Entities[i]);
             }
         }
@@ -66,7 +71,7 @@ namespace GunshotWound2.Crits
         protected void SendMessage(string message, NotifyLevels level = NotifyLevels.COMMON)
         {
 #if !DEBUG
-            if(level == NotifyLevels.DEBUG) return;
+            if (level == NotifyLevels.DEBUG) return;
 #endif
 
             var notification = EcsWorld.CreateEntityWith<ShowNotificationEvent>();
