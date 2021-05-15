@@ -1,4 +1,8 @@
-﻿namespace GunshotWound2.Configs
+﻿using System;
+using System.IO;
+using GunshotWound2.Utils;
+
+namespace GunshotWound2.Configs
 {
     public sealed class LocaleConfig
     {
@@ -125,7 +129,7 @@
 
         public string LocalizationAuthor;
 
-        public static void FillWithDefaultValues(LocaleConfig config)
+        private static void FillWithDefaultValues(LocaleConfig config)
         {
             config.HelmetSavedYourHead = "Helmet saved your head";
             config.ArmorSavedYourChest = "Armor saved your chest";
@@ -250,6 +254,160 @@
             config.PainShockDeath = "You have dead from pain shock";
 
             config.LocalizationAuthor = "~r~SH42913";
+        }
+
+        public static (bool success, string reason) TryToLoadLocalization(LocaleConfig config, string language)
+        {
+            var gswLocalization = new FileInfo("scripts/GSW2/GSW2Localization.csv");
+            var scriptsLocalization = new FileInfo("scripts/GSW2Localization.csv");
+            if (!gswLocalization.Exists && !scriptsLocalization.Exists)
+            {
+                return (false, "Localization file was not found");
+            }
+
+            var doc = gswLocalization.Exists
+                ? gswLocalization
+                : scriptsLocalization;
+
+            try
+            {
+                LoadLocalization(config, language, doc.OpenRead());
+            }
+            catch (Exception e)
+            {
+                FillWithDefaultValues(config);
+                return (false, e.Message);
+            }
+
+            return (true, null);
+        }
+
+        private static void LoadLocalization(LocaleConfig config, string language, Stream stream)
+        {
+            var manager = new LocalizationManager(stream);
+            manager.SetLanguage(language);
+
+            config.HelmetSavedYourHead = manager.GetWord("HelmetSavedYourHead");
+            config.ArmorSavedYourChest = manager.GetWord("ArmorSavedYourChest");
+            config.ArmorSavedYourLowerBody = manager.GetWord("ArmorSavedYourLowerBody");
+            config.ArmorPenetrated = manager.GetWord("ArmorPenetrated");
+
+            config.BodyPartHead = manager.GetWord("BodyPartHead");
+            config.BodyPartNeck = manager.GetWord("BodyPartNeck");
+            config.BodyPartChest = manager.GetWord("BodyPartChest");
+            config.BodyPartLowerBody = manager.GetWord("BodyPartLowerBody");
+            config.BodyPartArm = manager.GetWord("BodyPartArm");
+            config.BodyPartLeg = manager.GetWord("BodyPartLeg");
+
+            config.GrazeWound = manager.GetWord("GrazeWound");
+
+            config.GrazeGswOn = manager.GetWord("GrazeGswOn");
+            config.FleshGswOn = manager.GetWord("FleshGswOn");
+            config.PenetratingGswOn = manager.GetWord("PenetratingGswOn");
+            config.PerforatingGswOn = manager.GetWord("PerforatingGswOn");
+            config.AvulsiveGswOn = manager.GetWord("AvulsiveGswOn");
+
+            config.HeavyBrainDamage = manager.GetWord("HeavyBrainDamage");
+            config.BulletFlyThroughYourHead = manager.GetWord("BulletFlyThroughYourHead");
+            config.BulletTornApartYourBrain = manager.GetWord("BulletTornApartYourBrain");
+
+            config.LightBruise = manager.GetWord("LightBruise");
+            config.LightBruiseOn = manager.GetWord("LightBruiseOn");
+            config.MediumBruiseOn = manager.GetWord("MediumBruiseOn");
+            config.HeavyBruiseOn = manager.GetWord("HeavyBruiseOn");
+            config.AbrazionWoundOn = manager.GetWord("AbrazionWoundOn");
+            config.WindedFromImpact = manager.GetWord("WindedFromImpact");
+
+            config.IncisionWoundOn = manager.GetWord("IncisionWoundOn");
+            config.LacerationWoundOn = manager.GetWord("LacerationWoundOn");
+            config.StabWoundOn = manager.GetWord("StabWoundOn");
+
+            config.BodyBlown = manager.GetWord("BodyBlown");
+            config.HeadBlown = manager.GetWord("HeadBlown");
+            config.NeckBlown = manager.GetWord("NeckBlown");
+            config.ChestBlown = manager.GetWord("ChestBlown");
+            config.LowerBodyBlown = manager.GetWord("LowerBodyBlown");
+            config.ArmBlown = manager.GetWord("ArmBlown");
+            config.LegBlown = manager.GetWord("LegBlown");
+
+            config.Blackout = manager.GetWord("Blackout");
+            config.BleedingInHead = manager.GetWord("BleedingInHead");
+            config.TraumaticBrainInjury = manager.GetWord("TraumaticBrainInjury");
+            config.BrokenNeck = manager.GetWord("BrokenNeck");
+
+            config.Health = manager.GetWord("Health");
+            config.YouAreDead = manager.GetWord("YouAreDead");
+            config.Pain = manager.GetWord("Pain");
+
+            config.ArmorLooksGreat = manager.GetWord("ArmorLooksGreat");
+            config.ScratchesOnArmor = manager.GetWord("ScratchesOnArmor");
+            config.DentsOnArmor = manager.GetWord("DentsOnArmor");
+            config.ArmorLooksAwful = manager.GetWord("ArmorLooksAwful");
+
+            config.Crits = manager.GetWord("Crits");
+            config.NervesCrit = manager.GetWord("NervesCrit");
+            config.HeartCrit = manager.GetWord("HeartCrit");
+            config.LungsCrit = manager.GetWord("LungsCrit");
+            config.StomachCrit = manager.GetWord("StomachCrit");
+            config.GutsCrit = manager.GetWord("GutsCrit");
+            config.ArmsCrit = manager.GetWord("ArmsCrit");
+            config.LegsCrit = manager.GetWord("LegsCrit");
+
+            config.Wounds = manager.GetWord("Wounds");
+
+            config.DontHaveMoneyForHelmet = manager.GetWord("DontHaveMoneyForHelmet");
+
+            config.InternalBleeding = manager.GetWord("InternalBleeding");
+            config.SeveredArtery = manager.GetWord("SeveredArtery");
+            config.SeveredArteryMessage = manager.GetWord("SeveredArteryMessage");
+
+            config.PlayerNervesCritMessage = manager.GetWord("PlayerNervesCritMessage");
+            config.ManNervesCritMessage = manager.GetWord("ManNervesCritMessage");
+            config.WomanNervesCritMessage = manager.GetWord("WomanNervesCritMessage");
+
+            config.PlayerHeartCritMessage = manager.GetWord("PlayerHeartCritMessage");
+            config.ManHeartCritMessage = manager.GetWord("ManHeartCritMessage");
+            config.WomanHeartCritMessage = manager.GetWord("WomanHeartCritMessage");
+
+            config.PlayerLungsCritMessage = manager.GetWord("PlayerLungsCritMessage");
+            config.ManLungsCritMessage = manager.GetWord("ManLungsCritMessage");
+            config.WomanLungsCritMessage = manager.GetWord("WomanLungsCritMessage");
+
+            config.PlayerStomachCritMessage = manager.GetWord("PlayerStomachCritMessage");
+            config.ManStomachCritMessage = manager.GetWord("ManStomachCritMessage");
+            config.WomanStomachCritMessage = manager.GetWord("WomanStomachCritMessage");
+
+            config.PlayerGutsCritMessage = manager.GetWord("PlayerGutsCritMessage");
+            config.ManGutsCritMessage = manager.GetWord("ManGutsCritMessage");
+            config.WomanGutsCritMessage = manager.GetWord("WomanGutsCritMessage");
+
+            config.PlayerArmsCritMessage = manager.GetWord("PlayerArmsCritMessage");
+            config.ManArmsCritMessage = manager.GetWord("ManArmsCritMessage");
+            config.WomanArmsCritMessage = manager.GetWord("WomanArmsCritMessage");
+
+            config.PlayerLegsCritMessage = manager.GetWord("PlayerLegsCritMessage");
+            config.ManLegsCritMessage = manager.GetWord("ManLegsCritMessage");
+            config.WomanLegsCritMessage = manager.GetWord("WomanLegsCritMessage");
+
+            config.UnbearablePainMessage = manager.GetWord("UnbearablePainMessage");
+
+            config.AddingRange = manager.GetWord("AddingRange");
+            config.RemovingRange = manager.GetWord("RemovingRange");
+
+            config.ThanksForUsing = manager.GetWord("ThanksForUsing");
+            config.GswStopped = manager.GetWord("GswStopped");
+            config.GswIsPaused = manager.GetWord("GswIsPaused");
+            config.GswIsWorking = manager.GetWord("GswIsWorking");
+
+            config.AlreadyBandaging = manager.GetWord("AlreadyBandaging");
+            config.DontHaveMoneyForBandage = manager.GetWord("DontHaveMoneyForBandage");
+            config.YouTryToBandage = manager.GetWord("YouTryToBandage");
+            config.BandageFailed = manager.GetWord("BandageFailed");
+            config.BandageSuccess = manager.GetWord("BandageSuccess");
+
+            config.ArmorDestroyed = manager.GetWord("ArmorDestroyed");
+
+            config.LocalizationAuthor = manager.GetWord("TranslationAuthor");
         }
     }
 }

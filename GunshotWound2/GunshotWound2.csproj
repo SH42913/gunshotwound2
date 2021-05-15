@@ -150,6 +150,7 @@
     <Compile Include="Pain\PainRecoverySystem.cs" />
     <Compile Include="Pain\UnbearablePainChangeStateEvent.cs" />
     <Compile Include="Pain\UnbearablePainStateSystem.cs" />
+    <Compile Include="Utils\VariousExtensions.cs" />
     <Compile Include="World\ConvertPedToNpcGswPedEvent.cs" />
     <Compile Include="World\ConvertPedToNpcGswPedSystem.cs" />
     <Compile Include="World\ForceWorldPedUpdateEvent.cs" />
