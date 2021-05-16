@@ -1,0 +1,1 @@
+https://gta5-mods.com/scripts/gsw2-gunshot-wound-2-realistic-damage-system
