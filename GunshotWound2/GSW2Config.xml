@@ -8,7 +8,7 @@
 		<!-- If ped's health less than MinimalHealth, GSW will think player is died.
 		Maximal health always will MinimalHealth + 100.
 		Use it for compatibility with other mods:
-		 — WatchYourDeath mod, set to 4800 -->
+		 — WatchYourDeath mod (INCREASES HEALTH version) — set to 4800 -->
 
 		<PoliceCanForget Value="TRUE"/>
 		<!-- If TRUE - cops can forget you, when you fall unconscious.
