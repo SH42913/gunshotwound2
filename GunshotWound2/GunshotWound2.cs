@@ -30,6 +30,7 @@ namespace GunshotWound2
         public const float AddingToRemovingMultiplier = 2;
 
         public static readonly Random Random = new Random();
+        private readonly InputArgument[] _inputArguments = new InputArgument[2];
 
         private bool _isPaused;
 
@@ -221,14 +222,25 @@ namespace GunshotWound2
         {
             if (_isPaused) return;
 
-            if (_mainConfig.NpcConfig.AddingPedRange > MinimalRangeForWoundedPeds)
+            _inputArguments[0] = Game.Player;
+
+            var gswPedsEnabled = _mainConfig.NpcConfig.AddingPedRange > MinimalRangeForWoundedPeds;
+            if (gswPedsEnabled)
             {
-                Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, Game.Player, 0.01f);
+                _inputArguments[1] = 0.01f;
+                Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, _inputArguments);
             }
 
             if (_mainConfig.PlayerConfig.WoundedPlayerEnabled)
             {
-                Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, Game.Player, 0f);
+                _inputArguments[1] = 0f;
+                Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, _inputArguments);
+            }
+
+            if (gswPedsEnabled && _mainConfig.PlayerConfig.WoundedPlayerEnabled)
+            {
+                _inputArguments[0] = 0.01f;
+                Function.Call(Hash.SET_AI_WEAPON_DAMAGE_MODIFIER, _inputArguments);
             }
 
             _everyFrameSystems.Run();
