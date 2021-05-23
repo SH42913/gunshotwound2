@@ -214,5 +214,8 @@
 		<PauseKey>35</PauseKey>
 		<!-- Pause of script. It can be useful in some missions.
 		Default: End on keyboard. -->
+
+		<!-- <HealKey></HealKey> -->
+		<!-- Besides, you can set instant heal key -->
 	</Hotkeys>
 </GunshotWoundMod>
