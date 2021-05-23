@@ -24,7 +24,7 @@ namespace GunshotWound2.HitDetection
 
                 if (ped != null)
                 {
-                    Function.Call(Hash.CLEAR_PED_LAST_WEAPON_DAMAGE, ped);
+                    ped.ClearLastWeaponDamage();
                     Function.Call(Hash.CLEAR_PED_LAST_DAMAGE_BONE, ped);
                 }
 
