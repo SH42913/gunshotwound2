@@ -138,6 +138,7 @@ namespace GunshotWound2.Player
 
                 _ecsWorld.RemoveComponent<NpcMarkComponent>(newEntity);
                 _ecsWorld.AddComponent<PlayerMarkComponent>(newEntity);
+                UpdatePainState(newEntity, newPed.PainState);
 
                 playerConfig.PlayerEntity = newEntity;
 #if DEBUG
@@ -159,6 +160,38 @@ namespace GunshotWound2.Player
 
         public void Destroy()
         {
+        }
+
+        private void UpdatePainState(int entity, PainStates state)
+        {
+            BaseChangePainStateEvent evt;
+
+            switch (state)
+            {
+                case PainStates.NONE:
+                    evt = _ecsWorld.AddComponent<NoPainChangeStateEvent>(entity);
+                    break;
+                case PainStates.MILD:
+                    evt = _ecsWorld.AddComponent<MildPainChangeStateEvent>(entity);
+                    break;
+                case PainStates.AVERAGE:
+                    evt = _ecsWorld.AddComponent<AveragePainChangeStateEvent>(entity);
+                    break;
+                case PainStates.INTENSE:
+                    evt = _ecsWorld.AddComponent<IntensePainChangeStateEvent>(entity);
+                    break;
+                case PainStates.UNBEARABLE:
+                    evt = _ecsWorld.AddComponent<UnbearablePainChangeStateEvent>(entity);
+                    break;
+                case PainStates.DEADLY:
+                    evt = _ecsWorld.AddComponent<DeadlyPainChangeStateEvent>(entity);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            evt.ForceUpdate = true;
+            evt.Entity = entity;
         }
 
         private void SendMessage(string message, int pedEntity, NotifyLevels level = NotifyLevels.COMMON)
