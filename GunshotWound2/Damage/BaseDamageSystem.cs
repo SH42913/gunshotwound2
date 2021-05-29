@@ -165,7 +165,7 @@ namespace GunshotWound2.Damage
 
         protected void CreateHeavyBrainDamage(string name, int pedEntity)
         {
-            CreateWound(name, pedEntity, DamageMultiplier * 70f, BleeedingMultiplier * 3f, PainMultiplier * 110f);
+            CreateWound(name, pedEntity, DamageMultiplier * 50f, BleeedingMultiplier * 4f, PainMultiplier * 130f);
         }
 
         private bool CheckArmorPenetration(WoundedPedComponent woundedPed, int pedEntity)
