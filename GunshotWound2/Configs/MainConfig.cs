@@ -142,9 +142,7 @@ namespace GunshotWound2.Configs
 
             config.PlayerConfig.WoundedPlayerEnabled = node.Element("GSWPlayerEnabled").GetBool();
 
-            config.PlayerConfig.MinimalHealth = node.Element("MinimalHealth").GetInt() + 100;
-            config.PlayerConfig.MaximalHealth = config.PlayerConfig.MinimalHealth + 99;
-
+            config.PlayerConfig.MinimalHealth = node.Element("MinimalHealth").GetInt();
             config.PlayerConfig.MaximalPain = node.Element("MaximalPain").GetFloat();
             config.PlayerConfig.PainRecoverSpeed = node.Element("PainRecoverySpeed").GetFloat();
             config.PlayerConfig.BleedHealingSpeed = node.Element("BleedHealSpeed").GetFloat() / 1000f;

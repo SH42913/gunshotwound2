@@ -27,6 +27,9 @@ namespace GunshotWound2.HitDetection
 
     public sealed class WoundedPedComponent
     {
+        private const int HealthOffset = 100;
+        private const int MaxHealthOffset = HealthOffset + 1;
+
         public Ped ThisPed;
         public bool IsPlayer;
         public bool IsMale;
@@ -34,6 +37,7 @@ namespace GunshotWound2.HitDetection
         public int DefaultAccuracy;
 
         public float Health;
+        public int PrevIntHealth;
         public bool IsDead;
         public CritTypes Crits;
 
@@ -47,6 +51,25 @@ namespace GunshotWound2.HitDetection
         public int? MostDangerBleedingEntity;
 
         public int Armor;
+
+        public float PedHealth
+        {
+            get => ThisPed.Health - HealthOffset;
+            set
+            {
+                var intHealth = (int) value;
+                // if (PrevIntHealth == intHealth) return;
+                //
+                // PrevIntHealth = intHealth;
+                ThisPed.Health = intHealth + HealthOffset;
+            }
+        }
+
+        public float PedMaxHealth
+        {
+            get => ThisPed.MaxHealth - MaxHealthOffset;
+            set => ThisPed.MaxHealth = (int) value + MaxHealthOffset;
+        }
 
         public override string ToString()
         {

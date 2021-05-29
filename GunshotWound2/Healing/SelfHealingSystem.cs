@@ -20,14 +20,13 @@ namespace GunshotWound2.Healing
             for (var i = 0; i < _woundedPeds.EntitiesCount; i++)
             {
                 var woundedPed = _woundedPeds.Components1[i];
-                var ped = woundedPed.ThisPed;
                 var needToHeal = woundedPed.IsPlayer
-                    ? ped.Health + 1 < ped.MaxHealth
-                    : ped.Health < ped.MaxHealth;
+                    ? woundedPed.PedHealth + 1 < woundedPed.PedMaxHealth
+                    : woundedPed.PedHealth < woundedPed.PedMaxHealth;
                 if (woundedPed.IsDead || woundedPed.BleedingCount > 0 || !needToHeal) continue;
 
                 woundedPed.Health += _config.Data.WoundConfig.SelfHealingRate * Game.LastFrameTime;
-                ped.Health = (int) woundedPed.Health;
+                woundedPed.PedHealth = woundedPed.Health;
             }
         }
     }

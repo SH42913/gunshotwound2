@@ -42,26 +42,28 @@ namespace GunshotWound2.GUI
 
         private void ShowHealth(WoundedPedComponent woundedPed)
         {
+            var playerConfig = _config.Data.PlayerConfig;
             var healthPercent = !woundedPed.IsPlayer
-                ? (float) woundedPed.ThisPed.Health / woundedPed.ThisPed.MaxHealth
-                : (woundedPed.Health - _config.Data.PlayerConfig.MinimalHealth) /
-                  (_config.Data.PlayerConfig.MaximalHealth - _config.Data.PlayerConfig.MinimalHealth);
+                ? woundedPed.PedHealth / woundedPed.PedMaxHealth
+                : (woundedPed.Health - playerConfig.MinimalHealth) /
+                  (playerConfig.MaximalHealth - playerConfig.MinimalHealth);
 
+            var healthString = (healthPercent * 100f).ToString("0.0");
             if (healthPercent >= 0.7f)
             {
-                SendMessage($"~s~{_locale.Data.Health}: ~g~{healthPercent * 100f:0.0}%~s~");
+                SendMessage($"~s~{_locale.Data.Health}: ~g~{healthString}%~s~");
             }
             else if (healthPercent > 0.5f)
             {
-                SendMessage($"~s~{_locale.Data.Health}: ~y~{healthPercent * 100f:0.0}%~s~");
+                SendMessage($"~s~{_locale.Data.Health}: ~y~{healthString}%~s~");
             }
             else if (healthPercent > 0.2f)
             {
-                SendMessage($"~s~{_locale.Data.Health}: ~o~{healthPercent * 100f:0.0}%~s~");
+                SendMessage($"~s~{_locale.Data.Health}: ~o~{healthString}%~s~");
             }
             else if (healthPercent > 0f)
             {
-                SendMessage($"~s~{_locale.Data.Health}: ~r~{healthPercent * 100f:0.0}%~s~");
+                SendMessage($"~s~{_locale.Data.Health}: ~r~{healthString}%~s~");
             }
             else
             {
@@ -79,21 +81,25 @@ namespace GunshotWound2.GUI
             {
                 SendMessage($"~s~{_locale.Data.Pain}: ~r~>300%~s~");
             }
-            else if (painPercent > 1f)
+            else
             {
-                SendMessage($"~s~{_locale.Data.Pain}: ~r~{painPercent * 100f:0.0}%~s~");
-            }
-            else if (painPercent > 0.5f)
-            {
-                SendMessage($"~s~{_locale.Data.Pain}: ~o~{painPercent * 100f:0.0}%~s~");
-            }
-            else if (painPercent > 0.2f)
-            {
-                SendMessage($"~s~{_locale.Data.Pain}: ~y~{painPercent * 100f:0.0}%~s~");
-            }
-            else if (painPercent > 0f)
-            {
-                SendMessage($"~s~{_locale.Data.Pain}: ~g~{painPercent * 100f:0.0}%~s~");
+                var painString = (painPercent * 100f).ToString("0.0");
+                if (painPercent > 1f)
+                {
+                    SendMessage($"~s~{_locale.Data.Pain}: ~r~{painString}%~s~");
+                }
+                else if (painPercent > 0.5f)
+                {
+                    SendMessage($"~s~{_locale.Data.Pain}: ~o~{painString}%~s~");
+                }
+                else if (painPercent > 0.2f)
+                {
+                    SendMessage($"~s~{_locale.Data.Pain}: ~y~{painString}%~s~");
+                }
+                else if (painPercent > 0f)
+                {
+                    SendMessage($"~s~{_locale.Data.Pain}: ~g~{painString}%~s~");
+                }
             }
         }
 
@@ -184,15 +190,16 @@ namespace GunshotWound2.GUI
                     woundList += "~g~->~s~";
                 }
 
-                if (wound.BleedSeverity > _config.Data.WoundConfig.EmergencyBleedingLevel)
+                var woundConfig = _config.Data.WoundConfig;
+                if (wound.BleedSeverity > woundConfig.EmergencyBleedingLevel)
                 {
                     woundList += $"~r~{wound.Name}~s~\n";
                 }
-                else if (wound.BleedSeverity > _config.Data.WoundConfig.EmergencyBleedingLevel / 2)
+                else if (wound.BleedSeverity > woundConfig.EmergencyBleedingLevel / 2)
                 {
                     woundList += $"~o~{wound.Name}~s~\n";
                 }
-                else if (wound.BleedSeverity > _config.Data.WoundConfig.EmergencyBleedingLevel / 4)
+                else if (wound.BleedSeverity > woundConfig.EmergencyBleedingLevel / 4)
                 {
                     woundList += $"~y~{wound.Name}\n";
                 }
@@ -208,7 +215,7 @@ namespace GunshotWound2.GUI
         private void SendMessage(string message, NotifyLevels level = NotifyLevels.COMMON)
         {
 #if !DEBUG
-            if(level == NotifyLevels.DEBUG) return;
+            if (level == NotifyLevels.DEBUG) return;
 #endif
 
             var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();

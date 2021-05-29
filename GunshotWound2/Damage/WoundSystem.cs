@@ -43,7 +43,7 @@ namespace GunshotWound2.Damage
                 {
                     woundedPed.Health -= _config.Data.WoundConfig.DamageMultiplier * component.Damage +
                                          GunshotWound2.Random.NextFloat(-damageDeviation, damageDeviation);
-                    woundedPed.ThisPed.Health = (int) woundedPed.Health;
+                    woundedPed.PedHealth = woundedPed.Health;
                 }
 
                 CreateBleeding(woundedPed, pedEntity, component.BleedSeverity +
