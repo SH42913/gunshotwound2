@@ -16,12 +16,12 @@ namespace GunshotWound2.Pain
         {
             if (woundedPed.IsPlayer)
             {
-                woundedPed.ThisPed.Health = Config.Data.PlayerConfig.MinimalHealth - 1;
+                woundedPed.PedHealth = Config.Data.PlayerConfig.MinimalHealth - 1;
                 SendMessage(Locale.Data.PainShockDeath, NotifyLevels.EMERGENCY);
             }
             else
             {
-                woundedPed.ThisPed.Health = -1;
+                woundedPed.PedHealth = -1;
             }
         }
     }

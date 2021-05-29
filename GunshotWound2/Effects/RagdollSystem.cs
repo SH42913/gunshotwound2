@@ -48,7 +48,7 @@ namespace GunshotWound2.Effects
                         _ecsWorld.RemoveEntity(_events.Entities[i]);
                         continue;
                     case RagdollStates.WAKE_UP:
-                        if (woundedPed.InPermanentRagdoll && !woundedPed.Crits.Has(CritTypes.NERVES_DAMAGED))
+                        if ((woundedPed.InPermanentRagdoll || woundedPed.ThisPed.IsRagdoll) && !woundedPed.Crits.Has(CritTypes.NERVES_DAMAGED))
                         {
                             Function.Call(Hash.SET_PED_TO_RAGDOLL, woundedPed.ThisPed, 1, 1, 1, 0, 0, 0);
                             woundedPed.InPermanentRagdoll = false;

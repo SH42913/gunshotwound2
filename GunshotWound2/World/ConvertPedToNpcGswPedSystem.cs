@@ -32,6 +32,8 @@ namespace GunshotWound2.World
 
         private void ProcessRequest(ConvertPedToNpcGswPedEvent request)
         {
+            var npcConfig = _config.Data.NpcConfig;
+
             while (request.PedsToAdd.Count > 0)
             {
                 var pedToConvert = request.PedsToAdd.Dequeue();
@@ -42,12 +44,10 @@ namespace GunshotWound2.World
                 woundedPed.IsMale = pedToConvert.Gender == Gender.Male;
                 woundedPed.IsDead = false;
                 woundedPed.IsPlayer = false;
-                var newHealth = GunshotWound2.Random.Next(
-                    _config.Data.NpcConfig.MinStartHealth,
-                    _config.Data.NpcConfig.MaxStartHealth);
-                woundedPed.Health = newHealth + 100;
                 woundedPed.Armor = pedToConvert.Armor;
-                woundedPed.ThisPed.MaxHealth = newHealth;
+                woundedPed.Health = npcConfig.GetRandomHealth();
+                woundedPed.PedHealth = woundedPed.Health;
+                woundedPed.PedMaxHealth = woundedPed.Health;
 
                 woundedPed.ThisPed.CanWrithe = false;
                 woundedPed.ThisPed.CanWearHelmet = true;
@@ -60,29 +60,27 @@ namespace GunshotWound2.World
                 }
 
                 woundedPed.StopBleedingAmount = GunshotWound2.Random.NextFloat(
-                    _config.Data.NpcConfig.MaximalBleedStopSpeed / 2,
-                    _config.Data.NpcConfig.MaximalBleedStopSpeed);
+                    npcConfig.MaximalBleedStopSpeed / 2,
+                    npcConfig.MaximalBleedStopSpeed);
 
-                if (_config.Data.NpcConfig.MinAccuracy > 0 && _config.Data.NpcConfig.MaxAccuracy > 0)
+                if (npcConfig.MinAccuracy > 0 && npcConfig.MaxAccuracy > 0)
                 {
-                    pedToConvert.Accuracy = GunshotWound2.Random.Next(_config.Data.NpcConfig.MinAccuracy,
-                        _config.Data.NpcConfig.MaxAccuracy + 1);
+                    pedToConvert.Accuracy = GunshotWound2.Random.Next(npcConfig.MinAccuracy, npcConfig.MaxAccuracy + 1);
                 }
 
-                if (_config.Data.NpcConfig.MinShootRate > 0 && _config.Data.NpcConfig.MaxShootRate > 0)
+                if (npcConfig.MinShootRate > 0 && npcConfig.MaxShootRate > 0)
                 {
-                    pedToConvert.ShootRate = GunshotWound2.Random.Next(_config.Data.NpcConfig.MinShootRate,
-                        _config.Data.NpcConfig.MaxShootRate);
+                    pedToConvert.ShootRate = GunshotWound2.Random.Next(npcConfig.MinShootRate, npcConfig.MaxShootRate);
                 }
 
                 woundedPed.DefaultAccuracy = pedToConvert.Accuracy;
 
                 woundedPed.MaximalPain = GunshotWound2.Random.NextFloat(
-                    _config.Data.NpcConfig.LowerMaximalPain,
-                    _config.Data.NpcConfig.UpperMaximalPain);
+                    npcConfig.LowerMaximalPain,
+                    npcConfig.UpperMaximalPain);
                 woundedPed.PainRecoverSpeed = GunshotWound2.Random.NextFloat(
-                    _config.Data.NpcConfig.MaximalPainRecoverSpeed / 2,
-                    _config.Data.NpcConfig.MaximalPainRecoverSpeed);
+                    npcConfig.MaximalPainRecoverSpeed / 2,
+                    npcConfig.MaximalPainRecoverSpeed);
 
                 woundedPed.Crits = 0;
                 woundedPed.BleedingCount = 0;

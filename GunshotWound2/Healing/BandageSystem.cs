@@ -30,6 +30,13 @@ namespace GunshotWound2.Healing
                 if (woundedPed?.MostDangerBleedingEntity == null) continue;
                 if (woundedPed.InPermanentRagdoll) continue;
 
+                var progress = _ecsWorld.EnsureComponent<BandageInProgressComponent>(pedEntity, out var isNew);
+                if (!isNew)
+                {
+                    SendMessage(_localeConfig.Data.AlreadyBandaging, pedEntity);
+                    continue;
+                }
+
                 if (woundedPed.IsPlayer)
                 {
                     if (Game.Player.Money < _config.Data.WoundConfig.BandageCost)
@@ -39,13 +46,6 @@ namespace GunshotWound2.Healing
                     }
 
                     Game.Player.Money -= _config.Data.WoundConfig.BandageCost;
-                }
-
-                var progress = _ecsWorld.EnsureComponent<BandageInProgressComponent>(pedEntity, out var isNew);
-                if (!isNew)
-                {
-                    SendMessage(_localeConfig.Data.AlreadyBandaging, pedEntity);
-                    continue;
                 }
 
                 var timeToBandage = _config.Data.WoundConfig.ApplyBandageTime;

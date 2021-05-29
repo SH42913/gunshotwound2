@@ -11,8 +11,6 @@ namespace GunshotWound2.Configs
         public bool CanDropWeapon;
 
         public int MoneyForHelmet;
-
-        public int MaximalHealth;
         public int MinimalHealth;
 
         public float MaximalPain;
@@ -27,6 +25,8 @@ namespace GunshotWound2.Configs
 
         public bool CameraIsShaking;
 
+        public int MaximalHealth => MinimalHealth + 99;
+
         public static PlayerConfig CreateDefault()
         {
             return new PlayerConfig
@@ -34,7 +34,6 @@ namespace GunshotWound2.Configs
                 WoundedPlayerEnabled = true,
                 CanDropWeapon = true,
                 MoneyForHelmet = 40,
-                MaximalHealth = 99,
                 MinimalHealth = 0,
                 MaximalPain = 100,
                 PainRecoverSpeed = 1.5f,

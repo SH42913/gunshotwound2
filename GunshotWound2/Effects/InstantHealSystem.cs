@@ -52,7 +52,7 @@ namespace GunshotWound2.Effects
 
                     woundedPed.IsDead = false;
                     woundedPed.Crits = 0;
-                    woundedPed.ThisPed.Health = (int) woundedPed.Health;
+                    woundedPed.PedHealth = woundedPed.Health;
                     woundedPed.Armor = woundedPed.ThisPed.Armor;
                     woundedPed.BleedingCount = 0;
                     woundedPed.MostDangerBleedingEntity = null;

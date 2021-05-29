@@ -6,22 +6,22 @@
 
 		<MinimalHealth Value="0"/>
 		<!-- If ped's health less than MinimalHealth, GSW will think player is died.
-		Maximal health always will MinimalHealth + 100.
-		Use it for compatibility with other mods:
-		 — WatchYourDeath mod, set to 4800 -->
+        Maximal health always will MinimalHealth + 100.
+        Use it for compatibility with other mods:
+         — WatchYourDeath mod (INCREASES HEALTH version) — set to 4800 -->
 
 		<PoliceCanForget Value="TRUE"/>
 		<!-- If TRUE - cops can forget you, when you fall unconscious.
-		If you use Realism Dispatch Enhanced, better to set it FALSE-->
+        If you use Realism Dispatch Enhanced, better to set it FALSE-->
 
 		<CanDropWeapon Value="TRUE"/>
 		<!-- If TRUE - you will lose weapon on arm crits and when you fall unconscious -->
 
 		<MaximalSlowMo Value="0.5"/>
 		<!-- 0.5 mean TimeScale never be less than 0.5.
-		TimeScale will 0.5 + painPercent(pain/maxPain).
-		Be carefully, it will disable other SlowMo-mods.
-		If you want to disable this option, set it to 1.1. -->
+        TimeScale will 0.5 + painPercent(pain/maxPain).
+        Be carefully, it will disable other SlowMo-mods.
+        If you want to disable this option, set it to 1.1. -->
 
 		<MaximalPain Value="100.0"/>
 		<!-- 100.0 mean when pain will more than 100 points you'll fall unconscious -->
@@ -35,19 +35,19 @@
 		<Animations NoPain="move_m@generic" MildPain="move_m@gangster@a"
 					AvgPain="move_m@drunk@moderatedrunk" IntensePain="move_m@drunk@verydrunk"/>
 		<!-- You can change pain animations by yourself.
-		There are 4 states: No Pain, Mild(<30%, currentPain/maximalPain), Average(<80%) and Intense(<100%) -->
+        There are 4 states: No Pain, Mild(<30%, currentPain/maximalPain), Average(<80%) and Intense(<100%) -->
 	</Player>
 
 	<Peds>
 		<GSWScanRange Value="50"/>
 		<!-- It is start range where script scan other peds to convert them to GSWPeds. 
-		You also can change range in game, using Increase/ReduceRange keys, check in Hotkey section.
-		If you have low FPS or want to disable GSWPeds, just set range as -1. -->
+        You also can change range in game, using Increase/ReduceRange keys, check in Hotkey section.
+        If you have low FPS or want to disable GSWPeds, just set range as -1. -->
 
 		<ScanOnlyDamaged Value="FALSE"/>
 		<!-- If TRUE GSW will mark ped as GSWPed only after first damage.
-		It will increase performance, but it can have bugs.
-		PedHealth, new Accuracy and ShootRate will apply only after first damage! -->
+        It will increase performance, but it can have bugs.
+        PedHealth, new Accuracy and ShootRate will apply only after first damage! -->
 
 		<CriticalMessages Value="TRUE"/>
 		<!-- If TRUE you will see messages with critical wound of NonPlayable GSWPeds -->
@@ -55,9 +55,9 @@
 		<Targets ALL="TRUE" COMPANION="TRUE" DISLIKE="TRUE" HATE="TRUE"
 				 LIKE="TRUE" NEUTRAL="TRUE" PEDESTRIAN="TRUE" RESPECT="TRUE"/>
 		<!-- You can select what types of NonPlayable Peds can be affected by GSW.
-		It is based on Relationship between ped and player. Useful if you have low FPS or play missions.
-		If ALL is TRUE, other variants will not be checked.
-		If allies in missions are always died too quickly, set ALL to FALSE and try set COMPANION and RESPECT to FALSE. -->
+        It is based on Relationship between ped and player. Useful if you have low FPS or play missions.
+        If ALL is TRUE, other variants will not be checked.
+        If allies in missions are always died too quickly, set ALL to FALSE and try set COMPANION and RESPECT to FALSE. -->
 
 		<PedHealth Min="50" Max="100"/>
 		<!-- GSWPeds will have health between Min and Max -->
@@ -67,11 +67,11 @@
 
 		<Accuracy Min="5" Max="10"/>
 		<!-- GSWPeds will get accuracy between Min and Max.
-		If you want to use default game Accuracy, set both to 0. -->
+        If you want to use default game Accuracy, set both to 0. -->
 
 		<ShootRate Min="5" Max="10"/>
 		<!-- GSWPeds will get ShootRate between Min and Max.
-		If you want to use default game ShootRate, set both to 0. -->
+        If you want to use default game ShootRate, set both to 0. -->
 
 		<PainRecoverySpeed Value="1.0"/>
 		<BleedHealSpeed Value="1.0"/>
@@ -84,11 +84,11 @@
 	<Notifications>
 		<Language Value="EN"/>
 		<!-- Available languages: EN, RU, DE, FR, PL, KR and PT-BR.
-		Partially translated Spa, Swe, Jp and Cn.
-		All translations(except EN and RU) were made by community and can be inaccurate.
-		You also can help to translate GSW2 to other languages here:
-		https://docs.google.com/spreadsheets/d/1TY0nSEJMDmypkYrcVUBlMG3HIAEW075dCOtxXgW5UJ0/edit 
-		And more languages will be available in next build! -->
+        Partially translated Spa, Swe, Jp, Cn and Fa.
+        All translations(except EN and RU) were made by community and can be inaccurate.
+        You also can help to translate GSW2 to other languages here:
+        https://docs.google.com/spreadsheets/d/1TY0nSEJMDmypkYrcVUBlMG3HIAEW075dCOtxXgW5UJ0/edit 
+        And more languages will be available in next build! -->
 
 		<Common Value="TRUE"/>
 		<!-- Common(white) notifications like CheckSelf and OtherPedsCriticalWound -->
@@ -106,7 +106,7 @@
 	<Wounds>
 		<RealisticNervesDamage Value="TRUE"/>
 		<!-- If TRUE - peds(including player) will set to permanent ragdoll on spine damage.
-		If FALSE - ped will get just legs and arms critical damage. -->
+        If FALSE - ped will get just legs and arms critical damage. -->
 
 		<PainfulWoundValue Value="40.0"/>
 		<!-- Any wound with pain more than PainfulWoundValue will add painful-wound effects -->
@@ -125,7 +125,7 @@
 
 		<MinimalChanceForArmorSave Value="0.2"/>
 		<!-- 0.6 mean 60% chance to save your body on 1 armor point.
-		100 armor points will always 100% chance to save. -->
+        100 armor points will always 100% chance to save. -->
 
 		<MoveRateOnFullPain Value="0.7"/>
 		<!-- Move rate on 100% of pain -->
@@ -188,31 +188,34 @@
 
 	<Hotkeys>
 		<!-- If you don't want to use key, just remove value
-		 KeyCodes can be found here - https://www.oreilly.com/library/view/javascript-dhtml/9780596514082/apb.html -->
+         KeyCodes can be found here - https://www.oreilly.com/library/view/javascript-dhtml/9780596514082/apb.html -->
 		<GetHelmetKey>74</GetHelmetKey>
 		<!-- Give to player ped motorbike helmet if you have $40.
-		Helmet can save your head from impacts and weapons.
-		If you have helmet, this hotkey will remove it.
-		Default: J on keyboard. -->
+        Helmet can save your head from impacts and weapons.
+        If you have helmet, this hotkey will remove it.
+        Default: J on keyboard. -->
 
 		<BandageKey>75</BandageKey>
 		<!-- Applied bandages to you. It will cost $15.
-		Default: K on keyboard. -->
+        Default: K on keyboard. -->
 
 		<CheckKey>76</CheckKey>
 		<!-- Check Yourself. Show one time status-notifications about your wounds and health.
-		Default: L on keyboard. -->
+        Default: L on keyboard. -->
 
 		<IncreaseRangeKey>33</IncreaseRangeKey>
 		<!-- Increase GSW2 scan range.
-		Default: PageUp on keyboard. -->
+        Default: PageUp on keyboard. -->
 
 		<ReduceRangeKey>34</ReduceRangeKey>
 		<!-- Reduce GSW2 scan range.
-		Default: PageDown on keyboard. -->
+        Default: PageDown on keyboard. -->
 
 		<PauseKey>35</PauseKey>
 		<!-- Pause of script. It can be useful in some missions.
-		Default: End on keyboard. -->
+        Default: End on keyboard. -->
+
+		<!-- <HealKey></HealKey> -->
+		<!-- Besides, you can set instant heal key -->
 	</Hotkeys>
 </GunshotWoundMod>

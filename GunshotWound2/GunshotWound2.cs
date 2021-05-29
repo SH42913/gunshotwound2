@@ -30,6 +30,7 @@ namespace GunshotWound2
         public const float AddingToRemovingMultiplier = 2;
 
         public static readonly Random Random = new Random();
+        private readonly InputArgument[] _inputArguments = new InputArgument[2];
 
         private bool _isPaused;
 
@@ -150,13 +151,13 @@ namespace GunshotWound2
 
             if (eventArgs.KeyCode == _mainConfig.IncreaseRangeKey)
             {
-                IncreaseRange(5);
+                ChangeRange(5);
                 return;
             }
 
             if (eventArgs.KeyCode == _mainConfig.ReduceRangeKey)
             {
-                ReduceRange(5);
+                ChangeRange(-5);
                 return;
             }
 
@@ -221,8 +222,26 @@ namespace GunshotWound2
         {
             if (_isPaused) return;
 
-            Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, Game.Player, 0.01f);
-            Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, Game.Player, 0f);
+            _inputArguments[0] = Game.Player;
+
+            var gswPedsEnabled = _mainConfig.NpcConfig.AddingPedRange > MinimalRangeForWoundedPeds;
+            if (gswPedsEnabled)
+            {
+                _inputArguments[1] = 0.01f;
+                Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, _inputArguments);
+            }
+
+            if (_mainConfig.PlayerConfig.WoundedPlayerEnabled)
+            {
+                _inputArguments[1] = 0f;
+                Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, _inputArguments);
+            }
+
+            if (gswPedsEnabled && _mainConfig.PlayerConfig.WoundedPlayerEnabled)
+            {
+                _inputArguments[0] = 0.01f;
+                Function.Call(Hash.SET_AI_WEAPON_DAMAGE_MODIFIER, _inputArguments);
+            }
 
             _everyFrameSystems.Run();
             _commonSystems.Run();
@@ -233,28 +252,18 @@ namespace GunshotWound2
 #endif
         }
 
-        private void ReduceRange(float value)
+        private void ChangeRange(float value)
         {
-            if (_mainConfig.NpcConfig.AddingPedRange - value < MinimalRangeForWoundedPeds) return;
-
-            _mainConfig.NpcConfig.AddingPedRange -= value;
-            _mainConfig.NpcConfig.RemovePedRange = _mainConfig.NpcConfig.AddingPedRange * AddingToRemovingMultiplier;
-
-            ShowCurrentRanges();
-        }
-
-        private void IncreaseRange(float value)
-        {
-            if (_mainConfig.NpcConfig.AddingPedRange < MinimalRangeForWoundedPeds) return;
+            if (_mainConfig.NpcConfig.AddingPedRange + value < MinimalRangeForWoundedPeds) return;
 
             _mainConfig.NpcConfig.AddingPedRange += value;
             _mainConfig.NpcConfig.RemovePedRange = _mainConfig.NpcConfig.AddingPedRange * AddingToRemovingMultiplier;
 
-            ShowCurrentRanges();
-        }
+            if (_mainConfig.NpcConfig.AddingPedRange <= MinimalRangeForWoundedPeds)
+            {
+                Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, Game.Player, 1f);
+            }
 
-        private void ShowCurrentRanges()
-        {
             SendMessage($"{_localeConfig.AddingRange}: {_mainConfig.NpcConfig.AddingPedRange.ToString("F0")}\n" +
                         $"{_localeConfig.RemovingRange}: {_mainConfig.NpcConfig.RemovePedRange.ToString("F0")}");
         }

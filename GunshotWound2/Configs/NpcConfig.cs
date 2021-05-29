@@ -49,6 +49,11 @@ namespace GunshotWound2.Configs
         public int LastCheckedPedIndex;
         public int UpperBoundForFindInMs;
 
+        public float GetRandomHealth()
+        {
+            return GunshotWound2.Random.Next(MinStartHealth, MaxStartHealth);
+        }
+
         public static NpcConfig CreateDefault()
         {
             return new NpcConfig

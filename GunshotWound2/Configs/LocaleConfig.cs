@@ -131,9 +131,9 @@ namespace GunshotWound2.Configs
 
         private static void FillWithDefaultValues(LocaleConfig config)
         {
-            config.HelmetSavedYourHead = "Helmet saved your head";
-            config.ArmorSavedYourChest = "Armor saved your chest";
-            config.ArmorSavedYourLowerBody = "Armor saved your lower body";
+            config.HelmetSavedYourHead = "Your helmet saved your head";
+            config.ArmorSavedYourChest = "Your body armor has protected you from a chest injury";
+            config.ArmorSavedYourLowerBody = "Your body armor has protected you from a lower body injury";
             config.ArmorPenetrated = "Your armor was penetrated";
 
             config.BodyPartHead = "head";
@@ -152,14 +152,14 @@ namespace GunshotWound2.Configs
             config.AvulsiveGswOn = "Avulsive GSW on";
 
             config.HeavyBrainDamage = "Heavy brain damage";
-            config.BulletFlyThroughYourHead = "Bullet fly through your head";
-            config.BulletTornApartYourBrain = "Bullet torn apart your brain";
+            config.BulletFlyThroughYourHead = "A bullet has penetrated your skull";
+            config.BulletTornApartYourBrain = "A bullet has fractured your skull";
 
             config.LightBruise = "Light bruise";
             config.LightBruiseOn = "Light bruise on";
             config.MediumBruiseOn = "Medium bruise on";
             config.HeavyBruiseOn = "Heavy bruise on";
-            config.AbrazionWoundOn = "Abrazion wound on";
+            config.AbrazionWoundOn = "Abrasion wound on";
             config.WindedFromImpact = "Winded from impact";
 
             config.IncisionWoundOn = "Incision wound on";
@@ -175,18 +175,18 @@ namespace GunshotWound2.Configs
             config.LegBlown = "Leg blown";
 
             config.Blackout = "Blackout possible";
-            config.BleedingInHead = "Bleeding in the head";
+            config.BleedingInHead = "Intracranial bleeding";
             config.TraumaticBrainInjury = "Traumatic brain injury";
-            config.BrokenNeck = "Broken neck";
+            config.BrokenNeck = "Damage to cervical vertebrae";
 
             config.Health = "Health";
             config.YouAreDead = "You are dead!";
             config.Pain = "Pain";
 
-            config.ArmorLooksGreat = "Your armor looks great";
-            config.ScratchesOnArmor = "Your armor has some scratches";
-            config.DentsOnArmor = "Your armor has large dents";
-            config.ArmorLooksAwful = "Your armor looks awful";
+            config.ArmorLooksGreat = "Your armor appears undamaged";
+            config.ScratchesOnArmor = "Some plates of your armor is broken";
+            config.DentsOnArmor = "Your armor is noticeably damaged";
+            config.ArmorLooksAwful = "Your body armor is practically useless";
 
             config.Crits = "Critical damaged";
             config.NervesCrit = "nerves";
@@ -199,21 +199,21 @@ namespace GunshotWound2.Configs
 
             config.Wounds = "Wounds";
 
-            config.DontHaveMoneyForHelmet = "You don't have enough money to buy helmet";
+            config.DontHaveMoneyForHelmet = "Insufficient funds to purchase a helmet";
 
             config.InternalBleeding = "Internal bleeding";
-            config.SeveredArtery = "Severed artery";
-            config.SeveredArteryMessage = "Artery was severed!";
+            config.SeveredArtery = "Punctured artery";
+            config.SeveredArteryMessage = "An artery was severed";
 
-            config.PlayerNervesCritMessage = "You feel you can't control your arms and legs anymore";
+            config.PlayerNervesCritMessage = "You can't feel your limbs";
             config.ManNervesCritMessage = "He looks like his spine was damaged";
             config.WomanNervesCritMessage = "She looks like her spine was damaged";
 
-            config.PlayerHeartCritMessage = "You feel awful pain in your chest";
+            config.PlayerHeartCritMessage = "You feel like life is leaving you";
             config.ManHeartCritMessage = "He coughs up blood";
             config.WomanHeartCritMessage = "She coughs up blood";
 
-            config.PlayerLungsCritMessage = "It's very hard for you to breathe";
+            config.PlayerLungsCritMessage = "You cough up blood";
             config.ManLungsCritMessage = "He coughs up blood";
             config.WomanLungsCritMessage = "She coughs up blood";
 
@@ -221,37 +221,37 @@ namespace GunshotWound2.Configs
             config.ManStomachCritMessage = "He looks very sick";
             config.WomanStomachCritMessage = "She looks very sick";
 
-            config.PlayerGutsCritMessage = "You feel yourself very sick";
+            config.PlayerGutsCritMessage = "You can see your guts";
             config.ManGutsCritMessage = "He looks very sick";
             config.WomanGutsCritMessage = "She looks very sick";
 
-            config.PlayerArmsCritMessage = "It's looks like arm bone was broken";
-            config.ManArmsCritMessage = "His arm looks very bad";
-            config.WomanArmsCritMessage = "Her arm looks very bad";
+            config.PlayerArmsCritMessage = "You feel awful pain in your arm";
+            config.ManArmsCritMessage = "His arm looks broken";
+            config.WomanArmsCritMessage = "Her arm looks broken";
 
-            config.PlayerLegsCritMessage = "It's looks like leg bone was broken";
-            config.ManLegsCritMessage = "His leg looks very bad";
-            config.WomanLegsCritMessage = "Her leg looks very bad";
+            config.PlayerLegsCritMessage = "You feel awful pain in your leg";
+            config.ManLegsCritMessage = "His leg looks broken";
+            config.WomanLegsCritMessage = "Her leg looks broken";
 
-            config.UnbearablePainMessage = "You got a pain shock! You lose consciousness!";
+            config.UnbearablePainMessage = "You lose consciousness from the overwhelming pain";
 
-            config.AddingRange = "Adding range";
-            config.RemovingRange = "Removing range";
+            config.AddingRange = "Increasing range";
+            config.RemovingRange = "Decreasing range";
 
             config.ThanksForUsing = "Thanks for using";
-            config.GswStopped = "GSW2 stopped, sorry :(";
+            config.GswStopped = "GSW2 operations have ended :(";
             config.GswIsPaused = "GSW2 is paused";
             config.GswIsWorking = "GSW2 is working";
 
-            config.AlreadyBandaging = "You're already bandaging";
-            config.DontHaveMoneyForBandage = "You don't have enough money for bandage";
+            config.AlreadyBandaging = "You're already bandaging yourself";
+            config.DontHaveMoneyForBandage = "You don't have enough money for a bandage";
             config.YouTryToBandage = "You try to bandage self. You need to stand still for {0} seconds!";
-            config.BandageFailed = "Bandaging is failed. You need to stand still for apply bandage!";
+            config.BandageFailed = "Bandaging has failed. You need to stand still to apply a bandage!";
             config.BandageSuccess = "You applied bandage to {0}";
 
-            config.ArmorDestroyed = "Your armor fall apart";
+            config.ArmorDestroyed = "Your armor falls apart";
 
-            config.PainShockDeath = "You have dead from pain shock";
+            config.PainShockDeath = "You have died of shock";
 
             config.LocalizationAuthor = "~r~SH42913";
         }

@@ -52,7 +52,7 @@ namespace GunshotWound2.Damage
 
                 woundedPed.Health -= component.BleedSeverity * frameTimeInSeconds;
                 component.BleedSeverity -= woundedPed.StopBleedingAmount * frameTimeInSeconds;
-                woundedPed.ThisPed.Health = (int) woundedPed.Health;
+                woundedPed.PedHealth = woundedPed.Health;
 
                 if (!woundedPed.ThisPed.IsDead) continue;
                 RemoveBleeding(woundedPed, pedEntity, bleedingEntity);

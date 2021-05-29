@@ -65,6 +65,7 @@ namespace GunshotWound2.HitDetection
                 case Bone.SkelSpine0:
                 case Bone.SkelPelvis:
                 case Bone.SkelPelvis1:
+                case Bone.SkelPelvisRoot:
                     return BodyParts.LOWER_BODY;
                 case Bone.SkelLeftThigh:
                 case Bone.SkelRightThigh:
@@ -86,6 +87,8 @@ namespace GunshotWound2.HitDetection
                 case Bone.SkelLeftHand:
                 case Bone.SkelRightHand:
                     return BodyParts.ARM;
+                default:
+                    return (BodyParts) GunshotWound2.Random.Next(0, (int) BodyParts.LEG);
             }
 
             SendMessage("WARNING! Nothing bone is " + damagedBone, NotifyLevels.DEBUG);
@@ -96,7 +99,7 @@ namespace GunshotWound2.HitDetection
         private void SendMessage(string message, NotifyLevels level = NotifyLevels.COMMON)
         {
 #if !DEBUG
-            if(level == NotifyLevels.DEBUG) return;
+            if (level == NotifyLevels.DEBUG) return;
 #endif
 
             var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
