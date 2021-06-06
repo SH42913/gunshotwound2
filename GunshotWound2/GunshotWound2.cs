@@ -28,6 +28,7 @@ namespace GunshotWound2
 
         public const float MinimalRangeForWoundedPeds = 0;
         public const float AddingToRemovingMultiplier = 2;
+        private static readonly string ExceptionLogPath = Application.StartupPath + "/GSW2Exception.log";
 
         public static readonly Random Random = new Random();
         private readonly InputArgument[] _inputArguments = new InputArgument[2];
@@ -183,12 +184,14 @@ namespace GunshotWound2
             }
             catch (Exception exception)
             {
-                Notification.Show(_localeConfig.GswStopped);
-                Notification.Show($"~r~GSW2 error in runtime:{exception}");
-                _exceptionInRuntime = true;
+                Notification.Show($"~o~{_localeConfig.GswStopped}");
+                System.IO.File.WriteAllText(ExceptionLogPath, exception.ToString());
+                Notification.Show($"~r~There is a runtime error in GSW2! Check {ExceptionLogPath}"
 #if DEBUG
-                Notification.Show($"Last system is {LastSystem}");
+                                  + $"\nLast system is {LastSystem}"
 #endif
+                );
+                throw;
             }
         }
 
@@ -198,17 +201,15 @@ namespace GunshotWound2
 
             var translationAuthor = _localeConfig.LocalizationAuthor ?? "GSW2-community";
 
-            Notification.Show(!_exceptionInRuntime
-                ? $"{_localeConfig.ThanksForUsing}\n~g~GunShot Wound ~r~2~s~\nby SH42913\nTranslated by {translationAuthor}"
-                : $"~r~{_localeConfig.GswStopped}");
+            Notification.Show($"{_localeConfig.ThanksForUsing}\n" +
+                              $"~g~GunShot Wound ~r~2~s~\nby SH42913\nTranslated by {translationAuthor}");
 
             if (!_configLoaded)
             {
                 Notification.Show("GSW2 couldn't load config, default config was loaded.\n" +
-                                  $"You need to check {_configReason}");
+                                  $"You need to check ~r~{_configReason}");
             }
-
-            if (!_localizationLoaded)
+            else if (!_localizationLoaded)
             {
                 Notification.Show("GSW2 couldn't load localization, default localization was loaded.\n" +
                                   "You need to check or change localization\n" +
@@ -240,8 +241,8 @@ namespace GunshotWound2
             _commonSystems.Run();
 
 #if DEBUG
-            Screen.ShowSubtitle($"ActiveEntities: {_ecsWorld.GetStats().ActiveEntities}\n" +
-                                $"Peds in GSW: {_gswWorld.GswPeds.Count}");
+            GTA.UI.Screen.Screen.ShowSubtitle($"ActiveEntities: {_ecsWorld.GetStats().ActiveEntities.ToString()}\n" +
+                                $"Peds in GSW: {_gswWorld.GswPeds.Count.ToString()}");
 #endif
         }
 
