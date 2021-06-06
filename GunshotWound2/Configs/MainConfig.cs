@@ -331,7 +331,7 @@ namespace GunshotWound2.Configs
             config.WoundConfig.BleedingMultiplier = node.Element("OverallBleedingMult").GetFloat();
             config.WoundConfig.BleedingDeviation = node.Element("BleedingDeviation").GetFloat();
             config.WoundConfig.RagdollOnPainfulWound = node.Element("RagdollOnPainfulWound").GetBool();
-            config.WoundConfig.PainfulWoundValue = node.Element("PainfulWoundValue").GetFloat();
+            config.WoundConfig.PainfulWoundPercent = node.Element("PainfulWoundPercent").GetFloat();
             config.WoundConfig.MinimalChanceForArmorSave = node.Element("MinimalChanceForArmorSave").GetFloat();
             config.WoundConfig.ApplyBandageTime = node.Element("ApplyBandageTime").GetFloat();
             config.WoundConfig.BandageCost = node.Element("BandageCost").GetInt();

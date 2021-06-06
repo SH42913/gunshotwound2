@@ -108,8 +108,8 @@
 		<!-- If TRUE - peds(including player) will set to permanent ragdoll on spine damage.
         If FALSE - ped will get just legs and arms critical damage. -->
 
-		<PainfulWoundValue Value="40.0"/>
-		<!-- Any wound with pain more than PainfulWoundValue will add painful-wound effects -->
+		<PainfulWoundPercent Value="0.4"/>
+		<!-- Any wound with value more than PainfulWoundPercent * MaxPain will add painful-wound effects -->
 
 		<RagdollOnPainfulWound Value="TRUE"/>
 		<!-- If TRUE - peds(including player) will set to short ragdoll on painful wounds -->
