@@ -223,20 +223,14 @@ namespace GunshotWound2
         {
             if (_isPaused) return;
 
-            _inputArguments[0] = Game.Player;
-
-            if (_mainConfig.NpcConfig.AddingPedRange > MinimalRangeForWoundedPeds)
-            {
-                _inputArguments[1] = 0.01f;
-                Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, _inputArguments);
-            }
-
             if (_mainConfig.PlayerConfig.WoundedPlayerEnabled)
             {
+                _inputArguments[0] = Game.Player;
                 _inputArguments[1] = 0f;
                 Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, _inputArguments);
             }
 
+            _inputArguments[0] = null;
             _everyFrameSystems.Run();
             _commonSystems.Run();
 
@@ -252,11 +246,6 @@ namespace GunshotWound2
 
             _mainConfig.NpcConfig.AddingPedRange += value;
             _mainConfig.NpcConfig.RemovePedRange = _mainConfig.NpcConfig.AddingPedRange * AddingToRemovingMultiplier;
-
-            if (_mainConfig.NpcConfig.AddingPedRange <= MinimalRangeForWoundedPeds)
-            {
-                Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, Game.Player, 1f);
-            }
 
             SendMessage($"{_localeConfig.AddingRange}: {_mainConfig.NpcConfig.AddingPedRange.ToString("F0")}\n" +
                         $"{_localeConfig.RemovingRange}: {_mainConfig.NpcConfig.RemovePedRange.ToString("F0")}");
