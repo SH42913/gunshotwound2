@@ -224,8 +224,7 @@ namespace GunshotWound2
 
             _inputArguments[0] = Game.Player;
 
-            var gswPedsEnabled = _mainConfig.NpcConfig.AddingPedRange > MinimalRangeForWoundedPeds;
-            if (gswPedsEnabled)
+            if (_mainConfig.NpcConfig.AddingPedRange > MinimalRangeForWoundedPeds)
             {
                 _inputArguments[1] = 0.01f;
                 Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, _inputArguments);
@@ -235,12 +234,6 @@ namespace GunshotWound2
             {
                 _inputArguments[1] = 0f;
                 Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, _inputArguments);
-            }
-
-            if (gswPedsEnabled && _mainConfig.PlayerConfig.WoundedPlayerEnabled)
-            {
-                _inputArguments[0] = 0.01f;
-                Function.Call(Hash.SET_AI_WEAPON_DAMAGE_MODIFIER, _inputArguments);
             }
 
             _everyFrameSystems.Run();
