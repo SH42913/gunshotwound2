@@ -49,13 +49,9 @@ namespace GunshotWound2.Crits
 
                 woundedPed.Crits |= CurrentCrit;
                 if (woundedPed.IsPlayer)
-                {
                     ActionForPlayer(woundedPed, pedEntity);
-                }
                 else
-                {
                     ActionForNpc(woundedPed, pedEntity);
-                }
 
                 woundedPed.ThisPed.IsPainAudioEnabled = true;
                 var pain = GunshotWound2.Random.IsTrueWithProbability(0.5f) ? 6 : 7;
@@ -95,8 +91,7 @@ namespace GunshotWound2.Crits
 
         protected void SendPedToRagdoll(int pedEntity, RagdollStates ragdollType)
         {
-            SetPedToRagdollEvent ragdoll;
-            EcsWorld.CreateEntityWith(out ragdoll);
+            EcsWorld.CreateEntityWith(out SetPedToRagdollEvent ragdoll);
             ragdoll.Entity = pedEntity;
             ragdoll.RagdollState = ragdollType;
         }

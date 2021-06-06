@@ -56,13 +56,13 @@ namespace GunshotWound2.HitDetection
                 case Bone.SkelNeck1:
                 case Bone.SkelNeck2:
                     return BodyParts.NECK;
-                case Bone.SkelSpine1:
                 case Bone.SkelSpine2:
                 case Bone.SkelSpine3:
                     return BodyParts.UPPER_BODY;
                 case Bone.SkelRoot:
                 case Bone.SkelSpineRoot:
                 case Bone.SkelSpine0:
+                case Bone.SkelSpine1:
                 case Bone.SkelPelvis:
                 case Bone.SkelPelvis1:
                 case Bone.SkelPelvisRoot:

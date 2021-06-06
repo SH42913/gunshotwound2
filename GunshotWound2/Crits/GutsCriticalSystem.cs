@@ -1,4 +1,5 @@
 ﻿using GTA.Native;
+using GunshotWound2.Effects;
 using GunshotWound2.GUI;
 using GunshotWound2.HitDetection;
 using Leopotam.Ecs;
@@ -18,6 +19,7 @@ namespace GunshotWound2.Crits
         {
             CreatePain(pedEntity, 25f);
             CreateInternalBleeding(pedEntity, 0.5f);
+            SendPedToRagdoll(pedEntity, RagdollStates.SHORT);
 
             SendMessage(Locale.Data.PlayerGutsCritMessage, NotifyLevels.WARNING);
         }
@@ -26,8 +28,8 @@ namespace GunshotWound2.Crits
         {
             CreatePain(pedEntity, 25f);
             CreateInternalBleeding(pedEntity, 0.5f);
-            Function.Call(Hash.CREATE_NM_MESSAGE, true, 1119);
-            Function.Call(Hash.GIVE_PED_NM_MESSAGE, pedComponent.ThisPed);
+            SendPedToRagdoll(pedEntity, RagdollStates.SHORT);
+            RagdollSystem.PlayNaturalMotion(pedComponent.ThisPed, 1119);
 
             SendMessage(pedComponent.IsMale
                 ? Locale.Data.ManGutsCritMessage
