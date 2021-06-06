@@ -58,6 +58,9 @@ namespace GunshotWound2.Effects
                     case RagdollStates.HEART_DAMAGE:
                         skipRemoving = StartHeartDamageRagdoll(woundedPed);
                         break;
+                    case RagdollStates.GUTS_DAMAGE:
+                        skipRemoving = StartGutsDamageRagdoll(woundedPed);
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
@@ -132,6 +135,16 @@ namespace GunshotWound2.Effects
 
             SetToRagdoll(woundedPed.ThisPed, 6000, 1);
             PlayNaturalMotion(woundedPed.ThisPed, 1083);
+            return false;
+        }
+
+        private bool StartGutsDamageRagdoll(WoundedPedComponent woundedPed)
+        {
+            if (woundedPed.InPermanentRagdoll) return false;
+            if (woundedPed.ThisPed.IsRagdoll) return true;
+
+            SetToRagdoll(woundedPed.ThisPed, 4000, 0);
+            PlayNaturalMotion(woundedPed.ThisPed, 1119);
             return false;
         }
 
