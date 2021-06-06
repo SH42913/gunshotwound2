@@ -13,7 +13,7 @@ namespace GunshotWound2.Effects
         private readonly EcsFilter<SetPedToRagdollEvent> _events = null;
 
         private static readonly InputArgument[] PedArgument = new InputArgument[1];
-        private static readonly InputArgument[] RagdollArguments = {0, 0, 0, 0, 0, 0, 0};
+        private static readonly InputArgument[] RagdollArguments = {0, 0, 0, 0, 1, 1, 0};
         private static readonly InputArgument[] NaturalMotionArguments = {true, 0};
 
         public void Run()
@@ -83,7 +83,7 @@ namespace GunshotWound2.Effects
             if (woundedPed.ThisPed.IsRagdoll) return true;
 
             SetToRagdoll(woundedPed.ThisPed, 3000, 4);
-            PlayNaturalMotion(woundedPed.ThisPed, 0);
+            PlayNaturalMotion(woundedPed.ThisPed, 0, true);
             PlayNaturalMotion(woundedPed.ThisPed, 1025);
             PlayNaturalMotion(woundedPed.ThisPed, 169);
             return false;
@@ -134,6 +134,7 @@ namespace GunshotWound2.Effects
             if (woundedPed.ThisPed.IsRagdoll) return true;
 
             SetToRagdoll(woundedPed.ThisPed, 6000, 1);
+            PlayNaturalMotion(woundedPed.ThisPed, 0, true);
             PlayNaturalMotion(woundedPed.ThisPed, 1083);
             return false;
         }
@@ -144,12 +145,14 @@ namespace GunshotWound2.Effects
             if (woundedPed.ThisPed.IsRagdoll) return true;
 
             SetToRagdoll(woundedPed.ThisPed, 4000, 0);
+            PlayNaturalMotion(woundedPed.ThisPed, 0, true);
             PlayNaturalMotion(woundedPed.ThisPed, 1119);
             return false;
         }
 
-        public static void PlayNaturalMotion(Ped ped, int clip)
+        private static void PlayNaturalMotion(Ped ped, int clip, bool immediately = false)
         {
+            NaturalMotionArguments[0] = immediately;
             NaturalMotionArguments[1] = clip;
             Function.Call(Hash.CREATE_NM_MESSAGE, NaturalMotionArguments);
 
@@ -158,7 +161,7 @@ namespace GunshotWound2.Effects
             PedArgument[0] = null;
         }
 
-        public static void SetToRagdoll(Ped ped, int length, int type)
+        private static void SetToRagdoll(Ped ped, int length, int type)
         {
             RagdollArguments[0] = ped;
             RagdollArguments[1] = length;
