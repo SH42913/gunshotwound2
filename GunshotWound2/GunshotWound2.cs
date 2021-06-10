@@ -228,6 +228,10 @@ namespace GunshotWound2
                 _inputArguments[0] = Game.Player;
                 _inputArguments[1] = 0f;
                 Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, _inputArguments);
+
+                _inputArguments[0] = 0.01f;
+                Function.Call(Hash.SET_AI_WEAPON_DAMAGE_MODIFIER, _inputArguments);
+                Function.Call(Hash.SET_AI_MELEE_WEAPON_DAMAGE_MODIFIER, _inputArguments);
             }
 
             _inputArguments[0] = null;
