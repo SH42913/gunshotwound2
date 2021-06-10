@@ -16,9 +16,9 @@ namespace GunshotWound2.Pain
         {
             base.ExecuteState(woundedPed, pedEntity);
 
-            ChangeWalkingAnimation(pedEntity, woundedPed.IsPlayer
-                ? Config.Data.PlayerConfig.IntensePainAnim
-                : Config.Data.NpcConfig.IntensePainAnim);
+            ChangeMoveSet(pedEntity, woundedPed.IsPlayer
+                ? Config.Data.PlayerConfig.IntensePainSets
+                : Config.Data.NpcConfig.IntensePainSets);
 
             if (woundedPed.Crits.Has(CritTypes.ARMS_DAMAGED)) return;
             var pain = EcsWorld.GetComponent<PainComponent>(pedEntity);

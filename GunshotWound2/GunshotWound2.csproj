@@ -81,12 +81,12 @@
     <Compile Include="Damage\SmallCaliberDamageSystem.cs" />
     <Compile Include="Damage\WoundSystem.cs" />
     <Compile Include="Effects\ArmorSystem.cs" />
-    <Compile Include="Effects\ChangeWalkAnimationEvent.cs" />
+    <Compile Include="Effects\SwitchMoveSetRequest.cs" />
     <Compile Include="Effects\InstantHealEvent.cs" />
     <Compile Include="Effects\InstantHealSystem.cs" />
     <Compile Include="Effects\RagdollSystem.cs" />
     <Compile Include="Effects\SetPedToRagdollEvent.cs" />
-    <Compile Include="Effects\SwitchAnimationSystem.cs" />
+    <Compile Include="Effects\MoveSetSwitchSystem.cs" />
     <Compile Include="GUI\CheckSystem.cs" />
     <Compile Include="GUI\DebugInfoSystem.cs" />
     <Compile Include="GUI\NotificationSystem.cs" />

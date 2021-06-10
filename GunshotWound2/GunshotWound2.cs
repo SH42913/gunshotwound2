@@ -97,7 +97,7 @@ namespace GunshotWound2
                 .Add(new InstantHealSystem())
                 .Add(new HelmetRequestSystem())
                 .Add(new RagdollSystem())
-                .Add(new SwitchAnimationSystem())
+                .Add(new MoveSetSwitchSystem())
                 .Add(new DebugInfoSystem())
                 .Add(new CameraShakeSystem())
                 .Add(new FlashSystem())

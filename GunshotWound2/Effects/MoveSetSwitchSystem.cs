@@ -6,10 +6,11 @@ using Leopotam.Ecs;
 namespace GunshotWound2.Effects
 {
     [EcsInject]
-    public sealed class SwitchAnimationSystem : IEcsRunSystem
+    public sealed class MoveSetSwitchSystem : IEcsRunSystem
     {
         private readonly EcsWorld _ecsWorld = null;
-        private readonly EcsFilter<ChangeWalkAnimationEvent> _events = null;
+        private readonly EcsFilter<SwitchMoveSetRequest> _events = null;
+
         private readonly InputArgument[] _animRequestParams = new InputArgument[1];
         private readonly InputArgument[] _animSetParams = new InputArgument[3];
 

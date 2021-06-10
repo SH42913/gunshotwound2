@@ -18,10 +18,9 @@ namespace GunshotWound2.Configs
         public float BleedHealingSpeed;
         public float MaximalSlowMo;
 
-        public string NoPainAnim;
-        public string MildPainAnim;
-        public string AvgPainAnim;
-        public string IntensePainAnim;
+        public string[] MildPainSets;
+        public string[] AvgPainSets;
+        public string[] IntensePainSets;
 
         public bool CameraIsShaking;
 
@@ -41,10 +40,9 @@ namespace GunshotWound2.Configs
                 PlayerEntity = -1,
                 MaximalSlowMo = 0.5f,
                 PoliceCanForgetYou = true,
-                NoPainAnim = "move_m@generic",
-                MildPainAnim = "move_m@gangster@a",
-                AvgPainAnim = "move_m@drunk@moderatedrunk",
-                IntensePainAnim = "move_m@drunk@verydrunk"
+                MildPainSets = new[] {"move_m@injured;move_m@plodding;move_m@buzzed;"},
+                AvgPainSets = new[] {"move_m@drunk@a;move_m@drunk@moderatedrunk;move_m@depressed@a;"},
+                IntensePainSets = new[] {"move_m@drunk@verydrunk;move_m@strung_out@;"},
             };
         }
 

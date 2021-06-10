@@ -2,7 +2,7 @@
 
 namespace GunshotWound2.Effects
 {
-    public sealed class ChangeWalkAnimationEvent : ComponentWithEntity
+    public sealed class SwitchMoveSetRequest : ComponentWithEntity
     {
         public string AnimationName;
     }
