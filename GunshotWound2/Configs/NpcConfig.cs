@@ -40,10 +40,9 @@ namespace GunshotWound2.Configs
         public float UpperMaximalPain;
         public float MaximalPainRecoverSpeed;
 
-        public string NoPainAnim;
-        public string MildPainAnim;
-        public string AvgPainAnim;
-        public string IntensePainAnim;
+        public string[] MildPainSets;
+        public string[] AvgPainSets;
+        public string[] IntensePainSets;
 
         public Ped[] WorldPeds;
         public int LastCheckedPedIndex;

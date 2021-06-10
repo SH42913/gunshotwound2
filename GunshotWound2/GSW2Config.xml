@@ -32,10 +32,12 @@
 		<BleedHealSpeed Value="2.0"/>
 		<!-- How quickly bleeding will heal -->
 
-		<Animations NoPain="move_m@generic" MildPain="move_m@gangster@a"
-					AvgPain="move_m@drunk@moderatedrunk" IntensePain="move_m@drunk@verydrunk"/>
-		<!-- You can change pain animations by yourself.
-        There are 4 states: No Pain, Mild(<30%, currentPain/maximalPain), Average(<80%) and Intense(<100%) -->
+		<MoveSets MildPain="move_m@injured;move_m@plodding;move_m@buzzed;"
+				  AvgPain="move_m@drunk@a;move_m@drunk@moderatedrunk;move_m@depressed@a;"
+				  IntensePain="move_m@drunk@verydrunk;move_m@strung_out@;"/>
+		<!-- You can change pain MoveSets by yourself.
+		GSW support many MoveSets(separated by ;), one of them will be taken by random.
+        There are 3 states: Mild(<30%, currentPain/maximalPain), Average(<80%) and Intense(<100%) -->
 	</Player>
 
 	<Peds>
@@ -77,8 +79,8 @@
 		<BleedHealSpeed Value="1.0"/>
 		<!-- Same as for player -->
 
-		<Animations NoPain="" MildPain="" AvgPain="" IntensePain=""/>
-		<!-- Same as for player, but i don't have any ideas what animations add here -->
+		<MoveSets MildPain="" AvgPain="" IntensePain=""/>
+		<!-- Same as for player, but I don't have any ideas, which animations add here -->
 	</Peds>
 
 	<Notifications>
@@ -108,8 +110,8 @@
 		<!-- If TRUE - peds(including player) will set to permanent ragdoll on spine damage.
         If FALSE - ped will get just legs and arms critical damage. -->
 
-		<PainfulWoundValue Value="40.0"/>
-		<!-- Any wound with pain more than PainfulWoundValue will add painful-wound effects -->
+		<PainfulWoundPercent Value="0.4"/>
+		<!-- Any wound with value more than PainfulWoundPercent * MaxPain will add painful-wound effects -->
 
 		<RagdollOnPainfulWound Value="TRUE"/>
 		<!-- If TRUE - peds(including player) will set to short ragdoll on painful wounds -->

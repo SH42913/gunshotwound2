@@ -9,7 +9,8 @@ namespace GunshotWound2.Effects
         SHORT,
         LONG,
         LEG_DAMAGE,
-        HEART_DAMAGE
+        HEART_DAMAGE,
+        GUTS_DAMAGE,
     }
 
     public sealed class SetPedToRagdollEvent : ComponentWithEntity

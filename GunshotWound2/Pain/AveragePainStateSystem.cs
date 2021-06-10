@@ -19,9 +19,9 @@ namespace GunshotWound2.Pain
             base.ExecuteState(woundedPed, pedEntity);
 
             SendPedToRagdoll(pedEntity, RagdollStates.WAKE_UP);
-            ChangeWalkingAnimation(pedEntity, woundedPed.IsPlayer
-                ? Config.Data.PlayerConfig.AvgPainAnim
-                : Config.Data.NpcConfig.AvgPainAnim);
+            ChangeMoveSet(pedEntity, woundedPed.IsPlayer
+                ? Config.Data.PlayerConfig.AvgPainSets
+                : Config.Data.NpcConfig.AvgPainSets);
 
             if (!woundedPed.IsPlayer) return;
             Game.Player.IgnoredByEveryone = false;

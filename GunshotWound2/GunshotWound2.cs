@@ -28,6 +28,7 @@ namespace GunshotWound2
 
         public const float MinimalRangeForWoundedPeds = 0;
         public const float AddingToRemovingMultiplier = 2;
+        private static readonly string ExceptionLogPath = Application.StartupPath + "/GSW2Exception.log";
 
         public static readonly Random Random = new Random();
         private readonly InputArgument[] _inputArguments = new InputArgument[2];
@@ -96,7 +97,7 @@ namespace GunshotWound2
                 .Add(new InstantHealSystem())
                 .Add(new HelmetRequestSystem())
                 .Add(new RagdollSystem())
-                .Add(new SwitchAnimationSystem())
+                .Add(new MoveSetSwitchSystem())
                 .Add(new DebugInfoSystem())
                 .Add(new CameraShakeSystem())
                 .Add(new FlashSystem())
@@ -183,12 +184,14 @@ namespace GunshotWound2
             }
             catch (Exception exception)
             {
-                Notification.Show(_localeConfig.GswStopped);
-                Notification.Show($"~r~GSW2 error in runtime:{exception}");
-                _exceptionInRuntime = true;
+                Notification.Show($"~o~{_localeConfig.GswStopped}");
+                System.IO.File.WriteAllText(ExceptionLogPath, exception.ToString());
+                Notification.Show($"~r~There is a runtime error in GSW2! Check {ExceptionLogPath}"
 #if DEBUG
-                Notification.Show($"Last system is {LastSystem}");
+                                  + $"\nLast system is {LastSystem}"
 #endif
+                );
+                throw;
             }
         }
 
@@ -198,17 +201,15 @@ namespace GunshotWound2
 
             var translationAuthor = _localeConfig.LocalizationAuthor ?? "GSW2-community";
 
-            Notification.Show(!_exceptionInRuntime
-                ? $"{_localeConfig.ThanksForUsing}\n~g~GunShot Wound ~r~2~s~\nby SH42913\nTranslated by {translationAuthor}"
-                : $"~r~{_localeConfig.GswStopped}");
+            Notification.Show($"{_localeConfig.ThanksForUsing}\n" +
+                              $"~g~GunShot Wound ~r~2~s~\nby SH42913\nTranslated by {translationAuthor}");
 
             if (!_configLoaded)
             {
                 Notification.Show("GSW2 couldn't load config, default config was loaded.\n" +
-                                  $"You need to check {_configReason}");
+                                  $"You need to check ~r~{_configReason}");
             }
-
-            if (!_localizationLoaded)
+            else if (!_localizationLoaded)
             {
                 Notification.Show("GSW2 couldn't load localization, default localization was loaded.\n" +
                                   "You need to check or change localization\n" +
@@ -222,33 +223,24 @@ namespace GunshotWound2
         {
             if (_isPaused) return;
 
-            _inputArguments[0] = Game.Player;
-
-            var gswPedsEnabled = _mainConfig.NpcConfig.AddingPedRange > MinimalRangeForWoundedPeds;
-            if (gswPedsEnabled)
-            {
-                _inputArguments[1] = 0.01f;
-                Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, _inputArguments);
-            }
-
             if (_mainConfig.PlayerConfig.WoundedPlayerEnabled)
             {
+                _inputArguments[0] = Game.Player;
                 _inputArguments[1] = 0f;
                 Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, _inputArguments);
-            }
 
-            if (gswPedsEnabled && _mainConfig.PlayerConfig.WoundedPlayerEnabled)
-            {
                 _inputArguments[0] = 0.01f;
                 Function.Call(Hash.SET_AI_WEAPON_DAMAGE_MODIFIER, _inputArguments);
+                Function.Call(Hash.SET_AI_MELEE_WEAPON_DAMAGE_MODIFIER, _inputArguments);
             }
 
+            _inputArguments[0] = null;
             _everyFrameSystems.Run();
             _commonSystems.Run();
 
 #if DEBUG
-            Screen.ShowSubtitle($"ActiveEntities: {_ecsWorld.GetStats().ActiveEntities}\n" +
-                                $"Peds in GSW: {_gswWorld.GswPeds.Count}");
+            GTA.UI.Screen.Screen.ShowSubtitle($"ActiveEntities: {_ecsWorld.GetStats().ActiveEntities.ToString()}\n" +
+                                $"Peds in GSW: {_gswWorld.GswPeds.Count.ToString()}");
 #endif
         }
 
@@ -258,11 +250,6 @@ namespace GunshotWound2
 
             _mainConfig.NpcConfig.AddingPedRange += value;
             _mainConfig.NpcConfig.RemovePedRange = _mainConfig.NpcConfig.AddingPedRange * AddingToRemovingMultiplier;
-
-            if (_mainConfig.NpcConfig.AddingPedRange <= MinimalRangeForWoundedPeds)
-            {
-                Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, Game.Player, 1f);
-            }
 
             SendMessage($"{_localeConfig.AddingRange}: {_mainConfig.NpcConfig.AddingPedRange.ToString("F0")}\n" +
                         $"{_localeConfig.RemovingRange}: {_mainConfig.NpcConfig.RemovePedRange.ToString("F0")}");

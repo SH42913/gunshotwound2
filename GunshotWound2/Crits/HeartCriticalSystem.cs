@@ -21,7 +21,7 @@ namespace GunshotWound2.Crits
             CreateInternalBleeding(pedEntity, 2.5f);
 
             SendPedToRagdoll(pedEntity, RagdollStates.HEART_DAMAGE);
-            Function.Call(Hash.ANIMPOSTFX_PLAY, "DrugsDrivingIn", 5000, true);
+            StartPostFx("DrugsDrivingIn", 5000);
 
             SendMessage(Locale.Data.PlayerHeartCritMessage, NotifyLevels.WARNING);
         }

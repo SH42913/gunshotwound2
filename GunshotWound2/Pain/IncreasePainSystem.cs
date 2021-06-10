@@ -1,5 +1,4 @@
-﻿using GTA.Native;
-using GunshotWound2.Configs;
+﻿using GunshotWound2.Configs;
 using GunshotWound2.Effects;
 using GunshotWound2.HitDetection;
 using GunshotWound2.Player;
@@ -20,6 +19,7 @@ namespace GunshotWound2.Pain
 #if DEBUG
             GunshotWound2.LastSystem = nameof(IncreasePainSystem);
 #endif
+            var woundConfig = _config.Data.WoundConfig;
 
             for (var i = 0; i < _events.EntitiesCount; i++)
             {
@@ -35,42 +35,31 @@ namespace GunshotWound2.Pain
                 if (woundedPed != null && component.PainAmount > 0f)
                 {
                     var pain = _ecsWorld.EnsureComponent<PainComponent>(pedEntity, out var firstPain);
-                    if (firstPain)
-                    {
-                        pain.CurrentPain = 0f;
-                    }
+                    if (firstPain) pain.CurrentPain = 0f;
 
                     var newPain = component.PainAmount;
                     var painDeviation = GunshotWound2.Random.NextFloat(
-                        -_config.Data.WoundConfig.PainDeviation * newPain,
-                        _config.Data.WoundConfig.PainDeviation * newPain);
-                    pain.CurrentPain += _config.Data.WoundConfig.PainMultiplier * newPain + painDeviation;
+                        -woundConfig.PainDeviation * newPain,
+                        woundConfig.PainDeviation * newPain);
+                    pain.CurrentPain += woundConfig.PainMultiplier * newPain + painDeviation;
 
                     var painAnimIndex = GunshotWound2.Random.Next(1, 6);
-                    var animationDict = woundedPed.IsMale ? "facials@gen_male@base" : "facials@gen_female@base";
-                    Function.Call(Hash.PLAY_FACIAL_ANIM, woundedPed.ThisPed, $"pain_{painAnimIndex.ToString()}", animationDict);
+                    PainRecoverySystem.PlayFacialAnim(woundedPed, $"pain_{painAnimIndex.ToString()}");
 
-                    if (newPain > _config.Data.WoundConfig.PainfulWoundValue / 2)
-                    {
-                        if (woundedPed.IsPlayer)
-                        {
-                            _ecsWorld.CreateEntityWith<AddCameraShakeEvent>().Length = CameraShakeLength.ONE_TIME;
-                        }
-                    }
+                    var painfulWound = woundConfig.PainfulWoundPercent * woundedPed.MaximalPain;
+                    if (woundedPed.IsPlayer && newPain > painfulWound / 2f)
+                        _ecsWorld.CreateEntityWith<AddCameraShakeEvent>().Length = CameraShakeLength.ONE_TIME;
 
-                    if (newPain > _config.Data.WoundConfig.PainfulWoundValue)
+                    if (newPain > painfulWound)
                     {
-                        if (_config.Data.WoundConfig.RagdollOnPainfulWound)
+                        if (woundConfig.RagdollOnPainfulWound)
                         {
                             _ecsWorld.CreateEntityWith(out SetPedToRagdollEvent ragdoll);
                             ragdoll.Entity = pedEntity;
                             ragdoll.RagdollState = RagdollStates.SHORT;
                         }
 
-                        if (woundedPed.IsPlayer)
-                        {
-                            _ecsWorld.CreateEntityWith<AddFlashEvent>();
-                        }
+                        if (woundedPed.IsPlayer) _ecsWorld.CreateEntityWith<AddFlashEvent>();
                     }
                 }
 

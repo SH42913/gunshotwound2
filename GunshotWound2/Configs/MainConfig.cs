@@ -13,6 +13,7 @@ namespace GunshotWound2.Configs
     {
         private const string ScriptConfigPath = "scripts/GSW2Config.xml";
         private const string GswConfigPath = "scripts/GSW2/GSW2Config.xml";
+        private static readonly char[] Separator = {';'};
 
         public WoundConfig WoundConfig;
         public NpcConfig NpcConfig;
@@ -150,13 +151,12 @@ namespace GunshotWound2.Configs
             config.PlayerConfig.CanDropWeapon = node.Element("CanDropWeapon").GetBool();
             config.PlayerConfig.MaximalSlowMo = node.Element("MaximalSlowMo").GetFloat();
 
-            var animationNode = node.Element("Animations");
+            var animationNode = node.Element("MoveSets");
             if (animationNode == null) return;
 
-            config.PlayerConfig.NoPainAnim = animationNode.Attribute("NoPain").Value;
-            config.PlayerConfig.MildPainAnim = animationNode.Attribute("MildPain").Value;
-            config.PlayerConfig.AvgPainAnim = animationNode.Attribute("AvgPain").Value;
-            config.PlayerConfig.IntensePainAnim = animationNode.Attribute("IntensePain").Value;
+            config.PlayerConfig.MildPainSets = animationNode.Attribute("MildPain")?.Value.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
+            config.PlayerConfig.AvgPainSets = animationNode.Attribute("AvgPain")?.Value.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
+            config.PlayerConfig.IntensePainSets = animationNode.Attribute("IntensePain")?.Value.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
         }
 
         private static void PedsSection(MainConfig config, XElement doc)
@@ -188,12 +188,6 @@ namespace GunshotWound2.Configs
 
             config.NpcConfig.MaximalPainRecoverSpeed = node.Element("PainRecoverySpeed").GetFloat();
             config.NpcConfig.MaximalBleedStopSpeed = node.Element("BleedHealSpeed").GetFloat() / 1000f;
-
-            var animationNode = node.Element("Animations");
-            config.NpcConfig.NoPainAnim = animationNode.Attribute("NoPain").Value;
-            config.NpcConfig.MildPainAnim = animationNode.Attribute("MildPain").Value;
-            config.NpcConfig.AvgPainAnim = animationNode.Attribute("AvgPain").Value;
-            config.NpcConfig.IntensePainAnim = animationNode.Attribute("IntensePain").Value;
 
             var targetsNode = node.Element("Targets");
             var all = targetsNode.GetBool("ALL");
@@ -240,6 +234,13 @@ namespace GunshotWound2.Configs
             }
 
             config.NpcConfig.Targets = targets;
+
+            var animationNode = node.Element("MoveSets");
+            if (animationNode == null) return;
+
+            config.NpcConfig.MildPainSets = animationNode.Attribute("MildPain")?.Value.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
+            config.NpcConfig.AvgPainSets = animationNode.Attribute("AvgPain")?.Value.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
+            config.NpcConfig.IntensePainSets = animationNode.Attribute("IntensePain")?.Value.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
         }
 
         private static void NotificationsSection(MainConfig config, XElement doc)
@@ -311,9 +312,7 @@ namespace GunshotWound2.Configs
                 var hashes = weaponNode.Element(name)?.Attribute(name)?.Value;
                 if (string.IsNullOrEmpty(hashes)) throw new Exception($"{weaponName}'s hashes is empty");
 
-                return hashes.Split(';')
-                    .Where(x => !string.IsNullOrEmpty(x))
-                    .Select(uint.Parse).ToArray();
+                return hashes.Split(Separator, StringSplitOptions.RemoveEmptyEntries).Select(uint.Parse).ToArray();
             }
         }
 
@@ -331,7 +330,7 @@ namespace GunshotWound2.Configs
             config.WoundConfig.BleedingMultiplier = node.Element("OverallBleedingMult").GetFloat();
             config.WoundConfig.BleedingDeviation = node.Element("BleedingDeviation").GetFloat();
             config.WoundConfig.RagdollOnPainfulWound = node.Element("RagdollOnPainfulWound").GetBool();
-            config.WoundConfig.PainfulWoundValue = node.Element("PainfulWoundValue").GetFloat();
+            config.WoundConfig.PainfulWoundPercent = node.Element("PainfulWoundPercent").GetFloat();
             config.WoundConfig.MinimalChanceForArmorSave = node.Element("MinimalChanceForArmorSave").GetFloat();
             config.WoundConfig.ApplyBandageTime = node.Element("ApplyBandageTime").GetFloat();
             config.WoundConfig.BandageCost = node.Element("BandageCost").GetInt();

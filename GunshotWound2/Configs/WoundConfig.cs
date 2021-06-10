@@ -21,7 +21,7 @@ namespace GunshotWound2.Configs
         public float MoveRateOnNervesDamage;
 
         public bool RagdollOnPainfulWound;
-        public float PainfulWoundValue;
+        public float PainfulWoundPercent;
 
         public float MinimalChanceForArmorSave;
 
@@ -46,7 +46,7 @@ namespace GunshotWound2.Configs
                 BleedingDeviation = 0.2f,
                 PainDeviation = 0.2f,
                 RagdollOnPainfulWound = true,
-                PainfulWoundValue = 50,
+                PainfulWoundPercent = 0.5f,
                 MinimalChanceForArmorSave = 0.6f,
                 BandageCost = 15,
                 ApplyBandageTime = 5,
@@ -63,7 +63,6 @@ namespace GunshotWound2.Configs
                    $"{nameof(MoveRateOnFullPain)}: {MoveRateOnFullPain.ToString(CultureInfo.InvariantCulture)}\n" +
                    $"{nameof(MoveRateOnNervesDamage)}: {MoveRateOnNervesDamage.ToString(CultureInfo.InvariantCulture)}\n" +
                    $"{nameof(RagdollOnPainfulWound)}: {RagdollOnPainfulWound.ToString()}\n" +
-                   $"{nameof(PainfulWoundValue)}: {PainfulWoundValue.ToString(CultureInfo.InvariantCulture)}\n" +
                    $"{nameof(MinimalChanceForArmorSave)}: {MinimalChanceForArmorSave.ToString(CultureInfo.InvariantCulture)}";
         }
     }

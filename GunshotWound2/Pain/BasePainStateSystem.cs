@@ -44,7 +44,9 @@ namespace GunshotWound2.Pain
 
         protected virtual void ExecuteState(WoundedPedComponent woundedPed, int pedEntity)
         {
+#if DEBUG
             SendMessage($"{pedEntity} switch to {CurrentState} pain state", NotifyLevels.DEBUG);
+#endif
         }
 
         protected void SendPedToRagdoll(int pedEntity, RagdollStates ragdollType)
@@ -54,17 +56,24 @@ namespace GunshotWound2.Pain
             ragdoll.RagdollState = ragdollType;
         }
 
-        protected void ChangeWalkingAnimation(int pedEntity, string animationName)
+        protected void ChangeMoveSet(int pedEntity, string[] moveSets)
         {
-            EcsWorld.CreateEntityWith(out ChangeWalkAnimationEvent anim);
-            anim.Entity = pedEntity;
-            anim.AnimationName = animationName;
+            EcsWorld.CreateEntityWith(out SwitchMoveSetRequest request);
+            request.Entity = pedEntity;
+            request.AnimationName = moveSets != null && moveSets.Length > 0
+                ? moveSets[GunshotWound2.Random.Next(0, moveSets.Length)]
+                : null;
+        }
+
+        protected void ResetMoveSet(int pedEntity)
+        {
+            ChangeMoveSet(pedEntity, null);
         }
 
         protected void SendMessage(string message, NotifyLevels level = NotifyLevels.COMMON)
         {
 #if !DEBUG
-            if(level == NotifyLevels.DEBUG) return;
+            if (level == NotifyLevels.DEBUG) return;
 #endif
 
             var notification = EcsWorld.CreateEntityWith<ShowNotificationEvent>();

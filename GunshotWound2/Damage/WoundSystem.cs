@@ -35,9 +35,6 @@ namespace GunshotWound2.Damage
                 var damageDeviation = component.Damage > 0
                     ? _config.Data.WoundConfig.DamageDeviation * component.Damage
                     : 0;
-                var bleedingDeviation = component.BleedSeverity > 0
-                    ? _config.Data.WoundConfig.BleedingDeviation * component.BleedSeverity
-                    : 0;
 
                 if (!woundedPed.IsDead)
                 {
@@ -46,19 +43,16 @@ namespace GunshotWound2.Damage
                     woundedPed.PedHealth = woundedPed.Health;
                 }
 
-                CreateBleeding(woundedPed, pedEntity, component.BleedSeverity +
-                                                      GunshotWound2.Random.NextFloat(-bleedingDeviation, bleedingDeviation),
-                    component.Name);
-                woundedPed.BleedingCount++;
+                var bleedingDeviation = component.BleedSeverity > 0
+                    ? _config.Data.WoundConfig.BleedingDeviation * component.BleedSeverity
+                    : 0;
 
+                var severity = component.BleedSeverity + GunshotWound2.Random.NextFloat(-bleedingDeviation, bleedingDeviation);
+                CreateBleeding(woundedPed, pedEntity, severity, component.Name);
                 CreatePain(pedEntity, component.Pain);
                 CreateCritical(pedEntity, component.Crits);
 
-                if (component.ArterySevered)
-                {
-                    CreateBleeding(woundedPed, pedEntity, 1f, _locale.Data.SeveredArtery);
-                    woundedPed.BleedingCount++;
-                }
+                if (component.ArterySevered) CreateBleeding(woundedPed, pedEntity, 1f, _locale.Data.SeveredArtery);
 
 #if DEBUG
                 _ecsWorld.CreateEntityWith<ShowDebugInfoEvent>().Entity = pedEntity;
@@ -109,6 +103,7 @@ namespace GunshotWound2.Damage
             bleedingComponent.BleedSeverity = mult * bleedSeverity;
             bleedingComponent.Name = name;
             bleedingComponent.CanBeHealed = bleedSeverity <= mult * BleedingComponent.MaxSeverityForHeal;
+            woundedPed.BleedingCount++;
             if (!bleedingComponent.CanBeHealed) return;
 
             if (woundedPed.MostDangerBleedingEntity == null ||
@@ -134,7 +129,7 @@ namespace GunshotWound2.Damage
         private void SendWoundInfo(ProcessWoundEvent component, WoundedPedComponent woundedPed)
         {
 #if !DEBUG
-            if(_config.Data.PlayerConfig.PlayerEntity != component.Entity) return;
+            if (_config.Data.PlayerConfig.PlayerEntity != component.Entity) return;
 #endif
             if (woundedPed.IsDead) return;
 
