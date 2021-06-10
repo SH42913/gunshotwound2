@@ -18,7 +18,9 @@ namespace GunshotWound2.Crits
         {
             CreatePain(pedEntity, 25f);
             CreateInternalBleeding(pedEntity, 0.5f);
+
             SendPedToRagdoll(pedEntity, RagdollStates.GUTS_DAMAGE);
+            StartPostFx("DrugsDrivingIn", 5000);
 
             SendMessage(Locale.Data.PlayerGutsCritMessage, NotifyLevels.WARNING);
         }

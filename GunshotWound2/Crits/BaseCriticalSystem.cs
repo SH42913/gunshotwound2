@@ -95,5 +95,10 @@ namespace GunshotWound2.Crits
             ragdoll.Entity = pedEntity;
             ragdoll.RagdollState = ragdollType;
         }
+
+        protected static void StartPostFx(string animation, int argument)
+        {
+            Function.Call(Hash.ANIMPOSTFX_PLAY, animation, argument, true);
+        }
     }
 }
