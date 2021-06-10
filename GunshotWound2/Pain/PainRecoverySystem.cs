@@ -12,6 +12,7 @@ namespace GunshotWound2.Pain
         private readonly EcsWorld _ecsWorld = null;
         private readonly EcsFilter<WoundedPedComponent, PainComponent> _pedsWithPain = null;
         private readonly EcsFilterSingle<MainConfig> _config = null;
+        private static readonly InputArgument[] FacialAnimArguments = new InputArgument[3];
 
         public void Run()
         {
@@ -48,14 +49,7 @@ namespace GunshotWound2.Pain
                 }
                 else if (painPercent > 1f)
                 {
-                    if (woundedPed.IsMale)
-                    {
-                        Function.Call(Hash.PLAY_FACIAL_ANIM, woundedPed.ThisPed, "dead_1", "facials@gen_male@base");
-                    }
-                    else
-                    {
-                        Function.Call(Hash.PLAY_FACIAL_ANIM, woundedPed.ThisPed, "dead_1", "facials@gen_female@base");
-                    }
+                    PlayFacialAnim(woundedPed, "dead_1");
 
                     if (woundedPed.PainState == PainStates.UNBEARABLE) continue;
 
@@ -65,16 +59,7 @@ namespace GunshotWound2.Pain
                 }
                 else if (painPercent > 0.8f)
                 {
-                    if (woundedPed.IsMale)
-                    {
-                        Function.Call(Hash.PLAY_FACIAL_ANIM, woundedPed.ThisPed, "mood_injured_1",
-                            "facials@gen_male@base");
-                    }
-                    else
-                    {
-                        Function.Call(Hash.PLAY_FACIAL_ANIM, woundedPed.ThisPed, "mood_injured_1",
-                            "facials@gen_female@base");
-                    }
+                    PlayFacialAnim(woundedPed, "mood_injured_1");
 
                     if (woundedPed.PainState == PainStates.INTENSE) continue;
 
@@ -100,6 +85,8 @@ namespace GunshotWound2.Pain
                 }
                 else
                 {
+                    PlayFacialAnim(woundedPed, "mood_happy_1");
+
                     if (woundedPed.PainState == PainStates.NONE) continue;
 
                     _ecsWorld.CreateEntityWith(out NoPainChangeStateEvent noPainEvent);
@@ -119,6 +106,15 @@ namespace GunshotWound2.Pain
                 var moveRate = 1f - adjustable * backPercent;
                 Function.Call(Hash.SET_PED_MOVE_RATE_OVERRIDE, woundedPed.ThisPed, moveRate);
             }
+        }
+
+        public static void PlayFacialAnim(WoundedPedComponent woundedPed, string animation)
+        {
+            FacialAnimArguments[0] = woundedPed.ThisPed;
+            FacialAnimArguments[1] = animation;
+            FacialAnimArguments[2] = woundedPed.IsMale ? "facials@gen_male@base" : "facials@gen_female@base";
+            Function.Call(Hash.PLAY_FACIAL_ANIM, FacialAnimArguments);
+            FacialAnimArguments[0] = null;
         }
     }
 }

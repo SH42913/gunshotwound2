@@ -1,5 +1,4 @@
-﻿using GTA.Native;
-using GunshotWound2.Configs;
+﻿using GunshotWound2.Configs;
 using GunshotWound2.Effects;
 using GunshotWound2.HitDetection;
 using GunshotWound2.Player;
@@ -45,8 +44,7 @@ namespace GunshotWound2.Pain
                     pain.CurrentPain += woundConfig.PainMultiplier * newPain + painDeviation;
 
                     var painAnimIndex = GunshotWound2.Random.Next(1, 6);
-                    var animationDict = woundedPed.IsMale ? "facials@gen_male@base" : "facials@gen_female@base";
-                    Function.Call(Hash.PLAY_FACIAL_ANIM, woundedPed.ThisPed, $"pain_{painAnimIndex.ToString()}", animationDict);
+                    PainRecoverySystem.PlayFacialAnim(woundedPed, $"pain_{painAnimIndex.ToString()}");
 
                     var painfulWound = woundConfig.PainfulWoundPercent * woundedPed.MaximalPain;
                     if (woundedPed.IsPlayer && newPain > painfulWound / 2f)
