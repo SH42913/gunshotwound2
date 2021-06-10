@@ -21,15 +21,15 @@ AvulsiveGswOn,Avulsive GSW on,Рваное огнестрельное ранен
 ,,,,,,,,,,,,
 ,,,,,,,,,,,,
 HeavyBrainDamage,Heavy brain damage,Тяжелое повреждение мозга,Schwerer Hirnschaden,Lourds dégâts cérébraux,Poważne uszkodzenie mózgu,심각한 뇌 손상,Dano cerebral pesado,Daño cerebral grave,Heavy brain damage,脳に重大なダメージを受けた,頭部嚴重受損,Heavy brain damage
-BulletFlyThroughYourHead,A bullet has penetrated your skull,Пуля прошла вашу голову насквозь,Eine Kugel hat deinen Schädel durchdrungen,Une balle a pénétré dans votre crâne,Pocisk spenetrował ci czaskę,총알이 당신의 머리를 통해 난다,Bala voôu pela sua cabeça,Una bala a penetrado tu craneo,A bullet has penetrated your skull,銃弾があなたの頭蓋骨を貫通した,子彈穿透你的頭骨,A bullet has penetrated your skull
-BulletTornApartYourBrain,A bullet has fractured your skull,Пуля разорвала ваш череп на куски,Eine Kugel hat dein Hirn durchdrungen,Une balle vous a fracturé votre crâne,Pocisk uszkodził twoją czaskę,총알이 당신의 두뇌를 찢어 버렸습니다,bala explodiu sua cabeça,Una bala a fracturado tu craneo,A bullet has fractured your skull,弾丸により頭蓋骨が骨折した,子彈使你頭部骨折,A bullet has fractured your skull
+BulletFlyThroughYourHead,A bullet has penetrated your skull,Пуля прошла вашу голову насквозь,Eine Kugel hat deinen Schädel durchdrungen,Une balle a pénétré dans votre crâne,Pocisk spenetrował ci czaskę,총알이 당신의 머리를 통해 난다,Bala voôu pela sua cabeça,Una bala ha penetrado tu craneo,A bullet has penetrated your skull,銃弾があなたの頭蓋骨を貫通した,子彈穿透你的頭骨,A bullet has penetrated your skull
+BulletTornApartYourBrain,A bullet has fractured your skull,Пуля разорвала ваш череп на куски,Eine Kugel hat dein Hirn durchdrungen,Une balle vous a fracturé votre crâne,Pocisk uszkodził twoją czaskę,총알이 당신의 두뇌를 찢어 버렸습니다,bala explodiu sua cabeça,Una bala ha fracturado tu craneo,A bullet has fractured your skull,弾丸により頭蓋骨が骨折した,子彈使你頭部骨折,A bullet has fractured your skull
 ,,,,,,,,,,,,
 LightBruise,Light bruise,Легкий ушиб,Leichte Prellung,Léger bleu,Lekkie zacięcie,가벼운 타박상,ferimento leve,Abrasura leve,Light bruise,軽いあざ,輕度淤血,Light bruise
 LightBruiseOn,Light bruise on,Легкий ушиб на,Leichte Prellung an,Léger bleu activé,Lekkie zacięcie na,가벼운 타박상 ,Contusão leve on,abrasion ligera,Light bruise on,軽いあざ 有効,輕度淤血 on,Light bruise on
 MediumBruiseOn,Medium bruise on,Средний ушиб на,Mittlere Prellung an,Bleu activé,Średnie zacięcie na,중간 타박상 켜짐,Contusão média on,abrasion media,Medium bruise on,中傷 有効,中度淤血 on,Medium bruise on
 HeavyBruiseOn,Heavy bruise on,Серьезный ушиб на,Schwere Prellung an,Gros bleu activé,Poważne zacięcie na,심각한 타박상 켜짐,Contusão pesada on,abrasion grave,Heavy bruise on,大打撲 有効,嚴重摔傷 on,Heavy bruise on
 AbrazionWoundOn,Abrasion wound on,Содрана кожа на,Schürfwunde an,Éraflure,Przetarcie rany na,마모 상처 켜짐,Ferida de abrasão on,abulsion,Abrasion wound on,かすり傷 有効,擦傷 on,Abrasion wound on
-WindedFromImpact,Winded from impact,Головокружение от удара,Außer Atem durch Treffer,Vertiges du au choc,Powalenie po uderzeniu,충격 때문에 숨이 헐떡임,Falta de ar devido ao impacto,Falto de aliento por el impacto,Winded from impact,影響を受けない,因撞擊而喘氣,Winded from impact
+WindedFromImpact,Winded from impact,Головокружение от удара,Außer Atem durch Treffer,Vertiges du au choc,Powalenie po uderzeniu,충격 때문에 숨이 헐떡임,Falta de ar devido ao impacto,Falta de aliento por el impacto,Winded from impact,影響を受けない,因撞擊而喘氣,Winded from impact
 ,,,,,,,,,,,,
 IncisionWoundOn,Incision wound to the,Поверхностное ранение на,Schnittwunde an,Plaie superficielle sur,Naciencię na,절개 상처 어디에,Incisão em ferida,Incision,Incision wound to the,Incision wound to the,Incision wound to the,Incision wound to the
 LacerationWoundOn,Laceration wound to the,Рваная рана на,Reisswunde an,Lacération de la plaie sur,Skaleczenie na,열상 상처 어디에,Ferida de laceração,Laceracion,Laceration wound to the,Laceration wound to the,Laceration wound to the,Laceration wound to the
@@ -44,36 +44,36 @@ ArmBlown,Concussive shock damage to the arm detected,Рука разорвана
 LegBlown,Concussive shock damage to the legs detected,Нога разорвана на куски,Bein zerstört,Jambe touchée,Obrażenia wstrząsowe na nogach,다리가 헐떡임,Perna queimada,Concussive shock damage to the legs detected,Concussive shock damage to the legs detected,衝撃的による足の損傷を検出,腿部受到衝擊受傷,Concussive shock damage to the legs detected
 ,,,,,,,,,,,,
 Blackout,Blackout possible,Возможна потеря сознания,Möglicher Gedächtnisverlust,Risque d'évanouïssement,Zamroczenie,의식 상실 가능성이 있다,Possivel cegueira temporária,Blackout possible,Blackout possible,気絶の可能性あり,可能導致斷氣,Blackout possible
-BleedingInHead,Intracranial bleeding,Кровотечение в мозг,Kopfblutung,Saignement à la tête,Krwawienie wnętrzoczaskowe,머리에서 출혈,Sangrando na cabeça,Intracranial bleeding,Intracranial bleeding,頭蓋内出血,顱內出血,Intracranial bleeding
-TraumaticBrainInjury,Traumatic brain injury,Тяжелая травма головного мозга,Schädeltrauma,Lésion cérébrale traumatique,Traumatyczne uszkodzenie mózgu,외상성 뇌 손상,Traumatismo crâniano,Traumatic brain injury,Traumatic brain injury,外傷性脳損傷,頭部外傷,Traumatic brain injury
-BrokenNeck,Damage to cervical vertebrae,Повреждение шейных позвонков,Gebrochenes Genick,Nuque brisée,Złamany lub skręcony kark; uszkodzenie rdzeniu kręgowego,목이 부러짐,Pescoço quebrado,Broken or sprained neck; damage to cervical vertebrae,Broken or sprained neck; damage to cervical vertebrae,首の骨折、頚椎の損傷または捻挫,頸部骨折或扭傷,Damage to cervical vertebrae
+BleedingInHead,Intracranial bleeding,Кровотечение в мозг,Kopfblutung,Saignement à la tête,Krwawienie wnętrzoczaskowe,머리에서 출혈,Sangrando na cabeça,Hemorragia intercraneal,Intracranial bleeding,頭蓋内出血,顱內出血,Intracranial bleeding
+TraumaticBrainInjury,Traumatic brain injury,Тяжелая травма головного мозга,Schädeltrauma,Lésion cérébrale traumatique,Traumatyczne uszkodzenie mózgu,외상성 뇌 손상,Traumatismo crâniano,Traumatismo cerebral,Traumatic brain injury,外傷性脳損傷,頭部外傷,Traumatic brain injury
+BrokenNeck,Damage to cervical vertebrae,Повреждение шейных позвонков,Gebrochenes Genick,Nuque brisée,Złamany lub skręcony kark; uszkodzenie rdzeniu kręgowego,목이 부러짐,Pescoço quebrado,Cuello roto o dañado; vertebra cervical dañada,Broken or sprained neck; damage to cervical vertebrae,首の骨折、頚椎の損傷または捻挫,頸部骨折或扭傷,Damage to cervical vertebrae
 ,,,,,,,,,,,,
 Health,Health,Здоровье,Gesundheit,Santé,Zdrowie,체력 ,saúde,Health,Health,体力,健康,Health
-YouAreDead,You are dead!,Ты мертв!,Du bist tot!,Vous êtes mort !,Umarłeś,당신은 죽었다!,Voçê está morto,You are dead!,You are dead!,You are died!,你死啦,You are dead!
-Pain,Pain,Боль,Schmerz,Douleur,Ból,통증,Dor,Pain,Pain,痛み,疼痛,Pain
+YouAreDead,You are dead!,Ты мертв!,Du bist tot!,Vous êtes mort !,Umarłeś,당신은 죽었다!,Voçê está morto,¡Estas muerto!,You are dead!,You are died!,你死啦,You are dead!
+Pain,Pain,Боль,Schmerz,Douleur,Ból,통증,Dor,Dolor,Pain,痛み,疼痛,Pain
 ,,,,,,,,,,,,
-ArmorLooksGreat,Your armor appears undamaged,Бронежилет как новый,Deine Rüstung sieht gut aus,Votre blindage est en bon état,Hełm i kamizelka wyglądają dobrze,당신의 갑옷은 훌룡해 보인다,Sua armadura parece ótima,Your armor appears undamaged,Your armor appears undamaged,防弾ベストは損傷していない,防彈衣完好無損,Your armor appears undamaged
-ScratchesOnArmor,Some plates of your armor is broken,Несколько бронеплит сломаны,Deine Rüstung hat ein paar Kratzer,Votre blindage a des égratinures,Ceramika na hełmie i kamizelce wyglądają na uszkodzone,당신의 갑옷은 약간의 스크래치가 있다,Sua armadura tem alguns arranhões,One of the ceramic plates of your armor is broken,One of the ceramic plates of your armor is broken,防弾ベストのセラミックプレートの一つが壊れている,防彈衣的一塊瓷片被打壞,Some plates of your armor is broken
-DentsOnArmor,Your armor is noticeably damaged,Бронежилет серьезно поврежден,Deine Rüstung hat großen Schaden genommen,Votre blindage a de larges entailles,Hełm i kamizelka są zauważalnie uszkodzone,당신의 갑옷은 크게 찌그려 졋다,Sua armadura está visivelmente danificada,Your armor is noticeably damaged,Your armor is noticeably damaged,防弾ベストが著しく損傷している,防彈衣嚴重受損,Your armor is noticeably damaged
-ArmorLooksAwful,Your body armor is practically useless,Бронежилет выглядит хуже некуда,Deine Rüstung ist praktisch nutzlos,Votre blindage est en très mauvais état,Hełm i kamizelka są do wyrzucenia,당신은 갑옷은 끔찍한 보인다,Sua armadura parece horrível,Your body armor is practically useless,Your body armor is practically useless,防弾ベストはほとんど役に立たない,防彈衣幾乎報廢,Your body armor is practically useless
+ArmorLooksGreat,Your armor appears undamaged,Бронежилет как новый,Deine Rüstung sieht gut aus,Votre blindage est en bon état,Hełm i kamizelka wyglądają dobrze,당신의 갑옷은 훌룡해 보인다,Sua armadura parece ótima,Tu chaleco no parece estar dañado,Your armor appears undamaged,防弾ベストは損傷していない,防彈衣完好無損,Your armor appears undamaged
+ScratchesOnArmor,Some plates of your armor is broken,Несколько бронеплит сломаны,Deine Rüstung hat ein paar Kratzer,Votre blindage a des égratinures,Ceramika na hełmie i kamizelce wyglądają na uszkodzone,당신의 갑옷은 약간의 스크래치가 있다,Sua armadura tem alguns arranhões,Una de las placas de ceramica de tu chaleco esta rota,One of the ceramic plates of your armor is broken,防弾ベストのセラミックプレートの一つが壊れている,防彈衣的一塊瓷片被打壞,Some plates of your armor is broken
+DentsOnArmor,Your armor is noticeably damaged,Бронежилет серьезно поврежден,Deine Rüstung hat großen Schaden genommen,Votre blindage a de larges entailles,Hełm i kamizelka są zauważalnie uszkodzone,당신의 갑옷은 크게 찌그려 졋다,Sua armadura está visivelmente danificada,Tu chaleco se nota que esta un poco dañado,Your armor is noticeably damaged,防弾ベストが著しく損傷している,防彈衣嚴重受損,Your armor is noticeably damaged
+ArmorLooksAwful,Your body armor is practically useless,Бронежилет выглядит хуже некуда,Deine Rüstung ist praktisch nutzlos,Votre blindage est en très mauvais état,Hełm i kamizelka są do wyrzucenia,당신은 갑옷은 끔찍한 보인다,Sua armadura parece horrível,Tu chaleco corporal es practicamente inutil,Your body armor is practically useless,防弾ベストはほとんど役に立たない,防彈衣幾乎報廢,Your body armor is practically useless
 ,"Write correctly! Eg, ""Critical damaged nerves heart legs""",,,,,,,,,"Write correctly! Eg, ""Critical damaged nerves heart legs""",,
-Crits,Critical damaged,Критически повреждены,Kritischer Schaden an,Dégât critique,Krytyczne obrażenia,치명적인 손상,dano critico,Critical damage to,Critical damage to,クリティカルダメージ先,嚴重傷害,Critical damaged
-NervesCrit,nerves,нервы,Nerven,les nerfs,Nerwy,신경,nervos,nerves,nerves,神経,神經,nerves
-HeartCrit,heart,сердце,Herz,le coeur,Serce,심장,coração,heart,heart,心臓,心臟,heart
-LungsCrit,lungs,легкие,Lungen,les poumons,Płuca,폐,pulmões,lungs,lungs,肺,肺部,lungs
-StomachCrit,stomach,желудок,Bauch,l'estomac,Żołądek,복부,estômago,stomach,stomach,胃,胃部,stomach
-GutsCrit,guts,кишечник,Innereien,l'intestin,Wnętrzności,창자,culhões,guts,guts,腸,腸道,guts
-ArmsCrit,arms,руки,Arme, les bras,Ręce,팔,braços,arms,arms,腕,手臂,arms
-LegsCrit,legs,ноги,Beine, les jambes,Nogi,다리,pernas,legs,legs,足,腿部,legs
+Crits,Critical damaged,Критически повреждены,Kritischer Schaden an,Dégât critique,Krytyczne obrażenia,치명적인 손상,dano critico,Daño critico a ,Critical damage to,クリティカルダメージ先,嚴重傷害,Critical damaged
+NervesCrit,nerves,нервы,Nerven,les nerfs,Nerwy,신경,nervos,Nervios,nerves,神経,神經,nerves
+HeartCrit,heart,сердце,Herz,le coeur,Serce,심장,coração,Corazon,heart,心臓,心臟,heart
+LungsCrit,lungs,легкие,Lungen,les poumons,Płuca,폐,pulmões,Pulmones,lungs,肺,肺部,lungs
+StomachCrit,stomach,желудок,Bauch,l'estomac,Żołądek,복부,estômago,Estomago,stomach,胃,胃部,stomach
+GutsCrit,guts,кишечник,Innereien,l'intestin,Wnętrzności,창자,culhões,Intestinos,guts,腸,腸道,guts
+ArmsCrit,arms,руки,Arme, les bras,Ręce,팔,braços,Brazos,arms,腕,手臂,arms
+LegsCrit,legs,ноги,Beine, les jambes,Nogi,다리,pernas,Piernas,legs,足,腿部,legs
 ,,,,,,,,,,,,
-Wounds,Wounds,Ранения,Wunden,Blessures,Rany,상처,Feridas,Wounds,Wounds,傷,傷口,Wounds
+Wounds,Wounds,Ранения,Wunden,Blessures,Rany,상처,Feridas,Heridas,Wounds,傷,傷口,Wounds
 ,,,,,,,,,,,,
 ,,,,,,,,,,,,
-DontHaveMoneyForHelmet,Insufficient funds to purchase a helmet,Недостаточно денег для покупки шлема,Du hast nicht genug Geld für einen Helm,Vous n'avez pas assez d'argent pour acheter un casque,Nie masz wystarczających pieniędzy aby kupić hełm,당신은 헬멧을 사기에 충분한 돈을 가지고 있지 않다,Você não tem dinheiro suficiente para comprar capacete,Insufficient funds to purchase helmet,Insufficient funds to purchase helmet,ヘルメットを買うための金が足りない,購買頭盔資金不足,Insufficient funds to purchase a helmet
+DontHaveMoneyForHelmet,Insufficient funds to purchase a helmet,Недостаточно денег для покупки шлема,Du hast nicht genug Geld für einen Helm,Vous n'avez pas assez d'argent pour acheter un casque,Nie masz wystarczających pieniędzy aby kupić hełm,당신은 헬멧을 사기에 충분한 돈을 가지고 있지 않다,Você não tem dinheiro suficiente para comprar capacete,No tienes suficientes fondos para comprar un casco,Insufficient funds to purchase helmet,ヘルメットを買うための金が足りない,購買頭盔資金不足,Insufficient funds to purchase a helmet
 ,,,,,,,,,,,,
-InternalBleeding,Internal bleeding,Внутреннее кровотечение,Innere Blutungen,Hémorragie interne,Krwawienie wewnętrzne,내부 출혈,Sangramento interno,Internal bleeding,Internal bleeding,内出血,內出血,Internal bleeding
-SeveredArtery,Punctured artery,Разорванная артерия,Verletzte Arterie,Artère touchée,Przecięta tętnica,절단 동맥,Artéria cortada,Punctured artery,Punctured artery,穿刺動脈,動脈穿刺,Punctured artery
-SeveredArteryMessage,An artery was severed,Артерия была повреждена,Arterie wurde verletzt!,L'artère a été touchée,Masz przeciętą tętnice!,동맥이 절단되었다!,Artéria foi cortada!,An artery was severed!,An artery was severed!,動脈が切れた,動脈斷裂,An artery was severed
+InternalBleeding,Internal bleeding,Внутреннее кровотечение,Innere Blutungen,Hémorragie interne,Krwawienie wewnętrzne,내부 출혈,Sangramento interno,Hemorragia interna,Internal bleeding,内出血,內出血,Internal bleeding
+SeveredArtery,Punctured artery,Разорванная артерия,Verletzte Arterie,Artère touchée,Przecięta tętnica,절단 동맥,Artéria cortada,Arteria pinchada,Punctured artery,穿刺動脈,動脈穿刺,Punctured artery
+SeveredArteryMessage,An artery was severed,Артерия была повреждена,Arterie wurde verletzt!,L'artère a été touchée,Masz przeciętą tętnice!,동맥이 절단되었다!,Artéria foi cortada!,¡Una arteria se ha roto!,An artery was severed!,動脈が切れた,動脈斷裂,An artery was severed
 ,,,,,,,,,,,,
 PlayerNervesCritMessage,You can't feel your limbs,Вы не чувствуете свои ноги и руки,Es scheint als könntest du deine Arme und Beine nicht mehr kontrollieren,Vous ne maîtrisez plus vos jambes ni vos bras,Czujesz jak tracisz kontrole nad rękami i nogami,당신은  더 이상 팔과 다리를 움직일수 없다는걸 느꼇다,Você sente que não pode mais controlar seus braços e pernas,Spinal/nervous system damage detected,Spinal/nervous system damage detected,脊髄または神経系の損傷を検出,脊髓神經受損,You can't feel your limbs
 ManNervesCritMessage,He looks like his spine was damaged,Похоже у него поврежден позвоночник,Er sieht aus als ob sein Rückgrat verletzt wurde,On dirait que sa colonne vertébrale a été touchée,Wygląda na to że nerwy mu padły,그의 척추가 손상된 것처럼 보인다,Ele parece está com sua espinha foi danificada,He looks like his spine was damaged,He looks like his spine was damaged,彼の背骨は損傷したようだ,他脊髓神經受損,He looks like his spine was damaged
