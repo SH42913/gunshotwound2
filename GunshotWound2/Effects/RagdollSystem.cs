@@ -109,7 +109,9 @@ namespace GunshotWound2.Effects
 
         private void WakeUpFromRagdoll(WoundedPedComponent woundedPed, int pedEntity)
         {
-            if ((woundedPed.InPermanentRagdoll || woundedPed.ThisPed.IsRagdoll) && !woundedPed.Crits.Has(CritTypes.NERVES_DAMAGED))
+            if (woundedPed.Crits.Has(CritTypes.NERVES_DAMAGED)) return;
+
+            if (woundedPed.InPermanentRagdoll || woundedPed.ThisPed.IsRagdoll)
             {
                 SetToRagdoll(woundedPed.ThisPed, 1, 1);
                 woundedPed.InPermanentRagdoll = false;
