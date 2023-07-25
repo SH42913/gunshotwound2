@@ -10,5 +10,15 @@ namespace GunshotWound2.Utils
             if (probability <= 0) return false;
             return random.NextDouble() < probability;
         }
+
+        public static float NextFloat(this Random rand, float min, float max)
+        {
+            if (min > max)
+            {
+                throw new ArgumentException("min must be less than max");
+            }
+
+            return (float) rand.NextDouble() * (max - min) + min;
+        }
     }
 }
