@@ -1,6 +1,5 @@
-﻿namespace GunshotWound2.Pain
-{
-    public sealed class NoPainChangeStateEvent : BaseChangePainStateEvent
-    {
-    }
-}
+﻿// namespace GunshotWound2.Pain {
+//     using Leopotam.Ecs;
+//
+//     public struct NoPainChangeStateEvent : IEcsIgnoreInFilter { }
+// }

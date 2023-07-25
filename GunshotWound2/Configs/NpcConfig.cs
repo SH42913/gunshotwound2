@@ -44,15 +44,6 @@ namespace GunshotWound2.Configs
         public string[] AvgPainSets;
         public string[] IntensePainSets;
 
-        public Ped[] WorldPeds;
-        public int LastCheckedPedIndex;
-        public int UpperBoundForFindInMs;
-
-        public float GetRandomHealth()
-        {
-            return GunshotWound2.Random.Next(MinStartHealth, MaxStartHealth);
-        }
-
         public static NpcConfig CreateDefault()
         {
             return new NpcConfig
@@ -66,7 +57,6 @@ namespace GunshotWound2.Configs
                 LowerMaximalPain = 50,
                 UpperMaximalPain = 80,
                 MaximalPainRecoverSpeed = 1f,
-                UpperBoundForFindInMs = 10,
                 MinAccuracy = 10,
                 MaxAccuracy = 50,
                 MinShootRate = 10,

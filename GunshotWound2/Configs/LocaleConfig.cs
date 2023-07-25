@@ -256,7 +256,7 @@ namespace GunshotWound2.Configs
             config.LocalizationAuthor = "~r~SH42913";
         }
 
-        public static (bool success, string reason) TryToLoadLocalization(LocaleConfig config, string language)
+        public static (bool success, string reason) TryToLoad(LocaleConfig config, string language)
         {
             var gswLocalization = new FileInfo("scripts/GSW2/GSW2Localization.csv");
             var scriptsLocalization = new FileInfo("scripts/GSW2Localization.csv");

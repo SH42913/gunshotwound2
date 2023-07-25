@@ -1,6 +1,6 @@
-﻿namespace GunshotWound2.Pain
-{
-    public sealed class DeadlyPainChangeStateEvent : BaseChangePainStateEvent
-    {
-    }
-}
+﻿// namespace GunshotWound2.Pain
+// {
+//     public sealed class DeadlyPainChangeStateEvent : BaseChangePainStateEvent
+//     {
+//     }
+// }

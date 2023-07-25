@@ -1,8 +1,3 @@
-﻿using GunshotWound2.Utils;
-
-namespace GunshotWound2.GUI
-{
-    public sealed class ShowHealthStateEvent : ComponentWithEntity
-    {
-    }
-}
+﻿// namespace GunshotWound2.GUI {
+//     public struct ShowHealthStateEvent : Leopotam.Ecs.IEcsIgnoreInFilter { }
+// }

@@ -1,343 +1,256 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Threading;
-using System.Windows.Forms;
-using GTA;
-using GTA.Native;
-using GTA.UI;
-using GunshotWound2.Configs;
-using GunshotWound2.Crits;
-using GunshotWound2.Damage;
-using GunshotWound2.Effects;
-using GunshotWound2.GUI;
-using GunshotWound2.Healing;
-using GunshotWound2.HitDetection;
-using GunshotWound2.HitDetection.WeaponHitSystems;
-using GunshotWound2.Pain;
-using GunshotWound2.Player;
-using GunshotWound2.Utils;
-using GunshotWound2.World;
-using Leopotam.Ecs;
+﻿namespace GunshotWound2 {
+    using System;
+    using System.IO;
+    using System.Windows.Forms;
+    using Configs;
+    using GTA;
+    using GTA.UI;
+    using Scellecs.Morpeh;
+    using Utils;
+    using EcsWorld = Scellecs.Morpeh.World;
 
-namespace GunshotWound2
-{
-    public sealed class GunshotWound2 : Script
-    {
-        public static string LastSystem = "Nothing";
+    // ReSharper disable once ClassNeverInstantiated.Global
+    public sealed class GunshotWound2 : Script {
+        public const float MINIMAL_RANGE_FOR_WOUNDED_PEDS = 0;
+        public const float ADDING_TO_REMOVING_MULTIPLIER = 2;
 
-        public const float MinimalRangeForWoundedPeds = 0;
-        public const float AddingToRemovingMultiplier = 2;
-        private static readonly string ExceptionLogPath = Application.StartupPath + "/GSW2Exception.log";
+        private static readonly string EXCEPTION_LOG_PATH = $"{Application.StartupPath}/GSW2Exception.log";
 
-        public static readonly Random Random = new Random();
-        private readonly InputArgument[] _inputArguments = new InputArgument[2];
+        private readonly SharedData sharedData;
 
-        private bool _isPaused;
+        private readonly EcsWorld ecsWorld;
+        private readonly SystemsGroup commonSystems;
 
-        private EcsWorld _ecsWorld;
-        private EcsSystems _everyFrameSystems;
-        private MultiTickEcsSystems _commonSystems;
+        private float timeToStart;
+        private bool isStarted;
+        private bool isPaused;
 
-        private MainConfig _mainConfig;
-        private LocaleConfig _localeConfig;
-        private GswWorld _gswWorld;
-
-        private bool _isInit;
-        private bool _configLoaded;
-        private string _configReason;
-        private bool _localizationLoaded;
-        private string _localizationReason;
-        private bool _exceptionInRuntime;
-        private int _ticks;
-
-        public GunshotWound2()
-        {
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
-            GunshotWoundInit();
-        }
-
-        private void GunshotWoundInit()
-        {
-            Function.Call(Hash._SET_CAM_EFFECT, 0);
-            _ecsWorld = new EcsWorld();
-
-            _mainConfig = EcsFilterSingle<MainConfig>.Create(_ecsWorld);
-            _localeConfig = EcsFilterSingle<LocaleConfig>.Create(_ecsWorld);
-            _gswWorld = EcsFilterSingle<GswWorld>.Create(_ecsWorld);
-            _gswWorld.GswPeds = new Dictionary<Ped, int>();
-
-            (_configLoaded, _configReason) = MainConfig.TryToLoadFromXml(_mainConfig);
-            (_localizationLoaded, _localizationReason) = LocaleConfig.TryToLoadLocalization(_localeConfig, _mainConfig.Language);
-
-            _everyFrameSystems = new EcsSystems(_ecsWorld);
-            _commonSystems = new MultiTickEcsSystems(_ecsWorld, MultiTickEcsSystems.RestrictionModes.MILLISECONDS, 10);
-
-            if (_mainConfig.NpcConfig.AddingPedRange > MinimalRangeForWoundedPeds)
-            {
-                _commonSystems
-                    .Add(new NpcFindSystem())
-                    .Add(new ConvertPedToNpcGswPedSystem())
-                    .Add(new RemoveWoundedPedSystem());
-            }
-
-            if (_mainConfig.PlayerConfig.WoundedPlayerEnabled)
-            {
-                _everyFrameSystems
-                    .Add(new PlayerSystem())
-                    .Add(new SpecialAbilityLockSystem());
-
-                if (_mainConfig.PlayerConfig.MaximalSlowMo < 1f)
-                {
-                    _everyFrameSystems.Add(new AdrenalineSystem());
-                }
-            }
-
-            _everyFrameSystems
-                .Add(new InstantHealSystem())
-                .Add(new HelmetRequestSystem())
-                .Add(new RagdollSystem())
-                .Add(new MoveSetSwitchSystem())
-                .Add(new DebugInfoSystem())
-                .Add(new CameraShakeSystem())
-                .Add(new FlashSystem())
-                .Add(new PainRecoverySystem())
-                .Add(new BleedingSystem())
-                .Add(new BandageSystem())
-                .Add(new SelfHealingSystem());
-
-            _commonSystems
-                .Add(new ArmorSystem())
-                .AddHitDetectSystems()
-                .AddDamageProcessingSystems()
-                .AddWoundSystems()
-                .AddPainStateSystems()
-                .Add(new CheckSystem())
-                .Add(new NotificationSystem());
-
-            _everyFrameSystems.Initialize();
-            _commonSystems.Initialize();
-
+        public GunshotWound2() {
             Tick += OnTick;
+
+            var logger = new ScriptHookLogger();
+            sharedData = new SharedData(logger);
+
+            ecsWorld = EcsWorld.Create();
+            commonSystems = ecsWorld.CreateSystemsGroup();
+
             KeyUp += OnKeyUp;
+            isPaused = false;
+            timeToStart = 10f;
 
-            _isPaused = false;
+            Aborted += Cleanup;
         }
 
-        private void OnKeyUp(object sender, KeyEventArgs eventArgs)
-        {
-            if (eventArgs.KeyCode == _mainConfig.HelmetKey)
-            {
-                _ecsWorld.CreateEntityWith<AddHelmetToPlayerEvent>();
+        private void OnTick(object sender, EventArgs eventArgs) {
+            sharedData.deltaTime = Game.LastFrameTime;
+            if (!IsStarted()) {
                 return;
             }
 
-            if (eventArgs.KeyCode == _mainConfig.CheckKey)
-            {
-                CheckPlayer();
-                return;
-            }
-
-            if (eventArgs.KeyCode == _mainConfig.HealKey)
-            {
-                HealPlayer();
-                return;
-            }
-
-            if (eventArgs.KeyCode == _mainConfig.BandageKey)
-            {
-                ApplyBandageToPlayer();
-                return;
-            }
-
-            if (eventArgs.KeyCode == _mainConfig.IncreaseRangeKey)
-            {
-                ChangeRange(5);
-                return;
-            }
-
-            if (eventArgs.KeyCode == _mainConfig.ReduceRangeKey)
-            {
-                ChangeRange(-5);
-                return;
-            }
-
-            if (eventArgs.KeyCode == _mainConfig.PauseKey)
-            {
-                _isPaused = !_isPaused;
-                Notification.Show(_isPaused
-                    ? $"~r~{_localeConfig.GswIsPaused}"
-                    : $"~g~{_localeConfig.GswIsWorking}");
-                return;
-            }
-        }
-
-        private void OnTick(object sender, EventArgs eventArgs)
-        {
-            IsInitCheck();
-
-            if (_exceptionInRuntime) return;
-
-            try
-            {
+            try {
                 GunshotWoundTick();
+            } catch (Exception exception) {
+                HandleRuntimeException(exception);
+                Abort();
             }
-            catch (Exception exception)
-            {
-                Notification.Show($"~o~{_localeConfig.GswStopped}");
-                System.IO.File.WriteAllText(ExceptionLogPath, exception.ToString());
-                Notification.Show($"~r~There is a runtime error in GSW2! Check {ExceptionLogPath}"
+        }
+
+        private void OnKeyUp(object sender, KeyEventArgs eventArgs) {
+            if (timeToStart <= 0) {
+                // ProcessKeyCode(eventArgs.KeyCode);
+            }
+        }
+
+        private void Cleanup(object sender, EventArgs e) {
+            commonSystems.Dispose();
+            ecsWorld.Dispose();
+        }
+
+        #region PREPARE
+        private bool IsStarted() {
+            if (isStarted) {
+                return true;
+            }
+
+            if (timeToStart > 0) {
+                timeToStart -= sharedData.deltaTime;
+                return false;
+            }
+
+            //TODO: Coroutine for frames?
+            (bool success, string reason) = MainConfig.TryToLoad(sharedData.mainConfig);
+            if (!success) {
+                Notification.Show($"GSW2 couldn't load config!\nReason:\n~r~{reason}");
+                Abort();
+                return false;
+            }
+
+            (success, reason) = LocaleConfig.TryToLoad(sharedData.localeConfig, sharedData.mainConfig.Language);
+            if (!success) {
+                Notification.Show("GSW2 couldn't load localization, default localization was loaded.\n"
+                                  + $"You need to check or change localization\nReason:\n~r~{reason}");
+
+                return false;
+            }
+
+            try {
+                RegisterSystems();
+            } catch (Exception e) {
+                HandleRuntimeException(e);
+                Abort();
+                return false;
+            }
+
+            LocaleConfig localeConfig = sharedData.localeConfig;
+            string translationAuthor = localeConfig.LocalizationAuthor ?? "GSW2-community";
+            Notification.Show($"{localeConfig.ThanksForUsing}\n~g~GunShot Wound ~r~2~s~\n"
+                              + $"by SH42913\nTranslated by {translationAuthor}");
+
+            isStarted = true;
+            return true;
+        }
+
+        struct MyStruct : IComponent { }
+
+        private void RegisterSystems() {
+            ecsWorld.CreateEntity().AddComponent<MyStruct>();
+            ecsWorld.Commit();
+
+            // commonSystems.AddSystem(new NpcFindSystem());
+            // commonSystems.AddSystem(new ConvertPedToNpcGswPedSystem());
+            // commonSystems.AddSystem(new RemoveWoundedPedSystem());
+
+            // PlayerConfig playerConfig = sharedData.mainConfig.PlayerConfig;
+            // if (playerConfig.WoundedPlayerEnabled) {
+            //     everyFrameSystems.Add(new PlayerSystem()).Add(new SpecialAbilityLockSystem());
+            //
+            //     if (playerConfig.MaximalSlowMo < 1f) {
+            //         everyFrameSystems.Add(new AdrenalineSystem());
+            //     }
+            // }
+            //
+            // everyFrameSystems.Add(new InstantHealSystem()).Add(new HelmetRequestSystem()).Add(new RagdollSystem())
+            //                  .Add(new MoveSetSwitchSystem()).Add(new DebugInfoSystem()).Add(new CameraShakeSystem())
+            //                  .Add(new FlashSystem()).Add(new PainRecoverySystem()).Add(new BleedingSystem())
+            //                  .Add(new BandageSystem()).Add(new SelfHealingSystem());
+            //
+            // commonSystems.Add(new ArmorSystem()).Add(new HitDetectSystem()).Add(new BaseWeaponHitSystem())
+            //              .Add(new BodyHitSystem()).Add(new HitCleanSystem()).Add(new SmallCaliberDamageSystem())
+            //              .Add(new ShotgunDamageSystem()).Add(new LightImpactDamageSystem())
+            //              .Add(new HeavyImpactDamageSystem()).Add(new MediumCaliberDamageSystem())
+            //              .Add(new HighCaliberDamageSystem()).Add(new CuttingDamageSystem())
+            //              .Add(new ExplosionDamageSystem()).Add(new WoundSystem()).Add(new HeartCriticalSystem())
+            //              .Add(new LungsCriticalSystem()).Add(new NervesCriticalSystem()).Add(new ArmsCriticalSystem())
+            //              .Add(new LegsCriticalSystem()).Add(new GutsCriticalSystem()).Add(new StomachCriticalSystem())
+            //              .Add(new IncreasePainSystem()).Add(new NoPainStateSystem()).Add(new MildPainStateSystem())
+            //              .Add(new AveragePainStateSystem()).Add(new IntensePainStateSystem())
+            //              .Add(new UnbearablePainStateSystem()).Add(new DeadlyPainStateSystem()).Add(new CheckSystem())
+            //              .Add(new NotificationSystem());
+        }
+        #endregion
+
+        #region TICK
+        private void GunshotWoundTick() {
+            if (isPaused) {
+                return;
+            }
+
+            // if (sharedData.mainConfig.PlayerConfig.WoundedPlayerEnabled) {
+            //     Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, Game.Player, 0f);
+            //     Function.Call(Hash.SET_AI_WEAPON_DAMAGE_MODIFIER, 0.01f);
+            //     Function.Call(Hash.SET_AI_MELEE_WEAPON_DAMAGE_MODIFIER, 0.01f);
+            // }
+
+            commonSystems.Update(sharedData.deltaTime);
+            commonSystems.LateUpdate(sharedData.deltaTime);
+            commonSystems.CleanupUpdate(sharedData.deltaTime);
+
 #if DEBUG
-                                  + $"\nLast system is {LastSystem}"
-#endif
-                );
-                throw;
-            }
-        }
-
-        private void IsInitCheck()
-        {
-            if (_isInit || _ticks++ != 400) return;
-
-            var translationAuthor = _localeConfig.LocalizationAuthor ?? "GSW2-community";
-
-            Notification.Show($"{_localeConfig.ThanksForUsing}\n" +
-                              $"~g~GunShot Wound ~r~2~s~\nby SH42913\nTranslated by {translationAuthor}");
-
-            if (!_configLoaded)
-            {
-                Notification.Show("GSW2 couldn't load config, default config was loaded.\n" +
-                                  $"You need to check ~r~{_configReason}");
-            }
-            else if (!_localizationLoaded)
-            {
-                Notification.Show("GSW2 couldn't load localization, default localization was loaded.\n" +
-                                  "You need to check or change localization\n" +
-                                  "Possible reason: ~r~" + _localizationReason);
-            }
-
-            _isInit = true;
-        }
-
-        private void GunshotWoundTick()
-        {
-            if (_isPaused) return;
-
-            if (_mainConfig.PlayerConfig.WoundedPlayerEnabled)
-            {
-                _inputArguments[0] = Game.Player;
-                _inputArguments[1] = 0f;
-                Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, _inputArguments);
-
-                _inputArguments[0] = 0.01f;
-                Function.Call(Hash.SET_AI_WEAPON_DAMAGE_MODIFIER, _inputArguments);
-                Function.Call(Hash.SET_AI_MELEE_WEAPON_DAMAGE_MODIFIER, _inputArguments);
-            }
-
-            _inputArguments[0] = null;
-            _everyFrameSystems.Run();
-            _commonSystems.Run();
-
-#if DEBUG
-            GTA.UI.Screen.Screen.ShowSubtitle($"ActiveEntities: {_ecsWorld.GetStats().ActiveEntities.ToString()}\n" +
-                                $"Peds in GSW: {_gswWorld.GswPeds.Count.ToString()}");
+            var activeEntities = $"ActiveEntities: {ecsWorld.Filter.With<MyStruct>().GetLengthSlow().ToString()}";
+            var totalPeds = $"Peds in GSW: {sharedData.gswWorld.gswPeds.Count.ToString()}";
+            GTA.UI.Screen.ShowSubtitle($"{activeEntities}\n{totalPeds}");
 #endif
         }
 
-        private void ChangeRange(float value)
-        {
-            if (_mainConfig.NpcConfig.AddingPedRange + value < MinimalRangeForWoundedPeds) return;
-
-            _mainConfig.NpcConfig.AddingPedRange += value;
-            _mainConfig.NpcConfig.RemovePedRange = _mainConfig.NpcConfig.AddingPedRange * AddingToRemovingMultiplier;
-
-            SendMessage($"{_localeConfig.AddingRange}: {_mainConfig.NpcConfig.AddingPedRange.ToString("F0")}\n" +
-                        $"{_localeConfig.RemovingRange}: {_mainConfig.NpcConfig.RemovePedRange.ToString("F0")}");
+        private void HandleRuntimeException(Exception exception) {
+            Notification.Show($"~o~{sharedData.localeConfig.GswStopped}");
+            File.WriteAllText(EXCEPTION_LOG_PATH, exception.ToString());
+            Notification.Show($"~r~There is a runtime error in GSW2!\nCheck {EXCEPTION_LOG_PATH}");
         }
+        #endregion
 
-        private void CheckPlayer()
-        {
-            var playerEntity = _mainConfig.PlayerConfig.PlayerEntity;
-            if (playerEntity < 0) return;
-
-            _ecsWorld.CreateEntityWith<ShowHealthStateEvent>().Entity = playerEntity;
-        }
-
-        private void HealPlayer()
-        {
-            var playerEntity = _mainConfig.PlayerConfig.PlayerEntity;
-            if (playerEntity < 0) return;
-
-            _ecsWorld.CreateEntityWith<InstantHealEvent>().Entity = playerEntity;
-        }
-
-        private void ApplyBandageToPlayer()
-        {
-            var playerEntity = _mainConfig.PlayerConfig.PlayerEntity;
-            if (playerEntity < 0) return;
-
-            _ecsWorld.CreateEntityWith<ApplyBandageEvent>().Entity = playerEntity;
-        }
-
-        private void SendMessage(string message, NotifyLevels level = NotifyLevels.COMMON)
-        {
-#if !DEBUG
-            if (level == NotifyLevels.DEBUG) return;
-#endif
-
-            var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
-            notification.Level = level;
-            notification.StringToShow = message;
-        }
-    }
-
-    internal static class Extensions
-    {
-        public static MultiTickEcsSystems AddHitDetectSystems(this MultiTickEcsSystems systems)
-        {
-            return systems
-                .Add(new HitDetectSystem())
-                .Add(new BaseWeaponHitSystem())
-                .Add(new BodyHitSystem())
-                .Add(new HitCleanSystem());
-        }
-
-        public static MultiTickEcsSystems AddDamageProcessingSystems(this MultiTickEcsSystems systems)
-        {
-            return systems
-                .Add(new SmallCaliberDamageSystem())
-                .Add(new ShotgunDamageSystem())
-                .Add(new LightImpactDamageSystem())
-                .Add(new HeavyImpactDamageSystem())
-                .Add(new MediumCaliberDamageSystem())
-                .Add(new HighCaliberDamageSystem())
-                .Add(new CuttingDamageSystem())
-                .Add(new ExplosionDamageSystem());
-        }
-
-        public static MultiTickEcsSystems AddWoundSystems(this MultiTickEcsSystems systems)
-        {
-            return systems
-                .Add(new WoundSystem())
-                .Add(new HeartCriticalSystem())
-                .Add(new LungsCriticalSystem())
-                .Add(new NervesCriticalSystem())
-                .Add(new ArmsCriticalSystem())
-                .Add(new LegsCriticalSystem())
-                .Add(new GutsCriticalSystem())
-                .Add(new StomachCriticalSystem());
-        }
-
-        public static MultiTickEcsSystems AddPainStateSystems(this MultiTickEcsSystems systems)
-        {
-            return systems
-                .Add(new IncreasePainSystem())
-                .Add(new NoPainStateSystem())
-                .Add(new MildPainStateSystem())
-                .Add(new AveragePainStateSystem())
-                .Add(new IntensePainStateSystem())
-                .Add(new UnbearablePainStateSystem())
-                .Add(new DeadlyPainStateSystem());
-        }
+        #region KEYS
+        // private void ProcessKeyCode(Keys keyCode) {
+        //     MainConfig mainConfig = sharedData.mainConfig;
+        //     LocaleConfig localeConfig = sharedData.localeConfig;
+        //     if (keyCode == mainConfig.HelmetKey) {
+        //         ecsWorld.NewEntity().Get<AddHelmetToPlayerEvent>();
+        //         return;
+        //     }
+        //
+        //     if (keyCode == mainConfig.CheckKey) {
+        //         CheckPlayer();
+        //         return;
+        //     }
+        //
+        //     if (keyCode == mainConfig.HealKey) {
+        //         HealPlayer();
+        //         return;
+        //     }
+        //
+        //     if (keyCode == mainConfig.BandageKey) {
+        //         ApplyBandageToPlayer();
+        //         return;
+        //     }
+        //
+        //     if (keyCode == mainConfig.IncreaseRangeKey) {
+        //         ChangeRange(5);
+        //         return;
+        //     }
+        //
+        //     if (keyCode == mainConfig.ReduceRangeKey) {
+        //         ChangeRange(-5);
+        //         return;
+        //     }
+        //
+        //     if (keyCode == mainConfig.PauseKey) {
+        //         isPaused = !isPaused;
+        //         Notification.Show(isPaused ? $"~r~{localeConfig.GswIsPaused}" : $"~g~{localeConfig.GswIsWorking}");
+        //     }
+        // }
+        //
+        // private void ChangeRange(float value) {
+        //     NpcConfig npcConfig = sharedData.mainConfig.NpcConfig;
+        //     if (npcConfig.AddingPedRange + value < MINIMAL_RANGE_FOR_WOUNDED_PEDS) {
+        //         return;
+        //     }
+        //
+        //     npcConfig.AddingPedRange += value;
+        //     npcConfig.RemovePedRange = npcConfig.AddingPedRange * ADDING_TO_REMOVING_MULTIPLIER;
+        //
+        //     LocaleConfig localeConfig = sharedData.localeConfig;
+        //     var addRange = $"{localeConfig.AddingRange}: {npcConfig.AddingPedRange.ToString("F0")}";
+        //     var removeRange = $"{localeConfig.RemovingRange}: {npcConfig.RemovePedRange.ToString("F0")}";
+        //     NotificationSystem.SendMessage(ecsWorld, $"{addRange}\n{removeRange}");
+        // }
+        //
+        // private void CheckPlayer() {
+        //     if (sharedData.TryGetPlayer(out EcsEntity playerEntity)) {
+        //         ecsWorld.ScheduleEventWithTarget<ShowHealthStateEvent>(playerEntity);
+        //     }
+        // }
+        //
+        // private void HealPlayer() {
+        //     if (sharedData.TryGetPlayer(out EcsEntity playerEntity)) {
+        //         ecsWorld.ScheduleEventWithTarget<InstantHealEvent>(playerEntity);
+        //     }
+        // }
+        //
+        // private void ApplyBandageToPlayer() {
+        //     if (sharedData.TryGetPlayer(out EcsEntity playerEntity)) {
+        //         ecsWorld.ScheduleEventWithTarget<ApplyBandageEvent>(playerEntity);
+        //     }
+        // }
+        #endregion
     }
 }

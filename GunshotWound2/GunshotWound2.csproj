@@ -134,13 +134,15 @@
     <Compile Include="Pain\PainRecoverySystem.cs" />
     <Compile Include="Pain\UnbearablePainChangeStateEvent.cs" />
     <Compile Include="Pain\UnbearablePainStateSystem.cs" />
-    <Compile Include="Utils\VariousExtensions.cs" />
-    <Compile Include="World\ConvertPedToNpcGswPedEvent.cs" />
+    <Compile Include="SharedData.cs" />
+    <Compile Include="Utils\EcsExtensions.cs" />
+    <Compile Include="Utils\Loggers.cs" />
+    <Compile Include="Utils\TargetEntity.cs" />
+    <Compile Include="Utils\XElementExtensions.cs" />
     <Compile Include="World\ConvertPedToNpcGswPedSystem.cs" />
-    <Compile Include="World\ForceWorldPedUpdateEvent.cs" />
     <Compile Include="World\GswWorld.cs" />
     <Compile Include="World\NpcFindSystem.cs" />
-    <Compile Include="World\NpcMarkComponent.cs" />
+    <Compile Include="World\IsNpcMarker.cs" />
     <Compile Include="World\RemoveWoundedPedSystem.cs" />
     <Compile Include="Player\AddCameraShakeEvent.cs" />
     <Compile Include="Player\AddFlashEvent.cs" />
@@ -150,12 +152,10 @@
     <Compile Include="Player\ChangeSpecialAbilityEvent.cs" />
     <Compile Include="Player\FlashSystem.cs" />
     <Compile Include="Player\HelmetRequestSystem.cs" />
-    <Compile Include="Player\PlayerMarkComponent.cs" />
+    <Compile Include="Player\IsPlayerMarker.cs" />
     <Compile Include="Player\PlayerSystem.cs" />
     <Compile Include="Player\SpecialAbilityLockSystem.cs" />
-    <Compile Include="Utils\ComponentWithEntity.cs" />
     <Compile Include="Utils\LocalizationManager.cs" />
-    <Compile Include="Utils\MultiTickEcsSystems.cs" />
     <Compile Include="Utils\RandomExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

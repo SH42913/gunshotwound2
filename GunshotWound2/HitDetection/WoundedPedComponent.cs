@@ -25,7 +25,7 @@ namespace GunshotWound2.HitDetection
         DEADLY
     }
 
-    public sealed class WoundedPedComponent
+    public struct WoundedPedComponent
     {
         private const int HealthOffset = 100;
         private const int MaxHealthOffset = HealthOffset + 1;

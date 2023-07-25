@@ -67,7 +67,7 @@ namespace GunshotWound2.Configs
             config.NpcConfig = NpcConfig.CreateDefault();
         }
 
-        public static (bool success, string reason) TryToLoadFromXml(MainConfig config)
+        public static (bool success, string reason) TryToLoad(MainConfig config)
         {
             LoadDefaultValues(config);
 
@@ -87,10 +87,12 @@ namespace GunshotWound2.Configs
                 return (false, "GSW Config was not found");
             }
 
-            var doc = XDocument.Load(path).Root;
-            if (doc == null)
-            {
-                return (false, $"Incorrect XML file at {path}");
+            XElement doc;
+            try {
+                doc = XDocument.Load(path).Root;
+            } catch (Exception e) {
+                Console.WriteLine(e);
+                return (false, $"Incorrect XML file at {path}:\n{e.Message}");
             }
 
             string section = null;
@@ -116,7 +118,7 @@ namespace GunshotWound2.Configs
             }
             catch (Exception e)
             {
-                return (false, $"Failed loading of {section}:{e.Message}");
+                return (false, $"Failed loading of {section}:\n{e.Message}");
             }
 
             return (true, null);
@@ -165,7 +167,7 @@ namespace GunshotWound2.Configs
             if (node == null) return;
 
             config.NpcConfig.AddingPedRange = node.Element("GSWScanRange").GetFloat();
-            config.NpcConfig.RemovePedRange = config.NpcConfig.AddingPedRange * GunshotWound2.AddingToRemovingMultiplier;
+            config.NpcConfig.RemovePedRange = config.NpcConfig.AddingPedRange * GunshotWound2.ADDING_TO_REMOVING_MULTIPLIER;
 
             config.NpcConfig.ShowEnemyCriticalMessages = node.Element("CriticalMessages").GetBool();
             config.NpcConfig.ScanOnlyDamaged = node.Element("ScanOnlyDamaged").GetBool();

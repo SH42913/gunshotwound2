@@ -4,8 +4,6 @@ namespace GunshotWound2.Configs
 {
     public sealed class PlayerConfig
     {
-        public int PlayerEntity = -1;
-
         public bool WoundedPlayerEnabled;
         public bool PoliceCanForgetYou;
         public bool CanDropWeapon;
@@ -37,7 +35,6 @@ namespace GunshotWound2.Configs
                 MaximalPain = 100,
                 PainRecoverSpeed = 1.5f,
                 BleedHealingSpeed = 0.001f,
-                PlayerEntity = -1,
                 MaximalSlowMo = 0.5f,
                 PoliceCanForgetYou = true,
                 MildPainSets = new[] {"move_m@injured;move_m@plodding;move_m@buzzed;"},
