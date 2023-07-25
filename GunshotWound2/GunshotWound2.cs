@@ -57,7 +57,7 @@
 
         private void OnKeyUp(object sender, KeyEventArgs eventArgs) {
             if (timeToStart <= 0) {
-                // ProcessKeyCode(eventArgs.KeyCode);
+                ProcessKeyCode(eventArgs.KeyCode);
             }
         }
 
@@ -110,12 +110,7 @@
             return true;
         }
 
-        struct MyStruct : IComponent { }
-
         private void RegisterSystems() {
-            ecsWorld.CreateEntity().AddComponent<MyStruct>();
-            ecsWorld.Commit();
-
             // commonSystems.AddSystem(new NpcFindSystem());
             // commonSystems.AddSystem(new ConvertPedToNpcGswPedSystem());
             // commonSystems.AddSystem(new RemoveWoundedPedSystem());
@@ -166,9 +161,7 @@
             commonSystems.CleanupUpdate(sharedData.deltaTime);
 
 #if DEBUG
-            var activeEntities = $"ActiveEntities: {ecsWorld.Filter.With<MyStruct>().GetLengthSlow().ToString()}";
-            var totalPeds = $"Peds in GSW: {sharedData.gswWorld.gswPeds.Count.ToString()}";
-            GTA.UI.Screen.ShowSubtitle($"{activeEntities}\n{totalPeds}");
+            GTA.UI.Screen.ShowSubtitle($"Peds in GSW: {sharedData.gswWorld.gswPeds.Count.ToString()}");
 #endif
         }
 
@@ -180,45 +173,46 @@
         #endregion
 
         #region KEYS
-        // private void ProcessKeyCode(Keys keyCode) {
-        //     MainConfig mainConfig = sharedData.mainConfig;
-        //     LocaleConfig localeConfig = sharedData.localeConfig;
-        //     if (keyCode == mainConfig.HelmetKey) {
-        //         ecsWorld.NewEntity().Get<AddHelmetToPlayerEvent>();
-        //         return;
-        //     }
-        //
-        //     if (keyCode == mainConfig.CheckKey) {
-        //         CheckPlayer();
-        //         return;
-        //     }
-        //
-        //     if (keyCode == mainConfig.HealKey) {
-        //         HealPlayer();
-        //         return;
-        //     }
-        //
-        //     if (keyCode == mainConfig.BandageKey) {
-        //         ApplyBandageToPlayer();
-        //         return;
-        //     }
-        //
-        //     if (keyCode == mainConfig.IncreaseRangeKey) {
-        //         ChangeRange(5);
-        //         return;
-        //     }
-        //
-        //     if (keyCode == mainConfig.ReduceRangeKey) {
-        //         ChangeRange(-5);
-        //         return;
-        //     }
-        //
-        //     if (keyCode == mainConfig.PauseKey) {
-        //         isPaused = !isPaused;
-        //         Notification.Show(isPaused ? $"~r~{localeConfig.GswIsPaused}" : $"~g~{localeConfig.GswIsWorking}");
-        //     }
-        // }
-        //
+        private void ProcessKeyCode(Keys keyCode) {
+            MainConfig mainConfig = sharedData.mainConfig;
+            LocaleConfig localeConfig = sharedData.localeConfig;
+
+            // if (keyCode == mainConfig.HelmetKey) {
+            //     ecsWorld.NewEntity().Get<AddHelmetToPlayerEvent>();
+            //     return;
+            // }
+            //
+            // if (keyCode == mainConfig.CheckKey) {
+            //     CheckPlayer();
+            //     return;
+            // }
+            //
+            // if (keyCode == mainConfig.HealKey) {
+            //     HealPlayer();
+            //     return;
+            // }
+            //
+            // if (keyCode == mainConfig.BandageKey) {
+            //     ApplyBandageToPlayer();
+            //     return;
+            // }
+            //
+            // if (keyCode == mainConfig.IncreaseRangeKey) {
+            //     ChangeRange(5);
+            //     return;
+            // }
+            //
+            // if (keyCode == mainConfig.ReduceRangeKey) {
+            //     ChangeRange(-5);
+            //     return;
+            // }
+
+            if (keyCode == mainConfig.PauseKey) {
+                isPaused = !isPaused;
+                Notification.Show(isPaused ? $"~y~{localeConfig.GswIsPaused}" : $"~g~{localeConfig.GswIsWorking}");
+            }
+        }
+
         // private void ChangeRange(float value) {
         //     NpcConfig npcConfig = sharedData.mainConfig.NpcConfig;
         //     if (npcConfig.AddingPedRange + value < MINIMAL_RANGE_FOR_WOUNDED_PEDS) {
