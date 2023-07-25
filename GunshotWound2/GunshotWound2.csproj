@@ -161,12 +161,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\leoEcs\Leopotam.Ecs.csproj">
-      <Project>{45fc0562-7188-4470-b350-6a73699fe6e2}</Project>
-      <Name>Leopotam.Ecs</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="GSW2Config.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
