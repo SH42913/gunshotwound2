@@ -1,6 +1,5 @@
-GunshotWound2/bin/
-GunshotWound2/obj/
-GunshotWound2/leoEcs/
+*/bin/
+*/obj/
 .idea/
 packages/
 *.DotSettings.user
