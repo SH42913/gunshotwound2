@@ -35,9 +35,11 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ScriptHookVDotNet3, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\ScriptHookVDotNet3.3.1.0\lib\net48\ScriptHookVDotNet3.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="ScriptHookVDotNet">
+      <HintPath>..\HookDLLs\ScriptHookVDotNet.asi</HintPath>
+    </Reference>
+    <Reference Include="ScriptHookVDotNet3">
+      <HintPath>..\HookDLLs\ScriptHookVDotNet3.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -45,9 +47,8 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Weighted Randomizer, Version=1.0.3.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\WeightedRandomizer.1.0.3\lib\net35\Weighted Randomizer.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="WeightedRandomizer, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WeightedRandomizer.2.0.1\lib\net35\WeightedRandomizer.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
