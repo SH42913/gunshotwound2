@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <LangVersion>default</LangVersion>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -183,4 +184,7 @@
     <Target Name="AfterBuild">
     </Target>
     -->
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(TargetDir)" "C:\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\scripts\GSW2\"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
