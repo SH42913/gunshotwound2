@@ -1,6 +1,7 @@
-﻿using SHVDN;
+﻿namespace GunshotWound2.Utils {
+    using System;
+    using SHVDN;
 
-namespace GunshotWound2.Utils {
     public interface ILogger {
         void WriteInfo(string message);
         void WriteWarning(string message);
@@ -8,11 +9,11 @@ namespace GunshotWound2.Utils {
     }
 
     public sealed class ScriptHookLogger : ILogger {
-        private readonly Console consoleInstance;
+        private readonly SHVDN.Console consoleInstance;
         private readonly string[] cachedMessages;
 
         public ScriptHookLogger() {
-            consoleInstance = System.AppDomain.CurrentDomain.GetData("Console") as Console;
+            consoleInstance = (SHVDN.Console) AppDomain.CurrentDomain.GetData("Console");
             cachedMessages = new string[1];
         }
 

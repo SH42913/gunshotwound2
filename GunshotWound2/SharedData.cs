@@ -1,15 +1,15 @@
-﻿namespace GunshotWound2.Utils {
+﻿namespace GunshotWound2 {
     using System.Diagnostics;
     using Configs;
     using Scellecs.Morpeh;
-    using World;
+    using Utils;
 
     public sealed class SharedData {
         public readonly ILogger logger;
         public readonly Stopwatch stopwatch;
         public readonly System.Random random;
 
-        public readonly GswWorld gswWorld;
+        public readonly WorldService worldService;
         public readonly MainConfig mainConfig;
         public readonly LocaleConfig localeConfig;
 
@@ -21,7 +21,7 @@
             stopwatch = new Stopwatch();
             random = new System.Random();
 
-            gswWorld = new GswWorld(startCapacity: 64);
+            worldService = new WorldService(startCapacity: 64);
             mainConfig = new MainConfig();
             localeConfig = new LocaleConfig();
 

@@ -5,6 +5,7 @@
     using Configs;
     using GTA;
     using GTA.UI;
+    using Peds;
     using Scellecs.Morpeh;
     using Utils;
     using EcsWorld = Scellecs.Morpeh.World;
@@ -36,7 +37,7 @@
 
             KeyUp += OnKeyUp;
             isPaused = false;
-            timeToStart = 10f;
+            timeToStart = 5f;
 
             Aborted += Cleanup;
         }
@@ -111,9 +112,7 @@
         }
 
         private void RegisterSystems() {
-            // commonSystems.AddSystem(new NpcFindSystem());
-            // commonSystems.AddSystem(new ConvertPedToNpcGswPedSystem());
-            // commonSystems.AddSystem(new RemoveWoundedPedSystem());
+            ConvertPedsFeature.CreateSystems(commonSystems, sharedData);
 
             // PlayerConfig playerConfig = sharedData.mainConfig.PlayerConfig;
             // if (playerConfig.WoundedPlayerEnabled) {
@@ -161,12 +160,13 @@
             commonSystems.CleanupUpdate(sharedData.deltaTime);
 
 #if DEBUG
-            GTA.UI.Screen.ShowSubtitle($"Peds in GSW: {sharedData.gswWorld.gswPeds.Count.ToString()}");
+            GTA.UI.Screen.ShowSubtitle(sharedData.worldService.ToString());
 #endif
         }
 
         private void HandleRuntimeException(Exception exception) {
             Notification.Show($"~o~{sharedData.localeConfig.GswStopped}");
+            sharedData.logger.WriteError(exception.ToString());
             File.WriteAllText(EXCEPTION_LOG_PATH, exception.ToString());
             Notification.Show($"~r~There is a runtime error in GSW2!\nCheck {EXCEPTION_LOG_PATH}");
         }
@@ -196,16 +196,16 @@
             //     ApplyBandageToPlayer();
             //     return;
             // }
-            //
-            // if (keyCode == mainConfig.IncreaseRangeKey) {
-            //     ChangeRange(5);
-            //     return;
-            // }
-            //
-            // if (keyCode == mainConfig.ReduceRangeKey) {
-            //     ChangeRange(-5);
-            //     return;
-            // }
+            
+            if (keyCode == mainConfig.IncreaseRangeKey) {
+                ChangeRange(5);
+                return;
+            }
+            
+            if (keyCode == mainConfig.ReduceRangeKey) {
+                ChangeRange(-5);
+                return;
+            }
 
             if (keyCode == mainConfig.PauseKey) {
                 isPaused = !isPaused;
@@ -213,21 +213,22 @@
             }
         }
 
-        // private void ChangeRange(float value) {
-        //     NpcConfig npcConfig = sharedData.mainConfig.NpcConfig;
-        //     if (npcConfig.AddingPedRange + value < MINIMAL_RANGE_FOR_WOUNDED_PEDS) {
-        //         return;
-        //     }
-        //
-        //     npcConfig.AddingPedRange += value;
-        //     npcConfig.RemovePedRange = npcConfig.AddingPedRange * ADDING_TO_REMOVING_MULTIPLIER;
-        //
-        //     LocaleConfig localeConfig = sharedData.localeConfig;
-        //     var addRange = $"{localeConfig.AddingRange}: {npcConfig.AddingPedRange.ToString("F0")}";
-        //     var removeRange = $"{localeConfig.RemovingRange}: {npcConfig.RemovePedRange.ToString("F0")}";
-        //     NotificationSystem.SendMessage(ecsWorld, $"{addRange}\n{removeRange}");
-        // }
-        //
+        private void ChangeRange(float value) {
+            NpcConfig npcConfig = sharedData.mainConfig.NpcConfig;
+            if (npcConfig.AddingPedRange + value < MINIMAL_RANGE_FOR_WOUNDED_PEDS) {
+                return;
+            }
+        
+            npcConfig.AddingPedRange += value;
+            npcConfig.RemovePedRange = npcConfig.AddingPedRange * ADDING_TO_REMOVING_MULTIPLIER;
+        
+            LocaleConfig localeConfig = sharedData.localeConfig;
+            var addRange = $"{localeConfig.AddingRange}: {npcConfig.AddingPedRange.ToString("F0")}";
+            var removeRange = $"{localeConfig.RemovingRange}: {npcConfig.RemovePedRange.ToString("F0")}";
+            // NotificationSystem.SendMessage(ecsWorld, $"{addRange}\n{removeRange}"); TODO
+            sharedData.logger.WriteInfo($"{addRange}\n{removeRange}");
+        }
+        
         // private void CheckPlayer() {
         //     if (sharedData.TryGetPlayer(out EcsEntity playerEntity)) {
         //         ecsWorld.ScheduleEventWithTarget<ShowHealthStateEvent>(playerEntity);

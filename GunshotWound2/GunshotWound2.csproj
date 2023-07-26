@@ -89,6 +89,8 @@
     <Compile Include="Effects\RagdollSystem.cs" />
     <Compile Include="Effects\SetPedToRagdollEvent.cs" />
     <Compile Include="Effects\MoveSetSwitchSystem.cs" />
+    <Compile Include="Peds\JustConvertedMarker.cs" />
+    <Compile Include="WorldService.cs" />
     <Compile Include="GUI\CheckSystem.cs" />
     <Compile Include="GUI\DebugInfoSystem.cs" />
     <Compile Include="GUI\NotificationSystem.cs" />
@@ -140,11 +142,10 @@
     <Compile Include="Utils\Loggers.cs" />
     <Compile Include="Utils\TargetEntity.cs" />
     <Compile Include="Utils\XElementExtensions.cs" />
-    <Compile Include="World\ConvertPedToNpcGswPedSystem.cs" />
-    <Compile Include="World\GswWorld.cs" />
-    <Compile Include="World\NpcFindSystem.cs" />
-    <Compile Include="World\IsNpcMarker.cs" />
-    <Compile Include="World\RemoveWoundedPedSystem.cs" />
+    <Compile Include="Peds\ConvertPedSystem.cs" />
+    <Compile Include="Peds\NpcDetectSystem.cs" />
+    <Compile Include="Peds\ConvertedPed.cs" />
+    <Compile Include="Peds\RemoveConvertedPedSystem.cs" />
     <Compile Include="Player\AddCameraShakeEvent.cs" />
     <Compile Include="Player\AddFlashEvent.cs" />
     <Compile Include="Player\AddHelmetToPlayerEvent.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="Player\SpecialAbilityLockSystem.cs" />
     <Compile Include="Utils\LocalizationManager.cs" />
     <Compile Include="Utils\RandomExtensions.cs" />
+    <Compile Include="Peds\ConvertPedsFeature.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
