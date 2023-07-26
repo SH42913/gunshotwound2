@@ -57,7 +57,7 @@
         }
 
         private void OnKeyUp(object sender, KeyEventArgs eventArgs) {
-            if (timeToStart <= 0) {
+            if (isStarted) {
                 ProcessKeyCode(eventArgs.KeyCode);
             }
         }
@@ -95,6 +95,7 @@
             }
 
             try {
+                sharedData.mainConfig.ApplyTo(sharedData.notifier);
                 RegisterSystems();
             } catch (Exception e) {
                 HandleRuntimeException(e);
@@ -145,23 +146,23 @@
 
         #region TICK
         private void GunshotWoundTick() {
-            if (isPaused) {
-                return;
-            }
+            if (!isPaused) {
+                // if (sharedData.mainConfig.PlayerConfig.WoundedPlayerEnabled) {
+                //     Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, Game.Player, 0f);
+                //     Function.Call(Hash.SET_AI_WEAPON_DAMAGE_MODIFIER, 0.01f);
+                //     Function.Call(Hash.SET_AI_MELEE_WEAPON_DAMAGE_MODIFIER, 0.01f);
+                // }
 
-            // if (sharedData.mainConfig.PlayerConfig.WoundedPlayerEnabled) {
-            //     Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, Game.Player, 0f);
-            //     Function.Call(Hash.SET_AI_WEAPON_DAMAGE_MODIFIER, 0.01f);
-            //     Function.Call(Hash.SET_AI_MELEE_WEAPON_DAMAGE_MODIFIER, 0.01f);
-            // }
-
-            commonSystems.Update(sharedData.deltaTime);
-            commonSystems.LateUpdate(sharedData.deltaTime);
-            commonSystems.CleanupUpdate(sharedData.deltaTime);
+                commonSystems.Update(sharedData.deltaTime);
+                commonSystems.LateUpdate(sharedData.deltaTime);
+                commonSystems.CleanupUpdate(sharedData.deltaTime);
 
 #if DEBUG
-            GTA.UI.Screen.ShowSubtitle(sharedData.worldService.ToString());
+                GTA.UI.Screen.ShowSubtitle(sharedData.worldService.ToString());
 #endif
+            }
+
+            sharedData.notifier.Show();
         }
 
         private void HandleRuntimeException(Exception exception) {
@@ -196,12 +197,12 @@
             //     ApplyBandageToPlayer();
             //     return;
             // }
-            
+
             if (keyCode == mainConfig.IncreaseRangeKey) {
                 ChangeRange(5);
                 return;
             }
-            
+
             if (keyCode == mainConfig.ReduceRangeKey) {
                 ChangeRange(-5);
                 return;
@@ -209,7 +210,8 @@
 
             if (keyCode == mainConfig.PauseKey) {
                 isPaused = !isPaused;
-                Notification.Show(isPaused ? $"~y~{localeConfig.GswIsPaused}" : $"~g~{localeConfig.GswIsWorking}");
+                string message = isPaused ? $"~y~{localeConfig.GswIsPaused}" : $"~g~{localeConfig.GswIsWorking}";
+                sharedData.notifier.info.AddMessage(message);
             }
         }
 
@@ -218,17 +220,15 @@
             if (npcConfig.AddingPedRange + value < MINIMAL_RANGE_FOR_WOUNDED_PEDS) {
                 return;
             }
-        
+
             npcConfig.AddingPedRange += value;
             npcConfig.RemovePedRange = npcConfig.AddingPedRange * ADDING_TO_REMOVING_MULTIPLIER;
-        
+
             LocaleConfig localeConfig = sharedData.localeConfig;
-            var addRange = $"{localeConfig.AddingRange}: {npcConfig.AddingPedRange.ToString("F0")}";
-            var removeRange = $"{localeConfig.RemovingRange}: {npcConfig.RemovePedRange.ToString("F0")}";
-            // NotificationSystem.SendMessage(ecsWorld, $"{addRange}\n{removeRange}"); TODO
-            sharedData.logger.WriteInfo($"{addRange}\n{removeRange}");
+            sharedData.notifier.info.AddMessage($"{localeConfig.AddingRange}: {npcConfig.AddingPedRange.ToString("F0")}");
+            sharedData.notifier.info.AddMessage($"{localeConfig.RemovingRange}: {npcConfig.RemovePedRange.ToString("F0")}");
         }
-        
+
         // private void CheckPlayer() {
         //     if (sharedData.TryGetPlayer(out EcsEntity playerEntity)) {
         //         ecsWorld.ScheduleEventWithTarget<ShowHealthStateEvent>(playerEntity);

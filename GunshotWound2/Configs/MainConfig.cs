@@ -43,6 +43,13 @@ namespace GunshotWound2.Configs
         public uint[] CuttingHashes;
         public uint[] ExplosiveHashes;
 
+        public void ApplyTo(Notifier notifier) {
+            notifier.info.show = CommonMessages;
+            notifier.warning.show = WarningMessages;
+            notifier.alert.show = AlertMessages;
+            notifier.emergency.show = EmergencyMessages;
+        }
+
         public override string ToString()
         {
             return $"{WoundConfig}\n" +

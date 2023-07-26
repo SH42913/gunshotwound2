@@ -8,6 +8,7 @@
         public readonly ILogger logger;
         public readonly Stopwatch stopwatch;
         public readonly System.Random random;
+        public readonly Notifier notifier;
 
         public readonly WorldService worldService;
         public readonly MainConfig mainConfig;
@@ -20,6 +21,7 @@
             this.logger = logger;
             stopwatch = new Stopwatch();
             random = new System.Random();
+            notifier = new Notifier();
 
             worldService = new WorldService(startCapacity: 64);
             mainConfig = new MainConfig();

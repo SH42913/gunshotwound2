@@ -90,13 +90,12 @@
     <Compile Include="Effects\SetPedToRagdollEvent.cs" />
     <Compile Include="Effects\MoveSetSwitchSystem.cs" />
     <Compile Include="Peds\JustConvertedMarker.cs" />
+    <Compile Include="Utils\Notifier.cs" />
     <Compile Include="WorldService.cs" />
     <Compile Include="GUI\CheckSystem.cs" />
     <Compile Include="GUI\DebugInfoSystem.cs" />
-    <Compile Include="GUI\NotificationSystem.cs" />
     <Compile Include="GUI\ShowDebugInfoEvent.cs" />
     <Compile Include="GUI\ShowHealthStateEvent.cs" />
-    <Compile Include="GUI\ShowNotificationEvent.cs" />
     <Compile Include="GunshotWound2.cs" />
     <Compile Include="Healing\ApplyBandageEvent.cs" />
     <Compile Include="Healing\BandageInProgressComponent.cs" />
