@@ -36,7 +36,7 @@ namespace GunshotWound2.Configs
 
         public uint[] SmallCaliberHashes;
         public uint[] MediumCaliberHashes;
-        public uint[] HighCaliberHashes;
+        public uint[] HeavyCaliberHashes;
         public uint[] LightImpactHashes;
         public uint[] HeavyImpactHashes;
         public uint[] ShotgunHashes;
@@ -304,7 +304,7 @@ namespace GunshotWound2.Configs
 
             config.SmallCaliberHashes = GetWeaponHashes("SmallCaliber");
             config.MediumCaliberHashes = GetWeaponHashes("MediumCaliber");
-            config.HighCaliberHashes = GetWeaponHashes("HighCaliber");
+            config.HeavyCaliberHashes = GetWeaponHashes("HighCaliber");
             config.LightImpactHashes = GetWeaponHashes("LightImpact");
             config.HeavyImpactHashes = GetWeaponHashes("HeavyImpact");
             config.ShotgunHashes = GetWeaponHashes("Shotgun");

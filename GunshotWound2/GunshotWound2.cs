@@ -5,9 +5,7 @@
     using Configs;
     using GTA;
     using GTA.UI;
-    using Peds;
     using Scellecs.Morpeh;
-    using Utils;
     using EcsWorld = Scellecs.Morpeh.World;
 
     // ReSharper disable once ClassNeverInstantiated.Global
@@ -29,7 +27,7 @@
         public GunshotWound2() {
             Tick += OnTick;
 
-            var logger = new ScriptHookLogger();
+            var logger = new Utils.ScriptHookLogger();
             sharedData = new SharedData(logger);
 
             ecsWorld = EcsWorld.Create();
@@ -113,7 +111,8 @@
         }
 
         private void RegisterSystems() {
-            ConvertPedsFeature.CreateSystems(commonSystems, sharedData);
+            Peds.ConvertPedsFeature.CreateSystems(commonSystems, sharedData);
+            HitDetection.DetectHitFeature.CreateSystems(commonSystems, sharedData);
 
             // PlayerConfig playerConfig = sharedData.mainConfig.PlayerConfig;
             // if (playerConfig.WoundedPlayerEnabled) {

@@ -1,40 +1,45 @@
-﻿// using GTA.Native;
-// using GunshotWound2.Damage;
-// using GunshotWound2.GUI;
-// using Leopotam.Ecs;
-//
-// namespace GunshotWound2.HitDetection
-// {
-//     [EcsInject]
-//     public sealed class HitDetectSystem : IEcsRunSystem
-//     {
-//         private readonly EcsWorld _ecsWorld = null;
-//         private readonly EcsFilter<WoundedPedComponent> _peds = null;
-//         private readonly InputArgument[] _inputArguments = new InputArgument[1];
-//
-//         public void Run()
-//         {
-//             for (var i = 0; i < _peds.EntitiesCount; i++)
-//             {
-//                 _inputArguments[0] = _peds.Components1[i].ThisPed;
-//                 if (!Function.Call<bool>(Hash.HAS_ENTITY_BEEN_DAMAGED_BY_ANY_PED, _inputArguments) &&
-//                     !Function.Call<bool>(Hash.HAS_ENTITY_BEEN_DAMAGED_BY_ANY_OBJECT, _inputArguments))
-//                     continue;
-//
-//                 _ecsWorld.AddComponent<HaveDamageMarkComponent>(_peds.Entities[i]);
-//                 SendMessage($"Ped {_peds.Entities[i].ToString()} got damage", NotifyLevels.DEBUG);
-//             }
-//         }
-//
-//         private void SendMessage(string message, NotifyLevels level = NotifyLevels.COMMON)
-//         {
-// #if !DEBUG
-//             if (level == NotifyLevels.DEBUG) return;
-// #endif
-//
-//             var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
-//             notification.Level = level;
-//             notification.StringToShow = message;
-//         }
-//     }
-// }
+﻿namespace GunshotWound2.HitDetection {
+    using System;
+    using GTA;
+    using GTA.Native;
+    using Peds;
+    using Scellecs.Morpeh;
+
+    public sealed class HitDetectSystem : ISystem {
+        private readonly SharedData sharedData;
+
+        private Filter converted;
+        private Stash<ConvertedPed> convertedStash;
+
+        public Scellecs.Morpeh.World World { get; set; }
+
+        public HitDetectSystem(SharedData sharedData) {
+            this.sharedData = sharedData;
+        }
+
+        public void OnAwake() {
+            converted = World.Filter.With<ConvertedPed>();
+            convertedStash = World.GetStash<ConvertedPed>();
+        }
+
+        void IDisposable.Dispose() { }
+
+        public void OnUpdate(float deltaTime) {
+            foreach (Scellecs.Morpeh.Entity entity in converted) {
+                Ped ped = convertedStash.Get(entity).thisPed;
+                if (ped.Exists() && ped.IsAlive && CheckDamage(ped)) {
+                    entity.AddComponent<PedHitData>();
+#if DEBUG
+                    sharedData.logger.WriteInfo($"Detect damage at {ped.Handle.ToString()}");
+#endif
+                }
+            }
+        }
+
+        private static bool CheckDamage(Ped ped) {
+            return Function.Call<bool>(Hash.HAS_ENTITY_BEEN_DAMAGED_BY_ANY_PED, ped); //TODO: maybe ped.HasBeenDamagedByAnyWeapon()?
+
+            // || Function.Call<bool>(Hash.HAS_ENTITY_BEEN_DAMAGED_BY_ANY_OBJECT, ped); TODO: We need it?
+        }
+    }
+}

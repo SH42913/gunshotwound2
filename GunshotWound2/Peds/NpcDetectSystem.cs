@@ -6,7 +6,7 @@
     using Scellecs.Morpeh;
 
     public sealed class NpcDetectSystem : ISystem {
-        private const int MAX_TIME_TO_FIND_IN_MS = 5;
+        private const int MAX_TIME_TO_FIND_IN_MS = 1;
 
         private readonly SharedData sharedData;
 
