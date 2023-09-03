@@ -8,6 +8,7 @@
         public readonly ILogger logger;
         public readonly Stopwatch stopwatch;
         public readonly System.Random random;
+        public readonly Weighted_Randomizer.IWeightedRandomizer<int> weightRandom;
         public readonly Notifier notifier;
 
         public readonly WorldService worldService;
@@ -21,6 +22,7 @@
             this.logger = logger;
             stopwatch = new Stopwatch();
             random = new System.Random();
+            weightRandom = new Weighted_Randomizer.StaticWeightedRandomizer<int>();
             notifier = new Notifier();
 
             worldService = new WorldService(startCapacity: 64);
