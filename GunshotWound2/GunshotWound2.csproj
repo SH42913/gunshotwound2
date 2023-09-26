@@ -93,6 +93,7 @@
     <Compile Include="HitDetection\PedHitData.cs" />
     <Compile Include="HitDetection\WeaponHitSystem.cs" />
     <Compile Include="Peds\JustConvertedMarker.cs" />
+    <Compile Include="Player\PlayerFeature.cs" />
     <Compile Include="Utils\Notifier.cs" />
     <Compile Include="WorldService.cs" />
     <Compile Include="GUI\CheckSystem.cs" />
@@ -141,8 +142,7 @@
     <Compile Include="Player\ChangeSpecialAbilityEvent.cs" />
     <Compile Include="Player\FlashSystem.cs" />
     <Compile Include="Player\HelmetRequestSystem.cs" />
-    <Compile Include="Player\IsPlayerMarker.cs" />
-    <Compile Include="Player\PlayerSystem.cs" />
+    <Compile Include="Player\PlayerDetectSystem.cs" />
     <Compile Include="Player\SpecialAbilityLockSystem.cs" />
     <Compile Include="Utils\LocalizationManager.cs" />
     <Compile Include="Utils\RandomExtensions.cs" />

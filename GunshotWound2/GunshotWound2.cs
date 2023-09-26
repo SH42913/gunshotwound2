@@ -111,6 +111,7 @@
         }
 
         private void RegisterSystems() {
+            Player.PlayerFeature.CreateSystems(commonSystems, sharedData);
             Peds.ConvertPedsFeature.CreateSystems(commonSystems, sharedData);
             HitDetection.DetectHitFeature.CreateSystems(commonSystems, sharedData);
             Damage.DamageFeature.CreateSystems(commonSystems, sharedData);
@@ -156,10 +157,6 @@
                 commonSystems.Update(sharedData.deltaTime);
                 commonSystems.LateUpdate(sharedData.deltaTime);
                 commonSystems.CleanupUpdate(sharedData.deltaTime);
-
-#if DEBUG
-                GTA.UI.Screen.ShowSubtitle(sharedData.worldService.ToString());
-#endif
             }
 
             sharedData.notifier.Show();

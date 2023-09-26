@@ -26,16 +26,20 @@
             foreach (Scellecs.Morpeh.Entity entity in converted) {
                 ref ConvertedPed convertedPed = ref convertedStash.Get(entity);
                 Ped ped = convertedPed.thisPed;
-                if (ped.Exists() && ped.IsAlive && GTA.World.GetDistance(playerPosition, ped.Position) < removeRange) {
-                    continue;
+                if (!ped.Exists() || !ped.IsAlive) {
+                    Remove(entity, ref convertedPed);
+                } else if (removeRange > 0 && GTA.World.GetDistance(playerPosition, ped.Position) > removeRange) {
+                    Remove(entity, ref convertedPed);
                 }
-
-                sharedData.worldService.RemoveConverted(ped);
-                World.RemoveEntity(entity);
-#if DEBUG
-                DeleteBlip(convertedPed);
-#endif
             }
+        }
+
+        private void Remove(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) {
+            sharedData.worldService.RemoveConverted(convertedPed.thisPed);
+            World.RemoveEntity(entity);
+#if DEBUG
+            DeleteBlip(convertedPed);
+#endif
         }
 
         public void Dispose() {

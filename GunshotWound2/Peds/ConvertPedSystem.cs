@@ -31,8 +31,6 @@
                 ref ConvertedPed convertedPed = ref entity.AddComponent<ConvertedPed>();
                 convertedPed.name = $"P{pedToConvert.Handle.ToString()}";
                 convertedPed.thisPed = pedToConvert;
-                convertedPed.isPlayer = pedToConvert.IsPlayer;
-
                 worldService.AddConverted(pedToConvert, entity);
 
 #if DEBUG
