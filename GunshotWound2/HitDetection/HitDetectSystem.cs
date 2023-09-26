@@ -26,11 +26,12 @@
 
         public void OnUpdate(float deltaTime) {
             foreach (Scellecs.Morpeh.Entity entity in converted) {
-                Ped ped = convertedStash.Get(entity).thisPed;
+                ref ConvertedPed convertedPed = ref convertedStash.Get(entity);
+                Ped ped = convertedPed.thisPed;
                 if (ped.Exists() && ped.IsAlive && CheckDamage(ped)) {
                     entity.AddComponent<PedHitData>();
 #if DEBUG
-                    sharedData.logger.WriteInfo($"Detect damage at {ped.Handle.ToString()}");
+                    sharedData.logger.WriteInfo($"Detect damage at {convertedPed.name}");
 #endif
                 }
             }

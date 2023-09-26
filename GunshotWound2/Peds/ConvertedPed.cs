@@ -3,6 +3,7 @@
     using Scellecs.Morpeh;
 
     public struct ConvertedPed : IComponent {
+        public string name;
         public Ped thisPed;
         public bool isPlayer;
 #if DEBUG

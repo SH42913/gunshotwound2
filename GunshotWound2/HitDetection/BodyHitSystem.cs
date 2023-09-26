@@ -24,15 +24,15 @@
 
         public void OnUpdate(float deltaTime) {
             foreach (Scellecs.Morpeh.Entity pedEntity in damagedPeds) {
-                Ped ped = pedEntity.GetComponent<ConvertedPed>().thisPed;
-                pedEntity.GetComponent<PedHitData>().bodyPart = GetDamagedBodyPart(ped);
+                ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
+                pedEntity.GetComponent<PedHitData>().bodyPart = GetDamagedBodyPart(ref convertedPed);
             }
         }
 
-        private unsafe PedHitData.BodyParts GetDamagedBodyPart(Ped target) {
+        private unsafe PedHitData.BodyParts GetDamagedBodyPart(ref ConvertedPed target) {
             var damagedBoneNum = 0;
             int* x = &damagedBoneNum;
-            Function.Call(Hash.GET_PED_LAST_DAMAGE_BONE, target, x);
+            Function.Call(Hash.GET_PED_LAST_DAMAGE_BONE, target.thisPed, x);
             if (!Enum.TryParse(damagedBoneNum.ToString(), out Bone damagedBone)) {
                 sharedData.logger.WriteError($"Can't parse bone {damagedBone.ToString()}");
                 return PedHitData.BodyParts.Nothing;
@@ -88,7 +88,7 @@
                 sharedData.logger.WriteError($"Can't detect part by bone {damagedBone}");
             } else {
 #if DEBUG
-                sharedData.logger.WriteInfo($"Damaged part is {damagePart}, bone {damagedBone}");
+                sharedData.logger.WriteInfo($"Damaged part is {damagePart}, bone {damagedBone} at {target.name}");
 #endif
             }
 

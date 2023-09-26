@@ -29,18 +29,18 @@
                 Scellecs.Morpeh.Entity entity = World.CreateEntity();
 
                 ref ConvertedPed convertedPed = ref entity.AddComponent<ConvertedPed>();
+                convertedPed.name = $"P{pedToConvert.Handle.ToString()}";
                 convertedPed.thisPed = pedToConvert;
                 convertedPed.isPlayer = pedToConvert.IsPlayer;
 
-                // ecsWorld.ScheduleEventWithTarget<NoPainChangeStateEvent>(entity); TODO
-
                 worldService.AddConverted(pedToConvert, entity);
-                entity.AddComponent<JustConvertedMarker>();
 
 #if DEBUG
                 convertedPed.customBlip = pedToConvert.AddBlip();
                 convertedPed.customBlip.Scale = 0.3f;
 #endif
+
+                // ecsWorld.ScheduleEventWithTarget<NoPainChangeStateEvent>(entity); TODO
             }
         }
     }
