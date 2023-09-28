@@ -168,6 +168,25 @@ namespace Scellecs.Morpeh {
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ref T AddOrGet(Entity entity) {
+            world.ThreadSafetyCheck();
+            
+#if MORPEH_DEBUG
+            if (entity.IsNullOrDisposed()) {
+                throw new Exception($"[MORPEH] You are trying Add on null or disposed entity {entity.entityId.id}");
+            }
+#endif
+            if (this.components.Add(entity.entityId.id, default, out var slotIndex)) {
+                entity.AddTransfer(this.typeId);
+                return ref this.components.data[slotIndex];
+            }
+#if MORPEH_DEBUG
+            MLogger.LogError($"You're trying to add on entity {entity.entityId.id} a component that already exists! Use Get or Set instead!");
+#endif
+            return ref this.components.GetValueRefByKey(entity.entityId.id);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ref T Add(Entity entity, out bool exist) {
             world.ThreadSafetyCheck();
             

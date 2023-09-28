@@ -47,6 +47,20 @@ namespace Scellecs.Morpeh {
         }
 
 #if MORPEH_LEGACY
+        [Obsolete("[MORPEH] Use Stash.AddOrGet() instead.")]
+#endif
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ref T AddOrGetComponent<T>(this Entity entity) where T : struct, IComponent {
+#if MORPEH_DEBUG
+            if (entity.IsNullOrDisposed()) {
+                throw new Exception("[MORPEH] You are trying AddComponent on null or disposed entity");
+            }
+#endif
+
+            return ref entity.world.GetStash<T>().AddOrGet(entity);
+        }
+
+#if MORPEH_LEGACY
         [Obsolete("[MORPEH] Use Stash.Add() instead.")]
 #endif
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
