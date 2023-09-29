@@ -1,5 +1,6 @@
 ﻿namespace GunshotWound2.HitDetection {
     using System;
+    using System.Linq;
     using Configs;
     using GTA;
     using GTA.Native;
@@ -27,10 +28,8 @@
             MainConfig config = sharedData.mainConfig;
             foreach (Scellecs.Morpeh.Entity entity in damagedPeds) {
                 Ped ped = entity.GetComponent<ConvertedPed>().thisPed;
-                if (!ped.IsAlive) {
-                    continue;
-                }
 
+                var isSpecial = false;
                 PedHitData.WeaponTypes weaponType = default;
                 if (PedWasDamagedBy(config.LightImpactHashes, ped, out uint hitWeapon)) {
                     weaponType = PedHitData.WeaponTypes.LightImpact;
@@ -46,14 +45,28 @@
                     weaponType = PedHitData.WeaponTypes.HeavyCaliber;
                 } else if (PedWasDamagedBy(config.ShotgunHashes, ped, out hitWeapon)) {
                     weaponType = PedHitData.WeaponTypes.Shotgun;
+                } else if (ped.IsFalling) {
+                    weaponType = PedHitData.WeaponTypes.HeavyImpact;
+                    isSpecial = true;
+                } else if (ped.IsRagdoll) {
+                    weaponType = PedHitData.WeaponTypes.LightImpact;
+                    isSpecial = true;
+                } else if (ped.CurrentVehicle.Exists()) {
+                    weaponType = PedHitData.WeaponTypes.HeavyImpact;
+                    isSpecial = true;
                 }
 
                 if (weaponType == PedHitData.WeaponTypes.Nothing) {
-                    sharedData.logger.WriteError("Can't detect weapon, make sure you have hash of this weapon in GSWConfig");
+                    WeaponHash lastHash = ped.DamageRecords.LastOrDefault().WeaponHash;
+                    sharedData.logger.WriteError("Can't detect weapon");
+                    sharedData.logger.WriteError($"Make sure you have hash of this weapon(possible {lastHash}) in GSWConfig");
                 } else {
-                    entity.GetComponent<PedHitData>().weaponType = weaponType;
+                    ref PedHitData hitData = ref entity.GetComponent<PedHitData>();
+                    hitData.weaponType = weaponType;
+                    hitData.randomBodyPart = isSpecial;
 #if DEBUG
-                    sharedData.logger.WriteInfo($"Weapon type is {weaponType}, weapon is {hitWeapon.ToString()}");
+                    string specialString = isSpecial ? "(special)" : "";
+                    sharedData.logger.WriteInfo($"Weapon type is {weaponType}, weapon is {hitWeapon.ToString()}{specialString}");
 #endif
                 }
             }

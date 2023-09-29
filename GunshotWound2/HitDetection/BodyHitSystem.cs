@@ -6,6 +6,8 @@
     using Scellecs.Morpeh;
 
     public sealed class BodyHitSystem : ISystem {
+        private static readonly PedHitData.BodyParts[] PARTS = (PedHitData.BodyParts[])Enum.GetValues(typeof(PedHitData.BodyParts));
+
         private readonly SharedData sharedData;
 
         private Filter damagedPeds;
@@ -25,7 +27,17 @@
         public void OnUpdate(float deltaTime) {
             foreach (Scellecs.Morpeh.Entity pedEntity in damagedPeds) {
                 ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
-                pedEntity.GetComponent<PedHitData>().bodyPart = GetDamagedBodyPart(ref convertedPed);
+                ref PedHitData hitData = ref pedEntity.GetComponent<PedHitData>();
+
+                if (hitData.randomBodyPart) {
+                    int index = sharedData.random.Next(1, PARTS.Length);
+                    hitData.bodyPart = PARTS[index];
+#if DEBUG
+                    sharedData.logger.WriteInfo($"Damaged random part is {hitData.bodyPart} of {convertedPed.name}");
+#endif
+                } else {
+                    hitData.bodyPart = GetDamagedBodyPart(ref convertedPed);
+                }
             }
         }
 
@@ -34,7 +46,7 @@
             int* x = &damagedBoneNum;
             Function.Call(Hash.GET_PED_LAST_DAMAGE_BONE, target.thisPed, x);
             if (!Enum.TryParse(damagedBoneNum.ToString(), out Bone damagedBone)) {
-                sharedData.logger.WriteError($"Can't parse bone {damagedBone.ToString()}");
+                sharedData.logger.WriteError($"Can't parse bone {damagedBone}");
                 return PedHitData.BodyParts.Nothing;
             }
 

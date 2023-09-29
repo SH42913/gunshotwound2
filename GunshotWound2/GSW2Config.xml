@@ -173,8 +173,8 @@
 		</LightImpact>
 
 		<HeavyImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.1" CritChance="0.7">
-			<!-- RammedByCar;HelicopterCrash;Boar;Pig;Hammer;Crowbar;Bat;RunOverCar;FireExtinguisher;FireWork;GolfClub;PetrolCan;PoolCue;Wrench;Cow;Deer;StoneHatchet;Flare;GrenadeLauncherSmoke; -->
-			<Hashes Hashes="133987706;341774354;861723357;1205296881;1317494643;2227010557;2508868239;2741846334;101631238;2138347493;1141786504;883325847;2484171525;419712736;94548753;4106648222;940833800;1233104067;1305664598;"/>
+			<!-- Boar;Pig;Hammer;Crowbar;Bat;RunOverCar;FireExtinguisher;FireWork;GolfClub;PetrolCan;PoolCue;Wrench;Cow;Deer;StoneHatchet;Flare;GrenadeLauncherSmoke; -->
+			<Hashes Hashes="861723357;1205296881;1317494643;2227010557;2508868239;2741846334;101631238;2138347493;1141786504;883325847;2484171525;419712736;94548753;4106648222;940833800;1233104067;1305664598;"/>
 		</HeavyImpact>
 
 		<Cutting DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.5">
