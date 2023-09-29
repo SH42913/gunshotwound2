@@ -37,11 +37,11 @@
         }
 
         private void Remove(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) {
-            sharedData.worldService.RemoveConverted(convertedPed.thisPed);
-            World.RemoveEntity(entity);
 #if DEBUG
             DeleteBlip(convertedPed);
 #endif
+            sharedData.worldService.RemoveConverted(convertedPed.thisPed);
+            World.RemoveEntity(entity);
         }
 
         public void Dispose() {
