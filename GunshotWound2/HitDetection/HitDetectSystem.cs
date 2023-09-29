@@ -8,7 +8,7 @@
     public sealed class HitDetectSystem : ISystem {
         private readonly SharedData sharedData;
 
-        private Filter converted;
+        private Filter convertedPeds;
         private Stash<ConvertedPed> convertedStash;
 
         public Scellecs.Morpeh.World World { get; set; }
@@ -18,14 +18,14 @@
         }
 
         public void OnAwake() {
-            converted = World.Filter.With<ConvertedPed>();
+            convertedPeds = World.Filter.With<ConvertedPed>().Without<JustConvertedMarker>();
             convertedStash = World.GetStash<ConvertedPed>();
         }
 
         void IDisposable.Dispose() { }
 
         public void OnUpdate(float deltaTime) {
-            foreach (Scellecs.Morpeh.Entity entity in converted) {
+            foreach (Scellecs.Morpeh.Entity entity in convertedPeds) {
                 ref ConvertedPed convertedPed = ref convertedStash.Get(entity);
                 Ped ped = convertedPed.thisPed;
                 if (ped.Exists() && ped.IsAlive && CheckDamage(ped)) {
