@@ -25,5 +25,6 @@
 
         public BodyParts bodyPart;
         public WeaponTypes weaponType;
+        public int healthDiff;
     }
 }

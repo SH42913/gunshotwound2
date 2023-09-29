@@ -6,6 +6,7 @@
         public string name;
         public Ped thisPed;
         public bool isPlayer;
+        public int lastFrameHealth;
 #if DEBUG
         public Blip customBlip;
 #endif

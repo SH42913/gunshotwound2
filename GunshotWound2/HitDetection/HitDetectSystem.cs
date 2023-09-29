@@ -29,9 +29,13 @@
                 ref ConvertedPed convertedPed = ref convertedStash.Get(entity);
                 Ped ped = convertedPed.thisPed;
                 if (ped.Exists() && ped.IsAlive && CheckDamage(ped)) {
-                    entity.AddComponent<PedHitData>();
+                    int healthDiff = convertedPed.lastFrameHealth - ped.Health;
+                    entity.SetComponent(new PedHitData {
+                        healthDiff = healthDiff,
+                    });
+
 #if DEBUG
-                    sharedData.logger.WriteInfo($"Detect damage at {convertedPed.name}");
+                    sharedData.logger.WriteInfo($"Detect damage at {convertedPed.name}, healthDiff = {healthDiff.ToString()}");
 #endif
                 }
             }

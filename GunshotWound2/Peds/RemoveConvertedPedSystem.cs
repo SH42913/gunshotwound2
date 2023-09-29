@@ -30,6 +30,8 @@
                     Remove(entity, ref convertedPed);
                 } else if (removeRange > 0 && GTA.World.GetDistance(playerPosition, ped.Position) > removeRange) {
                     Remove(entity, ref convertedPed);
+                } else {
+                    convertedPed.lastFrameHealth = ped.Health;
                 }
             }
         }
