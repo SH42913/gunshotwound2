@@ -89,6 +89,10 @@
     <Compile Include="Effects\RagdollSystem.cs" />
     <Compile Include="Effects\SetPedToRagdollEvent.cs" />
     <Compile Include="Effects\MoveSetSwitchSystem.cs" />
+    <Compile Include="HealthCare\HealthDamageSystem.cs" />
+    <Compile Include="HealthCare\HealthFeature.cs" />
+    <Compile Include="HealthCare\Health.cs" />
+    <Compile Include="HealthCare\HealthInitSystem.cs" />
     <Compile Include="HitDetection\DetectHitFeature.cs" />
     <Compile Include="HitDetection\PedHitData.cs" />
     <Compile Include="HitDetection\WeaponHitSystem.cs" />

@@ -115,6 +115,7 @@
             Peds.ConvertPedsFeature.CreateSystems(commonSystems, sharedData);
             HitDetection.DetectHitFeature.CreateSystems(commonSystems, sharedData);
             Damage.DamageFeature.CreateSystems(commonSystems, sharedData);
+            HealthCare.HealthFeature.CreateSystems(commonSystems, sharedData);
 
             // PlayerConfig playerConfig = sharedData.mainConfig.PlayerConfig;
             // if (playerConfig.WoundedPlayerEnabled) {

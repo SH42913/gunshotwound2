@@ -32,6 +32,7 @@
                 convertedPed.name = $"P{pedToConvert.Handle.ToString()}";
                 convertedPed.thisPed = pedToConvert;
                 worldService.AddConverted(pedToConvert, entity);
+                entity.AddComponent<JustConvertedMarker>();
 
 #if DEBUG
                 convertedPed.customBlip = pedToConvert.AddBlip();

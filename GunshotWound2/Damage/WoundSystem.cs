@@ -2,6 +2,7 @@
     using System;
     using System.Collections.Generic;
     using Configs;
+    using HealthCare;
     using HitDetection;
     using Peds;
     using Scellecs.Morpeh;
@@ -30,7 +31,7 @@
         }
 
         public void OnAwake() {
-            damagedPeds = World.Filter.With<ConvertedPed>().With<PedHitData>();
+            damagedPeds = World.Filter.With<ConvertedPed>().With<PedHitData>().With<Health>();
         }
 
         void IDisposable.Dispose() { }
@@ -79,7 +80,8 @@
             damage += sharedData.random.NextFloat(-damageDeviation, damageDeviation);
             damage *= sharedData.mainConfig.WoundConfig.DamageMultiplier;
 
-            //TODO
+            ref Health health = ref pedEntity.GetComponent<Health>();
+            health.damage += damage;
         }
 
         private void CreateBleeding(Entity pedEntity, float bleeding) {
