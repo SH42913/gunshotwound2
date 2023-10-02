@@ -58,8 +58,8 @@
 
                 if (weaponType == PedHitData.WeaponTypes.Nothing) {
                     WeaponHash lastHash = ped.DamageRecords.LastOrDefault().WeaponHash;
-                    sharedData.logger.WriteError("Can't detect weapon");
-                    sharedData.logger.WriteError($"Make sure you have hash of this weapon(possible {lastHash}) in GSWConfig");
+                    sharedData.logger.WriteWarning("Can't detect weapon");
+                    sharedData.logger.WriteWarning($"Make sure you have hash of this weapon(possible {lastHash}) in GSWConfig");
                 } else {
                     ref PedHitData hitData = ref entity.GetComponent<PedHitData>();
                     hitData.weaponType = weaponType;

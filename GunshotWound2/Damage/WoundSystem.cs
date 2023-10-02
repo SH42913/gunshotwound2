@@ -38,17 +38,21 @@
 
         public void OnUpdate(float deltaTime) {
             foreach (Entity pedEntity in damagedPeds) {
-                ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
                 ref PedHitData hitData = ref pedEntity.GetComponent<PedHitData>();
+                if (hitData.weaponType == PedHitData.WeaponTypes.Nothing) {
+                    continue;
+                }
 
                 if (weaponDamages.TryGetValue(hitData.weaponType, out BaseWeaponDamage weaponDamage)) {
+                    ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
+
                     WoundData? wound = weaponDamage.ProcessHit(convertedPed.thisPed, hitData);
 #if DEBUG
                     sharedData.logger.WriteInfo(wound.HasValue ? $"New wound {wound.Value.ToString()} " : "No wound created");
 #endif
                     ProcessWound(pedEntity, ref convertedPed, ref wound);
                 } else {
-                    sharedData.logger.WriteError($"Doesn't support {hitData.weaponType}");
+                    sharedData.logger.WriteWarning($"Doesn't support {hitData.weaponType}");
                 }
             }
         }
