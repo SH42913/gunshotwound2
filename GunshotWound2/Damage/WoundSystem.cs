@@ -50,22 +50,20 @@
 #if DEBUG
                     sharedData.logger.WriteInfo(wound.HasValue ? $"New wound {wound.Value.ToString()} " : "No wound created");
 #endif
-                    ProcessWound(pedEntity, ref convertedPed, ref wound);
+                    ProcessWound(pedEntity, ref hitData, ref convertedPed, ref wound);
                 } else {
                     sharedData.logger.WriteWarning($"Doesn't support {hitData.weaponType}");
                 }
             }
         }
 
-        private void ProcessWound(Entity pedEntity, ref ConvertedPed convertedPed, ref WoundData? wound) {
+        private void ProcessWound(Entity pedEntity, ref PedHitData hitData, ref ConvertedPed convertedPed, ref WoundData? wound) {
             if (!wound.HasValue) {
                 return;
             }
 
             WoundData woundData = wound.Value;
-            WoundConfig woundConfig = sharedData.mainConfig.WoundConfig;
-
-            CreateDamage(pedEntity, woundData.Damage);
+            CreateDamage(pedEntity, woundData.Damage, ref hitData);
             CreateBleeding(pedEntity, woundData.BleedSeverity);
             CreatePain(pedEntity, woundData.Pain);
             CreateCrit(pedEntity, woundData.HasCrits);
@@ -79,13 +77,17 @@
             }
         }
 
-        private void CreateDamage(Entity pedEntity, float damage) {
-            float damageDeviation = damage > 0 ? sharedData.mainConfig.WoundConfig.DamageDeviation * damage : 0;
-            damage += sharedData.random.NextFloat(-damageDeviation, damageDeviation);
-            damage *= sharedData.mainConfig.WoundConfig.DamageMultiplier;
+        private void CreateDamage(Entity pedEntity, float damage, ref PedHitData hitData) {
+            damage -= hitData.healthDiff;
+            if (damage <= 0f) {
+                return;
+            }
+
+            float deviation = sharedData.mainConfig.WoundConfig.DamageDeviation;
+            float mult = sharedData.mainConfig.WoundConfig.DamageMultiplier;
 
             ref Health health = ref pedEntity.GetComponent<Health>();
-            health.damage += damage;
+            health.damage += CalculateAmount(damage, deviation, mult);
         }
 
         private void CreateBleeding(Entity pedEntity, float bleeding) {
@@ -165,6 +167,13 @@
             if (woundData.ArterySevered) {
                 sharedData.notifier.emergency.AddMessage(sharedData.localeConfig.SeveredArteryMessage);
             }
+        }
+
+        private float CalculateAmount(float baseAmount, float deviation, float mult) {
+            float damageDeviation = baseAmount > 0 ? deviation * baseAmount : 0;
+            baseAmount += sharedData.random.NextFloat(-damageDeviation, damageDeviation);
+            baseAmount *= mult;
+            return baseAmount;
         }
     }
 }
