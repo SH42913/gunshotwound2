@@ -1,7 +1,9 @@
 ﻿namespace GunshotWound2.HealthCare {
     using System;
+    using Configs;
     using Peds;
     using Scellecs.Morpeh;
+    using Utils;
 
     public sealed class HealthInitSystem : ISystem {
         private readonly SharedData sharedData;
@@ -18,11 +20,19 @@
         }
 
         public void OnUpdate(float deltaTime) {
+            PlayerConfig playerConfig = sharedData.mainConfig.PlayerConfig;
+            NpcConfig npcConfig = sharedData.mainConfig.NpcConfig;
             foreach (Entity entity in peds) {
                 ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
-                entity.SetComponent(new Health {
-                    max = convertedPed.thisPed.MaxHealth,
-                });
+                convertedPed.thisPed.CanSufferCriticalHits = true;
+                convertedPed.thisPed.DiesOnLowHealth = false;
+                convertedPed.thisPed.CanWrithe = false;
+
+                ref Health health = ref entity.AddOrGetComponent<Health>();
+                health.max = convertedPed.thisPed.MaxHealth;
+                health.bleedingHealRate = convertedPed.isPlayer
+                        ? playerConfig.BleedHealingSpeed
+                        : sharedData.random.NextFloat(0.5f * npcConfig.MaximalBleedStopSpeed, npcConfig.MaximalBleedStopSpeed);
             }
         }
 

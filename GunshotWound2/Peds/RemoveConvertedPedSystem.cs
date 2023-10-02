@@ -26,7 +26,7 @@
             foreach (Scellecs.Morpeh.Entity entity in converted) {
                 ref ConvertedPed convertedPed = ref convertedStash.Get(entity);
                 Ped ped = convertedPed.thisPed;
-                if (!ped.Exists() || !ped.IsAlive) {
+                if (!ped.Exists() || ped.IsDead) {
                     Remove(entity, ref convertedPed);
                 } else if (removeRange > 0 && GTA.World.GetDistance(playerPosition, ped.Position) > removeRange) {
                     Remove(entity, ref convertedPed);

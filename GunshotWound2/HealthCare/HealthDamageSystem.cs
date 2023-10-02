@@ -21,8 +21,12 @@
 
         public void OnUpdate(float deltaTime) {
             foreach (Entity entity in peds) {
-                ref Health health = ref healthStash.Get(entity);
                 ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
+                if (convertedPed.thisPed.IsDead) {
+                    continue;
+                }
+                
+                ref Health health = ref healthStash.Get(entity);
                 float threshold = convertedPed.isPlayer && convertedPed.IsUsingPhone() ? 5f : 1f;
                 if (health.damage < threshold) {
                     continue;

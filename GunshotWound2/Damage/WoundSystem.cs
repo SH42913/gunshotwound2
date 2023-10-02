@@ -64,12 +64,12 @@
 
             WoundData woundData = wound.Value;
             CreateDamage(pedEntity, woundData.Damage, ref hitData);
-            CreateBleeding(pedEntity, woundData.BleedSeverity);
+            CreateBleeding(pedEntity, woundData.BleedSeverity, woundData.Name);
             CreatePain(pedEntity, woundData.Pain);
             CreateCrit(pedEntity, woundData.HasCrits);
 
             if (woundData.ArterySevered) {
-                // CreateBleeding(woundedPed, woundData.BleedSeverity, 1f, _locale.Data.SeveredArtery);
+                CreateBleeding(pedEntity, WoundConfig.MAX_SEVERITY_FOR_BANDAGE, sharedData.localeConfig.SeveredArtery);
             }
 
             if (convertedPed.isPlayer) {
@@ -90,30 +90,19 @@
             health.damage += CalculateAmount(damage, deviation, mult);
         }
 
-        private void CreateBleeding(Entity pedEntity, float bleeding) {
-            float bleedingDeviation = bleeding > 0 ? sharedData.mainConfig.WoundConfig.BleedingDeviation * bleeding : 0;
-            float severity = bleeding + sharedData.random.NextFloat(-bleedingDeviation, bleedingDeviation);
+        private void CreateBleeding(Entity pedEntity, float severity, string name) {
+            if (severity <= 0f) {
+                return;
+            }
 
-            // var mult = _config.Data.WoundConfig.BleedingMultiplier;
-            // var entity = _ecsWorld.CreateEntityWith(out BleedingComponent bleedingComponent);
-            // bleedingComponent.Entity = pedEntity;
-            // bleedingComponent.BleedSeverity = mult * bleedSeverity;
-            // bleedingComponent.Name = name;
-            // bleedingComponent.CanBeHealed = bleedSeverity <= mult * BleedingComponent.MaxSeverityForHeal;
-            // woundedPed.BleedingCount++;
-            // if (!bleedingComponent.CanBeHealed) return;
-            //
-            // if (woundedPed.MostDangerBleedingEntity == null ||
-            //     !_ecsWorld.IsEntityExists(woundedPed.MostDangerBleedingEntity.Value))
-            // {
-            //     woundedPed.MostDangerBleedingEntity = entity;
-            //     return;
-            // }
-            //
-            // var oldBleeding = _ecsWorld.GetComponent<BleedingComponent>(woundedPed.MostDangerBleedingEntity.Value);
-            // if (oldBleeding != null && oldBleeding.BleedSeverity >= bleedingComponent.BleedSeverity) return;
-            //
-            // woundedPed.MostDangerBleedingEntity = entity;
+            float deviation = sharedData.mainConfig.WoundConfig.BleedingDeviation;
+            float mult = sharedData.mainConfig.WoundConfig.BleedingMultiplier;
+            severity = CalculateAmount(severity, deviation, mult);
+
+            ref Bleeding bleeding = ref World.CreateEntity().AddComponent<Bleeding>();
+            bleeding.target = pedEntity;
+            bleeding.severity = severity;
+            bleeding.name = name;
         }
 
         private void CreateCrit(Entity pedEntity, bool hasCrits) {

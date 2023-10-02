@@ -5,6 +5,9 @@ namespace GunshotWound2.Configs
 {
     public sealed class WoundConfig
     {
+        //TODO: Make it dynamic in config
+        public const float MAX_SEVERITY_FOR_BANDAGE = 1f;
+
         public float DamageMultiplier;
         public float PainMultiplier;
         public float BleedingMultiplier;
@@ -52,6 +55,10 @@ namespace GunshotWound2.Configs
                 ApplyBandageTime = 5,
                 SelfHealingRate = 0.01f
             };
+        }
+
+        public bool IsBleedingCanBeBandaged(float severity) {
+            return severity <= BleedingMultiplier * MAX_SEVERITY_FOR_BANDAGE;
         }
 
         public override string ToString()

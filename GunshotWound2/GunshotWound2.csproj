@@ -66,8 +66,6 @@
     <Compile Include="Crits\LungsCriticalSystem.cs" />
     <Compile Include="Crits\NervesCriticalSystem.cs" />
     <Compile Include="Crits\StomachCriticalSystem.cs" />
-    <Compile Include="Damage\BleedingComponent.cs" />
-    <Compile Include="Damage\BleedingSystem.cs" />
     <Compile Include="Damage\DamageFeature.cs" />
     <Compile Include="Damage\WoundData.cs" />
     <Compile Include="Damage\Weapons\BaseWeaponDamage.cs" />
@@ -89,6 +87,8 @@
     <Compile Include="Effects\RagdollSystem.cs" />
     <Compile Include="Effects\SetPedToRagdollEvent.cs" />
     <Compile Include="Effects\MoveSetSwitchSystem.cs" />
+    <Compile Include="HealthCare\Bleeding.cs" />
+    <Compile Include="HealthCare\BleedingSystem.cs" />
     <Compile Include="HealthCare\HealthDamageSystem.cs" />
     <Compile Include="HealthCare\HealthFeature.cs" />
     <Compile Include="HealthCare\Health.cs" />
