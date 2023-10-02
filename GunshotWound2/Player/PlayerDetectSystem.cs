@@ -105,7 +105,7 @@
             if (sharedData.worldService.TryGetConverted(playerPed, out Scellecs.Morpeh.Entity entity)) {
                 ref ConvertedPed convertedPed = ref pedStash.Get(entity);
                 SetPlayer(entity, ref convertedPed);
-            } else {
+            } else if (playerPed.IsAlive) {
                 sharedData.worldService.EnqueueToConvert(playerPed);
 #if DEBUG
                 sharedData.logger.WriteInfo($"New Player Ped {playerPed.Handle.ToString()} will be created!");
