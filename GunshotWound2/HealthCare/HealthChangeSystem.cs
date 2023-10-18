@@ -3,14 +3,14 @@
     using Peds;
     using Scellecs.Morpeh;
 
-    public sealed class HealthDamageSystem : ISystem {
+    public sealed class HealthChangeSystem : ISystem {
         private readonly SharedData sharedData;
         private Filter peds;
         private Stash<Health> healthStash;
 
         public World World { get; set; }
 
-        public HealthDamageSystem(SharedData sharedData) {
+        public HealthChangeSystem(SharedData sharedData) {
             this.sharedData = sharedData;
         }
 
@@ -25,20 +25,20 @@
                 if (convertedPed.thisPed.IsDead) {
                     continue;
                 }
-                
+
                 ref Health health = ref healthStash.Get(entity);
                 float threshold = convertedPed.isPlayer && convertedPed.IsUsingPhone() ? 5f : 1f;
-                if (health.damage < threshold) {
+                if (Math.Abs(health.diff) < threshold) {
                     continue;
                 }
 
-                var currentDamage = (int)Math.Floor(health.damage);
-                health.damage -= currentDamage;
-                convertedPed.thisPed.Health -= currentDamage;
+                int currentDiff = health.diff > 0 ? (int)Math.Floor(health.diff) : (int)Math.Ceiling(health.diff);
+                health.diff -= currentDiff;
+                convertedPed.thisPed.Health += currentDiff;
 
 #if DEBUG
                 var healthString = $"Current:{convertedPed.thisPed.Health.ToString()} / Max:{health.max.ToString()}";
-                sharedData.logger.WriteInfo($"Dealing {currentDamage.ToString()} damage to {convertedPed.name}. {healthString}");
+                sharedData.logger.WriteInfo($"Changed health: {currentDiff.ToString()} to {convertedPed.name}. {healthString}");
 #endif
             }
         }

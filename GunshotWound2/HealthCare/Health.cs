@@ -6,7 +6,7 @@
     [Serializable]
     public struct Health : IComponent {
         public int max;
-        public float damage;
+        public float diff;
 
         public float bleedingHealRate;
         public Entity bleedingToBandage;

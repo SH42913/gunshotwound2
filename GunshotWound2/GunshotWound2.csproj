@@ -89,7 +89,7 @@
     <Compile Include="Effects\MoveSetSwitchSystem.cs" />
     <Compile Include="HealthCare\Bleeding.cs" />
     <Compile Include="HealthCare\BleedingSystem.cs" />
-    <Compile Include="HealthCare\HealthDamageSystem.cs" />
+    <Compile Include="HealthCare\HealthChangeSystem.cs" />
     <Compile Include="HealthCare\HealthFeature.cs" />
     <Compile Include="HealthCare\Health.cs" />
     <Compile Include="HealthCare\HealthInitSystem.cs" />

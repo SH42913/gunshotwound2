@@ -87,7 +87,7 @@
             float mult = sharedData.mainConfig.WoundConfig.DamageMultiplier;
 
             ref Health health = ref pedEntity.GetComponent<Health>();
-            health.damage += CalculateAmount(damage, deviation, mult);
+            health.diff -= CalculateAmount(damage, deviation, mult);
         }
 
         private void CreateBleeding(Entity pedEntity, float severity, string name) {

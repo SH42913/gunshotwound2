@@ -32,6 +32,7 @@
         public void OnUpdate(float deltaTime) {
             UpdateBleedingWounds(deltaTime);
             RefreshBleedingToBandage();
+            AddDebugBleedingToPlayer();
         }
 
         void IDisposable.Dispose() { }
@@ -64,15 +65,15 @@
                 //     continue;
 
                 if (bleeding.severity <= 0f) {
-                    health.bleedingWounds.Remove(entity);
-                    World.RemoveEntity(entity);
 #if DEBUG
                     sharedData.logger.WriteInfo($"Bleeding {bleeding.name} at {convertedPed.name} was healed");
 #endif
+                    health.bleedingWounds.Remove(entity);
+                    World.RemoveEntity(entity);
                     continue;
                 }
 
-                health.damage += bleeding.severity * deltaTime;
+                health.diff -= bleeding.severity * deltaTime;
                 bleeding.severity -= health.bleedingHealRate * deltaTime;
             }
         }
@@ -115,6 +116,16 @@
             }
 
             health.bleedingToBandage = mostDangerWound;
+        }
+
+        [System.Diagnostics.Conditional("DEBUG")]
+        private void AddDebugBleedingToPlayer() {
+            if (GTA.Game.IsKeyPressed(System.Windows.Forms.Keys.B) && sharedData.TryGetPlayer(out Entity entity)) {
+                ref Bleeding bleeding = ref World.CreateEntity().AddComponent<Bleeding>();
+                bleeding.target = entity;
+                bleeding.severity = 0.1f;
+                bleeding.name = "TEST";
+            }
         }
     }
 }
