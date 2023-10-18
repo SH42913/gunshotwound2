@@ -29,7 +29,7 @@
                 convertedPed.thisPed.CanWrithe = false;
 
                 ref Health health = ref entity.AddOrGetComponent<Health>();
-                health.max = convertedPed.thisPed.MaxHealth;
+                health.max = convertedPed.thisPed.MaxHealth - 1;
                 health.bleedingHealRate = convertedPed.isPlayer
                         ? playerConfig.BleedHealingSpeed
                         : sharedData.random.NextFloat(0.5f * npcConfig.MaximalBleedStopSpeed, npcConfig.MaximalBleedStopSpeed);

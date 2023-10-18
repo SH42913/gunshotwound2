@@ -93,6 +93,7 @@
     <Compile Include="HealthCare\HealthFeature.cs" />
     <Compile Include="HealthCare\Health.cs" />
     <Compile Include="HealthCare\HealthInitSystem.cs" />
+    <Compile Include="HealthCare\SelfHealingSystem.cs" />
     <Compile Include="HitDetection\DetectHitFeature.cs" />
     <Compile Include="HitDetection\PedHitData.cs" />
     <Compile Include="HitDetection\WeaponHitSystem.cs" />
@@ -106,7 +107,6 @@
     <Compile Include="Healing\ApplyBandageEvent.cs" />
     <Compile Include="Healing\BandageInProgressComponent.cs" />
     <Compile Include="Healing\BandageSystem.cs" />
-    <Compile Include="Healing\SelfHealingSystem.cs" />
     <Compile Include="Healing\SuccessfulBandageEvent.cs" />
     <Compile Include="HitDetection\BodyHitSystem.cs" />
     <Compile Include="HitDetection\HitCleanSystem.cs" />
