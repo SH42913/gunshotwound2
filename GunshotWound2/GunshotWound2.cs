@@ -2,18 +2,14 @@
     using System;
     using System.IO;
     using System.Windows.Forms;
-    using Configs;
     using GTA;
     using GTA.UI;
     using Scellecs.Morpeh;
     using EcsWorld = Scellecs.Morpeh.World;
 
-    // ReSharper disable once ClassNeverInstantiated.Global
+    // ReSharper disable once UnusedType.Global
     public sealed class GunshotWound2 : Script {
-        public const float MINIMAL_RANGE_FOR_WOUNDED_PEDS = 0;
-        public const float ADDING_TO_REMOVING_MULTIPLIER = 2;
-
-        private static readonly string EXCEPTION_LOG_PATH = $"{Application.StartupPath}/GSW2Exception.log";
+        private static readonly string EXCEPTION_LOG_PATH = Path.Combine(Application.StartupPath, "GSW2Exception.log");
 
         private readonly SharedData sharedData;
 
@@ -55,9 +51,39 @@
         }
 
         private void OnKeyUp(object sender, KeyEventArgs eventArgs) {
-            if (isStarted) {
-                ProcessKeyCode(eventArgs.KeyCode);
+            if (isStarted && !isPaused) {
+                sharedData.inputListener.ConsumeKeyUp(eventArgs.KeyCode);
+
+                // TODO
+                // if (keyCode == mainConfig.HelmetKey) {
+                //     ecsWorld.NewEntity().Get<AddHelmetToPlayerEvent>();
+                //     return;
+                // }
+                //
+                // if (keyCode == mainConfig.CheckKey) {
+                //     CheckPlayer();
+                //     return;
+                // }
+                //
+                // if (keyCode == mainConfig.HealKey) {
+                //     HealPlayer();
+                //     return;
+                // }
+                //
+                // if (keyCode == mainConfig.BandageKey) {
+                //     ApplyBandageToPlayer();
+                //     return;
+                // }
             }
+        }
+
+        private void TogglePause() {
+            isPaused = !isPaused;
+            string message = isPaused
+                    ? $"~y~{sharedData.localeConfig.GswIsPaused}"
+                    : $"~g~{sharedData.localeConfig.GswIsWorking}";
+
+            sharedData.notifier.info.AddMessage(message);
         }
 
         private void Cleanup(object sender, EventArgs e) {
@@ -77,14 +103,14 @@
             }
 
             //TODO: Coroutine for frames?
-            (bool success, string reason) = MainConfig.TryToLoad(sharedData.mainConfig);
+            (bool success, string reason) = Configs.MainConfig.TryToLoad(sharedData.mainConfig);
             if (!success) {
                 Notification.Show($"GSW2 couldn't load config!\nReason:\n~r~{reason}");
                 Abort();
                 return false;
             }
 
-            (success, reason) = LocaleConfig.TryToLoad(sharedData.localeConfig, sharedData.mainConfig.Language);
+            (success, reason) = Configs.LocaleConfig.TryToLoad(sharedData.localeConfig, sharedData.mainConfig.Language);
             if (!success) {
                 Notification.Show("GSW2 couldn't load localization, default localization was loaded.\n"
                                   + $"You need to check or change localization\nReason:\n~r~{reason}");
@@ -101,10 +127,11 @@
                 return false;
             }
 
-            LocaleConfig localeConfig = sharedData.localeConfig;
-            string translationAuthor = localeConfig.LocalizationAuthor ?? "GSW2-community";
-            Notification.Show($"{localeConfig.ThanksForUsing}\n~g~GunShot Wound ~r~2~s~\n"
-                              + $"by SH42913\nTranslated by {translationAuthor}");
+            sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.PauseKey, TogglePause);
+            sharedData.notifier.info.AddMessage(sharedData.localeConfig.ThanksForUsing);
+            sharedData.notifier.info.AddMessage("~g~GunShot Wound ~r~2~s~ by SH42913");
+            sharedData.notifier.info.AddMessage("Translated by");
+            sharedData.notifier.info.AddMessage(sharedData.localeConfig.LocalizationAuthor ?? "GSW2-community");
 
             isStarted = true;
             return true;
@@ -149,12 +176,6 @@
         #region TICK
         private void GunshotWoundTick() {
             if (!isPaused) {
-                // if (sharedData.mainConfig.PlayerConfig.WoundedPlayerEnabled) {
-                //     Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, Game.Player, 0f);
-                //     Function.Call(Hash.SET_AI_WEAPON_DAMAGE_MODIFIER, 0.01f);
-                //     Function.Call(Hash.SET_AI_MELEE_WEAPON_DAMAGE_MODIFIER, 0.01f);
-                // }
-
                 commonSystems.Update(sharedData.deltaTime);
                 commonSystems.LateUpdate(sharedData.deltaTime);
                 commonSystems.CleanupUpdate(sharedData.deltaTime);
@@ -169,81 +190,6 @@
             File.WriteAllText(EXCEPTION_LOG_PATH, exception.ToString());
             Notification.Show($"~r~There is a runtime error in GSW2!\nCheck {EXCEPTION_LOG_PATH}");
         }
-        #endregion
-
-        #region KEYS
-        private void ProcessKeyCode(Keys keyCode) {
-            MainConfig mainConfig = sharedData.mainConfig;
-            LocaleConfig localeConfig = sharedData.localeConfig;
-
-            // if (keyCode == mainConfig.HelmetKey) {
-            //     ecsWorld.NewEntity().Get<AddHelmetToPlayerEvent>();
-            //     return;
-            // }
-            //
-            // if (keyCode == mainConfig.CheckKey) {
-            //     CheckPlayer();
-            //     return;
-            // }
-            //
-            // if (keyCode == mainConfig.HealKey) {
-            //     HealPlayer();
-            //     return;
-            // }
-            //
-            // if (keyCode == mainConfig.BandageKey) {
-            //     ApplyBandageToPlayer();
-            //     return;
-            // }
-
-            if (keyCode == mainConfig.IncreaseRangeKey) {
-                ChangeRange(5);
-                return;
-            }
-
-            if (keyCode == mainConfig.ReduceRangeKey) {
-                ChangeRange(-5);
-                return;
-            }
-
-            if (keyCode == mainConfig.PauseKey) {
-                isPaused = !isPaused;
-                string message = isPaused ? $"~y~{localeConfig.GswIsPaused}" : $"~g~{localeConfig.GswIsWorking}";
-                sharedData.notifier.info.AddMessage(message);
-            }
-        }
-
-        private void ChangeRange(float value) {
-            NpcConfig npcConfig = sharedData.mainConfig.NpcConfig;
-            if (npcConfig.AddingPedRange + value < MINIMAL_RANGE_FOR_WOUNDED_PEDS) {
-                return;
-            }
-
-            npcConfig.AddingPedRange += value;
-            npcConfig.RemovePedRange = npcConfig.AddingPedRange * ADDING_TO_REMOVING_MULTIPLIER;
-
-            LocaleConfig localeConfig = sharedData.localeConfig;
-            sharedData.notifier.info.AddMessage($"{localeConfig.AddingRange}: {npcConfig.AddingPedRange.ToString("F0")}");
-            sharedData.notifier.info.AddMessage($"{localeConfig.RemovingRange}: {npcConfig.RemovePedRange.ToString("F0")}");
-        }
-
-        // private void CheckPlayer() {
-        //     if (sharedData.TryGetPlayer(out EcsEntity playerEntity)) {
-        //         ecsWorld.ScheduleEventWithTarget<ShowHealthStateEvent>(playerEntity);
-        //     }
-        // }
-        //
-        // private void HealPlayer() {
-        //     if (sharedData.TryGetPlayer(out EcsEntity playerEntity)) {
-        //         ecsWorld.ScheduleEventWithTarget<InstantHealEvent>(playerEntity);
-        //     }
-        // }
-        //
-        // private void ApplyBandageToPlayer() {
-        //     if (sharedData.TryGetPlayer(out EcsEntity playerEntity)) {
-        //         ecsWorld.ScheduleEventWithTarget<ApplyBandageEvent>(playerEntity);
-        //     }
-        // }
         #endregion
     }
 }

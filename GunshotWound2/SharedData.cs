@@ -10,6 +10,7 @@
         public readonly System.Random random;
         public readonly Weighted_Randomizer.IWeightedRandomizer<int> weightRandom;
         public readonly Notifier notifier;
+        public readonly InputListener inputListener;
 
         public readonly WorldService worldService;
         public readonly MainConfig mainConfig;
@@ -24,6 +25,7 @@
             random = new System.Random();
             weightRandom = new Weighted_Randomizer.StaticWeightedRandomizer<int>();
             notifier = new Notifier();
+            inputListener = new InputListener();
 
             worldService = new WorldService(startCapacity: 64);
             mainConfig = new MainConfig();

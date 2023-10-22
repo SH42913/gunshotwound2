@@ -99,6 +99,7 @@
     <Compile Include="HitDetection\WeaponHitSystem.cs" />
     <Compile Include="Peds\JustConvertedMarker.cs" />
     <Compile Include="Player\PlayerFeature.cs" />
+    <Compile Include="Utils\InputListener.cs" />
     <Compile Include="Utils\Notifier.cs" />
     <Compile Include="WorldService.cs" />
     <Compile Include="GUI\CheckSystem.cs" />
