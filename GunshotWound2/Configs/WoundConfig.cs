@@ -7,6 +7,7 @@ namespace GunshotWound2.Configs
     {
         //TODO: Make it dynamic in config
         public const float MAX_SEVERITY_FOR_BANDAGE = 1f;
+        private const int HEALTH_CORRECTION = 100;
 
         public float DamageMultiplier;
         public float PainMultiplier;
@@ -59,6 +60,14 @@ namespace GunshotWound2.Configs
 
         public bool IsBleedingCanBeBandaged(float severity) {
             return severity <= BleedingMultiplier * MAX_SEVERITY_FOR_BANDAGE;
+        }
+
+        public static int ConvertHealthFromNative(int health) {
+            return health - HEALTH_CORRECTION;
+        }
+
+        public static int ConvertHealthToNative(int health) {
+            return health + HEALTH_CORRECTION;
         }
 
         public override string ToString()

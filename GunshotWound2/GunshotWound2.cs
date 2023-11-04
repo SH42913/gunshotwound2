@@ -143,6 +143,7 @@
             HitDetection.DetectHitFeature.Create(commonSystems, sharedData);
             Damage.DamageFeature.Create(commonSystems, sharedData);
             HealthCare.HealthFeature.Create(commonSystems, sharedData);
+            UI.UIFeature.Create(commonSystems, sharedData);
 
             // PlayerConfig playerConfig = sharedData.mainConfig.PlayerConfig;
             // if (playerConfig.WoundedPlayerEnabled) {

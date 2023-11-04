@@ -150,10 +150,6 @@
         // woundedPed.ThisPed.DiesOnLowHealth = false;
         // woundedPed.ThisPed.CanWearHelmet = true;
         // woundedPed.ThisPed.CanSufferCriticalHits = false;
-        //
-        // int totalHealth = playerConfig.MaximalHealth - playerConfig.MinimalHealth;
-        // float deadlyRate = totalHealth * playerConfig.BleedHealingSpeed;
-        // sharedData.mainConfig.WoundConfig.EmergencyBleedingLevel = (float)Math.Sqrt(deadlyRate);
 
         // ecsWorld.ScheduleEventWithTarget<NoPainChangeStateEvent>(entity);
         //     sharedData.worldService.AddConverted(ped, entity);
