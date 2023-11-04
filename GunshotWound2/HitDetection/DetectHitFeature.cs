@@ -2,7 +2,7 @@
     using Scellecs.Morpeh;
 
     public static class DetectHitFeature {
-        public static void CreateSystems(SystemsGroup systemsGroup, SharedData sharedData) {
+        public static void Create(SystemsGroup systemsGroup, SharedData sharedData) {
             systemsGroup.AddSystem(new HitDetectSystem(sharedData));
             systemsGroup.AddSystem(new WeaponHitSystem(sharedData));
             systemsGroup.AddSystem(new BodyHitSystem(sharedData));

@@ -7,7 +7,7 @@
         public const float MINIMAL_RANGE_FOR_WOUNDED_PEDS = 0;
         public const float ADDING_TO_REMOVING_MULTIPLIER = 2;
 
-        public static void CreateSystems(SystemsGroup systemsGroup, SharedData sharedData) {
+        public static void Create(SystemsGroup systemsGroup, SharedData sharedData) {
             systemsGroup.AddSystem(new NpcDetectSystem(sharedData));
             systemsGroup.AddSystem(new ConvertPedSystem(sharedData));
             systemsGroup.AddSystem(new RemoveConvertedPedSystem(sharedData));
