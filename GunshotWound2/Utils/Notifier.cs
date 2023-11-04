@@ -51,10 +51,9 @@
                 builder.Append(prefix);
                 for (int index = 0, count = messages.Count; index < count; index++) {
                     string message = messages[index];
+                    builder.Append(message);
                     if (count > index + 1) {
-                        builder.AppendLine(message);
-                    } else {
-                        builder.Append(message);
+                        builder.AppendEndOfLine();
                     }
                 }
 

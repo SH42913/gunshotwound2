@@ -101,6 +101,7 @@
     <Compile Include="Player\PlayerFeature.cs" />
     <Compile Include="Utils\InputListener.cs" />
     <Compile Include="Utils\Notifier.cs" />
+    <Compile Include="Utils\StringBuilderExtensions.cs" />
     <Compile Include="WorldService.cs" />
     <Compile Include="GUI\CheckSystem.cs" />
     <Compile Include="GUI\ShowHealthStateEvent.cs" />

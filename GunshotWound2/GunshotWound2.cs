@@ -129,9 +129,9 @@
 
             sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.PauseKey, TogglePause);
             sharedData.notifier.info.AddMessage(sharedData.localeConfig.ThanksForUsing);
-            sharedData.notifier.info.AddMessage("~g~GunShot Wound ~r~2~s~ by SH42913");
-            sharedData.notifier.info.AddMessage("Translated by");
-            sharedData.notifier.info.AddMessage(sharedData.localeConfig.LocalizationAuthor ?? "GSW2-community");
+            sharedData.notifier.info.AddMessage("~g~GunShot Wound ~r~2~s~");
+            sharedData.notifier.info.AddMessage("by <C>SH42913</C>");
+            sharedData.notifier.info.AddMessage($"\nTranslated by {sharedData.localeConfig.LocalizationAuthor ?? "GSW2-community"}");
 
             isStarted = true;
             return true;
