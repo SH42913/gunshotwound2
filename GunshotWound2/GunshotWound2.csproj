@@ -87,6 +87,7 @@
     <Compile Include="Effects\RagdollSystem.cs" />
     <Compile Include="Effects\SetPedToRagdollEvent.cs" />
     <Compile Include="Effects\MoveSetSwitchSystem.cs" />
+    <Compile Include="HealthCare\BandageSystem.cs" />
     <Compile Include="HealthCare\Bleeding.cs" />
     <Compile Include="HealthCare\BleedingSystem.cs" />
     <Compile Include="HealthCare\HealthChangeSystem.cs" />
@@ -106,10 +107,6 @@
     <Compile Include="WorldService.cs" />
     <Compile Include="UI\HealthChecker.cs" />
     <Compile Include="GunshotWound2.cs" />
-    <Compile Include="Healing\ApplyBandageEvent.cs" />
-    <Compile Include="Healing\BandageInProgressComponent.cs" />
-    <Compile Include="Healing\BandageSystem.cs" />
-    <Compile Include="Healing\SuccessfulBandageEvent.cs" />
     <Compile Include="HitDetection\BodyHitSystem.cs" />
     <Compile Include="HitDetection\HitCleanSystem.cs" />
     <Compile Include="HitDetection\HitDetectSystem.cs" />

@@ -56,7 +56,7 @@
             STRING_BUILDER.Append(localeConfig.Health);
             STRING_BUILDER.Append(": ");
             STRING_BUILDER.Append(color);
-            STRING_BUILDER.Append(healthPercent.ToString("P1"));
+            STRING_BUILDER.Append(healthPercent.ToString("P0"));
             STRING_BUILDER.SetDefaultColor();
 
             sharedData.notifier.info.AddMessage(STRING_BUILDER.ToString());
@@ -78,9 +78,10 @@
 
             foreach (Entity bleedingEntity in health.bleedingWounds) {
                 ref Bleeding bleeding = ref bleedingEntity.GetComponent<Bleeding>();
+                bool isBleedingToBandage = health.bleedingToBandage == bleedingEntity;
 
                 STRING_BUILDER.AppendEndOfLine();
-                if (health.bleedingToBandage == bleedingEntity) {
+                if (isBleedingToBandage) {
                     STRING_BUILDER.Append("~g~-> ");
                 }
 
@@ -101,6 +102,11 @@
 
                 STRING_BUILDER.Append(color);
                 STRING_BUILDER.Append(bleeding.name);
+
+                if (isBleedingToBandage && health.timeToBandage > 0f) {
+                    float bandagingProgress = 1f - (health.timeToBandage / sharedData.mainConfig.WoundConfig.ApplyBandageTime);
+                    STRING_BUILDER.Append($" ~g~({bandagingProgress.ToString("P1")})");
+                }
             }
 
             STRING_BUILDER.SetDefaultColor();
