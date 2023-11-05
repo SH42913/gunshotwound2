@@ -80,11 +80,10 @@
     <Compile Include="Damage\Weapons\SmallCaliberDamage.cs" />
     <Compile Include="Damage\WoundedPedComponent.cs" />
     <Compile Include="Damage\WoundSystem.cs" />
-    <Compile Include="Effects\SwitchMoveSetRequest.cs" />
-    <Compile Include="Effects\InstantHealSystem.cs" />
+    <Compile Include="Effects\CameraEffects.cs" />
+    <Compile Include="Effects\PedEffects.cs" />
+    <Compile Include="Effects\PlayerEffects.cs" />
     <Compile Include="Effects\RagdollSystem.cs" />
-    <Compile Include="Effects\SetPedToRagdollEvent.cs" />
-    <Compile Include="Effects\MoveSetSwitchSystem.cs" />
     <Compile Include="HealthCare\BandageSystem.cs" />
     <Compile Include="HealthCare\Bleeding.cs" />
     <Compile Include="HealthCare\BleedingSystem.cs" />
@@ -92,6 +91,7 @@
     <Compile Include="HealthCare\HealthFeature.cs" />
     <Compile Include="HealthCare\Health.cs" />
     <Compile Include="HealthCare\HealthInitSystem.cs" />
+    <Compile Include="HealthCare\InstantHealSystem.cs" />
     <Compile Include="HealthCare\SelfHealingSystem.cs" />
     <Compile Include="HealthCare\TotalHealCheckSystem.cs" />
     <Compile Include="HealthCare\TotallyHealedEvent.cs" />
@@ -136,14 +136,8 @@
     <Compile Include="Peds\NpcDetectSystem.cs" />
     <Compile Include="Peds\ConvertedPed.cs" />
     <Compile Include="Peds\RemoveConvertedPedSystem.cs" />
-    <Compile Include="Player\AddCameraShakeEvent.cs" />
-    <Compile Include="Player\AddFlashEvent.cs" />
     <Compile Include="Player\AdrenalineSystem.cs" />
-    <Compile Include="Player\CameraShakeSystem.cs" />
-    <Compile Include="Player\ChangeSpecialAbilityEvent.cs" />
-    <Compile Include="Player\FlashSystem.cs" />
     <Compile Include="Player\PlayerDetectSystem.cs" />
-    <Compile Include="Player\SpecialAbilityLockSystem.cs" />
     <Compile Include="Utils\LocalizationManager.cs" />
     <Compile Include="Utils\RandomExtensions.cs" />
     <Compile Include="Peds\ConvertPedsFeature.cs" />
