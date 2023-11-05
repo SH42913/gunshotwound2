@@ -51,30 +51,20 @@
         }
 
         private void OnKeyUp(object sender, KeyEventArgs eventArgs) {
+            if (eventArgs.KeyCode == sharedData.mainConfig.PauseKey) {
+                TogglePause();
+                return;
+            }
+
             if (isStarted && !isPaused) {
                 sharedData.inputListener.ConsumeKeyUp(eventArgs.KeyCode);
-
-                // TODO
-                // if (keyCode == mainConfig.HelmetKey) {
-                //     ecsWorld.NewEntity().Get<AddHelmetToPlayerEvent>();
-                //     return;
-                // }
-                //
-                // if (keyCode == mainConfig.CheckKey) {
-                //     CheckPlayer();
-                //     return;
-                // }
-                //
-                // if (keyCode == mainConfig.HealKey) {
-                //     HealPlayer();
-                //     return;
-                // }
-                //
-                // if (keyCode == mainConfig.BandageKey) {
-                //     ApplyBandageToPlayer();
-                //     return;
-                // }
             }
+
+            // TODO
+            // if (keyCode == mainConfig.HelmetKey) {
+            //     ecsWorld.NewEntity().Get<AddHelmetToPlayerEvent>();
+            //     return;
+            // }
         }
 
         private void TogglePause() {
@@ -127,7 +117,6 @@
                 return false;
             }
 
-            sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.PauseKey, TogglePause);
             sharedData.notifier.info.AddMessage(sharedData.localeConfig.ThanksForUsing);
             sharedData.notifier.info.AddMessage("~g~GunShot Wound ~r~2~s~");
             sharedData.notifier.info.AddMessage("by <C>SH42913</C>");
