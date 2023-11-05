@@ -1,6 +1,8 @@
 ﻿namespace GunshotWound2.HealthCare {
     using System;
     using Configs;
+    using GTA;
+    using GTA.Native;
     using Peds;
     using Scellecs.Morpeh;
     using Utils;
@@ -9,7 +11,7 @@
         private readonly SharedData sharedData;
         private Filter peds;
 
-        public World World { get; set; }
+        public Scellecs.Morpeh.World World { get; set; }
 
         public HealthInitSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -22,7 +24,7 @@
         public void OnUpdate(float deltaTime) {
             PlayerConfig playerConfig = sharedData.mainConfig.PlayerConfig;
             NpcConfig npcConfig = sharedData.mainConfig.NpcConfig;
-            foreach (Entity entity in peds) {
+            foreach (Scellecs.Morpeh.Entity entity in peds) {
                 ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
                 convertedPed.thisPed.CanSufferCriticalHits = true;
                 convertedPed.thisPed.DiesOnLowHealth = false;
@@ -30,9 +32,15 @@
 
                 ref Health health = ref entity.AddOrGetComponent<Health>();
                 health.max = convertedPed.thisPed.MaxHealth - 1;
-                health.bleedingHealRate = convertedPed.isPlayer
-                        ? playerConfig.BleedHealingSpeed
-                        : sharedData.random.NextFloat(0.5f * npcConfig.MaximalBleedStopSpeed, npcConfig.MaximalBleedStopSpeed);
+
+                if (convertedPed.isPlayer) {
+                    health.bleedingHealRate = playerConfig.BleedHealingSpeed;
+                    Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, Game.Player, 0f);
+                } else {
+                    float maxRate = npcConfig.MaximalBleedStopSpeed;
+                    float minRate = 0.5f * maxRate;
+                    health.bleedingHealRate = sharedData.random.NextFloat(minRate, maxRate);
+                }
             }
         }
 

@@ -111,9 +111,6 @@
                 sharedData.logger.WriteInfo($"New Player Ped {playerPed.Handle.ToString()} will be created!");
 #endif
             }
-
-            //TODO: Move to HealthSystem
-            Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, Game.Player, 0f);
         }
 
         // private void CreateGswPlayer(Ped ped, PlayerConfig playerConfig) {
