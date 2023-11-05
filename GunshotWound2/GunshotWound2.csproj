@@ -138,12 +138,10 @@
     <Compile Include="Peds\RemoveConvertedPedSystem.cs" />
     <Compile Include="Player\AddCameraShakeEvent.cs" />
     <Compile Include="Player\AddFlashEvent.cs" />
-    <Compile Include="Player\AddHelmetToPlayerEvent.cs" />
     <Compile Include="Player\AdrenalineSystem.cs" />
     <Compile Include="Player\CameraShakeSystem.cs" />
     <Compile Include="Player\ChangeSpecialAbilityEvent.cs" />
     <Compile Include="Player\FlashSystem.cs" />
-    <Compile Include="Player\HelmetRequestSystem.cs" />
     <Compile Include="Player\PlayerDetectSystem.cs" />
     <Compile Include="Player\SpecialAbilityLockSystem.cs" />
     <Compile Include="Utils\LocalizationManager.cs" />
