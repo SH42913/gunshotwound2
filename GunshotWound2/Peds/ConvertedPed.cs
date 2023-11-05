@@ -8,6 +8,7 @@
         public Ped thisPed;
         public bool isPlayer;
         public int lastFrameHealth;
+        public int lastFrameArmor;
 #if DEBUG
         public Blip customBlip;
 #endif

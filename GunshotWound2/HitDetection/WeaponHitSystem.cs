@@ -51,7 +51,7 @@
                 } else if (ped.IsRagdoll) {
                     weaponType = PedHitData.WeaponTypes.LightImpact;
                     isSpecial = true;
-                } else if (ped.CurrentVehicle.Exists()) {
+                } else if (ped.CurrentVehicle != null) {
                     weaponType = PedHitData.WeaponTypes.HeavyImpact;
                     isSpecial = true;
                 }

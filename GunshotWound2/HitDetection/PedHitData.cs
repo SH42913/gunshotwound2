@@ -26,6 +26,7 @@
         public BodyParts bodyPart;
         public WeaponTypes weaponType;
         public int healthDiff;
+        public int armorDiff;
         public bool randomBodyPart;
     }
 }

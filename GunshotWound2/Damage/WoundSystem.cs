@@ -45,6 +45,7 @@
 
                 if (weaponDamages.TryGetValue(hitData.weaponType, out BaseWeaponDamage weaponDamage)) {
                     ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
+                    convertedPed.thisPed.Armor += hitData.armorDiff;
 
                     WoundData? wound = weaponDamage.ProcessHit(convertedPed.thisPed, hitData);
 #if DEBUG

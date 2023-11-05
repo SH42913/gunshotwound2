@@ -32,6 +32,7 @@
                     Remove(entity, ref convertedPed);
                 } else {
                     convertedPed.lastFrameHealth = ped.Health;
+                    convertedPed.lastFrameArmor = ped.Armor;
                 }
             }
         }

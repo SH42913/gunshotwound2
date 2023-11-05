@@ -27,17 +27,25 @@
             foreach (Scellecs.Morpeh.Entity entity in convertedPeds) {
                 ref ConvertedPed convertedPed = ref convertedStash.Get(entity);
                 Ped ped = convertedPed.thisPed;
+                if (!ped.Exists() || !ped.IsAlive) {
+                    continue;
+                }
 
                 int healthDiff = convertedPed.lastFrameHealth - ped.Health;
-                if (ped.Exists() && ped.IsAlive && healthDiff > 0) {
-                    entity.SetComponent(new PedHitData {
-                        healthDiff = healthDiff,
-                    });
+                int armorDiff = convertedPed.lastFrameArmor - ped.Armor;
+                if (healthDiff <= 0 && armorDiff <= 0) {
+                    continue;
+                }
+
+                entity.SetComponent(new PedHitData {
+                    healthDiff = healthDiff,
+                    armorDiff = armorDiff,
+                });
 
 #if DEBUG
-                    sharedData.logger.WriteInfo($"Detect damage at {convertedPed.name}, healthDiff = {healthDiff.ToString()}");
+                sharedData.logger.WriteInfo($"Detect damage at {convertedPed.name}");
+                sharedData.logger.WriteInfo($"healthDiff = {healthDiff.ToString()}, armorDiff = {armorDiff.ToString()}");
 #endif
-                }
             }
         }
     }

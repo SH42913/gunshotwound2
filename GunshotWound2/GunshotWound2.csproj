@@ -80,7 +80,6 @@
     <Compile Include="Damage\Weapons\SmallCaliberDamage.cs" />
     <Compile Include="Damage\WoundedPedComponent.cs" />
     <Compile Include="Damage\WoundSystem.cs" />
-    <Compile Include="Effects\ArmorSystem.cs" />
     <Compile Include="Effects\SwitchMoveSetRequest.cs" />
     <Compile Include="Effects\InstantHealSystem.cs" />
     <Compile Include="Effects\RagdollSystem.cs" />
