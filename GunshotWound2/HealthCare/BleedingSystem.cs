@@ -64,7 +64,7 @@
                 // if (woundedPed.IsDead)
                 //     continue;
 
-                if (bleeding.severity <= 0f) {
+                if (bleeding.severity <= 0f || bleeding.target.Has<TotallyHealedEvent>()) {
 #if DEBUG
                     sharedData.logger.WriteInfo($"Bleeding {bleeding.name} at {convertedPed.name} was healed");
 #endif

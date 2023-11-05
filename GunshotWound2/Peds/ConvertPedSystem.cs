@@ -14,14 +14,14 @@
         }
 
         public void OnAwake() {
-            justConverted = World.Filter.With<JustConvertedMarker>();
+            justConverted = World.Filter.With<JustConvertedEvent>();
         }
 
         void IDisposable.Dispose() { }
 
         public void OnUpdate(float deltaTime) {
             foreach (Scellecs.Morpeh.Entity entity in justConverted) {
-                entity.RemoveComponent<JustConvertedMarker>();
+                entity.RemoveComponent<JustConvertedEvent>();
             }
 
             WorldService worldService = sharedData.worldService;
@@ -32,7 +32,7 @@
                 convertedPed.name = $"P{pedToConvert.Handle.ToString()}";
                 convertedPed.thisPed = pedToConvert;
                 worldService.AddConverted(pedToConvert, entity);
-                entity.AddComponent<JustConvertedMarker>();
+                entity.AddComponent<JustConvertedEvent>();
 
 #if DEBUG
                 convertedPed.customBlip = pedToConvert.AddBlip();

@@ -82,7 +82,6 @@
     <Compile Include="Damage\WoundSystem.cs" />
     <Compile Include="Effects\ArmorSystem.cs" />
     <Compile Include="Effects\SwitchMoveSetRequest.cs" />
-    <Compile Include="Effects\InstantHealEvent.cs" />
     <Compile Include="Effects\InstantHealSystem.cs" />
     <Compile Include="Effects\RagdollSystem.cs" />
     <Compile Include="Effects\SetPedToRagdollEvent.cs" />
@@ -95,10 +94,12 @@
     <Compile Include="HealthCare\Health.cs" />
     <Compile Include="HealthCare\HealthInitSystem.cs" />
     <Compile Include="HealthCare\SelfHealingSystem.cs" />
+    <Compile Include="HealthCare\TotalHealCheckSystem.cs" />
+    <Compile Include="HealthCare\TotallyHealedEvent.cs" />
     <Compile Include="HitDetection\DetectHitFeature.cs" />
     <Compile Include="HitDetection\PedHitData.cs" />
     <Compile Include="HitDetection\WeaponHitSystem.cs" />
-    <Compile Include="Peds\JustConvertedMarker.cs" />
+    <Compile Include="Peds\JustConvertedEvent.cs" />
     <Compile Include="Player\PlayerFeature.cs" />
     <Compile Include="UI\UIFeature.cs" />
     <Compile Include="Utils\InputListener.cs" />

@@ -18,7 +18,7 @@
 
         public void OnAwake() {
             pedStash = World.GetStash<ConvertedPed>();
-            newPeds = World.Filter.With<ConvertedPed>().With<JustConvertedMarker>();
+            newPeds = World.Filter.With<ConvertedPed>().With<JustConvertedEvent>();
         }
 
         void IDisposable.Dispose() { }
@@ -80,7 +80,7 @@
 
         private void SetPlayer(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) {
             convertedPed.isPlayer = true;
-            entity.SetMarker<JustConvertedMarker>();
+            entity.SetMarker<JustConvertedEvent>();
             sharedData.playerEntity = entity;
 #if DEBUG
             sharedData.logger.WriteInfo($"Ped {convertedPed.name} is new player");
@@ -89,7 +89,7 @@
 
         private void UnSetPlayer(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) {
             convertedPed.isPlayer = false;
-            entity.SetMarker<JustConvertedMarker>();
+            entity.SetMarker<JustConvertedEvent>();
             sharedData.playerEntity = null;
 #if DEBUG
             sharedData.logger.WriteInfo($"Ped {convertedPed.name} is not player anymore");

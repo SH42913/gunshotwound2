@@ -9,7 +9,7 @@
 
     public sealed class HealthInitSystem : ISystem {
         private readonly SharedData sharedData;
-        private Filter peds;
+        private Filter justConvertedPeds;
 
         public Scellecs.Morpeh.World World { get; set; }
 
@@ -18,13 +18,13 @@
         }
 
         public void OnAwake() {
-            peds = World.Filter.With<ConvertedPed>().With<JustConvertedMarker>();
+            justConvertedPeds = World.Filter.With<ConvertedPed>().With<JustConvertedEvent>();
         }
 
         public void OnUpdate(float deltaTime) {
             PlayerConfig playerConfig = sharedData.mainConfig.PlayerConfig;
             NpcConfig npcConfig = sharedData.mainConfig.NpcConfig;
-            foreach (Scellecs.Morpeh.Entity entity in peds) {
+            foreach (Scellecs.Morpeh.Entity entity in justConvertedPeds) {
                 ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
                 convertedPed.thisPed.CanSufferCriticalHits = true;
                 convertedPed.thisPed.DiesOnLowHealth = false;
@@ -32,6 +32,7 @@
 
                 ref Health health = ref entity.AddOrGetComponent<Health>();
                 health.max = convertedPed.thisPed.MaxHealth - 1;
+                convertedPed.thisPed.Health = health.max;
 
                 if (convertedPed.isPlayer) {
                     health.bleedingHealRate = playerConfig.BleedHealingSpeed;

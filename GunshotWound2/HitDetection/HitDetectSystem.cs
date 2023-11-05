@@ -17,7 +17,7 @@
         }
 
         public void OnAwake() {
-            convertedPeds = World.Filter.With<ConvertedPed>().Without<JustConvertedMarker>();
+            convertedPeds = World.Filter.With<ConvertedPed>().Without<JustConvertedEvent>();
             convertedStash = World.GetStash<ConvertedPed>();
         }
 

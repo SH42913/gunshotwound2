@@ -31,7 +31,7 @@
                 }
 
                 Ped ped = pedStash.Get(entity).thisPed;
-                if (ped.Health < health.max) {
+                if (ped.Health + health.diff < health.max) {
                     health.diff += sharedData.mainConfig.WoundConfig.SelfHealingRate * sharedData.deltaTime;
                 }
             }
