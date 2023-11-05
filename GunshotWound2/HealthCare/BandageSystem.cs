@@ -18,6 +18,7 @@
         }
 
         public void OnAwake() {
+            //TODO: Move to PlayerFeature
             sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.BandageKey, TryToBandagePlayer);
             pedsWithHealth = World.Filter.With<ConvertedPed>().With<Health>();
             pedStash = World.GetStash<ConvertedPed>();

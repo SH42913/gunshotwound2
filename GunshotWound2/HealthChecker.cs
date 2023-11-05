@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.UI {
+﻿namespace GunshotWound2 {
     using System;
     using System.Text;
     using Configs;
@@ -9,12 +9,6 @@
 
     public static class HealthChecker {
         private static readonly StringBuilder STRING_BUILDER = new();
-
-        public static void CheckPlayer(SharedData sharedData) {
-            if (sharedData.TryGetPlayer(out Entity playerEntity)) {
-                Check(sharedData, playerEntity);
-            }
-        }
 
         public static void Check(SharedData sharedData, Entity pedEntity) {
             ShowHealth(sharedData, pedEntity);
