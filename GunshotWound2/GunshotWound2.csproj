@@ -95,7 +95,7 @@
     <Compile Include="HealthCare\SelfHealingSystem.cs" />
     <Compile Include="HealthCare\TotalHealCheckSystem.cs" />
     <Compile Include="HealthCare\TotallyHealedEvent.cs" />
-    <Compile Include="HealthChecker.cs" />
+    <Compile Include="PedStateChecker.cs" />
     <Compile Include="HitDetection\DetectHitFeature.cs" />
     <Compile Include="HitDetection\PedHitData.cs" />
     <Compile Include="HitDetection\WeaponHitSystem.cs" />

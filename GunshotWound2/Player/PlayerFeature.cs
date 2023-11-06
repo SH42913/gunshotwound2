@@ -12,7 +12,7 @@
 
         private static void CheckPlayer(SharedData sharedData) {
             if (sharedData.TryGetPlayer(out Scellecs.Morpeh.Entity playerEntity)) {
-                HealthChecker.Check(sharedData, playerEntity);
+                PedStateChecker.Check(sharedData, playerEntity);
             }
         }
 

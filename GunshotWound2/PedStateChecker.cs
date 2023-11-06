@@ -7,30 +7,28 @@
     using Scellecs.Morpeh;
     using Utils;
 
-    public static class HealthChecker {
+    public static class PedStateChecker {
         private static readonly StringBuilder STRING_BUILDER = new();
 
         public static void Check(SharedData sharedData, Entity pedEntity) {
-            ShowHealth(sharedData, pedEntity);
-
-            // ShowArmor(woundedPed);
-            // ShowPain(woundedPed, pedEntity);
-            // ShowCrits(woundedPed);
-
-            ShowBleedingWounds(sharedData, pedEntity);
-        }
-
-        private static void ShowHealth(SharedData sharedData, Entity pedEntity) {
-            LocaleConfig localeConfig = sharedData.localeConfig;
-
             ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
             ref Health health = ref pedEntity.GetComponent<Health>();
 
+            ShowHealth(sharedData, ref convertedPed, ref health);
+            ShowArmor(sharedData, ref convertedPed);
+
+            // ShowPain(woundedPed, pedEntity);
+            // ShowCrits(woundedPed);
+
+            ShowBleedingWounds(sharedData, ref convertedPed, ref health);
+        }
+
+        private static void ShowHealth(SharedData sharedData, ref ConvertedPed convertedPed, ref Health health) {
             int currentHealth = WoundConfig.ConvertHealthFromNative(convertedPed.thisPed.Health);
             int maxHealth = WoundConfig.ConvertHealthFromNative(health.max);
             float healthPercent = (float)currentHealth / maxHealth;
             if (healthPercent <= 0f) {
-                sharedData.notifier.info.AddMessage($"~r~{localeConfig.YouAreDead}~s~");
+                sharedData.notifier.info.AddMessage($"~r~{sharedData.localeConfig.YouAreDead}~s~");
                 return;
             }
 
@@ -47,7 +45,7 @@
 
             STRING_BUILDER.Clear();
             STRING_BUILDER.SetDefaultColor();
-            STRING_BUILDER.Append(localeConfig.Health);
+            STRING_BUILDER.Append(sharedData.localeConfig.Health);
             STRING_BUILDER.Append(": ");
             STRING_BUILDER.Append(color);
             STRING_BUILDER.Append(healthPercent.ToString("P0"));
@@ -56,9 +54,38 @@
             sharedData.notifier.info.AddMessage(STRING_BUILDER.ToString());
         }
 
-        private static void ShowBleedingWounds(SharedData sharedData, Entity pedEntity) {
-            ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
-            ref Health health = ref pedEntity.GetComponent<Health>();
+        private static void ShowArmor(SharedData sharedData, ref ConvertedPed convertedPed) {
+            int armor = convertedPed.thisPed.Armor;
+            sharedData.logger.WriteInfo(armor.ToString());
+            if (armor <= 0) {
+                return;
+            }
+
+            string color;
+            string message;
+            if (armor >= 60) {
+                color = "~g~";
+                message = sharedData.localeConfig.ArmorLooksGreat;
+            } else if (armor >= 40) {
+                color = "~y~";
+                message = sharedData.localeConfig.ScratchesOnArmor;
+            } else if (armor >= 20) {
+                color = "~o~";
+                message = sharedData.localeConfig.DentsOnArmor;
+            } else {
+                color = "~r~";
+                message = sharedData.localeConfig.ArmorLooksAwful;
+            }
+
+            STRING_BUILDER.Clear();
+            STRING_BUILDER.Append(color);
+            STRING_BUILDER.Append(message);
+            STRING_BUILDER.SetDefaultColor();
+
+            sharedData.notifier.info.AddMessage(STRING_BUILDER.ToString());
+        }
+
+        private static void ShowBleedingWounds(SharedData sharedData, ref ConvertedPed convertedPed, ref Health health) {
             if (health.bleedingWounds == null || health.bleedingWounds.Count < 1) {
                 return;
             }
@@ -136,29 +163,6 @@
         //         {
         //             SendMessage($"~s~{_locale.Data.Pain}: ~g~{painString}%~s~");
         //         }
-        //     }
-        // }
-        //
-        // private void ShowArmor(WoundedPedComponent woundedPed)
-        // {
-        //     if (woundedPed.Armor <= 0) return;
-        //     var armorPercent = woundedPed.Armor / 100f;
-        //
-        //     if (armorPercent > 0.7f)
-        //     {
-        //         SendMessage($"~g~{_locale.Data.ArmorLooksGreat} ~s~");
-        //     }
-        //     else if (armorPercent > 0.4f)
-        //     {
-        //         SendMessage($"~y~{_locale.Data.ScratchesOnArmor} ~s~");
-        //     }
-        //     else if (armorPercent > 0.15f)
-        //     {
-        //         SendMessage($"~o~{_locale.Data.DentsOnArmor} ~s~");
-        //     }
-        //     else
-        //     {
-        //         SendMessage($"~r~{_locale.Data.ArmorLooksAwful} ~s~");
         //     }
         // }
         //
