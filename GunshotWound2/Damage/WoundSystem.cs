@@ -4,6 +4,7 @@
     using Configs;
     using HealthCare;
     using HitDetection;
+    using PainFeature;
     using Peds;
     using Scellecs.Morpeh;
     using Utils;
@@ -106,6 +107,14 @@
             bleeding.name = name;
         }
 
+        private void CreatePain(Entity pedEntity, float painAmount) {
+            float deviation = sharedData.mainConfig.WoundConfig.PainDeviation;
+            float mult = sharedData.mainConfig.WoundConfig.PainMultiplier;
+
+            ref Pain pain = ref pedEntity.GetComponent<Pain>();
+            pain.diff += CalculateAmount(painAmount, deviation, mult);
+        }
+
         private void CreateCrit(Entity pedEntity, bool hasCrits) {
             // switch (crit) {
             //     case CritTypes.LEGS_DAMAGED:
@@ -131,14 +140,6 @@
             //         break;
             //     default: throw new ArgumentOutOfRangeException();
             // }
-        }
-
-        private void CreatePain(Entity pedEntity, float painAmount) {
-            float pain = sharedData.mainConfig.WoundConfig.PainMultiplier * painAmount;
-
-            // var painComponent = _ecsWorld.CreateEntityWith<IncreasePainEvent>();
-            // painComponent.Entity = pedEntity;
-            // painComponent.PainAmount = pain;
         }
 
         private void SendWoundInfo(in WoundData woundData) {

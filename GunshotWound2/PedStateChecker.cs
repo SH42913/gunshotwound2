@@ -3,6 +3,7 @@
     using System.Text;
     using Configs;
     using HealthCare;
+    using PainFeature;
     using Peds;
     using Scellecs.Morpeh;
     using Utils;
@@ -16,10 +17,8 @@
 
             ShowHealth(sharedData, ref convertedPed, ref health);
             ShowArmor(sharedData, ref convertedPed);
-
-            // ShowPain(woundedPed, pedEntity);
+            ShowPain(sharedData, pedEntity);
             // ShowCrits(woundedPed);
-
             ShowBleedingWounds(sharedData, ref convertedPed, ref health);
         }
 
@@ -56,7 +55,6 @@
 
         private static void ShowArmor(SharedData sharedData, ref ConvertedPed convertedPed) {
             int armor = convertedPed.thisPed.Armor;
-            sharedData.logger.WriteInfo(armor.ToString());
             if (armor <= 0) {
                 return;
             }
@@ -80,6 +78,29 @@
             STRING_BUILDER.Clear();
             STRING_BUILDER.Append(color);
             STRING_BUILDER.Append(message);
+            STRING_BUILDER.SetDefaultColor();
+
+            sharedData.notifier.info.AddMessage(STRING_BUILDER.ToString());
+        }
+
+        private static void ShowPain(SharedData sharedData, Entity pedEntity) {
+            ref Pain pain = ref pedEntity.GetComponent<Pain>();
+            if (pain.currentState == null) {
+                return;
+            }
+
+            float painPercent = pain.amount / pain.max;
+            STRING_BUILDER.Clear();
+            STRING_BUILDER.Append(sharedData.localeConfig.Pain);
+            STRING_BUILDER.Append(": ");
+            STRING_BUILDER.Append(pain.currentState?.Color ?? "~g~");
+            STRING_BUILDER.Append(painPercent.ToString("P1"));
+
+            if (painPercent > 1f) {
+                float timeToRecover = (pain.amount - pain.max) / pain.recoveryRate;
+                STRING_BUILDER.Append($" ({timeToRecover.ToString("F1")} sec)");
+            }
+            
             STRING_BUILDER.SetDefaultColor();
 
             sharedData.notifier.info.AddMessage(STRING_BUILDER.ToString());
@@ -134,37 +155,6 @@
             sharedData.notifier.info.AddMessage(STRING_BUILDER.ToString());
         }
 
-        // private void ShowPain(WoundedPedComponent woundedPed, int pedEntity)
-        // {
-        //     var pain = _ecsWorld.GetComponent<PainComponent>(pedEntity);
-        //     if (pain == null || woundedPed.IsDead) return;
-        //
-        //     var painPercent = pain.CurrentPain / woundedPed.MaximalPain;
-        //     if (painPercent > 3f)
-        //     {
-        //         SendMessage($"~s~{_locale.Data.Pain}: ~r~>300%~s~");
-        //     }
-        //     else
-        //     {
-        //         var painString = (painPercent * 100f).ToString("0.0");
-        //         if (painPercent > 1f)
-        //         {
-        //             SendMessage($"~s~{_locale.Data.Pain}: ~r~{painString}%~s~");
-        //         }
-        //         else if (painPercent > 0.5f)
-        //         {
-        //             SendMessage($"~s~{_locale.Data.Pain}: ~o~{painString}%~s~");
-        //         }
-        //         else if (painPercent > 0.2f)
-        //         {
-        //             SendMessage($"~s~{_locale.Data.Pain}: ~y~{painString}%~s~");
-        //         }
-        //         else if (painPercent > 0f)
-        //         {
-        //             SendMessage($"~s~{_locale.Data.Pain}: ~g~{painString}%~s~");
-        //         }
-        //     }
-        // }
         //
         // private void ShowCrits(WoundedPedComponent woundedPed)
         // {
