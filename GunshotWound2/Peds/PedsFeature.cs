@@ -3,7 +3,7 @@
     using Scellecs.Morpeh;
     using Utils;
 
-    public static class ConvertPedsFeature {
+    public static class PedsFeature {
         public const float MINIMAL_RANGE_FOR_WOUNDED_PEDS = 0;
         public const float ADDING_TO_REMOVING_MULTIPLIER = 2;
 

@@ -127,7 +127,7 @@
         }
 
         private void RegisterSystems() {
-            Peds.ConvertPedsFeature.Create(commonSystems, sharedData);
+            Peds.PedsFeature.Create(commonSystems, sharedData);
             Player.PlayerFeature.Create(commonSystems, sharedData);
             HitDetection.DetectHitFeature.Create(commonSystems, sharedData);
             Damage.DamageFeature.Create(commonSystems, sharedData);

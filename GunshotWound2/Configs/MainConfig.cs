@@ -174,7 +174,7 @@ namespace GunshotWound2.Configs
             if (node == null) return;
 
             config.NpcConfig.AddingPedRange = node.Element("GSWScanRange").GetFloat();
-            config.NpcConfig.RemovePedRange = config.NpcConfig.AddingPedRange * Peds.ConvertPedsFeature.ADDING_TO_REMOVING_MULTIPLIER;
+            config.NpcConfig.RemovePedRange = config.NpcConfig.AddingPedRange * Peds.PedsFeature.ADDING_TO_REMOVING_MULTIPLIER;
 
             config.NpcConfig.ShowEnemyCriticalMessages = node.Element("CriticalMessages").GetBool();
             config.NpcConfig.ScanOnlyDamaged = node.Element("ScanOnlyDamaged").GetBool();

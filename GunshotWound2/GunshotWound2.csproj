@@ -81,7 +81,6 @@
     <Compile Include="Damage\WoundedPedComponent.cs" />
     <Compile Include="Damage\WoundSystem.cs" />
     <Compile Include="Effects\CameraEffects.cs" />
-    <Compile Include="Effects\PedEffects.cs" />
     <Compile Include="Effects\PlayerEffects.cs" />
     <Compile Include="Effects\RagdollSystem.cs" />
     <Compile Include="HealthCare\BandageSystem.cs" />
@@ -110,6 +109,8 @@
     <Compile Include="PainFeature\States\NoPainState.cs" />
     <Compile Include="PainFeature\States\UnbearablePainState.cs" />
     <Compile Include="Peds\JustConvertedEvent.cs" />
+    <Compile Include="Peds\PedEffects.cs" />
+    <Compile Include="Peds\RagdollSystem.cs" />
     <Compile Include="Player\PlayerFeature.cs" />
     <Compile Include="Utils\InputListener.cs" />
     <Compile Include="Utils\Notifier.cs" />
@@ -133,7 +134,7 @@
     <Compile Include="Player\PlayerDetectSystem.cs" />
     <Compile Include="Utils\LocalizationManager.cs" />
     <Compile Include="Utils\RandomExtensions.cs" />
-    <Compile Include="Peds\ConvertPedsFeature.cs" />
+    <Compile Include="Peds\PedsFeature.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

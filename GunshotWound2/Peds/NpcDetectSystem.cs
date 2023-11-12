@@ -25,7 +25,7 @@
         public void OnUpdate(float deltaTime) {
             NpcConfig npcConfig = sharedData.mainConfig.NpcConfig;
             float addRange = npcConfig.AddingPedRange;
-            if (addRange <= ConvertPedsFeature.MINIMAL_RANGE_FOR_WOUNDED_PEDS) {
+            if (addRange <= PedsFeature.MINIMAL_RANGE_FOR_WOUNDED_PEDS) {
                 return;
             }
 

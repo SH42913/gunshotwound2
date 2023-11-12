@@ -1,8 +1,17 @@
-﻿namespace GunshotWound2.Effects {
+﻿namespace GunshotWound2.Peds {
+    using System;
     using GTA;
     using GTA.Native;
 
     public static class PedEffects {
+        public static void ChangeMoveSetRandom(Ped ped, string[] moveSets, Random random) {
+            string set = moveSets != null && moveSets.Length > 0
+                    ? moveSets[random.Next(0, moveSets.Length)]
+                    : null;
+
+            ChangeMoveSet(ped, set);
+        }
+
         public static void ChangeMoveSet(Ped ped, string moveSetName) {
             if (string.IsNullOrEmpty(moveSetName)) {
                 ResetMoveSet(ped);
@@ -40,8 +49,14 @@
             Function.Call(Hash.SET_PED_TO_RAGDOLL, ped, timeInMs, timeInMs, type);
         }
 
+        public static void SetPermanentRagdoll(Ped ped) {
+            SetRagdoll(ped, timeInMs: -1);
+        }
+
         public static void ResetRagdoll(Ped ped) {
-            SetRagdoll(ped, 1);
+            if (ped.IsRagdoll) {
+                SetRagdoll(ped, timeInMs: 1);
+            }
         }
 
         public static void SetNaturalMotionMessage(Ped ped, int messageId) {
