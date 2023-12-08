@@ -18,6 +18,7 @@
 
         public Entity playerEntity;
         public float deltaTime;
+        public int deltaTimeInMs;
 
         public SharedData(ILogger logger) {
             this.logger = logger;

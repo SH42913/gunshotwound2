@@ -39,26 +39,6 @@
             Function.Call(Hash.SET_PED_MOVE_RATE_OVERRIDE, ped, moveRate);
         }
 
-        /// <summary>
-        /// Ragdoll Types
-        /// 0: CTaskNMRelax
-        /// 1: CTaskNMScriptControl: Hardcoded not to work in networked environments.
-        /// Else: CTaskNMBalance
-        /// </summary>
-        public static void SetRagdoll(Ped ped, int timeInMs, int type = 0) {
-            Function.Call(Hash.SET_PED_TO_RAGDOLL, ped, timeInMs, timeInMs, type);
-        }
-
-        public static void SetPermanentRagdoll(Ped ped) {
-            SetRagdoll(ped, timeInMs: -1);
-        }
-
-        public static void ResetRagdoll(Ped ped) {
-            if (ped.IsRagdoll) {
-                SetRagdoll(ped, timeInMs: 1);
-            }
-        }
-
         public static void SetNaturalMotionMessage(Ped ped, int messageId) {
             Function.Call(Hash.CREATE_NM_MESSAGE, true, messageId);
             Function.Call(Hash.GIVE_PED_NM_MESSAGE, ped);

@@ -38,6 +38,7 @@
 
         private void OnTick(object sender, EventArgs eventArgs) {
             sharedData.deltaTime = Game.LastFrameTime;
+            sharedData.deltaTimeInMs = (int)(sharedData.deltaTime * 1000f);
             if (!IsStarted()) {
                 return;
             }
@@ -131,7 +132,7 @@
             Player.PlayerFeature.Create(commonSystems, sharedData);
             HitDetection.DetectHitFeature.Create(commonSystems, sharedData);
             Damage.DamageFeature.Create(commonSystems, sharedData);
-            HealthCare.HealthFeature.Create(commonSystems, sharedData);
+            HealthCare.HealthFeature.Create(ecsWorld, commonSystems, sharedData);
             PainFeature.PainFeature.Create(commonSystems, sharedData);
 
             // PlayerConfig playerConfig = sharedData.mainConfig.PlayerConfig;
