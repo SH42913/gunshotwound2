@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.Effects {
+﻿namespace GunshotWound2.Player {
     using GTA.Native;
 
     public static class CameraEffects {

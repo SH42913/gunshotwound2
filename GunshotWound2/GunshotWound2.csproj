@@ -80,7 +80,6 @@
     <Compile Include="Damage\Weapons\SmallCaliberDamage.cs" />
     <Compile Include="Damage\WoundedPedComponent.cs" />
     <Compile Include="Damage\WoundSystem.cs" />
-    <Compile Include="Effects\CameraEffects.cs" />
     <Compile Include="Effects\RagdollSystem.cs" />
     <Compile Include="HealthCare\BandageSystem.cs" />
     <Compile Include="HealthCare\Bleeding.cs" />
@@ -110,6 +109,7 @@
     <Compile Include="Peds\JustConvertedEvent.cs" />
     <Compile Include="Peds\PedEffects.cs" />
     <Compile Include="Peds\RagdollSystem.cs" />
+    <Compile Include="Player\CameraEffects.cs" />
     <Compile Include="Player\PlayerEffects.cs" />
     <Compile Include="Player\PlayerFeature.cs" />
     <Compile Include="Utils\InputListener.cs" />
