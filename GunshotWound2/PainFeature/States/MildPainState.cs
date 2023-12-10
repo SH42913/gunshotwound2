@@ -1,5 +1,4 @@
 ﻿namespace GunshotWound2.PainFeature.States {
-    using HitDetection;
     using Peds;
     using Scellecs.Morpeh;
 
@@ -7,21 +6,15 @@
         public float PainThreshold => 0.01f;
         public string Color => "~s~";
 
-        public void ApplyState(Entity pedEntity, ref ConvertedPed convertedPed) {
-            // ChangeMoveSet(pedEntity,
-            //               woundedPed.IsPlayer
-            //                       ? Config.Data.PlayerConfig.MildPainSets
-            //                       : Config.Data.NpcConfig.MildPainSets);
-            //
-            // if (!woundedPed.IsPlayer) {
-            //     return;
-            // }
-            //
-            // if (!woundedPed.Crits.Has(CritTypes.ARMS_DAMAGED)) {
-            //     EcsWorld.CreateEntityWith<AddCameraShakeEvent>().Length = CameraShakeLength.CLEAR;
-            // }
-            //
-            // EcsWorld.CreateEntityWith<ChangeSpecialAbilityEvent>().Lock = false;
+        public void ApplyPainIncreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) { }
+
+        public void ApplyPainDecreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) {
+            PedEffects.PlayFacialAnim(convertedPed.thisPed, "mood_happy_1", convertedPed.isMale);
+        }
+
+        public bool TryGetMoveSets(SharedData sharedData, bool isPlayer, out string[] moveSets) {
+            moveSets = isPlayer ? sharedData.mainConfig.PlayerConfig.MildPainSets : sharedData.mainConfig.NpcConfig.MildPainSets;
+            return true;
         }
     }
 }

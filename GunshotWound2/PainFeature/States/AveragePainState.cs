@@ -1,24 +1,28 @@
 ﻿namespace GunshotWound2.PainFeature.States {
-    using GTA;
     using Peds;
+    using Player;
+    using Scellecs.Morpeh;
 
     public sealed class AveragePainState : IPainState {
         public float PainThreshold => 0.3f;
         public string Color => "~y~";
 
-        public void ApplyState(Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
-            // SendPedToRagdoll(pedEntity, RagdollStates.WAKE_UP);
-            // ChangeMoveSet(pedEntity,
-            //               woundedPed.IsPlayer
-            //                       ? Config.Data.PlayerConfig.AvgPainSets
-            //                       : Config.Data.NpcConfig.AvgPainSets);
-            //
-            // if (!woundedPed.IsPlayer) {
-            //     return;
-            // }
-            //
-            // Game.Player.IgnoredByEveryone = false;
-            // EcsWorld.CreateEntityWith<ChangeSpecialAbilityEvent>().Lock = true;
+        public void ApplyPainIncreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) {
+            if (convertedPed.isPlayer) {
+                PlayerEffects.SetSpecialAbilityLock(true);
+            }
+        }
+
+        public void ApplyPainDecreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) {
+            if (convertedPed.isPlayer) {
+                PlayerEffects.SetSpecialAbilityLock(false);
+                PlayerEffects.SetSprint(true);
+            }
+        }
+
+        public bool TryGetMoveSets(SharedData sharedData, bool isPlayer, out string[] moveSets) {
+            moveSets = isPlayer ? sharedData.mainConfig.PlayerConfig.AvgPainSets : sharedData.mainConfig.NpcConfig.AvgPainSets;
+            return true;
         }
     }
 }

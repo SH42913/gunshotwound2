@@ -1,4 +1,5 @@
 ﻿namespace GunshotWound2.PainFeature.States {
+    using HealthCare;
     using Peds;
     using Scellecs.Morpeh;
 
@@ -6,13 +7,20 @@
         public float PainThreshold => 3f;
         public string Color => "~r~";
 
-        public void ApplyState(Entity pedEntity, ref ConvertedPed convertedPed) {
-            // if (woundedPed.IsPlayer) {
-            //     woundedPed.PedHealth = Config.Data.PlayerConfig.MinimalHealth - 1;
-            //     SendMessage(Locale.Data.PainShockDeath, NotifyLevels.EMERGENCY);
-            // } else {
-            //     woundedPed.PedHealth = -1;
-            // }
+        public void ApplyPainIncreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) {
+            ref Health health = ref pedEntity.GetComponent<Health>();
+            health.diff -= Configs.WoundConfig.ConvertHealthFromNative(convertedPed.thisPed.Health);
+
+            if (convertedPed.isPlayer) {
+                sharedData.notifier.emergency.AddMessage(sharedData.localeConfig.PainShockDeath);
+            }
+        }
+
+        public void ApplyPainDecreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) { }
+
+        public bool TryGetMoveSets(SharedData sharedData, bool isPlayer, out string[] moveSets) {
+            moveSets = default;
+            return false;
         }
     }
 }

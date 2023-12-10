@@ -5,6 +5,8 @@
     public interface IPainState {
         float PainThreshold { get; }
         string Color { get; }
-        void ApplyState(Entity pedEntity, ref ConvertedPed convertedPed);
+        void ApplyPainIncreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed);
+        void ApplyPainDecreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed);
+        bool TryGetMoveSets(SharedData sharedData, bool isPlayer, out string[] moveSets);
     }
 }

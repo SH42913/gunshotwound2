@@ -1,32 +1,40 @@
 ﻿namespace GunshotWound2.PainFeature.States {
-    using HitDetection;
     using Peds;
+    using Player;
     using Scellecs.Morpeh;
 
     public sealed class IntensePainState : IPainState {
         public float PainThreshold => 0.6f;
         public string Color => "~o~";
 
-        public void ApplyState(Entity pedEntity, ref ConvertedPed convertedPed) {
-            // ChangeMoveSet(pedEntity,
-            //               woundedPed.IsPlayer
-            //                       ? Config.Data.PlayerConfig.IntensePainSets
-            //                       : Config.Data.NpcConfig.IntensePainSets);
-            //
-            // PlayFacialAnim(woundedPed, "mood_injured_1");
-            //
+        public void ApplyPainIncreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) {
+            PedEffects.PlayFacialAnim(convertedPed.thisPed, "mood_injured_1", convertedPed.isMale);
+
             // if (woundedPed.Crits.Has(CritTypes.ARMS_DAMAGED)) {
             //     return;
             // }
-            //
-            // var pain = EcsWorld.GetComponent<PainComponent>(pedEntity);
-            // float backPercent = 1f - pain.CurrentPain / woundedPed.MaximalPain;
-            // if (woundedPed.IsPlayer) {
-            //     EcsWorld.CreateEntityWith<AddCameraShakeEvent>().Length = CameraShakeLength.PERMANENT;
-            //     EcsWorld.CreateEntityWith<ChangeSpecialAbilityEvent>().Lock = true;
-            // } else {
-            //     woundedPed.ThisPed.Accuracy = (int)(backPercent * woundedPed.DefaultAccuracy);
-            // }
+            
+            if (convertedPed.isPlayer) {
+                CameraEffects.ShakeCameraPermanent();
+            } else {
+                ref Pain pain = ref pedEntity.GetComponent<Pain>();
+                float backPercent = 1f - pain.amount / pain.max;
+                convertedPed.thisPed.Accuracy = (int)(backPercent * convertedPed.defaultAccuracy);
+            }
+        }
+
+        public void ApplyPainDecreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) {
+            if (convertedPed.isPlayer) {
+                CameraEffects.ClearCameraShake();
+                PlayerEffects.SetSprint(false);
+            } else {
+                convertedPed.thisPed.Accuracy = convertedPed.defaultAccuracy;
+            }
+        }
+
+        public bool TryGetMoveSets(SharedData sharedData, bool isPlayer, out string[] moveSets) {
+            moveSets = isPlayer ? sharedData.mainConfig.PlayerConfig.IntensePainSets : sharedData.mainConfig.NpcConfig.IntensePainSets;
+            return true;
         }
     }
 }

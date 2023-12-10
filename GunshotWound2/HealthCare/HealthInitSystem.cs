@@ -45,6 +45,8 @@
             }
         }
 
-        void IDisposable.Dispose() { }
+        public void Dispose() {
+            Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, Game.Player, 1f);
+        }
     }
 }

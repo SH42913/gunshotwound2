@@ -104,7 +104,6 @@
     <Compile Include="PainFeature\States\DeadlyPainState.cs" />
     <Compile Include="PainFeature\States\IntensePainState.cs" />
     <Compile Include="PainFeature\States\MildPainState.cs" />
-    <Compile Include="PainFeature\States\NoPainState.cs" />
     <Compile Include="PainFeature\States\UnbearablePainState.cs" />
     <Compile Include="Peds\JustConvertedEvent.cs" />
     <Compile Include="Peds\PedEffects.cs" />

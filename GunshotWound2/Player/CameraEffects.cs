@@ -2,12 +2,19 @@
     using GTA.Native;
 
     public static class CameraEffects {
+        private static bool PERMANENT_SHAKING; 
+        
         public static void ShakeCameraOnce() {
-            Function.Call(Hash.SET_CAM_DEATH_FAIL_EFFECT_STATE, 1);
+            if (!PERMANENT_SHAKING) {
+                Function.Call(Hash.SET_CAM_DEATH_FAIL_EFFECT_STATE, 1);
+            }
         }
 
         public static void ShakeCameraPermanent() {
-            Function.Call(Hash.SET_CAM_DEATH_FAIL_EFFECT_STATE, 2);
+            if (!PERMANENT_SHAKING) {
+                Function.Call(Hash.SET_CAM_DEATH_FAIL_EFFECT_STATE, 2);
+                PERMANENT_SHAKING = true;
+            }
         }
 
         public static void ClearCameraShake() {

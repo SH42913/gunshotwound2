@@ -6,11 +6,13 @@
     public struct ConvertedPed : IComponent {
         public string name;
         public Ped thisPed;
+        public bool isMale;
         public bool isPlayer;
         public int lastFrameHealth;
         public int lastFrameArmor;
         public (int time, RagdollType type) ragdollRequest;
         public bool ragdollReset;
+        public int defaultAccuracy;
 #if DEBUG
         public Blip customBlip;
 #endif

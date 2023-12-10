@@ -31,6 +31,8 @@
                 ref ConvertedPed convertedPed = ref entity.AddComponent<ConvertedPed>();
                 convertedPed.name = $"P{pedToConvert.Handle.ToString()}";
                 convertedPed.thisPed = pedToConvert;
+                convertedPed.isMale = pedToConvert.Gender == Gender.Male;
+                convertedPed.defaultAccuracy = pedToConvert.Accuracy;
                 worldService.AddConverted(pedToConvert, entity);
                 entity.AddComponent<JustConvertedEvent>();
 

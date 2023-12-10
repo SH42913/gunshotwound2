@@ -3,13 +3,13 @@
     using Configs;
     using HealthCare;
     using Peds;
+    using Player;
     using Scellecs.Morpeh;
     using States;
 
     public sealed class PainChangeSystem : ISystem {
         private readonly SharedData sharedData;
 
-        private readonly IPainState noPainState = new NoPainState();
         private readonly IPainState[] painStates = {
             new MildPainState(),
             new AveragePainState(),
@@ -42,7 +42,7 @@
             foreach (Entity entity in pedsWithPain) {
                 if (totallyHealedStash.Has(entity)) {
                     ResetPain(entity);
-                    return;
+                    continue;
                 }
 
                 ref ConvertedPed convertedPed = ref pedStash.Get(entity);
@@ -51,10 +51,15 @@
                     ApplyPain(ref convertedPed, ref pain);
                 } else if (pain.amount > 0f) {
                     pain.amount -= pain.recoveryRate * deltaTime;
+                } else {
+                    continue;
+                }
+
+                if (entity.Has<JustConvertedEvent>()) {
+                    pain.currentState = null;
                 }
 
                 RefreshPainState(entity, ref convertedPed, ref pain);
-                RefreshMoveRate(ref convertedPed, ref pain);
             }
         }
 
@@ -65,55 +70,67 @@
         }
 
         private void ApplyPain(ref ConvertedPed convertedPed, ref Pain pain) {
+            PlayPainEffects(ref convertedPed, ref pain);
+
             float diff = pain.diff;
             pain.amount += diff;
             pain.diff = 0f;
-
-            // var painAnimIndex = GunshotWound2.Random.Next(1, 6);
-            // PainChangeSystem.PlayFacialAnim(woundedPed, $"pain_{painAnimIndex.ToString()}");
-
-            WoundConfig woundConfig = sharedData.mainConfig.WoundConfig;
-            float painfulThreshold = woundConfig.PainfulWoundPercent * pain.max;
-            if (diff < painfulThreshold) {
-                return;
-            }
-
-            if (woundConfig.RagdollOnPainfulWound) {
-                // _ecsWorld.CreateEntityWith(out SetPedToRagdollEvent ragdoll);
-                // ragdoll.Entity = pedEntity;
-                // ragdoll.RagdollState = RagdollStates.SHORT;
-            }
-
-            if (convertedPed.isPlayer) {
-                // _ecsWorld.CreateEntityWith<AddCameraShakeEvent>().Length = CameraShakeLength.ONE_TIME;
-                // _ecsWorld.CreateEntityWith<AddFlashEvent>();
-            }
         }
 
         private void RefreshPainState(Entity entity, ref ConvertedPed convertedPed, ref Pain pain) {
             float painPercent = pain.amount / pain.max;
-            IPainState newState = null;
 
-            foreach (IPainState painState in painStates) {
+            int newStateIndex = -1;
+            int curStateIndex = -1;
+            for (var i = 0; i < painStates.Length; i++) {
+                IPainState painState = painStates[i];
+                if (pain.currentState == painState) {
+                    curStateIndex = i;
+                }
+
                 if (painPercent >= painState.PainThreshold) {
-                    newState = painState;
+                    newStateIndex = i;
                 }
             }
 
-            if (newState == pain.currentState) {
-                return;
-            }
+            if (curStateIndex != newStateIndex) {
 #if DEBUG
-            string currentName = pain.currentState?.GetType().Name ?? "NO PAIN";
-            string newName = newState?.GetType().Name ?? "NO PAIN";
-            sharedData.logger.WriteInfo($"Changed pain state: {currentName} => {newName}");
+                string currentName = curStateIndex >= 0 ? painStates[curStateIndex].GetType().Name : "NO PAIN";
+                string newName = newStateIndex >= 0 ? painStates[newStateIndex].GetType().Name : "NO PAIN";
+                sharedData.logger.WriteInfo($"Changed pain state: {currentName} => {newName}");
 #endif
-            pain.currentState = newState;
 
-            if (pain.currentState != null) {
-                pain.currentState.ApplyState(entity, ref convertedPed);
+                //TODO Localize
+                int direction = Math.Sign(newStateIndex - curStateIndex);
+                if (convertedPed.isPlayer) {
+                    sharedData.notifier.info.AddMessage(direction > 0 ? "~o~You feel yourself worst" : "~g~You feel yourself better");
+                }
+
+                IPainState curState = null;
+                while (curStateIndex != newStateIndex) {
+                    IPainState prevState = curStateIndex >= 0 ? painStates[curStateIndex] : null;
+                    curStateIndex += direction;
+                    curState = curStateIndex >= 0 ? painStates[curStateIndex] : null;
+
+                    if (direction > 0) {
+                        curState?.ApplyPainIncreased(sharedData, entity, ref convertedPed);
+                    } else {
+                        prevState?.ApplyPainDecreased(sharedData, entity, ref convertedPed);
+                    }
+                }
+
+                pain.currentState = curState;
+                RefreshMoveSet(ref convertedPed, curState);
+            }
+
+            RefreshMoveRate(ref convertedPed, ref pain);
+        }
+
+        private void RefreshMoveSet(ref ConvertedPed convertedPed, IPainState state) {
+            if (state != null && state.TryGetMoveSets(sharedData, convertedPed.isPlayer, out string[] moveSets)) {
+                PedEffects.ChangeMoveSetRandom(convertedPed.thisPed, moveSets, sharedData.random);
             } else {
-                noPainState.ApplyState(entity, ref convertedPed);
+                PedEffects.ResetMoveSet(convertedPed.thisPed);
             }
         }
 
@@ -121,12 +138,19 @@
             // if (woundedPed.Crits.Has(CritTypes.LEGS_DAMAGED))
             //     continue;
 
-            // float backPercent = painPercent > 1
-            //         ? 0
-            //         : 1 - painPercent;
-            // float adjustable = 1f - _config.Data.WoundConfig.MoveRateOnFullPain;
-            // float moveRate = 1f - adjustable * backPercent;
-            // Function.Call(Hash.SET_PED_MOVE_RATE_OVERRIDE, woundedPed.ThisPed, moveRate);
+            if (pain.amount <= 0f) {
+                return;
+            }
+
+            float painPercent = pain.amount / pain.max;
+            if (painPercent >= 1f) {
+                PedEffects.OverrideMoveRate(convertedPed.thisPed, sharedData.mainConfig.WoundConfig.MoveRateOnFullPain);
+                return;
+            }
+
+            float adjustable = 1f - sharedData.mainConfig.WoundConfig.MoveRateOnFullPain;
+            float moveRate = 1f - adjustable * painPercent;
+            PedEffects.OverrideMoveRate(convertedPed.thisPed, moveRate);
         }
 
         private void ResetPain(Entity entity) {
@@ -134,15 +158,29 @@
             pain.amount = 0f;
             pain.diff = 0f;
 
-            noPainState.ApplyState(entity, ref pedStash.Get(entity));
+            RefreshPainState(entity, ref pedStash.Get(entity), ref pain);
         }
 
-        // protected void ChangeMoveSet(int pedEntity, string[] moveSets) {
-        //     EcsWorld.CreateEntityWith(out SwitchMoveSetRequest request);
-        //     request.Entity = pedEntity;
-        //     request.AnimationName = moveSets != null && moveSets.Length > 0
-        //             ? moveSets[GunshotWound2.Random.Next(0, moveSets.Length)]
-        //             : null;
-        // }
+        private void PlayPainEffects(ref ConvertedPed convertedPed, ref Pain pain) {
+            int painAnimIndex = sharedData.random.Next(1, 7);
+            PedEffects.PlayFacialAnim(convertedPed.thisPed, $"pain_{painAnimIndex.ToString()}", convertedPed.isMale);
+
+            WoundConfig woundConfig = sharedData.mainConfig.WoundConfig;
+            float painfulThreshold = woundConfig.PainfulWoundPercent * pain.max;
+            if (pain.diff >= painfulThreshold) {
+#if DEBUG
+                sharedData.logger.WriteInfo($"Painful wound {pain.diff.ToString("F")} at {convertedPed.name}");
+#endif
+
+                if (woundConfig.RagdollOnPainfulWound) {
+                    convertedPed.RequestRagdoll(timeInMs: 1000, GTA.RagdollType.Balance);
+                }
+
+                if (convertedPed.isPlayer) {
+                    CameraEffects.ShakeCameraOnce();
+                    CameraEffects.FlashCameraOnce();
+                }
+            }
+        }
     }
 }
