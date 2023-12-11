@@ -91,6 +91,7 @@
 
             string message = string.Format(sharedData.localeConfig.BandageSuccess, bleeding.name);
             sharedData.notifier.info.AddMessage($"~g~{message}");
+            convertedPed.thisPed.PlayAmbientSpeech("FIGHT_RUN");
         }
 
         private static bool CheckPedIsStandStill(Ped thisPed) {

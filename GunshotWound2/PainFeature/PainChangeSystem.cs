@@ -172,6 +172,7 @@
                 sharedData.logger.WriteInfo($"Painful wound {pain.diff.ToString("F")} at {convertedPed.name}");
 #endif
 
+                convertedPed.thisPed.PlayAmbientSpeech("GUN_BEG");
                 if (woundConfig.RagdollOnPainfulWound) {
                     convertedPed.RequestRagdoll(timeInMs: 1000, GTA.RagdollType.Balance);
                 }
