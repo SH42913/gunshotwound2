@@ -62,7 +62,7 @@ namespace GunshotWound2.Configs
                 MinShootRate = 10,
                 MaxShootRate = 50,
                 Targets = GswTargets.ALL,
-                ScanOnlyDamaged = false
+                ScanOnlyDamaged = false,
             };
         }
 

@@ -10,6 +10,7 @@
 //
 // namespace GunshotWound2.Effects
 // {
+// TODO Check anything from here
 //     [EcsInject]
 //     public sealed class InstantHealSystem : IEcsRunSystem
 //     {

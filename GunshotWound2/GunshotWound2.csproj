@@ -65,6 +65,7 @@
     <Compile Include="Crits\LegsCriticalSystem.cs" />
     <Compile Include="Crits\LungsCriticalSystem.cs" />
     <Compile Include="Crits\NervesCriticalSystem.cs" />
+    <Compile Include="Crits\RagdollSystem.cs" />
     <Compile Include="Crits\StomachCriticalSystem.cs" />
     <Compile Include="Damage\DamageFeature.cs" />
     <Compile Include="Damage\WoundData.cs" />
@@ -80,7 +81,6 @@
     <Compile Include="Damage\Weapons\SmallCaliberDamage.cs" />
     <Compile Include="Damage\WoundedPedComponent.cs" />
     <Compile Include="Damage\WoundSystem.cs" />
-    <Compile Include="Effects\RagdollSystem.cs" />
     <Compile Include="HealthCare\BandageSystem.cs" />
     <Compile Include="HealthCare\Bleeding.cs" />
     <Compile Include="HealthCare\BleedingSystem.cs" />
@@ -123,7 +123,6 @@
     <Compile Include="SharedData.cs" />
     <Compile Include="Utils\EcsExtensions.cs" />
     <Compile Include="Utils\Loggers.cs" />
-    <Compile Include="Utils\TargetEntity.cs" />
     <Compile Include="Utils\XElementExtensions.cs" />
     <Compile Include="Peds\ConvertPedSystem.cs" />
     <Compile Include="Peds\NpcDetectSystem.cs" />

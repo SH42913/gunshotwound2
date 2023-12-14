@@ -40,14 +40,6 @@ namespace GunshotWound2.Configs
         public string LacerationWoundOn;
         public string StabWoundOn;
 
-        public string BodyBlown;
-        public string HeadBlown;
-        public string NeckBlown;
-        public string ChestBlown;
-        public string LowerBodyBlown;
-        public string ArmBlown;
-        public string LegBlown;
-
         public string Blackout;
         public string BleedingInHead;
         public string TraumaticBrainInjury;
@@ -165,14 +157,6 @@ namespace GunshotWound2.Configs
             config.IncisionWoundOn = "Incision wound on";
             config.LacerationWoundOn = "Laceration wound on";
             config.StabWoundOn = "Stab wound on";
-
-            config.BodyBlown = "Body blown";
-            config.HeadBlown = "Head blown";
-            config.NeckBlown = "Neck blown";
-            config.ChestBlown = "Chest blown";
-            config.LowerBodyBlown = "Lower body blown";
-            config.ArmBlown = "Arm blown";
-            config.LegBlown = "Leg blown";
 
             config.Blackout = "Blackout possible";
             config.BleedingInHead = "Intracranial bleeding";
@@ -321,14 +305,6 @@ namespace GunshotWound2.Configs
             config.IncisionWoundOn = manager.GetWord("IncisionWoundOn");
             config.LacerationWoundOn = manager.GetWord("LacerationWoundOn");
             config.StabWoundOn = manager.GetWord("StabWoundOn");
-
-            config.BodyBlown = manager.GetWord("BodyBlown");
-            config.HeadBlown = manager.GetWord("HeadBlown");
-            config.NeckBlown = manager.GetWord("NeckBlown");
-            config.ChestBlown = manager.GetWord("ChestBlown");
-            config.LowerBodyBlown = manager.GetWord("LowerBodyBlown");
-            config.ArmBlown = manager.GetWord("ArmBlown");
-            config.LegBlown = manager.GetWord("LegBlown");
 
             config.Blackout = manager.GetWord("Blackout");
             config.BleedingInHead = manager.GetWord("BleedingInHead");

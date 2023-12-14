@@ -26,7 +26,7 @@
             NpcConfig npcConfig = sharedData.mainConfig.NpcConfig;
             foreach (Scellecs.Morpeh.Entity entity in justConvertedPeds) {
                 ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
-                convertedPed.thisPed.CanSufferCriticalHits = true;
+                convertedPed.thisPed.CanSufferCriticalHits = false;
                 convertedPed.thisPed.DiesOnLowHealth = false;
                 convertedPed.thisPed.CanWrithe = false;
 

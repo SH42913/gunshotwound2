@@ -41,7 +41,6 @@ namespace GunshotWound2.Configs
         public uint[] HeavyImpactHashes;
         public uint[] ShotgunHashes;
         public uint[] CuttingHashes;
-        public uint[] ExplosiveHashes;
 
         public void ApplyTo(Notifier notifier) {
             notifier.info.show = CommonMessages;
@@ -276,27 +275,27 @@ namespace GunshotWound2.Configs
 
                 var damageString = element.Attribute("DamageMult");
                 multipliers[0] = damageString != null
-                    ? (float?) float.Parse(damageString.Value, CultureInfo.InvariantCulture)
+                    ? float.Parse(damageString.Value, CultureInfo.InvariantCulture)
                     : null;
 
                 var bleedingString = element.Attribute("BleedingMult");
                 multipliers[1] = bleedingString != null
-                    ? (float?) float.Parse(bleedingString.Value, CultureInfo.InvariantCulture)
+                    ? float.Parse(bleedingString.Value, CultureInfo.InvariantCulture)
                     : null;
 
                 var painString = element.Attribute("PainMult");
                 multipliers[2] = painString != null
-                    ? (float?) float.Parse(painString.Value, CultureInfo.InvariantCulture)
+                    ? float.Parse(painString.Value, CultureInfo.InvariantCulture)
                     : null;
 
                 var critString = element.Attribute("CritChance");
                 multipliers[3] = critString != null
-                    ? (float?) float.Parse(critString.Value, CultureInfo.InvariantCulture)
+                    ? float.Parse(critString.Value, CultureInfo.InvariantCulture)
                     : null;
 
                 var armorString = element.Attribute("ArmorDamage");
                 multipliers[4] = armorString != null
-                    ? (float?) float.Parse(armorString.Value, CultureInfo.InvariantCulture)
+                    ? float.Parse(armorString.Value, CultureInfo.InvariantCulture)
                     : null;
 
                 dictionary.Add(element.Name.LocalName, multipliers);
@@ -309,7 +308,6 @@ namespace GunshotWound2.Configs
             config.HeavyImpactHashes = GetWeaponHashes("HeavyImpact");
             config.ShotgunHashes = GetWeaponHashes("Shotgun");
             config.CuttingHashes = GetWeaponHashes("Cutting");
-            config.ExplosiveHashes = GetWeaponHashes("Explosive");
             config.WoundConfig.DamageSystemConfigs = dictionary;
 
             uint[] GetWeaponHashes(string weaponName)

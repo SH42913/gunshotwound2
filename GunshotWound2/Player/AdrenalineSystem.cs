@@ -6,6 +6,7 @@
 //
 // namespace GunshotWound2.Player
 // {
+// TODO Restore this
 //     [EcsInject]
 //     public sealed class AdrenalineSystem : IEcsRunSystem
 //     {
