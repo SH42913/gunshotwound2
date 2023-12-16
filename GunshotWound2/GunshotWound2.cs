@@ -60,12 +60,6 @@
             if (isStarted && !isPaused) {
                 sharedData.inputListener.ConsumeKeyUp(eventArgs.KeyCode);
             }
-
-            // TODO
-            // if (keyCode == mainConfig.HelmetKey) {
-            //     ecsWorld.NewEntity().Get<AddHelmetToPlayerEvent>();
-            //     return;
-            // }
         }
 
         private void TogglePause() {
@@ -128,39 +122,12 @@
         }
 
         private void RegisterSystems() {
-            Peds.PedsFeature.Create(commonSystems, sharedData);
-            Player.PlayerFeature.Create(commonSystems, sharedData);
+            PedsFeature.PedsFeature.Create(commonSystems, sharedData);
+            PlayerFeature.PlayerFeature.Create(commonSystems, sharedData);
             HitDetection.DetectHitFeature.Create(commonSystems, sharedData);
-            Damage.DamageFeature.Create(commonSystems, sharedData);
-            HealthCare.HealthFeature.Create(ecsWorld, commonSystems, sharedData);
+            WoundFeature.WoundFeature.Create(commonSystems, sharedData);
+            HealthFeature.HealthFeature.Create(ecsWorld, commonSystems, sharedData);
             PainFeature.PainFeature.Create(commonSystems, sharedData);
-
-            // PlayerConfig playerConfig = sharedData.mainConfig.PlayerConfig;
-            // if (playerConfig.WoundedPlayerEnabled) {
-            //     everyFrameSystems.Add(new PlayerSystem()).Add(new SpecialAbilityLockSystem());
-            //
-            //     if (playerConfig.MaximalSlowMo < 1f) {
-            //         everyFrameSystems.Add(new AdrenalineSystem());
-            //     }
-            // }
-            //
-            // everyFrameSystems.Add(new InstantHealSystem()).Add(new HelmetRequestSystem()).Add(new RagdollSystem())
-            //                  .Add(new MoveSetSwitchSystem()).Add(new DebugInfoSystem()).Add(new CameraShakeSystem())
-            //                  .Add(new FlashSystem()).Add(new PainRecoverySystem()).Add(new BleedingSystem())
-            //                  .Add(new BandageSystem()).Add(new SelfHealingSystem());
-            //
-            // commonSystems.Add(new ArmorSystem()).Add(new HitDetectSystem()).Add(new BaseWeaponHitSystem())
-            //              .Add(new BodyHitSystem()).Add(new HitCleanSystem()).Add(new SmallCaliberDamageSystem())
-            //              .Add(new ShotgunDamageSystem()).Add(new LightImpactDamageSystem())
-            //              .Add(new HeavyImpactDamageSystem()).Add(new MediumCaliberDamageSystem())
-            //              .Add(new HighCaliberDamageSystem()).Add(new CuttingDamageSystem())
-            //              .Add(new ExplosionDamageSystem()).Add(new WoundSystem()).Add(new HeartCriticalSystem())
-            //              .Add(new LungsCriticalSystem()).Add(new NervesCriticalSystem()).Add(new ArmsCriticalSystem())
-            //              .Add(new LegsCriticalSystem()).Add(new GutsCriticalSystem()).Add(new StomachCriticalSystem())
-            //              .Add(new IncreasePainSystem()).Add(new NoPainStateSystem()).Add(new MildPainStateSystem())
-            //              .Add(new AveragePainStateSystem()).Add(new IntensePainStateSystem())
-            //              .Add(new UnbearablePainStateSystem()).Add(new DeadlyPainStateSystem()).Add(new CheckSystem())
-            //              .Add(new NotificationSystem());
         }
         #endregion
 

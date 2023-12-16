@@ -11,6 +11,9 @@ namespace GunshotWound2.Configs
 {
     public sealed class MainConfig
     {
+        public const float MINIMAL_RANGE_FOR_WOUNDED_PEDS = 0;
+        public const float ADDING_TO_REMOVING_MULTIPLIER = 2;
+
         private const string ScriptConfigPath = "scripts/GSW2Config.xml";
         private const string GswConfigPath = "scripts/GSW2/GSW2Config.xml";
         private static readonly char[] Separator = {';'};
@@ -173,7 +176,7 @@ namespace GunshotWound2.Configs
             if (node == null) return;
 
             config.NpcConfig.AddingPedRange = node.Element("GSWScanRange").GetFloat();
-            config.NpcConfig.RemovePedRange = config.NpcConfig.AddingPedRange * Peds.PedsFeature.ADDING_TO_REMOVING_MULTIPLIER;
+            config.NpcConfig.RemovePedRange = config.NpcConfig.AddingPedRange * ADDING_TO_REMOVING_MULTIPLIER;
 
             config.NpcConfig.ShowEnemyCriticalMessages = node.Element("CriticalMessages").GetBool();
             config.NpcConfig.ScanOnlyDamaged = node.Element("ScanOnlyDamaged").GetBool();

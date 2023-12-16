@@ -1,5 +1,5 @@
 ﻿namespace GunshotWound2.PainFeature.States {
-    using Peds;
+    using PedsFeature;
     using Scellecs.Morpeh;
 
     public interface IPainState {

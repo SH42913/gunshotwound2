@@ -2,7 +2,7 @@
     using System;
     using GTA;
     using GTA.Native;
-    using Peds;
+    using PedsFeature;
     using Scellecs.Morpeh;
 
     public sealed class BodyHitSystem : ISystem {

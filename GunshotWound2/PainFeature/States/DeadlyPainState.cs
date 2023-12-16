@@ -1,6 +1,6 @@
 ﻿namespace GunshotWound2.PainFeature.States {
-    using HealthCare;
-    using Peds;
+    using HealthFeature;
+    using PedsFeature;
     using Scellecs.Morpeh;
 
     public sealed class DeadlyPainState : IPainState {

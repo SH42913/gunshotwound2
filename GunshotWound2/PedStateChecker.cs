@@ -2,9 +2,9 @@
     using System;
     using System.Text;
     using Configs;
-    using HealthCare;
+    using HealthFeature;
     using PainFeature;
-    using Peds;
+    using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
 
@@ -89,7 +89,7 @@
                 return;
             }
 
-            float painPercent = pain.amount / pain.max;
+            float painPercent = pain.Percent();
             STRING_BUILDER.Clear();
             STRING_BUILDER.Append(sharedData.localeConfig.Pain);
             STRING_BUILDER.Append(": ");

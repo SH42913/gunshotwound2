@@ -1,9 +1,9 @@
 ﻿namespace GunshotWound2.PainFeature {
     using System;
     using Configs;
-    using HealthCare;
-    using Peds;
-    using Player;
+    using HealthFeature;
+    using PedsFeature;
+    using PlayerFeature;
     using Scellecs.Morpeh;
     using States;
 
@@ -49,7 +49,7 @@
                 ref Pain pain = ref painStash.Get(entity);
                 if (pain.diff > 0f) {
                     ApplyPain(ref convertedPed, ref pain);
-                } else if (pain.amount > 0f) {
+                } else if (pain.HasPain()) {
                     pain.amount -= pain.recoveryRate * deltaTime;
                 } else {
                     continue;
@@ -78,7 +78,7 @@
         }
 
         private void RefreshPainState(Entity entity, ref ConvertedPed convertedPed, ref Pain pain) {
-            float painPercent = pain.amount / pain.max;
+            float painPercent = pain.Percent();
 
             int newStateIndex = -1;
             int curStateIndex = -1;
@@ -138,11 +138,11 @@
             // if (woundedPed.Crits.Has(CritTypes.LEGS_DAMAGED))
             //     continue;
 
-            if (pain.amount <= 0f) {
+            if (!pain.HasPain()) {
                 return;
             }
 
-            float painPercent = pain.amount / pain.max;
+            float painPercent = pain.Percent();
             if (painPercent >= 1f) {
                 PedEffects.OverrideMoveRate(convertedPed.thisPed, sharedData.mainConfig.WoundConfig.MoveRateOnFullPain);
                 return;

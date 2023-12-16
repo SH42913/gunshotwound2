@@ -1,7 +1,7 @@
 ﻿namespace GunshotWound2.HitDetection {
     using System;
     using GTA;
-    using Peds;
+    using PedsFeature;
     using Scellecs.Morpeh;
 
     public sealed class HitDetectSystem : ISystem {

@@ -1,6 +1,6 @@
 ﻿namespace GunshotWound2.PainFeature.States {
-    using Peds;
-    using Player;
+    using PedsFeature;
+    using PlayerFeature;
     using Scellecs.Morpeh;
 
     public sealed class AveragePainState : IPainState {

@@ -1,7 +1,7 @@
 ﻿namespace GunshotWound2.PainFeature {
     using System;
     using Configs;
-    using Peds;
+    using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
 

@@ -1,6 +1,6 @@
 ﻿namespace GunshotWound2.PainFeature.States {
-    using Peds;
-    using Player;
+    using PedsFeature;
+    using PlayerFeature;
     using Scellecs.Morpeh;
 
     public sealed class IntensePainState : IPainState {
@@ -18,7 +18,7 @@
                 CameraEffects.ShakeCameraPermanent();
             } else {
                 ref Pain pain = ref pedEntity.GetComponent<Pain>();
-                float backPercent = 1f - pain.amount / pain.max;
+                float backPercent = 1f - pain.Percent();
                 convertedPed.thisPed.Accuracy = (int)(backPercent * convertedPed.defaultAccuracy);
             }
         }

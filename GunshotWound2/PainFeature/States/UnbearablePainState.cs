@@ -1,7 +1,7 @@
 ﻿namespace GunshotWound2.PainFeature.States {
     using GTA;
-    using Peds;
-    using Player;
+    using PedsFeature;
+    using PlayerFeature;
     using Utils;
 
     public sealed class UnbearablePainState : IPainState {

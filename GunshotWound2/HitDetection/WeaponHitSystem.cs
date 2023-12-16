@@ -4,7 +4,7 @@
     using Configs;
     using GTA;
     using GTA.Native;
-    using Peds;
+    using PedsFeature;
     using Scellecs.Morpeh;
 
     public sealed class WeaponHitSystem : ISystem {
