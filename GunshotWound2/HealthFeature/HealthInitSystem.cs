@@ -31,7 +31,9 @@
 
                 ref Health health = ref entity.AddOrGetComponent<Health>();
                 health.max = convertedPed.thisPed.MaxHealth - 1;
-                convertedPed.thisPed.Health = health.max;
+                if (convertedPed.thisPed.Health > health.max) {
+                    convertedPed.thisPed.Health = health.max;
+                }
 
                 if (convertedPed.isPlayer) {
                     health.bleedingHealRate = playerConfig.BleedHealingSpeed;
