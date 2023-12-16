@@ -97,7 +97,7 @@
 #if DEBUG
                 string currentName = curStateIndex >= 0 ? painStates[curStateIndex].GetType().Name : "NO PAIN";
                 string newName = newStateIndex >= 0 ? painStates[newStateIndex].GetType().Name : "NO PAIN";
-                sharedData.logger.WriteInfo($"Changed pain state: {currentName} => {newName}");
+                sharedData.logger.WriteInfo($"Changed pain state of {convertedPed.name}: {currentName} => {newName}");
 #endif
 
                 //TODO Localize

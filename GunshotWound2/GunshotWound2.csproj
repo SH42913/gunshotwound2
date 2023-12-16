@@ -108,6 +108,7 @@
     <Compile Include="Peds\JustConvertedEvent.cs" />
     <Compile Include="Peds\PedEffects.cs" />
     <Compile Include="Peds\RagdollSystem.cs" />
+    <Compile Include="Player\AdrenalineSystem.cs" />
     <Compile Include="Player\CameraEffects.cs" />
     <Compile Include="Player\PlayerEffects.cs" />
     <Compile Include="Player\PlayerFeature.cs" />
@@ -128,7 +129,6 @@
     <Compile Include="Peds\NpcDetectSystem.cs" />
     <Compile Include="Peds\ConvertedPed.cs" />
     <Compile Include="Peds\RemoveConvertedPedSystem.cs" />
-    <Compile Include="Player\AdrenalineSystem.cs" />
     <Compile Include="Player\PlayerDetectSystem.cs" />
     <Compile Include="Utils\LocalizationManager.cs" />
     <Compile Include="Utils\RandomExtensions.cs" />
