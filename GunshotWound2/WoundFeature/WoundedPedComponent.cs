@@ -1,17 +1,4 @@
 ﻿namespace GunshotWound2.WoundFeature {
-    using System;
-
-    [Flags]
-    public enum CritTypes {
-        LEGS_DAMAGED = 1 << 0,
-        ARMS_DAMAGED = 1 << 1,
-        NERVES_DAMAGED = 1 << 2,
-        GUTS_DAMAGED = 1 << 3,
-        STOMACH_DAMAGED = 1 << 4,
-        LUNGS_DAMAGED = 1 << 5,
-        HEART_DAMAGED = 1 << 6,
-    }
-
     // TODO Check everything from here
     // public struct WoundedPedComponent : IComponent {
     //     private const int HealthOffset = 100;
@@ -108,10 +95,4 @@
     //         return woundedPed;
     //     }
     // }
-
-    public static class CritTypesExtension {
-        public static bool Has(this CritTypes category, CritTypes value) {
-            return (category & value) == value;
-        }
-    }
 }

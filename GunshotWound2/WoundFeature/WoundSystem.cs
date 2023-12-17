@@ -2,6 +2,7 @@
     using System;
     using System.Collections.Generic;
     using Configs;
+    using CritsFeature;
     using HealthFeature;
     using HitDetection;
     using PainFeature;
@@ -68,7 +69,7 @@
             CreateDamage(pedEntity, woundData.Damage, ref hitData);
             CreateBleeding(pedEntity, woundData.BleedSeverity, woundData.Name);
             CreatePain(pedEntity, woundData.Pain);
-            CreateCrit(pedEntity, woundData.HasCrits);
+            CreateCrit(pedEntity, ref hitData, woundData.HasCrits);
 
             if (woundData.ArterySevered) {
                 CreateBleeding(pedEntity, WoundConfig.MAX_SEVERITY_FOR_BANDAGE, sharedData.localeConfig.SeveredArtery);
@@ -111,31 +112,10 @@
             pain.diff += CalculateAmount(painAmount, deviation, mult);
         }
 
-        private void CreateCrit(Entity pedEntity, bool hasCrits) {
-            // switch (crit) {
-            //     case CritTypes.LEGS_DAMAGED:
-            //         _ecsWorld.CreateEntityWith<LegsCriticalWoundEvent>().Entity = pedEntity;
-            //         break;
-            //     case CritTypes.ARMS_DAMAGED:
-            //         _ecsWorld.CreateEntityWith<ArmsCriticalWoundEvent>().Entity = pedEntity;
-            //         break;
-            //     case CritTypes.NERVES_DAMAGED:
-            //         _ecsWorld.CreateEntityWith<NervesCriticalWoundEvent>().Entity = pedEntity;
-            //         break;
-            //     case CritTypes.GUTS_DAMAGED:
-            //         _ecsWorld.CreateEntityWith<GutsCriticalWoundEvent>().Entity = pedEntity;
-            //         break;
-            //     case CritTypes.STOMACH_DAMAGED:
-            //         _ecsWorld.CreateEntityWith<StomachCriticalWoundEvent>().Entity = pedEntity;
-            //         break;
-            //     case CritTypes.LUNGS_DAMAGED:
-            //         _ecsWorld.CreateEntityWith<LungsCriticalWoundEvent>().Entity = pedEntity;
-            //         break;
-            //     case CritTypes.HEART_DAMAGED:
-            //         _ecsWorld.CreateEntityWith<HeartCriticalWoundEvent>().Entity = pedEntity;
-            //         break;
-            //     default: throw new ArgumentOutOfRangeException();
-            // }
+        private static void CreateCrit(Entity pedEntity, ref PedHitData pedHitData, bool hasCrits) {
+            if (hasCrits) {
+                pedEntity.AddOrGetComponent<Crits>().requestBodyPart = pedHitData.bodyPart;
+            }
         }
 
         private void SendWoundInfo(in WoundData woundData) {
