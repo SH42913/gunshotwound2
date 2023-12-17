@@ -8,4 +8,13 @@
         public bool canBeBandaged;
         public bool isProcessed;
     }
+
+    public static class BleedingExtensions {
+        public static void CreateBleeding(this Entity target, float severity, string name) {
+            ref Bleeding bleeding = ref target.world.CreateEntity().AddComponent<Bleeding>();
+            bleeding.target = target;
+            bleeding.severity = severity;
+            bleeding.name = name;
+        }
+    }
 }

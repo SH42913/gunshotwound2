@@ -12,7 +12,7 @@ namespace Scellecs.Morpeh {
     [Il2CppSetOption(Option.DivideByZeroChecks, false)]
     public sealed class Entity {
         [NonSerialized]
-        internal World world;
+        public World world;
 
         [SerializeField]
         internal int worldID;

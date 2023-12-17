@@ -100,11 +100,7 @@
             float deviation = sharedData.mainConfig.WoundConfig.BleedingDeviation;
             float mult = sharedData.mainConfig.WoundConfig.BleedingMultiplier;
             severity = CalculateAmount(severity, deviation, mult);
-
-            ref Bleeding bleeding = ref World.CreateEntity().AddComponent<Bleeding>();
-            bleeding.target = pedEntity;
-            bleeding.severity = severity;
-            bleeding.name = name;
+            pedEntity.CreateBleeding(severity, name);
         }
 
         private void CreatePain(Entity pedEntity, float painAmount) {
