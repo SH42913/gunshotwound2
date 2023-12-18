@@ -174,7 +174,7 @@
 
                 convertedPed.thisPed.PlayAmbientSpeech("GUN_BEG");
                 if (woundConfig.RagdollOnPainfulWound) {
-                    convertedPed.RequestRagdoll(timeInMs: 1000, GTA.RagdollType.Balance);
+                    convertedPed.RequestRagdoll(timeInMs: 3000, GTA.RagdollType.Balance);
                 }
 
                 if (convertedPed.isPlayer) {

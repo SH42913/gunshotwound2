@@ -99,5 +99,15 @@
 
             Function.Call(Hash.PLAY_FACIAL_ANIM, ped, animation, animDict);
         }
+
+        /// <summary>
+        /// Works for both player and peds, but some flags don't seem to work for the player (1, for example)  
+        /// 1 - Blocks ragdolling when shot.  
+        /// 2 - Blocks ragdolling when hit by a vehicle. The ped still might play a falling animation.  
+        /// 4 - Blocks ragdolling when set on fire.
+        /// </summary>
+        public static void SetRagdollBlockingFlags(Ped ped, int flag) {
+            Function.Call(Hash.SET_RAGDOLL_BLOCKING_FLAGS, ped, flag);
+        }
     }
 }
