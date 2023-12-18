@@ -14,8 +14,11 @@
         public (int time, RagdollType type) ragdollRequest;
         public int[] nmMessages; //TODO Replace with GTA.NaturalMotion.Message
         public bool ragdollReset;
-        
+
         public int defaultAccuracy;
+        public bool hasHandsTremor;
+        public bool hasBrokenLegs;
+        public bool hasSpineDamage;
 #if DEBUG
         public Blip customBlip;
 #endif
@@ -23,15 +26,19 @@
 
     public static class ConvertedPedExtensions {
         public static void RequestRagdoll(this ref ConvertedPed convertedPed, int timeInMs, RagdollType type = RagdollType.Relax) {
-            convertedPed.ragdollRequest = (timeInMs, type);
+            if (!convertedPed.hasSpineDamage) {
+                convertedPed.ragdollRequest = (timeInMs, type);
+            }
         }
 
         public static void RequestPermanentRagdoll(this ref ConvertedPed convertedPed, RagdollType type = RagdollType.Relax) {
-            convertedPed.ragdollRequest = (-1, type);
+            convertedPed.RequestRagdoll(-1, type);
         }
 
         public static void ResetRagdoll(this ref ConvertedPed convertedPed) {
-            convertedPed.ragdollReset = true;
+            if (!convertedPed.hasSpineDamage) {
+                convertedPed.ragdollReset = true;
+            }
         }
 
         public static bool IsUsingPhone(this in ConvertedPed convertedPed) {

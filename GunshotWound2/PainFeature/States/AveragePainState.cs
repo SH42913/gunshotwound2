@@ -16,7 +16,10 @@
         public void ApplyPainDecreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) {
             if (convertedPed.isPlayer) {
                 PlayerEffects.SetSpecialAbilityLock(false);
-                PlayerEffects.SetSprint(true);
+
+                if (!convertedPed.hasBrokenLegs) {
+                    PlayerEffects.SetSprint(true);
+                }
             }
         }
 

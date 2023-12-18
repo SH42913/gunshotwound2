@@ -138,7 +138,7 @@
             // if (woundedPed.Crits.Has(CritTypes.LEGS_DAMAGED))
             //     continue;
 
-            if (!pain.HasPain()) {
+            if (!pain.HasPain() || convertedPed.hasBrokenLegs) {
                 return;
             }
 
@@ -162,6 +162,10 @@
         }
 
         private void PlayPainEffects(ref ConvertedPed convertedPed, ref Pain pain) {
+            if (convertedPed.hasSpineDamage) {
+                return;
+            }
+            
             int painAnimIndex = sharedData.random.Next(1, 7);
             PedEffects.PlayFacialAnim(convertedPed.thisPed, $"pain_{painAnimIndex.ToString()}", convertedPed.isMale);
 

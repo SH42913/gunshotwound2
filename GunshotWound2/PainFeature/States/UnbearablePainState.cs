@@ -38,10 +38,9 @@
                 convertedPed.thisPed.Weapons.Drop();
             }
 
-            // if (!woundedPed.Crits.Has(CritTypes.NERVES_DAMAGED) && !woundedPed.IsDead) {
-            sharedData.notifier.emergency.AddMessage(sharedData.localeConfig.UnbearablePainMessage);
-
-            // }
+            if (!convertedPed.hasSpineDamage) {
+                sharedData.notifier.emergency.AddMessage(sharedData.localeConfig.UnbearablePainMessage);
+            }
         }
 
         public void ApplyPainDecreased(SharedData sharedData, Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {

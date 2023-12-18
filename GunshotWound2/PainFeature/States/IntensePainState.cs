@@ -10,10 +10,10 @@
         public void ApplyPainIncreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) {
             PedEffects.PlayFacialAnim(convertedPed.thisPed, "mood_injured_1", convertedPed.isMale);
 
-            // if (woundedPed.Crits.Has(CritTypes.ARMS_DAMAGED)) {
-            //     return;
-            // }
-            
+            if (convertedPed.hasHandsTremor) {
+                return;
+            }
+
             if (convertedPed.isPlayer) {
                 CameraEffects.ShakeCameraPermanent();
             } else {
@@ -24,9 +24,12 @@
         }
 
         public void ApplyPainDecreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) {
+            if (convertedPed.hasHandsTremor) {
+                return;
+            }
+
             if (convertedPed.isPlayer) {
                 CameraEffects.ClearCameraShake();
-                PlayerEffects.SetSprint(false);
             } else {
                 convertedPed.thisPed.Accuracy = convertedPed.defaultAccuracy;
             }

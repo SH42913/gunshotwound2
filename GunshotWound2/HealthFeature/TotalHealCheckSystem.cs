@@ -42,6 +42,7 @@
                     }
 
                     convertedPed.thisPed.Health = health.max;
+                    convertedPed.thisPed.ClearBloodDamage();
                     entity.SetMarker<TotallyHealedEvent>();
                 }
             }
