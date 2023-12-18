@@ -50,8 +50,7 @@
                 int newTime = ragdollRequest.time - sharedData.deltaTimeInMs;
                 ragdollRequest.time = newTime > 0 ? newTime : 0;
             } else {
-                RagdollType ragdollType = convertedPed.nmMessages == null ? ragdollRequest.type : RagdollType.ScriptControl;
-                convertedPed.thisPed.Ragdoll(ragdollRequest.time, ragdollType);
+                convertedPed.thisPed.Ragdoll(ragdollRequest.time, ragdollRequest.type);
                 convertedPed.ragdollRequest = default;
                 ApplyNaturalMotion(ref convertedPed);
             }

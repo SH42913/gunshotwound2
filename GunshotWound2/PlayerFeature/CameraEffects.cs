@@ -25,7 +25,7 @@
             Function.Call(Hash.SET_FLASH, 0, 0, 100, 500, 100);
         }
 
-        public static void StartPostFx(string animation, int durationInMs, bool loop) {
+        public static void StartPostFx(string animation, int durationInMs, bool loop = true) {
             Function.Call(Hash.ANIMPOSTFX_PLAY, animation, durationInMs, loop);
         }
 

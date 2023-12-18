@@ -35,7 +35,6 @@
         /// Needs to be looped!  
         /// </summary>
         public static void OverrideMoveRate(Ped ped, float moveRate) {
-            //Possibly needs to be looped
             Function.Call(Hash.SET_PED_MOVE_RATE_OVERRIDE, ped, moveRate);
         }
 

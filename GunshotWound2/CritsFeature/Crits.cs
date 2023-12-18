@@ -10,7 +10,7 @@
             Nothing = 0,
             LegsDamaged = 1 << 0,
             ArmsDamaged = 1 << 1,
-            NervesDamaged = 1 << 2,
+            SpineDamaged = 1 << 2,
             GutsDamaged = 1 << 3,
             StomachDamaged = 1 << 4,
             LungsDamaged = 1 << 5,
