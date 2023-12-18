@@ -5,11 +5,14 @@
     using Utils;
 
     public sealed class UnbearablePainState : IPainState {
+        private readonly int[] painInjuryMessages = { 789, };
+
         public float PainThreshold => 1f;
         public string Color => "~r~";
 
         public void ApplyPainIncreased(SharedData sharedData, Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
             convertedPed.RequestPermanentRagdoll();
+            convertedPed.nmMessages = painInjuryMessages;
 
             int deathAnimIndex = sharedData.random.Next(1, 3);
             //TODO SET_FACIAL_IDLE_ANIM_OVERRIDE
