@@ -38,7 +38,7 @@
                     sharedData.logger.WriteInfo($"Ped {convertedPed.name} was totally healed");
 #endif
                     if (convertedPed.isPlayer) {
-                        sharedData.notifier.info.AddMessage("You are totally healed"); //TODO Localize
+                        sharedData.notifier.info.AddMessage("~g~You are totally healed"); //TODO Localize
                     }
 
                     convertedPed.thisPed.Health = health.max;

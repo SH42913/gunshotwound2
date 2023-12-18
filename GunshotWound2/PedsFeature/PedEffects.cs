@@ -44,6 +44,10 @@
             Function.Call(Hash.GIVE_PED_NM_MESSAGE, ped);
         }
 
+        public static void StopNaturalMotion(Ped ped) {
+            SetNaturalMotionMessage(ped, 0);
+        }
+
         /// <summary>
         /// 0: PAIN_*_GENERIC (Low, Medium, High)
         /// 1: UNUSED

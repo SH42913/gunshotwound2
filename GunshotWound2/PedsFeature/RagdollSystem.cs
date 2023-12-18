@@ -48,15 +48,35 @@
                 }
 
                 int newTime = ragdollRequest.time - sharedData.deltaTimeInMs;
-                ragdollRequest.time = newTime > 0
-                        ? newTime
-                        : 0;
+                ragdollRequest.time = newTime > 0 ? newTime : 0;
             } else {
-                convertedPed.thisPed.Ragdoll(ragdollRequest.time, ragdollRequest.type);
+                RagdollType ragdollType = convertedPed.nmMessages == null ? ragdollRequest.type : RagdollType.ScriptControl;
+                convertedPed.thisPed.Ragdoll(ragdollRequest.time, ragdollType);
                 convertedPed.ragdollRequest = default;
+                ApplyNaturalMotion(ref convertedPed);
             }
         }
 
-        public void Dispose() { }
+        public void Dispose() {
+            foreach (Scellecs.Morpeh.Entity entity in peds) {
+                ref ConvertedPed convertedPed = ref pedStash.Get(entity);
+                if (convertedPed.thisPed.IsRagdoll) {
+                    convertedPed.thisPed.CancelRagdoll();
+                }
+            }
+        }
+
+        private static void ApplyNaturalMotion(ref ConvertedPed convertedPed) {
+            if (convertedPed.nmMessages == null) {
+                return;
+            }
+
+            PedEffects.StopNaturalMotion(convertedPed.thisPed);
+            foreach (int message in convertedPed.nmMessages) {
+                PedEffects.SetNaturalMotionMessage(convertedPed.thisPed, message);
+            }
+
+            convertedPed.nmMessages = null;
+        }
     }
 }

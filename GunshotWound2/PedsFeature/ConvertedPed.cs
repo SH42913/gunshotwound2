@@ -10,8 +10,11 @@
         public bool isPlayer;
         public int lastFrameHealth;
         public int lastFrameArmor;
+
         public (int time, RagdollType type) ragdollRequest;
+        public int[] nmMessages; //TODO Replace with GTA.NaturalMotion.Message
         public bool ragdollReset;
+        
         public int defaultAccuracy;
 #if DEBUG
         public Blip customBlip;
