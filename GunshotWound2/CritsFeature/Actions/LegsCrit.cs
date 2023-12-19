@@ -4,7 +4,6 @@
 
     public sealed class LegsCrit : BaseCrit {
         private readonly int[] nmMessages = {
-            1025,
             169,
         };
 

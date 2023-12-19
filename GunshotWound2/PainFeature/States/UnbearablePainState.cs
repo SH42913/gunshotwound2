@@ -5,7 +5,7 @@
     using Utils;
 
     public sealed class UnbearablePainState : IPainState {
-        private readonly int[] painInjuryMessages = { 789, };
+        private readonly int[] painInjuryMessages = { 787, };
 
         public float PainThreshold => 1f;
         public string Color => "~r~";

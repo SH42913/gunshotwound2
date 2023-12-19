@@ -1,5 +1,6 @@
 ﻿namespace GunshotWound2.PedsFeature {
     using GTA;
+    using GTA.Native;
     using Scellecs.Morpeh;
 
     public sealed class RagdollSystem : ILateSystem {
@@ -32,7 +33,6 @@
                     convertedPed.thisPed.CancelRagdoll();
                 }
 
-                convertedPed.ragdollRequest = default;
                 convertedPed.ragdollReset = default;
                 return;
             }
@@ -50,9 +50,20 @@
                 int newTime = ragdollRequest.time - sharedData.deltaTimeInMs;
                 ragdollRequest.time = newTime > 0 ? newTime : 0;
             } else {
-                convertedPed.thisPed.Ragdoll(ragdollRequest.time, ragdollRequest.type);
+                bool hasNaturalMotion = convertedPed.nmMessages != null;
+#if DEBUG
+                var time = ragdollRequest.time.ToString();
+                sharedData.logger.WriteInfo($"Ragdoll for {convertedPed.name} time={time} hasNM={hasNaturalMotion}");
+#endif
+                if (hasNaturalMotion) {
+                    Function.Call(Hash.SET_PED_TO_RAGDOLL, convertedPed.thisPed.Handle, 10000, ragdollRequest.time, 1, 1, 1, 0);
+                    ApplyNaturalMotion(ref convertedPed);
+                    convertedPed.nmMessages = null;
+                } else {
+                    convertedPed.thisPed.Ragdoll(ragdollRequest.time, ragdollRequest.type);
+                }
+
                 convertedPed.ragdollRequest = default;
-                ApplyNaturalMotion(ref convertedPed);
             }
         }
 
@@ -66,16 +77,10 @@
         }
 
         private static void ApplyNaturalMotion(ref ConvertedPed convertedPed) {
-            if (convertedPed.nmMessages == null) {
-                return;
-            }
-
             PedEffects.StopNaturalMotion(convertedPed.thisPed);
             foreach (int message in convertedPed.nmMessages) {
                 PedEffects.SetNaturalMotionMessage(convertedPed.thisPed, message);
             }
-
-            convertedPed.nmMessages = null;
         }
     }
 }

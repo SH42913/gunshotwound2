@@ -5,7 +5,7 @@
 
     public sealed class ArmsCrit : BaseCrit {
         private readonly int[] nmMessages = {
-            1024,
+            155,
         };
 
         protected override string PlayerMessage => sharedData.localeConfig.PlayerArmsCritMessage;
