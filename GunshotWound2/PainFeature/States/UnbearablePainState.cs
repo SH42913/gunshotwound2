@@ -11,6 +11,7 @@
         public string Color => "~r~";
 
         public void ApplyPainIncreased(SharedData sharedData, Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
+            convertedPed.ResetRagdoll();
             convertedPed.RequestPermanentRagdoll();
             convertedPed.nmMessages = painInjuryMessages;
 
@@ -22,11 +23,13 @@
             convertedPed.thisPed.PlayAmbientSpeech(speech, SpeechModifier.ShoutedClear); //TODO PLAY_PAIN
 
             if (!convertedPed.isPlayer) {
+                // convertedPed.thisPed.Task.Wait(5000); TODO Repeat while have pain
                 convertedPed.thisPed.Weapons.Drop();
                 return;
             }
 
             Player player = Game.Player;
+            player.CanControlCharacter = false;
             if (player.WantedLevel <= 3) {
                 player.IgnoredByEveryone = true;
                 if (sharedData.mainConfig.PlayerConfig.PoliceCanForgetYou) {
@@ -46,7 +49,9 @@
         public void ApplyPainDecreased(SharedData sharedData, Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
             convertedPed.ResetRagdoll();
             if (convertedPed.isPlayer) {
-                Game.Player.IgnoredByEveryone = false;
+                Player player = Game.Player;
+                player.IgnoredByEveryone = false;
+                player.CanControlCharacter = true;
                 PlayerEffects.SetSprint(false);
             }
         }
