@@ -35,7 +35,7 @@
         }
 
         protected void CreateInternalBleeding(Entity pedEntity, float severity) {
-            pedEntity.CreateBleeding(severity, sharedData.localeConfig.InternalBleeding); //TODO Force non-bandage?
+            pedEntity.CreateBleeding(severity, sharedData.localeConfig.InternalBleeding, isInternal: true);
         }
     }
 }
