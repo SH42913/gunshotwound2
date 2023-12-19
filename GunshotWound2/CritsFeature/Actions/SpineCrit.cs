@@ -10,8 +10,8 @@
         public SpineCrit(SharedData sharedData) : base(sharedData) { }
 
         public override void Apply(Entity pedEntity, ref ConvertedPed convertedPed) {
-            convertedPed.hasSpineDamage = true;
             convertedPed.RequestPermanentRagdoll();
+            convertedPed.hasSpineDamage = true;
         }
 
         public override void Cancel(Entity pedEntity, ref ConvertedPed convertedPed) {

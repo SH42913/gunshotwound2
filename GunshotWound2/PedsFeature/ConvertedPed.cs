@@ -26,7 +26,7 @@
 
     public static class ConvertedPedExtensions {
         public static void RequestRagdoll(this ref ConvertedPed convertedPed, int timeInMs, RagdollType type = RagdollType.Relax) {
-            if (!convertedPed.hasSpineDamage) {
+            if (convertedPed.ragdollRequest.time >= 0 && !convertedPed.hasSpineDamage) {
                 convertedPed.ragdollRequest = (timeInMs, type);
             }
         }
