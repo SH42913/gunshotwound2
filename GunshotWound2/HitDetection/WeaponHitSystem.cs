@@ -46,12 +46,12 @@
                 } else if (PedWasDamagedBy(config.ShotgunHashes, ped, out hitWeapon)) {
                     weaponType = PedHitData.WeaponTypes.Shotgun;
                 } else if (ped.IsFalling) {
-                    weaponType = PedHitData.WeaponTypes.HeavyImpact;
+                    weaponType = ped.Velocity.Length() >= 3f ? PedHitData.WeaponTypes.HeavyImpact : PedHitData.WeaponTypes.LightImpact;
                     isSpecial = true;
                 } else if (ped.IsRagdoll) {
                     weaponType = PedHitData.WeaponTypes.LightImpact;
                     isSpecial = true;
-                } else if (ped.CurrentVehicle != null) {
+                } else if (ped.IsInVehicle()) {
                     weaponType = PedHitData.WeaponTypes.HeavyImpact;
                     isSpecial = true;
                 }

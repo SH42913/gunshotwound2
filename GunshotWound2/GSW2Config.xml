@@ -167,7 +167,7 @@
 			<Hashes Hashes="487013001;1432025498;2017895192;2640438543;3800352039;984333226;4019527611;317205821;3514615361;"/>
 		</Shotgun>
 
-		<LightImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.2">
+		<LightImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.1">
 			<!-- Unarmed;Parachute;NightVision;Snowball;Nightstick;KnuckleDuster;Flashlight;HitByWaterCannon;Fall;Rabbit;Briefcase;BirdCrap;Hen;Briefcase2;GarbageBag;SmallDog;StunGun;FlareGun; -->
 			<Hashes Hashes="2725352035;4222310262;2803906140;126349499;1737195953;3638508604;2343591895;600439132;3425972830;3452007600;2793925639;2294779575;1834887169;955837630;28811031;3794977420;3146768957;911657153;1198879012;"/>
 		</LightImpact>
