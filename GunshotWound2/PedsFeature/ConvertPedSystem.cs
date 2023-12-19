@@ -33,8 +33,8 @@
                 convertedPed.thisPed = pedToConvert;
                 convertedPed.isMale = pedToConvert.Gender == Gender.Male;
                 convertedPed.defaultAccuracy = pedToConvert.Accuracy;
-                PedEffects.SetRagdollBlockingFlags(pedToConvert, 1);
-                //TODO Or maybe PED_FLAG_DONT_ACTIVATE_RAGDOLL_FROM_BULLET_IMPACT	107?
+                // PedEffects.SetRagdollBlockingFlags(pedToConvert, 1);
+                convertedPed.thisPed.SetConfigFlag(107, true);
 
                 worldService.AddConverted(pedToConvert, entity);
                 entity.AddComponent<JustConvertedEvent>();

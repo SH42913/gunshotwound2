@@ -10,6 +10,10 @@
     public sealed class PainChangeSystem : ISystem {
         private readonly SharedData sharedData;
 
+        private readonly int[] painNmMessages = {
+            548,
+        };
+
         private readonly IPainState[] painStates = {
             new MildPainState(),
             new AveragePainState(),
@@ -165,7 +169,7 @@
             if (convertedPed.hasSpineDamage) {
                 return;
             }
-            
+
             int painAnimIndex = sharedData.random.Next(1, 7);
             PedEffects.PlayFacialAnim(convertedPed.thisPed, $"pain_{painAnimIndex.ToString()}", convertedPed.isMale);
 
@@ -178,13 +182,17 @@
 
                 convertedPed.thisPed.PlayAmbientSpeech("GUN_BEG");
                 if (woundConfig.RagdollOnPainfulWound) {
-                    convertedPed.RequestRagdoll(timeInMs: 3000);
+                    convertedPed.RequestRagdoll(timeInMs: 2000);
+                    convertedPed.nmMessages = painNmMessages;
                 }
 
                 if (convertedPed.isPlayer) {
                     CameraEffects.ShakeCameraOnce();
                     CameraEffects.FlashCameraOnce();
                 }
+            } else if (!convertedPed.isPlayer) {
+                convertedPed.RequestRagdoll(timeInMs: 500);
+                convertedPed.nmMessages = painNmMessages;
             }
         }
     }
