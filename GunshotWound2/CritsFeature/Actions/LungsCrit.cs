@@ -3,7 +3,7 @@
     using PlayerFeature;
 
     public sealed class LungsCrit : BaseCrit {
-        private const string POST_FX = "DrugsDrivingIn"; //TODO Replace with black
+        private const string POST_FX = "DeathFailMPIn";
 
         protected override string PlayerMessage => sharedData.localeConfig.PlayerLungsCritMessage;
         protected override string ManMessage => sharedData.localeConfig.ManLungsCritMessage;
