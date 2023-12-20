@@ -67,11 +67,11 @@
 		<MaximalPain Min="50.0" Max="100.0"/>
 		<!-- Same as for player, but GSWPeds will have MaximalPain between Min and Max -->
 
-		<Accuracy Min="5" Max="10"/>
+		<Accuracy Min="-1" Max="-1"/>
 		<!-- GSWPeds will get accuracy between Min and Max.
         If you want to use default game Accuracy, set both to 0. -->
 
-		<ShootRate Min="5" Max="10"/>
+		<ShootRate Min="-1" Max="-1"/>
 		<!-- GSWPeds will get ShootRate between Min and Max.
         If you want to use default game ShootRate, set both to 0. -->
 

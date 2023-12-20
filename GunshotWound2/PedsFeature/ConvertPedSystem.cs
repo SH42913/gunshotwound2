@@ -1,5 +1,6 @@
 ﻿namespace GunshotWound2.PedsFeature {
     using System;
+    using Configs;
     using GTA;
     using Scellecs.Morpeh;
 
@@ -32,7 +33,17 @@
                 convertedPed.name = $"P{pedToConvert.Handle.ToString()}";
                 convertedPed.thisPed = pedToConvert;
                 convertedPed.isMale = pedToConvert.Gender == Gender.Male;
+
+                NpcConfig npcConfig = sharedData.mainConfig.NpcConfig;
+                if (npcConfig.MinAccuracy > 0 && npcConfig.MaxAccuracy > 0 && pedToConvert.Accuracy > npcConfig.MinAccuracy) {
+                    pedToConvert.Accuracy = sharedData.random.Next(npcConfig.MinAccuracy, npcConfig.MaxAccuracy + 1);
+                }
+                
                 convertedPed.defaultAccuracy = pedToConvert.Accuracy;
+                if (npcConfig.MinShootRate > 0 && npcConfig.MaxShootRate > 0) {
+                    pedToConvert.ShootRate = sharedData.random.Next(npcConfig.MinShootRate, npcConfig.MaxShootRate);
+                }
+
                 // PedEffects.SetRagdollBlockingFlags(pedToConvert, 1);
                 convertedPed.thisPed.SetConfigFlag(107, true);
 
