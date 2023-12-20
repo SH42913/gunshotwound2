@@ -2,20 +2,29 @@
     using GTA;
     using PedsFeature;
     using PlayerFeature;
+    using Scellecs.Morpeh;
     using Utils;
 
     public sealed class UnbearablePainState : IPainState {
-        private readonly int[] painInjuryMessages = { 787, };
+        private readonly int[] painInjuryMessages = {
+            787,
+        };
 
         public float PainThreshold => 1f;
         public string Color => "~r~";
 
         public void ApplyPainIncreased(SharedData sharedData, Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
+            ref Pain pain = ref pedEntity.GetComponent<Pain>();
+            if (pain.Percent() - PainThreshold < 0.1f) {
+                pain.diff += 0.2f * pain.max;
+            }
+
             convertedPed.ResetRagdoll();
             convertedPed.RequestPermanentRagdoll();
             convertedPed.nmMessages = painInjuryMessages;
 
             int deathAnimIndex = sharedData.random.Next(1, 3);
+
             //TODO SET_FACIAL_IDLE_ANIM_OVERRIDE
             PedEffects.PlayFacialAnim(convertedPed.thisPed, $"dead_{deathAnimIndex.ToString()}", convertedPed.isMale);
 
