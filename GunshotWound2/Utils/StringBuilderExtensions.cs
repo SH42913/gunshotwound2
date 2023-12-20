@@ -6,6 +6,10 @@
             return stringBuilder.Append('\n');
         }
 
+        public static StringBuilder AppendSpace(this StringBuilder stringBuilder) {
+            return stringBuilder.Append(' ');
+        }
+
         public static StringBuilder SetDefaultColor(this StringBuilder stringBuilder) {
             return stringBuilder.Append("~s~");
         }

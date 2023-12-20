@@ -58,7 +58,7 @@ DentsOnArmor,Your armor is noticeably damaged,Бронежилет серьез�
 ArmorLooksAwful,Your body armor is practically useless,Бронежилет выглядит хуже некуда,Deine Rüstung ist praktisch nutzlos,Votre blindage est en très mauvais état,Hełm i kamizelka są do wyrzucenia,당신은 갑옷은 끔찍한 보인다,Sua armadura parece horrível,Tu chaleco corporal es practicamente inutil,Your body armor is practically useless,防弾ベストはほとんど役に立たない,防彈衣幾乎報廢,Your body armor is practically useless
 ,"Write correctly! Eg, ""Critical damaged nerves heart legs""",,,,,,,,,"Write correctly! Eg, ""Critical damaged nerves heart legs""",,
 Crits,Critical damaged,Критически повреждены,Kritischer Schaden an,Dégât critique,Krytyczne obrażenia,치명적인 손상,dano critico,Daño critico a ,Critical damage to,クリティカルダメージ先,嚴重傷害,Critical damaged
-NervesCrit,nerves,нервы,Nerven,les nerfs,Nerwy,신경,nervos,Nervios,nerves,神経,神經,nerves
+NervesCrit,spine,позвоночник,Rücken,le dos,kręgosłup,신경,nervos,Nervios,nerves,神経,神經,nerves
 HeartCrit,heart,сердце,Herz,le coeur,Serce,심장,coração,Corazon,heart,心臓,心臟,heart
 LungsCrit,lungs,легкие,Lungen,les poumons,Płuca,폐,pulmões,Pulmones,lungs,肺,肺部,lungs
 StomachCrit,stomach,желудок,Bauch,l'estomac,Żołądek,복부,estômago,Estomago,stomach,胃,胃部,stomach

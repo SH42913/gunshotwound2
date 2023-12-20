@@ -2,6 +2,7 @@
     using System;
     using System.Text;
     using Configs;
+    using CritsFeature;
     using HealthFeature;
     using PainFeature;
     using PedsFeature;
@@ -18,7 +19,7 @@
             ShowHealth(sharedData, ref convertedPed, ref health);
             ShowArmor(sharedData, ref convertedPed);
             ShowPain(sharedData, pedEntity);
-            // ShowCrits(woundedPed);
+            ShowCrits(sharedData, pedEntity);
             ShowBleedingWounds(sharedData, ref convertedPed, ref health);
         }
 
@@ -100,7 +101,7 @@
                 float timeToRecover = (pain.amount - pain.max) / pain.recoveryRate;
                 STRING_BUILDER.Append($" ({timeToRecover.ToString("F1")} sec)");
             }
-            
+
             STRING_BUILDER.SetDefaultColor();
 
             sharedData.notifier.info.AddMessage(STRING_BUILDER.ToString());
@@ -155,53 +156,54 @@
             sharedData.notifier.info.AddMessage(STRING_BUILDER.ToString());
         }
 
-        //
-        // private void ShowCrits(WoundedPedComponent woundedPed)
-        // {
-        //     var healthInfo = "";
-        //     if (woundedPed.Crits <= 0) return;
-        //
-        //     healthInfo += $"~s~{_locale.Data.Crits} ~r~";
-        //
-        //     if (woundedPed.Crits.Has(CritTypes.NERVES_DAMAGED))
-        //     {
-        //         healthInfo += $"{_locale.Data.NervesCrit} ";
-        //     }
-        //
-        //     if (woundedPed.Crits.Has(CritTypes.HEART_DAMAGED))
-        //     {
-        //         healthInfo += $"{_locale.Data.HeartCrit} ";
-        //     }
-        //
-        //     if (woundedPed.Crits.Has(CritTypes.LUNGS_DAMAGED))
-        //     {
-        //         healthInfo += $"{_locale.Data.LungsCrit} ";
-        //     }
-        //
-        //     if (woundedPed.Crits.Has(CritTypes.STOMACH_DAMAGED))
-        //     {
-        //         healthInfo += $"{_locale.Data.StomachCrit} ";
-        //     }
-        //
-        //     if (woundedPed.Crits.Has(CritTypes.GUTS_DAMAGED))
-        //     {
-        //         healthInfo += $"{_locale.Data.GutsCrit} ";
-        //     }
-        //
-        //     if (woundedPed.Crits.Has(CritTypes.ARMS_DAMAGED))
-        //     {
-        //         healthInfo += $"{_locale.Data.ArmsCrit} ";
-        //     }
-        //
-        //     if (woundedPed.Crits.Has(CritTypes.LEGS_DAMAGED))
-        //     {
-        //         healthInfo += $"{_locale.Data.LegsCrit} ";
-        //     }
-        //
-        //     if (!string.IsNullOrEmpty(healthInfo))
-        //     {
-        //         SendMessage(healthInfo + "~s~");
-        //     }
-        // }
+        private static void ShowCrits(SharedData sharedData, Entity pedEntity) {
+            LocaleConfig localeConfig = sharedData.localeConfig;
+            ref Crits crits = ref pedEntity.GetComponent<Crits>();
+            if (crits.active == Crits.Types.Nothing) {
+                return;
+            }
+
+            STRING_BUILDER.Clear();
+            STRING_BUILDER.Append(localeConfig.Crits);
+            STRING_BUILDER.Append(" ~r~");
+
+            if (crits.HasActive(Crits.Types.SpineDamaged)) {
+                STRING_BUILDER.Append(localeConfig.NervesCrit);
+                STRING_BUILDER.AppendSpace();
+            }
+
+            if (crits.HasActive(Crits.Types.HeartDamaged)) {
+                STRING_BUILDER.Append(localeConfig.HeartCrit);
+                STRING_BUILDER.AppendSpace();
+            }
+
+            if (crits.HasActive(Crits.Types.LungsDamaged)) {
+                STRING_BUILDER.Append(localeConfig.LungsCrit);
+                STRING_BUILDER.AppendSpace();
+            }
+
+            if (crits.HasActive(Crits.Types.StomachDamaged)) {
+                STRING_BUILDER.Append(localeConfig.StomachCrit);
+                STRING_BUILDER.AppendSpace();
+            }
+
+            if (crits.HasActive(Crits.Types.GutsDamaged)) {
+                STRING_BUILDER.Append(localeConfig.GutsCrit);
+                STRING_BUILDER.AppendSpace();
+            }
+
+            if (crits.HasActive(Crits.Types.ArmsDamaged)) {
+                STRING_BUILDER.Append(localeConfig.ArmsCrit);
+                STRING_BUILDER.AppendSpace();
+            }
+
+            if (crits.HasActive(Crits.Types.LegsDamaged)) {
+                STRING_BUILDER.Append(localeConfig.LegsCrit);
+                STRING_BUILDER.AppendSpace();
+            }
+
+            STRING_BUILDER.SetDefaultColor();
+            sharedData.notifier.info.AddMessage(STRING_BUILDER.ToString());
+        }
     }
 }

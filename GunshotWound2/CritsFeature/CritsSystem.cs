@@ -109,6 +109,7 @@
                 sharedData.logger.WriteInfo($"Apply crit for {convertedPed.name} - {type}");
 #endif
 
+                action.ShowCritMessage(ref convertedPed);
                 action.Apply(entity, ref convertedPed);
                 crits.active |= type;
                 crits.requestBodyPart = default;
@@ -116,8 +117,6 @@
                 convertedPed.thisPed.IsPainAudioEnabled = true;
                 int pain = sharedData.random.IsTrueWithProbability(0.5f) ? 6 : 7;
                 PedEffects.PlayPain(convertedPed.thisPed, pain);
-
-                action.ShowCritMessage(ref convertedPed);
             }
         }
 
