@@ -61,19 +61,20 @@
         If ALL is TRUE, other variants will not be checked.
         If allies in missions are always died too quickly, set ALL to FALSE and try set COMPANION and RESPECT to FALSE. -->
 
-		<PedHealth Min="50" Max="100"/>
-		<!-- GSWPeds will have health between Min and Max -->
-
 		<MaximalPain Min="50.0" Max="100.0"/>
-		<!-- Same as for player, but GSWPeds will have MaximalPain between Min and Max -->
+		<!-- Same as for player, but GSWPeds will have MaximalPain between Min and Max. -->
+
+		<CustomHealth Min="-1" Max="-1"/>
+		<!-- It will override default health. GSWPeds will have health between Min and Max.
+        If you want to use default game PedHealth, set both to -1 -->
 
 		<Accuracy Min="-1" Max="-1"/>
 		<!-- GSWPeds will get accuracy between Min and Max.
-        If you want to use default game Accuracy, set both to 0. -->
+        If you want to use default game Accuracy, set both to -1. -->
 
 		<ShootRate Min="-1" Max="-1"/>
 		<!-- GSWPeds will get ShootRate between Min and Max.
-        If you want to use default game ShootRate, set both to 0. -->
+        If you want to use default game ShootRate, set both to -1. -->
 
 		<PainRecoverySpeed Value="1.0"/>
 		<BleedHealSpeed Value="1.0"/>

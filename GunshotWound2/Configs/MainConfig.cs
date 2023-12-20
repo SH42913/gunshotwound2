@@ -181,7 +181,7 @@ namespace GunshotWound2.Configs
             config.NpcConfig.ShowEnemyCriticalMessages = node.Element("CriticalMessages").GetBool();
             config.NpcConfig.ScanOnlyDamaged = node.Element("ScanOnlyDamaged").GetBool();
 
-            var healthNode = node.Element("PedHealth");
+            var healthNode = node.Element("CustomHealth");
             config.NpcConfig.MinStartHealth = healthNode.GetInt("Min");
             config.NpcConfig.MaxStartHealth = healthNode.GetInt("Max");
 
