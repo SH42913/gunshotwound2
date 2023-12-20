@@ -49,7 +49,7 @@
 
                 int newTime = ragdollRequest.time - sharedData.deltaTimeInMs;
                 ragdollRequest.time = newTime > 0 ? newTime : 0;
-            } else {
+            } else if (!convertedPed.thisPed.IsInVehicle()) {
                 bool hasNaturalMotion = convertedPed.nmMessages != null;
 #if DEBUG
                 var time = ragdollRequest.time.ToString();
