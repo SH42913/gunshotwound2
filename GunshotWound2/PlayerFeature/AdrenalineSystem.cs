@@ -23,7 +23,7 @@
 
             var convertedPed = playerEntity.GetComponent<ConvertedPed>();
             var pain = playerEntity.GetComponent<Pain>();
-            if (!convertedPed.isPlayer || !pain.HasPain()) { //TODO || convertedPed.InPermanentRagdoll)
+            if (!convertedPed.isPlayer || !pain.HasPain() || convertedPed.hasSpineDamage) {
                 Game.TimeScale = 1f;
                 return;
             }
