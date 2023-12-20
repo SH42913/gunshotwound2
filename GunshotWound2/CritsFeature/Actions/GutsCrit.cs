@@ -14,7 +14,7 @@
         public GutsCrit(SharedData sharedData) : base(sharedData) { }
 
         public override void Apply(Entity pedEntity, ref ConvertedPed convertedPed) {
-            CreatePain(pedEntity, 25f);
+            CreatePain(pedEntity, 30f);
             CreateInternalBleeding(pedEntity, 0.5f);
 
             convertedPed.RequestRagdoll(4000);

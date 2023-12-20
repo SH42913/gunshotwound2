@@ -12,7 +12,7 @@
         public LungsCrit(SharedData sharedData) : base(sharedData) { }
 
         public override void Apply(Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
-            CreatePain(pedEntity, 10f);
+            CreatePain(pedEntity, 30f);
             CreateInternalBleeding(pedEntity, 1f);
 
             if (convertedPed.isPlayer) {

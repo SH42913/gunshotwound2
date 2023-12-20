@@ -15,7 +15,7 @@
         public HeartCrit(SharedData sharedData) : base(sharedData) { }
 
         public override void Apply(Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
-            CreatePain(pedEntity, 25f);
+            CreatePain(pedEntity, 30f);
             CreateInternalBleeding(pedEntity, 2.5f);
 
             convertedPed.RequestRagdoll(6000);

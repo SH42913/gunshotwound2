@@ -17,7 +17,7 @@
         public override void Apply(Entity pedEntity, ref ConvertedPed convertedPed) {
             convertedPed.hasHandsTremor = true;
             convertedPed.nmMessages = nmMessages;
-            CreatePain(pedEntity, 25f);
+            CreatePain(pedEntity, 20f);
 
             if (!convertedPed.isPlayer) {
                 convertedPed.thisPed.Accuracy = (int)(0.1f * convertedPed.defaultAccuracy);
