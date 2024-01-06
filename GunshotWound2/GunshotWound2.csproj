@@ -81,7 +81,6 @@
     <Compile Include="WoundFeature\Weapons\MediumCaliberDamage.cs" />
     <Compile Include="WoundFeature\Weapons\ShotgunDamage.cs" />
     <Compile Include="WoundFeature\Weapons\SmallCaliberDamage.cs" />
-    <Compile Include="WoundFeature\WoundedPedComponent.cs" />
     <Compile Include="WoundFeature\WoundSystem.cs" />
     <Compile Include="HealthFeature\BandageSystem.cs" />
     <Compile Include="HealthFeature\Bleeding.cs" />

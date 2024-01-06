@@ -104,10 +104,12 @@
                 sharedData.logger.WriteInfo($"Changed pain state of {convertedPed.name}: {currentName} => {newName}");
 #endif
 
-                //TODO Localize
                 int direction = Math.Sign(newStateIndex - curStateIndex);
                 if (convertedPed.isPlayer) {
-                    sharedData.notifier.info.AddMessage(direction > 0 ? "~o~You feel yourself worst" : "~g~You feel yourself better");
+                    LocaleConfig localeConfig = sharedData.localeConfig;
+                    sharedData.notifier.info.AddMessage(direction > 0
+                                                                ? $"~o~{localeConfig.PainIncreasedMessage}"
+                                                                : $"~g~{localeConfig.PainDecreasedMessage}");
                 }
 
                 IPainState curState = null;

@@ -10,6 +10,7 @@ namespace GunshotWound2.Configs
         public string ArmorSavedYourChest;
         public string ArmorSavedYourLowerBody;
         public string ArmorPenetrated;
+        public string ArmorInjury;
 
         public string BodyPartHead;
         public string BodyPartNeck;
@@ -48,6 +49,9 @@ namespace GunshotWound2.Configs
         public string Health;
         public string YouAreDead;
         public string Pain;
+        public string PainIncreasedMessage;
+        public string PainDecreasedMessage;
+        public string TotallyHealedMessage;
 
         public string ArmorLooksGreat;
         public string ScratchesOnArmor;
@@ -275,6 +279,7 @@ namespace GunshotWound2.Configs
             config.ArmorSavedYourChest = manager.GetWord("ArmorSavedYourChest");
             config.ArmorSavedYourLowerBody = manager.GetWord("ArmorSavedYourLowerBody");
             config.ArmorPenetrated = manager.GetWord("ArmorPenetrated");
+            config.ArmorInjury = manager.GetWord("ArmorInjury");
 
             config.BodyPartHead = manager.GetWord("BodyPartHead");
             config.BodyPartNeck = manager.GetWord("BodyPartNeck");
@@ -314,6 +319,9 @@ namespace GunshotWound2.Configs
             config.Health = manager.GetWord("Health");
             config.YouAreDead = manager.GetWord("YouAreDead");
             config.Pain = manager.GetWord("Pain");
+            config.PainIncreasedMessage = manager.GetWord("PainIncreasedMessage");
+            config.PainDecreasedMessage = manager.GetWord("PainDecreasedMessage");
+            config.TotallyHealedMessage = manager.GetWord("TotallyHealedMessage");
 
             config.ArmorLooksGreat = manager.GetWord("ArmorLooksGreat");
             config.ScratchesOnArmor = manager.GetWord("ScratchesOnArmor");

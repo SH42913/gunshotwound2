@@ -27,25 +27,6 @@
             MarkNewPedsAsPlayer();
             RemoveMarkerIfDifferentPed();
             FindNewPedIfNeed();
-
-            // TODO WYD
-            //     var pedHealth = woundedPed.PedHealth;
-            //     if (pedHealth > playerConfig.MaximalHealth) {
-            //         ecsWorld.ScheduleEventWithTarget<InstantHealEvent>(playerEntity);
-            //     } else if (pedHealth < playerConfig.MinimalHealth && !woundedPed.IsDead) {
-            //         woundedPed.Health = pedHealth;
-            //         woundedPed.IsDead = true;
-            //         player.WantedLevel = 0;
-            //         player.IgnoredByEveryone = false;
-            //         Function.Call(Hash.ANIMPOSTFX_STOP_ALL);
-            //
-            //         var ragdollEvent = ecsWorld.CreateEntityWith<SetPedToRagdollEvent>();
-            //         ragdollEvent.RagdollState = RagdollStates.PERMANENT;
-            //         ragdollEvent.Entity = playerEntity;
-            //
-            //         ecsWorld.RemoveComponent<PainComponent>(players.Entities[index], true);
-            //         ecsWorld.CreateEntityWith<ShowHealthStateEvent>().Entity = playerEntity;
-            //     }
         }
 
         private void MarkNewPedsAsPlayer() {

@@ -159,8 +159,7 @@
 
         private WoundData GetUnderArmorWound(float damageMult, float painMult, string reason) {
             return new WoundData {
-                //TODO: Localize
-                Name = "Under armor injury",
+                Name = sharedData.localeConfig.ArmorInjury,
                 AdditionalMessage = reason,
                 Damage = damageMult * armorDamage,
                 Pain = painMult * armorDamage,
