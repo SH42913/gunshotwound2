@@ -1,5 +1,4 @@
 ﻿namespace GunshotWound2.Utils {
-    using System.Collections.Generic;
     using System.Text;
     using GTA.UI;
 
@@ -12,53 +11,39 @@
 
         public Notifier() {
             stringBuilder = new StringBuilder();
-            info = new Entry("");
-            warning = new Entry("~y~");
-            alert = new Entry("~o~");
-            emergency = new Entry("~r~");
+            info = new Entry("~s~", stringBuilder);
+            warning = new Entry("~y~", stringBuilder);
+            alert = new Entry("~o~", stringBuilder);
+            emergency = new Entry("~r~", stringBuilder);
         }
 
         public void Show() {
-            emergency.ShowNotification(stringBuilder);
-            alert.ShowNotification(stringBuilder);
-            warning.ShowNotification(stringBuilder);
-            info.ShowNotification(stringBuilder);
+            if (stringBuilder.Length > 0) {
+                Notification.Show(stringBuilder.ToString());
+                stringBuilder.Clear();
+            }
         }
 
         public sealed class Entry {
             public bool show;
 
+            private readonly StringBuilder builder;
             private readonly string prefix;
-            private List<string> messages;
 
-            public Entry(string prefix) {
+            public Entry(string prefix, StringBuilder builder) {
                 this.prefix = prefix;
+                this.builder = builder;
             }
 
             public void AddMessage(string message) {
                 if (show && !string.IsNullOrWhiteSpace(message)) {
-                    messages ??= new List<string>(8);
-                    messages.Add(message);
-                }
-            }
-
-            public void ShowNotification(StringBuilder builder) {
-                if (messages == null || messages.Count < 1) {
-                    return;
-                }
-
-                builder.Clear();
-                builder.Append(prefix);
-                for (int index = 0, count = messages.Count; index < count; index++) {
-                    string message = messages[index];
-                    builder.Append(message);
-                    if (count > index + 1) {
+                    if (builder.Length > 0) {
                         builder.AppendEndOfLine();
                     }
-                }
 
-                messages.Clear();
-                Notification.Show(builder.ToString());
+                    builder.Append(prefix);
+                    builder.Append(message);
+                }
             }
         }
     }

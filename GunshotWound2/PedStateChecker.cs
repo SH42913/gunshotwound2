@@ -17,9 +17,9 @@
             ref Health health = ref pedEntity.GetComponent<Health>();
 
             ShowHealth(sharedData, ref convertedPed, ref health);
-            ShowArmor(sharedData, ref convertedPed);
             ShowPain(sharedData, pedEntity);
             ShowCrits(sharedData, pedEntity);
+            ShowArmor(sharedData, ref convertedPed);
             ShowBleedingWounds(sharedData, ref convertedPed, ref health);
         }
 
@@ -79,6 +79,9 @@
             STRING_BUILDER.Clear();
             STRING_BUILDER.Append(color);
             STRING_BUILDER.Append(message);
+#if DEBUG
+            STRING_BUILDER.Append($" ({armor.ToString()})");
+#endif
             STRING_BUILDER.SetDefaultColor();
 
             sharedData.notifier.info.AddMessage(STRING_BUILDER.ToString());
