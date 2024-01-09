@@ -44,7 +44,8 @@
                     health.bleedingHealRate = sharedData.random.NextFloat(minRate, maxRate);
 
                     if (npcConfig.MinStartHealth > 0 && npcConfig.MaxStartHealth > 0) {
-                        convertedPed.thisPed.Health = sharedData.random.Next(npcConfig.MinStartHealth, npcConfig.MaxStartHealth);
+                        int randomHealth = sharedData.random.Next(npcConfig.MinStartHealth, npcConfig.MaxStartHealth);
+                        convertedPed.thisPed.Health = WoundConfig.ConvertHealthToNative(randomHealth);
                     }
                 }
             }
