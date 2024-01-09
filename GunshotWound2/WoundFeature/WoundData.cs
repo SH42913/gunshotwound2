@@ -1,7 +1,6 @@
 ﻿namespace GunshotWound2.WoundFeature {
     public struct WoundData {
         public string Name;
-        public string AdditionalMessage;
         public float Damage;
         public float Pain;
         public float BleedSeverity;

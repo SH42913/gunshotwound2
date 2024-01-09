@@ -67,10 +67,10 @@
             }
 
             WoundData woundData = wound.Value;
-            CreateDamage(pedEntity, woundData.Damage, ref hitData);
+            CreateDamage(pedEntity, woundData.Damage);
             CreateBleeding(pedEntity, woundData.BleedSeverity, woundData.Name);
             CreatePain(pedEntity, woundData.Pain);
-            CreateCrit(pedEntity, ref hitData, woundData.HasCrits);
+            CreateCrit(pedEntity, woundData.HasCrits, hitData.bodyPart);
 
             if (woundData.ArterySevered) {
                 CreateBleeding(pedEntity, WoundConfig.MAX_SEVERITY_FOR_BANDAGE, sharedData.localeConfig.SeveredArtery);
@@ -81,8 +81,7 @@
             }
         }
 
-        private void CreateDamage(Entity pedEntity, float damage, ref PedHitData hitData) {
-            damage -= hitData.healthDiff;
+        private void CreateDamage(Entity pedEntity, float damage) {
             if (damage <= 0f) {
                 return;
             }
@@ -113,27 +112,26 @@
             pain.diff += CalculateAmount(painAmount, deviation, mult);
         }
 
-        private static void CreateCrit(Entity pedEntity, ref PedHitData pedHitData, bool hasCrits) {
+        private static void CreateCrit(Entity pedEntity, bool hasCrits, PedHitData.BodyParts hitBodyPart) {
             if (hasCrits) {
-                pedEntity.AddOrGetComponent<Crits>().requestBodyPart = pedHitData.bodyPart;
+                pedEntity.AddOrGetComponent<Crits>().requestBodyPart = hitBodyPart;
             }
         }
 
         private void SendWoundInfo(in WoundData woundData) {
-            if (!string.IsNullOrEmpty(woundData.AdditionalMessage)) {
-                sharedData.notifier.warning.AddMessage(woundData.AdditionalMessage);
-            }
-
+            Notifier.Entry notifier;
             if (woundData.HasCrits
                 || woundData.ArterySevered
                 || woundData.BleedSeverity >= sharedData.mainConfig.WoundConfig.EmergencyBleedingLevel) {
-                sharedData.notifier.emergency.AddMessage(woundData.Name);
+                notifier = sharedData.notifier.emergency;
             } else {
-                sharedData.notifier.alert.AddMessage(woundData.Name);
+                notifier = sharedData.notifier.alert;
             }
 
+            notifier.AddMessage(woundData.Name);
+
             if (woundData.ArterySevered) {
-                sharedData.notifier.emergency.AddMessage(sharedData.localeConfig.SeveredArteryMessage);
+                notifier.AddMessage(sharedData.localeConfig.SeveredArteryMessage);
             }
         }
 

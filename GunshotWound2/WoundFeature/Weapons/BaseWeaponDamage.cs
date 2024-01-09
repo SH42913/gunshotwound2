@@ -57,15 +57,18 @@
             if (hit.bodyPart == PedHitData.BodyParts.Head
                 && ped.IsWearingHelmet
                 && sharedData.random.IsTrueWithProbability(HelmetSafeChance)) {
-                return GetUnderArmorWound(damageMult: 3f, painMult: 5f, sharedData.localeConfig.HelmetSavedYourHead);
+                sharedData.notifier.warning.AddMessage(sharedData.localeConfig.HelmetSavedYourHead);
+                return null;
             }
 
             if (hit.bodyPart == PedHitData.BodyParts.UpperBody && !CheckArmorPenetration(ped)) {
-                return GetUnderArmorWound(damageMult: 1f, painMult: 2f, sharedData.localeConfig.ArmorSavedYourChest);
+                sharedData.notifier.warning.AddMessage(sharedData.localeConfig.ArmorSavedYourChest);
+                return GetUnderArmorWound(damageMult: 1f, painMult: 2f);
             }
 
             if (hit.bodyPart == PedHitData.BodyParts.LowerBody && !CheckArmorPenetration(ped)) {
-                return GetUnderArmorWound(damageMult: 2f, painMult: 3f, sharedData.localeConfig.ArmorSavedYourLowerBody);
+                sharedData.notifier.warning.AddMessage(sharedData.localeConfig.ArmorSavedYourLowerBody);
+                return GetUnderArmorWound(damageMult: 2f, painMult: 3f);
             }
 
             switch (hit.bodyPart) {
@@ -157,10 +160,13 @@
             return true;
         }
 
-        private WoundData GetUnderArmorWound(float damageMult, float painMult, string reason) {
+        private WoundData? GetUnderArmorWound(float damageMult, float painMult) {
+            if (!CanPenetrateArmor) {
+                return null;
+            }
+
             return new WoundData {
                 Name = sharedData.localeConfig.ArmorInjury,
-                AdditionalMessage = reason,
                 Damage = damageMult * armorDamage,
                 Pain = painMult * armorDamage,
             };
