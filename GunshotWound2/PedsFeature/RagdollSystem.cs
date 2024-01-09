@@ -28,6 +28,7 @@
 
         private void Process(ref ConvertedPed convertedPed) {
             bool inRagdoll = convertedPed.thisPed.IsRagdoll;
+            convertedPed.isRagdoll = inRagdoll;
             if (convertedPed.ragdollReset) {
                 if (inRagdoll) {
                     convertedPed.thisPed.CancelRagdoll();
@@ -64,6 +65,7 @@
                 }
 
                 convertedPed.ragdollRequest = default;
+                convertedPed.isRagdoll = true;
             }
         }
 

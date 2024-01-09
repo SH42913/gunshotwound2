@@ -69,6 +69,7 @@
     <Compile Include="CritsFeature\Crits.cs" />
     <Compile Include="CritsFeature\CritsFeature.cs" />
     <Compile Include="CritsFeature\CritsSystem.cs" />
+    <Compile Include="PedsFeature\PedMovementSystem.cs" />
     <Compile Include="WoundFeature\WoundFeature.cs" />
     <Compile Include="WoundFeature\WoundData.cs" />
     <Compile Include="WoundFeature\Weapons\BaseWeaponDamage.cs" />

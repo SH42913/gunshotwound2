@@ -14,11 +14,15 @@
         public (int time, RagdollType type) ragdollRequest;
         public int[] nmMessages; //TODO Replace with GTA.NaturalMotion.Message and move to separate component
         public bool ragdollReset;
+        public bool isRagdoll;
 
         public int defaultAccuracy;
         public bool hasHandsTremor;
         public bool hasBrokenLegs;
         public bool hasSpineDamage;
+
+        public float moveRate;
+        
 #if DEBUG
         public Blip customBlip;
 #endif

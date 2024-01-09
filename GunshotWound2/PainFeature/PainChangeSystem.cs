@@ -141,22 +141,19 @@
         }
 
         private void RefreshMoveRate(ref ConvertedPed convertedPed, ref Pain pain) {
-            // if (woundedPed.Crits.Has(CritTypes.LEGS_DAMAGED))
-            //     continue;
-
             if (!pain.HasPain() || convertedPed.hasBrokenLegs) {
                 return;
             }
 
             float painPercent = pain.Percent();
             if (painPercent >= 1f) {
-                PedEffects.OverrideMoveRate(convertedPed.thisPed, sharedData.mainConfig.WoundConfig.MoveRateOnFullPain);
+                convertedPed.moveRate = sharedData.mainConfig.WoundConfig.MoveRateOnFullPain;
                 return;
             }
 
             float adjustable = 1f - sharedData.mainConfig.WoundConfig.MoveRateOnFullPain;
             float moveRate = 1f - adjustable * painPercent;
-            PedEffects.OverrideMoveRate(convertedPed.thisPed, moveRate);
+            convertedPed.moveRate = moveRate;
         }
 
         private void ResetPain(Entity entity) {

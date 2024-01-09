@@ -19,9 +19,8 @@
             convertedPed.hasBrokenLegs = true;
             convertedPed.RequestRagdoll(3000, GTA.RagdollType.Balance);
             convertedPed.nmMessages = nmMessages;
-            
-            //TODO Loop?
-            PedEffects.OverrideMoveRate(convertedPed.thisPed, sharedData.mainConfig.WoundConfig.MoveRateOnNervesDamage);
+
+            convertedPed.moveRate = sharedData.mainConfig.WoundConfig.MoveRateOnNervesDamage;
 
             if (convertedPed.isPlayer) {
                 PlayerEffects.SetSprint(false);

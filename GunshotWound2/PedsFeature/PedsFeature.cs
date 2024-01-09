@@ -8,6 +8,7 @@
             systemsGroup.AddSystem(new NpcDetectSystem(sharedData));
             systemsGroup.AddSystem(new ConvertPedSystem(sharedData));
             systemsGroup.AddSystem(new RagdollSystem(sharedData));
+            systemsGroup.AddSystem(new PedMovementSystem(sharedData));
             systemsGroup.AddSystem(new RemoveConvertedPedSystem(sharedData));
 
             MainConfig mainConfig = sharedData.mainConfig;
