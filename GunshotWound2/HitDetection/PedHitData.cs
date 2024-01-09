@@ -28,5 +28,6 @@
         public int healthDiff;
         public int armorDiff;
         public bool randomBodyPart;
+        public string armorMessage;
     }
 }

@@ -50,18 +50,19 @@
                     convertedPed.thisPed.Armor += hitData.armorDiff;
                     convertedPed.thisPed.Health += hitData.healthDiff;
 
-                    WoundData? wound = weaponDamage.ProcessHit(convertedPed.thisPed, hitData);
+                    WoundData? wound = weaponDamage.ProcessHit(ref convertedPed, ref hitData);
 #if DEBUG
                     sharedData.logger.WriteInfo(wound.HasValue ? $"New wound {wound.Value.ToString()} " : "No wound created");
 #endif
-                    ProcessWound(pedEntity, ref hitData, ref convertedPed, ref wound);
+                    ProcessWound(pedEntity, ref hitData, ref wound);
+                    SendWoundInfo(convertedPed, hitData, wound);
                 } else {
                     sharedData.logger.WriteWarning($"Doesn't support {hitData.weaponType}");
                 }
             }
         }
 
-        private void ProcessWound(Entity pedEntity, ref PedHitData hitData, ref ConvertedPed convertedPed, ref WoundData? wound) {
+        private void ProcessWound(Entity pedEntity, ref PedHitData hitData, ref WoundData? wound) {
             if (!wound.HasValue) {
                 return;
             }
@@ -74,10 +75,6 @@
 
             if (woundData.ArterySevered) {
                 CreateBleeding(pedEntity, WoundConfig.MAX_SEVERITY_FOR_BANDAGE, sharedData.localeConfig.SeveredArtery);
-            }
-
-            if (convertedPed.isPlayer) {
-                SendWoundInfo(woundData);
             }
         }
 
@@ -118,7 +115,17 @@
             }
         }
 
-        private void SendWoundInfo(in WoundData woundData) {
+        private void SendWoundInfo(in ConvertedPed convertedPed, in PedHitData hitData, in WoundData? wound) {
+            if (!convertedPed.isPlayer) {
+                return;
+            }
+
+            sharedData.notifier.alert.AddMessage(hitData.armorMessage);
+            if (!wound.HasValue) {
+                return;
+            }
+
+            WoundData woundData = wound.Value;
             Notifier.Entry notifier;
             if (woundData.HasCrits
                 || woundData.ArterySevered

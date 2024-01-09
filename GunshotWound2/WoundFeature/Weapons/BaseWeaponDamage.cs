@@ -1,8 +1,10 @@
 ﻿namespace GunshotWound2.WoundFeature {
+    using System;
     using System.Collections.Generic;
     using Configs;
     using GTA;
     using HitDetection;
+    using PedsFeature;
     using Utils;
 
     public abstract class BaseWeaponDamage {
@@ -48,27 +50,14 @@
             }
         }
 
-        public WoundData? ProcessHit(Ped ped, in PedHitData hit) {
+        public WoundData? ProcessHit(ref ConvertedPed convertedPed, ref PedHitData hit) {
             if (hit.bodyPart == PedHitData.BodyParts.Nothing || hit.weaponType == PedHitData.WeaponTypes.Nothing) {
                 sharedData.logger.WriteWarning("Hit is invalid, will be used default wound");
                 return DefaultWound();
             }
 
-            if (hit.bodyPart == PedHitData.BodyParts.Head
-                && ped.IsWearingHelmet
-                && sharedData.random.IsTrueWithProbability(HelmetSafeChance)) {
-                sharedData.notifier.warning.AddMessage(sharedData.localeConfig.HelmetSavedYourHead);
-                return null;
-            }
-
-            if (hit.bodyPart == PedHitData.BodyParts.UpperBody && !CheckArmorPenetration(ped)) {
-                sharedData.notifier.warning.AddMessage(sharedData.localeConfig.ArmorSavedYourChest);
-                return GetUnderArmorWound(damageMult: 1f, painMult: 2f);
-            }
-
-            if (hit.bodyPart == PedHitData.BodyParts.LowerBody && !CheckArmorPenetration(ped)) {
-                sharedData.notifier.warning.AddMessage(sharedData.localeConfig.ArmorSavedYourLowerBody);
-                return GetUnderArmorWound(damageMult: 2f, painMult: 3f);
+            if (TrySaveWithArmor(ref convertedPed, ref hit, out WoundData? armorWound)) {
+                return armorWound;
             }
 
             switch (hit.bodyPart) {
@@ -110,11 +99,53 @@
             };
         }
 
-        private bool CheckArmorPenetration(Ped ped) {
+        private bool TrySaveWithArmor(ref ConvertedPed convertedPed, ref PedHitData hit, out WoundData? armorWound) {
+            switch (hit.bodyPart) {
+                case PedHitData.BodyParts.Head:
+                    if (convertedPed.thisPed.IsWearingHelmet && sharedData.random.IsTrueWithProbability(HelmetSafeChance)) {
+                        hit.armorMessage = sharedData.localeConfig.HelmetSavedYourHead;
+                        armorWound = default;
+                        return true;
+                    } else {
+                        armorWound = default;
+                        return false;
+                    }
+
+                case PedHitData.BodyParts.UpperBody:
+                case PedHitData.BodyParts.LowerBody:
+                    break;
+                default:
+                    armorWound = default;
+                    return false;
+            }
+
+            if (CheckArmorPenetration(convertedPed.thisPed, out string reason)) {
+                hit.armorMessage = reason;
+                armorWound = default;
+                return false;
+            }
+
+            switch (hit.bodyPart) {
+                case PedHitData.BodyParts.UpperBody:
+                    hit.armorMessage = sharedData.localeConfig.ArmorSavedYourChest;
+                    armorWound = GetUnderArmorWound(damageMult: 1f, painMult: 2f);
+                    return true;
+                case PedHitData.BodyParts.LowerBody:
+                    hit.armorMessage = sharedData.localeConfig.ArmorSavedYourLowerBody;
+                    armorWound = GetUnderArmorWound(damageMult: 2f, painMult: 3f);
+                    break;
+                default: throw new ArgumentOutOfRangeException();
+            }
+
+            return true;
+        }
+
+        private bool CheckArmorPenetration(Ped ped, out string reason) {
             if (ped.Armor <= 0) {
 #if DEBUG
                 sharedData.logger.WriteInfo("Has no armor");
 #endif
+                reason = default;
                 return true;
             }
 
@@ -123,7 +154,7 @@
 #if DEBUG
                 sharedData.logger.WriteInfo("Armor is dead");
 #endif
-                sharedData.notifier.alert.AddMessage(sharedData.localeConfig.ArmorDestroyed);
+                reason = sharedData.localeConfig.ArmorDestroyed;
                 return true;
             }
 
@@ -131,6 +162,7 @@
 #if DEBUG
                 sharedData.logger.WriteInfo("Can't penetrate armor");
 #endif
+                reason = default;
                 return false;
             }
 
@@ -140,6 +172,7 @@
 #if DEBUG
                 sharedData.logger.WriteInfo("Minimal chance for armor save is >1");
 #endif
+                reason = default;
                 return false;
             }
 
@@ -150,13 +183,14 @@
 #if DEBUG
                 sharedData.logger.WriteInfo($"Armor deflected damage, save probability {saveProbability.ToString("F2")}");
 #endif
+                reason = default;
                 return false;
             }
 
 #if DEBUG
             sharedData.logger.WriteInfo($"Armor penetrated, save probability {saveProbability.ToString("F2")}");
 #endif
-            sharedData.notifier.warning.AddMessage(sharedData.localeConfig.ArmorPenetrated);
+            reason = sharedData.localeConfig.ArmorPenetrated;
             return true;
         }
 
