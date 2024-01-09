@@ -29,7 +29,15 @@
 
                 if (convertedPed.moveRate > 0f) {
                     PedEffects.OverrideMoveRate(convertedPed.thisPed, convertedPed.moveRate);
-                    sharedData.logger.WriteInfo($"MoveRate for {convertedPed.name} = {convertedPed.moveRate}");
+                }
+
+                if (convertedPed.resetMoveSet) {
+                    PedEffects.ResetMoveSet(convertedPed.thisPed);
+                    convertedPed.moveSet = default;
+                    convertedPed.resetMoveSet = default;
+                } else if (PedEffects.TryRequestMoveSet(convertedPed.moveSet)) {
+                    PedEffects.ChangeMoveSet(convertedPed.thisPed, convertedPed.moveSet);
+                    convertedPed.moveSet = default;
                 }
             }
         }
@@ -38,6 +46,7 @@
             foreach (Entity entity in peds) {
                 ref ConvertedPed convertedPed = ref pedStash.Get(entity);
                 PedEffects.OverrideMoveRate(convertedPed.thisPed, DEFAULT_MOVE_RATE);
+                PedEffects.ResetMoveSet(convertedPed.thisPed);
             }
         }
     }

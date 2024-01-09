@@ -134,9 +134,11 @@
 
         private void RefreshMoveSet(ref ConvertedPed convertedPed, IPainState state) {
             if (state != null && state.TryGetMoveSets(sharedData, convertedPed.isPlayer, out string[] moveSets)) {
-                PedEffects.ChangeMoveSetRandom(convertedPed.thisPed, moveSets, sharedData.random);
+                convertedPed.moveSet = moveSets != null && moveSets.Length > 0
+                        ? moveSets[sharedData.random.Next(0, moveSets.Length)]
+                        : null;
             } else {
-                PedEffects.ResetMoveSet(convertedPed.thisPed);
+                convertedPed.resetMoveSet = true;
             }
         }
 

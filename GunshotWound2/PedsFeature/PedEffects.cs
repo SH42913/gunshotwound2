@@ -1,28 +1,27 @@
 ﻿namespace GunshotWound2.PedsFeature {
-    using System;
     using GTA;
     using GTA.Native;
 
     public static class PedEffects {
-        public static void ChangeMoveSetRandom(Ped ped, string[] moveSets, Random random) {
-            string set = moveSets != null && moveSets.Length > 0
-                    ? moveSets[random.Next(0, moveSets.Length)]
-                    : null;
+        public static bool TryRequestMoveSet(string moveSetName) {
+            if (string.IsNullOrEmpty(moveSetName)) {
+                return false;
+            }
+            
+            var isLoaded = Function.Call<bool>(Hash.HAS_ANIM_SET_LOADED, moveSetName);
+            if (!isLoaded) {
+                Function.Call(Hash.REQUEST_ANIM_SET, moveSetName);
+            }
 
-            ChangeMoveSet(ped, set);
+            return isLoaded;
         }
 
         public static void ChangeMoveSet(Ped ped, string moveSetName) {
             if (string.IsNullOrEmpty(moveSetName)) {
                 ResetMoveSet(ped);
-                return;
+            } else {
+                Function.Call(Hash.SET_PED_MOVEMENT_CLIPSET, ped, moveSetName, 1f);
             }
-
-            if (!Function.Call<bool>(Hash.HAS_ANIM_SET_LOADED, moveSetName)) {
-                Function.Call(Hash.REQUEST_ANIM_SET, moveSetName);
-            }
-
-            Function.Call(Hash.SET_PED_MOVEMENT_CLIPSET, ped, moveSetName, 1f);
         }
 
         public static void ResetMoveSet(Ped ped) {
@@ -92,9 +91,7 @@
         }
 
         public static void PlayFacialAnim(Ped ped, string animation, bool useMaleDict) {
-            string animDict = useMaleDict
-                    ? "facials@gen_male@base"
-                    : "facials@gen_female@base";
+            string animDict = useMaleDict ? "facials@gen_male@base" : "facials@gen_female@base";
 
             Function.Call(Hash.PLAY_FACIAL_ANIM, ped, animation, animDict);
         }
