@@ -3,9 +3,7 @@
     using Scellecs.Morpeh;
 
     public sealed class GutsCrit : BaseCrit {
-        private readonly int[] nmMessages = {
-            1119,
-        };
+        private static readonly int[] NM_MESSAGES = { 1119, };
 
         protected override string PlayerMessage => sharedData.localeConfig.PlayerGutsCritMessage;
         protected override string ManMessage => sharedData.localeConfig.ManGutsCritMessage;
@@ -17,8 +15,9 @@
             CreatePain(pedEntity, 30f);
             CreateInternalBleeding(pedEntity, 0.5f);
 
+            PedEffects.PlayPain(convertedPed.thisPed, 8);
             convertedPed.RequestRagdoll(4000);
-            convertedPed.nmMessages = nmMessages;
+            convertedPed.nmMessages = NM_MESSAGES;
         }
 
         public override void Cancel(Entity pedEntity, ref ConvertedPed convertedPed) { }

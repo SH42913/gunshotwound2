@@ -4,9 +4,7 @@
     using Scellecs.Morpeh;
 
     public sealed class ArmsCrit : BaseCrit {
-        private readonly int[] nmMessages = {
-            155,
-        };
+        private static readonly int[] NM_MESSAGES = { 155, };
 
         protected override string PlayerMessage => sharedData.localeConfig.PlayerArmsCritMessage;
         protected override string ManMessage => sharedData.localeConfig.ManArmsCritMessage;
@@ -16,7 +14,7 @@
 
         public override void Apply(Entity pedEntity, ref ConvertedPed convertedPed) {
             convertedPed.hasHandsTremor = true;
-            convertedPed.nmMessages = nmMessages;
+            convertedPed.nmMessages = NM_MESSAGES;
             CreatePain(pedEntity, 20f);
 
             if (!convertedPed.isPlayer) {

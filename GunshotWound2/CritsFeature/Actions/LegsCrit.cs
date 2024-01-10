@@ -3,9 +3,7 @@
     using PlayerFeature;
 
     public sealed class LegsCrit : BaseCrit {
-        private readonly int[] nmMessages = {
-            169,
-        };
+        private static readonly int[] NM_MESSAGES = { 169, };
 
         protected override string PlayerMessage => sharedData.localeConfig.PlayerLegsCritMessage;
         protected override string ManMessage => sharedData.localeConfig.ManLegsCritMessage;
@@ -18,7 +16,7 @@
 
             convertedPed.hasBrokenLegs = true;
             convertedPed.RequestRagdoll(3000, GTA.RagdollType.Balance);
-            convertedPed.nmMessages = nmMessages;
+            convertedPed.nmMessages = NM_MESSAGES;
 
             convertedPed.moveRate = sharedData.mainConfig.WoundConfig.MoveRateOnNervesDamage;
 

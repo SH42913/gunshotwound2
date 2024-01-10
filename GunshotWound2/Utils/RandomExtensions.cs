@@ -20,5 +20,10 @@ namespace GunshotWound2.Utils
 
             return (float) rand.NextDouble() * (max - min) + min;
         }
+
+        public static T Next<T>(this Random random, T[] array) {
+            int index = random.Next(0, array.Length);
+            return array[index];
+        }
     }
 }

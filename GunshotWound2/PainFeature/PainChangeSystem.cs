@@ -6,14 +6,19 @@
     using PlayerFeature;
     using Scellecs.Morpeh;
     using States;
+    using Utils;
 
     public sealed class PainChangeSystem : ISystem {
-        private readonly SharedData sharedData;
-
-        private readonly int[] painNmMessages = {
-            548,
+        private static readonly int[] NM_MESSAGES = { 548, };
+        private static readonly int[] PAIN_SOUNDS = {
+            13,
+            18,
+            24,
+            32,
+            33,
         };
 
+        private readonly SharedData sharedData;
         private readonly IPainState[] painStates = {
             new MildPainState(),
             new AveragePainState(),
@@ -178,10 +183,11 @@
                 sharedData.logger.WriteInfo($"Painful wound {pain.diff.ToString("F")} at {convertedPed.name}");
 #endif
 
-                convertedPed.thisPed.PlayAmbientSpeech("GUN_BEG");
+                PedEffects.PlayPain(convertedPed.thisPed, sharedData.random.Next(PAIN_SOUNDS));
+                // convertedPed.thisPed.PlayAmbientSpeech("GUN_BEG");
                 if (woundConfig.RagdollOnPainfulWound) {
                     convertedPed.RequestRagdoll(timeInMs: 1500);
-                    convertedPed.nmMessages = painNmMessages;
+                    convertedPed.nmMessages = NM_MESSAGES;
                 }
 
                 if (convertedPed.isPlayer) {
@@ -190,7 +196,7 @@
                 }
             } else if (!convertedPed.isPlayer) {
                 convertedPed.RequestRagdoll(timeInMs: 500);
-                convertedPed.nmMessages = painNmMessages;
+                convertedPed.nmMessages = NM_MESSAGES;
             }
         }
     }
