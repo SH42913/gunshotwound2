@@ -27,10 +27,14 @@
         public void OnUpdate(float deltaTime) {
             MainConfig config = sharedData.mainConfig;
             foreach (Scellecs.Morpeh.Entity entity in damagedPeds) {
-                Ped ped = entity.GetComponent<ConvertedPed>().thisPed;
+                ref PedHitData hitData = ref entity.GetComponent<PedHitData>();
+                if (hitData.weaponType != PedHitData.WeaponTypes.Nothing) {
+                    continue;
+                }
 
                 var isSpecial = false;
                 PedHitData.WeaponTypes weaponType = default;
+                Ped ped = entity.GetComponent<ConvertedPed>().thisPed;
                 if (PedWasDamagedBy(config.LightImpactHashes, ped, out uint hitWeapon)) {
                     weaponType = PedHitData.WeaponTypes.LightImpact;
                 } else if (PedWasDamagedBy(config.HeavyImpactHashes, ped, out hitWeapon)) {
@@ -61,7 +65,6 @@
                     sharedData.logger.WriteWarning("Can't detect weapon");
                     sharedData.logger.WriteWarning($"Make sure you have hash of this weapon(possible {lastHash}) in GSWConfig");
                 } else {
-                    ref PedHitData hitData = ref entity.GetComponent<PedHitData>();
                     hitData.weaponType = weaponType;
                     hitData.randomBodyPart = isSpecial;
 #if DEBUG

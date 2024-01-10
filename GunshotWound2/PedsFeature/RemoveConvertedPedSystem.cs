@@ -38,6 +38,10 @@
         }
 
         private void Remove(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) {
+            if (convertedPed.isPlayer && convertedPed.thisPed.IsDead) {
+                PedStateChecker.Check(sharedData, entity);
+            }
+
 #if DEBUG
             DeleteBlip(convertedPed);
 #endif

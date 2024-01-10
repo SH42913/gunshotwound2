@@ -26,9 +26,12 @@
 
         public void OnUpdate(float deltaTime) {
             foreach (Scellecs.Morpeh.Entity pedEntity in damagedPeds) {
-                ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
                 ref PedHitData hitData = ref pedEntity.GetComponent<PedHitData>();
+                if (hitData.bodyPart != PedHitData.BodyParts.Nothing) {
+                    continue;
+                }
 
+                ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
                 if (hitData.randomBodyPart) {
                     int index = sharedData.random.Next(1, PARTS.Length);
                     hitData.bodyPart = PARTS[index];
