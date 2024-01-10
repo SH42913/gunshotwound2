@@ -22,8 +22,9 @@
         public bool hasSpineDamage;
 
         public float moveRate;
-        public string moveSet;
+        public string moveSetRequest;
         public bool resetMoveSet;
+        public bool hasCustomMoveSet;
         
 #if DEBUG
         public Blip customBlip;
