@@ -83,6 +83,7 @@
         /// 33: PAIN_*_GENERIC (Low, Medium, High)
         /// </summary>
         public static void PlayPain(Ped ped, int painId) {
+            ped.IsPainAudioEnabled = true;
             Function.Call(Hash.PLAY_PAIN, ped, painId, 0, 0);
         }
 

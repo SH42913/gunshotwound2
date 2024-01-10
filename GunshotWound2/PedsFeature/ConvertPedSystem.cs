@@ -46,7 +46,6 @@
 
                 // PedEffects.SetRagdollBlockingFlags(pedToConvert, 1);
                 convertedPed.thisPed.SetConfigFlag(107, true);
-                convertedPed.thisPed.IsPainAudioEnabled = true;
 
                 worldService.AddConverted(pedToConvert, entity);
                 entity.AddComponent<JustConvertedEvent>();
