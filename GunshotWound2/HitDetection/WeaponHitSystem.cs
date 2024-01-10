@@ -31,10 +31,14 @@
                 if (hitData.weaponType != PedHitData.WeaponTypes.Nothing) {
                     continue;
                 }
+                
+                Ped ped = entity.GetComponent<ConvertedPed>().thisPed;
+                if (ped.IsOnFire) {
+                    continue;
+                }
 
                 var isSpecial = false;
                 PedHitData.WeaponTypes weaponType = default;
-                Ped ped = entity.GetComponent<ConvertedPed>().thisPed;
                 if (PedWasDamagedBy(config.LightImpactHashes, ped, out uint hitWeapon)) {
                     weaponType = PedHitData.WeaponTypes.LightImpact;
                 } else if (PedWasDamagedBy(config.HeavyImpactHashes, ped, out hitWeapon)) {
