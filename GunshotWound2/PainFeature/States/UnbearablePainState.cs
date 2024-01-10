@@ -6,9 +6,8 @@
     using Utils;
 
     public sealed class UnbearablePainState : IPainState {
-        private readonly int[] painInjuryMessages = {
-            787,
-        };
+        private const string BLACKOUT_FX = "DeathFailOut";
+        private static readonly int[] NM_MESSAGES = { 787, };
 
         public float PainThreshold => 1f;
         public string Color => "~r~";
@@ -21,7 +20,7 @@
 
             convertedPed.ResetRagdoll();
             convertedPed.RequestPermanentRagdoll();
-            convertedPed.nmMessages = painInjuryMessages;
+            convertedPed.nmMessages = NM_MESSAGES;
 
             int deathAnimIndex = sharedData.random.Next(1, 3);
 
@@ -53,6 +52,8 @@
             if (!convertedPed.hasSpineDamage) {
                 sharedData.notifier.emergency.AddMessage(sharedData.localeConfig.UnbearablePainMessage);
             }
+            
+            CameraEffects.StartPostFx(BLACKOUT_FX, 5000);
         }
 
         public void ApplyPainDecreased(SharedData sharedData, Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
@@ -62,6 +63,7 @@
                 player.IgnoredByEveryone = false;
                 player.CanControlCharacter = true;
                 PlayerEffects.SetSprint(false);
+                CameraEffects.StopPostFx(BLACKOUT_FX);
             }
         }
 
