@@ -145,7 +145,12 @@
         }
 
         private void RefreshMoveRate(ref ConvertedPed convertedPed, ref Pain pain) {
-            if (!pain.HasPain() || convertedPed.hasBrokenLegs) {
+            if (convertedPed.hasBrokenLegs) {
+                return;
+            }
+
+            if (!pain.HasPain()) {
+                convertedPed.moveRate = 1f;
                 return;
             }
 
