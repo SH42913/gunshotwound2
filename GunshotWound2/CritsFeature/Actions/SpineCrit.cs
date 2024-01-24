@@ -16,8 +16,8 @@
         }
 
         public override void Cancel(Entity pedEntity, ref ConvertedPed convertedPed) {
-            convertedPed.ResetRagdoll();
             convertedPed.hasSpineDamage = false;
+            convertedPed.ResetRagdoll();
         }
     }
 }
