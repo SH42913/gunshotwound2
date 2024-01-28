@@ -31,6 +31,9 @@
             convertedPed.isRagdoll = inRagdoll;
             if (convertedPed.ragdollReset) {
                 if (inRagdoll) {
+#if DEBUG
+                    sharedData.logger.WriteInfo($"Restore {convertedPed.name} from ragdoll");
+#endif
                     convertedPed.thisPed.CancelRagdoll();
                 }
 
@@ -45,11 +48,11 @@
 
             if (inRagdoll) {
                 if (ragdollRequest.time < 0) {
-                    return;
+                    convertedPed.ResetRagdoll();
+                } else {
+                    int newTime = ragdollRequest.time - sharedData.deltaTimeInMs;
+                    ragdollRequest.time = newTime > 0 ? newTime : 0;
                 }
-
-                int newTime = ragdollRequest.time - sharedData.deltaTimeInMs;
-                ragdollRequest.time = newTime > 0 ? newTime : 0;
             } else if (!convertedPed.thisPed.IsInVehicle()) {
                 bool hasNaturalMotion = convertedPed.nmMessages != null;
 #if DEBUG
