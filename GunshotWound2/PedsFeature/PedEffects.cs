@@ -7,7 +7,7 @@
             if (string.IsNullOrEmpty(moveSetName)) {
                 return false;
             }
-            
+
             var isLoaded = Function.Call<bool>(Hash.HAS_ANIM_SET_LOADED, moveSetName);
             if (!isLoaded) {
                 Function.Call(Hash.REQUEST_ANIM_SET, moveSetName);
@@ -105,6 +105,10 @@
         /// </summary>
         public static void SetRagdollBlockingFlags(Ped ped, int flag) {
             Function.Call(Hash.SET_RAGDOLL_BLOCKING_FLAGS, ped, flag);
+        }
+
+        public static void SetVehicleOutOfControl(Vehicle vehicle) {
+            Function.Call(Hash.SET_VEHICLE_OUT_OF_CONTROL, vehicle, false, false);
         }
     }
 }

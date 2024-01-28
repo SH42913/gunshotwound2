@@ -20,6 +20,7 @@
         public bool hasHandsTremor;
         public bool hasBrokenLegs;
         public bool hasSpineDamage;
+        public bool isRestrictToDrive;
 
         public float moveRate;
         public string moveSetRequest;

@@ -23,24 +23,49 @@
         public void OnUpdate(float deltaTime) {
             foreach (Entity entity in peds) {
                 ref ConvertedPed convertedPed = ref pedStash.Get(entity);
-                if (convertedPed.isRagdoll) {
-                    continue;
+                if (convertedPed.thisPed.IsInVehicle()) {
+                    VehicleMovement(ref convertedPed);
+                } else {
+                    NonVehicleMovement(ref convertedPed);
                 }
+            }
+        }
 
-                if (convertedPed.moveRate > 0f) {
-                    PedEffects.OverrideMoveRate(convertedPed.thisPed, convertedPed.moveRate);
-                }
+        private static void VehicleMovement(ref ConvertedPed convertedPed) {
+            if (!convertedPed.isRestrictToDrive && !convertedPed.hasSpineDamage) {
+                return;
+            }
 
-                if (convertedPed.resetMoveSet) {
-                    PedEffects.ResetMoveSet(convertedPed.thisPed);
-                    convertedPed.moveSetRequest = default;
-                    convertedPed.resetMoveSet = false;
-                    convertedPed.hasCustomMoveSet = false;
-                } else if (PedEffects.TryRequestMoveSet(convertedPed.moveSetRequest)) {
-                    PedEffects.ChangeMoveSet(convertedPed.thisPed, convertedPed.moveSetRequest);
-                    convertedPed.moveSetRequest = default;
-                    convertedPed.hasCustomMoveSet = true;
-                }
+            GTA.Vehicle vehicle = convertedPed.thisPed.CurrentVehicle;
+            if (vehicle.Driver != convertedPed.thisPed) {
+                return;
+            }
+
+            if (convertedPed.isPlayer) {
+                GTA.Game.DisableAllControlsThisFrame();
+            } else {
+                PedEffects.SetVehicleOutOfControl(vehicle);
+            }
+        }
+
+        private static void NonVehicleMovement(ref ConvertedPed convertedPed) {
+            if (convertedPed.isRagdoll) {
+                return;
+            }
+
+            if (convertedPed.moveRate > 0f) {
+                PedEffects.OverrideMoveRate(convertedPed.thisPed, convertedPed.moveRate);
+            }
+
+            if (convertedPed.resetMoveSet) {
+                PedEffects.ResetMoveSet(convertedPed.thisPed);
+                convertedPed.moveSetRequest = default;
+                convertedPed.resetMoveSet = false;
+                convertedPed.hasCustomMoveSet = false;
+            } else if (PedEffects.TryRequestMoveSet(convertedPed.moveSetRequest)) {
+                PedEffects.ChangeMoveSet(convertedPed.thisPed, convertedPed.moveSetRequest);
+                convertedPed.moveSetRequest = default;
+                convertedPed.hasCustomMoveSet = true;
             }
         }
 

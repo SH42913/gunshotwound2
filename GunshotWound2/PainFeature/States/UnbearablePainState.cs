@@ -21,6 +21,7 @@
             convertedPed.ResetRagdoll();
             convertedPed.RequestPermanentRagdoll();
             convertedPed.nmMessages = NM_MESSAGES;
+            convertedPed.isRestrictToDrive = true;
 
             int deathAnimIndex = sharedData.random.Next(1, 3);
 
@@ -31,7 +32,6 @@
             convertedPed.thisPed.PlayAmbientSpeech(speech, SpeechModifier.ShoutedClear); //TODO PLAY_PAIN
 
             if (!convertedPed.isPlayer) {
-                // convertedPed.thisPed.Task.Wait(5000); TODO Repeat while have pain
                 convertedPed.thisPed.Weapons.Drop();
                 return;
             }
@@ -57,6 +57,8 @@
 
         public void ApplyPainDecreased(SharedData sharedData, Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
             convertedPed.ResetRagdoll();
+            convertedPed.isRestrictToDrive = false;
+
             if (convertedPed.isPlayer) {
                 Player player = Game.Player;
                 player.IgnoredByEveryone = false;
