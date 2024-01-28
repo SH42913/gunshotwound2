@@ -11,16 +11,21 @@
 
     public static class PedStateChecker {
         private static readonly StringBuilder STRING_BUILDER = new();
+        private static GTA.FeedPost LAST_POST;
 
         public static void Check(SharedData sharedData, Entity pedEntity) {
             ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
             ref Health health = ref pedEntity.GetComponent<Health>();
 
+            STRING_BUILDER.Clear();
             ShowHealth(sharedData, ref convertedPed, ref health);
             ShowPain(sharedData, pedEntity);
             ShowCrits(sharedData, pedEntity);
             ShowArmor(sharedData, ref convertedPed);
             ShowBleedingWounds(sharedData, ref convertedPed, ref health);
+
+            LAST_POST?.Delete();
+            LAST_POST = GTA.UI.Notification.PostTicker(STRING_BUILDER.ToString(), isImportant: true);
         }
 
         private static void ShowHealth(SharedData sharedData, ref ConvertedPed convertedPed, ref Health health) {
@@ -28,7 +33,7 @@
             int maxHealth = WoundConfig.ConvertHealthFromNative(health.max);
             float healthPercent = (float)currentHealth / maxHealth;
             if (healthPercent <= 0f) {
-                sharedData.notifier.info.AddMessage($"~r~{sharedData.localeConfig.YouAreDead}~s~");
+                STRING_BUILDER.AppendLine($"~r~{sharedData.localeConfig.YouAreDead}~s~");
                 return;
             }
 
@@ -43,15 +48,13 @@
                 color = "~r~";
             }
 
-            STRING_BUILDER.Clear();
             STRING_BUILDER.SetDefaultColor();
             STRING_BUILDER.Append(sharedData.localeConfig.Health);
             STRING_BUILDER.Append(": ");
             STRING_BUILDER.Append(color);
             STRING_BUILDER.Append(healthPercent.ToString("P0"));
             STRING_BUILDER.SetDefaultColor();
-
-            sharedData.notifier.info.AddMessage(STRING_BUILDER.ToString());
+            STRING_BUILDER.AppendEndOfLine();
         }
 
         private static void ShowArmor(SharedData sharedData, ref ConvertedPed convertedPed) {
@@ -76,15 +79,13 @@
                 message = sharedData.localeConfig.ArmorLooksAwful;
             }
 
-            STRING_BUILDER.Clear();
             STRING_BUILDER.Append(color);
             STRING_BUILDER.Append(message);
 #if DEBUG
             STRING_BUILDER.Append($" ({armor.ToString()})");
 #endif
             STRING_BUILDER.SetDefaultColor();
-
-            sharedData.notifier.info.AddMessage(STRING_BUILDER.ToString());
+            STRING_BUILDER.AppendEndOfLine();
         }
 
         private static void ShowPain(SharedData sharedData, Entity pedEntity) {
@@ -94,7 +95,6 @@
             }
 
             float painPercent = pain.Percent();
-            STRING_BUILDER.Clear();
             STRING_BUILDER.Append(sharedData.localeConfig.Pain);
             STRING_BUILDER.Append(": ");
             STRING_BUILDER.Append(pain.currentState?.Color ?? "~g~");
@@ -106,8 +106,7 @@
             }
 
             STRING_BUILDER.SetDefaultColor();
-
-            sharedData.notifier.info.AddMessage(STRING_BUILDER.ToString());
+            STRING_BUILDER.AppendEndOfLine();
         }
 
         private static void ShowBleedingWounds(SharedData sharedData, ref ConvertedPed convertedPed, ref Health health) {
@@ -116,7 +115,6 @@
             }
 
             LocaleConfig localeConfig = sharedData.localeConfig;
-            STRING_BUILDER.Clear();
             STRING_BUILDER.AppendEndOfLine();
             STRING_BUILDER.SetDefaultColor();
             STRING_BUILDER.Append(localeConfig.Wounds);
@@ -156,7 +154,7 @@
             }
 
             STRING_BUILDER.SetDefaultColor();
-            sharedData.notifier.info.AddMessage(STRING_BUILDER.ToString());
+            STRING_BUILDER.AppendEndOfLine();
         }
 
         private static void ShowCrits(SharedData sharedData, Entity pedEntity) {
@@ -166,7 +164,6 @@
                 return;
             }
 
-            STRING_BUILDER.Clear();
             STRING_BUILDER.Append(localeConfig.Crits);
             STRING_BUILDER.Append(" ~r~");
 
@@ -206,7 +203,7 @@
             }
 
             STRING_BUILDER.SetDefaultColor();
-            sharedData.notifier.info.AddMessage(STRING_BUILDER.ToString());
+            STRING_BUILDER.AppendEndOfLine();
         }
     }
 }
