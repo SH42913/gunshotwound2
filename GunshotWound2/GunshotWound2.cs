@@ -90,15 +90,16 @@
             //TODO: Coroutine for frames?
             (bool success, string reason) = Configs.MainConfig.TryToLoad(sharedData.mainConfig);
             if (!success) {
-                Notification.Show($"GSW2 couldn't load config!\nReason:\n~r~{reason}");
+                Notification.PostTicker($"GSW2 couldn't load config!\nReason:\n~r~{reason}", isImportant: true);
                 Abort();
                 return false;
             }
 
             (success, reason) = Configs.LocaleConfig.TryToLoad(sharedData.localeConfig, sharedData.mainConfig.Language);
             if (!success) {
-                Notification.Show("GSW2 couldn't load localization, default localization was loaded.\n"
-                                  + $"You need to check or change localization\nReason:\n~r~{reason}");
+                Notification.PostTicker(
+                    "GSW2 couldn't load localization, default localization was loaded.\n"
+                    + $"You need to check or change localization\nReason:\n~r~{reason}", isImportant: true);
 
                 return false;
             }
@@ -144,10 +145,10 @@
         }
 
         private void HandleRuntimeException(Exception exception) {
-            Notification.Show($"~o~{sharedData.localeConfig.GswStopped}");
+            Notification.PostTicker($"~o~{sharedData.localeConfig.GswStopped}", isImportant: true);
             sharedData.logger.WriteError(exception.ToString());
             File.WriteAllText(EXCEPTION_LOG_PATH, exception.ToString());
-            Notification.Show($"~r~There is a runtime error in GSW2!\nCheck {EXCEPTION_LOG_PATH}");
+            Notification.PostTicker($"~r~There is a runtime error in GSW2!\nCheck {EXCEPTION_LOG_PATH}", isImportant: true);
         }
         #endregion
     }

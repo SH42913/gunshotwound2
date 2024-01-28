@@ -19,7 +19,7 @@
 
         public void Show() {
             if (stringBuilder.Length > 0) {
-                Notification.Show(stringBuilder.ToString());
+                Notification.PostTicker(stringBuilder.ToString(), isImportant: false);
                 stringBuilder.Clear();
             }
         }
