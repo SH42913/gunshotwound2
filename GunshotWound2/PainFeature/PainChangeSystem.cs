@@ -198,6 +198,8 @@
                 if (convertedPed.isPlayer) {
                     CameraEffects.ShakeCameraOnce();
                     CameraEffects.FlashCameraOnce();
+                } else if(convertedPed.thisPed.IsOnBike) {
+                    convertedPed.thisPed.Task.LeaveVehicle(GTA.LeaveVehicleFlags.BailOut);
                 }
             }
         }
