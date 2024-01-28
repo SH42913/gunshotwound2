@@ -15,11 +15,11 @@
         }
 
         protected WoundData MediumBruiseWound(string position) {
-            return CreateWound($"{sharedData.localeConfig.MediumBruiseOn} {position}", 8f, -1f, 30f, 0.001f);
+            return CreateWound($"{sharedData.localeConfig.MediumBruiseOn} {position}", 8f, -1f, 25f, 0.001f);
         }
 
         protected WoundData HeavyBruiseWound(string position, bool hasCrits) {
-            return CreateWound($"{sharedData.localeConfig.HeavyBruiseOn} {position}", 10f, -1f, 45f, 0.05f, hasCrits);
+            return CreateWound($"{sharedData.localeConfig.HeavyBruiseOn} {position}", 10f, -1f, 39f, 0.05f, hasCrits);
         }
 
         protected WoundData WindedFromImpact() {

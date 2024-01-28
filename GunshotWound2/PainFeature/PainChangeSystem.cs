@@ -199,9 +199,6 @@
                     CameraEffects.ShakeCameraOnce();
                     CameraEffects.FlashCameraOnce();
                 }
-            } else if (!convertedPed.isPlayer) {
-                convertedPed.RequestRagdoll(timeInMs: 500);
-                convertedPed.nmMessages = NM_MESSAGES;
             }
         }
     }
