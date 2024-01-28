@@ -37,7 +37,6 @@
             }
 
             Player player = Game.Player;
-            player.CanControlCharacter = false;
             if (player.WantedLevel <= 3) {
                 player.IgnoredByEveryone = true;
                 if (sharedData.mainConfig.PlayerConfig.PoliceCanForgetYou) {
@@ -61,7 +60,6 @@
             if (convertedPed.isPlayer) {
                 Player player = Game.Player;
                 player.IgnoredByEveryone = false;
-                player.CanControlCharacter = true;
                 PlayerEffects.SetSprint(false);
                 CameraEffects.StopPostFx(BLACKOUT_FX);
             }
