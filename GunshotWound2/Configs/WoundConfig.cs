@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 
-namespace GunshotWound2.Configs
-{
-    public sealed class WoundConfig
-    {
+namespace GunshotWound2.Configs {
+    public sealed class WoundConfig {
         //TODO: Make it dynamic in config
         public const float MAX_SEVERITY_FOR_BANDAGE = 1f;
         private const int HEALTH_CORRECTION = 100;
@@ -35,29 +33,6 @@ namespace GunshotWound2.Configs
 
         public Dictionary<string, float?[]> DamageSystemConfigs;
 
-        public static WoundConfig CreateDefault()
-        {
-            return new WoundConfig
-            {
-                MoveRateOnNervesDamage = 0.7f,
-                MoveRateOnFullPain = 0.8f,
-                EmergencyBleedingLevel = 1.5f,
-                RealisticNervesDamage = true,
-                DamageMultiplier = 1,
-                BleedingMultiplier = 1,
-                PainMultiplier = 1,
-                DamageDeviation = 0.2f,
-                BleedingDeviation = 0.2f,
-                PainDeviation = 0.2f,
-                RagdollOnPainfulWound = true,
-                PainfulWoundPercent = 0.5f,
-                MinimalChanceForArmorSave = 0.6f,
-                BandageCost = 15,
-                ApplyBandageTime = 5,
-                SelfHealingRate = 0.01f
-            };
-        }
-
         public bool IsBleedingCanBeBandaged(float severity) {
             return severity <= BleedingMultiplier * MAX_SEVERITY_FOR_BANDAGE;
         }
@@ -70,16 +45,15 @@ namespace GunshotWound2.Configs
             return health + HEALTH_CORRECTION;
         }
 
-        public override string ToString()
-        {
-            return $"{nameof(WoundConfig)}:\n" +
-                   $"{nameof(RealisticNervesDamage)}: {RealisticNervesDamage.ToString()}\n" +
-                   $"D/P/B Mults: {DamageMultiplier.ToString("F2")}/{PainMultiplier.ToString("F2")}/{BleedingMultiplier.ToString("F2")}\n" +
-                   $"D/P/B Deviations: {DamageDeviation.ToString("F2")}/{PainDeviation.ToString("F2")}/{BleedingDeviation.ToString("F2")}\n" +
-                   $"{nameof(MoveRateOnFullPain)}: {MoveRateOnFullPain.ToString(CultureInfo.InvariantCulture)}\n" +
-                   $"{nameof(MoveRateOnNervesDamage)}: {MoveRateOnNervesDamage.ToString(CultureInfo.InvariantCulture)}\n" +
-                   $"{nameof(RagdollOnPainfulWound)}: {RagdollOnPainfulWound.ToString()}\n" +
-                   $"{nameof(MinimalChanceForArmorSave)}: {MinimalChanceForArmorSave.ToString(CultureInfo.InvariantCulture)}";
+        public override string ToString() {
+            return $"{nameof(WoundConfig)}:\n"
+                   + $"{nameof(RealisticNervesDamage)}: {RealisticNervesDamage.ToString()}\n"
+                   + $"D/P/B Mults: {DamageMultiplier.ToString("F2")}/{PainMultiplier.ToString("F2")}/{BleedingMultiplier.ToString("F2")}\n"
+                   + $"D/P/B Deviations: {DamageDeviation.ToString("F2")}/{PainDeviation.ToString("F2")}/{BleedingDeviation.ToString("F2")}\n"
+                   + $"{nameof(MoveRateOnFullPain)}: {MoveRateOnFullPain.ToString(CultureInfo.InvariantCulture)}\n"
+                   + $"{nameof(MoveRateOnNervesDamage)}: {MoveRateOnNervesDamage.ToString(CultureInfo.InvariantCulture)}\n"
+                   + $"{nameof(RagdollOnPainfulWound)}: {RagdollOnPainfulWound.ToString()}\n"
+                   + $"{nameof(MinimalChanceForArmorSave)}: {MinimalChanceForArmorSave.ToString(CultureInfo.InvariantCulture)}";
         }
     }
 }

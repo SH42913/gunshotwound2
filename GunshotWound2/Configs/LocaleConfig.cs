@@ -2,10 +2,8 @@
 using System.IO;
 using GunshotWound2.Utils;
 
-namespace GunshotWound2.Configs
-{
-    public sealed class LocaleConfig
-    {
+namespace GunshotWound2.Configs {
+    public sealed class LocaleConfig {
         public string HelmetSavedYourHead;
         public string ArmorSavedYourChest;
         public string ArmorSavedYourLowerBody;
@@ -125,153 +123,24 @@ namespace GunshotWound2.Configs
 
         public string LocalizationAuthor;
 
-        private static void FillWithDefaultValues(LocaleConfig config)
-        {
-            config.HelmetSavedYourHead = "Your helmet saved your head";
-            config.ArmorSavedYourChest = "Your body armor has protected you from a chest injury";
-            config.ArmorSavedYourLowerBody = "Your body armor has protected you from a lower body injury";
-            config.ArmorPenetrated = "Your armor was penetrated";
-
-            config.BodyPartHead = "head";
-            config.BodyPartNeck = "neck";
-            config.BodyPartChest = "chest";
-            config.BodyPartLowerBody = "lower body";
-            config.BodyPartArm = "arm";
-            config.BodyPartLeg = "leg";
-
-            config.GrazeWound = "Graze wound";
-
-            config.GrazeGswOn = "Graze GSW on";
-            config.FleshGswOn = "Flesh GSW on";
-            config.PenetratingGswOn = "Penetrating GSW on";
-            config.PerforatingGswOn = "Perforating GSW on";
-            config.AvulsiveGswOn = "Avulsive GSW on";
-
-            config.HeavyBrainDamage = "Heavy brain damage";
-            config.BulletFlyThroughYourHead = "A bullet has penetrated your skull";
-            config.BulletTornApartYourBrain = "A bullet has fractured your skull";
-
-            config.LightBruise = "Light bruise";
-            config.LightBruiseOn = "Light bruise on";
-            config.MediumBruiseOn = "Medium bruise on";
-            config.HeavyBruiseOn = "Heavy bruise on";
-            config.AbrazionWoundOn = "Abrasion wound on";
-            config.WindedFromImpact = "Winded from impact";
-
-            config.IncisionWoundOn = "Incision wound on";
-            config.LacerationWoundOn = "Laceration wound on";
-            config.StabWoundOn = "Stab wound on";
-
-            config.Blackout = "Blackout possible";
-            config.BleedingInHead = "Intracranial bleeding";
-            config.TraumaticBrainInjury = "Traumatic brain injury";
-            config.BrokenNeck = "Damage to cervical vertebrae";
-
-            config.Health = "Health";
-            config.YouAreDead = "You are dead!";
-            config.Pain = "Pain";
-
-            config.ArmorLooksGreat = "Your armor appears undamaged";
-            config.ScratchesOnArmor = "Some plates of your armor is broken";
-            config.DentsOnArmor = "Your armor is noticeably damaged";
-            config.ArmorLooksAwful = "Your body armor is practically useless";
-
-            config.Crits = "Critical damaged";
-            config.NervesCrit = "nerves";
-            config.HeartCrit = "heart";
-            config.LungsCrit = "lungs";
-            config.StomachCrit = "stomach";
-            config.GutsCrit = "guts";
-            config.ArmsCrit = "arms";
-            config.LegsCrit = "legs";
-
-            config.Wounds = "Wounds";
-
-            config.DontHaveMoneyForHelmet = "Insufficient funds to purchase a helmet";
-
-            config.InternalBleeding = "Internal bleeding";
-            config.SeveredArtery = "Punctured artery";
-            config.SeveredArteryMessage = "An artery was severed";
-
-            config.PlayerNervesCritMessage = "You can't feel your limbs";
-            config.ManNervesCritMessage = "He looks like his spine was damaged";
-            config.WomanNervesCritMessage = "She looks like her spine was damaged";
-
-            config.PlayerHeartCritMessage = "You feel like life is leaving you";
-            config.ManHeartCritMessage = "He coughs up blood";
-            config.WomanHeartCritMessage = "She coughs up blood";
-
-            config.PlayerLungsCritMessage = "You cough up blood";
-            config.ManLungsCritMessage = "He coughs up blood";
-            config.WomanLungsCritMessage = "She coughs up blood";
-
-            config.PlayerStomachCritMessage = "You feel yourself very sick";
-            config.ManStomachCritMessage = "He looks very sick";
-            config.WomanStomachCritMessage = "She looks very sick";
-
-            config.PlayerGutsCritMessage = "You can see your guts";
-            config.ManGutsCritMessage = "He looks very sick";
-            config.WomanGutsCritMessage = "She looks very sick";
-
-            config.PlayerArmsCritMessage = "You feel awful pain in your arm";
-            config.ManArmsCritMessage = "His arm looks broken";
-            config.WomanArmsCritMessage = "Her arm looks broken";
-
-            config.PlayerLegsCritMessage = "You feel awful pain in your leg";
-            config.ManLegsCritMessage = "His leg looks broken";
-            config.WomanLegsCritMessage = "Her leg looks broken";
-
-            config.UnbearablePainMessage = "You lose consciousness from the overwhelming pain";
-
-            config.AddingRange = "Increasing range";
-            config.RemovingRange = "Decreasing range";
-
-            config.ThanksForUsing = "Thanks for using";
-            config.GswStopped = "GSW2 operations have ended :(";
-            config.GswIsPaused = "GSW2 is paused";
-            config.GswIsWorking = "GSW2 is working";
-
-            config.AlreadyBandaging = "You're already bandaging yourself";
-            config.DontHaveMoneyForBandage = "You don't have enough money for a bandage";
-            config.YouTryToBandage = "You try to bandage self. You need to stand still for {0} seconds!";
-            config.BandageFailed = "Bandaging has failed. You need to stand still to apply a bandage!";
-            config.BandageSuccess = "You applied bandage to {0}";
-
-            config.ArmorDestroyed = "Your armor falls apart";
-
-            config.PainShockDeath = "You have died of shock";
-
-            config.LocalizationAuthor = "~r~SH42913";
-        }
-
-        public static (bool success, string reason) TryToLoad(LocaleConfig config, string language)
-        {
+        public static (bool success, string reason) TryToLoad(LocaleConfig config, string language) {
             var gswLocalization = new FileInfo("scripts/GSW2/GSW2Localization.csv");
             var scriptsLocalization = new FileInfo("scripts/GSW2Localization.csv");
-            if (!gswLocalization.Exists && !scriptsLocalization.Exists)
-            {
+            if (!gswLocalization.Exists && !scriptsLocalization.Exists) {
                 return (false, "Localization file was not found");
             }
 
-            var doc = gswLocalization.Exists
-                ? gswLocalization
-                : scriptsLocalization;
-
-            try
-            {
+            var doc = gswLocalization.Exists ? gswLocalization : scriptsLocalization;
+            try {
                 LoadLocalization(config, language, doc.OpenRead());
-            }
-            catch (Exception e)
-            {
-                FillWithDefaultValues(config);
+            } catch (Exception e) {
                 return (false, e.Message);
             }
 
             return (true, null);
         }
 
-        private static void LoadLocalization(LocaleConfig config, string language, Stream stream)
-        {
+        private static void LoadLocalization(LocaleConfig config, string language, Stream stream) {
             var manager = new LocalizationManager(stream);
             manager.SetLanguage(language);
 

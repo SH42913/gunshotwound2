@@ -59,26 +59,11 @@ namespace GunshotWound2.Configs
                    $"{PlayerConfig}";
         }
 
-        private static void LoadDefaultValues(MainConfig config)
-        {
-            config.Language = "EN";
-
-            config.HelmetKey = Keys.J;
-            config.BandageKey = Keys.K;
-            config.CheckKey = Keys.L;
-            config.IncreaseRangeKey = Keys.PageUp;
-            config.ReduceRangeKey = Keys.PageDown;
-            config.PauseKey = Keys.End;
-            config.HealKey = null;
-
-            config.PlayerConfig = PlayerConfig.CreateDefault();
-            config.WoundConfig = WoundConfig.CreateDefault();
-            config.NpcConfig = NpcConfig.CreateDefault();
-        }
-
         public static (bool success, string reason) TryToLoad(MainConfig config)
         {
-            LoadDefaultValues(config);
+            config.PlayerConfig = new PlayerConfig();
+            config.WoundConfig = new WoundConfig();
+            config.NpcConfig = new NpcConfig();
 
             string path = null;
 
@@ -153,8 +138,6 @@ namespace GunshotWound2.Configs
             if (node == null) return;
 
             config.PlayerConfig.WoundedPlayerEnabled = node.Element("GSWPlayerEnabled").GetBool();
-
-            config.PlayerConfig.MinimalHealth = node.Element("MinimalHealth").GetInt();
             config.PlayerConfig.MaximalPain = node.Element("MaximalPain").GetFloat();
             config.PlayerConfig.PainRecoverSpeed = node.Element("PainRecoverySpeed").GetFloat();
             config.PlayerConfig.BleedHealingSpeed = node.Element("BleedHealSpeed").GetFloat() / 1000f;

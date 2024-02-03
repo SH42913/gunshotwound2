@@ -2,23 +2,20 @@
 using System.Globalization;
 using GTA;
 
-namespace GunshotWound2.Configs
-{
+namespace GunshotWound2.Configs {
     [Flags]
-    public enum GswTargets
-    {
-        COMPANION = 1,
-        DISLIKE = 2,
-        HATE = 4,
-        LIKE = 8,
-        NEUTRAL = 16,
-        PEDESTRIAN = 32,
-        RESPECT = 64,
-        ALL = 128
+    public enum GswTargets {
+        COMPANION = 1 << 0,
+        DISLIKE = 1 << 1,
+        HATE = 1 << 2,
+        LIKE = 1 << 3,
+        NEUTRAL = 1 << 4,
+        PEDESTRIAN = 1 << 5,
+        RESPECT = 1 << 6,
+        ALL = 1 << 7,
     }
 
-    public sealed class NpcConfig
-    {
+    public sealed class NpcConfig {
         public float AddingPedRange;
         public float RemovePedRange;
 
@@ -44,41 +41,18 @@ namespace GunshotWound2.Configs
         public string[] AvgPainSets;
         public string[] IntensePainSets;
 
-        public static NpcConfig CreateDefault()
-        {
-            return new NpcConfig
-            {
-                AddingPedRange = 50f,
-                RemovePedRange = 100f,
-                ShowEnemyCriticalMessages = true,
-                MinStartHealth = 50,
-                MaxStartHealth = 100,
-                MaximalBleedStopSpeed = 0.001f,
-                LowerMaximalPain = 50,
-                UpperMaximalPain = 80,
-                MaximalPainRecoverSpeed = 1f,
-                MinAccuracy = 10,
-                MaxAccuracy = 50,
-                MinShootRate = 10,
-                MaxShootRate = 50,
-                Targets = GswTargets.ALL,
-                ScanOnlyDamaged = false,
-            };
-        }
-
-        public override string ToString()
-        {
-            return $"{nameof(NpcConfig)}:\n" +
-                   $"{nameof(ScanOnlyDamaged)}: {ScanOnlyDamaged.ToString()}\n" +
-                   $"{nameof(AddingPedRange)}: {AddingPedRange.ToString(CultureInfo.InvariantCulture)}\n" +
-                   $"{nameof(RemovePedRange)}: {RemovePedRange.ToString(CultureInfo.InvariantCulture)}\n" +
-                   $"{nameof(ShowEnemyCriticalMessages)}: {ShowEnemyCriticalMessages.ToString()}\n" +
-                   $"BleedStop: {MaximalBleedStopSpeed.ToString(CultureInfo.InvariantCulture)}\n" +
-                   $"StartHealth: {MinStartHealth.ToString()} - {MaxStartHealth.ToString()}\n" +
-                   $"MaximalPain: {LowerMaximalPain.ToString(CultureInfo.InvariantCulture)} - {UpperMaximalPain.ToString(CultureInfo.InvariantCulture)}\n" +
-                   $"Accuracy: {MinAccuracy.ToString()} - {MaxAccuracy.ToString()}\n" +
-                   $"ShootRate: {MinShootRate.ToString()} - {MaxShootRate.ToString()}\n" +
-                   $"PainRecoverSpeed: {MaximalPainRecoverSpeed.ToString(CultureInfo.InvariantCulture)}";
+        public override string ToString() {
+            return $"{nameof(NpcConfig)}:\n"
+                   + $"{nameof(ScanOnlyDamaged)}: {ScanOnlyDamaged.ToString()}\n"
+                   + $"{nameof(AddingPedRange)}: {AddingPedRange.ToString(CultureInfo.InvariantCulture)}\n"
+                   + $"{nameof(RemovePedRange)}: {RemovePedRange.ToString(CultureInfo.InvariantCulture)}\n"
+                   + $"{nameof(ShowEnemyCriticalMessages)}: {ShowEnemyCriticalMessages.ToString()}\n"
+                   + $"BleedStop: {MaximalBleedStopSpeed.ToString(CultureInfo.InvariantCulture)}\n"
+                   + $"StartHealth: {MinStartHealth.ToString()} - {MaxStartHealth.ToString()}\n"
+                   + $"MaximalPain: {LowerMaximalPain.ToString(CultureInfo.InvariantCulture)} - {UpperMaximalPain.ToString(CultureInfo.InvariantCulture)}\n"
+                   + $"Accuracy: {MinAccuracy.ToString()} - {MaxAccuracy.ToString()}\n"
+                   + $"ShootRate: {MinShootRate.ToString()} - {MaxShootRate.ToString()}\n"
+                   + $"PainRecoverSpeed: {MaximalPainRecoverSpeed.ToString(CultureInfo.InvariantCulture)}";
         }
     }
 }

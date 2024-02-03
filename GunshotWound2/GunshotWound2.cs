@@ -97,10 +97,8 @@
 
             (success, reason) = Configs.LocaleConfig.TryToLoad(sharedData.localeConfig, sharedData.mainConfig.Language);
             if (!success) {
-                Notification.PostTicker(
-                    "GSW2 couldn't load localization, default localization was loaded.\n"
-                    + $"You need to check or change localization\nReason:\n~r~{reason}", isImportant: true);
-
+                Notification.PostTicker($"GSW2 couldn't load localization!\nReason:\n~r~{reason}", isImportant: true);
+                Abort();
                 return false;
             }
 
