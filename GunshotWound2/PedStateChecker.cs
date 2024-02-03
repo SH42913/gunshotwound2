@@ -11,7 +11,7 @@
 
     public static class PedStateChecker {
         private static readonly StringBuilder STRING_BUILDER = new();
-        private static GTA.FeedPost LAST_POST;
+        private static int LAST_POST;
 
         public static void Check(SharedData sharedData, Entity pedEntity) {
             ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
@@ -24,8 +24,8 @@
             ShowArmor(sharedData, ref convertedPed);
             ShowBleedingWounds(sharedData, ref convertedPed, ref health);
 
-            LAST_POST?.Delete();
-            LAST_POST = GTA.UI.Notification.PostTicker(STRING_BUILDER.ToString(), isImportant: true);
+            GTA.UI.Notification.Hide(LAST_POST);
+            LAST_POST = GTA.UI.Notification.Show(STRING_BUILDER.ToString(), blinking: true);
         }
 
         private static void ShowHealth(SharedData sharedData, ref ConvertedPed convertedPed, ref Health health) {
