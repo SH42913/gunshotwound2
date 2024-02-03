@@ -14,8 +14,8 @@
 		<!-- If TRUE - cops can forget you, when you fall unconscious.
         If you use Realism Dispatch Enhanced, better to set it FALSE-->
 
-		<CanDropWeapon Value="TRUE"/>
-		<!-- If TRUE - you will lose weapon on arm crits and when you fall unconscious -->
+		<CanDropWeapon Value="FALSE"/>
+		<!-- If TRUE - player will lose weapon on arm crits and when you fall unconscious -->
 
 		<MaximalSlowMo Value="0.5"/>
 		<!-- 0.5 mean TimeScale never be less than 0.5.
