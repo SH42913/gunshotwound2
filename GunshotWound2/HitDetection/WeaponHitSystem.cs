@@ -1,5 +1,6 @@
 ﻿namespace GunshotWound2.HitDetection {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using Configs;
     using GTA;
@@ -79,7 +80,7 @@
             }
         }
 
-        private static bool PedWasDamagedBy(uint[] hashes, Ped target, out uint weapon) {
+        private static bool PedWasDamagedBy(HashSet<uint> hashes, Ped target, out uint weapon) {
             if (hashes != null) {
                 foreach (uint hash in hashes) {
                     if (Function.Call<bool>(Hash.HAS_PED_BEEN_DAMAGED_BY_WEAPON, target, hash, 0)) {

@@ -37,13 +37,13 @@ namespace GunshotWound2.Configs
         public bool AlertMessages = true;
         public bool EmergencyMessages = true;
 
-        public uint[] SmallCaliberHashes;
-        public uint[] MediumCaliberHashes;
-        public uint[] HeavyCaliberHashes;
-        public uint[] LightImpactHashes;
-        public uint[] HeavyImpactHashes;
-        public uint[] ShotgunHashes;
-        public uint[] CuttingHashes;
+        public HashSet<uint> SmallCaliberHashes;
+        public HashSet<uint> MediumCaliberHashes;
+        public HashSet<uint> HeavyCaliberHashes;
+        public HashSet<uint> LightImpactHashes;
+        public HashSet<uint> HeavyImpactHashes;
+        public HashSet<uint> ShotgunHashes;
+        public HashSet<uint> CuttingHashes;
 
         public void ApplyTo(Notifier notifier) {
             notifier.info.show = CommonMessages;
@@ -296,7 +296,7 @@ namespace GunshotWound2.Configs
             config.CuttingHashes = GetWeaponHashes("Cutting");
             config.WoundConfig.DamageSystemConfigs = dictionary;
 
-            uint[] GetWeaponHashes(string weaponName)
+            HashSet<uint> GetWeaponHashes(string weaponName)
             {
                 var weaponNode = node.Element(weaponName);
                 if (weaponNode == null) throw new Exception($"{weaponName} node not found!");
@@ -305,7 +305,7 @@ namespace GunshotWound2.Configs
                 var hashes = weaponNode.Element(name)?.Attribute(name)?.Value;
                 if (string.IsNullOrEmpty(hashes)) throw new Exception($"{weaponName}'s hashes is empty");
 
-                return hashes.Split(Separator, StringSplitOptions.RemoveEmptyEntries).Select(uint.Parse).ToArray();
+                return hashes.Split(Separator, StringSplitOptions.RemoveEmptyEntries).Select(uint.Parse).ToHashSet();
             }
         }
 
