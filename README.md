@@ -5,6 +5,7 @@ The GunShot Wound 2 - mod targets for realism, that brings to GTAV the most real
 It simulates pain, bleedings, organ failures, working armor, etc. Do you wanna real firearms experience?\
 Try the **GSW2**, young Luke!
 
+**Most mods that changes health or armor will be incompatible with GSW.**
 ~~GSW2 can work wrong if you have installed mods that changes .meta files of the game, especially if common.rpf/data/pedhealth.meta was changed, GSW2 only works well with vanilla pedhealth.meta file!
 Eg, GSW2 will be compatible with Ripplers Realism if you'll not apply pedhealth.meta from RR.~~
 
@@ -17,14 +18,15 @@ Every new wound applies pain to the ped. If total pain is more than maximal pain
 Pain decreases over time. Pain will make ped slower, change movement animation and reduce its accuracy. For player pain will disable and lock Special abilities and sprint.\
 Most of wounds create bleeding. Every bleeding step by step decreases ped's health, but wounds heal by themselves over time. Player can bandage self to reduce time to heal bleeding.\
 Any wound also can create critical damage, like broken arm bone, punctured lungs, severed artery, etc. It will create additional pain, bleeding, and other effects.\
-If ped got full health in any way, all pain, every bleedings and crits will heal instantly. So if you can heal all your wounds - find a med-pack or use a trainer to heal yourself.
+If ped got full health in any way, all pain, every bleedings and crits will heal instantly. So if you can heal all your wounds - find a med-pack or use a trainer to heal yourself.\
+_Currently, GSW2 doesn't support vehicle weapons._
 
 ## Other features
-- **Death from pain shock!** If ped's pain is more than 300%, ped will die. Be carefully!
-- **Translations!** The GSW2 supports translations to other languages. Just add your translation to [GSW2Localization-table](https://docs.google.com/spreadsheets/d/1TY0nSEJMDmypkYrcVUBlMG3HIAEW075dCOtxXgW5UJ0/edit) and your translation will appear in next release!
 - **Support for switching peds!** You can freely switch between peds! You can feel all their wounds. It also means you can switch skins!
+- **Bandages and SelfHealing!** You can apply a bandage for $15 to the wound using K by default, but some bleedings(eg, internal bleedings) can't be bandaged. If you have no bleeding, your health will slowly increase with time. It's the only way to survive in this dangerous world!
 - **Motorbike Helmets!** Helmets can save your head from hits and bullets with some chance. You can get a helmet for $40 with helmet-hotkey, by default H (changeable in XML-config).
-- **Bandages and SelfHealing!** You can apply a bandage for $15 to the wound using K by default. Some bleedings(eg, internal bleedings) can't be bandaged. If you have no bleeding, your health will slowly increase with time. It's the only way to survive in this dangerous world!
+- **Translations!** The GSW2 supports translations to other languages. Just add your translation to [GSW2Localization-table](https://docs.google.com/spreadsheets/d/1TY0nSEJMDmypkYrcVUBlMG3HIAEW075dCOtxXgW5UJ0/edit) and your translation will appear in next release!
+- **Death from pain shock!** If ped's pain is more than 300%, ped will die. Be carefully!
 
 ## How to install?
 1) Install Microsoft .NET Framework 4.8 or later

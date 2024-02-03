@@ -154,13 +154,13 @@
 		</SmallCaliber>
 
 		<MediumCaliber DamageMult="1.2" BleedingMult="1.3" PainMult="1.2" CritChance="0.6" ArmorDamage="4">
-			<!-- HeavyPistol;Revolver;RevolverMk2;AssaultRifleMk2;AdvancedRifle;AssaultSMG;BullpupRifle;BullpupRifleMk2;CarbineRifle;CarbineRifleMk2;CombatMG;CompactRifle;Gusenberg;SpecialCarbine;SpecialCarbineMk2;NavyRevolver;MilitaryRifle; -->
-			<Hashes Hashes="3523564046;3249783761;3415619887;961495388;2937143193;4024951519;2132975508;2228681469;2210333304;4208062921;2144741730;1649403952;1627465347;3231910285;2526821735;2441047180;2772307231;"/>
+			<!-- Pistol50;HeavyPistol;Revolver;RevolverMk2;AssaultRifleMk2;AdvancedRifle;AssaultSMG;BullpupRifle;BullpupRifleMk2;CarbineRifle;CarbineRifleMk2;CombatMG;CompactRifle;Gusenberg;SpecialCarbine;SpecialCarbineMk2;NavyRevolver;MilitaryRifle; -->
+			<Hashes Hashes="2578377531;3523564046;3249783761;3415619887;961495388;2937143193;4024951519;2132975508;2228681469;2210333304;4208062921;2144741730;1649403952;1627465347;3231910285;2526821735;2441047180;2772307231;"/>
 		</MediumCaliber>
 
 		<HighCaliber DamageMult="1.3" BleedingMult="1.5" PainMult="1.5" CritChance="0.8" ArmorDamage="6">
-			<!-- Pistol50;MG;CombatMGMk2;AssaultRifle;HeavySniper;HeavySniperMk2;MarksmanRifle;MarksmanRifleMk2;Minigun;Railgun;Musket;SniperRifle;UnholyHellbringer; -->
-			<Hashes Hashes="2578377531;2634544996;3686625920;3220176749;205991906;177293209;3342088282;1785463520;1119849093;1834241177;2828843422;100416529;1198256469;"/>
+			<!-- MG;CombatMGMk2;AssaultRifle;HeavySniper;HeavySniperMk2;MarksmanRifle;MarksmanRifleMk2;Minigun;Musket;SniperRifle;UnholyHellbringer; -->
+			<Hashes Hashes="2634544996;3686625920;3220176749;205991906;177293209;3342088282;1785463520;1119849093;2828843422;100416529;1198256469;"/>
 		</HighCaliber>
 
 		<Shotgun DamageMult="0.8" BleedingMult="1.1" PainMult="1.1" CritChance="0.4" ArmorDamage="3">
@@ -169,24 +169,24 @@
 		</Shotgun>
 
 		<LightImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.1">
-			<!-- Unarmed;Parachute;NightVision;Snowball;Nightstick;KnuckleDuster;Flashlight;HitByWaterCannon;Fall;Rabbit;Briefcase;BirdCrap;Hen;Briefcase2;GarbageBag;SmallDog;StunGun;FlareGun; -->
-			<Hashes Hashes="2725352035;4222310262;2803906140;126349499;1737195953;3638508604;2343591895;600439132;3425972830;3452007600;2793925639;2294779575;1834887169;955837630;28811031;3794977420;3146768957;911657153;1198879012;"/>
+			<!-- Fist;Snowball;Nightstick;KnuckleDuster;Flashlight;Baseball;WaterCannon;Briefcase;Briefcase2;Parachute;NightVision; -->
+			<Hashes Hashes="2725352035;126349499;1737195953;3638508604;2343591895;600439132;3425972830;2294779575;28811031;4222310262;2803906140;"/>
 		</LightImpact>
 
 		<HeavyImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.1" CritChance="0.7">
-			<!-- Boar;Pig;Hammer;Crowbar;Bat;RunOverCar;FireExtinguisher;FireWork;GolfClub;PetrolCan;PoolCue;Wrench;Cow;Deer;StoneHatchet;Flare;GrenadeLauncherSmoke; -->
-			<Hashes Hashes="861723357;1205296881;1317494643;2227010557;2508868239;2741846334;101631238;2138347493;1141786504;883325847;2484171525;419712736;94548753;4106648222;940833800;1233104067;1305664598;"/>
+			<!-- Boar;Pig;Hammer;Crowbar;Bat;RunOverCar;FireExtinguisher;GolfClub;PetrolCan;PoolCue;Wrench;Cow;Deer;StoneHatchet; -->
+			<Hashes Hashes="861723357;1205296881;1317494643;2227010557;2508868239;2741846334;101631238;1141786504;883325847;2484171525;419712736;94548753;4106648222;940833800;"/>
 		</HeavyImpact>
 
 		<Cutting DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.5">
-			<!-- Cougar;TigerShark;BarbedWire;Knife;HammerHeadShark;Cat;AnimalRetriever;Animal;KillerWhale;BattleAxe;Bottle;Dagger;Hatchet;Machete;SwitchBlade; -->
-			<Hashes Hashes="148160082;743550225;1223143800;2578778090;3030980043;3799318422;3854032506;4194021054;4198358245;3441901897;4192643659;2460120199;4191993645;3713923289;3756226112;"/>
+			<!-- Knife;BattleAxe;Bottle;Dagger;Hatchet;Machete;SwitchBlade;Animal;Cougar;BarbedWire; -->
+			<Hashes Hashes="2578778090;3441901897;4192643659;2460120199;4191993645;3713923289;3756226112;4194021054;148160082;1223143800;"/>
 		</Cutting>
 
 		<Ignore>
 			<!-- This weapons will be ignored by GSW, so it will deal vanilla damage -->
-			<!-- Molotov;BZGas;SmokeGrenade;StunGun; -->
-			<Hashes Hashes="615608432;2694266206;4256991824;911657153;"/>
+			<!-- Exhaustion;Fire;Molotov;BZGas;SmokeGrenade;StunGun;FlareGun;Flare;Up-n-Atomizer;GrenadeLauncherSmoke;FireWork;Railgun;RayMinigun;ElectricFence;Bleeding;Drowning;DrowningVehicle; -->
+			<Hashes Hashes="910830060;3750660587;615608432;2694266206;4256991824;911657153;1198879012;1233104067;2939590305;1305664598;2138347493;1834241177;3056410471;2461879995;2339582971;4284007675;1936677264;"/>
 		</Ignore>
 	</Weapons>
 
