@@ -74,7 +74,7 @@
 
         private bool IsInTargetList(Ped pedToCheck, Ped playerPed) {
             GswTargets targets = sharedData.mainConfig.NpcConfig.Targets;
-            if (HasFlag(targets, GswTargets.ALL)) {
+            if (targets == GswTargets.ALL) {
                 return true;
             }
 

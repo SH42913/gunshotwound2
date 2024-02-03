@@ -22,5 +22,9 @@
         public static void SetSprint(bool sprint) {
             Function.Call(Hash.SET_PLAYER_SPRINT, Player, sprint);
         }
+
+        public static float GetStaminaRemaining() {
+            return Function.Call<float>(Hash.GET_PLAYER_SPRINT_STAMINA_REMAINING, Player);
+        }
     }
 }

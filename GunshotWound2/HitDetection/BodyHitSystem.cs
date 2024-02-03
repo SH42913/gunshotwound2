@@ -36,23 +36,30 @@
                 }
 
                 ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
-                if (hitData.randomBodyPart) {
+                if (hitData.useRandomBodyPart) {
                     int index = sharedData.random.Next(1, PARTS.Length);
                     hitData.bodyPart = PARTS[index];
 #if DEBUG
                     sharedData.logger.WriteInfo($"Damaged random part is {hitData.bodyPart} of {convertedPed.name}");
 #endif
                 } else {
-                    hitData.bodyPart = GetDamagedBodyPart(ref convertedPed);
+                    hitData.bodyPart = GetDamagedBodyPart(ref convertedPed, out Bone damagedBone);
+                    if (hitData.bodyPart == PedHitData.BodyParts.Nothing) {
+                        sharedData.logger.WriteError($"Can't detect part by bone {damagedBone}");
+                    } else {
+#if DEBUG
+                        sharedData.logger.WriteInfo($"Damaged part is {hitData.bodyPart}, bone {damagedBone} at {convertedPed.name}");
+#endif
+                    }
                 }
             }
         }
 
-        private unsafe PedHitData.BodyParts GetDamagedBodyPart(ref ConvertedPed target) {
+        private unsafe PedHitData.BodyParts GetDamagedBodyPart(ref ConvertedPed target, out Bone damagedBone) {
             var damagedBoneNum = 0;
             int* x = &damagedBoneNum;
             Function.Call(Hash.GET_PED_LAST_DAMAGE_BONE, target.thisPed, x);
-            if (!Enum.TryParse(damagedBoneNum.ToString(), out Bone damagedBone)) {
+            if (!Enum.TryParse(damagedBoneNum.ToString(), out damagedBone)) {
                 sharedData.logger.WriteError($"Can't parse bone {damagedBone}");
                 return PedHitData.BodyParts.Nothing;
             }
@@ -101,14 +108,6 @@
                 case Bone.SkelRightHand:
                     damagePart = PedHitData.BodyParts.Arm;
                     break;
-            }
-
-            if (damagePart == PedHitData.BodyParts.Nothing) {
-                sharedData.logger.WriteError($"Can't detect part by bone {damagedBone}");
-            } else {
-#if DEBUG
-                sharedData.logger.WriteInfo($"Damaged part is {damagePart}, bone {damagedBone} at {target.name}");
-#endif
             }
 
             return damagePart;

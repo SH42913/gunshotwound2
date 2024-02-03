@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Globalization;
-using GTA;
 
 namespace GunshotWound2.Configs {
     [Flags]
     public enum GswTargets {
+        ALL = 0,
         COMPANION = 1 << 0,
         DISLIKE = 1 << 1,
         HATE = 1 << 2,
@@ -12,7 +12,6 @@ namespace GunshotWound2.Configs {
         NEUTRAL = 1 << 4,
         PEDESTRIAN = 1 << 5,
         RESPECT = 1 << 6,
-        ALL = 1 << 7,
     }
 
     public sealed class NpcConfig {
