@@ -183,10 +183,11 @@
 			<Hashes Hashes="148160082;743550225;1223143800;2578778090;3030980043;3799318422;3854032506;4194021054;4198358245;3441901897;4192643659;2460120199;4191993645;3713923289;3756226112;"/>
 		</Cutting>
 
-		<Explosive DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="1.0">
-			<!-- Explosion;Grenade;CompactGrenadeLauncher;StickyBomb;HomingLauncher;GrenadeLauncher;ProximityMine;UpNAtomizer;RPG;Widowmaker;PipeBomb;weapon_airstrike_rocket; -->
-			<Hashes Hashes="539292904;2481070269;125959754;741814745;1672152130;2726580491;2874559379;2939590305;2982836145;3056410471;3125143736;324506233;"/>
-		</Explosive>
+		<Ignore>
+			<!-- This weapons will be ignored by GSW, so it will deal vanilla damage -->
+			<!-- Molotov;BZGas;SmokeGrenade;StunGun; -->
+			<Hashes Hashes="615608432;2694266206;4256991824;911657153;"/>
+		</Ignore>
 	</Weapons>
 
 	<Hotkeys>

@@ -1,12 +1,12 @@
 ﻿namespace GunshotWound2.HitDetection {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Configs;
     using GTA;
     using GTA.Native;
     using PedsFeature;
     using Scellecs.Morpeh;
+    using SHVDN;
 
     public sealed class WeaponHitSystem : ISystem {
         private readonly SharedData sharedData;
@@ -34,13 +34,16 @@
                 }
                 
                 Ped ped = entity.GetComponent<ConvertedPed>().thisPed;
-                if (ped.IsOnFire) {
+                if (PedWasDamagedBy(config.IgnoreHashes, ped, out uint hitWeapon)) {
+#if DEBUG
+                    sharedData.logger.WriteInfo($"{hitWeapon.ToString()} is ignore hash, it will be skipped");
+#endif
                     continue;
                 }
 
                 var isSpecial = false;
                 PedHitData.WeaponTypes weaponType = default;
-                if (PedWasDamagedBy(config.LightImpactHashes, ped, out uint hitWeapon)) {
+                if (PedWasDamagedBy(config.LightImpactHashes, ped, out hitWeapon)) {
                     weaponType = PedHitData.WeaponTypes.LightImpact;
                 } else if (PedWasDamagedBy(config.HeavyImpactHashes, ped, out hitWeapon)) {
                     weaponType = PedHitData.WeaponTypes.HeavyImpact;
@@ -66,7 +69,7 @@
                 }
 
                 if (weaponType == PedHitData.WeaponTypes.Nothing) {
-                    WeaponHash lastHash = ped.DamageRecords.LastOrDefault().WeaponHash;
+                    (_, int lastHash, _) = NativeMemory.GetEntityDamageRecordEntryAtIndex(ped.MemoryAddress, 0);
                     sharedData.logger.WriteWarning("Can't detect weapon");
                     sharedData.logger.WriteWarning($"Make sure you have hash of this weapon(possible {lastHash}) in GSWConfig");
                 } else {

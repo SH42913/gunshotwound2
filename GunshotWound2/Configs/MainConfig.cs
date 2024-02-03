@@ -44,6 +44,7 @@ namespace GunshotWound2.Configs
         public HashSet<uint> HeavyImpactHashes;
         public HashSet<uint> ShotgunHashes;
         public HashSet<uint> CuttingHashes;
+        public HashSet<uint> IgnoreHashes;
 
         public void ApplyTo(Notifier notifier) {
             notifier.info.show = CommonMessages;
@@ -294,6 +295,7 @@ namespace GunshotWound2.Configs
             config.HeavyImpactHashes = GetWeaponHashes("HeavyImpact");
             config.ShotgunHashes = GetWeaponHashes("Shotgun");
             config.CuttingHashes = GetWeaponHashes("Cutting");
+            config.IgnoreHashes = GetWeaponHashes("Ignore");
             config.WoundConfig.DamageSystemConfigs = dictionary;
 
             HashSet<uint> GetWeaponHashes(string weaponName)

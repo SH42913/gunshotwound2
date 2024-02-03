@@ -27,6 +27,10 @@
         public void OnUpdate(float deltaTime) {
             foreach (Scellecs.Morpeh.Entity pedEntity in damagedPeds) {
                 ref PedHitData hitData = ref pedEntity.GetComponent<PedHitData>();
+                if (hitData.weaponType == PedHitData.WeaponTypes.Nothing) {
+                    continue;
+                }
+
                 if (hitData.bodyPart != PedHitData.BodyParts.Nothing) {
                     continue;
                 }
