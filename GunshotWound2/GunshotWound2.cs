@@ -90,14 +90,14 @@
             //TODO: Coroutine for frames?
             (bool success, string reason) = Configs.MainConfig.TryToLoad(sharedData.mainConfig);
             if (!success) {
-                Notification.PostTicker($"GSW2 couldn't load config!\nReason:\n~r~{reason}", isImportant: true);
+                Notification.Show($"GSW2 couldn't load config!\nReason:\n~r~{reason}", blinking: true);
                 Abort();
                 return false;
             }
 
             (success, reason) = Configs.LocaleConfig.TryToLoad(sharedData.localeConfig, sharedData.mainConfig.Language);
             if (!success) {
-                Notification.PostTicker($"GSW2 couldn't load localization!\nReason:\n~r~{reason}", isImportant: true);
+                Notification.Show($"GSW2 couldn't load localization!\nReason:\n~r~{reason}", blinking: true);
                 Abort();
                 return false;
             }
@@ -143,10 +143,10 @@
         }
 
         private void HandleRuntimeException(Exception exception) {
-            Notification.PostTicker($"~o~{sharedData.localeConfig.GswStopped}", isImportant: true);
+            Notification.Show($"~o~{sharedData.localeConfig.GswStopped}");
             sharedData.logger.WriteError(exception.ToString());
             File.WriteAllText(EXCEPTION_LOG_PATH, exception.ToString());
-            Notification.PostTicker($"~r~There is a runtime error in GSW2!\nCheck {EXCEPTION_LOG_PATH}", isImportant: true);
+            Notification.Show($"~r~There is a runtime error in GSW2!\nCheck {EXCEPTION_LOG_PATH}");
         }
         #endregion
     }

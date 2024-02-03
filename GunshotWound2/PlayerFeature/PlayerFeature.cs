@@ -32,7 +32,7 @@
             int moneyForHelmet = sharedData.mainConfig.PlayerConfig.MoneyForHelmet;
             if (player.Money >= moneyForHelmet) {
                 player.Money -= moneyForHelmet;
-                ped.GiveHelmet(dontTakeOffHelmet: true, HelmetPropFlags.None);
+                ped.GiveHelmet(false, Helmet.RegularMotorcycleHelmet, sharedData.random.Next(0, 15));
             } else {
                 sharedData.notifier.emergency.AddMessage(sharedData.localeConfig.DontHaveMoneyForHelmet);
             }

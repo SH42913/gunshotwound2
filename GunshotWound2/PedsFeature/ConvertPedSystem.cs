@@ -45,7 +45,7 @@
                 }
 
                 // PedEffects.SetRagdollBlockingFlags(pedToConvert, 1);
-                convertedPed.thisPed.SetConfigFlag(PedConfigFlags.DontActivateRagdollFromBulletImpact, true);
+                convertedPed.thisPed.SetConfigFlag(107, true);
 
                 worldService.AddConverted(pedToConvert, entity);
                 entity.AddComponent<JustConvertedEvent>();
