@@ -4,8 +4,12 @@
     using GTA;
     using PedsFeature;
     using Scellecs.Morpeh;
+    using Utils;
 
     public sealed class BandageSystem : ISystem {
+        private static int BANDAGE_START_POST;
+        private static int BANDAGE_FINISH_POST;
+
         private readonly SharedData sharedData;
         private Filter pedsWithHealth;
         private Stash<ConvertedPed> pedStash;
@@ -18,8 +22,6 @@
         }
 
         public void OnAwake() {
-            //TODO: Move to PlayerFeature
-            sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.BandageKey, TryToBandagePlayer);
             pedsWithHealth = World.Filter.With<ConvertedPed>().With<Health>();
             pedStash = World.GetStash<ConvertedPed>();
             healthStash = World.GetStash<Health>();
@@ -33,39 +35,6 @@
 
         void IDisposable.Dispose() { }
 
-        private void TryToBandagePlayer() {
-            if (!sharedData.TryGetPlayer(out Scellecs.Morpeh.Entity playerEntity)) {
-                return;
-            }
-
-            ref ConvertedPed convertedPed = ref pedStash.Get(playerEntity);
-            ref Health health = ref healthStash.Get(playerEntity);
-            if (health.bleedingToBandage.IsNullOrDisposed()) {
-                return;
-            }
-
-            LocaleConfig localeConfig = sharedData.localeConfig;
-            if (health.timeToBandage > 0f) {
-                sharedData.notifier.warning.AddMessage(localeConfig.AlreadyBandaging);
-                return;
-            }
-
-            if (!CheckPedIsStandStill(convertedPed.thisPed)) {
-                sharedData.notifier.emergency.AddMessage(sharedData.localeConfig.BandageFailed);
-                return;
-            }
-
-            WoundConfig woundConfig = sharedData.mainConfig.WoundConfig;
-            if (Game.Player.Money < woundConfig.BandageCost) {
-                sharedData.notifier.emergency.AddMessage(localeConfig.DontHaveMoneyForBandage);
-                return;
-            }
-
-            Game.Player.Money -= woundConfig.BandageCost;
-            health.timeToBandage = woundConfig.ApplyBandageTime;
-            sharedData.notifier.info.AddMessage(string.Format(localeConfig.YouTryToBandage, health.timeToBandage.ToString("F1")));
-        }
-
         private void ProcessBandaging(Scellecs.Morpeh.Entity entity, float deltaTime) {
             ref Health health = ref healthStash.Get(entity);
             if (health.timeToBandage <= 0f) {
@@ -75,7 +44,7 @@
             ref ConvertedPed convertedPed = ref pedStash.Get(entity);
             Ped thisPed = convertedPed.thisPed;
             if (!CheckPedIsStandStill(thisPed)) {
-                sharedData.notifier.emergency.AddMessage(sharedData.localeConfig.BandageFailed);
+                MakeStartPost(sharedData.notifier, $"~r~{sharedData.localeConfig.BandageFailed}");
                 health.timeToBandage = -1f;
                 return;
             }
@@ -90,8 +59,41 @@
             health.bleedingToBandage = null;
 
             string message = string.Format(sharedData.localeConfig.BandageSuccess, bleeding.name);
-            sharedData.notifier.info.AddMessage($"~g~{message}");
+            MakeFinishPost(sharedData.notifier, $"~g~{message}");
             convertedPed.thisPed.PlayAmbientSpeech("FIGHT_RUN");
+        }
+
+        public static void TryToBandage(SharedData sharedData, Scellecs.Morpeh.Entity entity) {
+            ref Health health = ref entity.GetComponent<Health>();
+            if (health.bleedingToBandage.IsNullOrDisposed()) {
+                return;
+            }
+
+            if (health.timeToBandage > 0f) {
+                MakeStartPost(sharedData.notifier, $"~y~{sharedData.localeConfig.AlreadyBandaging}");
+                return;
+            }
+
+            ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
+            if (!CheckPedIsStandStill(convertedPed.thisPed)) {
+                MakeStartPost(sharedData.notifier, $"~r~{sharedData.localeConfig.BandageFailed}");
+                return;
+            }
+
+            WoundConfig woundConfig = sharedData.mainConfig.WoundConfig;
+            if (convertedPed.isPlayer) {
+                if (Game.Player.Money < woundConfig.BandageCost) {
+                    MakeStartPost(sharedData.notifier, $"~r~{sharedData.localeConfig.DontHaveMoneyForBandage}");
+                    return;
+                }
+
+                Game.Player.Money -= woundConfig.BandageCost;
+            }
+
+            health.timeToBandage = woundConfig.ApplyBandageTime;
+
+            string message = string.Format(sharedData.localeConfig.YouTryToBandage, health.timeToBandage.ToString("F1"));
+            MakeStartPost(sharedData.notifier, message);
         }
 
         private static bool CheckPedIsStandStill(Ped thisPed) {
@@ -110,6 +112,14 @@
             //        || thisPed.IsCuffed
             //        || thisPed.IsDiving
             //        || thisPed.IsFalling;
+        }
+
+        private static void MakeStartPost(Notifier notifier, string message) {
+            BANDAGE_START_POST = notifier.ReplaceOne(message, blinking: true, BANDAGE_START_POST);
+        }
+
+        private static void MakeFinishPost(Notifier notifier, string message) {
+            BANDAGE_FINISH_POST = notifier.ReplaceOne(message, blinking: true, BANDAGE_FINISH_POST);
         }
     }
 }

@@ -12,7 +12,7 @@
             health.diff -= Configs.WoundConfig.ConvertHealthFromNative(convertedPed.thisPed.Health);
 
             if (convertedPed.isPlayer) {
-                sharedData.notifier.emergency.AddMessage(sharedData.localeConfig.PainShockDeath);
+                sharedData.notifier.emergency.QueueMessage(sharedData.localeConfig.PainShockDeath);
             }
         }
 

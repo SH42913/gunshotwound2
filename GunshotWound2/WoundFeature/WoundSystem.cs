@@ -120,7 +120,7 @@
                 return;
             }
 
-            sharedData.notifier.alert.AddMessage(hitData.armorMessage);
+            sharedData.notifier.alert.QueueMessage(hitData.armorMessage);
             if (!wound.HasValue) {
                 return;
             }
@@ -135,10 +135,10 @@
                 notifier = sharedData.notifier.alert;
             }
 
-            notifier.AddMessage(woundData.Name);
+            notifier.QueueMessage(woundData.Name);
 
             if (woundData.ArterySevered) {
-                notifier.AddMessage(sharedData.localeConfig.SeveredArteryMessage);
+                notifier.QueueMessage(sharedData.localeConfig.SeveredArteryMessage);
             }
         }
 

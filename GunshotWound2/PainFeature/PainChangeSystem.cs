@@ -111,7 +111,7 @@
 
                 int direction = Math.Sign(newStateIndex - curStateIndex);
                 if (convertedPed.isPlayer && direction < 0) {
-                    sharedData.notifier.info.AddMessage($"~g~{sharedData.localeConfig.PainDecreasedMessage}");
+                    sharedData.notifier.info.QueueMessage($"~g~{sharedData.localeConfig.PainDecreasedMessage}");
                 }
 
                 IPainState curState = null;

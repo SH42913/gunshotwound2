@@ -21,9 +21,9 @@
             }
 
             if (convertedPed.isPlayer) {
-                sharedData.notifier.warning.AddMessage(PlayerMessage);
+                sharedData.notifier.warning.QueueMessage(PlayerMessage);
             } else if (sharedData.mainConfig.NpcConfig.ShowEnemyCriticalMessages) {
-                sharedData.notifier.info.AddMessage(convertedPed.isMale ? ManMessage : WomanMessage);
+                sharedData.notifier.info.QueueMessage(convertedPed.isMale ? ManMessage : WomanMessage);
             }
         }
 

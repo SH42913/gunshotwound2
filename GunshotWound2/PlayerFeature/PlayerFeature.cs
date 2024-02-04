@@ -11,6 +11,12 @@
             sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.CheckKey, () => CheckPlayer(sharedData));
             sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.HelmetKey, () => ToggleHelmet(sharedData));
 
+            sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.BandageKey, () => {
+                if (sharedData.TryGetPlayer(out Scellecs.Morpeh.Entity playerEntity)) {
+                    HealthFeature.BandageSystem.TryToBandage(sharedData, playerEntity);
+                }
+            });
+
             sharedData.cheatListener.Register("GSW_HEAL", () => {
                 Ped playerChar = Game.Player.Character;
                 playerChar.Health = playerChar.MaxHealth;
@@ -40,7 +46,7 @@
                 player.Money -= moneyForHelmet;
                 ped.GiveHelmet(false, Helmet.RegularMotorcycleHelmet, sharedData.random.Next(0, 15));
             } else {
-                sharedData.notifier.emergency.AddMessage(sharedData.localeConfig.DontHaveMoneyForHelmet);
+                sharedData.notifier.emergency.QueueMessage(sharedData.localeConfig.DontHaveMoneyForHelmet);
             }
         }
     }

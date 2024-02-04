@@ -40,8 +40,8 @@
             npcConfig.RemovePedRange = npcConfig.AddingPedRange * MainConfig.ADDING_TO_REMOVING_MULTIPLIER;
 
             LocaleConfig localeConfig = sharedData.localeConfig;
-            sharedData.notifier.info.AddMessage($"{localeConfig.AddingRange}: {npcConfig.AddingPedRange.ToString("F0")}");
-            sharedData.notifier.info.AddMessage($"{localeConfig.RemovingRange}: {npcConfig.RemovePedRange.ToString("F0")}");
+            sharedData.notifier.info.QueueMessage($"{localeConfig.AddingRange}: {npcConfig.AddingPedRange.ToString("F0")}");
+            sharedData.notifier.info.QueueMessage($"{localeConfig.RemovingRange}: {npcConfig.RemovePedRange.ToString("F0")}");
         }
     }
 }

@@ -21,8 +21,6 @@
         private bool isPaused;
 
         public GunshotWound2() {
-            Tick += OnTick;
-
             var logger = new Utils.ScriptHookLogger();
             sharedData = new SharedData(logger);
 
@@ -33,6 +31,7 @@
             isPaused = false;
             timeToStart = 5f;
 
+            Tick += OnTick;
             Aborted += Cleanup;
         }
 
@@ -66,7 +65,7 @@
             isPaused = !isPaused;
             string message = isPaused ? $"~y~{sharedData.localeConfig.GswIsPaused}" : $"~g~{sharedData.localeConfig.GswIsWorking}";
 
-            sharedData.notifier.info.AddMessage(message);
+            sharedData.notifier.info.QueueMessage(message);
         }
 
         private void Cleanup(object sender, EventArgs e) {
@@ -113,10 +112,10 @@
                 return false;
             }
 
-            sharedData.notifier.info.AddMessage(sharedData.localeConfig.ThanksForUsing);
-            sharedData.notifier.info.AddMessage("~g~GunShot Wound ~r~2~s~");
-            sharedData.notifier.info.AddMessage("by <C>SH42913</C>");
-            sharedData.notifier.info.AddMessage($"\nTranslated by {sharedData.localeConfig.LocalizationAuthor ?? "GSW2-community"}");
+            sharedData.notifier.info.QueueMessage(sharedData.localeConfig.ThanksForUsing);
+            sharedData.notifier.info.QueueMessage("~g~GunShot Wound ~r~2~s~");
+            sharedData.notifier.info.QueueMessage("by <C>SH42913</C>");
+            sharedData.notifier.info.QueueMessage($"\nTranslated by {sharedData.localeConfig.LocalizationAuthor ?? "GSW2-community"}");
 
             isStarted = true;
             return true;

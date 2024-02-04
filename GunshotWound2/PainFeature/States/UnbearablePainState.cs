@@ -49,7 +49,7 @@
             }
 
             if (!convertedPed.hasSpineDamage) {
-                sharedData.notifier.emergency.AddMessage(sharedData.localeConfig.UnbearablePainMessage);
+                sharedData.notifier.emergency.QueueMessage(sharedData.localeConfig.UnbearablePainMessage);
             }
             
             CameraEffects.StartPostFx(BLACKOUT_FX, 5000);
