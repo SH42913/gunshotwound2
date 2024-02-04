@@ -192,7 +192,7 @@
                 // convertedPed.thisPed.PlayAmbientSpeech("GUN_BEG");
                 if (woundConfig.RagdollOnPainfulWound) {
                     convertedPed.RequestRagdoll(timeInMs: 1500);
-                    convertedPed.nmMessages = NM_MESSAGES;
+                    // convertedPed.nmMessages = NM_MESSAGES;
                 }
 
                 if (convertedPed.isPlayer) {

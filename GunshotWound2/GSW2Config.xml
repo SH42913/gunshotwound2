@@ -4,12 +4,6 @@
 		<GSWPlayerEnabled Value="TRUE"/>
 		<!-- If TRUE - player ped will be affected by GSW -->
 
-		<MinimalHealth Value="0"/>
-		<!-- If ped's health less than MinimalHealth, GSW will think player is died.
-        Maximal health always will MinimalHealth + 100.
-        Use it for compatibility with other mods:
-         — WatchYourDeath mod (INCREASES HEALTH version) — set to 4800 -->
-
 		<PoliceCanForget Value="TRUE"/>
 		<!-- If TRUE - cops can forget you, when you fall unconscious.
         If you use Realism Dispatch Enhanced, better to set it FALSE-->
@@ -20,11 +14,12 @@
 		<BlipsToMedkits Value="TRUE" RefreshTime="2" ModelName="prop_ld_health_pack"/>
 		<!-- Add map blips to medkits around player, refresh time in seconds -->
 
-		<MaximalSlowMo Value="0.5"/>
-		<!-- 0.5 mean TimeScale never be less than 0.5.
-        TimeScale will 0.5 + painPercent(pain/maxPain).
+		<MaximalSlowMo Value="0.7"/>
+		<!-- Adrenaline effect that slowdown time from your pain.
+		0.7 mean TimeScale never be less than 70% of default time speed. 
+		TimeScale will 0.7 + painPercent(pain/maxPain).
         Be carefully, it will disable other SlowMo-mods.
-        If you want to disable this option, set it to 1.1. -->
+        If you want to disable this option, set it more that 1. -->
 
 		<MaximalPain Value="100.0"/>
 		<!-- 100.0 mean when pain will more than 100 points you'll fall unconscious -->
@@ -136,16 +131,16 @@
 		<MoveRateOnFullPain Value="0.7"/>
 		<!-- Move rate on 100% of pain -->
 
-		<OverallDamageMult Value="1.0"/>
+		<OverallDamageMult Value="0.6"/>
 		<!-- Overall damage multiplier, 2.0 mean every wound will get x2 damage for ped -->
 
 		<DamageDeviation Value="0.2"/>
 		<!-- 0.2 mean +-20% random damage -->
 
-		<OverallBleedingMult Value="1.0"/>
+		<OverallBleedingMult Value="1.3"/>
 		<BleedingDeviation Value="0.2"/>
 
-		<OverallPainMult Value="1.0"/>
+		<OverallPainMult Value="1.2"/>
 		<PainDeviation Value="0.2"/>
 	</Wounds>
 

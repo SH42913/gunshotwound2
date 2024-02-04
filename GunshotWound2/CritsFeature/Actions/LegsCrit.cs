@@ -1,4 +1,5 @@
 ﻿namespace GunshotWound2.CritsFeature {
+    using GTA;
     using PedsFeature;
     using PlayerFeature;
 
@@ -14,9 +15,10 @@
         public override void Apply(Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
             CreatePain(pedEntity, 20f);
 
+            RagdollType ragdollType = convertedPed.thisPed.IsRunning ? RagdollType.Balance : RagdollType.Relax;
+            convertedPed.RequestRagdoll(3000, ragdollType);
+            // convertedPed.nmMessages = NM_MESSAGES;
             convertedPed.hasBrokenLegs = true;
-            convertedPed.RequestRagdoll(3000, GTA.RagdollType.Balance);
-            convertedPed.nmMessages = NM_MESSAGES;
 
             convertedPed.moveRate = sharedData.mainConfig.WoundConfig.MoveRateOnNervesDamage;
 
