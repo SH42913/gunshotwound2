@@ -17,7 +17,7 @@
             inputListener.RegisterHotkey(mainConfig.ReduceRangeKey, () => ChangeRange(sharedData, -5f));
 
 #if DEBUG
-            inputListener.RegisterHotkey(System.Windows.Forms.Keys.N, () => {
+            sharedData.cheatListener.Register("GSW_TEST_RAGDOLL", () => {
                 if (sharedData.TryGetPlayer(out Entity entity)) {
                     ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
                     if (convertedPed.thisPed.IsRagdoll) {

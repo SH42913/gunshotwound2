@@ -10,6 +10,11 @@
 
             sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.CheckKey, () => CheckPlayer(sharedData));
             sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.HelmetKey, () => ToggleHelmet(sharedData));
+
+            sharedData.cheatListener.Register("GSW_HEAL", () => {
+                Ped playerChar = Game.Player.Character;
+                playerChar.Health = playerChar.MaxHealth;
+            });
         }
 
         private static void CheckPlayer(SharedData sharedData) {

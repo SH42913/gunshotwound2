@@ -16,7 +16,7 @@
             });
 
 #if DEBUG
-            sharedData.inputListener.RegisterHotkey(System.Windows.Forms.Keys.B, () => {
+            sharedData.cheatListener.Register("GSW_TEST_BLEED", () => {
                 if (sharedData.TryGetPlayer(out Entity entity)) {
                     ref Bleeding bleeding = ref world.CreateEntity().AddComponent<Bleeding>();
                     bleeding.target = entity;

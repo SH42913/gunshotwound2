@@ -71,6 +71,7 @@
     <Compile Include="CritsFeature\CritsSystem.cs" />
     <Compile Include="PedsFeature\PedMovementSystem.cs" />
     <Compile Include="PlayerFeature\MedkitGpsSystem.cs" />
+    <Compile Include="Utils\CheatListener.cs" />
     <Compile Include="WoundFeature\WoundFeature.cs" />
     <Compile Include="WoundFeature\WoundData.cs" />
     <Compile Include="WoundFeature\Weapons\BaseWeaponDamage.cs" />

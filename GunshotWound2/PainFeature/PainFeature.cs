@@ -1,5 +1,4 @@
 ﻿namespace GunshotWound2.PainFeature {
-    using System.Windows.Forms;
     using Scellecs.Morpeh;
 
     public static class PainFeature {
@@ -8,7 +7,7 @@
             systemsGroup.AddSystem(new PainChangeSystem(sharedData));
 
 #if DEBUG
-            sharedData.inputListener.RegisterHotkey(Keys.Down, () => {
+            sharedData.cheatListener.Register("GSW_RANDOM_PAIN", () => {
                 if (sharedData.TryGetPlayer(out Entity player)) {
                     player.GetComponent<Pain>().diff += sharedData.random.Next(39, 42);
                 }

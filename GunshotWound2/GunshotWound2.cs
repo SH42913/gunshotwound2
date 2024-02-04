@@ -136,6 +136,7 @@
         #region TICK
         private void GunshotWoundTick() {
             if (!isPaused) {
+                sharedData.cheatListener.Check();
                 commonSystems.Update(sharedData.deltaTime);
                 commonSystems.LateUpdate(sharedData.deltaTime);
                 commonSystems.CleanupUpdate(sharedData.deltaTime);

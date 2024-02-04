@@ -6,7 +6,7 @@
             systemsGroup.AddSystem(new CritsSystem(sharedData));
 
 #if DEBUG
-            sharedData.inputListener.RegisterHotkey(System.Windows.Forms.Keys.V, () => {
+            sharedData.cheatListener.Register("GSW_RANDOM_CRIT", () => {
                 if (sharedData.TryGetPlayer(out Entity player)) {
                     System.Type enumType = typeof(HitDetection.PedHitData.BodyParts);
                     var bodyParts = (HitDetection.PedHitData.BodyParts[])System.Enum.GetValues(enumType);
