@@ -144,6 +144,9 @@ namespace GunshotWound2.Configs
             config.PlayerConfig.BleedHealingSpeed = node.Element("BleedHealSpeed").GetFloat() / 1000f;
             config.PlayerConfig.PoliceCanForgetYou = node.Element("PoliceCanForget").GetBool();
             config.PlayerConfig.CanDropWeapon = node.Element("CanDropWeapon").GetBool();
+            config.PlayerConfig.BlipsToMedkits = node.Element("BlipsToMedkits").GetBool();
+            config.PlayerConfig.TimeToRefreshMedkits = node.Element("BlipsToMedkits").GetFloat("RefreshTime");
+            config.PlayerConfig.MedkitModel = node.Element("BlipsToMedkits").GetString("ModelName");
             config.PlayerConfig.MaximalSlowMo = node.Element("MaximalSlowMo").GetFloat();
 
             var animationNode = node.Element("MoveSets");

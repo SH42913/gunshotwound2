@@ -6,6 +6,7 @@
         public static void Create(SystemsGroup systemsGroup, SharedData sharedData) {
             systemsGroup.AddSystem(new PlayerDetectSystem(sharedData));
             systemsGroup.AddSystem(new AdrenalineSystem(sharedData));
+            systemsGroup.AddSystem(new MedkitGpsSystem(sharedData));
 
             sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.CheckKey, () => CheckPlayer(sharedData));
             sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.HelmetKey, () => ToggleHelmet(sharedData));

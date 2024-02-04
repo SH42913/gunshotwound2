@@ -16,6 +16,9 @@
 
 		<CanDropWeapon Value="FALSE"/>
 		<!-- If TRUE - player will lose weapon on arm crits and when you fall unconscious -->
+		
+		<BlipsToMedkits Value="TRUE" RefreshTime="2" ModelName="prop_ld_health_pack"/>
+		<!-- Add map blips to medkits around player, refresh time in seconds -->
 
 		<MaximalSlowMo Value="0.5"/>
 		<!-- 0.5 mean TimeScale never be less than 0.5.

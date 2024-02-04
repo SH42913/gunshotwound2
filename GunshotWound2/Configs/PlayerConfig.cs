@@ -6,6 +6,10 @@ namespace GunshotWound2.Configs {
         public bool PoliceCanForgetYou;
         public bool CanDropWeapon;
 
+        public bool BlipsToMedkits;
+        public float TimeToRefreshMedkits;
+        public string MedkitModel;
+
         public int MoneyForHelmet;
 
         public float MaximalPain;
