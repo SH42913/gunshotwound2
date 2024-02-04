@@ -148,6 +148,7 @@ namespace GunshotWound2.Configs
             config.PlayerConfig.TimeToRefreshMedkits = node.Element("BlipsToMedkits").GetFloat("RefreshTime");
             config.PlayerConfig.MedkitModel = node.Element("BlipsToMedkits").GetString("ModelName");
             config.PlayerConfig.MaximalSlowMo = node.Element("MaximalSlowMo").GetFloat();
+            config.PlayerConfig.MoneyForHelmet = node.Element("HelmetCost").GetInt();
 
             var animationNode = node.Element("MoveSets");
             if (animationNode == null) return;

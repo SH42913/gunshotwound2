@@ -36,6 +36,9 @@
 		<!-- You can change pain MoveSets by yourself.
 		GSW support many MoveSets(separated by ;), one of them will be taken by random.
         There are 3 states: Mild(<30%, currentPain/maximalPain), Average(<80%) and Intense(<100%) -->
+
+		<HelmetCost Value="40"/>
+		<!-- 40 mean you need $40 to buy helmet. If you're using skin changer, you need to set it to 0. -->
 	</Player>
 
 	<Peds>
@@ -191,14 +194,15 @@
 	<Hotkeys>
 		<!-- If you don't want to use key, just remove value
          KeyCodes can be found here - https://www.oreilly.com/library/view/javascript-dhtml/9780596514082/apb.html -->
+
 		<GetHelmetKey>74</GetHelmetKey>
-		<!-- Give to player ped motorbike helmet if you have $40.
+		<!-- Give to player motorbike helmet if player have $40(can be changed).
         Helmet can save your head from impacts and weapons.
-        If you have helmet, this hotkey will remove it.
+        If player already have helmet, this hotkey will remove it.
         Default: J on keyboard. -->
 
 		<BandageKey>75</BandageKey>
-		<!-- Applied bandages to you. It will cost $15.
+		<!-- Applied bandages to you. It will cost $15(can be changed).
         Default: K on keyboard. -->
 
 		<CheckKey>76</CheckKey>
