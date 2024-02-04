@@ -4,6 +4,8 @@
     using Utils;
 
     public static class PedsFeature {
+        private static int LAST_POST;
+
         public static void Create(SystemsGroup systemsGroup, SharedData sharedData) {
             systemsGroup.AddSystem(new NpcDetectSystem(sharedData));
             systemsGroup.AddSystem(new ConvertPedSystem(sharedData));
@@ -40,8 +42,10 @@
             npcConfig.RemovePedRange = npcConfig.AddingPedRange * MainConfig.ADDING_TO_REMOVING_MULTIPLIER;
 
             LocaleConfig localeConfig = sharedData.localeConfig;
-            sharedData.notifier.info.QueueMessage($"{localeConfig.AddingRange}: {npcConfig.AddingPedRange.ToString("F0")}");
-            sharedData.notifier.info.QueueMessage($"{localeConfig.RemovingRange}: {npcConfig.RemovePedRange.ToString("F0")}");
+            var scan = npcConfig.AddingPedRange.ToString("F0");
+            var remove = npcConfig.RemovePedRange.ToString("F0");
+            LAST_POST = sharedData.notifier.ReplaceOne($"{localeConfig.AddingRange}: {scan}\n{localeConfig.RemovingRange}: {remove}",
+                                                       blinking: false, LAST_POST);
         }
     }
 }
