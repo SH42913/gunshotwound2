@@ -64,16 +64,18 @@
 
         private void TogglePause() {
             isPaused = !isPaused;
-            string message = isPaused
-                    ? $"~y~{sharedData.localeConfig.GswIsPaused}"
-                    : $"~g~{sharedData.localeConfig.GswIsWorking}";
+            string message = isPaused ? $"~y~{sharedData.localeConfig.GswIsPaused}" : $"~g~{sharedData.localeConfig.GswIsWorking}";
 
             sharedData.notifier.info.AddMessage(message);
         }
 
         private void Cleanup(object sender, EventArgs e) {
-            commonSystems.Dispose();
-            ecsWorld.Dispose();
+            try {
+                commonSystems.Dispose();
+                ecsWorld.Dispose();
+            } catch (Exception exception) {
+                HandleRuntimeException(exception);
+            }
         }
 
         #region PREPARE
