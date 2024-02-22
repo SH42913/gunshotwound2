@@ -16,7 +16,7 @@
             MainConfig mainConfig = sharedData.mainConfig;
             InputListener inputListener = sharedData.inputListener;
             inputListener.RegisterHotkey(mainConfig.IncreaseRangeKey, () => ChangeRange(sharedData, 5f));
-            inputListener.RegisterHotkey(mainConfig.ReduceRangeKey, () => ChangeRange(sharedData, -5f));
+            inputListener.RegisterHotkey(mainConfig.DecreaseRangeKey, () => ChangeRange(sharedData, -5f));
 
 #if DEBUG
             sharedData.cheatListener.Register("GSW_TEST_RAGDOLL", () => {

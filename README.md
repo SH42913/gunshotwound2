@@ -40,7 +40,7 @@ _Currently, GSW2 doesn't support vehicle weapons._
 - _L_ - Check yourself
 - _J_ - Get/Remove Helmet
 - _K_ - Apply Bandage
-- _PageUp/PageDown_ - Increase/Reduce WoundedPed Range
+- _PageUp/PageDown_ - Increase/Decrease scan range
 - _End_ - Pause/Unpause GSW
 You can change hotkeys in GSW2Config.xml!
 

@@ -44,7 +44,7 @@
 	<Peds>
 		<GSWScanRange Value="50"/>
 		<!-- It is start range where script scan other peds to convert them to GSWPeds. 
-        You also can change range in game, using Increase/ReduceRange keys, check in Hotkey section.
+        You also can change range in game, using Increase/DecreaseRange keys, check in Hotkey section.
         If you have low FPS or want to disable GSWPeds, just set range as -1. -->
 
 		<ScanOnlyDamaged Value="FALSE"/>
@@ -213,8 +213,8 @@
 		<!-- Increase GSW2 scan range.
         Default: PageUp on keyboard. -->
 
-		<ReduceRangeKey>34</ReduceRangeKey>
-		<!-- Reduce GSW2 scan range.
+		<DecreaseRangeKey>34</DecreaseRangeKey>
+		<!-- Decrease GSW2 scan range.
         Default: PageDown on keyboard. -->
 
 		<PauseKey>35</PauseKey>

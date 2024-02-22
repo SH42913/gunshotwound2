@@ -28,7 +28,7 @@ namespace GunshotWound2.Configs
         public Keys? CheckKey;
         public Keys? HealKey;
         public Keys? IncreaseRangeKey;
-        public Keys? ReduceRangeKey;
+        public Keys? DecreaseRangeKey;
         public Keys? PauseKey;
         public Keys? BandageKey;
 
@@ -128,7 +128,7 @@ namespace GunshotWound2.Configs
             config.CheckKey = node.GetKey("CheckKey");
             config.HealKey = node.GetKey("HealKey");
             config.IncreaseRangeKey = node.GetKey("IncreaseRangeKey");
-            config.ReduceRangeKey = node.GetKey("ReduceRangeKey");
+            config.DecreaseRangeKey = node.GetKey("DecreaseRangeKey");
             config.BandageKey = node.GetKey("BandageKey");
             config.PauseKey = node.GetKey("PauseKey");
         }
