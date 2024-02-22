@@ -1,4 +1,5 @@
 ﻿namespace GunshotWound2.PainFeature.States {
+    using Configs;
     using PedsFeature;
     using Scellecs.Morpeh;
 
@@ -12,8 +13,8 @@
             PedEffects.PlayFacialAnim(convertedPed.thisPed, "mood_happy_1", convertedPed.isMale);
         }
 
-        public bool TryGetMoveSets(SharedData sharedData, bool isPlayer, out string[] moveSets) {
-            moveSets = isPlayer ? sharedData.mainConfig.PlayerConfig.MildPainSets : sharedData.mainConfig.NpcConfig.MildPainSets;
+        public bool TryGetMoveSets(MainConfig mainConfig, in ConvertedPed convertedPed, out string[] moveSets) {
+            moveSets = mainConfig.GetPainMoveSetsFor(convertedPed).mild;
             return true;
         }
     }

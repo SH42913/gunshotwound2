@@ -17,9 +17,7 @@ namespace GunshotWound2.Configs {
         public float BleedHealingSpeed;
         public float MaximalSlowMo;
 
-        public string[] MildPainSets;
-        public string[] AvgPainSets;
-        public string[] IntensePainSets;
+        public PainMoveSets PainMoveSets;
 
         public override string ToString() {
             return $"{nameof(PlayerConfig)}:\n"

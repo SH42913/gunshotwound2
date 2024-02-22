@@ -135,7 +135,7 @@
         }
 
         private void RefreshMoveSet(ref ConvertedPed convertedPed, IPainState state) {
-            if (state != null && state.TryGetMoveSets(sharedData, convertedPed.isPlayer, out string[] moveSets)) {
+            if (state != null && state.TryGetMoveSets(sharedData.mainConfig, convertedPed, out string[] moveSets)) {
                 convertedPed.moveSetRequest = moveSets != null && moveSets.Length > 0
                         ? moveSets[sharedData.random.Next(0, moveSets.Length)]
                         : null;

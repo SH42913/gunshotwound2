@@ -1,4 +1,5 @@
 ﻿namespace GunshotWound2.PainFeature.States {
+    using Configs;
     using PedsFeature;
     using PlayerFeature;
     using Scellecs.Morpeh;
@@ -27,8 +28,8 @@
             }
         }
 
-        public bool TryGetMoveSets(SharedData sharedData, bool isPlayer, out string[] moveSets) {
-            moveSets = isPlayer ? sharedData.mainConfig.PlayerConfig.AvgPainSets : sharedData.mainConfig.NpcConfig.AvgPainSets;
+        public bool TryGetMoveSets(MainConfig mainConfig, in ConvertedPed convertedPed, out string[] moveSets) {
+            moveSets = mainConfig.GetPainMoveSetsFor(convertedPed).average;
             return true;
         }
     }

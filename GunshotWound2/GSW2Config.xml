@@ -81,8 +81,9 @@
 		<BleedHealSpeed Value="1.0"/>
 		<!-- Same as for player -->
 
-		<MoveSets MildPain="" AvgPain="" IntensePain=""/>
-		<!-- Same as for player, but I don't have any ideas, which animations add here -->
+		<MaleMoveSets MildPain="" AvgPain="" IntensePain=""/>
+		<FemaleMoveSets MildPain="" AvgPain="" IntensePain=""/>
+		<!-- Same as for player -->
 	</Peds>
 
 	<Notifications>

@@ -1,4 +1,5 @@
 ﻿namespace GunshotWound2.PainFeature.States {
+    using Configs;
     using HealthFeature;
     using PedsFeature;
     using Scellecs.Morpeh;
@@ -18,7 +19,7 @@
 
         public void ApplyPainDecreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) { }
 
-        public bool TryGetMoveSets(SharedData sharedData, bool isPlayer, out string[] moveSets) {
+        public bool TryGetMoveSets(MainConfig mainConfig, in ConvertedPed convertedPed, out string[] moveSets) {
             moveSets = default;
             return false;
         }

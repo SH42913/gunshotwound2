@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using GunshotWound2.PedsFeature;
 using GunshotWound2.Utils;
 
 namespace GunshotWound2.Configs
@@ -13,10 +14,10 @@ namespace GunshotWound2.Configs
     {
         public const float MINIMAL_RANGE_FOR_WOUNDED_PEDS = 0;
         public const float ADDING_TO_REMOVING_MULTIPLIER = 2;
+        public static readonly char[] Separator = {';'};
 
         private const string ScriptConfigPath = "scripts/GSW2Config.xml";
         private const string GswConfigPath = "scripts/GSW2/GSW2Config.xml";
-        private static readonly char[] Separator = {';'};
 
         public WoundConfig WoundConfig;
         public NpcConfig NpcConfig;
@@ -51,6 +52,16 @@ namespace GunshotWound2.Configs
             notifier.warning.show = WarningMessages;
             notifier.alert.show = AlertMessages;
             notifier.emergency.show = EmergencyMessages;
+        }
+
+        public PainMoveSets GetPainMoveSetsFor(in ConvertedPed convertedPed) {
+            if (convertedPed.isPlayer) {
+                return PlayerConfig.PainMoveSets;
+            } else if(convertedPed.isMale) {
+                return NpcConfig.MalePainMoveSets;
+            } else {
+                return NpcConfig.FemalePainMoveSets;
+            }
         }
 
         public override string ToString()
@@ -150,12 +161,7 @@ namespace GunshotWound2.Configs
             config.PlayerConfig.MaximalSlowMo = node.Element("MaximalSlowMo").GetFloat();
             config.PlayerConfig.MoneyForHelmet = node.Element("HelmetCost").GetInt();
 
-            var animationNode = node.Element("MoveSets");
-            if (animationNode == null) return;
-
-            config.PlayerConfig.MildPainSets = animationNode.Attribute("MildPain")?.Value.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
-            config.PlayerConfig.AvgPainSets = animationNode.Attribute("AvgPain")?.Value.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
-            config.PlayerConfig.IntensePainSets = animationNode.Attribute("IntensePain")?.Value.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
+            config.PlayerConfig.PainMoveSets = PainMoveSets.FromXElement(node, "MoveSets");
         }
 
         private static void PedsSection(MainConfig config, XElement doc)
@@ -234,12 +240,8 @@ namespace GunshotWound2.Configs
 
             config.NpcConfig.Targets = targets;
 
-            var animationNode = node.Element("MoveSets");
-            if (animationNode == null) return;
-
-            config.NpcConfig.MildPainSets = animationNode.Attribute("MildPain")?.Value.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
-            config.NpcConfig.AvgPainSets = animationNode.Attribute("AvgPain")?.Value.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
-            config.NpcConfig.IntensePainSets = animationNode.Attribute("IntensePain")?.Value.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
+            config.NpcConfig.MalePainMoveSets = PainMoveSets.FromXElement(node, "MaleMoveSets");
+            config.NpcConfig.FemalePainMoveSets = PainMoveSets.FromXElement(node, "FemaleMoveSets");
         }
 
         private static void NotificationsSection(MainConfig config, XElement doc)

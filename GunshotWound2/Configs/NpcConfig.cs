@@ -36,9 +36,8 @@ namespace GunshotWound2.Configs {
         public float UpperMaximalPain;
         public float MaximalPainRecoverSpeed;
 
-        public string[] MildPainSets;
-        public string[] AvgPainSets;
-        public string[] IntensePainSets;
+        public PainMoveSets MalePainMoveSets;
+        public PainMoveSets FemalePainMoveSets;
 
         public override string ToString() {
             return $"{nameof(NpcConfig)}:\n"
