@@ -177,11 +177,11 @@ namespace GunshotWound2.Configs
             config.NpcConfig.LowerMaximalPain = painNode.GetFloat("Min");
             config.NpcConfig.UpperMaximalPain = painNode.GetFloat("Max");
 
-            var accuracyNode = node.Element("Accuracy");
+            var accuracyNode = node.Element("CustomAccuracy");
             config.NpcConfig.MinAccuracy = accuracyNode.GetInt("Min");
             config.NpcConfig.MaxAccuracy = accuracyNode.GetInt("Max");
 
-            var rateNode = node.Element("ShootRate");
+            var rateNode = node.Element("CustomShootRate");
             config.NpcConfig.MinShootRate = rateNode.GetInt("Min");
             config.NpcConfig.MaxShootRate = rateNode.GetInt("Max");
 

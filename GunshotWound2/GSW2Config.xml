@@ -66,15 +66,15 @@
 		<!-- Same as for player, but GSWPeds will have MaximalPain between Min and Max. -->
 
 		<CustomHealth Min="-1" Max="-1"/>
-		<!-- It will override default health. GSWPeds will have health between Min and Max.
+		<!-- Peds will have random health between Min and Max.
         If you want to use default game PedHealth, set both to -1 -->
 
-		<Accuracy Min="-1" Max="-1"/>
-		<!-- GSWPeds will get accuracy between Min and Max.
+		<CustomAccuracy Min="-1" Max="-1"/>
+		<!-- Peds will get random accuracy between Min and Max.
         If you want to use default game Accuracy, set both to -1. -->
 
-		<ShootRate Min="-1" Max="-1"/>
-		<!-- GSWPeds will get ShootRate between Min and Max.
+		<CustomShootRate Min="-1" Max="-1"/>
+		<!-- Peds will get random ShootRate between Min and Max.
         If you want to use default game ShootRate, set both to -1. -->
 
 		<PainRecoverySpeed Value="1.0"/>
