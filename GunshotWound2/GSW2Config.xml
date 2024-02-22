@@ -30,9 +30,9 @@
 		<BleedHealSpeed Value="2.0"/>
 		<!-- How quickly bleeding will heal -->
 
-		<MoveSets MildPain="move_m@injured;move_m@plodding;move_m@buzzed;"
-				  AvgPain="move_m@drunk@a;move_m@drunk@moderatedrunk;move_m@depressed@a;"
-				  IntensePain="move_m@drunk@verydrunk;move_m@strung_out@;"/>
+		<MoveSets MildPain="move_m@plodding;move_m@buzzed;move_m@gangster@generic;"
+				  AvgPain="move_m@depressed@a;move_m@injured;move_m@drunk@slightlydrunk;"
+				  IntensePain="move_m@drunk@a;move_m@drunk@moderatedrunk;move_m@drunk@verydrunk;"/>
 		<!-- You can change pain MoveSets by yourself.
 		GSW support many MoveSets(separated by ;), one of them will be taken by random.
         There are 3 states: Mild(<30%, currentPain/maximalPain), Average(<80%) and Intense(<100%) -->
