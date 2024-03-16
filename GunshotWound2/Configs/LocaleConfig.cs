@@ -120,6 +120,7 @@
         public string ArmorDestroyed;
         public string PainShockDeath;
         public string DeathReason;
+        public string BleedingReason;
 
         public string LocalizationAuthor;
 
@@ -261,6 +262,7 @@
             config.ArmorDestroyed = manager.GetWord("ArmorDestroyed");
             config.PainShockDeath = manager.GetWord("PainShockDeath");
             config.DeathReason = manager.GetWord("DeathReason");
+            config.BleedingReason = manager.GetWord("BleedingReason");
 
             config.LocalizationAuthor = manager.GetWord("TranslationAuthor");
         }

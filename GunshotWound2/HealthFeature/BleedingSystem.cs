@@ -68,7 +68,7 @@
                     continue;
                 }
 
-                health.DealDamage(bleeding.severity * deltaTime, bleeding.name);
+                health.DealDamage(bleeding.severity * deltaTime, sharedData.localeConfig.BleedingReason);
                 bleeding.severity -= health.bleedingHealRate * deltaTime;
             }
         }

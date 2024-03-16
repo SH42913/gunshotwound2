@@ -20,7 +20,6 @@ PenetratingGswOn,Penetrating GSW on,Слепое огнестрельное ра
 PerforatingGswOn,Perforating GSW on,Сквозное огнестрельное ранение на,Durchschuss an,Perforation d'une balle sur,Zniekształcenia postrzałowe na,관통 총상 어디에,Uma bala atravessou seu/sua,Perforacion GSW en,Perforating GSW on,Perforating GSW on,Perforating GSW on,Perforating GSW on
 AvulsiveGswOn,Avulsive GSW on,Рваное огнестрельное ранение на,Fleisch-reissende Schussverletzung an,Avulsive GSW on,Oskurowanie postrzeleniem na,격렬한 총상 어디에,Ferimento a bala avulsivo no/a,Avulsion GSW,Avulsive GSW on,Avulsive GSW on,Avulsive GSW on,Avulsive GSW on
 ,,,,,,,,,,,,
-,,,,,,,,,,,,
 HeavyBrainDamage,Heavy brain damage,Тяжелое повреждение мозга,Schwerer Hirnschaden,Lourds dégâts cérébraux,Poważne uszkodzenie mózgu,심각한 뇌 손상,Dano cerebral pesado,Daño cerebral grave,Heavy brain damage,脳に重大なダメージを受けた,頭部嚴重受損,Heavy brain damage
 BulletFlyThroughYourHead,A bullet has penetrated your skull,Пуля прошла вашу голову насквозь,Eine Kugel hat deinen Schädel durchdrungen,Une balle a pénétré dans votre crâne,Pocisk spenetrował ci czaskę,총알이 당신의 머리를 통해 난다,Uma bala atravesou sua cabeça,Una bala ha penetrado tu craneo,A bullet has penetrated your skull,銃弾があなたの頭蓋骨を貫通した,子彈穿透你的頭骨,A bullet has penetrated your skull
 BulletTornApartYourBrain,A bullet has fractured your skull,Пуля разорвала ваш череп на куски,Eine Kugel hat dein Hirn durchdrungen,Une balle vous a fracturé votre crâne,Pocisk uszkodził twoją czaskę,총알이 당신의 두뇌를 찢어 버렸습니다,Uma bala destruiu seu cerebro,Una bala ha fracturado tu craneo,A bullet has fractured your skull,弾丸により頭蓋骨が骨折した,子彈使你頭部骨折,A bullet has fractured your skull
@@ -35,14 +34,6 @@ WindedFromImpact,Winded from impact,Головокружение от удара
 IncisionWoundOn,Incision wound to the,Поверхностное ранение на,Schnittwunde an,Plaie superficielle sur,Naciencię na,절개 상처 어디에,Sofreu uma incisão no/a,Incision,Incision wound to the,Incision wound to the,切割傷,Incision wound to the
 LacerationWoundOn,Laceration wound to the,Рваная рана на,Reisswunde an,Lacération de la plaie sur,Skaleczenie na,열상 상처 어디에,Sofreu uma laceração no/a,Laceracion,Laceration wound to the,Laceration wound to the,撕裂傷,Laceration wound to the
 StabWoundOn,Stab wound to the,Колотое ранение на,Stichwunde an,Coup de couteau sur,Rana kłuta na,찌린 상처 어디에,Levou uma facada no/a,Puñalada,Stab wound to the,Stab wound to the,刺傷,Stab wound to the
-,,,,,,,,,,,,
-BodyBlown,Concussive shock damage to the torso detected,Тело разорвано на куски,Torso zerstört,Corps touché,Obrażenia wstrząsowe na tułowiu,신체가 헐떡임 ,Teve seu corpo explodido,Concussive shock damage to the torso detected,Concussive shock damage to the torso detected,衝撃による胴体の損傷を検出,軀幹受到衝擊受傷,Concussive shock damage to the torso detected
-HeadBlown,Concussive shock damage to the head detected,Голова разорвана на куски,Kopf zerstört,Tête touchée,Obrażenia wstrząsowe na tułowiu; prawdopodobnie obrażenia tchawiczo-oskrzelowe,머리가 헐떡임,Teve sua cabeça explodida,Concussive shock damage to the head detected,Concussive shock damage to the head detected,頭部への衝撃が検出された、外傷性脳損傷の可能性あり,頭部受到衝擊受傷,Concussive shock damage to the head detected
-NeckBlown,Concussive shock damage to the neck detected,Шея разорвана на куски,Hals zerstört,Nuque touchée,Obrażenia wstrząsowe na szyji,목이 헐떡임,Teve o pescoço explodido,Concussive shock damage to the neck detected,Concussive shock damage to the neck detected,衝撃による首の損傷を検出,頸部受到衝擊受傷,Concussive shock damage to the neck detected
-ChestBlown,Concussive shock damage to the torso detected,Грудь разорвана на куски,Brust zerstört,Poitrine touchée,Obrażenia wstrząsowe na klatce piersiowej,가슴이 헐떡임,Teve o peito explodido,Concussive shock damage to the torso detected,Concussive shock damage to the torso detected,衝撃的による胴体の損傷を検出,軀幹受到衝擊受傷,Concussive shock damage to the torso detected
-LowerBodyBlown,Concussive shock damage to the abdomen detected,Живот разорван на куски,Unterkörper zerstört,Bas du crops touché,Obrażenia wstrząsowe na brzuchu,하체가 헐떡임,Teve o abdomen explodido,Concussive shock damage to the abdomen detected,Concussive shock damage to the abdomen detected,衝撃的による腹部の損傷を検出,腹部受到衝擊受傷,Concussive shock damage to the abdomen detected
-ArmBlown,Concussive shock damage to the arm detected,Рука разорвана на куски,Arm zerstört,Bras touché,Obrażenia wstrząsowe na dłoni,팔이 헐떡임,Teve o braço explodido,Concussive shock damage to the arm detected,Concussive shock damage to the arm detected,衝撃的による腕の損傷を検出,手臂受到衝擊受傷,Concussive shock damage to the arm detected
-LegBlown,Concussive shock damage to the legs detected,Нога разорвана на куски,Bein zerstört,Jambe touchée,Obrażenia wstrząsowe na nogach,다리가 헐떡임,Teve a perna explodida,Concussive shock damage to the legs detected,Concussive shock damage to the legs detected,衝撃的による足の損傷を検出,腿部受到衝擊受傷,Concussive shock damage to the legs detected
 ,,,,,,,,,,,,
 Blackout,Blackout possible,Возможна потеря сознания,Möglicher Gedächtnisverlust,Risque d'évanouïssement,Zamroczenie,의식 상실 가능성이 있다,Desmaiou,Posible desmayo,Blackout possible,気絶の可能性あり,可能導致斷氣,Blackout possible
 BleedingInHead,Intracranial bleeding,Кровотечение в мозг,Kopfblutung,Saignement à la tête,Krwawienie wnętrzoczaskowe,머리에서 출혈,Hemorragia na cabeça,Hemorragia intercraneal,Intracranial bleeding,頭蓋内出血,顱內出血,Intracranial bleeding
@@ -70,11 +61,9 @@ GutsCrit,guts,кишечник,Innereien,l'intestin,Wnętrzności,창자,Intesti
 ArmsCrit,arms,руки,Arme, les bras,Ręce,팔,Braços,Brazos,arms,腕,手臂,arms
 LegsCrit,legs,ноги,Beine, les jambes,Nogi,다리,Pernas,Piernas,legs,足,腿部,legs
 ,,,,,,,,,,,,
-Wounds,Wounds,Ранения,Wunden,Blessures,Rany,상처,Ferimentos,Heridas,Wounds,傷,傷口,Wounds
-,,,,,,,,,,,,
-,,,,,,,,,,,,
 DontHaveMoneyForHelmet,Insufficient funds to purchase a helmet,Недостаточно денег для покупки шлема,Du hast nicht genug Geld für einen Helm,Vous n'avez pas assez d'argent pour acheter un casque,Nie masz wystarczających pieniędzy aby kupić hełm,당신은 헬멧을 사기에 충분한 돈을 가지고 있지 않다,Você não tem dinheiro suficiente para comprar um capacete,No tienes suficientes fondos para comprar un casco,Insufficient funds to purchase helmet,ヘルメットを買うための金が足りない,購買頭盔資金不足,Insufficient funds to purchase a helmet
 ,,,,,,,,,,,,
+Wounds,Wounds,Ранения,Wunden,Blessures,Rany,상처,Ferimentos,Heridas,Wounds,傷,傷口,Wounds
 InternalBleeding,Internal bleeding,Внутреннее кровотечение,Innere Blutungen,Hémorragie interne,Krwawienie wewnętrzne,내부 출혈,Sangramento interno,Hemorragia interna,Internal bleeding,内出血,內出血,Internal bleeding
 SeveredArtery,Punctured artery,Разорванная артерия,Verletzte Arterie,Artère touchée,Przecięta tętnica,절단 동맥,Artéria cortada,Arteria pinchada,Punctured artery,穿刺動脈,動脈穿刺,Punctured artery
 SeveredArteryMessage,An artery was severed,Артерия была повреждена,Arterie wurde verletzt!,L'artère a été touchée,Masz przeciętą tętnice!,동맥이 절단되었다!,Artéria foi cortada!,¡Una arteria se ha roto!,An artery was severed!,動脈が切れた,動脈斷裂,An artery was severed
@@ -125,5 +114,6 @@ BandageSuccess,You applied a bandage to {0},Вы наложили бинт на 
 ArmorDestroyed,Your armor falls apart,Ваш бронежилет развалился на куски,Deine Rüstung ist kaputt,Votre blindage tombe en morceaux,Twoja zbroja została zniszczona!,당신의 갑옷이 떨어졌다,Sua armadura quebrou!,Tu chaleco se desprende,Your armor falls apart,防弾ベストがバラバラになった,你的防彈衣失去一部分保護,Your armor falls apart
 PainShockDeath,You have died of pain shock,Вы погибли от болевого шока,Du bist an einem Schock gestorben,Vous êtes mort du choc de douleur,Umarłeś z powodu nadmiaru bólu (Wstrząs bólowy),당신은 통증 때문에 죽었다,Você não resistiu a dor,Has muerto por una conmocion,You have died of shock,衝撃により死んだ,你死於休克,You have died of shock
 DeathReason,Death reason,Причина смерти,,,,,,,,,,
+BleedingReason,Bleeding,Кровотечение,,,,,,,,,,
 ,,,,,,,,,,,,
 TranslationAuthor,"SH42913, sob, Bleak_Perspective",SH42913,gand,JaminFR,MicroPanda123,kim GI,"AwesomeSmile, TheBrunoCA",,,Ranshiine,Kwansy,
