@@ -7,6 +7,7 @@
     public struct Health : IComponent {
         public int max;
         public float diff;
+        public bool kill;
 
         public float bleedingHealRate;
         public Entity bleedingToBandage;

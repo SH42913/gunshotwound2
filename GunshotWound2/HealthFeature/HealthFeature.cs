@@ -22,7 +22,17 @@
                     bleeding.target = entity;
                     bleeding.severity = 0.1f;
                     bleeding.name = "TEST";
-                };
+                }
+
+                ;
+            });
+
+            sharedData.cheatListener.Register("GSW_KILL_PLAYER", () => {
+                if (sharedData.TryGetPlayer(out Entity entity)) {
+                    entity.GetComponent<Health>().kill = true;
+                }
+
+                ;
             });
 #endif
         }

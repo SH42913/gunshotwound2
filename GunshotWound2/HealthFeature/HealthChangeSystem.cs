@@ -27,6 +27,11 @@
                 }
 
                 ref Health health = ref healthStash.Get(entity);
+                if (health.kill) {
+                    convertedPed.thisPed.Health -= 100;
+                    continue;
+                }
+
                 float threshold = convertedPed.isPlayer && convertedPed.IsUsingPhone() ? 5f : 1f;
                 if (Math.Abs(health.diff) < threshold) {
                     continue;

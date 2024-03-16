@@ -5,16 +5,11 @@
     using Scellecs.Morpeh;
 
     public sealed class DeadlyPainState : IPainState {
-        public float PainThreshold => 3f;
+        public float PainThreshold => WoundConfig.DEADLY_PAIN_PERCENT;
         public string Color => "~r~";
 
         public void ApplyPainIncreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) {
-            ref Health health = ref pedEntity.GetComponent<Health>();
-            health.diff -= Configs.WoundConfig.ConvertHealthFromNative(convertedPed.thisPed.Health);
-
-            if (convertedPed.isPlayer) {
-                sharedData.notifier.emergency.QueueMessage(sharedData.localeConfig.PainShockDeath);
-            }
+            pedEntity.GetComponent<Health>().kill = true;
         }
 
         public void ApplyPainDecreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) { }

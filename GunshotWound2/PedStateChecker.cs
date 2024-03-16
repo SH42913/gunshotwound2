@@ -54,7 +54,6 @@
             STRING_BUILDER.Append(color);
             STRING_BUILDER.Append(healthPercent.ToString("P0"));
             STRING_BUILDER.SetDefaultColor();
-            STRING_BUILDER.AppendEndOfLine();
         }
 
         private static void ShowArmor(SharedData sharedData, ref ConvertedPed convertedPed) {
@@ -79,13 +78,13 @@
                 message = sharedData.localeConfig.ArmorLooksAwful;
             }
 
+            STRING_BUILDER.AppendEndOfLine();
             STRING_BUILDER.Append(color);
             STRING_BUILDER.Append(message);
 #if DEBUG
             STRING_BUILDER.Append($" ({armor.ToString()})");
 #endif
             STRING_BUILDER.SetDefaultColor();
-            STRING_BUILDER.AppendEndOfLine();
         }
 
         private static void ShowPain(SharedData sharedData, Entity pedEntity) {
@@ -95,18 +94,23 @@
             }
 
             float painPercent = pain.Percent();
-            STRING_BUILDER.Append(sharedData.localeConfig.Pain);
-            STRING_BUILDER.Append(": ");
-            STRING_BUILDER.Append(pain.currentState?.Color ?? "~g~");
-            STRING_BUILDER.Append(painPercent.ToString("P1"));
+            STRING_BUILDER.AppendEndOfLine();
 
-            if (painPercent > 1f) {
-                float timeToRecover = (pain.amount - pain.max) / pain.recoveryRate;
-                STRING_BUILDER.Append($" ({timeToRecover.ToString("F1")} sec)");
+            if (painPercent >= WoundConfig.DEADLY_PAIN_PERCENT) {
+                STRING_BUILDER.Append(sharedData.localeConfig.PainShockDeath);
+            } else {
+                STRING_BUILDER.Append(sharedData.localeConfig.Pain);
+                STRING_BUILDER.Append(": ");
+                STRING_BUILDER.Append(pain.currentState.Color);
+                STRING_BUILDER.Append(painPercent.ToString("P1"));
+
+                if (painPercent > 1f) {
+                    float timeToRecover = (pain.amount - pain.max) / pain.recoveryRate;
+                    STRING_BUILDER.Append($" ({timeToRecover.ToString("F1")} sec)");
+                }
             }
 
             STRING_BUILDER.SetDefaultColor();
-            STRING_BUILDER.AppendEndOfLine();
         }
 
         private static void ShowBleedingWounds(SharedData sharedData, ref ConvertedPed convertedPed, ref Health health) {
@@ -115,6 +119,7 @@
             }
 
             LocaleConfig localeConfig = sharedData.localeConfig;
+            STRING_BUILDER.AppendEndOfLine();
             STRING_BUILDER.AppendEndOfLine();
             STRING_BUILDER.SetDefaultColor();
             STRING_BUILDER.Append(localeConfig.Wounds);
@@ -154,7 +159,6 @@
             }
 
             STRING_BUILDER.SetDefaultColor();
-            STRING_BUILDER.AppendEndOfLine();
         }
 
         private static void ShowCrits(SharedData sharedData, Entity pedEntity) {
@@ -164,6 +168,7 @@
                 return;
             }
 
+            STRING_BUILDER.AppendEndOfLine();
             STRING_BUILDER.Append(localeConfig.Crits);
             STRING_BUILDER.Append(" ~r~");
 
@@ -203,7 +208,6 @@
             }
 
             STRING_BUILDER.SetDefaultColor();
-            STRING_BUILDER.AppendEndOfLine();
         }
     }
 }
