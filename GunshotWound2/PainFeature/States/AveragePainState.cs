@@ -11,6 +11,8 @@
         public string Color => "~y~";
 
         public void ApplyPainIncreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) {
+            convertedPed.BlockSprint();
+
             if (convertedPed.isPlayer) {
                 PlayerEffects.SetSpecialAbilityLock(true);
                 CameraEffects.StartPostFx(POST_FX, 5000);
@@ -18,13 +20,11 @@
         }
 
         public void ApplyPainDecreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) {
+            convertedPed.UnBlockSprint();
+
             if (convertedPed.isPlayer) {
                 PlayerEffects.SetSpecialAbilityLock(false);
                 CameraEffects.StopPostFx(POST_FX);
-
-                if (!convertedPed.hasBrokenLegs) {
-                    PlayerEffects.SetSprint(true);
-                }
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿namespace GunshotWound2.PedsFeature {
+    using PlayerFeature;
     using Scellecs.Morpeh;
 
     public sealed class PedMovementSystem : ISystem {
@@ -31,7 +32,7 @@
             }
         }
 
-        private static void VehicleMovement(ref ConvertedPed convertedPed) {
+        private void VehicleMovement(ref ConvertedPed convertedPed) {
             if (!convertedPed.isRestrictToDrive && !convertedPed.hasSpineDamage) {
                 return;
             }
@@ -48,7 +49,7 @@
             }
         }
 
-        private static void NonVehicleMovement(ref ConvertedPed convertedPed) {
+        private void NonVehicleMovement(ref ConvertedPed convertedPed) {
             if (convertedPed.isRagdoll) {
                 return;
             }
@@ -66,6 +67,10 @@
                 PedEffects.ChangeMoveSet(convertedPed.thisPed, convertedPed.moveSetRequest);
                 convertedPed.moveSetRequest = default;
                 convertedPed.hasCustomMoveSet = true;
+            }
+
+            if (convertedPed.isPlayer) {
+                PlayerEffects.SetSprint(convertedPed.sprintBlockers <= 0);
             }
         }
 

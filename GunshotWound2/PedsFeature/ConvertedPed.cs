@@ -26,7 +26,8 @@
         public string moveSetRequest;
         public bool resetMoveSet;
         public bool hasCustomMoveSet;
-        
+        public int sprintBlockers;
+
 #if DEBUG
         public Blip customBlip;
 #endif
@@ -51,6 +52,16 @@
 
         public static bool IsUsingPhone(this in ConvertedPed convertedPed) {
             return Function.Call<bool>(Hash.IS_PED_RUNNING_MOBILE_PHONE_TASK, convertedPed.thisPed);
+        }
+
+        public static void BlockSprint(this ref ConvertedPed convertedPed) {
+            convertedPed.sprintBlockers++;
+        }
+
+        public static void UnBlockSprint(this ref ConvertedPed convertedPed) {
+            if (convertedPed.sprintBlockers > 0) {
+                convertedPed.sprintBlockers--;
+            }
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿namespace GunshotWound2.CritsFeature {
     using GTA;
     using PedsFeature;
-    using PlayerFeature;
 
     public sealed class LegsCrit : BaseCrit {
         private static readonly int[] NM_MESSAGES = { 169, };
@@ -17,21 +16,17 @@
 
             RagdollType ragdollType = convertedPed.thisPed.IsRunning ? RagdollType.Balance : RagdollType.Relax;
             convertedPed.RequestRagdoll(3000, ragdollType);
+
             // convertedPed.nmMessages = NM_MESSAGES;
             convertedPed.hasBrokenLegs = true;
 
             convertedPed.moveRate = sharedData.mainConfig.WoundConfig.MoveRateOnNervesDamage;
-
-            if (convertedPed.isPlayer) {
-                PlayerEffects.SetSprint(false);
-            }
+            convertedPed.BlockSprint();
         }
 
         public override void Cancel(Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
             convertedPed.hasBrokenLegs = false;
-            if (convertedPed.isPlayer) {
-                PlayerEffects.SetSprint(true);
-            }
+            convertedPed.UnBlockSprint();
         }
     }
 }

@@ -52,7 +52,7 @@
             if (!convertedPed.hasSpineDamage) {
                 sharedData.notifier.emergency.QueueMessage(sharedData.localeConfig.UnbearablePainMessage);
             }
-            
+
             CameraEffects.StartPostFx(BLACKOUT_FX, 5000);
         }
 
@@ -63,7 +63,6 @@
             if (convertedPed.isPlayer) {
                 Player player = Game.Player;
                 player.IgnoredByEveryone = false;
-                PlayerEffects.SetSprint(false);
                 CameraEffects.StopPostFx(BLACKOUT_FX);
             }
         }

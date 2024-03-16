@@ -17,7 +17,6 @@
 
             if (convertedPed.isPlayer) {
                 CameraEffects.ShakeCameraPermanent();
-                PlayerEffects.SetSprint(false);
             } else {
                 ref Pain pain = ref pedEntity.GetComponent<Pain>();
                 float backPercent = 1f - pain.Percent();
