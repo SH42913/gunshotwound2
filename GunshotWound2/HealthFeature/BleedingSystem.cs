@@ -68,7 +68,7 @@
                     continue;
                 }
 
-                health.diff -= bleeding.severity * deltaTime;
+                health.DealDamage(bleeding.severity * deltaTime, bleeding.name);
                 bleeding.severity -= health.bleedingHealRate * deltaTime;
             }
         }

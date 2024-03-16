@@ -68,7 +68,7 @@
             }
 
             WoundData woundData = wound.Value;
-            CreateDamage(pedEntity, woundData.Damage);
+            CreateDamage(pedEntity, woundData.Damage, woundData.Name);
             CreateBleeding(pedEntity, woundData.BleedSeverity, woundData.Name);
             CreatePain(pedEntity, woundData.Pain);
             CreateCrit(pedEntity, woundData.HasCrits, hitData.bodyPart);
@@ -78,7 +78,7 @@
             }
         }
 
-        private void CreateDamage(Entity pedEntity, float damage) {
+        private void CreateDamage(Entity pedEntity, float damage, string woundName) {
             if (damage <= 0f) {
                 return;
             }
@@ -86,8 +86,8 @@
             float deviation = sharedData.mainConfig.WoundConfig.DamageDeviation;
             float mult = sharedData.mainConfig.WoundConfig.DamageMultiplier;
 
-            ref Health health = ref pedEntity.GetComponent<Health>();
-            health.diff -= CalculateAmount(damage, deviation, mult);
+            float damageAmount = CalculateAmount(damage, deviation, mult);
+            pedEntity.GetComponent<Health>().DealDamage(damageAmount, woundName);
         }
 
         private void CreateBleeding(Entity pedEntity, float severity, string name) {

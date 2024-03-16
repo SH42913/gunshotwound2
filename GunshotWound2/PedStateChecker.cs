@@ -33,7 +33,13 @@
             int maxHealth = WoundConfig.ConvertHealthFromNative(health.max);
             float healthPercent = (float)currentHealth / maxHealth;
             if (healthPercent <= 0f) {
-                STRING_BUILDER.AppendLine($"~r~{sharedData.localeConfig.YouAreDead}~s~");
+                STRING_BUILDER.Append("~r~");
+                STRING_BUILDER.Append(sharedData.localeConfig.YouAreDead);
+                STRING_BUILDER.AppendEndOfLine();
+                STRING_BUILDER.Append(sharedData.localeConfig.DeathReason);
+                STRING_BUILDER.Append(": ");
+                STRING_BUILDER.Append(health.lastDamageReason);
+                STRING_BUILDER.SetDefaultColor();
                 return;
             }
 
@@ -95,19 +101,14 @@
 
             float painPercent = pain.Percent();
             STRING_BUILDER.AppendEndOfLine();
+            STRING_BUILDER.Append(sharedData.localeConfig.Pain);
+            STRING_BUILDER.Append(": ");
+            STRING_BUILDER.Append(pain.currentState.Color);
+            STRING_BUILDER.Append(painPercent.ToString("P1"));
 
-            if (painPercent >= WoundConfig.DEADLY_PAIN_PERCENT) {
-                STRING_BUILDER.Append(sharedData.localeConfig.PainShockDeath);
-            } else {
-                STRING_BUILDER.Append(sharedData.localeConfig.Pain);
-                STRING_BUILDER.Append(": ");
-                STRING_BUILDER.Append(pain.currentState.Color);
-                STRING_BUILDER.Append(painPercent.ToString("P1"));
-
-                if (painPercent > 1f) {
-                    float timeToRecover = (pain.amount - pain.max) / pain.recoveryRate;
-                    STRING_BUILDER.Append($" ({timeToRecover.ToString("F1")} sec)");
-                }
+            if (painPercent > 1f) {
+                float timeToRecover = (pain.amount - pain.max) / pain.recoveryRate;
+                STRING_BUILDER.Append($" ({timeToRecover.ToString("F1")} sec)");
             }
 
             STRING_BUILDER.SetDefaultColor();

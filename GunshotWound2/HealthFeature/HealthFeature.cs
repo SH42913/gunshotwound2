@@ -29,10 +29,8 @@
 
             sharedData.cheatListener.Register("GSW_KILL_PLAYER", () => {
                 if (sharedData.TryGetPlayer(out Entity entity)) {
-                    entity.GetComponent<Health>().kill = true;
+                    entity.GetComponent<Health>().InstantKill("GSW_KILL_PLAYER");
                 }
-
-                ;
             });
 #endif
         }
