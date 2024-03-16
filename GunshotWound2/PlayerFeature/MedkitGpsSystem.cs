@@ -34,14 +34,17 @@
                 return;
             }
 
-            ClearMedkits(false);
+            ClearMedkits(removeAll: false);
+            MarkNewMedkits();
+            timeToRefresh = PlayerConfig.TimeToRefreshMedkits;
+        }
+
+        private void MarkNewMedkits() {
             foreach (Prop prop in GTA.World.GetAllPickupObjects()) {
                 if (!markedMedkits.Contains(prop.Handle) && prop.Model.Equals(healthPackModel)) {
                     MarkMedkit(prop);
                 }
             }
-
-            timeToRefresh = PlayerConfig.TimeToRefreshMedkits;
         }
 
         private void MarkMedkit(Prop prop) {
@@ -66,7 +69,7 @@
         }
 
         public void Dispose() {
-            ClearMedkits(true);
+            ClearMedkits(removeAll: true);
         }
     }
 }
