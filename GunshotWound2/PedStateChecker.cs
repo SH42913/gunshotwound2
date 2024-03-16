@@ -38,7 +38,7 @@
                 STRING_BUILDER.AppendEndOfLine();
                 STRING_BUILDER.Append(sharedData.localeConfig.DeathReason);
                 STRING_BUILDER.Append(": ");
-                STRING_BUILDER.Append(health.lastDamageReason);
+                STRING_BUILDER.Append(health.lastDamageReason ?? "UNKNOWN");
                 STRING_BUILDER.SetDefaultColor();
                 return;
             }
