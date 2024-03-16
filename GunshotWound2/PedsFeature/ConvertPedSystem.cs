@@ -38,13 +38,12 @@
                 if (npcConfig.MinAccuracy > 0 && npcConfig.MaxAccuracy > 0 && pedToConvert.Accuracy > npcConfig.MinAccuracy) {
                     pedToConvert.Accuracy = sharedData.random.Next(npcConfig.MinAccuracy, npcConfig.MaxAccuracy + 1);
                 }
-                
+
                 convertedPed.defaultAccuracy = pedToConvert.Accuracy;
                 if (npcConfig.MinShootRate > 0 && npcConfig.MaxShootRate > 0) {
                     pedToConvert.ShootRate = sharedData.random.Next(npcConfig.MinShootRate, npcConfig.MaxShootRate);
                 }
 
-                // PedEffects.SetRagdollBlockingFlags(pedToConvert, 1);
                 convertedPed.thisPed.SetConfigFlag(107, true);
 
                 worldService.AddConverted(pedToConvert, entity);

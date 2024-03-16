@@ -3,7 +3,6 @@
     using System.Globalization;
 
     public sealed class WoundConfig {
-        //TODO: Make it dynamic in config
         public const float MAX_SEVERITY_FOR_BANDAGE = 1f;
         public const float DEADLY_PAIN_PERCENT = 3f;
         private const int HEALTH_CORRECTION = 100;

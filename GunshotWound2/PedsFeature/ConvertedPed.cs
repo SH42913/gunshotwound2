@@ -12,7 +12,7 @@
         public int lastFrameArmor;
 
         public (int time, RagdollType type) ragdollRequest;
-        public int[] nmMessages; //TODO Replace with GTA.NaturalMotion.Message and move to separate component
+        public int[] nmMessages;
         public bool ragdollReset;
         public bool isRagdoll;
 

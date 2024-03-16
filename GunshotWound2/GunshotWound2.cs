@@ -85,7 +85,6 @@
                 return false;
             }
 
-            //TODO: Coroutine for frames?
             (bool success, string reason) = Configs.MainConfig.TryToLoad(sharedData.mainConfig);
             if (!success) {
                 Notification.Show($"GSW2 couldn't load config!\nReason:\n~r~{reason}", blinking: true);

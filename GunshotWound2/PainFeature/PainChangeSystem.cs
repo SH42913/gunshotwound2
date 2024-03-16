@@ -189,16 +189,14 @@
 #endif
 
                 PedEffects.PlayPain(convertedPed.thisPed, sharedData.random.Next(PAIN_SOUNDS));
-                // convertedPed.thisPed.PlayAmbientSpeech("GUN_BEG");
                 if (woundConfig.RagdollOnPainfulWound) {
                     convertedPed.RequestRagdoll(timeInMs: 1500);
-                    // convertedPed.nmMessages = NM_MESSAGES;
                 }
 
                 if (convertedPed.isPlayer) {
                     CameraEffects.ShakeCameraOnce();
                     CameraEffects.FlashCameraOnce();
-                } else if(convertedPed.thisPed.IsOnBike) {
+                } else if (convertedPed.thisPed.IsOnBike) {
                     convertedPed.thisPed.Task.LeaveVehicle(GTA.LeaveVehicleFlags.BailOut);
                 }
             }

@@ -16,8 +16,6 @@
 
             RagdollType ragdollType = convertedPed.thisPed.IsRunning ? RagdollType.Balance : RagdollType.Relax;
             convertedPed.RequestRagdoll(3000, ragdollType);
-
-            // convertedPed.nmMessages = NM_MESSAGES;
             convertedPed.hasBrokenLegs = true;
 
             convertedPed.moveRate = sharedData.mainConfig.WoundConfig.MoveRateOnNervesDamage;

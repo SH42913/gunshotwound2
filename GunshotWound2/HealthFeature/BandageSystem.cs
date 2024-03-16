@@ -98,20 +98,6 @@
 
         private static bool CheckPedIsStandStill(Ped thisPed) {
             return thisPed.IsIdle && thisPed.IsStopped;
-
-            // return thisPed.IsRagdoll
-            //        || thisPed.IsWalking
-            //        || thisPed.IsRunning
-            //        || thisPed.IsSprinting
-            //        || thisPed.IsJumping
-            //        || thisPed.IsSwimming
-            //        || thisPed.IsShooting
-            //        || thisPed.IsReloading
-            //        || thisPed.IsAiming
-            //        || thisPed.IsClimbing
-            //        || thisPed.IsCuffed
-            //        || thisPed.IsDiving
-            //        || thisPed.IsFalling;
         }
 
         private static void MakeStartPost(Notifier notifier, string message) {
