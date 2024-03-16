@@ -1,8 +1,8 @@
-﻿using System;
-using System.IO;
-using GunshotWound2.Utils;
+﻿namespace GunshotWound2.Configs {
+    using System;
+    using System.IO;
+    using Utils;
 
-namespace GunshotWound2.Configs {
     public sealed class LocaleConfig {
         public string HelmetSavedYourHead;
         public string ArmorSavedYourChest;
@@ -118,8 +118,8 @@ namespace GunshotWound2.Configs {
         public string BandageSuccess;
 
         public string ArmorDestroyed;
-
         public string PainShockDeath;
+        public string DeathReason;
 
         public string LocalizationAuthor;
 
@@ -259,6 +259,8 @@ namespace GunshotWound2.Configs {
             config.BandageSuccess = manager.GetWord("BandageSuccess");
 
             config.ArmorDestroyed = manager.GetWord("ArmorDestroyed");
+            config.PainShockDeath = manager.GetWord("PainShockDeath");
+            config.DeathReason = manager.GetWord("DeathReason");
 
             config.LocalizationAuthor = manager.GetWord("TranslationAuthor");
         }
