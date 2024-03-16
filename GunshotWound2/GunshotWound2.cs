@@ -16,7 +16,6 @@
         private readonly EcsWorld ecsWorld;
         private readonly SystemsGroup commonSystems;
 
-        private float timeToStart;
         private bool isStarted;
         private bool isPaused;
 
@@ -29,7 +28,6 @@
 
             KeyUp += OnKeyUp;
             isPaused = false;
-            timeToStart = 5f;
 
             Tick += OnTick;
             Aborted += Cleanup;
@@ -83,8 +81,7 @@
                 return true;
             }
 
-            if (timeToStart > 0) {
-                timeToStart -= sharedData.deltaTime;
+            if (Game.IsLoading || Game.IsCutsceneActive) {
                 return false;
             }
 
