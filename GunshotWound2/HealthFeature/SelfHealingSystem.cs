@@ -26,6 +26,10 @@
         public void OnUpdate(float deltaTime) {
             foreach (Scellecs.Morpeh.Entity entity in peds) {
                 ref Health health = ref healthStash.Get(entity);
+                if (health.isDead) {
+                    continue;
+                }
+
                 if (health.bleedingWounds != null && health.bleedingWounds.Count > 0) {
                     continue;
                 }

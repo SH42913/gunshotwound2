@@ -37,7 +37,7 @@
 
         private void ProcessBandaging(Scellecs.Morpeh.Entity entity, float deltaTime) {
             ref Health health = ref healthStash.Get(entity);
-            if (health.timeToBandage <= 0f) {
+            if (health.timeToBandage <= 0f || health.isDead) {
                 return;
             }
 

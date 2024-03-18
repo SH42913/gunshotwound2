@@ -9,6 +9,7 @@
         public float diff;
         public bool kill;
         public string lastDamageReason;
+        public bool isDead;
 
         public float bleedingHealRate;
         public Entity bleedingToBandage;

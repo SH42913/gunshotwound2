@@ -52,6 +52,11 @@
                     continue;
                 }
 
+                if (health.isDead) {
+                    World.RemoveEntity(entity);
+                    continue;
+                }
+
                 if (!bleeding.isProcessed) {
                     ProcessBleeding(entity, ref bleeding, ref health);
 #if DEBUG

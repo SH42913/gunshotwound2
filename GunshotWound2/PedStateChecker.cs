@@ -14,6 +14,13 @@
         private static int LAST_POST;
 
         public static void Check(SharedData sharedData, Entity pedEntity) {
+            string message = BuildString(sharedData, pedEntity);
+
+            GTA.UI.Notification.Hide(LAST_POST);
+            LAST_POST = GTA.UI.Notification.Show(message, blinking: true);
+        }
+
+        public static string BuildString(SharedData sharedData, Entity pedEntity) {
             ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
             ref Health health = ref pedEntity.GetComponent<Health>();
 
@@ -23,9 +30,7 @@
             ShowCrits(sharedData, pedEntity);
             ShowArmor(sharedData, ref convertedPed);
             ShowBleedingWounds(sharedData, ref convertedPed, ref health);
-
-            GTA.UI.Notification.Hide(LAST_POST);
-            LAST_POST = GTA.UI.Notification.Show(STRING_BUILDER.ToString(), blinking: true);
+            return STRING_BUILDER.ToString();
         }
 
         private static void ShowHealth(SharedData sharedData, ref ConvertedPed convertedPed, ref Health health) {
