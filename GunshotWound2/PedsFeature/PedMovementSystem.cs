@@ -43,7 +43,7 @@
             }
 
             if (convertedPed.isPlayer) {
-                GTA.Game.DisableAllControlsThisFrame();
+                PlayerEffects.DisableVehicleControlThisFrame();
             } else {
                 PedEffects.SetVehicleOutOfControl(vehicle);
             }

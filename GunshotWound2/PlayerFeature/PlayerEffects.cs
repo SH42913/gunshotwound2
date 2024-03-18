@@ -1,8 +1,12 @@
 ﻿namespace GunshotWound2.PlayerFeature {
+    using System;
     using GTA;
     using GTA.Native;
 
     public static class PlayerEffects {
+        private static readonly Control[] CONTROL_VALUES = (Control[])Enum.GetValues(typeof(Control));
+        private static readonly string[] CONTROL_NAMES = Enum.GetNames(typeof(Control));
+
         private static Player Player => Game.Player;
 
         public static void SetSpecialAbilityLock(bool lockAbility) {
@@ -25,6 +29,19 @@
 
         public static float GetStaminaRemaining() {
             return Function.Call<float>(Hash.GET_PLAYER_SPRINT_STAMINA_REMAINING, Player);
+        }
+
+        public static void DisableVehicleControlThisFrame() {
+            for (var i = 0; i < CONTROL_VALUES.Length; i++) {
+                Control value = CONTROL_VALUES[i];
+                if (value == Control.VehicleExit) {
+                    continue;
+                }
+
+                if (CONTROL_NAMES[i].StartsWith("Vehicle")) {
+                    Game.DisableControlThisFrame(value);
+                }
+            }
         }
     }
 }
