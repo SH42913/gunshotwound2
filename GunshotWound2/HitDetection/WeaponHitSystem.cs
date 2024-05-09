@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using Configs;
     using GTA;
+    using GTA.Math;
     using GTA.Native;
     using PedsFeature;
     using PlayerFeature;
@@ -11,7 +12,9 @@
 
     public sealed class WeaponHitSystem : ISystem {
         private const uint RAMMED_BY_CAR = 133987706;
-        private const float MAX_LIGHT_IMPACT_SPEED = 5f;
+        private const uint RUN_OVER_CAR = 2741846334;
+        private const uint FALL = 3452007600;
+        private const float MAX_LIGHT_IMPACT_SPEED = 8f;
 
         private readonly SharedData sharedData;
 
@@ -120,22 +123,43 @@
                 return true;
             }
 
-            if (ped.IsFalling || ped.IsRagdoll || IsDamagedByWeapon(ped, RAMMED_BY_CAR)) {
-                float speed = ped.Velocity.Length();
+            skipDamage = false;
+            Vector3 pedVelocity = ped.Velocity;
+            if (IsDamagedByWeapon(ped, RUN_OVER_CAR)) {
+                Vehicle possibleVehicle = GTA.World.GetClosestVehicle(ped.Position, 5f);
+                Vector3 vehicleVelocity = possibleVehicle != null ? possibleVehicle.Velocity : Vector3.Zero;
+                float relativeSpeed = (vehicleVelocity - pedVelocity).Length();
+
 #if DEBUG
-                sharedData.logger.WriteInfo($"It is fall damage with speed {speed.ToString("F2")}");
+                string vehicleName = possibleVehicle?.DisplayName ?? "UNKNOWN";
+                sharedData.logger.WriteInfo($"It is run over car damage by {vehicleName}, relativeSpeed:{relativeSpeed}");
 #endif
-                weaponType = speed >= MAX_LIGHT_IMPACT_SPEED ? PedHitData.WeaponTypes.HeavyImpact : PedHitData.WeaponTypes.LightImpact;
+                if (relativeSpeed > MAX_LIGHT_IMPACT_SPEED) {
+                    weaponType = PedHitData.WeaponTypes.HeavyImpact;
+                } else if (relativeSpeed < 1f) {
+                    weaponType = PedHitData.WeaponTypes.Nothing;
+                    skipDamage = true;
+                } else {
+                    weaponType = PedHitData.WeaponTypes.LightImpact;
+                }
+            } else if (ped.IsFalling || ped.IsRagdoll || IsDamagedByWeapon(ped, RAMMED_BY_CAR) || IsDamagedByWeapon(ped, FALL)) {
+                float pedSpeed = pedVelocity.Length();
+#if DEBUG
+                sharedData.logger.WriteInfo($"It is fall damage with speed {pedSpeed.ToString("F2")}");
+#endif
+                weaponType = pedSpeed >= MAX_LIGHT_IMPACT_SPEED
+                        ? PedHitData.WeaponTypes.HeavyImpact
+                        : PedHitData.WeaponTypes.LightImpact;
             } else if (ped.IsInVehicle()) {
 #if DEBUG
                 sharedData.logger.WriteInfo("It is car impact damage");
 #endif
                 weaponType = PedHitData.WeaponTypes.HeavyImpact;
             } else {
+                sharedData.logger.WriteWarning("Unknown special case damage");
                 weaponType = PedHitData.WeaponTypes.Nothing;
             }
 
-            skipDamage = false;
             return weaponType != PedHitData.WeaponTypes.Nothing;
         }
 

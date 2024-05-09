@@ -176,8 +176,8 @@
 		</LightImpact>
 
 		<HeavyImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.1" CritChance="0.7">
-			<!-- Boar;Pig;Hammer;Crowbar;Bat;RunOverCar;FireExtinguisher;GolfClub;PetrolCan;PoolCue;Wrench;Cow;Deer;StoneHatchet; -->
-			<Hashes Hashes="861723357;1205296881;1317494643;2227010557;2508868239;2741846334;101631238;1141786504;883325847;2484171525;419712736;94548753;4106648222;940833800;"/>
+			<!-- Boar;Pig;Hammer;Crowbar;Bat;FireExtinguisher;GolfClub;PetrolCan;PoolCue;Wrench;Cow;Deer;StoneHatchet; -->
+			<Hashes Hashes="861723357;1205296881;1317494643;2227010557;2508868239;101631238;1141786504;883325847;2484171525;419712736;94548753;4106648222;940833800;"/>
 		</HeavyImpact>
 
 		<Cutting DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.5">

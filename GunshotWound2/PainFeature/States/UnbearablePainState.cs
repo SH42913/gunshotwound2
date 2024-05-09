@@ -25,7 +25,7 @@
             convertedPed.isRestrictToDrive = true;
 
             int deathAnimIndex = sharedData.random.Next(1, 3);
-            PedEffects.PlayFacialAnim(convertedPed.thisPed, $"dead_{deathAnimIndex.ToString()}", convertedPed.isMale);
+            PedEffects.PlayFacialAnim(convertedPed.thisPed, $"die_{deathAnimIndex.ToString()}", convertedPed.isMale);
 
             string speech = sharedData.random.IsTrueWithProbability(0.5f) ? "DYING_HELP" : "DYING_MOAN";
             convertedPed.thisPed.PlayAmbientSpeech(speech, SpeechModifier.ShoutedClear);
