@@ -10,7 +10,7 @@
         protected override WoundData GetHeadWound() {
             randomizer.Clear();
             randomizer.Add(0, 3);
-            randomizer.Add(1, 3);
+            randomizer.Add(1, 2);
             randomizer.Add(2, 1);
             randomizer.Add(3, 1);
 
@@ -25,7 +25,7 @@
 
         protected override WoundData GetNeckWound() {
             randomizer.Clear();
-            randomizer.Add(0, 3);
+            randomizer.Add(0, 2);
             randomizer.Add(1, 2);
             randomizer.Add(2, 1);
 
@@ -67,8 +67,8 @@
 
         protected override WoundData GetArmWound() {
             randomizer.Clear();
-            randomizer.Add(0, 3);
-            randomizer.Add(1, 2);
+            randomizer.Add(0, 1);
+            randomizer.Add(1, 1);
             randomizer.Add(2, 1);
 
             switch (randomizer.NextWithReplacement()) {
@@ -81,8 +81,8 @@
 
         protected override WoundData GetLegWound() {
             randomizer.Clear();
-            randomizer.Add(0, 3);
-            randomizer.Add(1, 2);
+            randomizer.Add(0, 1);
+            randomizer.Add(1, 1);
             randomizer.Add(2, 1);
 
             switch (randomizer.NextWithReplacement()) {

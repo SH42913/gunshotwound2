@@ -54,7 +54,7 @@
                     ragdollRequest.time = newTime > 0 ? newTime : 0;
                 }
             } else if (!convertedPed.thisPed.IsInVehicle()) {
-                bool hasNaturalMotion = convertedPed.nmMessages != null;
+                bool hasNaturalMotion = convertedPed.nmMessages != null && !convertedPed.hasSpineDamage;
 #if DEBUG
                 var time = ragdollRequest.time.ToString();
                 sharedData.logger.WriteInfo($"Ragdoll for {convertedPed.name} time={time} hasNM={hasNaturalMotion}");
