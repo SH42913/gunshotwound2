@@ -4,6 +4,7 @@
 
     public sealed class LegsCrit : BaseCrit {
         private static readonly int[] NM_MESSAGES = { 169, };
+        private const int LEG_INJURE_FLAG = 166;
 
         protected override string PlayerMessage => sharedData.localeConfig.PlayerLegsCritMessage;
         protected override string ManMessage => sharedData.localeConfig.ManLegsCritMessage;
@@ -20,11 +21,13 @@
 
             convertedPed.moveRate = sharedData.mainConfig.WoundConfig.MoveRateOnNervesDamage;
             convertedPed.BlockSprint();
+            convertedPed.thisPed.SetConfigFlag(LEG_INJURE_FLAG, true);
         }
 
         public override void Cancel(Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
             convertedPed.hasBrokenLegs = false;
             convertedPed.UnBlockSprint();
+            convertedPed.thisPed.ResetConfigFlag(LEG_INJURE_FLAG);
         }
     }
 }

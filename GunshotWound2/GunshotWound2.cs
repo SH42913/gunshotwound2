@@ -119,6 +119,14 @@
             sharedData.notifier.info.QueueMessage("by <C>SH42913</C>");
             sharedData.notifier.info.QueueMessage($"\nTranslated by {sharedData.localeConfig.LocalizationAuthor ?? "GSW2-community"}");
 
+#if DEBUG
+            sharedData.cheatListener.Register("GSW_TEST", () => {
+                foreach (Ped ped in GTA.World.GetAllPeds()) {
+                    ped.SetConfigFlag(166, true);
+                }
+            });
+#endif
+
             isStarted = true;
             return true;
         }
