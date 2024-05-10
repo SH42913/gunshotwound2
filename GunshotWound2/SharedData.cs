@@ -41,5 +41,12 @@
             player = playerEntity;
             return !player.IsNullOrDisposed();
         }
+
+        public bool PlayerCanSeeNotification() {
+            return !playerEntity.IsNullOrDisposed()
+                   && !GTA.Game.IsLoading
+                   && !GTA.Game.IsCutsceneActive
+                   && GTA.Game.Player.CanControlCharacter;
+        }
     }
 }

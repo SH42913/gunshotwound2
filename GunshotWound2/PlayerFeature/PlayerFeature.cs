@@ -7,7 +7,8 @@
             systemsGroup.AddSystem(new PlayerDetectSystem(sharedData));
             systemsGroup.AddSystem(new AdrenalineSystem(sharedData));
             systemsGroup.AddSystem(new MedkitGpsSystem(sharedData));
-            systemsGroup.AddSystem(new PlayerDeathReportSystem());
+            systemsGroup.AddSystem(new PlayerDeathReportSystem(sharedData));
+            systemsGroup.AddSystem(new MissionTrackerSystem(sharedData));
 
             sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.CheckKey, () => CheckPlayer(sharedData));
             sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.HelmetKey, () => ToggleHelmet(sharedData));

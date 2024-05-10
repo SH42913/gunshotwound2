@@ -8,7 +8,12 @@
     }
 
     public sealed class PlayerDeathReportSystem : ILateSystem {
+        private readonly SharedData sharedData;
         private Filter filter;
+
+        public PlayerDeathReportSystem(SharedData sharedData) {
+            this.sharedData = sharedData;
+        }
 
         public World World { get; set; }
 
@@ -17,7 +22,7 @@
         }
 
         public void OnUpdate(float deltaTime) {
-            if (GTA.Game.IsLoading || GTA.Game.IsCutsceneActive || !GTA.Game.Player.CanControlCharacter) {
+            if (!sharedData.PlayerCanSeeNotification()) {
                 return;
             }
 
@@ -25,6 +30,7 @@
                 ref ShowPlayerDeathReportRequest request = ref entity.GetComponent<ShowPlayerDeathReportRequest>();
                 if (!string.IsNullOrEmpty(request.report)) {
                     GTA.UI.Notification.Show(request.report, blinking: true);
+                    GunshotWound2.sharedData.logger.WriteError("Report shown");
                 }
 
                 entity.RemoveComponent<ShowPlayerDeathReportRequest>();

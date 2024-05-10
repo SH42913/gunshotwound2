@@ -110,6 +110,7 @@
         public string GswStopped;
         public string GswIsPaused;
         public string GswIsWorking;
+        public string GswPauseTip;
 
         public string AlreadyBandaging;
         public string DontHaveMoneyForBandage;
@@ -252,6 +253,7 @@
             config.GswStopped = manager.GetWord("GswStopped");
             config.GswIsPaused = manager.GetWord("GswIsPaused");
             config.GswIsWorking = manager.GetWord("GswIsWorking");
+            config.GswPauseTip = manager.GetWord("GswPauseTip");
 
             config.AlreadyBandaging = manager.GetWord("AlreadyBandaging");
             config.DontHaveMoneyForBandage = manager.GetWord("DontHaveMoneyForBandage");
