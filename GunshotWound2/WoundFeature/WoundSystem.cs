@@ -42,6 +42,7 @@
             foreach (Entity pedEntity in damagedPeds) {
                 ref PedHitData hitData = ref pedEntity.GetComponent<PedHitData>();
                 if (hitData.weaponType == PedHitData.WeaponTypes.Nothing) {
+                    sharedData.logger.WriteWarning("Wound with no weapon");
                     continue;
                 }
 
@@ -87,6 +88,7 @@
             float mult = sharedData.mainConfig.WoundConfig.DamageMultiplier;
 
             float damageAmount = CalculateAmount(damage, deviation, mult);
+            damageAmount = Math.Max(damageAmount, 1f);
             pedEntity.GetComponent<Health>().DealDamage(damageAmount, woundName);
         }
 

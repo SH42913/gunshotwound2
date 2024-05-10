@@ -8,6 +8,7 @@
         private readonly SharedData sharedData;
 
         private Filter convertedPeds;
+        private Filter justConvertedPeds;
         private Stash<ConvertedPed> convertedStash;
 
         public Scellecs.Morpeh.World World { get; set; }
@@ -18,12 +19,42 @@
 
         public void OnAwake() {
             convertedPeds = World.Filter.With<ConvertedPed>().Without<JustConvertedEvent>();
+            justConvertedPeds = World.Filter.With<JustConvertedEvent>();
             convertedStash = World.GetStash<ConvertedPed>();
         }
 
         void IDisposable.Dispose() { }
 
         public void OnUpdate(float deltaTime) {
+            ProcessJustDamagedPeds();
+            ProcessCommonPeds();
+        }
+
+        private void ProcessJustDamagedPeds() {
+            if (!sharedData.mainConfig.NpcConfig.ScanOnlyDamaged) {
+                return;
+            }
+
+            foreach (Scellecs.Morpeh.Entity entity in justConvertedPeds) {
+                ref ConvertedPed convertedPed = ref convertedStash.Get(entity);
+                if (convertedPed.isPlayer) {
+                    continue;
+                }
+
+                Ped ped = convertedPed.thisPed;
+                if (!ped.Exists() || !ped.IsAlive || ped.IsInvincible) {
+                    continue;
+                }
+
+                entity.SetComponent(new PedHitData());
+
+#if DEBUG
+                sharedData.logger.WriteInfo($"Detect damage at {convertedPed.name} (just converted case)");
+#endif
+            }
+        }
+
+        private void ProcessCommonPeds() {
             foreach (Scellecs.Morpeh.Entity entity in convertedPeds) {
                 ref ConvertedPed convertedPed = ref convertedStash.Get(entity);
                 Ped ped = convertedPed.thisPed;

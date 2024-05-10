@@ -84,6 +84,10 @@
             float diff = pain.diff;
             pain.amount += diff;
             pain.diff = 0f;
+
+#if DEBUG
+            sharedData.logger.WriteInfo($"Increased pain for {diff.ToString("F5")} at {convertedPed.name}");
+#endif
         }
 
         private void RefreshPainState(Entity entity, ref ConvertedPed convertedPed, ref Pain pain) {

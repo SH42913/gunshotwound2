@@ -33,6 +33,8 @@
                 health.max = convertedPed.thisPed.MaxHealth - 1;
                 if (convertedPed.thisPed.Health > health.max) {
                     convertedPed.thisPed.Health = health.max;
+                } else if (!convertedPed.isPlayer && sharedData.mainConfig.NpcConfig.ScanOnlyDamaged) {
+                    convertedPed.thisPed.Health = health.max;
                 }
 
                 if (convertedPed.isPlayer) {

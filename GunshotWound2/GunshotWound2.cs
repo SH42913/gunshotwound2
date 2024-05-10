@@ -11,7 +11,13 @@
     public sealed class GunshotWound2 : Script {
         private static readonly string EXCEPTION_LOG_PATH = Path.Combine(Application.StartupPath, "GSW2Exception.log");
 
+#if DEBUG
+
+        // ReSharper disable once InconsistentNaming
+        public static SharedData sharedData;
+#else
         private readonly SharedData sharedData;
+#endif
 
         private readonly EcsWorld ecsWorld;
         private readonly SystemsGroup commonSystems;
@@ -121,10 +127,10 @@
             PedsFeature.PedsFeature.Create(commonSystems, sharedData);
             PlayerFeature.PlayerFeature.Create(commonSystems, sharedData);
             HitDetection.DetectHitFeature.Create(commonSystems, sharedData);
-            WoundFeature.WoundFeature.Create(commonSystems, sharedData);
             HealthFeature.HealthFeature.Create(ecsWorld, commonSystems, sharedData);
-            CritsFeature.CritsFeature.Create(commonSystems, sharedData);
             PainFeature.PainFeature.Create(commonSystems, sharedData);
+            CritsFeature.CritsFeature.Create(commonSystems, sharedData);
+            WoundFeature.WoundFeature.Create(commonSystems, sharedData);
         }
         #endregion
 
