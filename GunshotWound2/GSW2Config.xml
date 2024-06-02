@@ -222,6 +222,10 @@
 		<!-- Pause of script. It can be useful in some missions.
         Default: End on keyboard. -->
 
+		<DeathKey>46</DeathKey>
+		<!-- Instant death. Useful if you're stuck in a deadly situation and don't want to wait for slow death.
+		Default: Delete on keyboard. -->
+
 		<!-- <HealKey></HealKey> -->
 		<!-- Besides, you can set instant heal key -->
 	</Hotkeys>

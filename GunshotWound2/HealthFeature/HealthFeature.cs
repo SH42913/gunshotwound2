@@ -15,6 +15,12 @@
                 ped.Health = ped.MaxHealth;
             });
 
+            sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.DeathKey, () => {
+                if (sharedData.TryGetPlayer(out Entity entity)) {
+                    entity.GetComponent<Health>().InstantKill(reason: null);
+                }
+            });
+
 #if DEBUG
             sharedData.cheatListener.Register("GSW_TEST_BLEED", () => {
                 if (sharedData.TryGetPlayer(out Entity entity)) {

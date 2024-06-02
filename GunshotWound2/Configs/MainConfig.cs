@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Windows.Forms;
-using System.Xml.Linq;
-using GunshotWound2.PedsFeature;
-using GunshotWound2.Utils;
+﻿namespace GunshotWound2.Configs {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Windows.Forms;
+    using System.Xml.Linq;
+    using PedsFeature;
+    using Utils;
 
-namespace GunshotWound2.Configs
-{
-    public sealed class MainConfig
-    {
+    public sealed class MainConfig {
         public const float MINIMAL_RANGE_FOR_WOUNDED_PEDS = 0;
         public const float ADDING_TO_REMOVING_MULTIPLIER = 2;
-        public static readonly char[] Separator = {';'};
+        public static readonly char[] Separator = { ';' };
 
         private const string ScriptConfigPath = "scripts/GSW2Config.xml";
         private const string GswConfigPath = "scripts/GSW2/GSW2Config.xml";
@@ -32,6 +30,7 @@ namespace GunshotWound2.Configs
         public Keys? DecreaseRangeKey;
         public Keys? PauseKey;
         public Keys? BandageKey;
+        public Keys? DeathKey;
 
         public bool CommonMessages = true;
         public bool WarningMessages = true;
@@ -57,39 +56,31 @@ namespace GunshotWound2.Configs
         public PainMoveSets GetPainMoveSetsFor(in ConvertedPed convertedPed) {
             if (convertedPed.isPlayer) {
                 return PlayerConfig.PainMoveSets;
-            } else if(convertedPed.isMale) {
+            } else if (convertedPed.isMale) {
                 return NpcConfig.MalePainMoveSets;
             } else {
                 return NpcConfig.FemalePainMoveSets;
             }
         }
 
-        public override string ToString()
-        {
-            return $"{WoundConfig}\n" +
-                   $"{NpcConfig}\n" +
-                   $"{PlayerConfig}";
+        public override string ToString() {
+            return $"{WoundConfig}\n" + $"{NpcConfig}\n" + $"{PlayerConfig}";
         }
 
-        public static (bool success, string reason) TryToLoad(MainConfig config)
-        {
+        public static (bool success, string reason) TryToLoad(MainConfig config) {
             config.PlayerConfig = new PlayerConfig();
             config.WoundConfig = new WoundConfig();
             config.NpcConfig = new NpcConfig();
 
             string path = null;
 
-            if (File.Exists(GswConfigPath))
-            {
+            if (File.Exists(GswConfigPath)) {
                 path = GswConfigPath;
-            }
-            else if (File.Exists(ScriptConfigPath))
-            {
+            } else if (File.Exists(ScriptConfigPath)) {
                 path = ScriptConfigPath;
             }
 
-            if (string.IsNullOrEmpty(path))
-            {
+            if (string.IsNullOrEmpty(path)) {
                 return (false, "GSW Config was not found");
             }
 
@@ -102,8 +93,7 @@ namespace GunshotWound2.Configs
             }
 
             string section = null;
-            try
-            {
+            try {
                 section = nameof(HotkeysSection);
                 HotkeysSection(config, doc);
 
@@ -121,19 +111,17 @@ namespace GunshotWound2.Configs
 
                 section = nameof(WeaponsSection);
                 WeaponsSection(config, doc);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 return (false, $"Failed loading of {section}:\n{e.Message}");
             }
 
             return (true, null);
         }
 
-        private static void HotkeysSection(MainConfig config, XElement doc)
-        {
+        private static void HotkeysSection(MainConfig config, XElement doc) {
             var node = doc.Element("Hotkeys");
-            if (node == null) return;
+            if (node == null)
+                return;
 
             config.HelmetKey = node.GetKey("GetHelmetKey");
             config.CheckKey = node.GetKey("CheckKey");
@@ -142,12 +130,13 @@ namespace GunshotWound2.Configs
             config.DecreaseRangeKey = node.GetKey("DecreaseRangeKey");
             config.BandageKey = node.GetKey("BandageKey");
             config.PauseKey = node.GetKey("PauseKey");
+            config.DeathKey = node.GetKey("DeathKey");
         }
 
-        private static void PlayerSection(MainConfig config, XElement doc)
-        {
+        private static void PlayerSection(MainConfig config, XElement doc) {
             var node = doc.Element("Player");
-            if (node == null) return;
+            if (node == null)
+                return;
 
             config.PlayerConfig.WoundedPlayerEnabled = node.Element("GSWPlayerEnabled").GetBool();
             config.PlayerConfig.MaximalPain = node.Element("MaximalPain").GetFloat();
@@ -164,10 +153,10 @@ namespace GunshotWound2.Configs
             config.PlayerConfig.PainMoveSets = PainMoveSets.FromXElement(node, "MoveSets");
         }
 
-        private static void PedsSection(MainConfig config, XElement doc)
-        {
+        private static void PedsSection(MainConfig config, XElement doc) {
             var node = doc.Element("Peds");
-            if (node == null) return;
+            if (node == null)
+                return;
 
             config.NpcConfig.AddingPedRange = node.Element("GSWScanRange").GetFloat();
             config.NpcConfig.RemovePedRange = config.NpcConfig.AddingPedRange * ADDING_TO_REMOVING_MULTIPLIER;
@@ -197,44 +186,36 @@ namespace GunshotWound2.Configs
             var targetsNode = node.Element("Targets");
             var all = targetsNode.GetBool("ALL");
             GswTargets targets = 0;
-            if (all)
-            {
+            if (all) {
                 config.NpcConfig.Targets = GswTargets.ALL;
                 return;
             }
 
-            if (targetsNode.GetBool("COMPANION"))
-            {
+            if (targetsNode.GetBool("COMPANION")) {
                 targets |= GswTargets.COMPANION;
             }
 
-            if (targetsNode.GetBool("DISLIKE"))
-            {
+            if (targetsNode.GetBool("DISLIKE")) {
                 targets |= GswTargets.DISLIKE;
             }
 
-            if (targetsNode.GetBool("HATE"))
-            {
+            if (targetsNode.GetBool("HATE")) {
                 targets |= GswTargets.HATE;
             }
 
-            if (targetsNode.GetBool("LIKE"))
-            {
+            if (targetsNode.GetBool("LIKE")) {
                 targets |= GswTargets.LIKE;
             }
 
-            if (targetsNode.GetBool("NEUTRAL"))
-            {
+            if (targetsNode.GetBool("NEUTRAL")) {
                 targets |= GswTargets.NEUTRAL;
             }
 
-            if (targetsNode.GetBool("PEDESTRIAN"))
-            {
+            if (targetsNode.GetBool("PEDESTRIAN")) {
                 targets |= GswTargets.PEDESTRIAN;
             }
 
-            if (targetsNode.GetBool("RESPECT"))
-            {
+            if (targetsNode.GetBool("RESPECT")) {
                 targets |= GswTargets.RESPECT;
             }
 
@@ -244,10 +225,10 @@ namespace GunshotWound2.Configs
             config.NpcConfig.FemalePainMoveSets = PainMoveSets.FromXElement(node, "FemaleMoveSets");
         }
 
-        private static void NotificationsSection(MainConfig config, XElement doc)
-        {
+        private static void NotificationsSection(MainConfig config, XElement doc) {
             var node = doc.Element("Notifications");
-            if (node == null) return;
+            if (node == null)
+                return;
 
             config.Language = node.Element("Language").Attribute("Value").Value;
             config.CommonMessages = node.Element("Common").GetBool();
@@ -256,40 +237,39 @@ namespace GunshotWound2.Configs
             config.EmergencyMessages = node.Element("Emergency").GetBool();
         }
 
-        private static void WeaponsSection(MainConfig config, XElement doc)
-        {
+        private static void WeaponsSection(MainConfig config, XElement doc) {
             var node = doc.Element("Weapons");
-            if (node == null) return;
+            if (node == null)
+                return;
 
             var dictionary = new Dictionary<string, float?[]>();
-            foreach (var element in node.Elements())
-            {
+            foreach (var element in node.Elements()) {
                 var multipliers = new float?[5];
 
                 var damageString = element.Attribute("DamageMult");
                 multipliers[0] = damageString != null
-                    ? float.Parse(damageString.Value, CultureInfo.InvariantCulture)
-                    : null;
+                        ? float.Parse(damageString.Value, CultureInfo.InvariantCulture)
+                        : null;
 
                 var bleedingString = element.Attribute("BleedingMult");
                 multipliers[1] = bleedingString != null
-                    ? float.Parse(bleedingString.Value, CultureInfo.InvariantCulture)
-                    : null;
+                        ? float.Parse(bleedingString.Value, CultureInfo.InvariantCulture)
+                        : null;
 
                 var painString = element.Attribute("PainMult");
                 multipliers[2] = painString != null
-                    ? float.Parse(painString.Value, CultureInfo.InvariantCulture)
-                    : null;
+                        ? float.Parse(painString.Value, CultureInfo.InvariantCulture)
+                        : null;
 
                 var critString = element.Attribute("CritChance");
                 multipliers[3] = critString != null
-                    ? float.Parse(critString.Value, CultureInfo.InvariantCulture)
-                    : null;
+                        ? float.Parse(critString.Value, CultureInfo.InvariantCulture)
+                        : null;
 
                 var armorString = element.Attribute("ArmorDamage");
                 multipliers[4] = armorString != null
-                    ? float.Parse(armorString.Value, CultureInfo.InvariantCulture)
-                    : null;
+                        ? float.Parse(armorString.Value, CultureInfo.InvariantCulture)
+                        : null;
 
                 dictionary.Add(element.Name.LocalName, multipliers);
             }
@@ -304,23 +284,24 @@ namespace GunshotWound2.Configs
             config.IgnoreHashes = GetWeaponHashes("Ignore");
             config.WoundConfig.DamageSystemConfigs = dictionary;
 
-            HashSet<uint> GetWeaponHashes(string weaponName)
-            {
+            HashSet<uint> GetWeaponHashes(string weaponName) {
                 var weaponNode = node.Element(weaponName);
-                if (weaponNode == null) throw new Exception($"{weaponName} node not found!");
+                if (weaponNode == null)
+                    throw new Exception($"{weaponName} node not found!");
 
                 const string name = "Hashes";
                 var hashes = weaponNode.Element(name)?.Attribute(name)?.Value;
-                if (string.IsNullOrEmpty(hashes)) throw new Exception($"{weaponName}'s hashes is empty");
+                if (string.IsNullOrEmpty(hashes))
+                    throw new Exception($"{weaponName}'s hashes is empty");
 
                 return hashes.Split(Separator, StringSplitOptions.RemoveEmptyEntries).Select(uint.Parse).ToHashSet();
             }
         }
 
-        private static void WoundsSection(MainConfig config, XElement doc)
-        {
+        private static void WoundsSection(MainConfig config, XElement doc) {
             var node = doc.Element("Wounds");
-            if (node == null) return;
+            if (node == null)
+                return;
 
             config.WoundConfig.MoveRateOnFullPain = node.Element("MoveRateOnFullPain").GetFloat();
             config.WoundConfig.RealisticNervesDamage = node.Element("RealisticNervesDamage").GetBool();
