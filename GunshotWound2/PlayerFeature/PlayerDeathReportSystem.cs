@@ -29,8 +29,7 @@
             foreach (Entity entity in filter) {
                 ref ShowPlayerDeathReportRequest request = ref entity.GetComponent<ShowPlayerDeathReportRequest>();
                 if (!string.IsNullOrEmpty(request.report)) {
-                    GTA.UI.Notification.Show(request.report, blinking: true);
-                    GunshotWound2.sharedData.logger.WriteError("Report shown");
+                    sharedData.notifier.ShowOne(request.report, blinking: true);
                 }
 
                 entity.RemoveComponent<ShowPlayerDeathReportRequest>();

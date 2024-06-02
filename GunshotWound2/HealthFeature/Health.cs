@@ -27,5 +27,9 @@
             health.kill = true;
             health.lastDamageReason = reason;
         }
+
+        public static bool IsAlive(this ref Health health) {
+            return !health.isDead;
+        }
     }
 }

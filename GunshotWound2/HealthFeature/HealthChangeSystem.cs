@@ -35,7 +35,9 @@
                 }
 
                 if (health.kill) {
+                    health.isDead = true;
                     convertedPed.thisPed.Health -= 100;
+                    CreateDeathReport(entity, ref convertedPed, ref health);
                     continue;
                 }
 

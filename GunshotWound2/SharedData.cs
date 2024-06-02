@@ -1,6 +1,7 @@
 ﻿namespace GunshotWound2 {
     using System.Diagnostics;
     using Configs;
+    using HealthFeature;
     using Scellecs.Morpeh;
     using Utils;
 
@@ -43,10 +44,11 @@
         }
 
         public bool PlayerCanSeeNotification() {
-            return !playerEntity.IsNullOrDisposed()
-                   && !GTA.Game.IsLoading
-                   && !GTA.Game.IsCutsceneActive
-                   && GTA.Game.Player.CanControlCharacter;
+            if (TryGetPlayer(out Entity entity) && entity.GetComponent<Health>().IsAlive()) {
+                return !GTA.Game.IsLoading && !GTA.Game.IsCutsceneActive && GTA.Game.Player.CanControlCharacter;
+            } else {
+                return false;
+            }
         }
     }
 }
