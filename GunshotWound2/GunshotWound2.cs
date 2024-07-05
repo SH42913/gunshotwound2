@@ -61,7 +61,7 @@
             }
 
             if (isStarted && !isPaused) {
-                sharedData.inputListener.ConsumeKeyUp(eventArgs.KeyCode);
+                sharedData.inputListener.ConsumeKeyUp(eventArgs.KeyCode, eventArgs.Modifiers);
             }
         }
 
