@@ -93,14 +93,14 @@
 
             (bool success, string reason) = Configs.MainConfig.TryToLoad(sharedData.mainConfig);
             if (!success) {
-                Notification.Show($"GSW2 couldn't load config!\nReason:\n~r~{reason}", blinking: true);
+                Notification.PostTicker($"GSW2 couldn't load config!\nReason:\n~r~{reason}", isImportant: true);
                 Abort();
                 return false;
             }
 
             (success, reason) = Configs.LocaleConfig.TryToLoad(sharedData.localeConfig, sharedData.mainConfig.Language);
             if (!success) {
-                Notification.Show($"GSW2 couldn't load localization!\nReason:\n~r~{reason}", blinking: true);
+                Notification.PostTicker($"GSW2 couldn't load localization!\nReason:\n~r~{reason}", isImportant: true);
                 Abort();
                 return false;
             }
@@ -122,7 +122,7 @@
 #if DEBUG
             sharedData.cheatListener.Register("GSW_TEST", () => {
                 foreach (Ped ped in GTA.World.GetAllPeds()) {
-                    ped.SetConfigFlag(166, true);
+                    ped.SetConfigFlag(PedConfigFlagToggles.IsInjured, true);
                 }
             });
 #endif
@@ -155,10 +155,10 @@
         }
 
         private void HandleRuntimeException(Exception exception) {
-            Notification.Show($"~o~{sharedData.localeConfig.GswStopped}");
+            Notification.PostTicker($"~o~{sharedData.localeConfig.GswStopped}", isImportant: true);
             sharedData.logger.WriteError(exception.ToString());
             File.WriteAllText(EXCEPTION_LOG_PATH, exception.ToString());
-            Notification.Show($"~r~There is a runtime error in GSW2!\nCheck {EXCEPTION_LOG_PATH}");
+            Notification.PostTicker($"~r~There is a runtime error in GSW2!\nCheck {EXCEPTION_LOG_PATH}", isImportant: true);
         }
         #endregion
     }

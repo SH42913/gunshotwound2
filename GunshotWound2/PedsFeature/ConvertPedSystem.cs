@@ -44,7 +44,7 @@
                     pedToConvert.ShootRate = sharedData.random.Next(npcConfig.MinShootRate, npcConfig.MaxShootRate);
                 }
 
-                convertedPed.thisPed.SetConfigFlag(107, true);
+                convertedPed.thisPed.SetConfigFlag(PedConfigFlagToggles.DontActivateRagdollFromBulletImpact, true);
 
                 worldService.AddConverted(pedToConvert, entity);
                 entity.AddComponent<JustConvertedEvent>();

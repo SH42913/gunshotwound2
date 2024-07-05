@@ -55,8 +55,8 @@
                 }
 
                 if (weaponType == PedHitData.WeaponTypes.Nothing) {
-                    (_, int intHash, _) = NativeMemory.GetEntityDamageRecordEntryAtIndex(convertedPed.thisPed.MemoryAddress, 0);
-                    var uintHash = unchecked((uint)intHash);
+                    var damageRecord = NativeMemory.GetEntityDamageRecordEntryAtIndex(convertedPed.thisPed.MemoryAddress, 0);
+                    var uintHash = unchecked((uint)damageRecord.weaponHash);
                     sharedData.logger.WriteWarning("Can't detect weapon");
                     sharedData.logger.WriteWarning($"Make sure you have hash of this weapon(possible {uintHash}) in GSWConfig");
                 } else {

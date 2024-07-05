@@ -25,7 +25,7 @@
         }
 
         public int ShowOne(string message, bool blinking) {
-            return Notification.Show(message, blinking);
+            return Notification.PostTicker(message, blinking).Handle;
         }
 
         public int ReplaceOne(string message, bool blinking, int oldPost) {

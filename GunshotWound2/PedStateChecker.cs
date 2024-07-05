@@ -17,7 +17,7 @@
             string message = BuildString(sharedData, pedEntity);
 
             GTA.UI.Notification.Hide(LAST_POST);
-            LAST_POST = GTA.UI.Notification.Show(message, blinking: true);
+            LAST_POST = GTA.UI.Notification.PostTicker(message, isImportant: true).Handle;
         }
 
         public static string BuildString(SharedData sharedData, Entity pedEntity) {
