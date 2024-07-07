@@ -53,15 +53,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configs\LocaleConfig.cs" />
-    <Compile Include="Configs\MainConfig.cs" />
-    <Compile Include="Configs\NpcConfig.cs" />
-    <Compile Include="Configs\PainMoveSets.cs" />
-    <Compile Include="Configs\PlayerConfig.cs" />
-    <Compile Include="Configs\WoundConfig.cs" />
-    <Compile Include="CritsFeature\Actions\ArmsCrit.cs" />
-    <Compile Include="CritsFeature\Actions\GutsCrit.cs" />
-    <Compile Include="CritsFeature\Actions\HeartCrit.cs" />
+    <Compile Include="Configs\LocaleConfig.cs"/>
+    <Compile Include="Configs\MainConfig.cs"/>
+    <Compile Include="Configs\NpcConfig.cs"/>
+    <Compile Include="Configs\PainMoveSets.cs"/>
+    <Compile Include="Configs\PlayerConfig.cs"/>
+    <Compile Include="Configs\WoundConfig.cs"/>
+    <Compile Include="CritsFeature\Actions\ArmsCrit.cs"/>
+    <Compile Include="CritsFeature\Actions\GutsCrit.cs"/>
+    <Compile Include="CritsFeature\Actions\HeartCrit.cs"/>
     <Compile Include="CritsFeature\Actions\BaseCrit.cs"/>
     <Compile Include="CritsFeature\Actions\LegsCrit.cs"/>
     <Compile Include="CritsFeature\Actions\LungsCrit.cs"/>
@@ -75,6 +75,8 @@
     <Compile Include="PlayerFeature\MissionTrackerSystem.cs"/>
     <Compile Include="PlayerFeature\PlayerDeathReportSystem.cs"/>
     <Compile Include="Utils\CheatListener.cs"/>
+    <Compile Include="Utils\CsvReader.cs"/>
+    <Compile Include="Utils\Localization.cs"/>
     <Compile Include="WoundFeature\WoundFeature.cs"/>
     <Compile Include="WoundFeature\WoundData.cs"/>
     <Compile Include="WoundFeature\Weapons\BaseWeaponDamage.cs"/>
@@ -84,16 +86,16 @@
     <Compile Include="WoundFeature\Weapons\HeavyImpactDamage.cs"/>
     <Compile Include="WoundFeature\Weapons\HeavyCaliberDamage.cs"/>
     <Compile Include="WoundFeature\Weapons\LightImpactDamage.cs"/>
-    <Compile Include="WoundFeature\Weapons\MediumCaliberDamage.cs" />
-    <Compile Include="WoundFeature\Weapons\ShotgunDamage.cs" />
-    <Compile Include="WoundFeature\Weapons\SmallCaliberDamage.cs" />
-    <Compile Include="WoundFeature\WoundSystem.cs" />
-    <Compile Include="HealthFeature\BandageSystem.cs" />
-    <Compile Include="HealthFeature\Bleeding.cs" />
-    <Compile Include="HealthFeature\BleedingSystem.cs" />
-    <Compile Include="HealthFeature\HealthChangeSystem.cs" />
-    <Compile Include="HealthFeature\HealthFeature.cs" />
-    <Compile Include="HealthFeature\Health.cs" />
+    <Compile Include="WoundFeature\Weapons\MediumCaliberDamage.cs"/>
+    <Compile Include="WoundFeature\Weapons\ShotgunDamage.cs"/>
+    <Compile Include="WoundFeature\Weapons\SmallCaliberDamage.cs"/>
+    <Compile Include="WoundFeature\WoundSystem.cs"/>
+    <Compile Include="HealthFeature\BandageSystem.cs"/>
+    <Compile Include="HealthFeature\Bleeding.cs"/>
+    <Compile Include="HealthFeature\BleedingSystem.cs"/>
+    <Compile Include="HealthFeature\HealthChangeSystem.cs"/>
+    <Compile Include="HealthFeature\HealthFeature.cs"/>
+    <Compile Include="HealthFeature\Health.cs"/>
     <Compile Include="HealthFeature\HealthInitSystem.cs" />
     <Compile Include="HealthFeature\SelfHealingSystem.cs" />
     <Compile Include="HealthFeature\TotalHealCheckSystem.cs" />
