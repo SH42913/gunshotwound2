@@ -43,6 +43,7 @@
         public string BleedingInHead;
         public string TraumaticBrainInjury;
         public string BrokenNeck;
+        public string ClosedFractureOf;
 
         public string Health;
         public string YouAreDead;
@@ -186,6 +187,7 @@
             config.BleedingInHead = manager.GetWord("BleedingInHead");
             config.TraumaticBrainInjury = manager.GetWord("TraumaticBrainInjury");
             config.BrokenNeck = manager.GetWord("BrokenNeck");
+            config.ClosedFractureOf = manager.GetWord("ClosedFractureOf");
 
             config.Health = manager.GetWord("Health");
             config.YouAreDead = manager.GetWord("YouAreDead");

@@ -88,14 +88,17 @@
                                         float bleeding,
                                         float pain,
                                         float arteryDamageChance = -1,
-                                        bool hasCrits = false) {
+                                        bool hasCrits = false,
+                                        bool ignoreCritsChance = false,
+                                        bool internalBleeding = false) {
             return new WoundData {
                 Name = name,
                 Damage = damageMultiplier * damage,
                 Pain = painMultiplier * pain,
                 BleedSeverity = bleedingMultiplier * bleeding,
+                InternalBleeding = internalBleeding,
                 ArterySevered = arteryDamageChance > 0 && sharedData.random.IsTrueWithProbability(arteryDamageChance),
-                HasCrits = hasCrits && sharedData.random.IsTrueWithProbability(critChance),
+                HasCrits = hasCrits && (ignoreCritsChance || sharedData.random.IsTrueWithProbability(critChance)),
             };
         }
 

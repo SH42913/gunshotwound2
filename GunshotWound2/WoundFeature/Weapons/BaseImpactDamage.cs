@@ -25,5 +25,10 @@
         protected WoundData WindedFromImpact() {
             return CreateWound(sharedData.localeConfig.WindedFromImpact, 10f, -1, 40f);
         }
+
+        protected WoundData ClosedFracture(string position) {
+            var name = $"{sharedData.localeConfig.ClosedFractureOf} {position}";
+            return CreateWound(name, 10f, 0.2f, 40f, 0f, true, true, true);
+        }
     }
 }
