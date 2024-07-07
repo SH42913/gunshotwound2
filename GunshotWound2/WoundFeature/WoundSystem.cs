@@ -42,7 +42,9 @@
             foreach (Entity pedEntity in damagedPeds) {
                 ref PedHitData hitData = ref pedEntity.GetComponent<PedHitData>();
                 if (hitData.weaponType == PedHitData.WeaponTypes.Nothing) {
+#if DEBUG
                     sharedData.logger.WriteWarning("Wound with no weapon");
+#endif
                     continue;
                 }
 
