@@ -1,6 +1,7 @@
 ﻿namespace GunshotWound2.PlayerFeature {
     using GTA;
     using Scellecs.Morpeh;
+    using Utils;
 
     public static class PlayerFeature {
         public static void Create(SystemsGroup systemsGroup, SharedData sharedData) {
@@ -44,10 +45,14 @@
             }
 
             int moneyForHelmet = sharedData.mainConfig.PlayerConfig.MoneyForHelmet;
-            if (player.Money >= moneyForHelmet) {
+            if (player.Money <= 0 || player.Money >= moneyForHelmet) {
                 player.Money -= moneyForHelmet;
                 int helmetTextureId = sharedData.random.Next(0, 15);
-                ped.GiveHelmet(dontTakeOffHelmet: false, HelmetPropFlags.RandomHelmet, helmetTextureId);
+                HelmetPropFlags helmetType = sharedData.random.IsTrueWithProbability(0.5f)
+                        ? HelmetPropFlags.RandomHelmet
+                        : HelmetPropFlags.Cold;
+
+                ped.GiveHelmet(dontTakeOffHelmet: true, helmetType, helmetTextureId);
             } else {
                 sharedData.notifier.emergency.QueueMessage(sharedData.localeConfig.DontHaveMoneyForHelmet);
             }

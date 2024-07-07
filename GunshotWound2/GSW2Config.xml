@@ -2,14 +2,15 @@
 <GunshotWoundMod>
 	<Player>
 		<GSWPlayerEnabled Value="TRUE"/>
-		<!-- If TRUE - player ped will be affected by GSW -->
+		<!-- If TRUE - player ped will be affected by GSW2 -->
 
 		<PoliceCanForget Value="TRUE"/>
-		<!-- If TRUE - cops can forget you, when you fall unconscious.
+		<!-- If TRUE - cops can forget you when you fall unconscious.
         If you use Realism Dispatch Enhanced, better to set it FALSE-->
 
 		<CanDropWeapon Value="FALSE"/>
-		<!-- If TRUE - player will lose weapon on arm crits and when you fall unconscious -->
+		<!-- If TRUE - player will lose a weapon on arm crits and when you fall unconscious.
+		Recommended to use with Pickups mod. -->
 
 		<BlipsToMedkits Value="TRUE" RefreshTime="2" ModelName="prop_ld_health_pack"/>
 		<!-- Add map blips to medkits around player, refresh time in seconds -->
@@ -28,39 +29,39 @@
 		<!-- 1.5 mean 1.5 pain points will be restored per 1 sec -->
 
 		<BleedHealSpeed Value="2.0"/>
-		<!-- How quickly bleeding will heal -->
+		<!-- How quickly bleeding will heal by itself -->
 
 		<MoveSets MildPain="move_m@plodding;move_m@buzzed;move_m@gangster@generic;"
 				  AvgPain="move_m@depressed@a;move_m@injured;move_m@drunk@slightlydrunk;"
 				  IntensePain="move_m@drunk@a;move_m@drunk@moderatedrunk;move_m@drunk@verydrunk;"/>
 		<!-- You can change pain MoveSets by yourself.
-		GSW support many MoveSets(separated by ;), one of them will be taken by random.
+		GSW supports many MoveSets(separated by ;), random will take one of them.
         There are 3 states: Mild(<30%, currentPain/maximalPain), Average(<80%) and Intense(<100%) -->
 
 		<HelmetCost Value="40"/>
-		<!-- 40 mean you need $40 to buy helmet. If you're using skin changer, you need to set it to 0. -->
+		<!-- 40 mean you need $40 to buy a helmet. If you're using a skin changer, you need to set it to 0. -->
 	</Player>
 
 	<Peds>
 		<GSWScanRange Value="50"/>
-		<!-- It is start range where script scan other peds to convert them to GSWPeds. 
+		<!-- It is range where the script scans other peds to convert them to GSWPeds. 
         You also can change range in game, using Increase/DecreaseRange keys, check in Hotkey section.
         If you have low FPS or want to disable GSWPeds, just set range as -1. -->
 
 		<ScanOnlyDamaged Value="FALSE"/>
-		<!-- If TRUE GSW will mark ped as GSWPed only after first damage.
+		<!-- If TRUE - GSW will mark ped as GSWPed only after first damage.
         It will increase performance, but it can have bugs.
         PedHealth, new Accuracy and ShootRate will apply only after first damage! -->
 
 		<CriticalMessages Value="TRUE"/>
-		<!-- If TRUE you will see messages with critical wound of NonPlayable GSWPeds -->
+		<!-- If TRUE - you will see messages about a critical wound of NonPlayable GSWPeds -->
 
 		<Targets ALL="TRUE" COMPANION="TRUE" DISLIKE="TRUE" HATE="TRUE"
 				 LIKE="TRUE" NEUTRAL="TRUE" PEDESTRIAN="TRUE" RESPECT="TRUE"/>
 		<!-- You can select what types of NonPlayable Peds can be affected by GSW.
         It is based on Relationship between ped and player. Useful if you have low FPS or play missions.
         If ALL is TRUE, other variants will not be checked.
-        If allies in missions are always died too quickly, set ALL to FALSE and try set COMPANION and RESPECT to FALSE. -->
+        If allies in missions always die too quickly, set ALL to FALSE and try set COMPANION and RESPECT to FALSE. -->
 
 		<MaximalPain Min="50.0" Max="100.0"/>
 		<!-- Same as for player, but GSWPeds will have MaximalPain between Min and Max. -->
@@ -91,7 +92,7 @@
 		<!-- Available languages: EN, RU, DE, FR, PL, KR and PT-BR.
         Partially translated Spa, Swe, Jp, Cn and Fa.
         All translations(except EN and RU) were made by community and can be inaccurate.
-        You also can help to translate GSW2 to other languages here:
+        You also may help to translate GSW2 to other languages here:
         https://docs.google.com/spreadsheets/d/1TY0nSEJMDmypkYrcVUBlMG3HIAEW075dCOtxXgW5UJ0/edit 
         And more languages will be available in next build! -->
 
@@ -111,7 +112,7 @@
 	<Wounds>
 		<RealisticNervesDamage Value="TRUE"/>
 		<!-- If TRUE - peds(including player) will set to permanent ragdoll on spine damage.
-        If FALSE - ped will get just legs and arms critical damage. -->
+        If FALSE - ped gets legs and arms critical damage instead of permanent ragdoll. -->
 
 		<PainfulWoundPercent Value="0.5"/>
 		<!-- Any wound with value more than PainfulWoundPercent * MaxPain will add painful-wound effects -->
@@ -123,10 +124,10 @@
 		<!-- 5.0 mean you need to stay still 5 seconds for bandaging -->
 
 		<BandageCost Value="15"/>
-		<!-- 15 mean you need $15 for use bandages. If you're using skin changer, you need to set it to 0. -->
+		<!-- 15 mean you need $15 for use bandages. If you're using a custom char model, you need to set it to 0. -->
 
 		<SelfHealingRate Value="0.03"/>
-		<!-- How fast you will heal, if you have no bleedings -->
+		<!-- How fast you will heal if you have no bleeding -->
 
 		<MinimalChanceForArmorSave Value="0.2"/>
 		<!-- 0.6 mean 60% chance to save your body on 1 armor point.
@@ -186,20 +187,20 @@
 		</Cutting>
 
 		<Ignore>
-			<!-- This weapons will be ignored by GSW, so it will deal vanilla damage -->
+			<!-- GSW2 will ignore these weapons, so it will deal vanilla damage -->
 			<!-- Molotov;BZGas;SmokeGrenade;StunGun;FlareGun;Flare;Up-n-Atomizer;GrenadeLauncherSmoke;FireWork;Railgun;RayMinigun;ElectricFence;Bleeding;Drowning;DrowningVehicle; -->
 			<Hashes Hashes="615608432;2694266206;4256991824;911657153;1198879012;1233104067;2939590305;1305664598;2138347493;1834241177;3056410471;2461879995;2339582971;4284007675;1936677264;"/>
 		</Ignore>
 	</Weapons>
 
 	<Hotkeys>
-		<!-- If you don't want to use key, just remove value
+		<!-- If you don't want to use key, just remove key value
          KeyCodes can be found here - https://www.oreilly.com/library/view/javascript-dhtml/9780596514082/apb.html -->
 
 		<GetHelmetKey>74</GetHelmetKey>
-		<!-- Give to player motorbike helmet if player have $40(can be changed).
-        Helmet can save your head from impacts and weapons.
-        If player already have helmet, this hotkey will remove it.
+		<!-- Give to player motorbike helmet if the player has $40(can be changed in HelmetCost section).
+        Helmet can save your head from impact and weapons.
+        If the player already has a helmet, this hotkey will remove it.
         Default: J on keyboard. -->
 
 		<BandageKey>75</BandageKey>
@@ -219,7 +220,8 @@
         Default: PageDown on keyboard. -->
 
 		<PauseKey>35</PauseKey>
-		<!-- Pause of script. It can be useful in some missions.
+		<!-- Pause of the script.
+		It can be useful in some missions.
         Default: End on keyboard. -->
 
 		<DeathKey>46</DeathKey>
@@ -227,6 +229,6 @@
 		Default: Delete on keyboard. -->
 
 		<!-- <HealKey></HealKey> -->
-		<!-- Besides, you can set instant heal key -->
+		<!-- Besides, you can set a key for instant heal -->
 	</Hotkeys>
 </GunshotWoundMod>
