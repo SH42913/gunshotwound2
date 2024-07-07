@@ -24,6 +24,7 @@
 
         private bool isStarted;
         private bool isPaused;
+        private bool cleanedUp;
 
         public GunshotWound2() {
             var logger = new Utils.ScriptHookLogger();
@@ -73,9 +74,14 @@
         }
 
         private void Cleanup(object sender, EventArgs e) {
+            if (cleanedUp) {
+                return;
+            }
+
             try {
                 commonSystems.Dispose();
                 ecsWorld.Dispose();
+                cleanedUp = true;
             } catch (Exception exception) {
                 HandleRuntimeException(exception);
             }
@@ -93,14 +99,18 @@
 
             (bool success, string reason) = Configs.MainConfig.TryToLoad(sharedData.mainConfig);
             if (!success) {
-                Notification.PostTicker($"GSW2 couldn't load config!\nReason:\n~r~{reason}", isImportant: true);
+                var message = $"GSW2 couldn't load config!\nReason:\n~r~{reason}";
+                Notification.PostTicker(message, isImportant: true);
+                sharedData.logger.WriteError(message);
                 Abort();
                 return false;
             }
 
             (success, reason) = Configs.LocaleConfig.TryToLoad(sharedData.localeConfig, sharedData.mainConfig.Language);
             if (!success) {
-                Notification.PostTicker($"GSW2 couldn't load localization!\nReason:\n~r~{reason}", isImportant: true);
+                var message = $"GSW2 couldn't load localization!\nReason:\n~r~{reason}";
+                Notification.PostTicker(message, isImportant: true);
+                sharedData.logger.WriteError(message);
                 Abort();
                 return false;
             }
