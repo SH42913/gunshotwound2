@@ -1,6 +1,6 @@
-﻿using System.Globalization;
+﻿namespace GunshotWound2.Configs {
+    using System.Globalization;
 
-namespace GunshotWound2.Configs {
     public sealed class PlayerConfig {
         public bool WoundedPlayerEnabled;
         public bool PoliceCanForgetYou;
@@ -15,7 +15,7 @@ namespace GunshotWound2.Configs {
         public float MaximalPain;
         public float PainRecoverSpeed;
         public float BleedHealingSpeed;
-        public float MaximalSlowMo;
+        public float PainSlowMo;
 
         public PainMoveSets PainMoveSets;
 
@@ -26,7 +26,7 @@ namespace GunshotWound2.Configs {
                    + $"{nameof(MaximalPain)}: {MaximalPain.ToString(CultureInfo.InvariantCulture)}\n"
                    + $"{nameof(PainRecoverSpeed)}: {PainRecoverSpeed.ToString(CultureInfo.InvariantCulture)}\n"
                    + $"{nameof(BleedHealingSpeed)}: {BleedHealingSpeed.ToString(CultureInfo.InvariantCulture)}\n"
-                   + $"{nameof(MaximalSlowMo)}: {MaximalSlowMo.ToString(CultureInfo.InvariantCulture)}";
+                   + $"{nameof(PainSlowMo)}: {PainSlowMo.ToString(CultureInfo.InvariantCulture)}";
         }
     }
 }

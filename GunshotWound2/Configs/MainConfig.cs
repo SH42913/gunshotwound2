@@ -147,7 +147,7 @@
             config.PlayerConfig.BlipsToMedkits = node.Element("BlipsToMedkits").GetBool();
             config.PlayerConfig.TimeToRefreshMedkits = node.Element("BlipsToMedkits").GetFloat("RefreshTime");
             config.PlayerConfig.MedkitModel = node.Element("BlipsToMedkits").GetString("ModelName");
-            config.PlayerConfig.MaximalSlowMo = node.Element("MaximalSlowMo").GetFloat();
+            config.PlayerConfig.PainSlowMo = node.Element("PainSlowMo").GetFloat();
             config.PlayerConfig.MoneyForHelmet = node.Element("HelmetCost").GetInt();
 
             config.PlayerConfig.PainMoveSets = PainMoveSets.FromXElement(node, "MoveSets");

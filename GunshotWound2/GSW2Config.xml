@@ -10,16 +10,16 @@
 
 		<CanDropWeapon Value="FALSE"/>
 		<!-- If TRUE - player will lose weapon on arm crits and when you fall unconscious -->
-		
+
 		<BlipsToMedkits Value="TRUE" RefreshTime="2" ModelName="prop_ld_health_pack"/>
 		<!-- Add map blips to medkits around player, refresh time in seconds -->
 
-		<MaximalSlowMo Value="0.7"/>
-		<!-- Adrenaline effect that slowdown time from your pain.
+		<PainSlowMo Value="-1"/>
+		<!-- Adrenaline effect that slowdown time using player's pain.
 		0.7 mean TimeScale never be less than 70% of default time speed. 
-		TimeScale will 0.7 + painPercent(pain/maxPain).
+		TimeScale will be calculated as 0.7 + painPercent(pain/maxPain).
         Be carefully, it will disable other SlowMo-mods.
-        If you want to disable this option, set it more that 1. -->
+        If you want to disable this option, set any negative value. -->
 
 		<MaximalPain Value="100.0"/>
 		<!-- 100.0 mean when pain will more than 100 points you'll fall unconscious -->

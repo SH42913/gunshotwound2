@@ -16,8 +16,12 @@
         public void OnAwake() { }
 
         public void OnUpdate(float deltaTime) {
-            float maximalSlowMo = sharedData.mainConfig.PlayerConfig.MaximalSlowMo;
-            if (maximalSlowMo >= 1f || !sharedData.TryGetPlayer(out Scellecs.Morpeh.Entity playerEntity)) {
+            float painSlowMo = sharedData.mainConfig.PlayerConfig.PainSlowMo;
+            if (painSlowMo is <= 0f or >= 1f) {
+                return;
+            }
+
+            if (!sharedData.TryGetPlayer(out Scellecs.Morpeh.Entity playerEntity)) {
                 return;
             }
 
@@ -29,7 +33,7 @@
             }
 
             float painPercent = pain.Percent();
-            float adjustable = 1f - maximalSlowMo;
+            float adjustable = 1f - painSlowMo;
             Game.TimeScale = painPercent <= 1f ? 1f - adjustable * painPercent : 1f;
         }
 
