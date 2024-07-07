@@ -13,7 +13,7 @@
         private readonly string[] cachedMessages;
 
         public ScriptHookLogger() {
-            consoleInstance = (SHVDN.Console) AppDomain.CurrentDomain.GetData("Console");
+            consoleInstance = (SHVDN.Console)AppDomain.CurrentDomain.GetData("Console");
             cachedMessages = new string[1];
         }
 
@@ -24,13 +24,11 @@
         }
 
         public void WriteWarning(string message) {
-            consoleInstance.PrintWarning(message);
             cachedMessages[0] = message;
             Log.Message(Log.Level.Warning, cachedMessages);
         }
 
         public void WriteError(string message) {
-            consoleInstance.PrintError(message);
             cachedMessages[0] = message;
             Log.Message(Log.Level.Error, cachedMessages);
         }
