@@ -34,19 +34,16 @@
         }
 
         private static void ShowHealth(SharedData sharedData, ref ConvertedPed convertedPed, ref Health health) {
+            string healthType = convertedPed.isPlayer
+                    ? sharedData.localeConfig.YourHealth
+                    : convertedPed.isMale
+                            ? sharedData.localeConfig.HisHealth
+                            : sharedData.localeConfig.HerHealth;
+
             int currentHealth = WoundConfig.ConvertHealthFromNative(convertedPed.thisPed.Health);
             int maxHealth = WoundConfig.ConvertHealthFromNative(health.max);
             float healthPercent = (float)currentHealth / maxHealth;
-            if (healthPercent <= 0f) {
-                STRING_BUILDER.Append("~r~");
-                STRING_BUILDER.Append(sharedData.localeConfig.YouAreDead);
-                STRING_BUILDER.AppendEndOfLine();
-                STRING_BUILDER.Append(sharedData.localeConfig.DeathReason);
-                STRING_BUILDER.Append(": ");
-                STRING_BUILDER.Append(health.lastDamageReason ?? "UNKNOWN");
-                STRING_BUILDER.SetDefaultColor();
-                return;
-            }
+            string healthPercentText = healthPercent <= 0 ? sharedData.localeConfig.Dead : healthPercent.ToString("P0");
 
             string color;
             if (healthPercent >= 0.75f) {
@@ -60,10 +57,20 @@
             }
 
             STRING_BUILDER.SetDefaultColor();
-            STRING_BUILDER.Append(sharedData.localeConfig.Health);
+            STRING_BUILDER.Append(healthType);
             STRING_BUILDER.Append(": ");
             STRING_BUILDER.Append(color);
-            STRING_BUILDER.Append(healthPercent.ToString("P0"));
+            STRING_BUILDER.Append(healthPercentText);
+            if (healthPercent <= 0f) {
+                STRING_BUILDER.AppendEndOfLine();
+                STRING_BUILDER.SetDefaultColor();
+                STRING_BUILDER.Append(sharedData.localeConfig.DeathReason);
+                STRING_BUILDER.Append(": ");
+                STRING_BUILDER.Append(color);
+                STRING_BUILDER.Append(health.lastDamageReason ?? "UNKNOWN");
+                STRING_BUILDER.AppendEndOfLine();
+            }
+
             STRING_BUILDER.SetDefaultColor();
         }
 

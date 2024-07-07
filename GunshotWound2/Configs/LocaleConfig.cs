@@ -45,8 +45,10 @@
         public string BrokenNeck;
         public string ClosedFractureOf;
 
-        public string Health;
-        public string YouAreDead;
+        public string YourHealth;
+        public string HisHealth;
+        public string HerHealth;
+        public string Dead;
         public string Pain;
         public string PainIncreasedMessage;
         public string PainDecreasedMessage;
@@ -196,8 +198,10 @@
             config.BrokenNeck = GetBaseTranslation(manager, "BrokenNeck");
             config.ClosedFractureOf = GetBaseTranslation(manager, "ClosedFractureOf");
 
-            config.Health = GetBaseTranslation(manager, "Health");
-            config.YouAreDead = GetBaseTranslation(manager, "YouAreDead");
+            config.YourHealth = GetBaseTranslation(manager, "YourHealth");
+            config.HisHealth = GetBaseTranslation(manager, "HisHealth");
+            config.HerHealth = GetBaseTranslation(manager, "HerHealth");
+            config.Dead = GetBaseTranslation(manager, "Dead");
             config.Pain = GetBaseTranslation(manager, "Pain");
             config.PainIncreasedMessage = GetBaseTranslation(manager, "PainIncreasedMessage");
             config.PainDecreasedMessage = GetBaseTranslation(manager, "PainDecreasedMessage");

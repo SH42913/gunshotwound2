@@ -209,6 +209,7 @@
 
 		<CheckKey>76</CheckKey>
 		<!-- Check Yourself. Show one time status-notifications about your wounds and health.
+		When Shift is pressed - will bandage the closest ped.
         Default: L on keyboard. -->
 
 		<IncreaseRangeKey>33</IncreaseRangeKey>
