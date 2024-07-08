@@ -22,11 +22,16 @@ When ped got full health in any way - all pain, every bleeding and crits will he
 _Currently, GSW2 doesn't support vehicle weapons._
 
 ## Additional features
-- **Support for switching peds!** You can freely switch between peds! You can feel all their wounds. It also means you can switch skins!
-- **Bandages and SelfHealing!** You can apply a bandage for $15 to the wound using K by default, but some bleeding(eg, internal bleeding) can't be bandaged. If you have no bleeding, your health will slowly increase with time. It's the only way to survive in this dangerous world!
-- **Motorbike Helmets!** Helmets can save your head from hits and bullets with some chance. You can get a helmet for $40 with helmet-hotkey, by default H (changeable in XML-config).
-- **Translations!** The GSW2 supports translations to other languages. Just add your translation to [GSW2Localization-table](https://docs.google.com/spreadsheets/d/1TY0nSEJMDmypkYrcVUBlMG3HIAEW075dCOtxXgW5UJ0/edit) and your translation will appear in next release!
-- **Death from pain shock!** If ped's pain is more than 300%, ped will die. Be carefully!
+- **Support for switching peds!** You can freely switch between peds! You can feel all their wounds. It also means you
+  can switch skins!
+- **Bandages and SelfHealing!** You can apply a bandage to the wound, but some bleeding(eg, internal bleeding) can't be
+  bandaged. If you have no bleeding, your health will slowly increase with time.
+- **Helmets!** Helmets can save your head from hits and bullets with some chance. You can get a motorbike helmet using
+  GetHelmet-hotkey.
+- **Translations!** The GSW2 supports translations to other languages. Just add your translation
+  to [GSW2Localization-table](https://docs.google.com/spreadsheets/d/1TY0nSEJMDmypkYrcVUBlMG3HIAEW075dCOtxXgW5UJ0/edit),
+  and your translation will appear in next release!
+- **Death from pain shock!** If your pain is more than 300%, you will die. Be carefully!
 
 ## How to install?
 1) Install Microsoft .NET Framework 4.8 or later
@@ -38,21 +43,44 @@ _Currently, GSW2 doesn't support vehicle weapons._
 7) Launch GTAV and try not to die quickly :)
 
 ## Default Hotkeys
-- _L_ - Check yourself
+
+- _L_ - Check yourself (+ Shift to check the closest ped)
+- _K_ - Bandage yourself (+ Shift to bandage the closest ped)
 - _J_ - Get/Remove Helmet
-- _K_ - Apply Bandage
+- _Delete_ - Kill yourself if you're stuck in a deadly situation
 - _PageUp/PageDown_ - Increase/Decrease scan range
 - _End_ - Pause/Unpause GSW
-You can change hotkeys in GSW2Config.xml!
+  You can change hotkeys in _GSW2Config.xml_!
+
+## Cheat-codes
+
+- _GSW_HEAL_ - Will instantly heal player
+- _GSW_KILL_PLAYER_ - Will instantly kill player
+- _GSW_TEST_PED_ - Will create ped for tests
 
 ## Recommended Mods
-- <a href="https://www.gta5-mods.com/scripts/forced-first-person-aim"><b>Forced First Person Aim</b></a> if you like classical GTA third-person view, but also you like aiming from first-person. It's a great experience!
-- <a href="https://gta5-mods.com/scripts/gun-recoil"><b>Gun Recoil</b></a> and <a href="https://www.gta5-mods.com/scripts/manual-reload"><b>Realistic Reload</b></a> to make firearm gameplay realistic and challenging.
-- <a href="https://gta5-mods.com/scripts/better-weapon-ragdoll"><b>Better Weapon Ragdoll</b></a> to loosing your weapon from car-accident.
-- <a href="https://ru.gta5-mods.com/misc/bass-dragon-s-euphoria-overhaul-w-i-p-v1-0"><b>Bass Dragon's ERO</b></a> or <a href="https://www.gta5-mods.com/misc/rageuphoria"><b>RAGEuphoria</b></a> for more realistic ped's reaction.
+
+- <a href="https://www.gta5-mods.com/scripts/forced-first-person-aim"><b>Forced First Person Aim</b></a> if you like
+  classical GTA third-person view, but also you like aiming from first-person. It's a great experience!
+- <a href="https://www.gta5-mods.com/scripts/gun-recoil"><b>Gun Recoil</b></a>
+  and <a href="https://www.gta5-mods.com/scripts/manual-reload"><b>Realistic Reload</b></a> to make firearm gameplay
+  realistic and challenging.
+- <a href="https://www.gta5-mods.com/scripts/better-weapon-ragdoll"><b>Better Weapon Ragdoll</b></a> to loosing your
+  weapon from car-accident.
+- <a href="https://www.gta5-mods.com/misc/bass-dragon-s-euphoria-overhaul-w-i-p-v1-0"><b>Bass Dragon's ERO</b></a>
+  or <a href="https://www.gta5-mods.com/misc/rageuphoria"><b>RAGEuphoria</b></a> for more realistic ped's reaction.
 - <a href="https://www.gta5-mods.com/weapons/perui"><b>Baka's Weapons Sounds</b></a> to get best gun sound mod!
-- <a href="https://www.gta5-mods.com/misc/realistic-blood-and-decals"><b>Realistic Blood and Decals</b></a> to get realistic wound decals.
+- <a href="https://www.gta5-mods.com/misc/realistic-blood-and-decals"><b>Realistic Blood and Decals</b></a> to get
+  realistic wound decals.
 - <a href="https://www.gta5-mods.com/scripts/pickups"><b>Pickups</b></a> with Auto Weapon Pickup = 0 in Pickups.ini.
+  Using Pickups, you may enable CanDropWeapon option in GSW2Config.xml.
 
 ## Donations
+
 You can [Buy Me A Coffee](https://www.buymeacoffee.com/SH42913) :)
+
+## Credits
+
+- [Morpeh](https://github.com/scellecs/morpeh)
+- [Weighted Randomizer](https://github.com/BlueRaja/Weighted-Item-Randomizer-for-C-Sharp)
+- Some libraries by [Leopotam](https://leopotam.com/)

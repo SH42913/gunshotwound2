@@ -32,9 +32,12 @@
                     }
                 }
             });
-
-            sharedData.cheatListener.Register("GSW_TEST_PED", () => GTA.World.CreateRandomPed(GTA.Game.Player.Character.Position));
 #endif
+
+            sharedData.cheatListener.Register("GSW_TEST_PED", () => {
+                GTA.Ped ped = GTA.World.CreateRandomPed(GTA.Game.Player.Character.BelowPosition);
+                ped.DecisionMaker = new GTA.DecisionMaker(GTA.DecisionMakerTypeHash.Empty);
+            });
         }
 
         private static void ChangeRange(SharedData sharedData, float value) {
