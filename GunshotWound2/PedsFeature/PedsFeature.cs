@@ -18,6 +18,7 @@
             InputListener inputListener = sharedData.inputListener;
             inputListener.RegisterHotkey(mainConfig.IncreaseRangeKey, () => ChangeRange(sharedData, 5f));
             inputListener.RegisterHotkey(mainConfig.DecreaseRangeKey, () => ChangeRange(sharedData, -5f));
+            inputListener.RegisterHotkey(mainConfig.BandageKey, () => BandageClosestPed(sharedData), Keys.Shift);
             inputListener.RegisterHotkey(mainConfig.CheckKey, () => CheckClosestPed(sharedData), Keys.Shift);
 
 #if DEBUG
@@ -56,6 +57,20 @@
             if (TryGetClosestPed(out GTA.Ped closest) && sharedData.worldService.TryGetConverted(closest, out Entity entity)) {
                 PedStateChecker.Check(sharedData, entity);
             }
+        }
+
+        private static void BandageClosestPed(SharedData sharedData) {
+            if (!TryGetClosestPed(out GTA.Ped closest) || !sharedData.worldService.TryGetConverted(closest, out Entity entity)) {
+                return;
+            }
+
+            if (!sharedData.TryGetPlayer(out Entity playerEntity)) {
+                return;
+            }
+
+            entity.SetComponent(new HealthFeature.BandageRequest {
+                medic = playerEntity,
+            });
         }
 
         private static bool TryGetClosestPed(out GTA.Ped closestPed) {

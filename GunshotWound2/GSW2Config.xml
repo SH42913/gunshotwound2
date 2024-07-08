@@ -204,7 +204,8 @@
         Default: J on keyboard. -->
 
 		<BandageKey>75</BandageKey>
-		<!-- Applied bandages to you. It will cost $15(can be changed).
+		<!-- Applied bandages to you. It will cost $15(can be changed in BandageCost).
+		When Shift is pressed - will bandage the closest ped.
         Default: K on keyboard. -->
 
 		<CheckKey>76</CheckKey>

@@ -70,6 +70,7 @@
     <Compile Include="CritsFeature\Crits.cs"/>
     <Compile Include="CritsFeature\CritsFeature.cs"/>
     <Compile Include="CritsFeature\CritsSystem.cs"/>
+    <Compile Include="HealthFeature\BandageRequest.cs"/>
     <Compile Include="PedsFeature\PedMovementSystem.cs"/>
     <Compile Include="PlayerFeature\MedkitGpsSystem.cs"/>
     <Compile Include="PlayerFeature\MissionTrackerSystem.cs"/>
@@ -96,16 +97,16 @@
     <Compile Include="HealthFeature\HealthChangeSystem.cs"/>
     <Compile Include="HealthFeature\HealthFeature.cs"/>
     <Compile Include="HealthFeature\Health.cs"/>
-    <Compile Include="HealthFeature\HealthInitSystem.cs" />
-    <Compile Include="HealthFeature\SelfHealingSystem.cs" />
-    <Compile Include="HealthFeature\TotalHealCheckSystem.cs" />
-    <Compile Include="HealthFeature\TotallyHealedEvent.cs" />
-    <Compile Include="PainFeature\PainInitSystem.cs" />
-    <Compile Include="PainFeature\States\IPainState.cs" />
-    <Compile Include="PedStateChecker.cs" />
-    <Compile Include="HitDetection\DetectHitFeature.cs" />
-    <Compile Include="HitDetection\PedHitData.cs" />
-    <Compile Include="HitDetection\WeaponHitSystem.cs" />
+    <Compile Include="HealthFeature\HealthInitSystem.cs"/>
+    <Compile Include="HealthFeature\SelfHealingSystem.cs"/>
+    <Compile Include="HealthFeature\TotalHealCheckSystem.cs"/>
+    <Compile Include="HealthFeature\TotallyHealedEvent.cs"/>
+    <Compile Include="PainFeature\PainInitSystem.cs"/>
+    <Compile Include="PainFeature\States\IPainState.cs"/>
+    <Compile Include="PedStateChecker.cs"/>
+    <Compile Include="HitDetection\DetectHitFeature.cs"/>
+    <Compile Include="HitDetection\PedHitData.cs"/>
+    <Compile Include="HitDetection\WeaponHitSystem.cs"/>
     <Compile Include="PainFeature\Pain.cs" />
     <Compile Include="PainFeature\PainFeature.cs" />
     <Compile Include="PainFeature\States\AveragePainState.cs" />
@@ -146,6 +147,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\README.md">
+      <Link>README.md</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="GSW2Config.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

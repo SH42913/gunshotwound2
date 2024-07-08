@@ -15,6 +15,7 @@
         public Entity bleedingToBandage;
         public HashSet<Entity> bleedingWounds;
         public float timeToBandage;
+        public Entity bandagingMedic;
     }
 
     public static class HealthExtensions {
