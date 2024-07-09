@@ -77,7 +77,7 @@
             CreateCrit(pedEntity, woundData.HasCrits, hitData.bodyPart);
 
             if (woundData.ArterySevered) {
-                CreateBleeding(pedEntity, WoundConfig.MAX_SEVERITY_FOR_BANDAGE, isInternal: false,
+                CreateBleeding(pedEntity, WoundConfig.MAX_SEVERITY_FOR_BANDAGE, isInternal: true,
                                sharedData.localeConfig.SeveredArtery);
             }
         }
