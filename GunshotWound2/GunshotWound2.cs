@@ -38,6 +38,8 @@
 
             Tick += OnTick;
             Aborted += Cleanup;
+
+            sharedData.logger.WriteInfo("GSW2 is initializing...");
         }
 
         private void OnTick(object sender, EventArgs eventArgs) {
@@ -137,6 +139,7 @@
             });
 #endif
 
+            sharedData.logger.WriteInfo("GSW2 has started");
             isStarted = true;
             return true;
         }
