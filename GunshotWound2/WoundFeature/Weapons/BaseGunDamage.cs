@@ -24,10 +24,10 @@
 
             switch (randomizer.NextWithReplacement()) {
                 case 0:  return CreateGrazeWound(sharedData.localeConfig.BodyPartHead);
-                case 1:  return CreateHeavyBrainDamage(sharedData.localeConfig.BulletFlyThroughYourHead);
+                case 1:  return CreateFleshWound(sharedData.localeConfig.BodyPartHead, 0.25f);
                 case 2:  return CreateHeavyBrainDamage(sharedData.localeConfig.HeavyBrainDamage);
-                case 3:  return CreateHeavyBrainDamage(sharedData.localeConfig.BulletFlyThroughYourHead);
-                case 4:  return CreateHeavyBrainDamage(sharedData.localeConfig.BulletTornApartYourBrain);
+                case 3:  return CreateHeavyBrainDamage(sharedData.localeConfig.BulletFlyThroughHead);
+                case 4:  return CreateHeavyBrainDamage(sharedData.localeConfig.BulletTornApartBrain);
                 default: throw new InvalidOperationException();
             }
         }

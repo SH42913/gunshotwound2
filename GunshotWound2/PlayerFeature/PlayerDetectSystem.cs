@@ -68,7 +68,7 @@
         }
 
         private void FindNewPedIfNeed() {
-            if (!sharedData.mainConfig.PlayerConfig.WoundedPlayerEnabled || sharedData.TryGetPlayer(out _)) {
+            if (sharedData.TryGetPlayer(out _)) {
                 return;
             }
 

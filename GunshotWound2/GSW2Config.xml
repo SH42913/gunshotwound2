@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <GunshotWoundMod>
 	<Player>
-		<GSWPlayerEnabled Value="TRUE"/>
-		<!-- If TRUE - player ped will be affected by GSW2 -->
-
 		<PoliceCanForget Value="TRUE"/>
 		<!-- If TRUE - cops can forget you when you fall unconscious.
         If you use Realism Dispatch Enhanced, better to set it FALSE-->

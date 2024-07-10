@@ -2,7 +2,6 @@
     using System.Globalization;
 
     public sealed class PlayerConfig {
-        public bool WoundedPlayerEnabled;
         public bool PoliceCanForgetYou;
         public bool CanDropWeapon;
 
@@ -21,7 +20,6 @@
 
         public override string ToString() {
             return $"{nameof(PlayerConfig)}:\n"
-                   + $"{nameof(WoundedPlayerEnabled)}: {WoundedPlayerEnabled.ToString()}\n"
                    + $"{nameof(MoneyForHelmet)}: {MoneyForHelmet.ToString()}\n"
                    + $"{nameof(MaximalPain)}: {MaximalPain.ToString(CultureInfo.InvariantCulture)}\n"
                    + $"{nameof(PainRecoverSpeed)}: {PainRecoverSpeed.ToString(CultureInfo.InvariantCulture)}\n"

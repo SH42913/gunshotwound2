@@ -28,7 +28,7 @@ LightBruise,Light bruise,Легкий ушиб,Leichte Prellung,Léger bleu,Lekk
 LightBruiseOn,Light bruise on,Легкий ушиб на,Leichte Prellung an,Léger bleu activé,Lekkie zacięcie na,가벼운 타박상 ,Ferimento leve no/a,Moraton leve en ,Light bruise on,軽いあざ 有効,輕微瘀傷 啟用,轻微瘀伤 启用,Light bruise on
 MediumBruiseOn,Medium bruise on,Средний ушиб на,Mittlere Prellung an,Bleu activé,Średnie zacięcie na,중간 타박상 켜짐,Ferimento médio no/a,Moraton medio en,Medium bruise on,中傷 有効,中度瘀傷 啟用,中度瘀伤 启用,Medium bruise on
 HeavyBruiseOn,Heavy bruise on,Серьезный ушиб на,Schwere Prellung an,Gros bleu activé,Poważne zacięcie na,심각한 타박상 켜짐,Ferimento pesado no/a,Moraton grave en,Heavy bruise on,大打撲 有効,嚴重瘀傷 啟用,严重瘀伤 启用,Heavy bruise on
-AbrazionWoundOn,Abrasion wound on,Содрана кожа на,Schürfwunde an,Éraflure,Przetarcie rany na,마모 상처 켜짐,Ferida abrasiva no/a,Herida de quemadura en,Abrasion wound on,かすり傷 有効,擦傷 啟用,擦伤 启用,Abrasion wound on
+AbrasionWoundOn,Abrasion wound on,Содрана кожа на,Schürfwunde an,Éraflure,Przetarcie rany na,마모 상처 켜짐,Ferida abrasiva no/a,Herida de quemadura en,Abrasion wound on,かすり傷 有効,擦傷 啟用,擦伤 启用,Abrasion wound on
 WindedFromImpact,Winded from impact,Головокружение от удара,Außer Atem durch Treffer,Vertiges du au choc,Powalenie po uderzeniu,충격 때문에 숨이 헐떡임,Falta de ar causada pelo impacto,Aturdido por el impacto,Winded from impact,影響を受けない,因撞擊而纏繞,因撞击而缠绕,Winded from impact
 ,,,,,,,,,,,,,
 IncisionWoundOn,Incision wound to the,Поверхностное ранение на,Schnittwunde an,Plaie superficielle sur,Naciencię na,절개 상처 어디에,Sofreu uma incisão no/a,Incision,Incision wound to the,トラウマ,創傷,创伤,Incision wound to the

@@ -25,14 +25,14 @@
         public string AvulsiveGswOn;
 
         public string HeavyBrainDamage;
-        public string BulletFlyThroughYourHead;
-        public string BulletTornApartYourBrain;
+        public string BulletFlyThroughHead;
+        public string BulletTornApartBrain;
 
         public string LightBruise;
         public string LightBruiseOn;
         public string MediumBruiseOn;
         public string HeavyBruiseOn;
-        public string AbrazionWoundOn;
+        public string AbrasionWoundOn;
         public string WindedFromImpact;
 
         public string IncisionWoundOn;
@@ -179,14 +179,14 @@
             config.AvulsiveGswOn = GetBaseTranslation(manager, "AvulsiveGswOn");
 
             config.HeavyBrainDamage = GetBaseTranslation(manager, "HeavyBrainDamage");
-            config.BulletFlyThroughYourHead = GetBaseTranslation(manager, "BulletFlyThroughYourHead");
-            config.BulletTornApartYourBrain = GetBaseTranslation(manager, "BulletTornApartYourBrain");
+            config.BulletFlyThroughHead = GetBaseTranslation(manager, "BulletFlyThroughHead");
+            config.BulletTornApartBrain = GetBaseTranslation(manager, "BulletTornApartBrain");
 
             config.LightBruise = GetBaseTranslation(manager, "LightBruise");
             config.LightBruiseOn = GetBaseTranslation(manager, "LightBruiseOn");
             config.MediumBruiseOn = GetBaseTranslation(manager, "MediumBruiseOn");
             config.HeavyBruiseOn = GetBaseTranslation(manager, "HeavyBruiseOn");
-            config.AbrazionWoundOn = GetBaseTranslation(manager, "AbrazionWoundOn");
+            config.AbrasionWoundOn = GetBaseTranslation(manager, "AbrasionWoundOn");
             config.WindedFromImpact = GetBaseTranslation(manager, "WindedFromImpact");
 
             config.IncisionWoundOn = GetBaseTranslation(manager, "IncisionWoundOn");

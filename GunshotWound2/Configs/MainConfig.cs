@@ -138,7 +138,6 @@
             if (node == null)
                 return;
 
-            config.PlayerConfig.WoundedPlayerEnabled = node.Element("GSWPlayerEnabled").GetBool();
             config.PlayerConfig.MaximalPain = node.Element("MaximalPain").GetFloat();
             config.PlayerConfig.PainRecoverSpeed = node.Element("PainRecoverySpeed").GetFloat();
             config.PlayerConfig.BleedHealingSpeed = node.Element("BleedHealSpeed").GetFloat() / 1000f;

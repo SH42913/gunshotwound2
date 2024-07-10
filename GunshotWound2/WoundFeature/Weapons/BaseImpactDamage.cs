@@ -7,7 +7,7 @@
         }
 
         protected WoundData AbrasionWoundOn(string position) {
-            return CreateWound($"{sharedData.localeConfig.AbrazionWoundOn} {position}", 3f, 0.15f, 15f);
+            return CreateWound($"{sharedData.localeConfig.AbrasionWoundOn} {position}", 3f, 0.15f, 15f);
         }
 
         protected WoundData LightBruiseWound(string position) {
