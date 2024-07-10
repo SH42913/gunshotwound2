@@ -150,26 +150,26 @@
 	</Wounds>
 
 	<Weapons>
-		<SmallCaliber DamageMult="1.0" BleedingMult="1.0" PainMult="1.3" CritChance="0.4" ArmorDamage="2">
+		<SmallCaliber DamageMult="1.0" BleedingMult="1.0" PainMult="1.3" CritChance="0.4" ArmorDamage="4">
 			<!-- Here you can determine weapons in this WeaponGroup -->
 			<!-- Pistol;PistolMk2;CombatPistol;SNSPistol;SNSPistolMk2;VintagePistol;MarksmanPistol;DoubleActionRevolver;APPistol;MicroSMG;MiniSMG;SMG;SMGMk2;CombatPDW;MachinePistol;CeramicPistol;PericoPistol; -->
 			<Hashes Hashes="453432689;3219281620;1593441988;3218215474;2285322324;137902532;3696079510;2548703416;584646201;324215364;3173288789;736523883;2024373456;171789620;3675956304;727643628;3514013252;"/>
 		</SmallCaliber>
 
-		<MediumCaliber DamageMult="1.2" BleedingMult="1.3" PainMult="1.5" CritChance="0.6" ArmorDamage="4">
-			<!-- Pistol50;HeavyPistol;Revolver;RevolverMk2;AssaultRifleMk2;AdvancedRifle;AssaultSMG;BullpupRifle;BullpupRifleMk2;CarbineRifle;CarbineRifleMk2;CombatMG;CompactRifle;Gusenberg;SpecialCarbine;SpecialCarbineMk2;NavyRevolver;MilitaryRifle; -->
-			<Hashes Hashes="2578377531;3523564046;3249783761;3415619887;961495388;2937143193;4024951519;2132975508;2228681469;2210333304;4208062921;2144741730;1649403952;1627465347;3231910285;2526821735;2441047180;2772307231;"/>
-		</MediumCaliber>
-
-		<HighCaliber DamageMult="1.3" BleedingMult="1.5" PainMult="1.8" CritChance="0.8" ArmorDamage="6">
-			<!-- MG;CombatMGMk2;AssaultRifle;HeavySniper;HeavySniperMk2;MarksmanRifle;MarksmanRifleMk2;Minigun;Musket;SniperRifle;UnholyHellbringer; -->
-			<Hashes Hashes="2634544996;3686625920;3220176749;205991906;177293209;3342088282;1785463520;1119849093;2828843422;100416529;1198256469;"/>
-		</HighCaliber>
-
-		<Shotgun DamageMult="0.8" BleedingMult="1.3" PainMult="1.5" CritChance="0.6" ArmorDamage="5">
+		<Shotgun DamageMult="0.8" BleedingMult="1.3" PainMult="1.5" CritChance="0.6" ArmorDamage="8">
 			<!-- PumpShotgun;PumpShotgunMk2;SawnOffShotgun;BullpupShotgun;AssaultShotgun;HeavyShotgun;DoubleBarrelShotgun;SweeperShotgun;CombatShotgun; -->
 			<Hashes Hashes="487013001;1432025498;2017895192;2640438543;3800352039;984333226;4019527611;317205821;3514615361;"/>
 		</Shotgun>
+
+		<MediumCaliber DamageMult="1.2" BleedingMult="1.3" PainMult="1.5" CritChance="0.6" ArmorDamage="15">
+			<!-- Pistol50;HeavyPistol;Revolver;RevolverMk2;AssaultRifle;AssaultRifleMk2;AdvancedRifle;AssaultSMG;BullpupRifle;BullpupRifleMk2;CarbineRifle;CarbineRifleMk2;CombatMG;CompactRifle;Gusenberg;SpecialCarbine;SpecialCarbineMk2;NavyRevolver;MilitaryRifle; -->
+			<Hashes Hashes="2578377531;3523564046;3249783761;3415619887;3220176749;961495388;2937143193;4024951519;2132975508;2228681469;2210333304;4208062921;2144741730;1649403952;1627465347;3231910285;2526821735;2441047180;2772307231;"/>
+		</MediumCaliber>
+
+		<HighCaliber DamageMult="1.3" BleedingMult="1.5" PainMult="1.8" CritChance="0.8" ArmorDamage="20">
+			<!-- MG;CombatMGMk2;HeavySniper;HeavySniperMk2;MarksmanRifle;MarksmanRifleMk2;Minigun;Musket;SniperRifle;UnholyHellbringer; -->
+			<Hashes Hashes="2634544996;3686625920;3220176749;205991906;177293209;3342088282;1785463520;1119849093;2828843422;100416529;1198256469;"/>
+		</HighCaliber>
 
 		<LightImpact DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.1">
 			<!-- Fist;Snowball;Nightstick;KnuckleDuster;Flashlight;Baseball;WaterCannon;Briefcase;Briefcase2;Parachute;NightVision; -->

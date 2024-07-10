@@ -82,18 +82,27 @@
 
             string color;
             string message;
-            if (armor >= 60) {
-                color = "~g~";
-                message = sharedData.localeConfig.ArmorLooksGreat;
-            } else if (armor >= 40) {
-                color = "~y~";
-                message = sharedData.localeConfig.ScratchesOnArmor;
-            } else if (armor >= 20) {
-                color = "~o~";
-                message = sharedData.localeConfig.DentsOnArmor;
-            } else {
-                color = "~r~";
-                message = sharedData.localeConfig.ArmorLooksAwful;
+            switch (armor) {
+                case > 80:
+                    color = "~g~";
+                    message = sharedData.localeConfig.ArmorClassV;
+                    break;
+                case > 60:
+                    color = "~g~";
+                    message = sharedData.localeConfig.ArmorClassIV;
+                    break;
+                case > 40:
+                    color = "~y~";
+                    message = sharedData.localeConfig.ArmorClassIII;
+                    break;
+                case > 20:
+                    color = "~o~";
+                    message = sharedData.localeConfig.ArmorClassII;
+                    break;
+                default:
+                    color = "~r~";
+                    message = sharedData.localeConfig.ArmorClassI;
+                    break;
             }
 
             STRING_BUILDER.AppendEndOfLine();

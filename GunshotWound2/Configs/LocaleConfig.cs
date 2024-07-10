@@ -54,10 +54,11 @@
         public string PainDecreasedMessage;
         public string TotallyHealedMessage;
 
-        public string ArmorLooksGreat;
-        public string ScratchesOnArmor;
-        public string DentsOnArmor;
-        public string ArmorLooksAwful;
+        public string ArmorClassI;
+        public string ArmorClassII;
+        public string ArmorClassIII;
+        public string ArmorClassIV;
+        public string ArmorClassV;
 
         public string Crits;
         public string NervesCrit;
@@ -207,10 +208,11 @@
             config.PainDecreasedMessage = GetBaseTranslation(manager, "PainDecreasedMessage");
             config.TotallyHealedMessage = GetBaseTranslation(manager, "TotallyHealedMessage");
 
-            config.ArmorLooksGreat = GetBaseTranslation(manager, "ArmorLooksGreat");
-            config.ScratchesOnArmor = GetBaseTranslation(manager, "ScratchesOnArmor");
-            config.DentsOnArmor = GetBaseTranslation(manager, "DentsOnArmor");
-            config.ArmorLooksAwful = GetBaseTranslation(manager, "ArmorLooksAwful");
+            config.ArmorClassI = GetBaseTranslation(manager, "ArmorClassI");
+            config.ArmorClassII = GetBaseTranslation(manager, "ArmorClassII");
+            config.ArmorClassIII = GetBaseTranslation(manager, "ArmorClassIII");
+            config.ArmorClassIV = GetBaseTranslation(manager, "ArmorClassIV");
+            config.ArmorClassV = GetBaseTranslation(manager, "ArmorClassV");
 
             config.Crits = GetBaseTranslation(manager, "Crits");
             config.NervesCrit = GetBaseTranslation(manager, "NervesCrit");
