@@ -153,7 +153,7 @@
 			<Hashes Hashes="453432689;3219281620;1593441988;3218215474;2285322324;137902532;3696079510;2548703416;584646201;324215364;3173288789;736523883;2024373456;171789620;3675956304;727643628;3514013252;"/>
 		</SmallCaliber>
 
-		<Shotgun DamageMult="0.8" BleedingMult="1.3" PainMult="1.5" CritChance="0.6" ArmorDamage="8">
+		<Shotgun DamageMult="1.2" BleedingMult="1.7" PainMult="2" CritChance="0.9" ArmorDamage="8">
 			<!-- PumpShotgun;PumpShotgunMk2;SawnOffShotgun;BullpupShotgun;AssaultShotgun;HeavyShotgun;DoubleBarrelShotgun;SweeperShotgun;CombatShotgun; -->
 			<Hashes Hashes="487013001;1432025498;2017895192;2640438543;3800352039;984333226;4019527611;317205821;3514615361;"/>
 		</Shotgun>

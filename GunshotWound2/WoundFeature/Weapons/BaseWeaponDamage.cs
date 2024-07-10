@@ -135,7 +135,7 @@
                     return true;
                 case PedHitData.BodyParts.LowerBody:
                     hit.armorMessage = sharedData.localeConfig.ArmorSavedYourLowerBody;
-                    armorWound = GetUnderArmorWound(damageMult: 2f, painMult: 3f);
+                    armorWound = GetUnderArmorWound(damageMult: 1f, painMult: 3f);
                     break;
                 default: throw new ArgumentOutOfRangeException();
             }
@@ -198,7 +198,7 @@
         }
 
         private WoundData? GetUnderArmorWound(float damageMult, float painMult) {
-            if (!CanPenetrateArmor) {
+            if (armorDamage < 1) {
                 return null;
             }
 
