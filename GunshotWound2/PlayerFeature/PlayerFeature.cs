@@ -11,10 +11,10 @@
             systemsGroup.AddSystem(new PlayerDeathReportSystem(sharedData));
             systemsGroup.AddSystem(new MissionTrackerSystem(sharedData));
 
-            sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.CheckKey, () => CheckPlayer(sharedData));
+            sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.CheckSelfKey, () => CheckPlayer(sharedData));
             sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.HelmetKey, () => ToggleHelmet(sharedData));
 
-            sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.BandageKey, () => {
+            sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.BandageSelfKey, () => {
                 if (sharedData.TryGetPlayer(out Scellecs.Morpeh.Entity playerEntity)) {
                     playerEntity.SetComponent(new HealthFeature.BandageRequest {
                         medic = playerEntity,

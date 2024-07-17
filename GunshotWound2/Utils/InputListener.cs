@@ -8,29 +8,49 @@
 
         public void RegisterHotkey(Keys? key, Action action, Keys modifiers = default) {
             if (key.HasValue) {
-                hotkeys.Add(new Hotkey(key.Value, action, modifiers));
+                RegisterHotkey(new Scheme(key.Value, modifiers), action);
             }
         }
 
-        public void ConsumeKeyUp(Keys pressedKey, Keys pressedModifier) {
+        public void RegisterHotkey(Scheme scheme, Action action) {
+            if (scheme.IsValid) {
+                hotkeys.Add(new Hotkey(scheme, action));
+            }
+        }
+
+        public void ConsumeKeyUp(KeyEventArgs keyEventArgs) {
             foreach (Hotkey hotkey in hotkeys) {
-                hotkey.Consume(pressedKey, pressedModifier);
+                hotkey.Consume(keyEventArgs);
+            }
+        }
+
+        public readonly struct Scheme {
+            private readonly Keys key;
+            private readonly Keys modifiers;
+
+            public bool IsValid => key != Keys.None;
+
+            public Scheme(Keys key, Keys modifiers) {
+                this.key = key;
+                this.modifiers = modifiers;
+            }
+
+            public bool IsPressed(KeyEventArgs keyEventArgs) {
+                return keyEventArgs.KeyCode == key && keyEventArgs.Modifiers == modifiers;
             }
         }
 
         private readonly struct Hotkey {
-            private readonly Keys key;
+            private readonly Scheme scheme;
             private readonly Action action;
-            private readonly Keys modifiers;
 
-            public Hotkey(Keys key, Action action, Keys modifiers) {
-                this.key = key;
+            public Hotkey(Scheme scheme, Action action) {
+                this.scheme = scheme;
                 this.action = action;
-                this.modifiers = modifiers;
             }
 
-            public void Consume(Keys pressedKey, Keys pressedModifier) {
-                if (pressedKey == key && pressedModifier == modifiers) {
+            public void Consume(KeyEventArgs keyEventArgs) {
+                if (scheme.IsPressed(keyEventArgs)) {
                     action.Invoke();
                 }
             }

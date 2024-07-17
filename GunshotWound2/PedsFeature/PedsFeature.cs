@@ -1,5 +1,4 @@
 ﻿namespace GunshotWound2.PedsFeature {
-    using System.Windows.Forms;
     using Configs;
     using Scellecs.Morpeh;
     using Utils;
@@ -18,8 +17,8 @@
             InputListener inputListener = sharedData.inputListener;
             inputListener.RegisterHotkey(mainConfig.IncreaseRangeKey, () => ChangeRange(sharedData, 5f));
             inputListener.RegisterHotkey(mainConfig.DecreaseRangeKey, () => ChangeRange(sharedData, -5f));
-            inputListener.RegisterHotkey(mainConfig.BandageKey, () => BandageClosestPed(sharedData), Keys.Shift);
-            inputListener.RegisterHotkey(mainConfig.CheckKey, () => CheckClosestPed(sharedData), Keys.Shift);
+            inputListener.RegisterHotkey(mainConfig.CheckClosestKey, () => CheckClosestPed(sharedData));
+            inputListener.RegisterHotkey(mainConfig.BandageClosestKey, () => BandageClosestPed(sharedData));
 
 #if DEBUG
             sharedData.cheatListener.Register("GSW_TEST_RAGDOLL", () => {

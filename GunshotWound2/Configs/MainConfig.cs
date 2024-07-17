@@ -4,7 +4,6 @@
     using System.Globalization;
     using System.IO;
     using System.Linq;
-    using System.Windows.Forms;
     using System.Xml.Linq;
     using PedsFeature;
     using Utils;
@@ -23,14 +22,16 @@
 
         public string Language = "EN";
 
-        public Keys? HelmetKey;
-        public Keys? CheckKey;
-        public Keys? HealKey;
-        public Keys? IncreaseRangeKey;
-        public Keys? DecreaseRangeKey;
-        public Keys? PauseKey;
-        public Keys? BandageKey;
-        public Keys? DeathKey;
+        public InputListener.Scheme CheckSelfKey;
+        public InputListener.Scheme CheckClosestKey;
+        public InputListener.Scheme BandageSelfKey;
+        public InputListener.Scheme BandageClosestKey;
+        public InputListener.Scheme DeathKey;
+        public InputListener.Scheme HealKey;
+        public InputListener.Scheme HelmetKey;
+        public InputListener.Scheme IncreaseRangeKey;
+        public InputListener.Scheme DecreaseRangeKey;
+        public InputListener.Scheme PauseKey;
 
         public bool CommonMessages = true;
         public bool WarningMessages = true;
@@ -123,14 +124,16 @@
             if (node == null)
                 return;
 
-            config.HelmetKey = node.GetKey("GetHelmetKey");
-            config.CheckKey = node.GetKey("CheckKey");
-            config.HealKey = node.GetKey("HealKey");
-            config.IncreaseRangeKey = node.GetKey("IncreaseRangeKey");
-            config.DecreaseRangeKey = node.GetKey("DecreaseRangeKey");
-            config.BandageKey = node.GetKey("BandageKey");
-            config.PauseKey = node.GetKey("PauseKey");
-            config.DeathKey = node.GetKey("DeathKey");
+            config.CheckSelfKey = node.Element("CheckSelfKey").GetKeyScheme();
+            config.CheckClosestKey = node.Element("CheckClosestKey").GetKeyScheme();
+            config.BandageSelfKey = node.Element("BandageSelfKey").GetKeyScheme();
+            config.BandageClosestKey = node.Element("BandageClosestKey").GetKeyScheme();
+            config.DeathKey = node.Element("DeathKey").GetKeyScheme();
+            config.HealKey = node.Element("HealKey").GetKeyScheme();
+            config.HelmetKey = node.Element("GetHelmetKey").GetKeyScheme();
+            config.IncreaseRangeKey = node.Element("IncreaseRangeKey").GetKeyScheme();
+            config.DecreaseRangeKey = node.Element("DecreaseRangeKey").GetKeyScheme();
+            config.PauseKey = node.Element("PauseKey").GetKeyScheme();
         }
 
         private static void PlayerSection(MainConfig config, XElement doc) {

@@ -5,7 +5,7 @@
 
     public static class XElementExtensions {
         public static string GetString(this XElement node, string attributeName = "Value") {
-            return string.IsNullOrEmpty(attributeName) ? node.Value : node.Attribute(attributeName).Value;
+            return string.IsNullOrEmpty(attributeName) ? node?.Value : node?.Attribute(attributeName)?.Value;
         }
 
         public static bool GetBool(this XElement node, string attributeName = "Value") {
@@ -23,12 +23,15 @@
             return float.Parse(value, CultureInfo.InvariantCulture);
         }
 
-        public static Keys? GetKey(this XElement node, string name) {
-            if (string.IsNullOrEmpty(node?.Element(name)?.Value)) {
-                return null;
-            }
+        public static Keys? GetKey(this XElement node, string attributeName) {
+            string value = node.GetString(attributeName);
+            return string.IsNullOrEmpty(value) ? null : (Keys)int.Parse(value);
+        }
 
-            return (Keys)int.Parse(node.Element(name).Value);
+        public static InputListener.Scheme GetKeyScheme(this XElement node) {
+            Keys? keyCode = node.GetKey("KeyCode");
+            Keys? modifiers = node.GetKey("Modifiers");
+            return keyCode.HasValue ? new InputListener.Scheme(keyCode.Value, modifiers ?? default) : default;
         }
     }
 }

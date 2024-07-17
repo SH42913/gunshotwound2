@@ -58,13 +58,13 @@
         }
 
         private void OnKeyUp(object sender, KeyEventArgs eventArgs) {
-            if (eventArgs.KeyCode == sharedData.mainConfig.PauseKey) {
+            if (sharedData.mainConfig.PauseKey.IsPressed(eventArgs)) {
                 TogglePause();
                 return;
             }
 
             if (isStarted && !isPaused) {
-                sharedData.inputListener.ConsumeKeyUp(eventArgs.KeyCode, eventArgs.Modifiers);
+                sharedData.inputListener.ConsumeKeyUp(eventArgs);
             }
         }
 
