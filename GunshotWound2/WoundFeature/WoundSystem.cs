@@ -132,16 +132,17 @@
 
             Notifier.Entry notifier;
             WoundData woundData = wound.Value;
-            float deadlyBleedingThreshold = pedEntity.GetComponent<Health>().CalculateDeadlyBleedingThreshold(convertedPed);
+            ref Health health = ref pedEntity.GetComponent<Health>();
             if (woundData.HasCrits
                 || woundData.ArterySevered
-                || woundData.BleedSeverity >= deadlyBleedingThreshold) {
+                || woundData.BleedSeverity > health.CalculateDeadlyBleedingThreshold(convertedPed)) {
                 notifier = sharedData.notifier.critical;
             } else {
                 notifier = sharedData.notifier.wounds;
             }
 
-            notifier.QueueMessage(woundData.Name);
+            Notifier.Color bleedingColor = health.GetBleedingColor(convertedPed, woundData.BleedSeverity);
+            notifier.QueueMessage(woundData.Name, bleedingColor);
 
             if (woundData.ArterySevered) {
                 notifier.QueueMessage(sharedData.localeConfig.SeveredArteryMessage);

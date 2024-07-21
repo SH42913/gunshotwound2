@@ -42,15 +42,15 @@
             float healthPercent = (float)currentHealth / maxHealth;
             string healthPercentText = healthPercent <= 0 ? sharedData.localeConfig.Dead : healthPercent.ToString("P0");
 
-            string color;
+            Notifier.Color color;
             if (healthPercent >= 0.75f) {
-                color = "~g~";
+                color = Notifier.Color.GREEN;
             } else if (healthPercent > 0.5f) {
-                color = "~y~";
+                color = Notifier.Color.YELLOW;
             } else if (healthPercent > 0.25f) {
-                color = "~o~";
+                color = Notifier.Color.ORANGE;
             } else {
-                color = "~r~";
+                color = Notifier.Color.RED;
             }
 
             STRING_BUILDER.SetDefaultColor();
@@ -77,27 +77,27 @@
                 return;
             }
 
-            string color;
+            Notifier.Color color;
             string message;
             switch (armor) {
                 case > 80:
-                    color = "~g~";
+                    color = Notifier.Color.GREEN;
                     message = sharedData.localeConfig.ArmorClassV;
                     break;
                 case > 60:
-                    color = "~g~";
+                    color = Notifier.Color.GREEN;
                     message = sharedData.localeConfig.ArmorClassIV;
                     break;
                 case > 40:
-                    color = "~y~";
+                    color = Notifier.Color.YELLOW;
                     message = sharedData.localeConfig.ArmorClassIII;
                     break;
                 case > 20:
-                    color = "~o~";
+                    color = Notifier.Color.ORANGE;
                     message = sharedData.localeConfig.ArmorClassII;
                     break;
                 default:
-                    color = "~r~";
+                    color = Notifier.Color.RED;
                     message = sharedData.localeConfig.ArmorClassI;
                     break;
             }
@@ -153,18 +153,7 @@
                     STRING_BUILDER.Append("~g~-> ");
                 }
 
-                string color;
-                float deadlyBleedingThreshold = health.CalculateDeadlyBleedingThreshold(convertedPed);
-                if (bleeding.severity > deadlyBleedingThreshold) {
-                    color = "~r~";
-                } else if (bleeding.severity > 0.5f * deadlyBleedingThreshold) {
-                    color = "~o~";
-                } else if (bleeding.severity > 0.25f * deadlyBleedingThreshold) {
-                    color = "~y~";
-                } else {
-                    color = "~s~";
-                }
-
+                Notifier.Color color = health.GetBleedingColor(convertedPed, bleeding.severity);
                 STRING_BUILDER.Append(color);
                 STRING_BUILDER.Append(bleeding.name);
 

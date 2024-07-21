@@ -4,6 +4,7 @@
     using Configs;
     using PedsFeature;
     using Scellecs.Morpeh;
+    using Utils;
 
     [Serializable]
     public struct Health : IComponent {
@@ -39,6 +40,19 @@
             int totalHealth = WoundConfig.ConvertHealthFromNative(convertedPed.thisPed.Health);
             float deadlyRate = totalHealth * health.bleedingHealRate;
             return (float)Math.Sqrt(deadlyRate);
+        }
+
+        public static Notifier.Color GetBleedingColor(this ref Health health, in ConvertedPed convertedPed, float severity) {
+            float threshold = health.CalculateDeadlyBleedingThreshold(convertedPed);
+            if (severity > threshold) {
+                return Notifier.Color.RED;
+            } else if (severity > 0.5f * threshold) {
+                return Notifier.Color.ORANGE;
+            } else if (severity > 0.25f * threshold) {
+                return Notifier.Color.YELLOW;
+            } else {
+                return Notifier.Color.COMMON;
+            }
         }
     }
 }
