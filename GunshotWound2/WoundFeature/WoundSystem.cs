@@ -58,7 +58,7 @@
                     sharedData.logger.WriteInfo(wound.HasValue ? $"New wound {wound.Value.ToString()} " : "No wound created");
 #endif
                     ProcessWound(pedEntity, ref hitData, ref wound);
-                    SendWoundInfo(convertedPed, hitData, wound);
+                    SendWoundInfo(pedEntity, convertedPed, hitData, wound);
                 } else {
                     sharedData.logger.WriteWarning($"Doesn't support {hitData.weaponType}");
                 }
@@ -120,7 +120,7 @@
             }
         }
 
-        private void SendWoundInfo(in ConvertedPed convertedPed, in PedHitData hitData, in WoundData? wound) {
+        private void SendWoundInfo(Entity pedEntity, in ConvertedPed convertedPed, in PedHitData hitData, in WoundData? wound) {
             if (!convertedPed.isPlayer) {
                 return;
             }
@@ -130,11 +130,12 @@
                 return;
             }
 
-            WoundData woundData = wound.Value;
             Notifier.Entry notifier;
+            WoundData woundData = wound.Value;
+            float deadlyBleedingThreshold = pedEntity.GetComponent<Health>().CalculateDeadlyBleedingThreshold(convertedPed);
             if (woundData.HasCrits
                 || woundData.ArterySevered
-                || woundData.BleedSeverity >= sharedData.mainConfig.WoundConfig.EmergencyBleedingLevel) {
+                || woundData.BleedSeverity >= deadlyBleedingThreshold) {
                 notifier = sharedData.notifier.critical;
             } else {
                 notifier = sharedData.notifier.wounds;

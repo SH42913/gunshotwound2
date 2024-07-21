@@ -1,6 +1,8 @@
 ﻿namespace GunshotWound2.HealthFeature {
     using System;
     using System.Collections.Generic;
+    using Configs;
+    using PedsFeature;
     using Scellecs.Morpeh;
 
     [Serializable]
@@ -31,6 +33,12 @@
 
         public static bool IsAlive(this ref Health health) {
             return !health.isDead;
+        }
+
+        public static float CalculateDeadlyBleedingThreshold(this ref Health health, in ConvertedPed convertedPed) {
+            int totalHealth = WoundConfig.ConvertHealthFromNative(convertedPed.thisPed.Health);
+            float deadlyRate = totalHealth * health.bleedingHealRate;
+            return (float)Math.Sqrt(deadlyRate);
         }
     }
 }

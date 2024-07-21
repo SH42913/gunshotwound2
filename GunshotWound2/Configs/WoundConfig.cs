@@ -17,8 +17,6 @@
 
         public bool RealisticNervesDamage;
 
-        public float EmergencyBleedingLevel;
-
         public float MoveRateOnFullPain;
         public float MoveRateOnNervesDamage;
 

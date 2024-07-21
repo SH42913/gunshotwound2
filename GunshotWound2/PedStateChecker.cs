@@ -1,5 +1,4 @@
 ﻿namespace GunshotWound2 {
-    using System;
     using System.Text;
     using Configs;
     using CritsFeature;
@@ -154,11 +153,8 @@
                     STRING_BUILDER.Append("~g~-> ");
                 }
 
-                int totalHealth = WoundConfig.ConvertHealthFromNative(convertedPed.thisPed.Health);
-                float deadlyRate = totalHealth * health.bleedingHealRate;
-                float deadlyBleedingThreshold = (float)Math.Sqrt(deadlyRate);
-
                 string color;
+                float deadlyBleedingThreshold = health.CalculateDeadlyBleedingThreshold(convertedPed);
                 if (bleeding.severity > deadlyBleedingThreshold) {
                     color = "~r~";
                 } else if (bleeding.severity > 0.5f * deadlyBleedingThreshold) {
