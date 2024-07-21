@@ -125,7 +125,7 @@
                 return;
             }
 
-            sharedData.notifier.alert.QueueMessage(hitData.armorMessage);
+            sharedData.notifier.critical.QueueMessage(hitData.armorMessage, Notifier.Color.YELLOW);
             if (!wound.HasValue) {
                 return;
             }
@@ -135,9 +135,9 @@
             if (woundData.HasCrits
                 || woundData.ArterySevered
                 || woundData.BleedSeverity >= sharedData.mainConfig.WoundConfig.EmergencyBleedingLevel) {
-                notifier = sharedData.notifier.emergency;
+                notifier = sharedData.notifier.critical;
             } else {
-                notifier = sharedData.notifier.alert;
+                notifier = sharedData.notifier.wounds;
             }
 
             notifier.QueueMessage(woundData.Name);

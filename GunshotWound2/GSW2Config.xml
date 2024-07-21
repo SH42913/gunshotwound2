@@ -50,9 +50,6 @@
         It will increase performance, but it can have bugs.
         PedHealth, new Accuracy and ShootRate will apply only after first damage! -->
 
-		<CriticalMessages Value="TRUE"/>
-		<!-- If TRUE - you will see messages about a critical wound of NonPlayable GSWPeds -->
-
 		<Targets ALL="TRUE" COMPANION="TRUE" DISLIKE="TRUE" HATE="TRUE"
 				 LIKE="TRUE" NEUTRAL="TRUE" PEDESTRIAN="TRUE" RESPECT="TRUE"/>
 		<!-- You can select what types of NonPlayable Peds can be affected by GSW.
@@ -83,28 +80,6 @@
 		<FemaleMoveSets MildPain="" AvgPain="" IntensePain=""/>
 		<!-- Same as for player -->
 	</Peds>
-
-	<Notifications>
-		<Language Value="EN"/>
-		<!-- Available languages: EN,RU,DE,FR,PL,KR,PT-BR,SPA,SWE,JP,ZH-HK,ZN-CN,FA.
-        All translations(except EN and RU) were made by community and can be inaccurate.
-		Not every available language is fully translated, you still may see english translation.
-        You also may help to translate GSW2 to other languages here:
-        https://docs.google.com/spreadsheets/d/1TY0nSEJMDmypkYrcVUBlMG3HIAEW075dCOtxXgW5UJ0/edit 
-        And more languages will be available in next build! -->
-
-		<Common Value="TRUE"/>
-		<!-- Common(white) notifications like CheckSelf and OtherPedsCriticalWound -->
-
-		<Warning Value="TRUE"/>
-		<!-- Warning(yellow) notifications like CriticalDamage -->
-
-		<Alert Value="TRUE"/>
-		<!-- Alert(orange) notifications like LightWounds/MediumWounds -->
-
-		<Emergency Value="TRUE"/>
-		<!-- Emergency(red) notifications like HeavyWounds -->
-	</Notifications>
 
 	<Wounds>
 		<RealisticNervesDamage Value="TRUE"/>
@@ -238,4 +213,26 @@
 		It can be useful in some missions.
         Default: End on keyboard. -->
 	</Hotkeys>
+
+	<Notifications>
+		<Language Value="EN"/>
+		<!-- Available languages: EN,RU,DE,FR,PL,KR,PT-BR,SPA,SWE,JP,ZH-HK,ZN-CN,FA.
+        All translations(except EN and RU) were made by community and can be inaccurate.
+		Not every available language is fully translated, you still may see english translation.
+        You also may help to translate GSW2 to other languages here:
+        https://docs.google.com/spreadsheets/d/1TY0nSEJMDmypkYrcVUBlMG3HIAEW075dCOtxXgW5UJ0/edit 
+        And more languages will be available in next build! -->
+
+		<Info Value="TRUE"/>
+		<!-- Info notifications: Totally healed, Pain decreased, Pause in mission  -->
+
+		<OtherPeds Value="TRUE"/>
+		<!-- Notifications about other peds like "He coughs up blood" -->
+
+		<Wounds Value="TRUE"/>
+		<!-- Notifications about your wounds -->
+
+		<Critical Value="TRUE"/>
+		<!-- Important notifications about crits, heavy wounds, armor hits, etc -->
+	</Notifications>
 </GunshotWoundMod>

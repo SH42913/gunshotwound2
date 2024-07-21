@@ -1,15 +1,18 @@
 ﻿namespace GunshotWound2 {
     using System;
     using System.IO;
+    using System.Text;
     using System.Windows.Forms;
+    using Configs;
     using GTA;
-    using GTA.UI;
     using Scellecs.Morpeh;
+    using Utils;
     using EcsWorld = Scellecs.Morpeh.World;
 
     // ReSharper disable once UnusedType.Global
     public sealed class GunshotWound2 : Script {
         private static readonly string EXCEPTION_LOG_PATH = Path.Combine(Application.StartupPath, "GSW2Exception.log");
+        private static int PAUSE_POST;
 
 #if DEBUG
 
@@ -27,7 +30,7 @@
         private bool cleanedUp;
 
         public GunshotWound2() {
-            var logger = new Utils.ScriptHookLogger();
+            var logger = new ScriptHookLogger();
             sharedData = new SharedData(logger);
 
             ecsWorld = EcsWorld.Create();
@@ -70,9 +73,11 @@
 
         private void TogglePause() {
             isPaused = !isPaused;
-            string message = isPaused ? $"~y~{sharedData.localeConfig.GswIsPaused}" : $"~g~{sharedData.localeConfig.GswIsWorking}";
 
-            sharedData.notifier.info.QueueMessage(message);
+            LocaleConfig localeConfig = sharedData.localeConfig;
+            PAUSE_POST = isPaused
+                    ? sharedData.notifier.ReplaceOne(localeConfig.GswIsPaused, blinking: true, PAUSE_POST, Notifier.Color.YELLOW)
+                    : sharedData.notifier.ReplaceOne(localeConfig.GswIsWorking, blinking: true, PAUSE_POST, Notifier.Color.GREEN);
         }
 
         private void Cleanup(object sender, EventArgs e) {
@@ -99,19 +104,19 @@
                 return false;
             }
 
-            (bool success, string reason) = Configs.MainConfig.TryToLoad(sharedData.mainConfig);
+            (bool success, string reason) = MainConfig.TryToLoad(sharedData.mainConfig);
             if (!success) {
                 var message = $"GSW2 couldn't load config!\nReason:\n~r~{reason}";
-                Notification.PostTicker(message, isImportant: true);
+                sharedData.notifier.ShowOne(message, blinking: true);
                 sharedData.logger.WriteError(message);
                 Abort();
                 return false;
             }
 
-            (success, reason) = Configs.LocaleConfig.TryToLoad(sharedData.localeConfig, sharedData.mainConfig.Language);
+            (success, reason) = LocaleConfig.TryToLoad(sharedData.localeConfig, sharedData.mainConfig.Language);
             if (!success) {
                 var message = $"GSW2 couldn't load localization!\nReason:\n~r~{reason}";
-                Notification.PostTicker(message, isImportant: true);
+                sharedData.notifier.ShowOne(message, blinking: true);
                 sharedData.logger.WriteError(message);
                 Abort();
                 return false;
@@ -126,10 +131,12 @@
                 return false;
             }
 
-            sharedData.notifier.info.QueueMessage(sharedData.localeConfig.ThanksForUsing);
-            sharedData.notifier.info.QueueMessage("~g~GunShot Wound ~r~2~s~");
-            sharedData.notifier.info.QueueMessage("by <C>SH42913</C>");
-            sharedData.notifier.info.QueueMessage($"\nTranslated by {sharedData.localeConfig.LocalizationAuthor ?? "GSW2-community"}");
+            var builder = new StringBuilder();
+            builder.Append(sharedData.localeConfig.ThanksForUsing);
+            builder.AppendEndOfLine();
+            builder.AppendLine("~g~GunShot Wound ~r~2~s~\nby <C>SH42913</C>");
+            builder.Append($"Translated by {sharedData.localeConfig.LocalizationAuthor ?? "GSW2-community"}");
+            sharedData.notifier.ShowOne(builder.ToString(), blinking: true);
 
 #if DEBUG
             sharedData.cheatListener.Register("GSW_TEST", () => {
@@ -139,7 +146,7 @@
             });
 #endif
 
-            sharedData.logger.WriteInfo("GSW2 has started");
+            sharedData.logger.WriteInfo($"GunShot Wound 2 ({Application.ProductVersion}) has started");
             isStarted = true;
             return true;
         }
@@ -168,10 +175,11 @@
         }
 
         private void HandleRuntimeException(Exception exception) {
-            Notification.PostTicker($"~o~{sharedData.localeConfig.GswStopped}", isImportant: true);
+            sharedData.notifier.ShowOne(sharedData.localeConfig.GswStopped, blinking: true, Notifier.Color.ORANGE);
             sharedData.logger.WriteError(exception.ToString());
             File.WriteAllText(EXCEPTION_LOG_PATH, exception.ToString());
-            Notification.PostTicker($"~r~There is a runtime error in GSW2!\nCheck {EXCEPTION_LOG_PATH}", isImportant: true);
+            sharedData.notifier.ShowOne("There is a runtime error in GSW2, please report it to Github-issues!\n"
+                                        + $"Log-File - {EXCEPTION_LOG_PATH} to Github-issues\n", blinking: true, Notifier.Color.RED);
         }
         #endregion
     }

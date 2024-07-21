@@ -33,10 +33,10 @@
         public InputListener.Scheme DecreaseRangeKey;
         public InputListener.Scheme PauseKey;
 
-        public bool CommonMessages = true;
-        public bool WarningMessages = true;
-        public bool AlertMessages = true;
-        public bool EmergencyMessages = true;
+        public bool InfoMessages = true;
+        public bool PedsMessages = true;
+        public bool WoundsMessages = true;
+        public bool CriticalMessages = true;
 
         public HashSet<uint> SmallCaliberHashes;
         public HashSet<uint> MediumCaliberHashes;
@@ -48,10 +48,10 @@
         public HashSet<uint> IgnoreHashes;
 
         public void ApplyTo(Notifier notifier) {
-            notifier.info.show = CommonMessages;
-            notifier.warning.show = WarningMessages;
-            notifier.alert.show = AlertMessages;
-            notifier.emergency.show = EmergencyMessages;
+            notifier.info.show = InfoMessages;
+            notifier.peds.show = PedsMessages;
+            notifier.wounds.show = WoundsMessages;
+            notifier.critical.show = CriticalMessages;
         }
 
         public PainMoveSets GetPainMoveSetsFor(in ConvertedPed convertedPed) {
@@ -232,11 +232,11 @@
             if (node == null)
                 return;
 
-            config.Language = node.Element("Language").Attribute("Value").Value;
-            config.CommonMessages = node.Element("Common").GetBool();
-            config.WarningMessages = node.Element("Warning").GetBool();
-            config.AlertMessages = node.Element("Alert").GetBool();
-            config.EmergencyMessages = node.Element("Emergency").GetBool();
+            config.Language = node.Element("Language").GetString();
+            config.InfoMessages = node.Element("Info").GetBool();
+            config.PedsMessages = node.Element("OtherPeds").GetBool();
+            config.WoundsMessages = node.Element("Wounds").GetBool();
+            config.CriticalMessages = node.Element("Critical").GetBool();
         }
 
         private static void WeaponsSection(MainConfig config, XElement doc) {

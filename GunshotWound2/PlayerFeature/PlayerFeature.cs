@@ -56,7 +56,7 @@
 
                 ped.GiveHelmet(dontTakeOffHelmet: true, helmetType, helmetTextureId);
             } else {
-                sharedData.notifier.emergency.QueueMessage(sharedData.localeConfig.DontHaveMoneyForHelmet);
+                sharedData.notifier.ShowOne(sharedData.localeConfig.DontHaveMoneyForHelmet, blinking: true, Notifier.Color.RED);
             }
         }
     }

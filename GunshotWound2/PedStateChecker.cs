@@ -15,9 +15,7 @@
 
         public static void Check(SharedData sharedData, Entity pedEntity) {
             string message = BuildString(sharedData, pedEntity);
-
-            GTA.UI.Notification.Hide(LAST_POST);
-            LAST_POST = GTA.UI.Notification.PostTicker(message, isImportant: true).Handle;
+            LAST_POST = sharedData.notifier.ReplaceOne(message, blinking: true, LAST_POST);
         }
 
         public static string BuildString(SharedData sharedData, Entity pedEntity) {

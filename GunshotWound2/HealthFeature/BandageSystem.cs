@@ -67,7 +67,7 @@
 #if DEBUG
                 sharedData.logger.WriteInfo("Ped is already bandaging");
 #endif
-                MakeStartPost(sharedData.notifier, $"~y~{sharedData.localeConfig.AlreadyBandaging}");
+                MakeStartPost(sharedData.notifier, sharedData.localeConfig.AlreadyBandaging, Notifier.Color.YELLOW);
                 return;
             }
 
@@ -76,7 +76,7 @@
 #if DEBUG
                 sharedData.logger.WriteInfo("Wrong conditions for bandaging");
 #endif
-                MakeStartPost(sharedData.notifier, $"~r~{sharedData.localeConfig.BandageFailed}");
+                MakeStartPost(sharedData.notifier, sharedData.localeConfig.BandageFailed, Notifier.Color.RED);
                 return;
             }
 
@@ -84,7 +84,7 @@
             if (convertedMedic.isPlayer) {
                 GTA.Player player = GTA.Game.Player;
                 if (player.Money > 0 && player.Money < woundConfig.BandageCost) {
-                    MakeStartPost(sharedData.notifier, $"~r~{sharedData.localeConfig.DontHaveMoneyForBandage}");
+                    MakeStartPost(sharedData.notifier, sharedData.localeConfig.DontHaveMoneyForBandage, Notifier.Color.RED);
                     return;
                 }
 
@@ -98,7 +98,7 @@
 #endif
 
             string message = string.Format(sharedData.localeConfig.YouTryToBandage, health.timeToBandage.ToString("F1"));
-            MakeStartPost(sharedData.notifier, message);
+            MakeStartPost(sharedData.notifier, message, Notifier.Color.COMMON);
         }
 
         private void ProcessBandaging(Entity entity, float deltaTime) {
@@ -110,7 +110,7 @@
             ref ConvertedPed convertedTarget = ref pedStash.Get(entity);
             ref ConvertedPed convertedMedic = ref pedStash.Get(health.bandagingMedic);
             if (!CheckBandagingConditions(convertedTarget.thisPed, convertedMedic.thisPed)) {
-                MakeStartPost(sharedData.notifier, $"~r~{sharedData.localeConfig.BandageFailed}");
+                MakeStartPost(sharedData.notifier, sharedData.localeConfig.BandageFailed, Notifier.Color.RED);
                 health.timeToBandage = -1f;
                 return;
             }
@@ -126,7 +126,7 @@
             health.bandagingMedic = null;
 
             string message = string.Format(sharedData.localeConfig.BandageSuccess, bleeding.name);
-            MakeFinishPost(sharedData.notifier, $"~g~{message}");
+            BANDAGE_FINISH_POST = sharedData.notifier.ReplaceOne(message, blinking: true, BANDAGE_FINISH_POST, Notifier.Color.GREEN);
             convertedTarget.thisPed.PlayAmbientSpeech("FIGHT_RUN");
         }
 
@@ -148,12 +148,8 @@
             return targetPed.IsRagdoll || CheckPedIsStandStill(targetPed);
         }
 
-        private static void MakeStartPost(Notifier notifier, string message) {
-            BANDAGE_START_POST = notifier.ReplaceOne(message, blinking: true, BANDAGE_START_POST);
-        }
-
-        private static void MakeFinishPost(Notifier notifier, string message) {
-            BANDAGE_FINISH_POST = notifier.ReplaceOne(message, blinking: true, BANDAGE_FINISH_POST);
+        private static void MakeStartPost(Notifier notifier, string message, Notifier.Color color) {
+            BANDAGE_START_POST = notifier.ReplaceOne(message, blinking: true, BANDAGE_START_POST, color);
         }
     }
 }

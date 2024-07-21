@@ -3,6 +3,7 @@
     using PainFeature;
     using PedsFeature;
     using Scellecs.Morpeh;
+    using Utils;
 
     public abstract class BaseCrit {
         protected readonly SharedData sharedData;
@@ -21,9 +22,9 @@
             }
 
             if (convertedPed.isPlayer) {
-                sharedData.notifier.warning.QueueMessage(PlayerMessage);
-            } else if (sharedData.mainConfig.NpcConfig.ShowEnemyCriticalMessages) {
-                sharedData.notifier.info.QueueMessage(convertedPed.isMale ? ManMessage : WomanMessage);
+                sharedData.notifier.critical.QueueMessage(PlayerMessage, Notifier.Color.YELLOW);
+            } else {
+                sharedData.notifier.peds.QueueMessage(convertedPed.isMale ? ManMessage : WomanMessage);
             }
         }
 

@@ -111,7 +111,7 @@
         public string RemovingRange;
 
         public string ThanksForUsing;
-        public string GswStopped;
+        public string GswStopped = "Something went wrong with GSW2 :(";
         public string GswIsPaused;
         public string GswIsWorking;
         public string GswPauseTip;
