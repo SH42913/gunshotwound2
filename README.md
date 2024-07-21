@@ -77,7 +77,8 @@ _Currently, GSW2 doesn't support vehicle weapons._
 
 ## Donations
 
-You can [Buy Me A Coffee](https://www.buymeacoffee.com/SH42913) :)
+You can use a subscription at [Patreon](https://patreon.com/SH42913) or [Boosty](https://boosty.to/sh42913)
+Also you can make [one-time donate at Boosty](https://boosty.to/sh42913/donate).
 
 ## Credits
 
