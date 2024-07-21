@@ -4,7 +4,7 @@
     using PedsFeature;
     using Scellecs.Morpeh;
 
-    public sealed class SelfHealingSystem : ISystem {
+    public sealed class SelfHealingSystem : ILateSystem {
         private readonly SharedData sharedData;
 
         private Stash<Health> healthStash;

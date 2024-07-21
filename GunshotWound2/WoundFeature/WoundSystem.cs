@@ -10,7 +10,7 @@
     using Scellecs.Morpeh;
     using Utils;
 
-    public sealed class WoundSystem : ISystem {
+    public sealed class WoundSystem : ILateSystem {
         private readonly SharedData sharedData;
         private readonly Dictionary<PedHitData.WeaponTypes, BaseWeaponDamage> weaponDamages;
 

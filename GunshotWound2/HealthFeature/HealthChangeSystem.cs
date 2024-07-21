@@ -4,7 +4,7 @@
     using PlayerFeature;
     using Scellecs.Morpeh;
 
-    public sealed class HealthChangeSystem : ISystem {
+    public sealed class HealthChangeSystem : ILateSystem {
         private readonly SharedData sharedData;
         private Filter peds;
         private Stash<Health> healthStash;

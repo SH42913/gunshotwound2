@@ -4,7 +4,7 @@
     using PedsFeature;
     using Scellecs.Morpeh;
 
-    public sealed class BleedingSystem : ISystem {
+    public sealed class BleedingSystem : ILateSystem {
         private readonly SharedData sharedData;
 
         private Stash<Bleeding> bleedingStash;

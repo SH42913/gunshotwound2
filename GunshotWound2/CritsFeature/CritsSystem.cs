@@ -5,20 +5,16 @@
     using Scellecs.Morpeh;
     using Utils;
 
-    public sealed class CritsSystem : ISystem {
+    public sealed class CritsSystem : ILateSystem {
         private readonly SharedData sharedData;
         private readonly (Crits.Types, BaseCrit)[] critActions;
 
         private readonly Crits.Types[] upperBodyCrits = {
-            Crits.Types.SpineDamaged,
-            Crits.Types.LungsDamaged,
-            Crits.Types.HeartDamaged,
+            Crits.Types.SpineDamaged, Crits.Types.LungsDamaged, Crits.Types.HeartDamaged,
         };
 
         private readonly Crits.Types[] lowerBodyCrits = {
-            Crits.Types.SpineDamaged,
-            Crits.Types.StomachDamaged,
-            Crits.Types.GutsDamaged,
+            Crits.Types.SpineDamaged, Crits.Types.StomachDamaged, Crits.Types.GutsDamaged,
         };
 
         private Filter pedsWithCrits;

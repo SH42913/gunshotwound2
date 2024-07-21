@@ -2,7 +2,7 @@
     using PlayerFeature;
     using Scellecs.Morpeh;
 
-    public sealed class PedMovementSystem : ISystem {
+    public sealed class PedMovementSystem : ILateSystem {
         private const float DEFAULT_MOVE_RATE = 1f;
 
         private readonly SharedData sharedData;

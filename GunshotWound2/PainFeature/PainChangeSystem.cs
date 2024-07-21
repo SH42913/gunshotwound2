@@ -8,7 +8,7 @@
     using States;
     using Utils;
 
-    public sealed class PainChangeSystem : ISystem {
+    public sealed class PainChangeSystem : ILateSystem {
         private static readonly int[] NM_MESSAGES = { 548, };
         private static readonly int[] PAIN_SOUNDS = {
             13,

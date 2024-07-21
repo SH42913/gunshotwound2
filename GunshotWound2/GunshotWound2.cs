@@ -155,10 +155,10 @@
             PedsFeature.PedsFeature.Create(commonSystems, sharedData);
             PlayerFeature.PlayerFeature.Create(commonSystems, sharedData);
             HitDetection.DetectHitFeature.Create(commonSystems, sharedData);
+            WoundFeature.WoundFeature.Create(commonSystems, sharedData);
             HealthFeature.HealthFeature.Create(ecsWorld, commonSystems, sharedData);
             PainFeature.PainFeature.Create(commonSystems, sharedData);
             CritsFeature.CritsFeature.Create(commonSystems, sharedData);
-            WoundFeature.WoundFeature.Create(commonSystems, sharedData);
         }
         #endregion
 
