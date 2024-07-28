@@ -78,6 +78,8 @@
                 Player player = Game.Player;
                 player.IgnoredByEveryone = false;
                 CameraEffects.StopPostFx(BLACKOUT_FX);
+            } else if (sharedData.random.IsTrueWithProbability(0.5f)) {
+                convertedPed.thisPed.Task.Cower(-1);
             }
         }
 
