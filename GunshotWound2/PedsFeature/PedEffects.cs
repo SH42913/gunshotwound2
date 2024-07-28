@@ -93,7 +93,6 @@
 
         public static void PlayFacialAnim(Ped ped, string animation, bool useMaleDict) {
             string animDict = useMaleDict ? "facials@gen_male@base" : "facials@gen_female@base";
-
             Function.Call(Hash.PLAY_FACIAL_ANIM, ped, animation, animDict);
         }
 

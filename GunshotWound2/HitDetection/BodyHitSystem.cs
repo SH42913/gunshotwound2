@@ -43,7 +43,8 @@
                     sharedData.logger.WriteInfo($"Damaged random part is {hitData.bodyPart} of {convertedPed.name}");
 #endif
                 } else {
-                    hitData.bodyPart = GetDamagedBodyPart(ref convertedPed, out Bone damagedBone);
+                    hitData.bodyPart = GetDamagedBodyPart(convertedPed.thisPed, out Bone damagedBone);
+                    hitData.damagedBone = damagedBone;
                     if (hitData.bodyPart == PedHitData.BodyParts.Nothing) {
                         sharedData.logger.WriteError($"Can't detect part by bone {damagedBone}");
                     } else {
@@ -55,10 +56,10 @@
             }
         }
 
-        private unsafe PedHitData.BodyParts GetDamagedBodyPart(ref ConvertedPed target, out Bone damagedBone) {
+        private unsafe PedHitData.BodyParts GetDamagedBodyPart(Ped ped, out Bone damagedBone) {
             var damagedBoneNum = 0;
             int* x = &damagedBoneNum;
-            Function.Call(Hash.GET_PED_LAST_DAMAGE_BONE, target.thisPed, x);
+            Function.Call(Hash.GET_PED_LAST_DAMAGE_BONE, ped, x);
             if (!Enum.TryParse(damagedBoneNum.ToString(), out damagedBone)) {
                 sharedData.logger.WriteError($"Can't parse bone {damagedBone}");
                 return PedHitData.BodyParts.Nothing;

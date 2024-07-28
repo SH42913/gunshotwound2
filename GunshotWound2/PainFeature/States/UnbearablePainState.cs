@@ -1,6 +1,8 @@
 ﻿namespace GunshotWound2.PainFeature.States {
     using Configs;
+    using CritsFeature;
     using GTA;
+    using GTA.NaturalMotion;
     using PedsFeature;
     using PlayerFeature;
     using Scellecs.Morpeh;
@@ -21,11 +23,25 @@
 
             convertedPed.ResetRagdoll();
             convertedPed.RequestPermanentRagdoll();
-            convertedPed.nmMessages = NM_MESSAGES;
             convertedPed.isRestrictToDrive = true;
 
+            bool armsDamaged = (pedEntity.GetComponent<Crits>().active & Crits.Types.ArmsDamaged) != 0;
+            bool leftSide = sharedData.random.IsTrueWithProbability(0.5f);
+            convertedPed.nmHelper = new InjuredOnGroundHelper(convertedPed.thisPed) {
+                Injury1Component = leftSide ? (int)convertedPed.lastDamagedBone : 0,
+                Injury2Component = leftSide ? 0 : (int)convertedPed.lastDamagedBone,
+                NumInjuries = sharedData.random.Next(0, 3),
+                DontReachWithLeft = armsDamaged && leftSide,
+                DontReachWithRight = armsDamaged && !leftSide,
+                StrongRollForce = sharedData.random.IsTrueWithProbability(0.5f),
+            };
+
             int deathAnimIndex = sharedData.random.Next(1, 3);
-            PedEffects.PlayFacialAnim(convertedPed.thisPed, $"die_{deathAnimIndex.ToString()}", convertedPed.isMale);
+            string animation = sharedData.random.IsTrueWithProbability(0.5f)
+                    ? $"die_{deathAnimIndex.ToString()}"
+                    : $"died_{deathAnimIndex.ToString()}";
+
+            PedEffects.PlayFacialAnim(convertedPed.thisPed, animation, convertedPed.isMale);
 
             string speech = sharedData.random.IsTrueWithProbability(0.5f) ? "DYING_HELP" : "DYING_MOAN";
             convertedPed.thisPed.PlayAmbientSpeech(speech, SpeechModifier.ShoutedClear);

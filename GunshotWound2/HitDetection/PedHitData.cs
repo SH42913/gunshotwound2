@@ -1,4 +1,5 @@
 ﻿namespace GunshotWound2.HitDetection {
+    using GTA;
     using Scellecs.Morpeh;
 
     public struct PedHitData : IComponent {
@@ -29,5 +30,6 @@
         public int armorDiff;
         public bool useRandomBodyPart;
         public string armorMessage;
+        public Bone damagedBone;
     }
 }

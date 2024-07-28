@@ -1,6 +1,7 @@
 ﻿namespace GunshotWound2.PedsFeature {
     using GTA;
     using GTA.Native;
+    using GTA.NaturalMotion;
     using Scellecs.Morpeh;
 
     public struct ConvertedPed : IComponent {
@@ -10,9 +11,11 @@
         public bool isPlayer;
         public int lastFrameHealth;
         public int lastFrameArmor;
+        public Bone lastDamagedBone;
 
         public (int time, RagdollType type) ragdollRequest;
         public int[] nmMessages;
+        public CustomHelper nmHelper;
         public bool ragdollReset;
         public bool isRagdoll;
 

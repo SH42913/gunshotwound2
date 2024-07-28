@@ -52,6 +52,7 @@
                     ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
                     convertedPed.thisPed.Armor += hitData.armorDiff;
                     convertedPed.thisPed.Health += hitData.healthDiff;
+                    convertedPed.lastDamagedBone = hitData.damagedBone;
 
                     WoundData? wound = weaponDamage.ProcessHit(ref convertedPed, ref hitData);
 #if DEBUG
