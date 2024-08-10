@@ -30,8 +30,7 @@
         private bool cleanedUp;
 
         public GunshotWound2() {
-            var logger = new ScriptHookLogger();
-            sharedData = new SharedData(logger);
+            sharedData = new SharedData(Filename, new ScriptHookLogger());
 
             ecsWorld = EcsWorld.Create();
             commonSystems = ecsWorld.CreateSystemsGroup();
@@ -104,7 +103,7 @@
                 return false;
             }
 
-            (bool success, string reason) = MainConfig.TryToLoad(sharedData.mainConfig);
+            (bool success, string reason) = MainConfig.TryToLoad(sharedData.scriptPath, sharedData.mainConfig);
             if (!success) {
                 var message = $"GSW2 couldn't load config!\nReason:\n~r~{reason}";
                 sharedData.notifier.ShowOne(message, blinking: true);
@@ -113,7 +112,7 @@
                 return false;
             }
 
-            (success, reason) = LocaleConfig.TryToLoad(sharedData.localeConfig, sharedData.mainConfig.Language);
+            (success, reason) = LocaleConfig.TryToLoad(sharedData.scriptPath, sharedData.localeConfig, sharedData.mainConfig.Language);
             if (!success) {
                 var message = $"GSW2 couldn't load localization!\nReason:\n~r~{reason}";
                 sharedData.notifier.ShowOne(message, blinking: true);

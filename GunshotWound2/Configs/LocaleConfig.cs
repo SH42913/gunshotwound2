@@ -129,14 +129,13 @@
 
         public string LocalizationAuthor;
 
-        public static (bool success, string reason) TryToLoad(LocaleConfig config, string language) {
-            var gswLocalization = new FileInfo("scripts/GSW2/GSW2Localization.csv");
-            var scriptsLocalization = new FileInfo("scripts/GSW2Localization.csv");
-            if (!gswLocalization.Exists && !scriptsLocalization.Exists) {
+        public static (bool success, string reason) TryToLoad(string scriptPath, LocaleConfig config, string language) {
+            string path = Path.ChangeExtension(scriptPath, ".csv");
+            if (!File.Exists(path)) {
                 return (false, "Localization file was not found");
             }
 
-            var doc = gswLocalization.Exists ? gswLocalization : scriptsLocalization;
+            var doc = new FileInfo(path);
             try {
                 LoadLocalization(config, language, doc.OpenRead());
             } catch (Exception e) {

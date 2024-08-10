@@ -6,6 +6,7 @@
     using Utils;
 
     public sealed class SharedData {
+        public readonly string scriptPath;
         public readonly ILogger logger;
         public readonly Stopwatch stopwatch;
         public readonly System.Random random;
@@ -22,8 +23,10 @@
         public float deltaTime;
         public int deltaTimeInMs;
 
-        public SharedData(ILogger logger) {
+        public SharedData(string scriptPath, ILogger logger) {
+            this.scriptPath = scriptPath;
             this.logger = logger;
+
             stopwatch = new Stopwatch();
             random = new System.Random();
             weightRandom = new Weighted_Randomizer.StaticWeightedRandomizer<int>();

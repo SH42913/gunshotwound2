@@ -13,9 +13,6 @@
         public const float ADDING_TO_REMOVING_MULTIPLIER = 2;
         public static readonly char[] Separator = { ';' };
 
-        private const string ScriptConfigPath = "scripts/GSW2Config.xml";
-        private const string GswConfigPath = "scripts/GSW2/GSW2Config.xml";
-
         public WoundConfig WoundConfig;
         public NpcConfig NpcConfig;
         public PlayerConfig PlayerConfig;
@@ -47,6 +44,12 @@
         public HashSet<uint> CuttingHashes;
         public HashSet<uint> IgnoreHashes;
 
+        public MainConfig() {
+            PlayerConfig = new PlayerConfig();
+            WoundConfig = new WoundConfig();
+            NpcConfig = new NpcConfig();
+        }
+
         public void ApplyTo(Notifier notifier) {
             notifier.info.show = InfoMessages;
             notifier.peds.show = PedsMessages;
@@ -68,20 +71,9 @@
             return $"{WoundConfig}\n" + $"{NpcConfig}\n" + $"{PlayerConfig}";
         }
 
-        public static (bool success, string reason) TryToLoad(MainConfig config) {
-            config.PlayerConfig = new PlayerConfig();
-            config.WoundConfig = new WoundConfig();
-            config.NpcConfig = new NpcConfig();
-
-            string path = null;
-
-            if (File.Exists(GswConfigPath)) {
-                path = GswConfigPath;
-            } else if (File.Exists(ScriptConfigPath)) {
-                path = ScriptConfigPath;
-            }
-
-            if (string.IsNullOrEmpty(path)) {
+        public static (bool success, string reason) TryToLoad(string scriptPath, MainConfig config) {
+            string path = Path.ChangeExtension(scriptPath, ".xml");
+            if (!File.Exists(path)) {
                 return (false, "GSW Config was not found");
             }
 

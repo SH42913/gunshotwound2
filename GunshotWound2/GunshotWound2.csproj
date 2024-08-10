@@ -107,16 +107,16 @@
     <Compile Include="HitDetection\DetectHitFeature.cs"/>
     <Compile Include="HitDetection\PedHitData.cs"/>
     <Compile Include="HitDetection\WeaponHitSystem.cs"/>
-    <Compile Include="PainFeature\Pain.cs" />
-    <Compile Include="PainFeature\PainFeature.cs" />
-    <Compile Include="PainFeature\States\AveragePainState.cs" />
-    <Compile Include="PainFeature\States\DeadlyPainState.cs" />
-    <Compile Include="PainFeature\States\IntensePainState.cs" />
-    <Compile Include="PainFeature\States\MildPainState.cs" />
-    <Compile Include="PainFeature\States\UnbearablePainState.cs" />
-    <Compile Include="PedsFeature\JustConvertedEvent.cs" />
-    <Compile Include="PedsFeature\PedEffects.cs" />
-    <Compile Include="PedsFeature\RagdollSystem.cs" />
+    <Compile Include="PainFeature\Pain.cs"/>
+    <Compile Include="PainFeature\PainFeature.cs"/>
+    <Compile Include="PainFeature\States\AveragePainState.cs"/>
+    <Compile Include="PainFeature\States\DeadlyPainState.cs"/>
+    <Compile Include="PainFeature\States\IntensePainState.cs"/>
+    <Compile Include="PainFeature\States\MildPainState.cs"/>
+    <Compile Include="PainFeature\States\UnbearablePainState.cs"/>
+    <Compile Include="PedsFeature\JustConvertedEvent.cs"/>
+    <Compile Include="PedsFeature\PedEffects.cs"/>
+    <Compile Include="PedsFeature\RagdollSystem.cs"/>
     <Compile Include="PlayerFeature\AdrenalineSystem.cs" />
     <Compile Include="PlayerFeature\CameraEffects.cs" />
     <Compile Include="PlayerFeature\PlayerEffects.cs" />
@@ -151,10 +151,10 @@
       <Link>README.md</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GSW2Config.xml">
+    <Content Include="GunshotWound2.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GSW2Localization.csv">
+    <Content Include="GunshotWound2.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
