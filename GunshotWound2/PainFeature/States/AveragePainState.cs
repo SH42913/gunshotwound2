@@ -23,6 +23,7 @@
             convertedPed.UnBlockSprint();
 
             if (convertedPed.isPlayer) {
+                PlayerEffects.FlashAbilityBar(2000);
                 PlayerEffects.SetSpecialAbilityLock(false);
                 CameraEffects.StopPostFx(POST_FX);
             }
