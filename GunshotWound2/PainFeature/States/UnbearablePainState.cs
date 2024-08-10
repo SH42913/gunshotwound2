@@ -46,11 +46,32 @@
             string speech = sharedData.random.IsTrueWithProbability(0.5f) ? "DYING_HELP" : "DYING_MOAN";
             convertedPed.thisPed.PlayAmbientSpeech(speech, SpeechModifier.ShoutedClear);
 
-            if (!convertedPed.isPlayer) {
-                convertedPed.thisPed.Weapons.Drop();
-                return;
+            if (convertedPed.isPlayer) {
+                PlayerOnlyCase(sharedData, ref convertedPed);
+            } else {
+                NonPlayerCase(sharedData, ref convertedPed);
             }
+        }
 
+        public void ApplyPainDecreased(SharedData sharedData, Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
+            convertedPed.ResetRagdoll();
+            convertedPed.isRestrictToDrive = false;
+
+            if (convertedPed.isPlayer) {
+                Player player = Game.Player;
+                player.IgnoredByEveryone = false;
+                CameraEffects.StopPostFx(BLACKOUT_FX);
+            } else if (sharedData.random.IsTrueWithProbability(0.5f)) {
+                convertedPed.thisPed.Task.Cower(-1);
+            }
+        }
+
+        public bool TryGetMoveSets(MainConfig mainConfig, in ConvertedPed convertedPed, out string[] moveSets) {
+            moveSets = default;
+            return false;
+        }
+
+        private static void PlayerOnlyCase(SharedData sharedData, ref ConvertedPed convertedPed) {
             Player player = Game.Player;
             if (player.WantedLevel <= 3) {
                 player.IgnoredByEveryone = true;
@@ -70,22 +91,14 @@
             CameraEffects.StartPostFx(BLACKOUT_FX, 5000);
         }
 
-        public void ApplyPainDecreased(SharedData sharedData, Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
-            convertedPed.ResetRagdoll();
-            convertedPed.isRestrictToDrive = false;
+        private static void NonPlayerCase(SharedData sharedData, ref ConvertedPed convertedPed) {
+            convertedPed.thisPed.Weapons.Drop();
 
-            if (convertedPed.isPlayer) {
-                Player player = Game.Player;
-                player.IgnoredByEveryone = false;
-                CameraEffects.StopPostFx(BLACKOUT_FX);
-            } else if (sharedData.random.IsTrueWithProbability(0.5f)) {
-                convertedPed.thisPed.Task.Cower(-1);
+            bool isInVehicle = convertedPed.thisPed.IsInVehicle();
+            bool notDriver = convertedPed.thisPed.SeatIndex != VehicleSeat.Driver;
+            if (isInVehicle && notDriver && sharedData.random.IsTrueWithProbability(0.5f)) {
+                convertedPed.thisPed.Task.LeaveVehicle(LeaveVehicleFlags.BailOut);
             }
-        }
-
-        public bool TryGetMoveSets(MainConfig mainConfig, in ConvertedPed convertedPed, out string[] moveSets) {
-            moveSets = default;
-            return false;
         }
     }
 }
