@@ -122,6 +122,7 @@
             }
 
             try {
+                ClearExceptionLog();
                 sharedData.mainConfig.ApplyTo(sharedData.notifier);
                 RegisterSystems();
             } catch (Exception e) {
@@ -173,7 +174,13 @@
             sharedData.notifier.Show();
         }
 
-        private void HandleRuntimeException(Exception exception) {
+        private static void ClearExceptionLog() {
+            if (File.Exists(EXCEPTION_LOG_PATH)) {
+                File.Delete(EXCEPTION_LOG_PATH);
+            }
+        }
+
+        private static void HandleRuntimeException(Exception exception) {
             sharedData.notifier.ShowOne(sharedData.localeConfig.GswStopped, blinking: true, Notifier.Color.ORANGE);
             sharedData.logger.WriteError(exception.ToString());
             File.WriteAllText(EXCEPTION_LOG_PATH, exception.ToString());
