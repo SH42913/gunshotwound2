@@ -167,48 +167,47 @@
 
 	<Hotkeys>
 		<!-- If you don't want to use key, just remove KeyCode value or key itself.
-		You also can set Modifiers like Shift(set 65536), Alt(set 262144) and Ctrl(set 131072).
-        KeyCodes can be found here - https://www.oreilly.com/library/view/javascript-dhtml/9780596514082/apb.html -->
+		You also can set Modifiers like Shift, Alt and Control. -->
 
-		<CheckSelfKey KeyCode="76" Modifiers=""/>
+		<CheckSelfKey KeyCode="L" Modifiers=""/>
 		<!-- Check Yourself. Show one time status-notifications about your wounds and health.
         Default: L on keyboard. -->
 
-		<CheckClosestKey KeyCode="76" Modifiers="65536"/>
+		<CheckClosestKey KeyCode="L" Modifiers="Shift"/>
 		<!-- Works like CheckSelfKey, but checks the closest ped.
         Default: Shift + L on keyboard. -->
 
-		<BandageSelfKey KeyCode="75" Modifiers=""/>
+		<BandageSelfKey KeyCode="K" Modifiers=""/>
 		<!-- Applied bandages to you. It will cost $15(can be changed in BandageCost).
 		When Shift is pressed - will bandage the closest ped.
         Default: K on keyboard. -->
 
-		<BandageClosestKey KeyCode="75" Modifiers="65536"/>
+		<BandageClosestKey KeyCode="K" Modifiers="Shift"/>
 		<!-- Works like BandageSelfKey, but bandages the closest ped.
         Default: Shift + K on keyboard. -->
 
-		<DeathKey KeyCode="46" Modifiers=""/>
+		<DeathKey KeyCode="Delete" Modifiers=""/>
 		<!-- Instant death. Useful if you're stuck in a deadly situation and don't want to wait for slow death.
 		Default: Delete on keyboard. -->
 
 		<!-- <HealKey KeyCode="" Modifiers="" /> -->
 		<!-- Besides, you can set a key for instant heal -->
 
-		<GetHelmetKey KeyCode="74" Modifiers=""/>
+		<GetHelmetKey KeyCode="J" Modifiers=""/>
 		<!-- Give to player motorbike helmet if the player has $40(can be changed in HelmetCost section).
         Helmet can save your head from impact and weapons.
         If the player already has a helmet, this hotkey will remove it.
         Default: J on keyboard. -->
 
-		<IncreaseRangeKey KeyCode="33" Modifiers=""/>
+		<IncreaseRangeKey KeyCode="PageUp" Modifiers=""/>
 		<!-- Increase GSW2 scan range.
         Default: PageUp on keyboard. -->
 
-		<DecreaseRangeKey KeyCode="34" Modifiers=""/>
+		<DecreaseRangeKey KeyCode="PageDown" Modifiers=""/>
 		<!-- Decrease GSW2 scan range.
         Default: PageDown on keyboard. -->
 
-		<PauseKey KeyCode="35" Modifiers=""/>
+		<PauseKey KeyCode="End" Modifiers=""/>
 		<!-- Pause of the script.
 		It can be useful in some missions.
         Default: End on keyboard. -->

@@ -23,9 +23,9 @@
             return float.Parse(value, CultureInfo.InvariantCulture);
         }
 
-        public static Keys? GetKey(this XElement node, string attributeName) {
+        private static Keys? GetKey(this XElement node, string attributeName) {
             string value = node.GetString(attributeName);
-            return string.IsNullOrEmpty(value) ? null : (Keys)int.Parse(value);
+            return string.IsNullOrEmpty(value) ? null : (Keys?)System.Enum.Parse(typeof(Keys), value, ignoreCase: true);
         }
 
         public static InputListener.Scheme GetKeyScheme(this XElement node) {
