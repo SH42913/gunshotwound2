@@ -99,7 +99,7 @@
                 return true;
             }
 
-            if (Game.IsLoading || Game.IsCutsceneActive) {
+            if (Game.IsCutsceneActive) {
                 return false;
             }
 

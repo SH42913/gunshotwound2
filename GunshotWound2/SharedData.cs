@@ -48,10 +48,12 @@
 
         public bool PlayerCanSeeNotification() {
             if (TryGetPlayer(out Entity entity) && entity.GetComponent<Health>().IsAlive()) {
-                return !GTA.Game.IsLoading
-                       && !GTA.Game.IsCutsceneActive
-                       && GTA.Game.Player.IsPlaying
-                       && GTA.Game.Player.CanControlCharacter;
+                if (GTA.Game.IsCutsceneActive) {
+                    return false;
+                }
+
+                GTA.Player player = GTA.Game.Player;
+                return player.IsPlaying && player.CanControlCharacter;
             } else {
                 return false;
             }
