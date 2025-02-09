@@ -37,7 +37,7 @@
                     convertedPed.thisPed.CancelRagdoll();
                 }
 
-                convertedPed.ragdollReset = default;
+                convertedPed.ragdollReset = false;
                 return;
             }
 
@@ -47,39 +47,43 @@
             }
 
             if (inRagdoll) {
-                if (ragdollRequest.time < 0) {
-                    convertedPed.ResetRagdoll();
-                } else {
+                if (ragdollRequest.time > 0) {
                     int newTime = ragdollRequest.time - sharedData.deltaTimeInMs;
                     ragdollRequest.time = newTime > 0 ? newTime : 0;
                 }
-            } else if (!convertedPed.thisPed.IsInVehicle()) {
-#if DEBUG
-                var time = ragdollRequest.time.ToString();
-                sharedData.logger.WriteInfo($"Ragdoll for {convertedPed.name} time={time}");
-#endif
 
-                // ReSharper disable once InconsistentNaming
-                bool canPlayNM = !convertedPed.hasSpineDamage;
-                if (canPlayNM && convertedPed.nmHelper != null) {
-#if DEBUG
-                    sharedData.logger.WriteInfo($"Playing NM helper: {convertedPed.nmHelper.GetType().FullName}");
-#endif
-                    convertedPed.nmHelper.Start();
-                } else if (canPlayNM && convertedPed.nmMessages != null) {
-#if DEBUG
-                    sharedData.logger.WriteInfo($"Playing NM messages: {string.Join(" ,", convertedPed.nmMessages)}");
-#endif
-                    Function.Call(Hash.SET_PED_TO_RAGDOLL, convertedPed.thisPed.Handle, 10000, ragdollRequest.time, 1, 1, 1, 0);
-                    ApplyNaturalMotion(ref convertedPed);
-                    convertedPed.nmMessages = null;
-                } else {
-                    convertedPed.thisPed.Ragdoll(ragdollRequest.time, ragdollRequest.type);
-                }
-
-                convertedPed.ragdollRequest = default;
-                convertedPed.isRagdoll = true;
+                return;
             }
+
+            if (convertedPed.thisPed.IsInVehicle()) {
+                return;
+            }
+
+#if DEBUG
+            var time = ragdollRequest.time.ToString();
+            sharedData.logger.WriteInfo($"Ragdoll for {convertedPed.name} time={time}");
+#endif
+
+            // ReSharper disable once InconsistentNaming
+            bool canPlayNM = !convertedPed.hasSpineDamage;
+            if (canPlayNM && convertedPed.nmHelper != null) {
+#if DEBUG
+                sharedData.logger.WriteInfo($"Playing NM helper: {convertedPed.nmHelper.GetType().FullName}");
+#endif
+                convertedPed.nmHelper.Start();
+            } else if (canPlayNM && convertedPed.nmMessages != null) {
+#if DEBUG
+                sharedData.logger.WriteInfo($"Playing NM messages: {string.Join(" ,", convertedPed.nmMessages)}");
+#endif
+                Function.Call(Hash.SET_PED_TO_RAGDOLL, convertedPed.thisPed.Handle, 10000, ragdollRequest.time, 1, 1, 1, 0);
+                ApplyNaturalMotion(ref convertedPed);
+                convertedPed.nmMessages = null;
+            } else {
+                convertedPed.thisPed.Ragdoll(ragdollRequest.time, ragdollRequest.type);
+            }
+
+            convertedPed.ragdollRequest = default;
+            convertedPed.isRagdoll = true;
         }
 
         public void Dispose() {
