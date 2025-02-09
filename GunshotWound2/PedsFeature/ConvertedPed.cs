@@ -66,5 +66,9 @@
                 convertedPed.sprintBlockers--;
             }
         }
+
+        public static void ResetMoveRate(this ref ConvertedPed convertedPed) {
+            convertedPed.moveRate = 1f;
+        }
     }
 }

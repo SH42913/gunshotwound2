@@ -60,12 +60,12 @@
 
             if (convertedPed.resetMoveSet) {
                 PedEffects.ResetMoveSet(convertedPed.thisPed);
-                convertedPed.moveSetRequest = default;
+                convertedPed.moveSetRequest = null;
                 convertedPed.resetMoveSet = false;
                 convertedPed.hasCustomMoveSet = false;
             } else if (PedEffects.TryRequestMoveSet(convertedPed.moveSetRequest)) {
                 PedEffects.ChangeMoveSet(convertedPed.thisPed, convertedPed.moveSetRequest);
-                convertedPed.moveSetRequest = default;
+                convertedPed.moveSetRequest = null;
                 convertedPed.hasCustomMoveSet = true;
             }
 

@@ -23,6 +23,7 @@
 
         public override void Cancel(Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
             convertedPed.hasBrokenLegs = false;
+            convertedPed.ResetMoveRate();
             convertedPed.UnBlockSprint();
             convertedPed.thisPed.SetConfigFlag(PedConfigFlagToggles.IsInjured, false);
         }

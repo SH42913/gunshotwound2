@@ -154,7 +154,7 @@
             }
 
             if (!pain.HasPain()) {
-                convertedPed.moveRate = 1f;
+                convertedPed.ResetMoveRate();
                 return;
             }
 
