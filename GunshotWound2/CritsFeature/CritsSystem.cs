@@ -79,6 +79,8 @@
 
         private Crits.Types GetRandomCritFor(PedHitData.BodyParts bodyPart) {
             switch (bodyPart) {
+                case PedHitData.BodyParts.Head: return Crits.Types.SpineDamaged;
+
                 case PedHitData.BodyParts.UpperBody: {
                     int index = sharedData.random.Next(0, upperBodyCrits.Length);
                     return upperBodyCrits[index];

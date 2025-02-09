@@ -80,7 +80,7 @@
         protected abstract WoundData GetLegWound();
 
         protected WoundData CreateHeavyBrainDamage(string name) {
-            return CreateWound(name, 50f, 4f, 130f);
+            return CreateWound(name, 50f, 4f, 130f, hasCrits: true, ignoreCritsChance: true, internalBleeding: true);
         }
 
         protected WoundData CreateWound(string name,
@@ -107,10 +107,10 @@
                 case PedHitData.BodyParts.Head:
                     if (convertedPed.thisPed.IsWearingHelmet && sharedData.random.IsTrueWithProbability(HelmetSafeChance)) {
                         hit.armorMessage = sharedData.localeConfig.HelmetSavedYourHead;
-                        armorWound = default;
+                        armorWound = null;
                         return true;
                     } else {
-                        armorWound = default;
+                        armorWound = null;
                         return false;
                     }
 
@@ -118,13 +118,13 @@
                 case PedHitData.BodyParts.LowerBody:
                     break;
                 default:
-                    armorWound = default;
+                    armorWound = null;
                     return false;
             }
 
             if (CheckArmorPenetration(convertedPed.thisPed, out string reason)) {
                 hit.armorMessage = reason;
-                armorWound = default;
+                armorWound = null;
                 return false;
             }
 
@@ -148,7 +148,7 @@
 #if DEBUG
                 sharedData.logger.WriteInfo("Has no armor");
 #endif
-                reason = default;
+                reason = null;
                 return true;
             }
 
@@ -165,7 +165,7 @@
 #if DEBUG
                 sharedData.logger.WriteInfo("Can't penetrate armor");
 #endif
-                reason = default;
+                reason = null;
                 return false;
             }
 
@@ -175,7 +175,7 @@
 #if DEBUG
                 sharedData.logger.WriteInfo("Minimal chance for armor save is >1");
 #endif
-                reason = default;
+                reason = null;
                 return false;
             }
 
@@ -186,7 +186,7 @@
 #if DEBUG
                 sharedData.logger.WriteInfo($"Armor deflected damage, save probability {saveProbability.ToString("F2")}");
 #endif
-                reason = default;
+                reason = null;
                 return false;
             }
 

@@ -1,4 +1,5 @@
-﻿namespace GunshotWound2.WoundFeature {
+﻿// ReSharper disable InconsistentNaming
+namespace GunshotWound2.WoundFeature {
     public struct WoundData {
         public string Name;
         public float Damage;
