@@ -47,7 +47,7 @@
                 } else if (CheckSpecialCases(ref convertedPed, out weaponType, out skipDamage)) {
                     isSpecialCase = true;
                 } else {
-                    isSpecialCase = default;
+                    isSpecialCase = false;
                 }
 
                 if (skipDamage) {
@@ -57,8 +57,10 @@
                 if (weaponType == PedHitData.WeaponTypes.Nothing) {
                     var damageRecord = NativeMemory.GetEntityDamageRecordEntryAtIndex(convertedPed.thisPed.MemoryAddress, 0);
                     var uintHash = unchecked((uint)damageRecord.weaponHash);
+                    string name = Weapon.GetHumanNameFromHash((WeaponHash)uintHash);
                     sharedData.logger.WriteWarning("Can't detect weapon");
-                    sharedData.logger.WriteWarning($"Make sure you have hash of this weapon(possible {uintHash}) in GSWConfig");
+                    sharedData.logger.WriteWarning($"Possible hash - {uintHash}({name})");
+                    sharedData.logger.WriteWarning("Make sure you have hash of this weapon in Weapons section of GSWConfig.xml");
                 } else {
                     hitData.weaponType = weaponType;
                     hitData.useRandomBodyPart = isSpecialCase;
@@ -173,7 +175,7 @@
                 }
             }
 
-            weapon = default;
+            weapon = 0;
             return false;
         }
 
