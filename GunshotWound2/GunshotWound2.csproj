@@ -77,6 +77,7 @@
     <Compile Include="PlayerFeature\PlayerDeathReportSystem.cs"/>
     <Compile Include="Utils\CheatListener.cs"/>
     <Compile Include="Utils\CsvReader.cs"/>
+    <Compile Include="Utils\GTAHelpers.cs" />
     <Compile Include="Utils\Localization.cs"/>
     <Compile Include="WoundFeature\WoundFeature.cs"/>
     <Compile Include="WoundFeature\WoundData.cs"/>

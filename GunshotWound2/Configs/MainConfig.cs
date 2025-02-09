@@ -157,6 +157,7 @@
 
             config.NpcConfig.ShowEnemyCriticalMessages = node.Element("CriticalMessages").GetBool();
             config.NpcConfig.ScanOnlyDamaged = node.Element("ScanOnlyDamaged").GetBool();
+            config.NpcConfig.ClosestPedRange = node.Element("ClosestPedRange").GetFloat();
 
             var healthNode = node.Element("CustomHealth");
             config.NpcConfig.MinStartHealth = healthNode.GetInt("Min");

@@ -20,6 +20,7 @@ namespace GunshotWound2.Configs {
 
         public GswTargets Targets;
         public bool ScanOnlyDamaged;
+        public float ClosestPedRange;
 
         public int MinAccuracy;
         public int MaxAccuracy;

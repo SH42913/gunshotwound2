@@ -56,35 +56,16 @@
         }
 
         private static void CheckClosestPed(SharedData sharedData) {
-            if (TryGetClosestPed(out GTA.Ped closest) && sharedData.worldService.TryGetConverted(closest, out Entity entity)) {
+            if (sharedData.TryGetClosestPedEntity(out _, out Entity entity)) {
                 PedStateChecker.Check(sharedData, entity);
             }
         }
 
         private static void BandageClosestPed(SharedData sharedData) {
-            if (!TryGetClosestPed(out GTA.Ped closest) || !sharedData.worldService.TryGetConverted(closest, out Entity entity)) {
-                return;
-            }
-
-            if (!sharedData.TryGetPlayer(out Entity playerEntity)) {
-                return;
-            }
-
-            entity.SetComponent(new HealthFeature.BandageRequest {
-                medic = playerEntity,
-            });
-        }
-
-        private static bool TryGetClosestPed(out GTA.Ped closestPed) {
-            const float radius = 2f;
-            GTA.Ped playerPed = GTA.Game.Player.Character;
-            GTA.Ped[] closestPeds = GTA.World.GetNearbyPeds(playerPed, radius);
-            if (closestPeds.Length > 0) {
-                closestPed = closestPeds[0];
-                return true;
-            } else {
-                closestPed = null;
-                return false;
+            if (sharedData.TryGetPlayer(out Entity playerEntity) && sharedData.TryGetClosestPedEntity(out _, out Entity entity)) {
+                entity.SetComponent(new HealthFeature.BandageRequest {
+                    medic = playerEntity,
+                });
             }
         }
     }

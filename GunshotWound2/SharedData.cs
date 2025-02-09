@@ -58,5 +58,14 @@
                 return false;
             }
         }
+
+        public bool TryGetClosestPedEntity(out GTA.Ped closestPed, out Entity closestPedEntity) {
+            if (GTAHelpers.TryGetClosestPed(out closestPed, mainConfig.NpcConfig.ClosestPedRange)) {
+                return worldService.TryGetConverted(closestPed, out closestPedEntity);
+            }
+
+            closestPedEntity = null;
+            return false;
+        }
     }
 }

@@ -50,6 +50,9 @@
         It will increase performance, but it can have bugs.
         PedHealth, new Accuracy and ShootRate will apply only after first damage! -->
 
+		<ClosestPedRange Value="2"/>
+		<!-- Range where GSW will look for closest ped when using keys like BandageClosestKey -->
+
 		<Targets ALL="TRUE" COMPANION="TRUE" DISLIKE="TRUE" HATE="TRUE"
 				 LIKE="TRUE" NEUTRAL="TRUE" PEDESTRIAN="TRUE" RESPECT="TRUE"/>
 		<!-- You can select what types of NonPlayable Peds can be affected by GSW.
@@ -62,15 +65,15 @@
 
 		<CustomHealth Min="-1" Max="-1"/>
 		<!-- Peds will have random health between Min and Max.
-        If you want to use default game PedHealth, set both to -1 -->
+        If you want to use default game PedHealth, set any to -1 -->
 
 		<CustomAccuracy Min="-1" Max="-1"/>
 		<!-- Peds will get random accuracy between Min and Max.
-        If you want to use default game Accuracy, set both to -1. -->
+        If you want to use default game Accuracy, set any to -1. -->
 
 		<CustomShootRate Min="-1" Max="-1"/>
 		<!-- Peds will get random ShootRate between Min and Max.
-        If you want to use default game ShootRate, set both to -1. -->
+        If you want to use default game ShootRate, set any to -1. -->
 
 		<PainRecoverySpeed Value="0.8"/>
 		<BleedHealSpeed Value="1.0"/>
