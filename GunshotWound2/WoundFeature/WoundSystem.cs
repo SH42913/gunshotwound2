@@ -58,7 +58,7 @@
 #if DEBUG
                     sharedData.logger.WriteInfo(wound.HasValue ? $"New wound {wound.Value.ToString()} " : "No wound created");
 #endif
-                    ProcessWound(pedEntity, ref hitData, ref wound);
+                    ProcessWound(pedEntity, ref hitData, ref wound, convertedPed.isPlayer);
                     SendWoundInfo(pedEntity, convertedPed, hitData, wound);
                 } else {
                     sharedData.logger.WriteWarning($"Doesn't support {hitData.weaponType}");
@@ -66,12 +66,20 @@
             }
         }
 
-        private void ProcessWound(Entity pedEntity, ref PedHitData hitData, ref WoundData? wound) {
+        private void ProcessWound(Entity pedEntity, ref PedHitData hitData, ref WoundData? wound, bool isPlayer) {
             if (!wound.HasValue) {
                 return;
             }
 
             WoundData woundData = wound.Value;
+            if (IsDeadlyWound(hitData, isPlayer)) {
+#if DEBUG
+                sharedData.logger.WriteInfo("It's deadly wound");
+#endif
+                InstantKill(pedEntity, woundData.Name);
+                return;
+            }
+
             CreateDamage(pedEntity, woundData.Damage, woundData.Name);
             CreateBleeding(pedEntity, woundData.BleedSeverity, woundData.InternalBleeding, woundData.Name);
             CreatePain(pedEntity, woundData.Pain);
@@ -81,6 +89,17 @@
                 CreateBleeding(pedEntity, WoundConfig.MAX_SEVERITY_FOR_BANDAGE, isInternal: true,
                                sharedData.localeConfig.SeveredArtery);
             }
+        }
+
+        private bool IsDeadlyWound(in PedHitData hitData, bool isPlayer) {
+            return hitData.bodyPart == PedHitData.BodyParts.Head
+                   && (isPlayer
+                           ? sharedData.mainConfig.PlayerConfig.InstantDeathHeadshot
+                           : sharedData.mainConfig.NpcConfig.InstantDeathHeadshot);
+        }
+
+        private static void InstantKill(Entity pedEntity, string woundName) {
+            pedEntity.GetComponent<Health>().InstantKill(woundName);
         }
 
         private void CreateDamage(Entity pedEntity, float damage, string woundName) {

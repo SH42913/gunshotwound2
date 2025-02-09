@@ -1,9 +1,11 @@
-﻿namespace GunshotWound2.Configs {
+﻿// ReSharper disable InconsistentNaming
+namespace GunshotWound2.Configs {
     using System.Globalization;
 
     public sealed class PlayerConfig {
         public bool PoliceCanForgetYou;
         public bool CanDropWeapon;
+        public bool InstantDeathHeadshot;
 
         public bool BlipsToMedkits;
         public float TimeToRefreshMedkits;

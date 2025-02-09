@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+// ReSharper disable InconsistentNaming
 
 namespace GunshotWound2.Configs {
     [Flags]
@@ -20,6 +21,7 @@ namespace GunshotWound2.Configs {
 
         public GswTargets Targets;
         public bool ScanOnlyDamaged;
+        public bool InstantDeathHeadshot;
         public float ClosestPedRange;
 
         public int MinAccuracy;

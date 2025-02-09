@@ -138,6 +138,7 @@
             config.PlayerConfig.BleedHealingSpeed = node.Element("BleedHealSpeed").GetFloat() / 1000f;
             config.PlayerConfig.PoliceCanForgetYou = node.Element("PoliceCanForget").GetBool();
             config.PlayerConfig.CanDropWeapon = node.Element("CanDropWeapon").GetBool();
+            config.PlayerConfig.InstantDeathHeadshot = node.Element("HeadshotIsInstantDeath").GetBool();
             config.PlayerConfig.BlipsToMedkits = node.Element("BlipsToMedkits").GetBool();
             config.PlayerConfig.TimeToRefreshMedkits = node.Element("BlipsToMedkits").GetFloat("RefreshTime");
             config.PlayerConfig.MedkitModel = node.Element("BlipsToMedkits").GetString("ModelName");
@@ -157,6 +158,7 @@
 
             config.NpcConfig.ShowEnemyCriticalMessages = node.Element("CriticalMessages").GetBool();
             config.NpcConfig.ScanOnlyDamaged = node.Element("ScanOnlyDamaged").GetBool();
+            config.NpcConfig.InstantDeathHeadshot = node.Element("HeadshotIsInstantDeath").GetBool();
             config.NpcConfig.ClosestPedRange = node.Element("ClosestPedRange").GetFloat();
 
             var healthNode = node.Element("CustomHealth");

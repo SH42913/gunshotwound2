@@ -9,6 +9,10 @@
 		<!-- If TRUE - player will lose a weapon on arm crits and when you fall unconscious.
 		Recommended to use with Pickups mod. -->
 
+		<HeadshotIsInstantDeath Value="FALSE"/>
+		<!-- Headshots in GSW2 are always deadly, but by default death takes some time(like IRL).
+		Set this Value to TRUE if you want player will dead instantly when getting headshot. -->
+
 		<BlipsToMedkits Value="TRUE" RefreshTime="2" ModelName="prop_ld_health_pack"/>
 		<!-- Add map blips to medkits around player, refresh time in seconds -->
 
@@ -49,6 +53,10 @@
 		<!-- If TRUE - GSW will mark ped as GSWPed only after first damage.
         It will increase performance, but it can have bugs.
         PedHealth, new Accuracy and ShootRate will apply only after first damage! -->
+
+		<HeadshotIsInstantDeath Value="FALSE"/>
+		<!-- Headshots in GSW2 are always deadly, but by default death takes some time(like IRL).
+		Set this Value to TRUE if you want peds will dead instantly when getting headshot. -->
 
 		<ClosestPedRange Value="2"/>
 		<!-- Range where GSW will look for closest ped when using keys like BandageClosestKey -->
