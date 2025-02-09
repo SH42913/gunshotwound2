@@ -79,35 +79,17 @@
             }
 
             Relationship relationship = playerPed.GetRelationshipWithPed(pedToCheck);
-            if (!HasFlag(targets, GswTargets.PEDESTRIAN) && relationship == Relationship.Pedestrians) {
-                return false;
+            switch (relationship) {
+                case Relationship.Companion:   return HasFlag(targets, GswTargets.COMPANION);
+                case Relationship.Respect:     return HasFlag(targets, GswTargets.RESPECT);
+                case Relationship.Like:        return HasFlag(targets, GswTargets.LIKE);
+                case Relationship.Neutral:     return HasFlag(targets, GswTargets.NEUTRAL);
+                case Relationship.Dislike:     return HasFlag(targets, GswTargets.DISLIKE);
+                case Relationship.Hate:        return HasFlag(targets, GswTargets.HATE);
+                case Relationship.Pedestrians: return HasFlag(targets, GswTargets.PEDESTRIAN);
+                case Relationship.Dead:        return false;
+                default:                       throw new ArgumentOutOfRangeException();
             }
-
-            if (!HasFlag(targets, GswTargets.COMPANION) && relationship == Relationship.Companion) {
-                return false;
-            }
-
-            if (!HasFlag(targets, GswTargets.NEUTRAL) && relationship == Relationship.Neutral) {
-                return false;
-            }
-
-            if (!HasFlag(targets, GswTargets.DISLIKE) && relationship == Relationship.Dislike) {
-                return false;
-            }
-
-            if (!HasFlag(targets, GswTargets.HATE) && relationship == Relationship.Hate) {
-                return false;
-            }
-
-            if (!HasFlag(targets, GswTargets.LIKE) && relationship == Relationship.Like) {
-                return false;
-            }
-
-            if (!HasFlag(targets, GswTargets.RESPECT) && relationship == Relationship.Respect) {
-                return false;
-            }
-
-            return true;
         }
 
         private static bool HasFlag(GswTargets value, GswTargets flag) {

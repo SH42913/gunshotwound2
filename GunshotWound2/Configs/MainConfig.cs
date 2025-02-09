@@ -184,41 +184,36 @@
             config.NpcConfig.FemalePainMoveSets = PainMoveSets.FromXElement(node, "FemaleMoveSets");
 
             var targetsNode = node.Element("Targets");
-            var all = targetsNode.GetBool("ALL");
             GswTargets targets = 0;
-            if (all) {
-                config.NpcConfig.Targets = GswTargets.ALL;
-            } else {
-                if (targetsNode.GetBool("COMPANION")) {
-                    targets |= GswTargets.COMPANION;
-                }
-
-                if (targetsNode.GetBool("DISLIKE")) {
-                    targets |= GswTargets.DISLIKE;
-                }
-
-                if (targetsNode.GetBool("HATE")) {
-                    targets |= GswTargets.HATE;
-                }
-
-                if (targetsNode.GetBool("LIKE")) {
-                    targets |= GswTargets.LIKE;
-                }
-
-                if (targetsNode.GetBool("NEUTRAL")) {
-                    targets |= GswTargets.NEUTRAL;
-                }
-
-                if (targetsNode.GetBool("PEDESTRIAN")) {
-                    targets |= GswTargets.PEDESTRIAN;
-                }
-
-                if (targetsNode.GetBool("RESPECT")) {
-                    targets |= GswTargets.RESPECT;
-                }
-
-                config.NpcConfig.Targets = targets;
+            if (targetsNode.GetBool("COMPANION")) {
+                targets |= GswTargets.COMPANION;
             }
+
+            if (targetsNode.GetBool("DISLIKE")) {
+                targets |= GswTargets.DISLIKE;
+            }
+
+            if (targetsNode.GetBool("HATE")) {
+                targets |= GswTargets.HATE;
+            }
+
+            if (targetsNode.GetBool("LIKE")) {
+                targets |= GswTargets.LIKE;
+            }
+
+            if (targetsNode.GetBool("NEUTRAL")) {
+                targets |= GswTargets.NEUTRAL;
+            }
+
+            if (targetsNode.GetBool("PEDESTRIAN")) {
+                targets |= GswTargets.PEDESTRIAN;
+            }
+
+            if (targetsNode.GetBool("RESPECT")) {
+                targets |= GswTargets.RESPECT;
+            }
+
+            config.NpcConfig.Targets = targets;
         }
 
         private static void NotificationsSection(MainConfig config, XElement doc) {

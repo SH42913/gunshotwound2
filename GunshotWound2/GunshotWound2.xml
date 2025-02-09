@@ -61,18 +61,19 @@
 		<ClosestPedRange Value="2"/>
 		<!-- Range where GSW will look for closest ped when using keys like BandageClosestKey -->
 
-		<Targets ALL="TRUE" COMPANION="TRUE" DISLIKE="TRUE" HATE="TRUE"
-				 LIKE="TRUE" NEUTRAL="TRUE" PEDESTRIAN="TRUE" RESPECT="TRUE"/>
-		<!-- You can select what types of NonPlayable Peds can be affected by GSW.
-        It is based on Relationship between ped and player. Useful if you have low FPS or play missions.
-        If ALL is TRUE, other variants will not be checked.
-        If allies in missions always die too quickly, set ALL to FALSE and try set COMPANION and RESPECT to FALSE. -->
+		<Targets COMPANION="FALSE" RESPECT="FALSE" LIKE="TRUE"
+				 PEDESTRIAN="TRUE" NEUTRAL="TRUE"
+				 DISLIKE="TRUE" HATE="TRUE"/>
+		<!-- You can select what types of Peds can be affected by GSW.
+        It is based on Relationship between ped and player.
+        By default, COMPANION and RESPECT is FALSE to ignore friendly peds by GSW. -->
 
 		<MaximalPain Min="50.0" Max="100.0"/>
 		<!-- Same as for player, but GSWPeds will have MaximalPain between Min and Max. -->
 
 		<CustomHealth Min="-1" Max="-1"/>
 		<!-- Peds will have random health between Min and Max.
+		Recommended to set 50-100, that will make missions more realistic.
         If you want to use default game PedHealth, set any to -1 -->
 
 		<CustomAccuracy Min="-1" Max="-1"/>
