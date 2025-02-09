@@ -57,11 +57,19 @@
                     sharedData.logger.WriteInfo($"Random crit {newCrit} for {crits.requestBodyPart} at {convertedPed.name}");
 #endif
 
-                    if (newCrit == Crits.Types.SpineDamaged && !sharedData.mainConfig.WoundConfig.RealisticNervesDamage) {
-                        ApplyCrit(entity, ref crits, ref convertedPed, Crits.Types.ArmsDamaged);
-                        ApplyCrit(entity, ref crits, ref convertedPed, Crits.Types.LegsDamaged);
-                    } else {
+                    if (newCrit != Crits.Types.SpineDamaged) {
                         ApplyCrit(entity, ref crits, ref convertedPed, newCrit);
+                    } else {
+                        bool realSpineCrit = convertedPed.isPlayer
+                                ? sharedData.mainConfig.PlayerConfig.RealisticSpineDamage
+                                : sharedData.mainConfig.NpcConfig.RealisticSpineDamage;
+
+                        if (realSpineCrit) {
+                            ApplyCrit(entity, ref crits, ref convertedPed, Crits.Types.SpineDamaged);
+                        } else {
+                            ApplyCrit(entity, ref crits, ref convertedPed, Crits.Types.ArmsDamaged);
+                            ApplyCrit(entity, ref crits, ref convertedPed, Crits.Types.LegsDamaged);
+                        }
                     }
 
                     crits.requestBodyPart = default;

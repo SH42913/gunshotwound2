@@ -1,4 +1,5 @@
-﻿namespace GunshotWound2.Configs {
+﻿// ReSharper disable InconsistentNaming
+namespace GunshotWound2.Configs {
     using System.Collections.Generic;
     using System.Globalization;
 
@@ -15,10 +16,8 @@
         public float PainDeviation;
         public float BleedingDeviation;
 
-        public bool RealisticNervesDamage;
-
         public float MoveRateOnFullPain;
-        public float MoveRateOnNervesDamage;
+        public float MoveRateOnLegsCrit;
 
         public bool RagdollOnPainfulWound;
         public float PainfulWoundPercent;
@@ -45,11 +44,10 @@
 
         public override string ToString() {
             return $"{nameof(WoundConfig)}:\n"
-                   + $"{nameof(RealisticNervesDamage)}: {RealisticNervesDamage.ToString()}\n"
                    + $"D/P/B Mults: {DamageMultiplier.ToString("F2")}/{PainMultiplier.ToString("F2")}/{BleedingMultiplier.ToString("F2")}\n"
                    + $"D/P/B Deviations: {DamageDeviation.ToString("F2")}/{PainDeviation.ToString("F2")}/{BleedingDeviation.ToString("F2")}\n"
                    + $"{nameof(MoveRateOnFullPain)}: {MoveRateOnFullPain.ToString(CultureInfo.InvariantCulture)}\n"
-                   + $"{nameof(MoveRateOnNervesDamage)}: {MoveRateOnNervesDamage.ToString(CultureInfo.InvariantCulture)}\n"
+                   + $"{nameof(MoveRateOnLegsCrit)}: {MoveRateOnLegsCrit.ToString(CultureInfo.InvariantCulture)}\n"
                    + $"{nameof(RagdollOnPainfulWound)}: {RagdollOnPainfulWound.ToString()}\n"
                    + $"{nameof(MinimalChanceForArmorSave)}: {MinimalChanceForArmorSave.ToString(CultureInfo.InvariantCulture)}";
         }

@@ -1,4 +1,5 @@
-﻿namespace GunshotWound2.Configs {
+﻿// ReSharper disable InconsistentNaming
+namespace GunshotWound2.Configs {
     using System;
     using System.Collections.Generic;
     using System.Globalization;
@@ -13,9 +14,9 @@
         public const float ADDING_TO_REMOVING_MULTIPLIER = 2;
         public static readonly char[] Separator = { ';' };
 
-        public WoundConfig WoundConfig;
-        public NpcConfig NpcConfig;
-        public PlayerConfig PlayerConfig;
+        public readonly WoundConfig WoundConfig;
+        public readonly NpcConfig NpcConfig;
+        public readonly PlayerConfig PlayerConfig;
 
         public string Language = "EN";
 
@@ -140,6 +141,7 @@
             config.PlayerConfig.PedsCanIgnore = node.Element("PedsCanIgnore").GetBool();
             config.PlayerConfig.CanDropWeapon = node.Element("CanDropWeapon").GetBool();
             config.PlayerConfig.InstantDeathHeadshot = node.Element("HeadshotIsInstantDeath").GetBool();
+            config.PlayerConfig.RealisticSpineDamage = node.Element("RealisticSpineDamage").GetBool();
             config.PlayerConfig.BlipsToMedkits = node.Element("BlipsToMedkits").GetBool();
             config.PlayerConfig.TimeToRefreshMedkits = node.Element("BlipsToMedkits").GetFloat("RefreshTime");
             config.PlayerConfig.MedkitModel = node.Element("BlipsToMedkits").GetString("ModelName");
@@ -160,6 +162,7 @@
             config.NpcConfig.ShowEnemyCriticalMessages = node.Element("CriticalMessages").GetBool();
             config.NpcConfig.ScanOnlyDamaged = node.Element("ScanOnlyDamaged").GetBool();
             config.NpcConfig.InstantDeathHeadshot = node.Element("HeadshotIsInstantDeath").GetBool();
+            config.NpcConfig.RealisticSpineDamage = node.Element("RealisticSpineDamage").GetBool();
             config.NpcConfig.ClosestPedRange = node.Element("ClosestPedRange").GetFloat();
 
             var healthNode = node.Element("CustomHealth");
@@ -296,7 +299,7 @@
                 return;
 
             config.WoundConfig.MoveRateOnFullPain = node.Element("MoveRateOnFullPain").GetFloat();
-            config.WoundConfig.RealisticNervesDamage = node.Element("RealisticNervesDamage").GetBool();
+            config.WoundConfig.MoveRateOnLegsCrit = node.Element("MoveRateOnLegsCrit").GetFloat();
             config.WoundConfig.DamageMultiplier = node.Element("OverallDamageMult").GetFloat();
             config.WoundConfig.DamageDeviation = node.Element("DamageDeviation").GetFloat();
             config.WoundConfig.PainMultiplier = node.Element("OverallPainMult").GetFloat();

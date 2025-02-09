@@ -7,6 +7,7 @@ namespace GunshotWound2.Configs {
         public bool PedsCanIgnore;
         public bool CanDropWeapon;
         public bool InstantDeathHeadshot;
+        public bool RealisticSpineDamage;
 
         public bool BlipsToMedkits;
         public float TimeToRefreshMedkits;

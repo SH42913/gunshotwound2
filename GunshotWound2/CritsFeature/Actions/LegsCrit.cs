@@ -16,7 +16,7 @@
             convertedPed.RequestRagdoll(3000, ragdollType);
             convertedPed.hasBrokenLegs = true;
 
-            convertedPed.moveRate = sharedData.mainConfig.WoundConfig.MoveRateOnNervesDamage;
+            convertedPed.moveRate = sharedData.mainConfig.WoundConfig.MoveRateOnLegsCrit;
             convertedPed.BlockSprint();
             convertedPed.thisPed.SetConfigFlag(PedConfigFlagToggles.IsInjured, true);
         }
