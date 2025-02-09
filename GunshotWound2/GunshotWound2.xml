@@ -5,6 +5,9 @@
 		<!-- If TRUE - cops can forget you when you fall unconscious.
         If you use Realism Dispatch Enhanced, better to set it FALSE-->
 
+		<PedsCanIgnore Value="TRUE"/>
+		<!-- If TRUE - peds will not attack you while you are unconscious -->
+
 		<CanDropWeapon Value="FALSE"/>
 		<!-- If TRUE - player will lose a weapon on arm crits and when you fall unconscious.
 		Recommended to use with Pickups mod. -->

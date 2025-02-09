@@ -58,8 +58,7 @@
             convertedPed.isRestrictToDrive = false;
 
             if (convertedPed.isPlayer) {
-                Player player = Game.Player;
-                player.IgnoredByEveryone = false;
+                SetPlayerIsIgnoredByPeds(sharedData, Game.Player, false);
                 CameraEffects.StopPostFx(BLACKOUT_FX);
             } else if (sharedData.random.IsTrueWithProbability(0.5f)) {
                 convertedPed.thisPed.Task.Cower(-1);
@@ -67,14 +66,14 @@
         }
 
         public bool TryGetMoveSets(MainConfig mainConfig, in ConvertedPed convertedPed, out string[] moveSets) {
-            moveSets = default;
+            moveSets = null;
             return false;
         }
 
         private static void PlayerOnlyCase(SharedData sharedData, ref ConvertedPed convertedPed) {
             Player player = Game.Player;
             if (player.WantedLevel <= 3) {
-                player.IgnoredByEveryone = true;
+                SetPlayerIsIgnoredByPeds(sharedData, Game.Player, true);
                 if (sharedData.mainConfig.PlayerConfig.PoliceCanForgetYou) {
                     player.WantedLevel = 0;
                 }
@@ -98,6 +97,12 @@
             bool notDriver = convertedPed.thisPed.SeatIndex != VehicleSeat.Driver;
             if (isInVehicle && notDriver && sharedData.random.IsTrueWithProbability(0.5f)) {
                 convertedPed.thisPed.Task.LeaveVehicle(LeaveVehicleFlags.BailOut);
+            }
+        }
+
+        private static void SetPlayerIsIgnoredByPeds(SharedData sharedData, Player player, bool value) {
+            if (sharedData.mainConfig.PlayerConfig.PedsCanIgnore) {
+                player.IgnoredByEveryone = value;
             }
         }
     }

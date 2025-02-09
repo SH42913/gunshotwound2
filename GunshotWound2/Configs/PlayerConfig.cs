@@ -4,6 +4,7 @@ namespace GunshotWound2.Configs {
 
     public sealed class PlayerConfig {
         public bool PoliceCanForgetYou;
+        public bool PedsCanIgnore;
         public bool CanDropWeapon;
         public bool InstantDeathHeadshot;
 
