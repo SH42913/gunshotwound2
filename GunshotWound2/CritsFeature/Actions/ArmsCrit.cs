@@ -26,6 +26,10 @@
             if (!convertedPed.isPlayer || sharedData.mainConfig.PlayerConfig.CanDropWeapon) {
                 convertedPed.thisPed.Weapons.Drop();
             }
+
+            if (convertedPed.thisPed.IsClimbing || convertedPed.thisPed.IsClimbingLadder) {
+                convertedPed.RequestRagdoll(1000);
+            }
         }
 
         public override void Cancel(Entity pedEntity, ref ConvertedPed convertedPed) {
