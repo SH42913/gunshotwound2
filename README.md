@@ -60,20 +60,33 @@ _Currently, GSW2 doesn't support vehicle weapons._
 
 ## Recommended Mods
 
-- <a href="https://www.gta5-mods.com/scripts/forced-first-person-aim"><b>Forced First Person Aim</b></a> if you like
-  classical GTA third-person view, but also you like aiming from first-person. It's a great experience!
-- <a href="https://www.gta5-mods.com/scripts/gun-recoil"><b>Gun Recoil</b></a>
-  and <a href="https://www.gta5-mods.com/scripts/manual-reload"><b>Realistic Reload</b></a> to make firearm gameplay
-  realistic and challenging.
-- <a href="https://www.gta5-mods.com/scripts/better-weapon-ragdoll"><b>Better Weapon Ragdoll</b></a> to loosing your
-  weapon from car-accident.
-- <a href="https://www.gta5-mods.com/misc/bass-dragon-s-euphoria-overhaul-w-i-p-v1-0"><b>Bass Dragon's ERO</b></a>
-  or <a href="https://www.gta5-mods.com/misc/rageuphoria"><b>RAGEuphoria</b></a> for more realistic ped's reaction.
-- <a href="https://www.gta5-mods.com/weapons/perui"><b>Baka's Weapons Sounds</b></a> to get best gun sound mod!
-- <a href="https://www.gta5-mods.com/misc/realistic-blood-and-decals"><b>Realistic Blood and Decals</b></a> to get
-  realistic wound decals.
-- <a href="https://www.gta5-mods.com/scripts/pickups"><b>Pickups</b></a> with Auto Weapon Pickup = 0 in Pickups.ini.
+- [Forced First Person Aim](https://www.gta5-mods.com/scripts/forced-first-person-aim)
+  if you like classical GTA third-person view, but also you like aiming from first-person view. It's a great experience!
+- [Gun Recoil](https://www.gta5-mods.com/scripts/gun-recoil)
+  and [Realistic Reload](https://www.gta5-mods.com/scripts/manual-reload) to make firearm gameplay realistic and challenging
+- [Better Weapon Ragdoll](https://www.gta5-mods.com/scripts/better-weapon-ragdoll) to loosing your weapons from car-accident
+- [Bass Dragon's ERO](https://www.gta5-mods.com/misc/bass-dragon-s-euphoria-overhaul-w-i-p-v1-0)
+  or [RAGEuphoria](https://www.gta5-mods.com/misc/rageuphoria) for more realistic ped's reaction.
+- [Baka's Weapons Sounds](https://www.gta5-mods.com/weapons/perui) to get best gun sound mod!
+- [Realistic Blood and Decals](https://www.gta5-mods.com/misc/realistic-blood-and-decals) to get realistic wound decals
+- [Pickups](https://www.gta5-mods.com/scripts/pickups) with Auto Weapon Pickup = 0 in Pickups.ini. 
   Using Pickups, you may enable CanDropWeapon option in GSW2Config.xml.
+- [LSPDFR](https://www.lcpdfr.com/) if you want to change side and play as police officer
+
+## Compatibility
+### GSW2 will never be compatible with:
+- **Injuries** by Zuthara, 'cause GSW2 is doing same things
+
+### GSW2 is compatible with some adjustments:
+- **More Gore** by IAmJFry.\
+  Required to set `PedHealthToPlayInjuredRagdoll`, `HealthLossRate` and `PlayerHealthLossRate` values to 0 in _More Gore Settings.xml_.
+
+### GSW2 will be compatible in future updates(if it's possible) with:
+- **Watch Your Death** by IAmJFry
+- **GTA Online Respawn** by MrFoxsteil
+- **Los Santos Red** by Greskrendtregk
+- **Rebalance Dispatch Enhanced** by RDE Team
+You may request for compatibility with other mods in [#compatibility-issues](https://discordapp.com/channels/1263842381321732147/1338065003185442857) channel in discord.
 
 ## Donations
 
