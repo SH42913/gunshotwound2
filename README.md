@@ -85,3 +85,10 @@ Also you can make [one-time donate at Boosty](https://boosty.to/sh42913/donate).
 - [Morpeh](https://github.com/scellecs/morpeh)
 - [Weighted Randomizer](https://github.com/BlueRaja/Weighted-Item-Randomizer-for-C-Sharp)
 - Some libraries by [Leopotam](https://leopotam.com/)
+
+## Sources of inspiration
+
+- [Extreme Difficulty Health Realism](https://www.gta5-mods.com/scripts/sob-s-extreme-difficulty-health-realism) by sob, the ancestor of GSW
+- [Crawl Injury](https://www.gta5-mods.com/scripts/crawl-injury) by jedijosh920
+- [Injuries](https://www.gta5-mods.com/scripts/injuries) by Zuthara
+- More Gore by IAmJFry
