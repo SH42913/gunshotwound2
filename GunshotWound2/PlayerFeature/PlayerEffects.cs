@@ -16,7 +16,7 @@
         public static void SetSpecialAbilityLock(bool lockAbility) {
             Player player = Player;
             if (lockAbility && Function.Call<bool>(Hash.IS_SPECIAL_ABILITY_ACTIVE, player)) {
-                Function.Call(Hash.SPECIAL_ABILITY_DEACTIVATE_FAST, player);
+                Function.Call(Hash.SPECIAL_ABILITY_DEACTIVATE, player);
             }
 
             Hash function = lockAbility
@@ -25,6 +25,7 @@
 
             int playerModel = player.Character.Model.Hash;
             Function.Call(function, playerModel);
+            Function.Call(Hash.FLASH_ABILITY_BAR);
         }
 
         public static void SetSprint(bool sprint) {
