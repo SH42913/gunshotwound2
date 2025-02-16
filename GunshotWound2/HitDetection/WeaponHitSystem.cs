@@ -57,16 +57,15 @@
                 if (weaponType == PedHitData.WeaponTypes.Nothing) {
                     var damageRecord = NativeMemory.GetEntityDamageRecordEntryAtIndex(convertedPed.thisPed.MemoryAddress, 0);
                     var uintHash = unchecked((uint)damageRecord.weaponHash);
-                    string name = Weapon.GetHumanNameFromHash((WeaponHash)uintHash);
-                    sharedData.logger.WriteWarning("Can't detect weapon");
-                    sharedData.logger.WriteWarning($"Possible hash - {uintHash}({name})");
+                    sharedData.logger.WriteWarning($"Can't detect weapon! Possible hash - {BuildWeaponName(uintHash)})");
                     sharedData.logger.WriteWarning("Make sure you have hash of this weapon in Weapons section of GSWConfig.xml");
                 } else {
                     hitData.weaponType = weaponType;
                     hitData.useRandomBodyPart = isSpecialCase;
 #if DEBUG
+                    string weaponName = BuildWeaponName(hitWeapon);
                     string specialString = isSpecialCase ? "(special)" : "";
-                    sharedData.logger.WriteInfo($"Weapon type is {weaponType}, weapon is {hitWeapon.ToString()}{specialString}");
+                    sharedData.logger.WriteInfo($"Weapon type is {weaponType}, weapon is {weaponName}{specialString}");
 #endif
                 }
             }
@@ -75,7 +74,7 @@
         private bool CheckWeaponHashes(Ped ped, out uint hitWeapon, out PedHitData.WeaponTypes weaponType, out bool skipDamage) {
             if (PedWasDamagedBy(sharedData.mainConfig.IgnoreHashes, ped, out hitWeapon)) {
 #if DEBUG
-                sharedData.logger.WriteInfo($"{hitWeapon.ToString()} is ignore hash, it will be skipped");
+                sharedData.logger.WriteInfo($"{BuildWeaponName(hitWeapon)} is ignore hash, it will be skipped");
 #endif
                 weaponType = default;
                 skipDamage = true;
@@ -107,6 +106,15 @@
 
         private bool CheckSpecialCases(ref ConvertedPed convertedPed, out PedHitData.WeaponTypes weaponType, out bool skipDamage) {
             Ped ped = convertedPed.thisPed;
+            if (ped.IsBeingStunned) {
+#if DEBUG
+                sharedData.logger.WriteInfo("It is STUN damage");
+#endif
+                weaponType = PedHitData.WeaponTypes.Stun;
+                skipDamage = false;
+                return true;
+            }
+
             if (ped.IsOnFire) {
 #if DEBUG
                 sharedData.logger.WriteInfo("It is FIRE damage, it will be skipped");
@@ -181,6 +189,11 @@
 
         private static bool IsDamagedByWeapon(Ped target, uint hash) {
             return Function.Call<bool>(Hash.HAS_PED_BEEN_DAMAGED_BY_WEAPON, target, hash, 0);
+        }
+
+        private static string BuildWeaponName(uint hash) {
+            string name = Weapon.GetHumanNameFromHash((WeaponHash)hash);
+            return $"{name}({hash.ToString()})";
         }
     }
 }

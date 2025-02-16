@@ -27,11 +27,7 @@
         public void OnUpdate(float deltaTime) {
             foreach (Scellecs.Morpeh.Entity pedEntity in damagedPeds) {
                 ref PedHitData hitData = ref pedEntity.GetComponent<PedHitData>();
-                if (hitData.weaponType == PedHitData.WeaponTypes.Nothing) {
-                    continue;
-                }
-
-                if (hitData.bodyPart != PedHitData.BodyParts.Nothing) {
+                if (ShouldSkipDetection(ref hitData)) {
                     continue;
                 }
 
@@ -56,6 +52,31 @@
             }
         }
 
+        private bool ShouldSkipDetection(ref PedHitData hitData) {
+            if (hitData.weaponType == PedHitData.WeaponTypes.Nothing) {
+#if DEBUG
+                sharedData.logger.WriteInfo("Skip body part detection, 'cause there's no weapon");
+#endif
+                return true;
+            }
+
+            if (hitData.weaponType == PedHitData.WeaponTypes.Stun) {
+#if DEBUG
+                sharedData.logger.WriteInfo("Skip body part detection, 'cause stun weapon don't need that");
+#endif
+                return true;
+            }
+
+            if (hitData.bodyPart != PedHitData.BodyParts.Nothing) {
+#if DEBUG
+                sharedData.logger.WriteInfo("Skip body part detection, 'cause it's already detected");
+#endif
+                return true;
+            }
+
+            return false;
+        }
+
         private unsafe PedHitData.BodyParts GetDamagedBodyPart(Ped ped, out Bone damagedBone) {
             var damagedBoneNum = 0;
             int* x = &damagedBoneNum;
@@ -67,9 +88,7 @@
 
             PedHitData.BodyParts damagePart = default;
             switch (damagedBone) {
-                case Bone.SkelHead:
-                    damagePart = PedHitData.BodyParts.Head;
-                    break;
+                case Bone.SkelHead: damagePart = PedHitData.BodyParts.Head; break;
                 case Bone.SkelNeck1:
                 case Bone.SkelNeck2:
                     damagePart = PedHitData.BodyParts.Neck;

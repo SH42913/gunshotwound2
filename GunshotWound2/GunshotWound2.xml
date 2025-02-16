@@ -183,8 +183,8 @@
 
 		<Ignore>
 			<!-- GSW2 will ignore these weapons, so it will deal vanilla damage -->
-			<!-- Molotov;BZGas;SmokeGrenade;StunGun;FlareGun;Flare;Up-n-Atomizer;GrenadeLauncherSmoke;FireWork;Railgun;RayMinigun;ElectricFence;Bleeding;Drowning;DrowningVehicle; -->
-			<Hashes Hashes="615608432;2694266206;4256991824;911657153;1198879012;1233104067;2939590305;1305664598;2138347493;1834241177;3056410471;2461879995;2339582971;4284007675;1936677264;"/>
+			<!-- Molotov;BZGas;SmokeGrenade;FlareGun;Flare;Up-n-Atomizer;GrenadeLauncherSmoke;FireWork;Railgun;RayMinigun;ElectricFence;Bleeding;Drowning;DrowningVehicle; -->
+			<Hashes Hashes="615608432;2694266206;4256991824;1198879012;1233104067;2939590305;1305664598;2138347493;1834241177;3056410471;2461879995;2339582971;4284007675;1936677264;"/>
 		</Ignore>
 	</Weapons>
 

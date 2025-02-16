@@ -22,6 +22,7 @@
             MediumCaliber,
             HeavyCaliber,
             Shotgun,
+            Stun,
         }
 
         public BodyParts bodyPart;

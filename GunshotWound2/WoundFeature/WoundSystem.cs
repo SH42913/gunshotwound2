@@ -48,8 +48,13 @@
                     continue;
                 }
 
+                ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
+                if (hitData.weaponType == PedHitData.WeaponTypes.Stun) {
+                    CreateStunPain(pedEntity, ref convertedPed);
+                    continue;
+                }
+
                 if (weaponDamages.TryGetValue(hitData.weaponType, out BaseWeaponDamage weaponDamage)) {
-                    ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
                     convertedPed.thisPed.Armor += hitData.armorDiff;
                     convertedPed.thisPed.Health += hitData.healthDiff;
                     convertedPed.lastDamagedBone = hitData.damagedBone;
@@ -64,6 +69,15 @@
                     sharedData.logger.WriteWarning($"Doesn't support {hitData.weaponType}");
                 }
             }
+        }
+
+        private void CreateStunPain(Entity pedEntity, ref ConvertedPed convertedPed) {
+            const float stunPainMult = 1.2f;
+            float maxPain = convertedPed.isPlayer
+                    ? sharedData.mainConfig.PlayerConfig.MaximalPain
+                    : sharedData.mainConfig.NpcConfig.UpperMaximalPain;
+
+            CreatePain(pedEntity, stunPainMult * maxPain);
         }
 
         private void ProcessWound(Entity pedEntity, ref PedHitData hitData, ref WoundData? wound, bool isPlayer) {
