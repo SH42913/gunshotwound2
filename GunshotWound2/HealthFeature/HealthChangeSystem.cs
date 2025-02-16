@@ -28,16 +28,13 @@
                 }
 
                 ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
-                if (convertedPed.thisPed.IsDead) {
+                if (!convertedPed.thisPed.Exists() || convertedPed.thisPed.IsDead) {
                     health.isDead = true;
-                    CreateDeathReport(entity, ref convertedPed, ref health);
                     continue;
                 }
 
                 if (health.kill) {
-                    health.isDead = true;
-                    convertedPed.thisPed.Health -= 100;
-                    CreateDeathReport(entity, ref convertedPed, ref health);
+                    MarkPedAsDead(entity, ref convertedPed, ref health);
                     continue;
                 }
 
@@ -53,14 +50,24 @@
                 int newHealth = oldHealth + currentDiff;
                 convertedPed.thisPed.Health = newHealth;
 
-                health.isDead = Configs.WoundConfig.ConvertHealthFromNative(newHealth) < 0;
-                CreateDeathReport(entity, ref convertedPed, ref health);
-
 #if DEBUG
                 var healthString = $"{oldHealth.ToString()} -> {newHealth.ToString()} / Max:{health.max.ToString()}";
                 sharedData.logger.WriteInfo($"Changed health: {currentDiff.ToString()} to {convertedPed.name}. {healthString}");
 #endif
+
+                if (Configs.WoundConfig.ConvertHealthFromNative(newHealth) < 0) {
+                    MarkPedAsDead(entity, ref convertedPed, ref health);
+                }
             }
+        }
+
+        private void MarkPedAsDead(Entity entity, ref ConvertedPed convertedPed, ref Health health) {
+#if DEBUG
+            sharedData.logger.WriteInfo($"Ped {convertedPed.name} is marked as dead");
+#endif
+            health.isDead = true;
+            convertedPed.thisPed.ApplyDamage(100000);
+            CreateDeathReport(entity, ref convertedPed, ref health);
         }
 
         private void CreateDeathReport(Entity entity, ref ConvertedPed convertedPed, ref Health health) {
