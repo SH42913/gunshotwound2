@@ -192,7 +192,7 @@
                 sharedData.logger.WriteInfo($"Painful wound {pain.diff.ToString("F")} at {convertedPed.name}");
 #endif
 
-                PedEffects.PlayPain(convertedPed.thisPed, sharedData.random.Next(PAIN_SOUNDS));
+                convertedPed.thisPed.PlayAmbientSpeech("PAIN_RAPIDS");
                 if (woundConfig.RagdollOnPainfulWound) {
                     convertedPed.RequestRagdoll(timeInMs: 1500);
                 }

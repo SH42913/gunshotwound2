@@ -3,7 +3,6 @@
     using HitDetection;
     using PedsFeature;
     using Scellecs.Morpeh;
-    using Utils;
 
     public sealed class CritsSystem : ILateSystem {
         private readonly SharedData sharedData;
@@ -119,10 +118,6 @@
                 action.Apply(entity, ref convertedPed);
                 crits.active |= type;
                 crits.requestBodyPart = default;
-
-                convertedPed.thisPed.IsPainAudioEnabled = true;
-                int pain = sharedData.random.IsTrueWithProbability(0.5f) ? 6 : 7;
-                PedEffects.PlayPain(convertedPed.thisPed, pain);
             }
         }
 

@@ -12,6 +12,7 @@
         public override void Apply(Entity pedEntity, ref ConvertedPed convertedPed) {
             CreatePain(pedEntity, 25f);
             CreateInternalBleeding(pedEntity, 0.5f);
+            convertedPed.thisPed.PlayAmbientSpeech("PAIN_RAPIDS", GTA.SpeechModifier.InterruptShouted);
         }
 
         public override void Cancel(Entity pedEntity, ref ConvertedPed convertedPed) { }

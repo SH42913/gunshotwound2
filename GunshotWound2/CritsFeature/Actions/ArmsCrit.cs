@@ -15,6 +15,7 @@
         public override void Apply(Entity pedEntity, ref ConvertedPed convertedPed) {
             convertedPed.hasHandsTremor = true;
             convertedPed.nmMessages = NM_MESSAGES;
+            convertedPed.thisPed.PlayAmbientSpeech("DEATH_HIGH_MEDIUM", GTA.SpeechModifier.InterruptShouted);
             CreatePain(pedEntity, 20f);
 
             if (!convertedPed.isPlayer) {

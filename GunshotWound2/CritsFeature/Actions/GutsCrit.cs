@@ -15,7 +15,7 @@
             CreatePain(pedEntity, 30f);
             CreateInternalBleeding(pedEntity, 0.5f);
 
-            PedEffects.PlayPain(convertedPed.thisPed, 8);
+            convertedPed.thisPed.PlayAmbientSpeech("PAIN_RAPIDS", GTA.SpeechModifier.InterruptShouted);
             convertedPed.RequestRagdoll(4000);
             convertedPed.nmMessages = NM_MESSAGES;
         }

@@ -12,6 +12,14 @@
         private const string BLACKOUT_FX = "DeathFailOut";
         private static readonly int[] NM_MESSAGES = { 787, };
 
+        private static readonly string[] NON_PLAYER_DEATH_AMBIENT = {
+            "DYING_HELP", "DYING_MOAN", "DYING_PLEAD",
+        };
+
+        private static readonly string[] PLAYER_DEATH_AMBIENT = {
+            "DEATH_HIGH_LONG", "DEATH_HIGH_MEDIUM", "DEATH_UNDERWATER",
+        };
+
         public float PainThreshold => 1f;
         public string Color => "~r~";
 
@@ -43,9 +51,6 @@
 
             PedEffects.PlayFacialAnim(convertedPed.thisPed, animation, convertedPed.isMale);
 
-            string speech = sharedData.random.IsTrueWithProbability(0.5f) ? "DYING_HELP" : "DYING_MOAN";
-            convertedPed.thisPed.PlayAmbientSpeech(speech, SpeechModifier.ShoutedClear);
-
             if (convertedPed.isPlayer) {
                 PlayerOnlyCase(sharedData, ref convertedPed);
             } else {
@@ -71,6 +76,9 @@
         }
 
         private static void PlayerOnlyCase(SharedData sharedData, ref ConvertedPed convertedPed) {
+            string speech = sharedData.random.Next(PLAYER_DEATH_AMBIENT);
+            convertedPed.thisPed.PlayAmbientSpeech(speech, SpeechModifier.InterruptShouted);
+
             Player player = Game.Player;
             if (player.WantedLevel <= 3) {
                 SetPlayerIsIgnoredByPeds(sharedData, Game.Player, true);
@@ -91,6 +99,9 @@
         }
 
         private static void NonPlayerCase(SharedData sharedData, ref ConvertedPed convertedPed) {
+            string speech = sharedData.random.Next(NON_PLAYER_DEATH_AMBIENT);
+            convertedPed.thisPed.PlayAmbientSpeech(speech, SpeechModifier.InterruptShouted);
+
             convertedPed.thisPed.Weapons.Drop();
 
             bool isInVehicle = convertedPed.thisPed.IsInVehicle();

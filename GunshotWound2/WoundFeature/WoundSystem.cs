@@ -78,6 +78,7 @@
                     : sharedData.mainConfig.NpcConfig.UpperMaximalPain;
 
             CreatePain(pedEntity, stunPainMult * maxPain);
+            convertedPed.thisPed.PlayAmbientSpeech("PAIN_TAZER", GTA.SpeechModifier.InterruptShouted);
         }
 
         private void ProcessWound(Entity pedEntity, ref PedHitData hitData, ref WoundData? wound, bool isPlayer) {

@@ -1,13 +1,10 @@
 ﻿namespace GunshotWound2.CritsFeature {
+    using GTA;
     using PedsFeature;
     using PlayerFeature;
-    using Utils;
 
     public sealed class LungsCrit : BaseCrit {
         private const string POST_FX = "DeathFailMPIn";
-        private static readonly int[] PAIN_SOUNDS = {
-            10, 19, 30,
-        };
 
         protected override string PlayerMessage => sharedData.localeConfig.PlayerLungsCritMessage;
         protected override string ManMessage => sharedData.localeConfig.ManLungsCritMessage;
@@ -19,7 +16,7 @@
             CreatePain(pedEntity, 30f);
             CreateInternalBleeding(pedEntity, 1f);
 
-            PedEffects.PlayPain(convertedPed.thisPed, sharedData.random.Next(PAIN_SOUNDS));
+            convertedPed.thisPed.PlayAmbientSpeech("COUGH", SpeechModifier.InterruptShouted);
             convertedPed.BlockSprint();
 
             if (convertedPed.isPlayer) {
