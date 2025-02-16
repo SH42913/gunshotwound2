@@ -20,6 +20,14 @@
             "DEATH_HIGH_LONG", "DEATH_HIGH_MEDIUM", "DEATH_UNDERWATER",
         };
 
+        private static readonly string[] MOODS = {
+            "dead_1",
+            "dead_2",
+            "mood_sleeping_1",
+            "mood_knockout_1",
+            "pose_aiming_1",
+        };
+
         public float PainThreshold => 1f;
         public string Color => "~r~";
 
@@ -45,11 +53,7 @@
             };
 
             int deathAnimIndex = sharedData.random.Next(1, 3);
-            string animation = sharedData.random.IsTrueWithProbability(0.5f)
-                    ? $"die_{deathAnimIndex.ToString()}"
-                    : $"died_{deathAnimIndex.ToString()}";
-
-            PedEffects.PlayFacialAnim(convertedPed.thisPed, animation, convertedPed.isMale);
+            PedEffects.PlayFacialAnim(convertedPed.thisPed, $"die_{deathAnimIndex.ToString()}", convertedPed.isMale);
 
             if (convertedPed.isPlayer) {
                 PlayerOnlyCase(sharedData, ref convertedPed);
@@ -73,6 +77,11 @@
         public bool TryGetMoveSets(MainConfig mainConfig, in ConvertedPed convertedPed, out string[] moveSets) {
             moveSets = null;
             return false;
+        }
+
+        public bool TryGetMoodSets(MainConfig mainConfig, in ConvertedPed convertedPed, out string[] moodSets) {
+            moodSets = MOODS;
+            return true;
         }
 
         private static void PlayerOnlyCase(SharedData sharedData, ref ConvertedPed convertedPed) {

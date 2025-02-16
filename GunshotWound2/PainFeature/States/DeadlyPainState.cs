@@ -15,7 +15,12 @@
         public void ApplyPainDecreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) { }
 
         public bool TryGetMoveSets(MainConfig mainConfig, in ConvertedPed convertedPed, out string[] moveSets) {
-            moveSets = default;
+            moveSets = null;
+            return false;
+        }
+
+        public bool TryGetMoodSets(MainConfig mainConfig, in ConvertedPed convertedPed, out string[] moodSets) {
+            moodSets = null;
             return false;
         }
     }

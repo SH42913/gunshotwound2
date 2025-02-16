@@ -6,6 +6,12 @@
 
     public sealed class AveragePainState : IPainState {
         private const string POST_FX = "FocusIn";
+        private static readonly string[] MOODS = {
+            "mood_stressed_1",
+            "mood_frustrated_1",
+            "effort_2",
+            "effort_3",
+        };
 
         public float PainThreshold => 0.3f;
         public string Color => "~y~";
@@ -31,6 +37,11 @@
 
         public bool TryGetMoveSets(MainConfig mainConfig, in ConvertedPed convertedPed, out string[] moveSets) {
             moveSets = mainConfig.GetPainMoveSetsFor(convertedPed).average;
+            return true;
+        }
+
+        public bool TryGetMoodSets(MainConfig mainConfig, in ConvertedPed convertedPed, out string[] moodSets) {
+            moodSets = MOODS;
             return true;
         }
     }

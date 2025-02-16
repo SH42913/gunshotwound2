@@ -133,6 +133,7 @@
 
                 pain.currentState = curState;
                 RefreshMoveSet(ref convertedPed, curState);
+                RefreshMood(ref convertedPed, curState);
             }
 
             RefreshMoveRate(ref convertedPed, ref pain);
@@ -141,10 +142,18 @@
         private void RefreshMoveSet(ref ConvertedPed convertedPed, IPainState state) {
             if (state != null && state.TryGetMoveSets(sharedData.mainConfig, convertedPed, out string[] moveSets)) {
                 convertedPed.moveSetRequest = moveSets != null && moveSets.Length > 0
-                        ? moveSets[sharedData.random.Next(0, moveSets.Length)]
+                        ? sharedData.random.Next(moveSets)
                         : null;
             } else {
                 convertedPed.resetMoveSet = true;
+            }
+        }
+
+        private void RefreshMood(ref ConvertedPed convertedPed, IPainState state) {
+            if (state != null && state.TryGetMoodSets(sharedData.mainConfig, convertedPed, out string[] sets) && sets.Length > 0) {
+                PedEffects.SetFacialIdleAnim(convertedPed.thisPed, sharedData.random.Next(sets), convertedPed.isMale);
+            } else {
+                PedEffects.CleanFacialIdleAnim(convertedPed.thisPed);
             }
         }
 

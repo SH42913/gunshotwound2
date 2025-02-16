@@ -5,6 +5,14 @@
     using Scellecs.Morpeh;
 
     public sealed class IntensePainState : IPainState {
+        private static readonly string[] MOODS = {
+            "mood_drunk_1",
+            "mood_sulk_1",
+            "mood_injured_1",
+            "shocked_1",
+            "shocked_2",
+        };
+
         public float PainThreshold => 0.6f;
         public string Color => "~o~";
 
@@ -38,6 +46,11 @@
 
         public bool TryGetMoveSets(MainConfig mainConfig, in ConvertedPed convertedPed, out string[] moveSets) {
             moveSets = mainConfig.GetPainMoveSetsFor(convertedPed).intense;
+            return true;
+        }
+
+        public bool TryGetMoodSets(MainConfig mainConfig, in ConvertedPed convertedPed, out string[] moodSets) {
+            moodSets = MOODS;
             return true;
         }
     }

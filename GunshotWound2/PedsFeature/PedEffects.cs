@@ -52,7 +52,20 @@
 
         public static void PlayFacialAnim(Ped ped, string animation, bool useMaleDict) {
             string animDict = useMaleDict ? "facials@gen_male@base" : "facials@gen_female@base";
+            Function.Call(Hash.REQUEST_ANIM_DICT, animDict);
             Function.Call(Hash.PLAY_FACIAL_ANIM, ped, animation, animDict);
+        }
+
+        public static void SetFacialIdleAnim(Ped ped, string animation, bool useMaleDict) {
+            string animDict = useMaleDict ? "facials@gen_male@base" : "facials@gen_female@base";
+            Function.Call(Hash.REQUEST_ANIM_DICT, animDict);
+            Function.Call(Hash.SET_FACIAL_CLIPSET, ped, animDict);
+            Function.Call(Hash.SET_FACIAL_IDLE_ANIM_OVERRIDE, ped, animation, 0);
+        }
+
+        public static void CleanFacialIdleAnim(Ped ped) {
+            Function.Call(Hash.RESET_FACIAL_IDLE_ANIM, ped);
+            Function.Call(Hash.CLEAR_FACIAL_IDLE_ANIM_OVERRIDE, ped);
         }
 
         /// <summary>
