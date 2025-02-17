@@ -54,6 +54,7 @@
 
             int deathAnimIndex = sharedData.random.Next(1, 3);
             PedEffects.PlayFacialAnim(convertedPed.thisPed, $"die_{deathAnimIndex.ToString()}", convertedPed.isMale);
+            convertedPed.thisPed.StopCurrentPlayingSpeech(); 
 
             if (convertedPed.isPlayer) {
                 PlayerOnlyCase(sharedData, ref convertedPed);
