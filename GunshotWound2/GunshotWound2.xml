@@ -127,10 +127,10 @@
 		<MoveRateOnFullPain Value="0.7"/>
 		<!-- Move rate on 100% of pain -->
 
-		<MoveRateOnLegsCrit Value="0.4"/>
+		<MoveRateOnLegsCrit Value="0.5"/>
 		<!-- Move rate when Legs are critically damaged -->
 
-		<OverallDamageMult Value="0.5"/>
+		<OverallDamageMult Value="0.4"/>
 		<!-- Overall damage multiplier, 2.0 mean every wound will get x2 damage for ped -->
 
 		<DamageDeviation Value="0.2"/>
@@ -139,7 +139,7 @@
 		<OverallBleedingMult Value="1.3"/>
 		<BleedingDeviation Value="0.2"/>
 
-		<OverallPainMult Value="1.0"/>
+		<OverallPainMult Value="1.1"/>
 		<PainDeviation Value="0.2"/>
 	</Wounds>
 
