@@ -53,6 +53,7 @@
                 }
 
                 if (health.isDead) {
+                    health.bleedingWounds?.Clear();
                     World.RemoveEntity(entity);
                     continue;
                 }
