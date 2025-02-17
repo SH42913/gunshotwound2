@@ -9,10 +9,6 @@
 
         private static Player Player => Game.Player;
 
-        public static void FlashAbilityBar(int durationInMs) {
-            Function.Call(Hash.FLASH_ABILITY_BAR, durationInMs);
-        }
-
         public static void SetSpecialAbilityLock(bool lockAbility) {
             Player player = Player;
             if (lockAbility && Function.Call<bool>(Hash.IS_SPECIAL_ABILITY_ACTIVE, player)) {
@@ -25,7 +21,7 @@
 
             int playerModel = player.Character.Model.Hash;
             Function.Call(function, playerModel);
-            Function.Call(Hash.FLASH_ABILITY_BAR);
+            Function.Call(Hash.FLASH_ABILITY_BAR, 1000);
         }
 
         public static void SetSprint(bool sprint) {

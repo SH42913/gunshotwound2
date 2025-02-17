@@ -85,6 +85,7 @@
             }
 
             try {
+                sharedData.cameraService.ClearAllEffects();
                 commonSystems.Dispose();
                 ecsWorld.Dispose();
                 cleanedUp = true;
@@ -140,9 +141,7 @@
 
 #if DEBUG
             sharedData.cheatListener.Register("GSW_TEST", () => {
-                foreach (Ped ped in GTA.World.GetAllPeds()) {
-                    ped.SetConfigFlag(PedConfigFlagToggles.IsInjured, true);
-                }
+                //
             });
 #endif
 

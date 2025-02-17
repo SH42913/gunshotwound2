@@ -1,10 +1,10 @@
 ﻿namespace GunshotWound2.PainFeature.States {
     using Configs;
     using PedsFeature;
-    using PlayerFeature;
     using Scellecs.Morpeh;
 
     public sealed class IntensePainState : IPainState {
+        private const float SHAKE_AMPLITUDE = 1f;
         private static readonly string[] MOODS = {
             "mood_drunk_1",
             "mood_sulk_1",
@@ -24,7 +24,7 @@
             }
 
             if (convertedPed.isPlayer) {
-                CameraEffects.ShakeCameraPermanent();
+                sharedData.cameraService.CameraShakeAmplitude += SHAKE_AMPLITUDE;
             } else {
                 ref Pain pain = ref pedEntity.GetComponent<Pain>();
                 float backPercent = 1f - pain.Percent();
@@ -38,7 +38,7 @@
             }
 
             if (convertedPed.isPlayer) {
-                CameraEffects.ClearCameraShake();
+                sharedData.cameraService.CameraShakeAmplitude -= SHAKE_AMPLITUDE;
             } else {
                 convertedPed.thisPed.Accuracy = convertedPed.defaultAccuracy;
             }

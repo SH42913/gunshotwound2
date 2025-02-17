@@ -1,9 +1,9 @@
 ﻿namespace GunshotWound2.CritsFeature {
     using PedsFeature;
-    using PlayerFeature;
     using Scellecs.Morpeh;
 
     public sealed class ArmsCrit : BaseCrit {
+        private const float SHAKE_AMPLITUDE = 1f;
         private static readonly int[] NM_MESSAGES = { 155, };
 
         protected override string PlayerMessage => sharedData.localeConfig.PlayerArmsCritMessage;
@@ -21,7 +21,8 @@
             if (!convertedPed.isPlayer) {
                 convertedPed.thisPed.Accuracy = (int)(0.1f * convertedPed.defaultAccuracy);
             } else {
-                CameraEffects.ShakeCameraPermanent();
+                sharedData.cameraService.CameraShakeArmsCrit = true;
+                sharedData.cameraService.CameraShakeAmplitude += SHAKE_AMPLITUDE;
             }
 
             if (!convertedPed.isPlayer || sharedData.mainConfig.PlayerConfig.CanDropWeapon) {
@@ -36,7 +37,8 @@
         public override void Cancel(Entity pedEntity, ref ConvertedPed convertedPed) {
             convertedPed.hasHandsTremor = false;
             if (convertedPed.isPlayer) {
-                CameraEffects.ClearCameraShake();
+                sharedData.cameraService.CameraShakeArmsCrit = false;
+                sharedData.cameraService.CameraShakeAmplitude -= SHAKE_AMPLITUDE;
             }
         }
     }

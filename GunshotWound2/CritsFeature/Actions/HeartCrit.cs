@@ -1,9 +1,7 @@
 ﻿namespace GunshotWound2.CritsFeature {
     using PedsFeature;
-    using PlayerFeature;
 
     public sealed class HeartCrit : BaseCrit {
-        private const string POST_FX = "DrugsDrivingIn";
         private static readonly int[] NM_MESSAGES = { 1083, };
 
         protected override string PlayerMessage => sharedData.localeConfig.PlayerHeartCritMessage;
@@ -21,13 +19,13 @@
             convertedPed.nmMessages = NM_MESSAGES;
 
             if (convertedPed.isPlayer) {
-                CameraEffects.StartPostFx(POST_FX, 5000);
+                sharedData.cameraService.SetHeartCritEffect(true);
             }
         }
 
         public override void Cancel(Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
             if (convertedPed.isPlayer) {
-                CameraEffects.StopPostFx(POST_FX);
+                sharedData.cameraService.SetHeartCritEffect(false);
             }
         }
     }

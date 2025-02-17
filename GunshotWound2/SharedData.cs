@@ -3,6 +3,7 @@
     using Configs;
     using HealthFeature;
     using Scellecs.Morpeh;
+    using Services;
     using Utils;
 
     public sealed class SharedData {
@@ -14,6 +15,7 @@
         public readonly Notifier notifier;
         public readonly InputListener inputListener;
         public readonly CheatListener cheatListener;
+        public readonly CameraService cameraService;
 
         public readonly WorldService worldService;
         public readonly MainConfig mainConfig;
@@ -33,6 +35,7 @@
             notifier = new Notifier();
             inputListener = new InputListener();
             cheatListener = new CheatListener(this.logger);
+            cameraService = new CameraService(this.logger);
 
             worldService = new WorldService(startCapacity: 64);
             mainConfig = new MainConfig();

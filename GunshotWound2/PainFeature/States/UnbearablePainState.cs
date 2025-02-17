@@ -4,12 +4,10 @@
     using GTA;
     using GTA.NaturalMotion;
     using PedsFeature;
-    using PlayerFeature;
     using Scellecs.Morpeh;
     using Utils;
 
     public sealed class UnbearablePainState : IPainState {
-        private const string BLACKOUT_FX = "DeathFailOut";
         private static readonly int[] NM_MESSAGES = { 787, };
 
         private static readonly string[] NON_PLAYER_DEATH_AMBIENT = {
@@ -54,7 +52,7 @@
 
             int deathAnimIndex = sharedData.random.Next(1, 3);
             PedEffects.PlayFacialAnim(convertedPed.thisPed, $"die_{deathAnimIndex.ToString()}", convertedPed.isMale);
-            convertedPed.thisPed.StopCurrentPlayingSpeech(); 
+            convertedPed.thisPed.StopCurrentPlayingSpeech();
 
             if (convertedPed.isPlayer) {
                 PlayerOnlyCase(sharedData, ref convertedPed);
@@ -69,7 +67,7 @@
 
             if (convertedPed.isPlayer) {
                 SetPlayerIsIgnoredByPeds(sharedData, Game.Player, false);
-                CameraEffects.StopPostFx(BLACKOUT_FX);
+                sharedData.cameraService.SetUnconsciousEffect(false);
             } else if (sharedData.random.IsTrueWithProbability(0.5f)) {
                 convertedPed.thisPed.Task.Cower(-1);
             }
@@ -105,7 +103,7 @@
                 sharedData.notifier.critical.QueueMessage(sharedData.localeConfig.UnbearablePainMessage);
             }
 
-            CameraEffects.StartPostFx(BLACKOUT_FX, 5000);
+            sharedData.cameraService.SetUnconsciousEffect(true);
         }
 
         private static void NonPlayerCase(SharedData sharedData, ref ConvertedPed convertedPed) {

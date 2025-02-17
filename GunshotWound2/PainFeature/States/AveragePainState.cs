@@ -5,7 +5,8 @@
     using Scellecs.Morpeh;
 
     public sealed class AveragePainState : IPainState {
-        private const string POST_FX = "FocusIn";
+        private const float SHAKE_AMPLITUDE = 1f;
+
         private static readonly string[] MOODS = {
             "mood_stressed_1",
             "mood_frustrated_1",
@@ -21,7 +22,8 @@
 
             if (convertedPed.isPlayer) {
                 PlayerEffects.SetSpecialAbilityLock(true);
-                CameraEffects.StartPostFx(POST_FX, 5000);
+                sharedData.cameraService.SetPainEffect(true);
+                sharedData.cameraService.CameraShakeAmplitude += SHAKE_AMPLITUDE;
             }
         }
 
@@ -29,9 +31,9 @@
             convertedPed.UnBlockSprint();
 
             if (convertedPed.isPlayer) {
-                PlayerEffects.FlashAbilityBar(2000);
                 PlayerEffects.SetSpecialAbilityLock(false);
-                CameraEffects.StopPostFx(POST_FX);
+                sharedData.cameraService.CameraShakeAmplitude -= SHAKE_AMPLITUDE;
+                sharedData.cameraService.SetPainEffect(false);
             }
         }
 

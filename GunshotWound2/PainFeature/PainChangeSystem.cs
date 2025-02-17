@@ -64,7 +64,8 @@
                     continue;
                 }
 
-                if (entity.Has<JustConvertedEvent>()) {
+                if (convertedPed.isPlayer && entity.Has<JustConvertedEvent>()) {
+                    sharedData.cameraService.ClearAllEffects();
                     pain.currentState = null;
                 }
 
@@ -207,8 +208,7 @@
                 }
 
                 if (convertedPed.isPlayer) {
-                    CameraEffects.ShakeCameraOnce();
-                    CameraEffects.FlashCameraOnce();
+                    sharedData.cameraService.PlayPainfulWoundEffect();
                 } else if (convertedPed.thisPed.IsOnBike) {
                     convertedPed.thisPed.Task.LeaveVehicle(GTA.LeaveVehicleFlags.BailOut);
                 }
