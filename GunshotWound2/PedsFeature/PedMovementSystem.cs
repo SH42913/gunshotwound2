@@ -69,8 +69,13 @@
                 convertedPed.hasCustomMoveSet = true;
             }
 
-            if (convertedPed.isPlayer) {
-                PlayerEffects.SetSprint(convertedPed.sprintBlockers <= 0);
+            if (convertedPed.sprintBlockers > 0) {
+                convertedPed.thisPed.SetConfigFlag(GTA.PedConfigFlagToggles.IsInjured, true);
+                if (convertedPed.isPlayer) {
+                    PlayerEffects.SetSprint(false);
+                }
+            } else if (convertedPed.isPlayer) {
+                PlayerEffects.SetSprint(true);
             }
         }
 

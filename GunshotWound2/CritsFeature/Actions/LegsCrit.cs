@@ -18,7 +18,6 @@
 
             convertedPed.moveRate = sharedData.mainConfig.WoundConfig.MoveRateOnLegsCrit;
             convertedPed.BlockSprint();
-            convertedPed.thisPed.SetConfigFlag(PedConfigFlagToggles.IsInjured, true);
 
             convertedPed.thisPed.PlayAmbientSpeech("DEATH_HIGH_MEDIUM", SpeechModifier.InterruptShouted);
         }
