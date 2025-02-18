@@ -74,6 +74,7 @@
     <Compile Include="PedsFeature\PedMovementSystem.cs"/>
     <Compile Include="PlayerFeature\MedkitGpsSystem.cs"/>
     <Compile Include="PlayerFeature\MissionTrackerSystem.cs"/>
+    <Compile Include="PlayerFeature\PlayerCameraSystem.cs" />
     <Compile Include="PlayerFeature\PlayerDeathReportSystem.cs"/>
     <Compile Include="Services\CameraService.cs" />
     <Compile Include="Services\PedStateService.cs" />

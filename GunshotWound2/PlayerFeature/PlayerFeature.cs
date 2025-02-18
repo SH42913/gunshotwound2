@@ -10,6 +10,7 @@
             systemsGroup.AddSystem(new MedkitGpsSystem(sharedData));
             systemsGroup.AddSystem(new PlayerDeathReportSystem(sharedData));
             systemsGroup.AddSystem(new MissionTrackerSystem(sharedData));
+            systemsGroup.AddSystem(new PlayerCameraSystem(sharedData));
 
             sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.CheckSelfKey, () => CheckPlayer(sharedData));
             sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.HelmetKey, () => ToggleHelmet(sharedData));

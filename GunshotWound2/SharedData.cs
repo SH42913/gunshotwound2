@@ -53,7 +53,7 @@
 
         public bool PlayerCanSeeNotification() {
             if (TryGetPlayer(out Entity entity) && entity.GetComponent<Health>().IsAlive()) {
-                if (GTA.Game.IsCutsceneActive) {
+                if (GTA.Game.IsCutsceneActive || !GTA.GameplayCamera.IsRendering) {
                     return false;
                 }
 

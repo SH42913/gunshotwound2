@@ -23,7 +23,7 @@
             if (convertedPed.isPlayer) {
                 PlayerEffects.SetSpecialAbilityLock(true);
                 sharedData.cameraService.SetPainEffect(true);
-                sharedData.cameraService.CameraShakeAmplitude += SHAKE_AMPLITUDE;
+                sharedData.cameraService.aimingShakeAmplitude += SHAKE_AMPLITUDE;
             }
         }
 
@@ -32,7 +32,7 @@
 
             if (convertedPed.isPlayer) {
                 PlayerEffects.SetSpecialAbilityLock(false);
-                sharedData.cameraService.CameraShakeAmplitude -= SHAKE_AMPLITUDE;
+                sharedData.cameraService.aimingShakeAmplitude -= SHAKE_AMPLITUDE;
                 sharedData.cameraService.SetPainEffect(false);
             }
         }

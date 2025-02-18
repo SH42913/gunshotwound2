@@ -21,8 +21,8 @@
             if (!convertedPed.isPlayer) {
                 convertedPed.thisPed.Accuracy = (int)(0.1f * convertedPed.defaultAccuracy);
             } else {
-                sharedData.cameraService.CameraShakeArmsCrit = true;
-                sharedData.cameraService.CameraShakeAmplitude += SHAKE_AMPLITUDE;
+                sharedData.cameraService.aimingShakeCritType = true;
+                sharedData.cameraService.aimingShakeAmplitude += SHAKE_AMPLITUDE;
             }
 
             if (!convertedPed.isPlayer || sharedData.mainConfig.PlayerConfig.CanDropWeapon) {
@@ -37,8 +37,8 @@
         public override void Cancel(Entity pedEntity, ref ConvertedPed convertedPed) {
             convertedPed.hasHandsTremor = false;
             if (convertedPed.isPlayer) {
-                sharedData.cameraService.CameraShakeArmsCrit = false;
-                sharedData.cameraService.CameraShakeAmplitude -= SHAKE_AMPLITUDE;
+                sharedData.cameraService.aimingShakeCritType = false;
+                sharedData.cameraService.aimingShakeAmplitude -= SHAKE_AMPLITUDE;
             }
         }
     }

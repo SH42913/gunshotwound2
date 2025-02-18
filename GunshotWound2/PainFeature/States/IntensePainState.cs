@@ -24,7 +24,7 @@
             }
 
             if (convertedPed.isPlayer) {
-                sharedData.cameraService.CameraShakeAmplitude += SHAKE_AMPLITUDE;
+                sharedData.cameraService.aimingShakeAmplitude += SHAKE_AMPLITUDE;
             } else {
                 ref Pain pain = ref pedEntity.GetComponent<Pain>();
                 float backPercent = 1f - pain.Percent();
@@ -38,7 +38,7 @@
             }
 
             if (convertedPed.isPlayer) {
-                sharedData.cameraService.CameraShakeAmplitude -= SHAKE_AMPLITUDE;
+                sharedData.cameraService.aimingShakeAmplitude -= SHAKE_AMPLITUDE;
             } else {
                 convertedPed.thisPed.Accuracy = convertedPed.defaultAccuracy;
             }

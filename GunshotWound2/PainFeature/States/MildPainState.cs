@@ -4,6 +4,8 @@
     using Scellecs.Morpeh;
 
     public sealed class MildPainState : IPainState {
+        private const float SHAKE_AMPLITUDE = 1f;
+
         private static readonly string[] MOODS = {
             "effort_1",
             "mood_drivefast_1",
@@ -14,8 +16,17 @@
         public float PainThreshold => 0.01f;
         public string Color => "~s~";
 
-        public void ApplyPainIncreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) { }
-        public void ApplyPainDecreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) { }
+        public void ApplyPainIncreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) {
+            if (convertedPed.isPlayer) {
+                sharedData.cameraService.aimingShakeAmplitude += SHAKE_AMPLITUDE;
+            }
+        }
+
+        public void ApplyPainDecreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) {
+            if (convertedPed.isPlayer) {
+                sharedData.cameraService.aimingShakeAmplitude -= SHAKE_AMPLITUDE;
+            }
+        }
 
         public bool TryGetMoveSets(MainConfig mainConfig, in ConvertedPed convertedPed, out string[] moveSets) {
             moveSets = mainConfig.GetPainMoveSetsFor(convertedPed).mild;

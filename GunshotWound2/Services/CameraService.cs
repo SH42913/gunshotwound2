@@ -8,43 +8,25 @@ namespace GunshotWound2.Services {
         private readonly ILogger logger;
 
         private readonly SortedList<int, string> postFxList = new(4);
-        private float cameraShakeAmplitude;
-        private bool cameraShakeArmsCrit;
 
-        public float CameraShakeAmplitude {
-            get => cameraShakeAmplitude;
-            set => SetCameraShake(cameraShakeArmsCrit, value);
-        }
-
-        public bool CameraShakeArmsCrit {
-            get => cameraShakeArmsCrit;
-            set => SetCameraShake(value, cameraShakeAmplitude);
-        }
+        public float aimingShakeAmplitude;
+        public bool aimingShakeCritType;
 
         public CameraService(ILogger logger) {
             this.logger = logger;
         }
 
-        private void SetCameraShake(bool armsCritType, float amplitude) {
-#if DEBUG
-            logger.WriteInfo($"Changed camera shake, armsCrit = {armsCritType}, amplitude = {amplitude.ToString("F1")}");
-#endif
-            bool typeChanged = cameraShakeArmsCrit != armsCritType;
-            if (typeChanged) {
-                cameraShakeArmsCrit = armsCritType;
-            }
-
-            cameraShakeAmplitude = amplitude;
-            if (cameraShakeAmplitude <= 0f) {
-                GameplayCamera.StopShaking();
+        public void SetAimingShake(bool needShaking) {
+            bool isShaking = GameplayCamera.IsShaking;
+            if (isShaking == needShaking) {
                 return;
             }
 
-            if (typeChanged || !GameplayCamera.IsShaking) {
-                CameraShake type = cameraShakeArmsCrit ? CameraShake.FamilyDrugTrip : CameraShake.Hand;
-                GameplayCamera.Shake(type, cameraShakeAmplitude);
+            if (needShaking) {
+                CameraShake type = aimingShakeCritType ? CameraShake.Drunk : CameraShake.Hand;
+                GameplayCamera.Shake(type, aimingShakeAmplitude);
             } else {
-                GameplayCamera.ShakeAmplitude = cameraShakeAmplitude;
+                GameplayCamera.StopShaking();
             }
         }
 
@@ -84,7 +66,7 @@ namespace GunshotWound2.Services {
         }
 
         public void ClearAllEffects() {
-            SetCameraShake(armsCritType: false, amplitude: 0f);
+            SetAimingShake(needShaking: false);
             StopAllPostFx();
         }
 
