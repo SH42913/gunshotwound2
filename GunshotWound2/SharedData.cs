@@ -16,6 +16,7 @@
         public readonly InputListener inputListener;
         public readonly CheatListener cheatListener;
         public readonly CameraService cameraService;
+        public readonly PedStateService pedStateService;
 
         public readonly WorldService worldService;
         public readonly MainConfig mainConfig;
@@ -40,6 +41,7 @@
             worldService = new WorldService(startCapacity: 64);
             mainConfig = new MainConfig();
             localeConfig = new LocaleConfig();
+            pedStateService = new PedStateService(notifier, mainConfig, localeConfig);
 
             playerEntity = null;
         }

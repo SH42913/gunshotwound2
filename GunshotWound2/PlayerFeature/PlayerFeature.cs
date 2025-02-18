@@ -30,7 +30,7 @@
 
         private static void CheckPlayer(SharedData sharedData) {
             if (sharedData.TryGetPlayer(out Scellecs.Morpeh.Entity playerEntity)) {
-                PedStateChecker.Check(sharedData, playerEntity);
+                sharedData.pedStateService.Check(playerEntity);
             }
         }
 

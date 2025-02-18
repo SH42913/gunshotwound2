@@ -4,6 +4,7 @@
     using GTA;
     using GTA.Native;
     using Scellecs.Morpeh;
+    using Services;
 
     public sealed class NpcDetectSystem : ISystem {
         private const int MAX_TIME_TO_FIND_IN_MS = 1;
@@ -39,6 +40,7 @@
             if (refreshPeds) {
                 npcToProcess = GTA.World.GetNearbyPeds(playerPed, addRange);
                 lastCheckedPedIndex = 0;
+                worldService.forceRefreshRequest = false;
             }
 
             for (int index = lastCheckedPedIndex; index < npcToProcess.Length; index++) {

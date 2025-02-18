@@ -76,6 +76,8 @@
     <Compile Include="PlayerFeature\MissionTrackerSystem.cs"/>
     <Compile Include="PlayerFeature\PlayerDeathReportSystem.cs"/>
     <Compile Include="Services\CameraService.cs" />
+    <Compile Include="Services\PedStateService.cs" />
+    <Compile Include="Services\WorldService.cs" />
     <Compile Include="Utils\CheatListener.cs" />
     <Compile Include="Utils\CsvReader.cs" />
     <Compile Include="Utils\GTAHelpers.cs" />
@@ -105,7 +107,6 @@
     <Compile Include="HealthFeature\TotallyHealedEvent.cs" />
     <Compile Include="PainFeature\PainInitSystem.cs" />
     <Compile Include="PainFeature\States\IPainState.cs" />
-    <Compile Include="PedStateChecker.cs" />
     <Compile Include="HitDetection\DetectHitFeature.cs" />
     <Compile Include="HitDetection\PedHitData.cs" />
     <Compile Include="HitDetection\WeaponHitSystem.cs" />
@@ -125,7 +126,6 @@
     <Compile Include="Utils\InputListener.cs" />
     <Compile Include="Utils\Notifier.cs" />
     <Compile Include="Utils\StringBuilderExtensions.cs" />
-    <Compile Include="WorldService.cs" />
     <Compile Include="GunshotWound2.cs" />
     <Compile Include="HitDetection\BodyHitSystem.cs" />
     <Compile Include="HitDetection\HitCleanSystem.cs" />

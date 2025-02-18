@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2 {
+﻿namespace GunshotWound2.Services {
     using System.Collections.Generic;
     using GTA;
     using EcsEntity = Scellecs.Morpeh.Entity;
@@ -44,7 +44,7 @@
                 ped = pedsToConvert.Dequeue();
                 return true;
             } else {
-                ped = default;
+                ped = null;
                 return false;
             }
         }

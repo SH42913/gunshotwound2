@@ -1,4 +1,5 @@
-﻿namespace GunshotWound2.Configs {
+﻿// ReSharper disable InconsistentNaming
+namespace GunshotWound2.Configs {
     using System;
     using System.IO;
     using Leopotam.Localization;

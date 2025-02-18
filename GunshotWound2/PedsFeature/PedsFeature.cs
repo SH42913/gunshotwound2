@@ -57,7 +57,7 @@
 
         private static void CheckClosestPed(SharedData sharedData) {
             if (sharedData.TryGetClosestPedEntity(out _, out Entity entity)) {
-                PedStateChecker.Check(sharedData, entity);
+                sharedData.pedStateService.Check(entity);
             }
         }
 

@@ -73,7 +73,7 @@
         private void CreateDeathReport(Entity entity, ref ConvertedPed convertedPed, ref Health health) {
             if (health.isDead && convertedPed.isPlayer) {
                 World.CreateEntity().SetComponent(new ShowPlayerDeathReportRequest {
-                    report = PedStateChecker.BuildString(sharedData, entity),
+                    report = sharedData.pedStateService.BuildString(entity),
                 });
             }
         }

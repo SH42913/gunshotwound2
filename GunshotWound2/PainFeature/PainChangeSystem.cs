@@ -3,20 +3,12 @@
     using Configs;
     using HealthFeature;
     using PedsFeature;
-    using PlayerFeature;
     using Scellecs.Morpeh;
     using States;
     using Utils;
 
     public sealed class PainChangeSystem : ILateSystem {
         private static readonly int[] NM_MESSAGES = { 548, };
-        private static readonly int[] PAIN_SOUNDS = {
-            13,
-            18,
-            24,
-            32,
-            33,
-        };
 
         private readonly SharedData sharedData;
         private readonly IPainState[] painStates = {
