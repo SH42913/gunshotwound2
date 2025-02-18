@@ -22,6 +22,7 @@ namespace GunshotWound2.Configs {
         public GswTargets Targets;
         public bool ScanOnlyDamaged;
         public bool InstantDeathHeadshot;
+        public bool DontActivateRagdollFromBulletImpact;
         public bool RealisticSpineDamage;
         public float ClosestPedRange;
 

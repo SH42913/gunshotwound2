@@ -65,6 +65,9 @@
 		<!-- Headshots in GSW2 are always deadly, but by default death takes some time(like IRL).
 		Set this Value to TRUE if you want peds will dead instantly when getting headshot. -->
 
+		<DontActivateRagdollFromBulletImpact Value="TRUE"/>
+		<!-- More realistic ped behaviour, but incompatible with euphoria mods -->
+
 		<RealisticSpineDamage Value="TRUE"/>
 		<!-- If TRUE - peds will set to permanent ragdoll on spine damage.
         If FALSE - peds will get legs and arms critical damage instead of permanent ragdoll. -->
@@ -79,7 +82,7 @@
         It is based on Relationship between ped and player.
         By default, COMPANION and RESPECT is FALSE to ignore friendly peds by GSW. -->
 
-		<MaximalPain Min="50.0" Max="100.0"/>
+		<MaximalPain Min="60.0" Max="100.0"/>
 		<!-- Same as for player, but GSWPeds will have MaximalPain between Min and Max. -->
 
 		<CustomHealth Min="-1" Max="-1"/>
@@ -139,7 +142,7 @@
 		<OverallBleedingMult Value="1.3"/>
 		<BleedingDeviation Value="0.2"/>
 
-		<OverallPainMult Value="1.1"/>
+		<OverallPainMult Value="1.0"/>
 		<PainDeviation Value="0.2"/>
 	</Wounds>
 

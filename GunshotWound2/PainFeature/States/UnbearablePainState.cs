@@ -68,8 +68,6 @@
             if (convertedPed.isPlayer) {
                 SetPlayerIsIgnoredByPeds(sharedData, Game.Player, false);
                 sharedData.cameraService.SetUnconsciousEffect(false);
-            } else if (sharedData.random.IsTrueWithProbability(0.5f)) {
-                convertedPed.thisPed.Task.Cower(-1);
             }
         }
 
@@ -88,7 +86,7 @@
             convertedPed.thisPed.PlayAmbientSpeech(speech, SpeechModifier.InterruptShouted);
 
             Player player = Game.Player;
-            if (player.WantedLevel <= 3) {
+            if (player.WantedLevel <= 2) {
                 SetPlayerIsIgnoredByPeds(sharedData, Game.Player, true);
                 if (sharedData.mainConfig.PlayerConfig.PoliceCanForgetYou) {
                     player.WantedLevel = 0;

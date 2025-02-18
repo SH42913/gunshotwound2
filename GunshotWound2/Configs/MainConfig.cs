@@ -162,6 +162,7 @@ namespace GunshotWound2.Configs {
             config.NpcConfig.ShowEnemyCriticalMessages = node.Element("CriticalMessages").GetBool();
             config.NpcConfig.ScanOnlyDamaged = node.Element("ScanOnlyDamaged").GetBool();
             config.NpcConfig.InstantDeathHeadshot = node.Element("HeadshotIsInstantDeath").GetBool();
+            config.NpcConfig.DontActivateRagdollFromBulletImpact = node.Element("DontActivateRagdollFromBulletImpact").GetBool();
             config.NpcConfig.RealisticSpineDamage = node.Element("RealisticSpineDamage").GetBool();
             config.NpcConfig.ClosestPedRange = node.Element("ClosestPedRange").GetFloat();
 
