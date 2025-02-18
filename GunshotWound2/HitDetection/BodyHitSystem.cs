@@ -77,6 +77,7 @@
             return false;
         }
 
+        // ReSharper disable once CyclomaticComplexity
         private unsafe PedHitData.BodyParts GetDamagedBodyPart(Ped ped, out Bone damagedBone) {
             var damagedBoneNum = 0;
             int* x = &damagedBoneNum;

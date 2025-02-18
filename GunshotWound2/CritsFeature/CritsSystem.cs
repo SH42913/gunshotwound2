@@ -3,17 +3,26 @@
     using HitDetection;
     using PedsFeature;
     using Scellecs.Morpeh;
+    using Utils;
 
     public sealed class CritsSystem : ILateSystem {
         private readonly SharedData sharedData;
         private readonly (Crits.Types, BaseCrit)[] critActions;
 
         private readonly Crits.Types[] upperBodyCrits = {
-            Crits.Types.SpineDamaged, Crits.Types.LungsDamaged, Crits.Types.HeartDamaged,
+            Crits.Types.SpineDamaged,
+            Crits.Types.LungsDamaged,
+            Crits.Types.HeartDamaged,
+            Crits.Types.LungsDamaged,
+            Crits.Types.HeartDamaged,
         };
 
         private readonly Crits.Types[] lowerBodyCrits = {
-            Crits.Types.SpineDamaged, Crits.Types.StomachDamaged, Crits.Types.GutsDamaged,
+            Crits.Types.SpineDamaged,
+            Crits.Types.StomachDamaged,
+            Crits.Types.GutsDamaged,
+            Crits.Types.StomachDamaged,
+            Crits.Types.GutsDamaged,
         };
 
         private Filter pedsWithCrits;
@@ -59,12 +68,13 @@
                     if (newCrit != Crits.Types.SpineDamaged) {
                         ApplyCrit(entity, ref crits, ref convertedPed, newCrit);
                     } else {
+                        bool isHeadshot = crits.requestBodyPart == PedHitData.BodyParts.Head;
                         bool realSpineCrit = convertedPed.isPlayer
                                 ? sharedData.mainConfig.PlayerConfig.RealisticSpineDamage
                                 : sharedData.mainConfig.NpcConfig.RealisticSpineDamage;
 
-                        if (realSpineCrit) {
-                            ApplyCrit(entity, ref crits, ref convertedPed, Crits.Types.SpineDamaged);
+                        if (isHeadshot || realSpineCrit) {
+                            ApplyCrit(entity, ref crits, ref convertedPed, Crits.Types.SpineDamaged, message: !isHeadshot);
                         } else {
                             ApplyCrit(entity, ref crits, ref convertedPed, Crits.Types.ArmsDamaged);
                             ApplyCrit(entity, ref crits, ref convertedPed, Crits.Types.LegsDamaged);
@@ -86,25 +96,20 @@
 
         private Crits.Types GetRandomCritFor(PedHitData.BodyParts bodyPart) {
             switch (bodyPart) {
-                case PedHitData.BodyParts.Head: return Crits.Types.SpineDamaged;
-
-                case PedHitData.BodyParts.UpperBody: {
-                    int index = sharedData.random.Next(0, upperBodyCrits.Length);
-                    return upperBodyCrits[index];
-                }
-
-                case PedHitData.BodyParts.LowerBody: {
-                    int index = sharedData.random.Next(0, lowerBodyCrits.Length);
-                    return lowerBodyCrits[index];
-                }
-
-                case PedHitData.BodyParts.Arm: return Crits.Types.ArmsDamaged;
-                case PedHitData.BodyParts.Leg: return Crits.Types.LegsDamaged;
-                default:                       return default;
+                case PedHitData.BodyParts.Head:      return Crits.Types.SpineDamaged;
+                case PedHitData.BodyParts.UpperBody: return sharedData.random.Next(upperBodyCrits);
+                case PedHitData.BodyParts.LowerBody: return sharedData.random.Next(lowerBodyCrits);
+                case PedHitData.BodyParts.Arm:       return Crits.Types.ArmsDamaged;
+                case PedHitData.BodyParts.Leg:       return Crits.Types.LegsDamaged;
+                default:                             return default;
             }
         }
 
-        private void ApplyCrit(Entity entity, ref Crits crits, ref ConvertedPed convertedPed, Crits.Types newCrit) {
+        private void ApplyCrit(Entity entity,
+                               ref Crits crits,
+                               ref ConvertedPed convertedPed,
+                               Crits.Types newCrit,
+                               bool message = true) {
             foreach ((Crits.Types type, BaseCrit action) in critActions) {
                 if (newCrit != type || crits.HasActive(type)) {
                     continue;
@@ -114,7 +119,10 @@
                 sharedData.logger.WriteInfo($"Apply crit for {convertedPed.name} - {type}");
 #endif
 
-                action.ShowCritMessage(ref convertedPed);
+                if (message) {
+                    action.ShowCritMessage(ref convertedPed);
+                }
+
                 action.Apply(entity, ref convertedPed);
                 crits.active |= type;
                 crits.requestBodyPart = default;
