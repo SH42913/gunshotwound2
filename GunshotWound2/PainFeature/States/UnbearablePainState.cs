@@ -10,6 +10,8 @@
 
     public sealed class UnbearablePainState : IPainState {
         public const float PAIN_THRESHOLD = 1f;
+        private static ConvertedPed.AfterRagdollAction writheAction;
+
         private static readonly int[] NM_MESSAGES = { 787, };
 
         private static readonly string[] NON_PLAYER_DEATH_AMBIENT = {
@@ -30,6 +32,10 @@
 
         public float PainThreshold => PAIN_THRESHOLD;
         public string Color => "~r~";
+
+        public UnbearablePainState() {
+            writheAction = StartWrithe;
+        }
 
         public void ApplyPainIncreased(SharedData sharedData, Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
             ref Pain pain = ref pedEntity.GetComponent<Pain>();
@@ -94,12 +100,8 @@
 #if DEBUG
                 sharedData.logger.WriteInfo("Default writhe as visual behaviour");
 #endif
-                convertedPed.RemoveRagdollRequest();
-                convertedPed.forceRemove = true;
-
-                ped.CanWrithe = true;
-                ped.BlockPermanentEvents = true;
-                PedEffects.StartWritheTask(ped);
+                convertedPed.RequestRagdoll(3000);
+                convertedPed.afterRagdollAction = writheAction;
                 return;
             }
 
@@ -171,6 +173,16 @@
             if (sharedData.mainConfig.PlayerConfig.PedsCanIgnore) {
                 player.IgnoredByEveryone = value;
             }
+        }
+
+        private static void StartWrithe(ref ConvertedPed convertedPed) {
+            convertedPed.forceRemove = true;
+
+            Ped ped = convertedPed.thisPed;
+            ped.Task.ClearAllImmediately();
+            ped.CanWrithe = true;
+            ped.BlockPermanentEvents = true;
+            PedEffects.StartWritheTask(ped);
         }
     }
 }

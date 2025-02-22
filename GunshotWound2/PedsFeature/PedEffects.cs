@@ -84,7 +84,7 @@
 
         public static void StartWritheTask(Ped ped, Ped target = null) {
             ped.Health = 200;
-            Function.Call(Hash.TASK_WRITHE, ped, target ?? ped, -1, 0, false, 0);
+            Function.Call(Hash.TASK_WRITHE, ped, target ?? ped, -1, 0, true, 0);
         }
 
         public static bool IsPedInWrithe(Ped ped) {

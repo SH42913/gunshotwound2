@@ -58,7 +58,7 @@
             foreach (Scellecs.Morpeh.Entity entity in convertedPeds) {
                 ref ConvertedPed convertedPed = ref convertedStash.Get(entity);
                 Ped ped = convertedPed.thisPed;
-                if (!ped.Exists() || !ped.IsAlive || ped.IsInvincible) {
+                if (!ped.Exists() || !ped.IsAlive || ped.IsInvincible || PedEffects.IsPedInWrithe(ped)) {
                     continue;
                 }
 
