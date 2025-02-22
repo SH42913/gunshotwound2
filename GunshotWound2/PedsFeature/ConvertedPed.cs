@@ -5,6 +5,8 @@
     using Scellecs.Morpeh;
 
     public struct ConvertedPed : IComponent {
+        public delegate void AfterRagdollAction(ref ConvertedPed convertedPed);
+        
         public string name;
         public Ped thisPed;
         public bool isMale;
@@ -19,6 +21,7 @@
         public CustomHelper nmHelper;
         public bool ragdollReset;
         public bool isRagdoll;
+        public AfterRagdollAction afterRagdollAction;
 
         public int defaultAccuracy;
         public bool hasHandsTremor;

@@ -28,6 +28,15 @@
 
         private void Process(ref ConvertedPed convertedPed) {
             bool inRagdoll = convertedPed.thisPed.IsRagdoll;
+            if (convertedPed.isRagdoll != inRagdoll && !inRagdoll && convertedPed.afterRagdollAction != null) {
+#if DEBUG
+                string methodName = convertedPed.afterRagdollAction.Method.Name;
+                sharedData.logger.WriteInfo($"Applying after ragdoll action {methodName}");
+#endif
+                convertedPed.afterRagdollAction.Invoke(ref convertedPed);
+                convertedPed.afterRagdollAction = null;
+            }
+
             convertedPed.isRagdoll = inRagdoll;
             if (convertedPed.ragdollReset) {
                 if (inRagdoll) {
