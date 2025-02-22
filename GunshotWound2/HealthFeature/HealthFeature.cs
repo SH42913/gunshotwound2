@@ -38,5 +38,20 @@
                 }
             });
         }
+
+        public static float CalculateSeverityOfAllBleedingWounds(Entity entity) {
+            ref Health health = ref entity.GetComponent<Health>();
+            if (health.bleedingWounds == null || health.bleedingWounds.Count < 1) {
+                return 0f;
+            }
+
+            var totalSeverity = 0f;
+            Stash<Bleeding> bleedingStash = entity.world.GetStash<Bleeding>();
+            foreach (Entity woundEntity in health.bleedingWounds) {
+                totalSeverity += bleedingStash.Get(woundEntity).severity;
+            }
+
+            return totalSeverity;
+        }
     }
 }

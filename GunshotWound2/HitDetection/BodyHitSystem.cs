@@ -55,7 +55,7 @@
         private bool ShouldSkipDetection(ref PedHitData hitData) {
             if (hitData.weaponType == PedHitData.WeaponTypes.Nothing) {
 #if DEBUG
-                sharedData.logger.WriteInfo("Skip body part detection, 'cause there's no weapon");
+                sharedData.logger.WriteWarning("Skip body part detection, 'cause there's no weapon");
 #endif
                 return true;
             }

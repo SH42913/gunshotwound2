@@ -134,9 +134,8 @@
             stringBuilder.Append(pain.currentState.Color);
             stringBuilder.Append(painPercent.ToString("P1"));
 
-            if (painPercent > 1f) {
-                float timeToRecover = (pain.amount - pain.max) / pain.recoveryRate;
-                stringBuilder.Append($" ({timeToRecover.ToString("F1")} sec)");
+            if (pain.TooMuchPain()) {
+                stringBuilder.Append($" ({pain.TimeToRecover().ToString("F1")} sec)");
             }
 
             stringBuilder.SetDefaultColor();

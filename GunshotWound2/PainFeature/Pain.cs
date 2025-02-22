@@ -20,5 +20,13 @@
         public static float Percent(this in Pain pain) {
             return pain.amount / pain.max;
         }
+
+        public static bool TooMuchPain(this in Pain pain) {
+            return pain.Percent() > UnbearablePainState.PAIN_THRESHOLD;
+        }
+
+        public static float TimeToRecover(this in Pain pain) {
+            return pain.TooMuchPain() ? (pain.amount - pain.max) / pain.recoveryRate : 0f;
+        }
     }
 }

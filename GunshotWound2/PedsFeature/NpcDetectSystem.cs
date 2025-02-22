@@ -63,7 +63,7 @@
                 return false;
             }
 
-            if (ped.IsPlayer || !ped.IsHuman || ped.IsDead) {
+            if (ped.IsPlayer || !ped.IsHuman || ped.IsDead || PedEffects.IsPedInWrithe(ped)) {
                 return false;
             }
 

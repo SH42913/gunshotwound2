@@ -81,5 +81,14 @@
         public static void SetVehicleOutOfControl(Vehicle vehicle) {
             Function.Call(Hash.SET_VEHICLE_OUT_OF_CONTROL, vehicle, false, false);
         }
+
+        public static void StartWritheTask(Ped ped, Ped target = null) {
+            ped.Health = 200;
+            Function.Call(Hash.TASK_WRITHE, ped, target ?? ped, -1, 0, false, 0);
+        }
+
+        public static bool IsPedInWrithe(Ped ped) {
+            return Function.Call<bool>(Hash.IS_PED_IN_WRITHE, ped);
+        }
     }
 }
