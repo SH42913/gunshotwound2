@@ -8,7 +8,6 @@
     using PedsFeature;
     using PlayerFeature;
     using Scellecs.Morpeh;
-    using SHVDN;
 
     public sealed class WeaponHitSystem : ISystem {
         private const uint RAMMED_BY_CAR = 133987706;
@@ -55,8 +54,7 @@
                 }
 
                 if (weaponType == PedHitData.WeaponTypes.Nothing) {
-                    var damageRecord = NativeMemory.GetEntityDamageRecordEntryAtIndex(convertedPed.thisPed.MemoryAddress, 0);
-                    var uintHash = unchecked((uint)damageRecord.weaponHash);
+                    PedEffects.TryGetLastDamageRecord(convertedPed.thisPed, out uint uintHash, out _);
                     sharedData.logger.WriteWarning($"Can't detect weapon! Possible hash - {BuildWeaponName(uintHash)})");
                     sharedData.logger.WriteWarning("Make sure you have hash of this weapon in Weapons section of GSWConfig.xml");
                 } else {

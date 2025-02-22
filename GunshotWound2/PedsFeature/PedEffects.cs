@@ -1,6 +1,7 @@
 ﻿namespace GunshotWound2.PedsFeature {
     using GTA;
     using GTA.Native;
+    using SHVDN;
 
     public static class PedEffects {
         public static bool TryRequestMoveSet(string moveSetName) {
@@ -89,6 +90,13 @@
 
         public static bool IsPedInWrithe(Ped ped) {
             return Function.Call<bool>(Hash.IS_PED_IN_WRITHE, ped);
+        }
+
+        public static bool TryGetLastDamageRecord(Ped ped, out uint weaponHash, out int attackerHandle) {
+            var record = NativeMemory.GetEntityDamageRecordEntryAtIndex(ped.MemoryAddress, 0);
+            weaponHash = unchecked((uint)record.weaponHash);
+            attackerHandle = record.attackerEntityHandle;
+            return record.gameTime != 0;
         }
     }
 }
