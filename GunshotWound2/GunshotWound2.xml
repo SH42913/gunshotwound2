@@ -65,8 +65,8 @@
 		<!-- Headshots in GSW2 are always deadly, but by default death takes some time(like IRL).
 		Set this Value to TRUE if you want peds will dead instantly when getting headshot. -->
 
-		<DontActivateRagdollFromBulletImpact Value="TRUE"/>
-		<!-- More realistic ped behaviour, but incompatible with euphoria mods -->
+		<DontActivateRagdollFromBulletImpact Value="FALSE"/>
+		<!-- More realistic impact behaviour, but override euphoria mods reactions(must be FALSE if you use any) -->
 
 		<RealisticSpineDamage Value="TRUE"/>
 		<!-- If TRUE - peds will set to permanent ragdoll on spine damage.
