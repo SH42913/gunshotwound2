@@ -3,6 +3,7 @@
     using PedsFeature;
 
     public sealed class LungsCrit : BaseCrit {
+        protected override string CritName => sharedData.localeConfig.LungsCrit;
         protected override string PlayerMessage => sharedData.localeConfig.PlayerLungsCritMessage;
         protected override string ManMessage => sharedData.localeConfig.ManLungsCritMessage;
         protected override string WomanMessage => sharedData.localeConfig.WomanLungsCritMessage;
@@ -20,6 +21,8 @@
                 sharedData.cameraService.SetLungsCritEffect(true);
             }
         }
+
+        public override void EveryFrame(Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) { }
 
         public override void Cancel(Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
             convertedPed.UnBlockSprint();

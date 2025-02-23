@@ -127,10 +127,10 @@
 		<!-- 0.6 mean 60% chance to save your body on 1 armor point.
         100 armor points will always 100% chance to save. -->
 
-		<MoveRateOnFullPain Value="0.7"/>
+		<MoveRateOnFullPain Value="0.8"/>
 		<!-- Move rate on 100% of pain -->
 
-		<MoveRateOnLegsCrit Value="0.5"/>
+		<MoveRateOnLegsCrit Value="0.7"/>
 		<!-- Move rate when Legs are critically damaged -->
 
 		<OverallDamageMult Value="0.4"/>

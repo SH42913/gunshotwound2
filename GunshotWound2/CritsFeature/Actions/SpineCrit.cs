@@ -3,6 +3,7 @@
     using Scellecs.Morpeh;
 
     public sealed class SpineCrit : BaseCrit {
+        protected override string CritName => sharedData.localeConfig.NervesCrit;
         protected override string PlayerMessage => sharedData.localeConfig.PlayerNervesCritMessage;
         protected override string ManMessage => sharedData.localeConfig.ManNervesCritMessage;
         protected override string WomanMessage => sharedData.localeConfig.WomanNervesCritMessage;
@@ -16,6 +17,12 @@
 
             if (!convertedPed.isPlayer || sharedData.mainConfig.PlayerConfig.CanDropWeapon) {
                 convertedPed.thisPed.Weapons.Drop();
+            }
+        }
+
+        public override void EveryFrame(Entity pedEntity, ref ConvertedPed convertedPed) {
+            if (!convertedPed.isRagdoll) {
+                convertedPed.RequestPermanentRagdoll();
             }
         }
 

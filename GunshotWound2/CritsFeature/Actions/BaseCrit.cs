@@ -8,6 +8,7 @@
     public abstract class BaseCrit {
         protected readonly SharedData sharedData;
 
+        protected abstract string CritName { get; }
         protected abstract string PlayerMessage { get; }
         protected abstract string ManMessage { get; }
         protected abstract string WomanMessage { get; }
@@ -29,6 +30,7 @@
         }
 
         public abstract void Apply(Entity pedEntity, ref ConvertedPed convertedPed);
+        public abstract void EveryFrame(Entity pedEntity, ref ConvertedPed convertedPed);
         public abstract void Cancel(Entity pedEntity, ref ConvertedPed convertedPed);
 
         protected void CreatePain(Entity entity, float amount) {
@@ -37,6 +39,14 @@
 
         protected void CreateInternalBleeding(Entity pedEntity, float severity) {
             pedEntity.CreateBleeding(severity, sharedData.localeConfig.InternalBleeding, isInternal: true);
+        }
+
+        protected void ShowRunningWarningMessage(in ConvertedPed convertedPed) {
+            if (convertedPed.isPlayer) {
+                string message = sharedData.localeConfig.RunningWithScissors;
+                message = string.Format(message, CritName);
+                sharedData.notifier.critical.QueueMessage(message);
+            }
         }
     }
 }

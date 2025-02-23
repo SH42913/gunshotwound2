@@ -107,15 +107,16 @@
         }
 
         private static void NonPlayerCase(SharedData sharedData, ref ConvertedPed convertedPed) {
+            Ped ped = convertedPed.thisPed;
+            ped.Weapons.Drop();
+
             string speech = sharedData.random.Next(NON_PLAYER_DEATH_AMBIENT);
-            convertedPed.thisPed.PlayAmbientSpeech(speech, SpeechModifier.InterruptShouted);
+            ped.PlayAmbientSpeech(speech, SpeechModifier.InterruptShouted);
 
-            convertedPed.thisPed.Weapons.Drop();
-
-            bool isInVehicle = convertedPed.thisPed.IsInVehicle();
-            bool notDriver = convertedPed.thisPed.SeatIndex != VehicleSeat.Driver;
+            bool isInVehicle = ped.IsInVehicle();
+            bool notDriver = ped.SeatIndex != VehicleSeat.Driver;
             if (isInVehicle && notDriver && sharedData.random.IsTrueWithProbability(0.5f)) {
-                convertedPed.thisPed.Task.LeaveVehicle(LeaveVehicleFlags.BailOut);
+                ped.Task.LeaveVehicle(LeaveVehicleFlags.BailOut);
             }
         }
 

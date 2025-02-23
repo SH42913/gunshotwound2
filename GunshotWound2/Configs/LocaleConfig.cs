@@ -127,6 +127,7 @@ namespace GunshotWound2.Configs {
         public string PainShockDeath;
         public string DeathReason;
         public string BleedingReason;
+        public string RunningWithScissors;
 
         public string LocalizationAuthor;
 
@@ -280,6 +281,7 @@ namespace GunshotWound2.Configs {
             config.PainShockDeath = GetBaseTranslation(manager, "PainShockDeath");
             config.DeathReason = GetBaseTranslation(manager, "DeathReason");
             config.BleedingReason = GetBaseTranslation(manager, "BleedingReason");
+            config.RunningWithScissors = GetBaseTranslation(manager, "RunningWithScissors");
 
             config.LocalizationAuthor = GetBaseTranslation(manager, "TranslationAuthor");
         }

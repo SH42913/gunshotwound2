@@ -82,6 +82,8 @@
                     }
 
                     crits.requestBodyPart = default;
+                } else {
+                    IterateCrits(entity, ref crits, ref convertedPed);
                 }
             }
         }
@@ -126,6 +128,14 @@
                 action.Apply(entity, ref convertedPed);
                 crits.active |= type;
                 crits.requestBodyPart = default;
+            }
+        }
+
+        private void IterateCrits(Entity entity, ref Crits crits, ref ConvertedPed convertedPed) {
+            foreach ((Crits.Types type, BaseCrit action) in critActions) {
+                if (crits.HasActive(type)) {
+                    action.EveryFrame(entity, ref convertedPed);
+                }
             }
         }
 

@@ -6,6 +6,7 @@
         private const float SHAKE_AMPLITUDE = 1f;
         private static readonly int[] NM_MESSAGES = { 155, };
 
+        protected override string CritName => sharedData.localeConfig.ArmsCrit;
         protected override string PlayerMessage => sharedData.localeConfig.PlayerArmsCritMessage;
         protected override string ManMessage => sharedData.localeConfig.ManArmsCritMessage;
         protected override string WomanMessage => sharedData.localeConfig.WomanArmsCritMessage;
@@ -33,6 +34,8 @@
                 convertedPed.RequestRagdoll(1000);
             }
         }
+
+        public override void EveryFrame(Entity pedEntity, ref ConvertedPed convertedPed) { }
 
         public override void Cancel(Entity pedEntity, ref ConvertedPed convertedPed) {
             convertedPed.hasHandsTremor = false;
