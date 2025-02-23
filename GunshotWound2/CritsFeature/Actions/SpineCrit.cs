@@ -13,6 +13,10 @@
             convertedPed.ResetRagdoll();
             convertedPed.RequestPermanentRagdoll();
             convertedPed.hasSpineDamage = true;
+
+            if (!convertedPed.isPlayer || sharedData.mainConfig.PlayerConfig.CanDropWeapon) {
+                convertedPed.thisPed.Weapons.Drop();
+            }
         }
 
         public override void Cancel(Entity pedEntity, ref ConvertedPed convertedPed) {
