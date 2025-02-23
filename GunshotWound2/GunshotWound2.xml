@@ -114,8 +114,8 @@
 		<RagdollOnPainfulWound Value="TRUE"/>
 		<!-- If TRUE - peds(including player) will set to short ragdoll on painful wounds -->
 
-		<ApplyBandageTime Value="5.0"/>
-		<!-- 5.0 mean you need to stay still 5 seconds for bandaging -->
+		<ApplyBandageTime Value="3.0"/>
+		<!-- 3.0 mean you need to stay still 3 seconds for bandaging -->
 
 		<BandageCost Value="15"/>
 		<!-- 15 mean you need $15 for use bandages. If you're using a custom char model, you need to set it to 0. -->
