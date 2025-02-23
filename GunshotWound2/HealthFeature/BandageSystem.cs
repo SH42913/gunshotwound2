@@ -38,7 +38,17 @@
             World.Commit();
 
             foreach (Entity entity in pedsWithHealth) {
-                ProcessBandaging(entity, deltaTime);
+                ref Health health = ref healthStash.Get(entity);
+                if (health.timeToBandage <= 0f) {
+                    continue;
+                }
+
+                ref ConvertedPed convertedTarget = ref pedStash.Get(entity);
+                ref ConvertedPed convertedMedic = ref pedStash.Get(health.bandagingMedic);
+                ProcessBandaging(ref health, ref convertedTarget, ref convertedMedic, deltaTime, out bool finished);
+                if (finished && convertedMedic.isPlayer) {
+                    sharedData.uiService.HideProgressIndicator();
+                }
             }
         }
 
@@ -99,24 +109,39 @@
 
             string message = string.Format(sharedData.localeConfig.YouTryToBandage, health.timeToBandage.ToString("F1"));
             MakeStartPost(sharedData.notifier, message, Notifier.Color.COMMON);
-        }
+            convertedTarget.thisPed.PlayAmbientSpeech("FIGHT_RUN");
 
-        private void ProcessBandaging(Entity entity, float deltaTime) {
-            ref Health health = ref healthStash.Get(entity);
-            if (health.timeToBandage <= 0f || health.isDead) {
-                return;
+            if (!convertedTarget.isRagdoll) {
+                convertedTarget.thisPed.Task.StandStill(health.timeToBandage.ConvertToMilliSec());
             }
 
-            ref ConvertedPed convertedTarget = ref pedStash.Get(entity);
-            ref ConvertedPed convertedMedic = ref pedStash.Get(health.bandagingMedic);
+            if (convertedMedic.isPlayer) {
+                string progressText = sharedData.localeConfig.AlreadyBandaging;
+                sharedData.uiService.ShowProgressIndicator(progressText);
+            }
+        }
+
+        private void ProcessBandaging(ref Health health,
+                                      ref ConvertedPed convertedTarget,
+                                      ref ConvertedPed convertedMedic,
+                                      float deltaTime,
+                                      out bool finished) {
             if (!CheckBandagingConditions(convertedTarget.thisPed, convertedMedic.thisPed)) {
                 MakeStartPost(sharedData.notifier, sharedData.localeConfig.BandageFailed, Notifier.Color.RED);
                 health.timeToBandage = -1f;
+                finished = true;
+                return;
+            }
+
+            if (health.isDead || health.bleedingToBandage.IsNullOrDisposed()) {
+                health.timeToBandage = -1f;
+                finished = true;
                 return;
             }
 
             health.timeToBandage -= deltaTime;
             if (health.timeToBandage > 0 || health.bleedingToBandage.IsNullOrDisposed()) {
+                finished = false;
                 return;
             }
 
@@ -127,7 +152,7 @@
 
             string message = string.Format(sharedData.localeConfig.BandageSuccess, bleeding.name);
             BANDAGE_FINISH_POST = sharedData.notifier.ReplaceOne(message, blinking: true, BANDAGE_FINISH_POST, Notifier.Color.GREEN);
-            convertedTarget.thisPed.PlayAmbientSpeech("FIGHT_RUN");
+            finished = true;
         }
 
         private static bool CheckBandagingConditions(GTA.Ped target, GTA.Ped medic) {

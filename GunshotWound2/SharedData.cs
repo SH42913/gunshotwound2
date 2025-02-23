@@ -16,6 +16,7 @@
         public readonly InputListener inputListener;
         public readonly CheatListener cheatListener;
         public readonly CameraService cameraService;
+        public readonly UIService uiService;
         public readonly PedStateService pedStateService;
 
         public readonly WorldService worldService;
@@ -37,6 +38,7 @@
             inputListener = new InputListener();
             cheatListener = new CheatListener(this.logger);
             cameraService = new CameraService(this.logger);
+            uiService = new UIService(this.logger);
 
             worldService = new WorldService(startCapacity: 64);
             mainConfig = new MainConfig();

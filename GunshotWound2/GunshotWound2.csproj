@@ -78,6 +78,7 @@
     <Compile Include="PlayerFeature\PlayerDeathReportSystem.cs"/>
     <Compile Include="Services\CameraService.cs" />
     <Compile Include="Services\PedStateService.cs" />
+    <Compile Include="Services\UIService.cs" />
     <Compile Include="Services\WorldService.cs" />
     <Compile Include="Utils\CheatListener.cs" />
     <Compile Include="Utils\CsvReader.cs" />

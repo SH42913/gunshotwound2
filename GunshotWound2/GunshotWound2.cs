@@ -85,9 +85,10 @@
             }
 
             try {
-                sharedData.cameraService.ClearAllEffects();
                 commonSystems.Dispose();
                 ecsWorld.Dispose();
+                sharedData.cameraService.ClearAllEffects();
+                sharedData.uiService.ClearAll();
                 cleanedUp = true;
             } catch (Exception exception) {
                 HandleRuntimeException(exception);

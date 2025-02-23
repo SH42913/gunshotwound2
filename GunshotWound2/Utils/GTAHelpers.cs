@@ -32,5 +32,9 @@ namespace GunshotWound2.Utils {
             closestPed = closestPeds[closestPedIndex];
             return true;
         }
+
+        public static int ConvertToMilliSec(this float timeInSec) {
+            return (int)(timeInSec * 1000);
+        }
     }
 }
