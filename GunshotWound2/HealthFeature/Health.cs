@@ -32,16 +32,20 @@
             health.lastDamageReason = reason;
         }
 
-        public static bool IsAlive(this ref Health health) {
+        public static bool IsAlive(this in Health health) {
             return !health.isDead;
         }
 
-        public static float CalculateDeadlyBleedingThreshold(this ref Health health, in ConvertedPed convertedPed) {
+        public static bool HasBleedingWounds(this in Health health) {
+            return health.bleedingWounds != null && health.bleedingWounds.Count > 0;
+        }
+
+        public static float CalculateDeadlyBleedingThreshold(this in Health health, in ConvertedPed convertedPed) {
             float deadlyRate = convertedPed.TotalHealth() * health.bleedingHealRate;
             return (float)Math.Sqrt(deadlyRate);
         }
 
-        public static Notifier.Color GetBleedingColor(this ref Health health, in ConvertedPed convertedPed, float severity) {
+        public static Notifier.Color GetBleedingColor(this in Health health, in ConvertedPed convertedPed, float severity) {
             float threshold = health.CalculateDeadlyBleedingThreshold(convertedPed);
             if (severity > threshold) {
                 return Notifier.Color.RED;

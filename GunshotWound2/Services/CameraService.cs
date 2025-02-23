@@ -41,6 +41,13 @@ namespace GunshotWound2.Services {
             Function.Call(Hash.SET_FLASH, 0, 0, 100, 500, 100);
         }
 
+        public void SetUnconsciousEffect(bool value) {
+#if DEBUG
+            logger.WriteInfo($"{nameof(SetUnconsciousEffect)} with {value.ToString()}");
+#endif
+            SetPostFx(priority: 1, "DeathFailOut", value);
+        }
+
         public void SetHeartCritEffect(bool value) {
 #if DEBUG
             logger.WriteInfo($"{nameof(SetHeartCritEffect)} with {value.ToString()}");
@@ -55,18 +62,21 @@ namespace GunshotWound2.Services {
             SetPostFx(priority: 3, "LostTimeNight", value);
         }
 
+        public void SetBleedingEffect(bool value) {
+            const int priority = 4;
+            if (postFxList.ContainsKey(priority) != value) {
+#if DEBUG
+                logger.WriteInfo($"{nameof(SetBleedingEffect)} with {value.ToString()}");
+#endif
+                SetPostFx(priority, "CrossLine", value);
+            }
+        }
+
         public void SetPainEffect(bool value) {
 #if DEBUG
             logger.WriteInfo($"{nameof(SetPainEffect)} with {value.ToString()}");
 #endif
-            SetPostFx(priority: 4, "CrossLine", value);
-        }
-
-        public void SetUnconsciousEffect(bool value) {
-#if DEBUG
-            logger.WriteInfo($"{nameof(SetUnconsciousEffect)} with {value.ToString()}");
-#endif
-            SetPostFx(priority: 1, "DeathFailOut", value);
+            SetPostFx(priority: 5, "FocusIn", value);
         }
 
         public void ClearAllEffects() {
@@ -100,9 +110,7 @@ namespace GunshotWound2.Services {
                 return;
             }
 
-            if (postFxList.Count < 1) {
-                StopAllPostFx();
-            } else if (!string.IsNullOrEmpty(prev)) {
+            if (!string.IsNullOrEmpty(prev)) {
                 Function.Call(Hash.ANIMPOSTFX_STOP, prev);
             }
 

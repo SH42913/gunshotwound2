@@ -30,7 +30,7 @@
                     continue;
                 }
 
-                if (health.bleedingWounds != null && health.bleedingWounds.Count > 0) {
+                if (health.HasBleedingWounds()) {
                     continue;
                 }
 

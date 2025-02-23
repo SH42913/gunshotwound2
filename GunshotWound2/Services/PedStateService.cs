@@ -142,7 +142,7 @@
         }
 
         private void ShowBleedingWounds(ref ConvertedPed convertedPed, ref Health health) {
-            if (health.bleedingWounds == null || health.bleedingWounds.Count < 1) {
+            if (!health.HasBleedingWounds()) {
                 return;
             }
 

@@ -92,7 +92,7 @@
         private void RefreshBleedingToBandage() {
             foreach (Entity entity in peds) {
                 ref Health health = ref healthStash.Get(entity);
-                if (health.bleedingWounds is { Count: > 0, } && health.bleedingToBandage.IsNullOrDisposed()) {
+                if (health.HasBleedingWounds() && health.bleedingToBandage.IsNullOrDisposed()) {
                     DetectBleedingToBandage(ref health);
                 }
             }
