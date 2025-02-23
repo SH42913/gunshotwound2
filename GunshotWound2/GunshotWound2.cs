@@ -180,7 +180,7 @@
             }
         }
 
-        private static void HandleRuntimeException(Exception exception) {
+        private void HandleRuntimeException(Exception exception) {
             sharedData.notifier.ShowOne(sharedData.localeConfig.GswStopped, blinking: true, Notifier.Color.ORANGE);
             sharedData.logger.WriteError(exception.ToString());
             File.WriteAllText(EXCEPTION_LOG_PATH, exception.ToString());
