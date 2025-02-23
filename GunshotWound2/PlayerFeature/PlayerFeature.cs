@@ -51,11 +51,7 @@
             if (player.Money <= 0 || player.Money >= moneyForHelmet) {
                 player.Money -= moneyForHelmet;
                 int helmetTextureId = sharedData.random.Next(0, 15);
-                HelmetPropFlags helmetType = sharedData.random.IsTrueWithProbability(0.5f)
-                        ? HelmetPropFlags.RandomHelmet
-                        : HelmetPropFlags.Cold;
-
-                ped.GiveHelmet(dontTakeOffHelmet: true, helmetType, helmetTextureId);
+                ped.GiveHelmet(dontTakeOffHelmet: true, HelmetPropFlags.DefaultHelmet, helmetTextureId);
             } else {
                 sharedData.notifier.ShowOne(sharedData.localeConfig.DontHaveMoneyForHelmet, blinking: true, Notifier.Color.RED);
             }
