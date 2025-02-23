@@ -138,7 +138,7 @@
             IWeightedRandomizer<int> randomizer = sharedData.weightRandom;
             randomizer.Clear();
             randomizer.Add(0);
-            randomizer.Add(1, 2);
+            randomizer.Add(1, 3);
 
             ref Crits crits = ref pedEntity.GetComponent<Crits>();
             bool armsDamaged = crits.HasActive(Crits.Types.ArmsDamaged);
@@ -149,13 +149,13 @@
                              || crits.HasActive(Crits.Types.GutsDamaged);
 
             if (heavyCrit || legsDamaged) {
-                randomizer.Add(2);
+                randomizer.Add(2, 2);
             }
 
             float totalSeverity = HealthFeature.CalculateSeverityOfAllBleedingWounds(pedEntity);
             float timeToDeath = convertedPed.CalculateTimeToDeath(totalSeverity);
             if (heavyCrit && timeToDeath <= 30f) {
-                randomizer.Add(3);
+                randomizer.Add(3, 2);
             }
 
             switch (randomizer.NextWithReplacement()) {
