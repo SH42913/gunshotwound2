@@ -1,16 +1,18 @@
 ﻿namespace GunshotWound2.PainFeature.States {
+    using System;
     using Configs;
     using CritsFeature;
     using GTA;
+    using GTA.Math;
     using GTA.NaturalMotion;
     using PedsFeature;
     using HealthFeature;
     using Scellecs.Morpeh;
     using Utils;
+    using Weighted_Randomizer;
 
     public sealed class UnbearablePainState : IPainState {
         public const float PAIN_THRESHOLD = 1f;
-        private static ConvertedPed.AfterRagdollAction writheAction;
 
         private static readonly int[] NM_MESSAGES = { 787, };
 
@@ -33,8 +35,12 @@
         public float PainThreshold => PAIN_THRESHOLD;
         public string Color => "~r~";
 
+        private readonly ConvertedPed.AfterRagdollAction writheAction;
+        private readonly ConvertedPed.AfterRagdollAction crawlAction;
+
         public UnbearablePainState() {
             writheAction = StartWrithe;
+            crawlAction = StartCrawl;
         }
 
         public void ApplyPainIncreased(SharedData sharedData, Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
@@ -75,62 +81,6 @@
         public bool TryGetMoodSets(MainConfig mainConfig, in ConvertedPed convertedPed, out string[] moodSets) {
             moodSets = MOODS;
             return true;
-        }
-
-        private static void SelectVisualBehaviour(SharedData sharedData,
-                                                  Scellecs.Morpeh.Entity pedEntity,
-                                                  ref ConvertedPed convertedPed) {
-            if (convertedPed.hasSpineDamage) {
-#if DEBUG
-                sharedData.logger.WriteInfo("No visual behaviour due Spine Damage");
-#endif
-                return;
-            }
-
-            Ped ped = convertedPed.thisPed;
-            ref Crits crits = ref pedEntity.GetComponent<Crits>();
-            bool deadlyCrit = crits.HasActive(Crits.Types.HeartDamaged)
-                              || crits.HasActive(Crits.Types.LungsDamaged)
-                              || crits.HasActive(Crits.Types.StomachDamaged)
-                              || crits.HasActive(Crits.Types.GutsDamaged);
-
-            float totalSeverity = HealthFeature.CalculateSeverityOfAllBleedingWounds(pedEntity);
-            float timeToDeath = convertedPed.CalculateTimeToDeath(totalSeverity);
-            if (deadlyCrit && timeToDeath <= 20) {
-#if DEBUG
-                sharedData.logger.WriteInfo("Default writhe as visual behaviour");
-#endif
-                convertedPed.RequestRagdoll(3000);
-                convertedPed.afterRagdollAction = writheAction;
-                return;
-            }
-
-            const float relaxRagdollPossibility = 0.25f;
-            if (sharedData.random.IsTrueWithProbability(relaxRagdollPossibility)) {
-#if DEBUG
-                sharedData.logger.WriteInfo("Simple ragdoll as visual behaviour");
-#endif
-                convertedPed.ResetRagdoll();
-                convertedPed.RequestPermanentRagdoll();
-                return;
-            }
-
-#if DEBUG
-            sharedData.logger.WriteInfo("InjuredOnGroundHelper as visual behaviour");
-#endif
-            convertedPed.ResetRagdoll();
-            convertedPed.RequestPermanentRagdoll();
-
-            bool armsDamaged = (crits.active & Crits.Types.ArmsDamaged) != 0;
-            bool leftSide = sharedData.random.IsTrueWithProbability(0.5f);
-            convertedPed.nmHelper = new InjuredOnGroundHelper(ped) {
-                Injury1Component = leftSide ? (int)convertedPed.lastDamagedBone : 0,
-                Injury2Component = leftSide ? 0 : (int)convertedPed.lastDamagedBone,
-                NumInjuries = sharedData.random.Next(0, 3),
-                DontReachWithLeft = armsDamaged && leftSide,
-                DontReachWithRight = armsDamaged && !leftSide,
-                StrongRollForce = sharedData.random.IsTrueWithProbability(0.5f),
-            };
         }
 
         private static void PlayerOnlyCase(SharedData sharedData, ref ConvertedPed convertedPed) {
@@ -175,6 +125,98 @@
             }
         }
 
+        private void SelectVisualBehaviour(SharedData sharedData,
+                                           Scellecs.Morpeh.Entity pedEntity,
+                                           ref ConvertedPed convertedPed) {
+            if (convertedPed.hasSpineDamage) {
+#if DEBUG
+                sharedData.logger.WriteInfo("No visual behaviour due Spine Damage");
+#endif
+                return;
+            }
+
+            IWeightedRandomizer<int> randomizer = sharedData.weightRandom;
+            randomizer.Clear();
+            randomizer.Add(0);
+            randomizer.Add(1, 2);
+
+            ref Crits crits = ref pedEntity.GetComponent<Crits>();
+            bool armsDamaged = crits.HasActive(Crits.Types.ArmsDamaged);
+            bool legsDamaged = crits.HasActive(Crits.Types.LegsDamaged);
+            bool heavyCrit = crits.HasActive(Crits.Types.HeartDamaged)
+                             || crits.HasActive(Crits.Types.LungsDamaged)
+                             || crits.HasActive(Crits.Types.StomachDamaged)
+                             || crits.HasActive(Crits.Types.GutsDamaged);
+
+            if (heavyCrit || legsDamaged) {
+                randomizer.Add(2);
+            }
+
+            float totalSeverity = HealthFeature.CalculateSeverityOfAllBleedingWounds(pedEntity);
+            float timeToDeath = convertedPed.CalculateTimeToDeath(totalSeverity);
+            if (heavyCrit && timeToDeath <= 30f) {
+                randomizer.Add(3);
+            }
+
+            switch (randomizer.NextWithReplacement()) {
+                case 0:  SimpleRagdollVisualBehaviour(sharedData, ref convertedPed); break;
+                case 1:  InjuredVisualBehaviour(sharedData, ref convertedPed, armsDamaged); break;
+                case 2:  CrawlVisualBehaviour(sharedData, ref convertedPed); break;
+                case 3:  WritheVisualBehaviour(sharedData, ref convertedPed); break;
+                default: throw new Exception("Incorrect visual behaviour index");
+            }
+        }
+
+        private static void SimpleRagdollVisualBehaviour(SharedData sharedData, ref ConvertedPed convertedPed) {
+#if DEBUG
+            sharedData.logger.WriteInfo("Simple ragdoll as visual behaviour");
+#endif
+            convertedPed.ResetRagdoll();
+            convertedPed.RequestPermanentRagdoll();
+        }
+
+        private void WritheVisualBehaviour(SharedData sharedData, ref ConvertedPed convertedPed) {
+#if DEBUG
+            sharedData.logger.WriteInfo("Default writhe as visual behaviour");
+#endif
+            convertedPed.RequestRagdoll(3000);
+            convertedPed.afterRagdollAction = writheAction;
+        }
+
+        private void CrawlVisualBehaviour(SharedData sharedData, ref ConvertedPed convertedPed) {
+#if DEBUG
+            sharedData.logger.WriteInfo("Crawl animation as visual behaviour");
+#endif
+            convertedPed.RequestRagdoll(1000);
+            convertedPed.afterRagdollAction = crawlAction;
+        }
+
+        private static void InjuredVisualBehaviour(SharedData sharedData, ref ConvertedPed convertedPed, bool armsDamaged) {
+#if DEBUG
+            sharedData.logger.WriteInfo("InjuredOnGroundHelper as visual behaviour");
+#endif
+            convertedPed.ResetRagdoll();
+            convertedPed.RequestPermanentRagdoll();
+
+            PedEffects.DetermineBoneSide(convertedPed.lastDamagedBone, out bool leftSide, out bool rightSide);
+            PedBone damagedBone = convertedPed.thisPed.Bones[convertedPed.lastDamagedBone];
+            var helper = new InjuredOnGroundHelper(convertedPed.thisPed) {
+                Injury1Component = (int)convertedPed.lastDamagedBone,
+                Injury1LocalPosition = damagedBone.Position,
+                Injury1LocalNormal = damagedBone.RelativeRightVector,
+                NumInjuries = sharedData.random.Next(0, 3),
+                DontReachWithLeft = armsDamaged && leftSide,
+                DontReachWithRight = armsDamaged && rightSide,
+                StrongRollForce = sharedData.random.IsTrueWithProbability(0.5f),
+            };
+
+            if (PedEffects.TryGetLastDamageRecord(convertedPed.thisPed, out _, out int handle)) {
+                helper.AttackerPos = GTA.Entity.FromHandle(handle).Position;
+            }
+
+            convertedPed.nmHelper = helper;
+        }
+
         private static void StartWrithe(ref ConvertedPed convertedPed) {
             convertedPed.forceRemove = true;
 
@@ -182,7 +224,43 @@
             ped.Task.ClearAllImmediately();
             ped.CanWrithe = true;
             ped.BlockPermanentEvents = true;
-            PedEffects.StartWritheTask(ped);
+
+            if (PedEffects.TryGetLastDamageRecord(ped, out _, out int attackerHandle)) {
+                PedEffects.StartWritheTask(ped, (Ped)GTA.Entity.FromHandle(attackerHandle));
+            } else {
+                PedEffects.StartWritheTask(ped);
+            }
+        }
+
+        private static void StartCrawl(ref ConvertedPed convertedPed) {
+            Ped ped = convertedPed.thisPed;
+            ped.BlockPermanentEvents = true;
+
+            bool back;
+            Quaternion quat;
+            if (PedEffects.TryGetLastDamageRecord(ped, out _, out int attackerHandle)) {
+                GTA.Entity attacker = GTA.Entity.FromHandle(attackerHandle);
+                Vector3 dir = ped.Position - attacker.Position;
+                back = Vector3.Dot(ped.ForwardVector, dir) < 0;
+                quat = Quaternion.LookRotation(back ? -dir : dir);
+            } else {
+                back = false;
+                quat = Quaternion.LookRotation(Vector3.RandomXY());
+            }
+
+            ped.Quaternion = quat;
+
+            PedEffects.DetermineBoneSide(convertedPed.lastDamagedBone, out bool left, out bool right);
+            string animName = back
+                    ? "back_loop"
+                    : left
+                            ? "sidel_loop"
+                            : right
+                                    ? "sider_loop"
+                                    : "front_loop";
+
+            const AnimationFlags flags = AnimationFlags.Loop | AnimationFlags.RagdollOnCollision | AnimationFlags.AbortOnWeaponDamage;
+            ped.Task.PlayAnimation("move_injured_ground", animName, 8f, -1, flags);
         }
     }
 }

@@ -98,5 +98,11 @@
             attackerHandle = record.attackerEntityHandle;
             return record.gameTime != 0;
         }
+
+        public static void DetermineBoneSide(Bone bone, out bool left, out bool right) {
+            var name = bone.ToString();
+            left = name.Contains("Left");
+            right = name.Contains("Right");
+        }
     }
 }
