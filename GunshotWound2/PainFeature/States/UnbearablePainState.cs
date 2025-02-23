@@ -199,12 +199,9 @@
             convertedPed.RequestPermanentRagdoll();
 
             PedEffects.DetermineBoneSide(convertedPed.lastDamagedBone, out bool leftSide, out bool rightSide);
-            PedBone damagedBone = convertedPed.thisPed.Bones[convertedPed.lastDamagedBone];
             var helper = new InjuredOnGroundHelper(convertedPed.thisPed) {
                 Injury1Component = (int)convertedPed.lastDamagedBone,
-                Injury1LocalPosition = damagedBone.Position,
-                Injury1LocalNormal = damagedBone.RelativeRightVector,
-                NumInjuries = sharedData.random.Next(0, 3),
+                NumInjuries = sharedData.random.Next(1, 3),
                 DontReachWithLeft = armsDamaged && leftSide,
                 DontReachWithRight = armsDamaged && rightSide,
                 StrongRollForce = sharedData.random.IsTrueWithProbability(0.5f),
