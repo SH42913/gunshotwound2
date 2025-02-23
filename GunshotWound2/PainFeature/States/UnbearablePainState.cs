@@ -208,10 +208,11 @@
             ped.CanWrithe = true;
             ped.BlockPermanentEvents = true;
 
+            int loops = sharedData.random.Next(1, 5);
             if (PedEffects.TryGetLastDamageRecord(ped, out _, out int attackerHandle)) {
-                PedEffects.StartWritheTask(ped, (Ped)GTA.Entity.FromHandle(attackerHandle));
+                PedEffects.StartWritheTask(ped, loops, (Ped)GTA.Entity.FromHandle(attackerHandle));
             } else {
-                PedEffects.StartWritheTask(ped);
+                PedEffects.StartWritheTask(ped, loops);
             }
         }
 

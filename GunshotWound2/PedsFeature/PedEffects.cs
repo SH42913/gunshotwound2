@@ -83,9 +83,9 @@
             Function.Call(Hash.SET_VEHICLE_OUT_OF_CONTROL, vehicle, false, false);
         }
 
-        public static void StartWritheTask(Ped ped, Ped target = null) {
+        public static void StartWritheTask(Ped ped, int loops, Ped target = null) {
             ped.Health = 200;
-            Function.Call(Hash.TASK_WRITHE, ped, target ?? ped, -1, 0, true, 0);
+            Function.Call(Hash.TASK_WRITHE, ped, target ?? ped, loops, 0, true, 0);
         }
 
         public static bool IsPedInWrithe(Ped ped) {
