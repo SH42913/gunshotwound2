@@ -38,6 +38,10 @@
         }
 
         private void Remove(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) {
+            if (convertedPed.isPlayer) {
+                sharedData.cameraService.ClearAllEffects();
+            }
+
 #if DEBUG
             DeleteBlip(convertedPed);
 #endif

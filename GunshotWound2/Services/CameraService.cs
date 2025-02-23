@@ -24,10 +24,11 @@ namespace GunshotWound2.Services {
 
             if (needShaking) {
                 CameraShake type = aimingShakeCritType ? CameraShake.Drunk : CameraShake.Hand;
+                float amplitude = aimingShakeAmplitude >= 0f ? aimingShakeAmplitude : 0f;
 #if DEBUG
-                logger.WriteInfo($"Starting aiming shake type {type} with {aimingShakeAmplitude.ToString("F2")} amplitude");
+                logger.WriteInfo($"Starting aiming shake type {type} with {amplitude.ToString("F2")} amplitude");
 #endif
-                GameplayCamera.Shake(type, aimingShakeAmplitude);
+                GameplayCamera.Shake(type, amplitude);
             } else {
                 GameplayCamera.StopShaking();
             }
@@ -99,7 +100,9 @@ namespace GunshotWound2.Services {
                 return;
             }
 
-            if (!string.IsNullOrEmpty(prev)) {
+            if (postFxList.Count < 1) {
+                StopAllPostFx();
+            } else if (!string.IsNullOrEmpty(prev)) {
                 Function.Call(Hash.ANIMPOSTFX_STOP, prev);
             }
 
@@ -111,6 +114,9 @@ namespace GunshotWound2.Services {
         }
 
         private void StopAllPostFx() {
+#if DEBUG
+            logger.WriteInfo($"Stop all PostFx");
+#endif
             postFxList.Clear();
             Function.Call(Hash.ANIMPOSTFX_STOP_ALL);
         }
