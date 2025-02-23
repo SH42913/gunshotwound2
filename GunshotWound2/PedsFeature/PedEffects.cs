@@ -104,5 +104,19 @@
             left = name.Contains("Left");
             right = name.Contains("Right");
         }
+
+        public static bool IsPlayingAnimation(Ped ped, (string, string) animInfo) {
+            if (string.IsNullOrEmpty(animInfo.Item1) || string.IsNullOrEmpty(animInfo.Item2)) {
+                return false;
+            }
+
+            return ped.IsPlayingAnimation(new CrClipAsset(animInfo.Item1, animInfo.Item2));
+        }
+
+        public static void StopAnimation(Ped ped, (string, string) animInfo) {
+            if (!string.IsNullOrEmpty(animInfo.Item1) && !string.IsNullOrEmpty(animInfo.Item2)) {
+                ped.StopAnimation(new CrClipAsset(animInfo.Item1, animInfo.Item2), AnimationBlendDelta.NormalBlendOut);
+            }
+        }
     }
 }

@@ -8,18 +8,24 @@
         public float PainThreshold => WoundConfig.DEADLY_PAIN_PERCENT;
         public string Color => "~r~";
 
-        public void ApplyPainIncreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) {
+        private readonly SharedData sharedData;
+
+        public DeadlyPainState(SharedData sharedData) {
+            this.sharedData = sharedData;
+        }
+
+        public void ApplyPainIncreased(Entity pedEntity, ref ConvertedPed convertedPed) {
             pedEntity.GetComponent<Health>().InstantKill(sharedData.localeConfig.PainShockDeath);
         }
 
-        public void ApplyPainDecreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) { }
+        public void ApplyPainDecreased(Entity pedEntity, ref ConvertedPed convertedPed) { }
 
-        public bool TryGetMoveSets(MainConfig mainConfig, in ConvertedPed convertedPed, out string[] moveSets) {
+        public bool TryGetMoveSets(in ConvertedPed convertedPed, out string[] moveSets) {
             moveSets = null;
             return false;
         }
 
-        public bool TryGetMoodSets(MainConfig mainConfig, in ConvertedPed convertedPed, out string[] moodSets) {
+        public bool TryGetMoodSets(in ConvertedPed convertedPed, out string[] moodSets) {
             moodSets = null;
             return false;
         }

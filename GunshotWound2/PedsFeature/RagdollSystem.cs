@@ -1,7 +1,7 @@
 ﻿namespace GunshotWound2.PedsFeature {
-    using GTA;
     using GTA.Native;
     using Scellecs.Morpeh;
+    using RagdollType = GTA.RagdollType;
 
     public sealed class RagdollSystem : ILateSystem {
         private readonly SharedData sharedData;
@@ -9,7 +9,7 @@
         private Filter peds;
         private Stash<ConvertedPed> pedStash;
 
-        public Scellecs.Morpeh.World World { get; set; }
+        public World World { get; set; }
 
         public RagdollSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -21,53 +21,51 @@
         }
 
         public void OnUpdate(float deltaTime) {
-            foreach (Scellecs.Morpeh.Entity entity in peds) {
+            foreach (Entity entity in peds) {
                 Process(ref pedStash.Get(entity));
             }
         }
 
         private void Process(ref ConvertedPed convertedPed) {
-            bool inRagdoll = convertedPed.thisPed.IsRagdoll;
-            if (convertedPed.isRagdoll != inRagdoll && !inRagdoll && convertedPed.afterRagdollAction != null) {
-#if DEBUG
-                string methodName = convertedPed.afterRagdollAction.Method.Name;
-                sharedData.logger.WriteInfo($"Applying after ragdoll action {methodName}");
-#endif
-                convertedPed.afterRagdollAction.Invoke(ref convertedPed);
-                convertedPed.afterRagdollAction = null;
-            }
-
+            GTA.Ped ped = convertedPed.thisPed;
+            bool inRagdoll = ped.IsRagdoll;
+            CallAfterRagdollAction(ref convertedPed, inRagdoll);
             convertedPed.isRagdoll = inRagdoll;
-            if (convertedPed.ragdollReset) {
-                if (inRagdoll) {
-#if DEBUG
-                    sharedData.logger.WriteInfo($"Restore {convertedPed.name} from ragdoll");
-#endif
-                    convertedPed.thisPed.CancelRagdoll();
-                }
 
-                convertedPed.ragdollReset = false;
+            if (convertedPed.ragdollReset) {
+                ResetRagdoll(ref convertedPed);
                 return;
             }
 
             ref (int time, RagdollType type) ragdollRequest = ref convertedPed.ragdollRequest;
+            if (convertedPed.permanentRagdoll && ragdollRequest.time >= 0) {
+#if DEBUG
+                sharedData.logger.WriteInfo($"Applying permanent ragdoll to {convertedPed.name}");
+#endif
+                ragdollRequest = (-1, RagdollType.Relax);
+            }
+
             if (ragdollRequest.time == 0) {
                 return;
             }
 
             if (inRagdoll) {
-                if (ragdollRequest.time > 0) {
-                    int newTime = ragdollRequest.time - sharedData.deltaTimeInMs;
-                    ragdollRequest.time = newTime > 0 ? newTime : 0;
-                }
-
+                SkipTime(ref ragdollRequest);
                 return;
             }
 
-            if (convertedPed.thisPed.IsInVehicle()) {
+            bool isPlaying = PedEffects.IsPlayingAnimation(ped, convertedPed.forcedAnimation);
+            bool ragdollIsBlocked = ped.IsInVehicle() || isPlaying;
+            if (ragdollIsBlocked) {
                 return;
             }
 
+            ApplyRagdoll(ref convertedPed, ref ragdollRequest);
+            convertedPed.ragdollRequest = default;
+            convertedPed.isRagdoll = true;
+        }
+
+        private void ApplyRagdoll(ref ConvertedPed convertedPed, ref (int time, RagdollType type) ragdollRequest) {
 #if DEBUG
             var time = ragdollRequest.time.ToString();
             sharedData.logger.WriteInfo($"Ragdoll for {convertedPed.name} time={time}");
@@ -90,13 +88,44 @@
             } else {
                 convertedPed.thisPed.Ragdoll(ragdollRequest.time, ragdollRequest.type);
             }
+        }
 
+        private void CallAfterRagdollAction(ref ConvertedPed convertedPed, bool inRagdoll) {
+            if (convertedPed.isRagdoll == inRagdoll || inRagdoll || convertedPed.afterRagdollAction == null) {
+                return;
+            }
+#if DEBUG
+            string methodName = convertedPed.afterRagdollAction.Method.Name;
+            sharedData.logger.WriteInfo($"Applying after ragdoll action {methodName}");
+#endif
+            convertedPed.afterRagdollAction.Invoke(ref convertedPed);
+            convertedPed.afterRagdollAction = null;
+        }
+
+        private void ResetRagdoll(ref ConvertedPed convertedPed) {
+            if (convertedPed.isRagdoll) {
+#if DEBUG
+                sharedData.logger.WriteInfo($"Restore {convertedPed.name} from ragdoll");
+#endif
+                convertedPed.thisPed.CancelRagdoll();
+            }
+
+            convertedPed.ragdollReset = false;
+            convertedPed.permanentRagdoll = false;
             convertedPed.ragdollRequest = default;
-            convertedPed.isRagdoll = true;
+        }
+
+        private void SkipTime(ref (int time, RagdollType type) ragdollRequest) {
+            if (ragdollRequest.time <= 0) {
+                return;
+            }
+
+            int newTime = ragdollRequest.time - sharedData.deltaTimeInMs;
+            ragdollRequest.time = newTime > 0 ? newTime : 0;
         }
 
         public void Dispose() {
-            foreach (Scellecs.Morpeh.Entity entity in peds) {
+            foreach (Entity entity in peds) {
                 ref ConvertedPed convertedPed = ref pedStash.Get(entity);
                 if (convertedPed.thisPed.IsRagdoll) {
                     convertedPed.thisPed.CancelRagdoll();

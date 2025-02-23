@@ -11,13 +11,7 @@
         private static readonly int[] NM_MESSAGES = { 548, };
 
         private readonly SharedData sharedData;
-        private readonly IPainState[] painStates = {
-            new MildPainState(),
-            new AveragePainState(),
-            new IntensePainState(),
-            new UnbearablePainState(),
-            new DeadlyPainState(),
-        };
+        private readonly IPainState[] painStates;
 
         private Filter pedsWithPain;
         private Stash<ConvertedPed> pedStash;
@@ -28,6 +22,14 @@
 
         public PainChangeSystem(SharedData sharedData) {
             this.sharedData = sharedData;
+
+            painStates = new IPainState[] {
+                new MildPainState(sharedData),
+                new AveragePainState(sharedData),
+                new IntensePainState(sharedData),
+                new UnbearablePainState(sharedData),
+                new DeadlyPainState(sharedData),
+            };
         }
 
         public void OnAwake() {
@@ -118,9 +120,9 @@
                     curState = curStateIndex >= 0 ? painStates[curStateIndex] : null;
 
                     if (direction > 0) {
-                        curState?.ApplyPainIncreased(sharedData, entity, ref convertedPed);
+                        curState?.ApplyPainIncreased(entity, ref convertedPed);
                     } else {
-                        prevState?.ApplyPainDecreased(sharedData, entity, ref convertedPed);
+                        prevState?.ApplyPainDecreased(entity, ref convertedPed);
                     }
                 }
 
@@ -133,7 +135,7 @@
         }
 
         private void RefreshMoveSet(ref ConvertedPed convertedPed, IPainState state) {
-            if (state != null && state.TryGetMoveSets(sharedData.mainConfig, convertedPed, out string[] moveSets)) {
+            if (state != null && state.TryGetMoveSets(convertedPed, out string[] moveSets)) {
                 convertedPed.moveSetRequest = moveSets != null && moveSets.Length > 0
                         ? sharedData.random.Next(moveSets)
                         : null;
@@ -143,7 +145,7 @@
         }
 
         private void RefreshMood(ref ConvertedPed convertedPed, IPainState state) {
-            if (state != null && state.TryGetMoodSets(sharedData.mainConfig, convertedPed, out string[] sets) && sets.Length > 0) {
+            if (state != null && state.TryGetMoodSets(convertedPed, out string[] sets) && sets.Length > 0) {
                 PedEffects.SetFacialIdleAnim(convertedPed.thisPed, sharedData.random.Next(sets), convertedPed.isMale);
             } else {
                 PedEffects.CleanFacialIdleAnim(convertedPed.thisPed);

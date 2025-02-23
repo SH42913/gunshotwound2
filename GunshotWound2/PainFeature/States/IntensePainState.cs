@@ -16,7 +16,13 @@
         public float PainThreshold => 0.6f;
         public string Color => "~o~";
 
-        public void ApplyPainIncreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) {
+        private readonly SharedData sharedData;
+
+        public IntensePainState(SharedData sharedData) {
+            this.sharedData = sharedData;
+        }
+
+        public void ApplyPainIncreased(Entity pedEntity, ref ConvertedPed convertedPed) {
             PedEffects.PlayFacialAnim(convertedPed.thisPed, "mood_injured_1", convertedPed.isMale);
 
             if (convertedPed.hasHandsTremor) {
@@ -32,7 +38,7 @@
             }
         }
 
-        public void ApplyPainDecreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) {
+        public void ApplyPainDecreased(Entity pedEntity, ref ConvertedPed convertedPed) {
             if (convertedPed.hasHandsTremor) {
                 return;
             }
@@ -44,12 +50,12 @@
             }
         }
 
-        public bool TryGetMoveSets(MainConfig mainConfig, in ConvertedPed convertedPed, out string[] moveSets) {
-            moveSets = mainConfig.GetPainMoveSetsFor(convertedPed).intense;
+        public bool TryGetMoveSets(in ConvertedPed convertedPed, out string[] moveSets) {
+            moveSets = sharedData.mainConfig.GetPainMoveSetsFor(convertedPed).intense;
             return true;
         }
 
-        public bool TryGetMoodSets(MainConfig mainConfig, in ConvertedPed convertedPed, out string[] moodSets) {
+        public bool TryGetMoodSets(in ConvertedPed convertedPed, out string[] moodSets) {
             moodSets = MOODS;
             return true;
         }

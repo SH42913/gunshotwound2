@@ -17,6 +17,7 @@
         public Bone lastDamagedBone;
 
         public (int time, RagdollType type) ragdollRequest;
+        public bool permanentRagdoll;
         public int[] nmMessages;
         public CustomHelper nmHelper;
         public bool ragdollReset;
@@ -30,6 +31,7 @@
         public bool isRestrictToDrive;
         public bool forceRemove;
 
+        public (string, string) forcedAnimation;
         public float moveRate;
         public string moveSetRequest;
         public bool resetMoveSet;
@@ -51,13 +53,13 @@
         }
         
         public static void RequestRagdoll(this ref ConvertedPed convertedPed, int timeInMs, RagdollType type = RagdollType.Relax) {
-            if (convertedPed.ragdollRequest.time >= 0 && !convertedPed.hasSpineDamage) {
+            if (convertedPed.ragdollRequest.time >= 0 && !convertedPed.permanentRagdoll) {
                 convertedPed.ragdollRequest = (timeInMs, type);
             }
         }
 
-        public static void RequestPermanentRagdoll(this ref ConvertedPed convertedPed, RagdollType type = RagdollType.Relax) {
-            convertedPed.RequestRagdoll(-1, type);
+        public static void RequestPermanentRagdoll(this ref ConvertedPed convertedPed) {
+            convertedPed.permanentRagdoll = true;
         }
 
         public static void RemoveRagdollRequest(this ref ConvertedPed convertedPed) {

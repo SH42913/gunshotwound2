@@ -1,6 +1,5 @@
 ﻿namespace GunshotWound2.PainFeature.States {
     using System;
-    using Configs;
     using CritsFeature;
     using GTA;
     using GTA.Math;
@@ -36,60 +35,65 @@
         public string Color => "~r~";
 
         private readonly ConvertedPed.AfterRagdollAction writheAction;
-        private readonly ConvertedPed.AfterRagdollAction crawlAction;
 
-        public UnbearablePainState() {
+        private readonly SharedData sharedData;
+
+        public UnbearablePainState(SharedData sharedData) {
+            this.sharedData = sharedData;
+
             writheAction = StartWrithe;
-            crawlAction = StartCrawl;
         }
 
-        public void ApplyPainIncreased(SharedData sharedData, Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
+        public void ApplyPainIncreased(Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
             ref Pain pain = ref pedEntity.GetComponent<Pain>();
             if (pain.Percent() - PainThreshold < 0.1f) {
                 pain.diff += 0.2f * pain.max;
             }
 
             convertedPed.isRestrictToDrive = true;
-            SelectVisualBehaviour(sharedData, pedEntity, ref convertedPed);
+            SelectVisualBehaviour(pedEntity, ref convertedPed);
 
             int deathAnimIndex = sharedData.random.Next(1, 3);
             PedEffects.PlayFacialAnim(convertedPed.thisPed, $"die_{deathAnimIndex.ToString()}", convertedPed.isMale);
             convertedPed.thisPed.StopCurrentPlayingSpeech();
 
             if (convertedPed.isPlayer) {
-                PlayerOnlyCase(sharedData, ref convertedPed);
+                PlayerOnlyCase(ref convertedPed);
             } else {
-                NonPlayerCase(sharedData, ref convertedPed);
+                NonPlayerCase(ref convertedPed);
             }
         }
 
-        public void ApplyPainDecreased(SharedData sharedData, Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
+        public void ApplyPainDecreased(Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
             convertedPed.ResetRagdoll();
             convertedPed.isRestrictToDrive = false;
 
+            PedEffects.StopAnimation(convertedPed.thisPed, convertedPed.forcedAnimation);
+            convertedPed.forcedAnimation = default;
+
             if (convertedPed.isPlayer) {
-                SetPlayerIsIgnoredByPeds(sharedData, Game.Player, false);
+                SetPlayerIsIgnoredByPeds(Game.Player, false);
                 sharedData.cameraService.SetUnconsciousEffect(false);
             }
         }
 
-        public bool TryGetMoveSets(MainConfig mainConfig, in ConvertedPed convertedPed, out string[] moveSets) {
+        public bool TryGetMoveSets(in ConvertedPed convertedPed, out string[] moveSets) {
             moveSets = null;
             return false;
         }
 
-        public bool TryGetMoodSets(MainConfig mainConfig, in ConvertedPed convertedPed, out string[] moodSets) {
+        public bool TryGetMoodSets(in ConvertedPed convertedPed, out string[] moodSets) {
             moodSets = MOODS;
             return true;
         }
 
-        private static void PlayerOnlyCase(SharedData sharedData, ref ConvertedPed convertedPed) {
+        private void PlayerOnlyCase(ref ConvertedPed convertedPed) {
             string speech = sharedData.random.Next(PLAYER_DEATH_AMBIENT);
             convertedPed.thisPed.PlayAmbientSpeech(speech, SpeechModifier.InterruptShouted);
 
             Player player = Game.Player;
             if (player.WantedLevel <= 2) {
-                SetPlayerIsIgnoredByPeds(sharedData, Game.Player, true);
+                SetPlayerIsIgnoredByPeds(Game.Player, true);
                 if (sharedData.mainConfig.PlayerConfig.PoliceCanForgetYou) {
                     player.WantedLevel = 0;
                 }
@@ -106,7 +110,7 @@
             sharedData.cameraService.SetUnconsciousEffect(true);
         }
 
-        private static void NonPlayerCase(SharedData sharedData, ref ConvertedPed convertedPed) {
+        private void NonPlayerCase(ref ConvertedPed convertedPed) {
             Ped ped = convertedPed.thisPed;
             ped.Weapons.Drop();
 
@@ -120,15 +124,13 @@
             }
         }
 
-        private static void SetPlayerIsIgnoredByPeds(SharedData sharedData, Player player, bool value) {
+        private void SetPlayerIsIgnoredByPeds(Player player, bool value) {
             if (sharedData.mainConfig.PlayerConfig.PedsCanIgnore) {
                 player.IgnoredByEveryone = value;
             }
         }
 
-        private void SelectVisualBehaviour(SharedData sharedData,
-                                           Scellecs.Morpeh.Entity pedEntity,
-                                           ref ConvertedPed convertedPed) {
+        private void SelectVisualBehaviour(Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
             if (convertedPed.hasSpineDamage) {
 #if DEBUG
                 sharedData.logger.WriteInfo("No visual behaviour due Spine Damage");
@@ -142,7 +144,6 @@
             randomizer.Add(1, 3);
 
             ref Crits crits = ref pedEntity.GetComponent<Crits>();
-            bool armsDamaged = crits.HasActive(Crits.Types.ArmsDamaged);
             bool legsDamaged = crits.HasActive(Crits.Types.LegsDamaged);
             bool heavyCrit = crits.HasActive(Crits.Types.HeartDamaged)
                              || crits.HasActive(Crits.Types.LungsDamaged)
@@ -160,23 +161,22 @@
             }
 
             switch (randomizer.NextWithReplacement()) {
-                case 0:  SimpleRagdollVisualBehaviour(sharedData, ref convertedPed); break;
-                case 1:  InjuredVisualBehaviour(sharedData, ref convertedPed, armsDamaged); break;
-                case 2:  CrawlVisualBehaviour(sharedData, ref convertedPed); break;
-                case 3:  WritheVisualBehaviour(sharedData, ref convertedPed); break;
+                case 0:  SimpleRagdollVisualBehaviour(ref convertedPed); break;
+                case 1:  InjuredVisualBehaviour(ref convertedPed); break;
+                case 2:  CrawlVisualBehaviour(ref convertedPed); break;
+                case 3:  WritheVisualBehaviour(ref convertedPed); break;
                 default: throw new Exception("Incorrect visual behaviour index");
             }
         }
 
-        private static void SimpleRagdollVisualBehaviour(SharedData sharedData, ref ConvertedPed convertedPed) {
+        private void SimpleRagdollVisualBehaviour(ref ConvertedPed convertedPed) {
 #if DEBUG
             sharedData.logger.WriteInfo("Simple ragdoll as visual behaviour");
 #endif
-            convertedPed.ResetRagdoll();
             convertedPed.RequestPermanentRagdoll();
         }
 
-        private void WritheVisualBehaviour(SharedData sharedData, ref ConvertedPed convertedPed) {
+        private void WritheVisualBehaviour(ref ConvertedPed convertedPed) {
 #if DEBUG
             sharedData.logger.WriteInfo("Default writhe as visual behaviour");
 #endif
@@ -184,38 +184,23 @@
             convertedPed.afterRagdollAction = writheAction;
         }
 
-        private void CrawlVisualBehaviour(SharedData sharedData, ref ConvertedPed convertedPed) {
+        private void CrawlVisualBehaviour(ref ConvertedPed convertedPed) {
 #if DEBUG
             sharedData.logger.WriteInfo("Crawl animation as visual behaviour");
 #endif
-            convertedPed.RequestRagdoll(1000);
-            convertedPed.afterRagdollAction = crawlAction;
+            StartCrawl(ref convertedPed);
         }
 
-        private static void InjuredVisualBehaviour(SharedData sharedData, ref ConvertedPed convertedPed, bool armsDamaged) {
+        private void InjuredVisualBehaviour(ref ConvertedPed convertedPed) {
 #if DEBUG
             sharedData.logger.WriteInfo("InjuredOnGroundHelper as visual behaviour");
 #endif
-            convertedPed.ResetRagdoll();
-            convertedPed.RequestPermanentRagdoll();
-
             PedEffects.DetermineBoneSide(convertedPed.lastDamagedBone, out bool leftSide, out bool rightSide);
-            var helper = new InjuredOnGroundHelper(convertedPed.thisPed) {
-                Injury1Component = (int)convertedPed.lastDamagedBone,
-                NumInjuries = sharedData.random.Next(1, 3),
-                DontReachWithLeft = armsDamaged && leftSide,
-                DontReachWithRight = armsDamaged && rightSide,
-                StrongRollForce = sharedData.random.IsTrueWithProbability(0.5f),
-            };
-
-            if (PedEffects.TryGetLastDamageRecord(convertedPed.thisPed, out _, out int handle)) {
-                helper.AttackerPos = GTA.Entity.FromHandle(handle).Position;
-            }
-
-            convertedPed.nmHelper = helper;
+            convertedPed.RequestPermanentRagdoll();
+            convertedPed.nmHelper = GetInjuredOnGroundHelper(convertedPed, leftSide, rightSide);
         }
 
-        private static void StartWrithe(ref ConvertedPed convertedPed) {
+        private void StartWrithe(ref ConvertedPed convertedPed) {
             convertedPed.forceRemove = true;
 
             Ped ped = convertedPed.thisPed;
@@ -230,7 +215,7 @@
             }
         }
 
-        private static void StartCrawl(ref ConvertedPed convertedPed) {
+        private void StartCrawl(ref ConvertedPed convertedPed) {
             Ped ped = convertedPed.thisPed;
             ped.BlockPermanentEvents = true;
 
@@ -249,6 +234,7 @@
             ped.Quaternion = quat;
 
             PedEffects.DetermineBoneSide(convertedPed.lastDamagedBone, out bool left, out bool right);
+            const string animDict = "move_injured_ground";
             string animName = back
                     ? "back_loop"
                     : left
@@ -258,7 +244,34 @@
                                     : "front_loop";
 
             const AnimationFlags flags = AnimationFlags.Loop | AnimationFlags.RagdollOnCollision | AnimationFlags.AbortOnWeaponDamage;
-            ped.Task.PlayAnimation("move_injured_ground", animName, 8f, -1, flags);
+            ped.Task.PlayAnimation(new CrClipAsset(animDict, animName),
+                                   AnimationBlendDelta.SlowBlendIn,
+                                   AnimationBlendDelta.InstantBlendOut,
+                                   duration: sharedData.random.Next(5000, 30000),
+                                   flags,
+                                   startPhase: 0f);
+
+            convertedPed.forcedAnimation = (animDict, animName);
+            convertedPed.RequestPermanentRagdoll();
+            convertedPed.nmHelper = GetInjuredOnGroundHelper(convertedPed, dontReachWithLeft: left, dontReachWithRight: right);
+        }
+
+        private InjuredOnGroundHelper GetInjuredOnGroundHelper(in ConvertedPed convertedPed,
+                                                               bool dontReachWithLeft,
+                                                               bool dontReachWithRight) {
+            var helper = new InjuredOnGroundHelper(convertedPed.thisPed) {
+                Injury1Component = (int)convertedPed.lastDamagedBone,
+                NumInjuries = sharedData.random.Next(1, 3),
+                DontReachWithLeft = dontReachWithLeft,
+                DontReachWithRight = dontReachWithRight,
+                StrongRollForce = sharedData.random.IsTrueWithProbability(0.5f),
+            };
+
+            if (PedEffects.TryGetLastDamageRecord(convertedPed.thisPed, out _, out int handle)) {
+                helper.AttackerPos = GTA.Entity.FromHandle(handle).Position;
+            }
+
+            return helper;
         }
     }
 }

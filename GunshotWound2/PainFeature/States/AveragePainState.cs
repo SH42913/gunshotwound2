@@ -17,7 +17,13 @@
         public float PainThreshold => 0.3f;
         public string Color => "~y~";
 
-        public void ApplyPainIncreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) {
+        private readonly SharedData sharedData;
+
+        public AveragePainState(SharedData sharedData) {
+            this.sharedData = sharedData;
+        }
+
+        public void ApplyPainIncreased(Entity pedEntity, ref ConvertedPed convertedPed) {
             convertedPed.BlockSprint();
 
             if (convertedPed.isPlayer) {
@@ -27,7 +33,7 @@
             }
         }
 
-        public void ApplyPainDecreased(SharedData sharedData, Entity pedEntity, ref ConvertedPed convertedPed) {
+        public void ApplyPainDecreased(Entity pedEntity, ref ConvertedPed convertedPed) {
             convertedPed.UnBlockSprint();
 
             if (convertedPed.isPlayer) {
@@ -37,12 +43,12 @@
             }
         }
 
-        public bool TryGetMoveSets(MainConfig mainConfig, in ConvertedPed convertedPed, out string[] moveSets) {
-            moveSets = mainConfig.GetPainMoveSetsFor(convertedPed).average;
+        public bool TryGetMoveSets(in ConvertedPed convertedPed, out string[] moveSets) {
+            moveSets = sharedData.mainConfig.GetPainMoveSetsFor(convertedPed).average;
             return true;
         }
 
-        public bool TryGetMoodSets(MainConfig mainConfig, in ConvertedPed convertedPed, out string[] moodSets) {
+        public bool TryGetMoodSets(in ConvertedPed convertedPed, out string[] moodSets) {
             moodSets = MOODS;
             return true;
         }
