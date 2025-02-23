@@ -76,6 +76,7 @@ _Currently, GSW2 doesn't support vehicle weapons._
 ## Compatibility
 ### GSW2 will never be compatible with:
 - **Injuries** by Zuthara, 'cause GSW2 is doing same things
+- **Crawl Injury** by jedijosh920, 'cause GSW2 is doing same things
 
 ### GSW2 is compatible with some adjustments:
 - **More Gore** by IAmJFry.\
