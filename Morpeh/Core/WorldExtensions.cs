@@ -119,6 +119,11 @@ namespace Scellecs.Morpeh {
             var pluginType    = typeof(IWorldPlugin);
 
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
+                // HACK: Collect components only for GunshotWound2 assembly
+                if (assembly.GetName().Name != "GunshotWound2") {
+                    continue;
+                }
+
                 foreach (var type in assembly.GetTypes()) {
                     if (componentType.IsAssignableFrom(type) && type.IsValueType && !type.ContainsGenericParameters) {
                         try {
