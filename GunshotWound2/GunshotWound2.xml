@@ -92,10 +92,12 @@
 
 		<CustomAccuracy Min="-1" Max="-1"/>
 		<!-- Peds will get random accuracy between Min and Max.
+		Recommended to set 5-10, you don't want them hit every shot :)
         If you want to use default game Accuracy, set any to -1. -->
 
 		<CustomShootRate Min="-1" Max="-1"/>
 		<!-- Peds will get random ShootRate between Min and Max.
+		Recommended to set 5-10, you don't want them shot too often :)
         If you want to use default game ShootRate, set any to -1. -->
 
 		<PainRecoverySpeed Value="0.8"/>
