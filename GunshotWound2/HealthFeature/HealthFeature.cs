@@ -39,6 +39,12 @@
             });
         }
 
+        public static void StartBandaging(Entity target, Entity medic = null) {
+            target.SetComponent(new BandageRequest {
+                medic = medic ?? target,
+            });
+        }
+
         public static float CalculateSeverityOfAllBleedingWounds(Entity entity) {
             ref Health health = ref entity.GetComponent<Health>();
             if (!health.HasBleedingWounds()) {

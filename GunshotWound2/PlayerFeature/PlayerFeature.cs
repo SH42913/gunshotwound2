@@ -17,9 +17,7 @@
 
             sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.BandageSelfKey, () => {
                 if (sharedData.TryGetPlayer(out Scellecs.Morpeh.Entity playerEntity)) {
-                    playerEntity.SetComponent(new HealthFeature.BandageRequest {
-                        medic = playerEntity,
-                    });
+                    HealthFeature.HealthFeature.StartBandaging(playerEntity);
                 }
             });
 

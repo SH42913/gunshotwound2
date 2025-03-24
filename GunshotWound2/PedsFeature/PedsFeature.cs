@@ -63,9 +63,7 @@
 
         private static void BandageClosestPed(SharedData sharedData) {
             if (sharedData.TryGetPlayer(out Entity playerEntity) && sharedData.TryGetClosestPedEntity(out _, out Entity entity)) {
-                entity.SetComponent(new HealthFeature.BandageRequest {
-                    medic = playerEntity,
-                });
+                HealthFeature.HealthFeature.StartBandaging(entity, medic: playerEntity);
             }
         }
     }
