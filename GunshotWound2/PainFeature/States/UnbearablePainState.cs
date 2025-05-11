@@ -92,10 +92,12 @@
             convertedPed.thisPed.PlayAmbientSpeech(speech, SpeechModifier.InterruptShouted);
 
             Player player = Game.Player;
-            if (player.WantedLevel <= 2) {
+            if (player.Wanted.WantedLevel <= 2) {
                 SetPlayerIsIgnoredByPeds(Game.Player, true);
                 if (sharedData.mainConfig.PlayerConfig.PoliceCanForgetYou) {
-                    player.WantedLevel = 0;
+                    const bool delayLawResponse = false;
+                    player.Wanted.SetWantedLevel(0, delayLawResponse);
+                    player.Wanted.ApplyWantedLevelChangeNow(delayLawResponse);
                 }
             }
 
@@ -125,8 +127,8 @@
         }
 
         private void SetPlayerIsIgnoredByPeds(Player player, bool value) {
-            if (sharedData.mainConfig.PlayerConfig.PedsCanIgnore) {
-                player.IgnoredByEveryone = value;
+            if (sharedData.mainConfig.PlayerConfig.PedsWillIgnoreUnconsciousPlayer) {
+                player.Wanted.SetEveryoneIgnorePlayer(value);
             }
         }
 

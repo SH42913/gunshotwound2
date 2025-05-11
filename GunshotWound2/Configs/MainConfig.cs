@@ -138,7 +138,7 @@ namespace GunshotWound2.Configs {
             config.PlayerConfig.PainRecoverSpeed = node.Element("PainRecoverySpeed").GetFloat();
             config.PlayerConfig.BleedHealingSpeed = node.Element("BleedHealSpeed").GetFloat() / 1000f;
             config.PlayerConfig.PoliceCanForgetYou = node.Element("PoliceCanForget").GetBool();
-            config.PlayerConfig.PedsCanIgnore = node.Element("PedsCanIgnore").GetBool();
+            config.PlayerConfig.PedsWillIgnoreUnconsciousPlayer = node.Element("PedsWillIgnoreUnconsciousPlayer").GetBool();
             config.PlayerConfig.CanDropWeapon = node.Element("CanDropWeapon").GetBool();
             config.PlayerConfig.InstantDeathHeadshot = node.Element("HeadshotIsInstantDeath").GetBool();
             config.PlayerConfig.RealisticSpineDamage = node.Element("RealisticSpineDamage").GetBool();

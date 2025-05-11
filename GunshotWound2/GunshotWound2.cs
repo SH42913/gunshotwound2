@@ -181,10 +181,10 @@
         }
 
         private void HandleRuntimeException(Exception exception) {
-            sharedData.notifier.ShowOne(sharedData.localeConfig.GswStopped, blinking: true, Notifier.Color.ORANGE);
-            sharedData.logger.WriteError(exception.ToString());
             File.WriteAllText(EXCEPTION_LOG_PATH, exception.ToString());
-            sharedData.notifier.ShowOne("There is a runtime error in GSW2, please report it to Github-issues!\n"
+            sharedData.logger.WriteError(exception.ToString());
+            sharedData.notifier.ShowOne(sharedData.localeConfig.GswStopped, blinking: true, Notifier.Color.ORANGE);
+            sharedData.notifier.ShowOne("There is a runtime error in GSW2, please report it to Github-issues or GSW discord!\n"
                                         + $"Log-File - {EXCEPTION_LOG_PATH} to Github-issues\n", blinking: true, Notifier.Color.RED);
         }
         #endregion

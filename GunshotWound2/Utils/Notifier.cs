@@ -27,7 +27,7 @@
 
         public int ShowOne(string message, bool blinking, Color color = default) {
             color.AppendTo(ref message);
-            return Notification.PostTicker(message, blinking).Handle;
+            return Notification.PostTicker(message, blinking)?.Handle ?? 0;
         }
 
         public int ReplaceOne(string message, bool blinking, int oldPost, Color color = default) {
