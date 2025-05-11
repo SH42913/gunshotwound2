@@ -159,6 +159,7 @@
             CritsFeature.CritsFeature.Create(commonSystems, sharedData);
             HealthFeature.HealthFeature.Create(ecsWorld, commonSystems, sharedData);
             PainFeature.PainFeature.Create(commonSystems, sharedData);
+            InventoryFeature.InventoryFeature.Create(commonSystems, sharedData);
         }
         #endregion
 
