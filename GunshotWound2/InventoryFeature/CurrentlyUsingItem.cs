@@ -8,4 +8,10 @@ namespace GunshotWound2.InventoryFeature {
         public float remainingTime;
         public Entity target;
     }
+
+    public static class CurrentlyUsingItemExtensions {
+        public static float ProgressPercent(this in CurrentlyUsingItem currentlyUsing) {
+            return 1f - (currentlyUsing.remainingTime / currentlyUsing.itemTemplate.duration);
+        }
+    }
 }

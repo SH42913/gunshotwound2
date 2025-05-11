@@ -3,6 +3,7 @@
     using Configs;
     using CritsFeature;
     using HealthFeature;
+    using InventoryFeature;
     using PainFeature;
     using PedsFeature;
     using Scellecs.Morpeh;
@@ -30,13 +31,14 @@
         public string BuildString(Entity pedEntity) {
             ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
             ref Health health = ref pedEntity.GetComponent<Health>();
+            ref CurrentlyUsingItem currentlyUsing = ref pedEntity.GetComponent<CurrentlyUsingItem>();
 
             stringBuilder.Clear();
             ShowHealth(ref convertedPed, ref health);
             ShowPain(pedEntity);
             ShowCrits(pedEntity);
             ShowArmor(ref convertedPed);
-            ShowBleedingWounds(ref convertedPed, ref health);
+            ShowBleedingWounds(pedEntity, ref convertedPed, ref health, ref currentlyUsing);
             return stringBuilder.ToString();
         }
 
@@ -141,7 +143,10 @@
             stringBuilder.SetDefaultColor();
         }
 
-        private void ShowBleedingWounds(ref ConvertedPed convertedPed, ref Health health) {
+        private void ShowBleedingWounds(Entity pedEntity,
+                                        ref ConvertedPed convertedPed,
+                                        ref Health health,
+                                        ref CurrentlyUsingItem currentlyUsing) {
             if (!health.HasBleedingWounds()) {
                 return;
             }
@@ -165,9 +170,8 @@
                 stringBuilder.Append(color);
                 stringBuilder.Append(bleeding.name);
 
-                if (isBleedingToBandage && health.timeToBandage > 0f) {
-                    float bandagingProgress = 1f - (health.timeToBandage / mainConfig.WoundConfig.ApplyBandageTime);
-                    stringBuilder.Append($" ~g~({bandagingProgress.ToString("P1")})");
+                if (isBleedingToBandage && currentlyUsing.itemTemplate.IsBandage() && currentlyUsing.target == pedEntity) {
+                    stringBuilder.Append($" ~g~({currentlyUsing.ProgressPercent().ToString("P1")})");
                 }
             }
 

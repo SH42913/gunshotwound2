@@ -310,8 +310,6 @@ namespace GunshotWound2.Configs {
             config.WoundConfig.RagdollOnPainfulWound = node.Element("RagdollOnPainfulWound").GetBool();
             config.WoundConfig.PainfulWoundPercent = node.Element("PainfulWoundPercent").GetFloat();
             config.WoundConfig.MinimalChanceForArmorSave = node.Element("MinimalChanceForArmorSave").GetFloat();
-            config.WoundConfig.ApplyBandageTime = node.Element("ApplyBandageTime").GetFloat();
-            config.WoundConfig.BandageCost = node.Element("BandageCost").GetInt();
             config.WoundConfig.SelfHealingRate = node.Element("SelfHealingRate").GetFloat();
         }
     }

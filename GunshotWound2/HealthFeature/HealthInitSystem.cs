@@ -8,6 +8,7 @@
 
     public sealed class HealthInitSystem : ISystem {
         private readonly SharedData sharedData;
+        private Stash<ConvertedPed> convertedStash;
         private Filter justConvertedPeds;
 
         public Scellecs.Morpeh.World World { get; set; }
@@ -17,6 +18,7 @@
         }
 
         public void OnAwake() {
+            convertedStash = World.GetStash<ConvertedPed>();
             justConvertedPeds = World.Filter.With<ConvertedPed>().With<JustConvertedEvent>();
         }
 
@@ -24,7 +26,7 @@
             PlayerConfig playerConfig = sharedData.mainConfig.PlayerConfig;
             NpcConfig npcConfig = sharedData.mainConfig.NpcConfig;
             foreach (Scellecs.Morpeh.Entity entity in justConvertedPeds) {
-                ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
+                ref ConvertedPed convertedPed = ref convertedStash.Get(entity);
                 convertedPed.thisPed.CanSufferCriticalHits = false;
                 convertedPed.thisPed.DiesOnLowHealth = false;
                 convertedPed.thisPed.CanWrithe = false;

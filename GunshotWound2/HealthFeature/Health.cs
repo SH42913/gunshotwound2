@@ -1,7 +1,6 @@
 ﻿namespace GunshotWound2.HealthFeature {
     using System;
     using System.Collections.Generic;
-    using Configs;
     using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
@@ -17,8 +16,6 @@
         public float bleedingHealRate;
         public Entity bleedingToBandage;
         public HashSet<Entity> bleedingWounds;
-        public float timeToBandage;
-        public Entity bandagingMedic;
     }
 
     public static class HealthExtensions {

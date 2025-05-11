@@ -1,11 +1,11 @@
 ﻿namespace GunshotWound2.HealthFeature {
+    using InventoryFeature;
     using Scellecs.Morpeh;
 
     public static class HealthFeature {
         public static void Create(World world, SystemsGroup systemsGroup, SharedData sharedData) {
             systemsGroup.AddSystem(new TotalHealCheckSystem(sharedData));
             systemsGroup.AddSystem(new HealthInitSystem(sharedData));
-            systemsGroup.AddSystem(new BandageSystem(sharedData));
             systemsGroup.AddSystem(new BleedingSystem(sharedData));
             systemsGroup.AddSystem(new SelfHealingSystem(sharedData));
             systemsGroup.AddSystem(new HealthChangeSystem(sharedData));
@@ -37,11 +37,21 @@
                     entity.GetComponent<Health>().InstantKill("GSW_KILL_PLAYER");
                 }
             });
+
+            sharedData.cheatListener.Register("GSW_FREE_BANDAGES", () => {
+                if (sharedData.TryGetPlayer(out Entity entity)) {
+                    entity.SetComponent(new AddItemRequest {
+                        item = (BandageItem.template, count: 5),
+                    });
+                }
+            });
         }
 
         public static void StartBandaging(Entity target, Entity medic = null) {
-            target.SetComponent(new BandageRequest {
-                medic = medic ?? target,
+            medic ??= target;
+            medic.SetComponent(new UseItemRequest {
+                target = target,
+                item = BandageItem.template,
             });
         }
 

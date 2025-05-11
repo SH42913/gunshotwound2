@@ -70,6 +70,7 @@
     <Compile Include="CritsFeature\Crits.cs"/>
     <Compile Include="CritsFeature\CritsFeature.cs"/>
     <Compile Include="CritsFeature\CritsSystem.cs"/>
+    <Compile Include="HealthFeature\BandageItem.cs" />
     <Compile Include="HealthFeature\BandageRequest.cs"/>
     <Compile Include="InventoryFeature\AddItemRequest.cs" />
     <Compile Include="InventoryFeature\CurrentlyUsingItem.cs" />
@@ -106,7 +107,6 @@
     <Compile Include="WoundFeature\Weapons\ShotgunDamage.cs" />
     <Compile Include="WoundFeature\Weapons\SmallCaliberDamage.cs" />
     <Compile Include="WoundFeature\WoundSystem.cs" />
-    <Compile Include="HealthFeature\BandageSystem.cs" />
     <Compile Include="HealthFeature\Bleeding.cs" />
     <Compile Include="HealthFeature\BleedingSystem.cs" />
     <Compile Include="HealthFeature\HealthChangeSystem.cs" />
