@@ -122,8 +122,6 @@ namespace GunshotWound2.Configs {
         public string GswIsWorking;
         public string GswPauseTip;
 
-        public string AlreadyBandaging;
-        public string DontHaveMoneyForBandage;
         public string YouTryToBandage;
         public string BandageFailed;
         public string BandageSuccess;
@@ -133,6 +131,10 @@ namespace GunshotWound2.Configs {
         public string DeathReason;
         public string BleedingReason;
         public string RunningWithScissors;
+
+        public string FoundItems;
+        public string YourInventory;
+        public string HandsAreBusy;
 
         public string LocalizationAuthor;
 

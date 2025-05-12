@@ -31,6 +31,7 @@
         public string BuildString(Entity pedEntity) {
             ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
             ref Health health = ref pedEntity.GetComponent<Health>();
+            ref Inventory inventory = ref pedEntity.GetComponent<Inventory>();
             ref CurrentlyUsingItem currentlyUsing = ref pedEntity.GetComponent<CurrentlyUsingItem>();
 
             stringBuilder.Clear();
@@ -39,6 +40,7 @@
             ShowCrits(pedEntity);
             ShowArmor(ref convertedPed);
             ShowBleedingWounds(pedEntity, ref convertedPed, ref health, ref currentlyUsing);
+            ShowInventory(ref inventory, ref currentlyUsing);
             return stringBuilder.ToString();
         }
 
@@ -128,7 +130,7 @@
             stringBuilder.Append(color);
             stringBuilder.Append(message);
 #if DEBUG
-            stringBuilder.Append($" ({armor.ToString()})");
+            stringBuilder.AppendFormat(" ({0})", armor.ToString());
 #endif
             stringBuilder.SetDefaultColor();
         }
@@ -147,7 +149,7 @@
             stringBuilder.Append(painPercent.ToString("P1"));
 
             if (pain.TooMuchPain()) {
-                stringBuilder.Append($" ({pain.TimeToRecover().ToString("F1")} sec)");
+                stringBuilder.AppendFormat(" ({0} sec)", pain.TimeToRecover().ToString("F1"));
             }
 
             stringBuilder.SetDefaultColor();
@@ -181,7 +183,7 @@
                 stringBuilder.Append(bleeding.name);
 
                 if (isBleedingToBandage && currentlyUsing.itemTemplate.IsBandage() && currentlyUsing.target == pedEntity) {
-                    stringBuilder.Append($" ~g~({currentlyUsing.ProgressPercent().ToString("P1")})");
+                    stringBuilder.AppendFormat(" ~g~({0})", currentlyUsing.ProgressPercent().ToString("P1"));
                 }
             }
 
@@ -234,6 +236,24 @@
             }
 
             stringBuilder.SetDefaultColor();
+        }
+
+        private void ShowInventory(ref Inventory inventory, ref CurrentlyUsingItem currentlyUsing) {
+            if (inventory.items == null || inventory.items.Count < 1) {
+                return;
+            }
+
+            stringBuilder.AppendLine();
+            stringBuilder.Append(localeConfig.YourInventory);
+
+            foreach ((ItemTemplate item, int count) in inventory.items) {
+                stringBuilder.AppendEndOfLine();
+                stringBuilder.Append(item.GetPluralTranslation(localeConfig, count));
+
+                if (item.Equals(currentlyUsing.itemTemplate)) {
+                    stringBuilder.AppendFormat(" ({0})", currentlyUsing.ProgressPercent().ToString("P1"));
+                }
+            }
         }
     }
 }

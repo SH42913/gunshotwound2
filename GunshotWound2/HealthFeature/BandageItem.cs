@@ -6,6 +6,7 @@ namespace GunshotWound2.HealthFeature {
 
     public static class BandageItem {
         public static ItemTemplate template = new(internalName: "Bandages",
+                                                  pluralKey: "XBandages",
                                                   progressDescriptionKey: "BandagingProgress",
                                                   duration: 3f,
                                                   StartAction,

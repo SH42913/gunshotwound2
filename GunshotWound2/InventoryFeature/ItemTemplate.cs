@@ -1,8 +1,10 @@
 namespace GunshotWound2.InventoryFeature {
     using System;
+    using Configs;
 
     public readonly struct ItemTemplate : IEquatable<ItemTemplate> {
         public readonly string internalName;
+        public readonly string pluralKey;
         public readonly string progressDescriptionKey;
         public readonly float duration;
         public readonly InventoryFeature.ItemAction startAction;
@@ -12,12 +14,14 @@ namespace GunshotWound2.InventoryFeature {
         public bool IsValid => !string.IsNullOrEmpty(internalName);
 
         public ItemTemplate(string internalName,
+                            string pluralKey,
                             string progressDescriptionKey,
                             float duration,
                             InventoryFeature.ItemAction startAction,
                             InventoryFeature.ItemAction progressAction,
                             InventoryFeature.ItemAction finishAction) {
             this.internalName = internalName;
+            this.pluralKey = pluralKey;
             this.progressDescriptionKey = progressDescriptionKey;
             this.duration = duration;
             this.startAction = startAction;
@@ -35,6 +39,13 @@ namespace GunshotWound2.InventoryFeature {
 
         public override int GetHashCode() {
             return (internalName != null ? internalName.GetHashCode() : 0);
+        }
+    }
+
+    public static class ItemExtensions {
+        public static string GetPluralTranslation(this in ItemTemplate item, LocaleConfig localeConfig, int count) {
+            string translation = localeConfig.GetTranslation(item.pluralKey);
+            return string.Format(translation, count.ToString());
         }
     }
 }
