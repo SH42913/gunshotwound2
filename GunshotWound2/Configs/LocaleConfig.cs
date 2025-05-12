@@ -1,10 +1,15 @@
 ﻿// ReSharper disable InconsistentNaming
+// ReSharper disable UnassignedField.Global due fields are filling with reflection 
+
 namespace GunshotWound2.Configs {
     using System;
     using System.IO;
+    using System.Reflection;
     using Leopotam.Localization;
 
     public sealed class LocaleConfig {
+        private Localization localization;
+
         public string HelmetSavedYourHead;
         public string ArmorSavedYourChest;
         public string ArmorSavedYourLowerBody;
@@ -112,7 +117,7 @@ namespace GunshotWound2.Configs {
         public string RemovingRange;
 
         public string ThanksForUsing;
-        public string GswStopped = "Something went wrong with GSW2 :(";
+        public string GswStopped;
         public string GswIsPaused;
         public string GswIsWorking;
         public string GswPauseTip;
@@ -148,145 +153,31 @@ namespace GunshotWound2.Configs {
         }
 
         private static void LoadLocalization(LocaleConfig config, string language, Stream stream) {
-            var manager = new Localization(defaultLanguage: "En");
-            manager.SetDefaultAsFallback(true);
-            manager.SetLanguage(language);
+            config.GswStopped = "Something went wrong with GSW2 :(";
+
+            var localization = new Localization(defaultLanguage: "En");
+            localization.SetDefaultAsFallback(true);
+            localization.SetLanguage(language);
 
             using var reader = new StreamReader(stream);
-            bool success = manager.AddSource(reader.ReadToEnd(), category: "Base");
+            bool success = localization.AddSource(reader.ReadToEnd(), category: "Base");
             if (!success) {
                 throw new Exception("Can't parse localization file");
             }
 
-            config.HelmetSavedYourHead = GetBaseTranslation(manager, "HelmetSavedYourHead");
-            config.ArmorSavedYourChest = GetBaseTranslation(manager, "ArmorSavedYourChest");
-            config.ArmorSavedYourLowerBody = GetBaseTranslation(manager, "ArmorSavedYourLowerBody");
-            config.ArmorPenetrated = GetBaseTranslation(manager, "ArmorPenetrated");
-            config.ArmorInjury = GetBaseTranslation(manager, "ArmorInjury");
+            config.localization = localization;
 
-            config.BodyPartHead = GetBaseTranslation(manager, "BodyPartHead");
-            config.BodyPartNeck = GetBaseTranslation(manager, "BodyPartNeck");
-            config.BodyPartChest = GetBaseTranslation(manager, "BodyPartChest");
-            config.BodyPartLowerBody = GetBaseTranslation(manager, "BodyPartLowerBody");
-            config.BodyPartArm = GetBaseTranslation(manager, "BodyPartArm");
-            config.BodyPartLeg = GetBaseTranslation(manager, "BodyPartLeg");
-
-            config.GrazeWound = GetBaseTranslation(manager, "GrazeWound");
-
-            config.GrazeGswOn = GetBaseTranslation(manager, "GrazeGswOn");
-            config.FleshGswOn = GetBaseTranslation(manager, "FleshGswOn");
-            config.PenetratingGswOn = GetBaseTranslation(manager, "PenetratingGswOn");
-            config.PerforatingGswOn = GetBaseTranslation(manager, "PerforatingGswOn");
-            config.AvulsiveGswOn = GetBaseTranslation(manager, "AvulsiveGswOn");
-
-            config.HeavyBrainDamage = GetBaseTranslation(manager, "HeavyBrainDamage");
-            config.BulletFlyThroughHead = GetBaseTranslation(manager, "BulletFlyThroughHead");
-            config.BulletTornApartBrain = GetBaseTranslation(manager, "BulletTornApartBrain");
-
-            config.LightBruise = GetBaseTranslation(manager, "LightBruise");
-            config.LightBruiseOn = GetBaseTranslation(manager, "LightBruiseOn");
-            config.MediumBruiseOn = GetBaseTranslation(manager, "MediumBruiseOn");
-            config.HeavyBruiseOn = GetBaseTranslation(manager, "HeavyBruiseOn");
-            config.AbrasionWoundOn = GetBaseTranslation(manager, "AbrasionWoundOn");
-            config.WindedFromImpact = GetBaseTranslation(manager, "WindedFromImpact");
-
-            config.IncisionWoundOn = GetBaseTranslation(manager, "IncisionWoundOn");
-            config.LacerationWoundOn = GetBaseTranslation(manager, "LacerationWoundOn");
-            config.StabWoundOn = GetBaseTranslation(manager, "StabWoundOn");
-
-            config.Blackout = GetBaseTranslation(manager, "Blackout");
-            config.BleedingInHead = GetBaseTranslation(manager, "BleedingInHead");
-            config.TraumaticBrainInjury = GetBaseTranslation(manager, "TraumaticBrainInjury");
-            config.BrokenNeck = GetBaseTranslation(manager, "BrokenNeck");
-            config.ClosedFractureOf = GetBaseTranslation(manager, "ClosedFractureOf");
-
-            config.YourHealth = GetBaseTranslation(manager, "YourHealth");
-            config.HisHealth = GetBaseTranslation(manager, "HisHealth");
-            config.HerHealth = GetBaseTranslation(manager, "HerHealth");
-            config.Dead = GetBaseTranslation(manager, "Dead");
-            config.Pain = GetBaseTranslation(manager, "Pain");
-            config.PainIncreasedMessage = GetBaseTranslation(manager, "PainIncreasedMessage");
-            config.PainDecreasedMessage = GetBaseTranslation(manager, "PainDecreasedMessage");
-            config.TotallyHealedMessage = GetBaseTranslation(manager, "TotallyHealedMessage");
-
-            config.ArmorClassI = GetBaseTranslation(manager, "ArmorClassI");
-            config.ArmorClassII = GetBaseTranslation(manager, "ArmorClassII");
-            config.ArmorClassIII = GetBaseTranslation(manager, "ArmorClassIII");
-            config.ArmorClassIV = GetBaseTranslation(manager, "ArmorClassIV");
-            config.ArmorClassV = GetBaseTranslation(manager, "ArmorClassV");
-
-            config.Crits = GetBaseTranslation(manager, "Crits");
-            config.NervesCrit = GetBaseTranslation(manager, "NervesCrit");
-            config.HeartCrit = GetBaseTranslation(manager, "HeartCrit");
-            config.LungsCrit = GetBaseTranslation(manager, "LungsCrit");
-            config.StomachCrit = GetBaseTranslation(manager, "StomachCrit");
-            config.GutsCrit = GetBaseTranslation(manager, "GutsCrit");
-            config.ArmsCrit = GetBaseTranslation(manager, "ArmsCrit");
-            config.LegsCrit = GetBaseTranslation(manager, "LegsCrit");
-
-            config.Wounds = GetBaseTranslation(manager, "Wounds");
-
-            config.DontHaveMoneyForHelmet = GetBaseTranslation(manager, "DontHaveMoneyForHelmet");
-
-            config.InternalBleeding = GetBaseTranslation(manager, "InternalBleeding");
-            config.SeveredArtery = GetBaseTranslation(manager, "SeveredArtery");
-            config.SeveredArteryMessage = GetBaseTranslation(manager, "SeveredArteryMessage");
-
-            config.PlayerNervesCritMessage = GetBaseTranslation(manager, "PlayerNervesCritMessage");
-            config.ManNervesCritMessage = GetBaseTranslation(manager, "ManNervesCritMessage");
-            config.WomanNervesCritMessage = GetBaseTranslation(manager, "WomanNervesCritMessage");
-
-            config.PlayerHeartCritMessage = GetBaseTranslation(manager, "PlayerHeartCritMessage");
-            config.ManHeartCritMessage = GetBaseTranslation(manager, "ManHeartCritMessage");
-            config.WomanHeartCritMessage = GetBaseTranslation(manager, "WomanHeartCritMessage");
-
-            config.PlayerLungsCritMessage = GetBaseTranslation(manager, "PlayerLungsCritMessage");
-            config.ManLungsCritMessage = GetBaseTranslation(manager, "ManLungsCritMessage");
-            config.WomanLungsCritMessage = GetBaseTranslation(manager, "WomanLungsCritMessage");
-
-            config.PlayerStomachCritMessage = GetBaseTranslation(manager, "PlayerStomachCritMessage");
-            config.ManStomachCritMessage = GetBaseTranslation(manager, "ManStomachCritMessage");
-            config.WomanStomachCritMessage = GetBaseTranslation(manager, "WomanStomachCritMessage");
-
-            config.PlayerGutsCritMessage = GetBaseTranslation(manager, "PlayerGutsCritMessage");
-            config.ManGutsCritMessage = GetBaseTranslation(manager, "ManGutsCritMessage");
-            config.WomanGutsCritMessage = GetBaseTranslation(manager, "WomanGutsCritMessage");
-
-            config.PlayerArmsCritMessage = GetBaseTranslation(manager, "PlayerArmsCritMessage");
-            config.ManArmsCritMessage = GetBaseTranslation(manager, "ManArmsCritMessage");
-            config.WomanArmsCritMessage = GetBaseTranslation(manager, "WomanArmsCritMessage");
-
-            config.PlayerLegsCritMessage = GetBaseTranslation(manager, "PlayerLegsCritMessage");
-            config.ManLegsCritMessage = GetBaseTranslation(manager, "ManLegsCritMessage");
-            config.WomanLegsCritMessage = GetBaseTranslation(manager, "WomanLegsCritMessage");
-
-            config.UnbearablePainMessage = GetBaseTranslation(manager, "UnbearablePainMessage");
-
-            config.AddingRange = GetBaseTranslation(manager, "AddingRange");
-            config.RemovingRange = GetBaseTranslation(manager, "RemovingRange");
-
-            config.ThanksForUsing = GetBaseTranslation(manager, "ThanksForUsing");
-            config.GswStopped = GetBaseTranslation(manager, "GswStopped");
-            config.GswIsPaused = GetBaseTranslation(manager, "GswIsPaused");
-            config.GswIsWorking = GetBaseTranslation(manager, "GswIsWorking");
-            config.GswPauseTip = GetBaseTranslation(manager, "GswPauseTip");
-
-            config.AlreadyBandaging = GetBaseTranslation(manager, "AlreadyBandaging");
-            config.DontHaveMoneyForBandage = GetBaseTranslation(manager, "DontHaveMoneyForBandage");
-            config.YouTryToBandage = GetBaseTranslation(manager, "YouTryToBandage");
-            config.BandageFailed = GetBaseTranslation(manager, "BandageFailed");
-            config.BandageSuccess = GetBaseTranslation(manager, "BandageSuccess");
-
-            config.ArmorDestroyed = GetBaseTranslation(manager, "ArmorDestroyed");
-            config.PainShockDeath = GetBaseTranslation(manager, "PainShockDeath");
-            config.DeathReason = GetBaseTranslation(manager, "DeathReason");
-            config.BleedingReason = GetBaseTranslation(manager, "BleedingReason");
-            config.RunningWithScissors = GetBaseTranslation(manager, "RunningWithScissors");
-
-            config.LocalizationAuthor = GetBaseTranslation(manager, "TranslationAuthor");
+            Type stringType = typeof(string);
+            FieldInfo[] fields = typeof(LocaleConfig).GetFields(BindingFlags.Instance | BindingFlags.Public);
+            foreach (FieldInfo field in fields) {
+                if (field.FieldType == stringType) {
+                    string translation = config.GetTranslation(field.Name);
+                    field.SetValue(config, translation);
+                }
+            }
         }
 
-        private static string GetBaseTranslation(Localization localization, string key) {
+        public string GetTranslation(string key) {
             return localization.Get(key, "Base").Item1;
         }
     }
