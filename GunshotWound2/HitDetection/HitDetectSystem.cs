@@ -31,7 +31,7 @@
         }
 
         private void ProcessJustDamagedPeds() {
-            if (!sharedData.mainConfig.NpcConfig.ScanOnlyDamaged) {
+            if (!sharedData.mainConfig.pedsConfig.ScanOnlyDamaged) {
                 return;
             }
 

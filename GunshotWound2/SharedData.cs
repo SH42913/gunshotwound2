@@ -67,7 +67,7 @@
         }
 
         public bool TryGetClosestPedEntity(out GTA.Ped closestPed, out Entity closestPedEntity) {
-            if (GTAHelpers.TryGetClosestPed(out closestPed, mainConfig.NpcConfig.ClosestPedRange)) {
+            if (GTAHelpers.TryGetClosestPed(out closestPed, mainConfig.pedsConfig.ClosestPedRange)) {
                 return worldService.TryGetConverted(closestPed, out closestPedEntity);
             }
 

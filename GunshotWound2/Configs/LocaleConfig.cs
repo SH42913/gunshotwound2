@@ -138,7 +138,7 @@ namespace GunshotWound2.Configs {
 
         public string TranslationAuthor;
 
-        public static (bool success, string reason) TryToLoad(string scriptPath, LocaleConfig config, string language) {
+        public (bool success, string reason) TryToLoad(string scriptPath, string language) {
             string path = Path.ChangeExtension(scriptPath, ".csv");
             if (!File.Exists(path)) {
                 return (false, "Localization file was not found");
@@ -146,7 +146,7 @@ namespace GunshotWound2.Configs {
 
             var doc = new FileInfo(path);
             try {
-                LoadLocalization(config, language, doc.OpenRead());
+                LoadLocalization(language, doc.OpenRead());
             } catch (Exception e) {
                 return (false, e.Message);
             }
@@ -154,10 +154,10 @@ namespace GunshotWound2.Configs {
             return (true, null);
         }
 
-        private static void LoadLocalization(LocaleConfig config, string language, Stream stream) {
-            config.GswStopped = "Something went wrong with GSW2 :(";
+        private void LoadLocalization(string language, Stream stream) {
+            GswStopped = "Something went wrong with GSW2 :(";
 
-            var localization = new Localization(defaultLanguage: "En");
+            localization = new Localization(defaultLanguage: "En");
             localization.SetDefaultAsFallback(true);
             localization.SetLanguage(language);
 
@@ -167,14 +167,12 @@ namespace GunshotWound2.Configs {
                 throw new Exception("Can't parse localization file");
             }
 
-            config.localization = localization;
-
             Type stringType = typeof(string);
             FieldInfo[] fields = typeof(LocaleConfig).GetFields(BindingFlags.Instance | BindingFlags.Public);
             foreach (FieldInfo field in fields) {
                 if (field.FieldType == stringType) {
-                    string translation = config.GetTranslation(field.Name);
-                    field.SetValue(config, translation);
+                    string translation = GetTranslation(field.Name);
+                    field.SetValue(this, translation);
                 }
             }
         }

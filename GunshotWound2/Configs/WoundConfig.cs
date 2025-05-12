@@ -1,7 +1,10 @@
 ﻿// ReSharper disable InconsistentNaming
+
 namespace GunshotWound2.Configs {
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Xml.Linq;
+    using Utils;
 
     public sealed class WoundConfig {
         public const float MAX_SEVERITY_FOR_BANDAGE = 1f;
@@ -26,7 +29,25 @@ namespace GunshotWound2.Configs {
 
         public float SelfHealingRate;
 
-        public Dictionary<string, float?[]> DamageSystemConfigs;
+        public void FillFrom(XElement doc) {
+            XElement node = doc.Element("Wounds");
+            if (node == null) {
+                return;
+            }
+
+            MoveRateOnFullPain = node.Element("MoveRateOnFullPain").GetFloat();
+            MoveRateOnLegsCrit = node.Element("MoveRateOnLegsCrit").GetFloat();
+            DamageMultiplier = node.Element("OverallDamageMult").GetFloat();
+            DamageDeviation = node.Element("DamageDeviation").GetFloat();
+            PainMultiplier = node.Element("OverallPainMult").GetFloat();
+            PainDeviation = node.Element("PainDeviation").GetFloat();
+            BleedingMultiplier = node.Element("OverallBleedingMult").GetFloat();
+            BleedingDeviation = node.Element("BleedingDeviation").GetFloat();
+            RagdollOnPainfulWound = node.Element("RagdollOnPainfulWound").GetBool();
+            PainfulWoundPercent = node.Element("PainfulWoundPercent").GetFloat();
+            MinimalChanceForArmorSave = node.Element("MinimalChanceForArmorSave").GetFloat();
+            SelfHealingRate = node.Element("SelfHealingRate").GetFloat();
+        }
 
         public bool IsBleedingCanBeBandaged(float severity) {
             return severity <= BleedingMultiplier * MAX_SEVERITY_FOR_BANDAGE;

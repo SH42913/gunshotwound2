@@ -94,14 +94,14 @@
             Player player = Game.Player;
             if (player.Wanted.WantedLevel <= 2) {
                 SetPlayerIsIgnoredByPeds(Game.Player, true);
-                if (sharedData.mainConfig.PlayerConfig.PoliceCanForgetYou) {
+                if (sharedData.mainConfig.playerConfig.PoliceCanForgetYou) {
                     const bool delayLawResponse = false;
                     player.Wanted.SetWantedLevel(0, delayLawResponse);
                     player.Wanted.ApplyWantedLevelChangeNow(delayLawResponse);
                 }
             }
 
-            if (sharedData.mainConfig.PlayerConfig.CanDropWeapon) {
+            if (sharedData.mainConfig.playerConfig.CanDropWeapon) {
                 convertedPed.thisPed.Weapons.Drop();
             }
 
@@ -127,7 +127,7 @@
         }
 
         private void SetPlayerIsIgnoredByPeds(Player player, bool value) {
-            if (sharedData.mainConfig.PlayerConfig.PedsWillIgnoreUnconsciousPlayer) {
+            if (sharedData.mainConfig.playerConfig.PedsWillIgnoreUnconsciousPlayer) {
                 player.Wanted.SetEveryoneIgnorePlayer(value);
             }
         }

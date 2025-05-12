@@ -45,7 +45,7 @@
                 return;
             }
 
-            int moneyForHelmet = sharedData.mainConfig.PlayerConfig.MoneyForHelmet;
+            int moneyForHelmet = sharedData.mainConfig.playerConfig.MoneyForHelmet;
             if (player.Money <= 0 || player.Money >= moneyForHelmet) {
                 player.Money -= moneyForHelmet;
                 int helmetTextureId = sharedData.random.Next(0, 15);

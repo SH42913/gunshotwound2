@@ -105,7 +105,7 @@
                 return false;
             }
 
-            (bool success, string reason) = MainConfig.TryToLoad(sharedData.scriptPath, sharedData.mainConfig);
+            (bool success, string reason) = sharedData.mainConfig.TryToLoad(sharedData.scriptPath);
             if (!success) {
                 var message = $"GSW2 couldn't load config!\nReason:\n~r~{reason}";
                 sharedData.notifier.ShowOne(message, blinking: true);
@@ -114,7 +114,7 @@
                 return false;
             }
 
-            (success, reason) = LocaleConfig.TryToLoad(sharedData.scriptPath, sharedData.localeConfig, sharedData.mainConfig.Language);
+            (success, reason) = sharedData.localeConfig.TryToLoad(sharedData.scriptPath, sharedData.mainConfig.Language);
             if (!success) {
                 var message = $"GSW2 couldn't load localization!\nReason:\n~r~{reason}";
                 sharedData.notifier.ShowOne(message, blinking: true);

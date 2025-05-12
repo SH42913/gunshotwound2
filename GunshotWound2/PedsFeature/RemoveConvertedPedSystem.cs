@@ -22,7 +22,7 @@
 
         public void OnUpdate(float deltaTime) {
             Vector3 playerPosition = Game.Player.Character.Position;
-            float removeRange = sharedData.mainConfig.NpcConfig.RemovePedRange;
+            float removeRange = sharedData.mainConfig.pedsConfig.RemovePedRange;
             foreach (Scellecs.Morpeh.Entity entity in converted) {
                 ref ConvertedPed convertedPed = ref convertedStash.Get(entity);
                 Ped ped = convertedPed.thisPed;

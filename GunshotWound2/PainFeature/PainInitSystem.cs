@@ -20,8 +20,8 @@
         }
 
         public void OnUpdate(float deltaTime) {
-            PlayerConfig playerConfig = sharedData.mainConfig.PlayerConfig;
-            NpcConfig npcConfig = sharedData.mainConfig.NpcConfig;
+            PlayerConfig playerConfig = sharedData.mainConfig.playerConfig;
+            PedsConfig pedsConfig = sharedData.mainConfig.pedsConfig;
             foreach (Entity entity in justConvertedPeds) {
                 ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
                 ref Pain pain = ref entity.AddOrGetComponent<Pain>();
@@ -29,10 +29,10 @@
                     pain.recoveryRate = playerConfig.PainRecoverSpeed;
                     pain.max = playerConfig.MaximalPain;
                 } else {
-                    float maxRate = npcConfig.MaximalPainRecoverSpeed;
+                    float maxRate = pedsConfig.MaximalPainRecoverSpeed;
                     float minRate = 0.5f * maxRate;
                     pain.recoveryRate = sharedData.random.NextFloat(minRate, maxRate);
-                    pain.max = sharedData.random.NextFloat(npcConfig.LowerMaximalPain, npcConfig.UpperMaximalPain);
+                    pain.max = sharedData.random.NextFloat(pedsConfig.LowerMaximalPain, pedsConfig.UpperMaximalPain);
                 }
             }
         }

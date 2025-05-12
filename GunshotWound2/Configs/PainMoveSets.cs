@@ -7,7 +7,7 @@
         public readonly string[] average;
         public readonly string[] intense;
 
-        public PainMoveSets(string[] mild, string[] average, string[] intense) {
+        private PainMoveSets(string[] mild, string[] average, string[] intense) {
             this.mild = mild;
             this.average = average;
             this.intense = intense;

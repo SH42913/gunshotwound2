@@ -81,7 +81,7 @@
 
         private void ProcessBleeding(Entity entity, ref Bleeding bleeding, ref Health health) {
             bleeding.canBeBandaged = !bleeding.isInternal
-                                     && sharedData.mainConfig.WoundConfig.IsBleedingCanBeBandaged(bleeding.severity);
+                                     && sharedData.mainConfig.woundConfig.IsBleedingCanBeBandaged(bleeding.severity);
 
             health.bleedingWounds ??= new HashSet<Entity>(4);
             health.bleedingWounds.Add(entity);

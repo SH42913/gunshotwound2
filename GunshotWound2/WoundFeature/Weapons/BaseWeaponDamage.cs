@@ -24,7 +24,7 @@
             this.sharedData = sharedData;
             randomizer = sharedData.weightRandom;
 
-            Dictionary<string, float?[]> damageSystemConfigs = sharedData.mainConfig.WoundConfig.DamageSystemConfigs;
+            Dictionary<string, float?[]> damageSystemConfigs = sharedData.mainConfig.weaponConfig.DamageSystemConfigs;
             if (damageSystemConfigs != null
                 && damageSystemConfigs.TryGetValue(weaponClass, out float?[] multsArray)
                 && multsArray.Length == 5) {
@@ -169,7 +169,7 @@
                 return false;
             }
 
-            WoundConfig woundConfig = sharedData.mainConfig.WoundConfig;
+            WoundConfig woundConfig = sharedData.mainConfig.woundConfig;
             float chanceToSave = woundConfig.MinimalChanceForArmorSave;
             if (chanceToSave >= 1f) {
 #if DEBUG

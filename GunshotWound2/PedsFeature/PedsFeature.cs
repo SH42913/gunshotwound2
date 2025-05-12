@@ -40,17 +40,17 @@
         }
 
         private static void ChangeRange(SharedData sharedData, float value) {
-            NpcConfig npcConfig = sharedData.mainConfig.NpcConfig;
-            if (npcConfig.AddingPedRange + value < MainConfig.MINIMAL_RANGE_FOR_WOUNDED_PEDS) {
+            PedsConfig pedsConfig = sharedData.mainConfig.pedsConfig;
+            if (pedsConfig.AddingPedRange + value < PedsConfig.MINIMAL_RANGE_FOR_WOUNDED_PEDS) {
                 return;
             }
 
-            npcConfig.AddingPedRange += value;
-            npcConfig.RemovePedRange = npcConfig.AddingPedRange * MainConfig.ADDING_TO_REMOVING_MULTIPLIER;
+            pedsConfig.AddingPedRange += value;
+            pedsConfig.RemovePedRange = pedsConfig.AddingPedRange * PedsConfig.ADDING_TO_REMOVING_MULTIPLIER;
 
             LocaleConfig localeConfig = sharedData.localeConfig;
-            var scan = npcConfig.AddingPedRange.ToString("F0");
-            var remove = npcConfig.RemovePedRange.ToString("F0");
+            var scan = pedsConfig.AddingPedRange.ToString("F0");
+            var remove = pedsConfig.RemovePedRange.ToString("F0");
             LAST_POST = sharedData.notifier.ReplaceOne($"{localeConfig.AddingRange}: {scan}\n{localeConfig.RemovingRange}: {remove}",
                                                        blinking: false, LAST_POST);
         }

@@ -16,7 +16,7 @@
         public void OnAwake() { }
 
         public void OnUpdate(float deltaTime) {
-            float painSlowMo = sharedData.mainConfig.PlayerConfig.PainSlowMo;
+            float painSlowMo = sharedData.mainConfig.playerConfig.PainSlowMo;
             if (painSlowMo is <= 0f or >= 1f) {
                 return;
             }

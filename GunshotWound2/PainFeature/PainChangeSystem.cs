@@ -164,11 +164,11 @@
 
             float painPercent = pain.Percent();
             if (painPercent >= 1f) {
-                convertedPed.moveRate = sharedData.mainConfig.WoundConfig.MoveRateOnFullPain;
+                convertedPed.moveRate = sharedData.mainConfig.woundConfig.MoveRateOnFullPain;
                 return;
             }
 
-            float adjustable = 1f - sharedData.mainConfig.WoundConfig.MoveRateOnFullPain;
+            float adjustable = 1f - sharedData.mainConfig.woundConfig.MoveRateOnFullPain;
             float moveRate = 1f - adjustable * painPercent;
             convertedPed.moveRate = moveRate;
         }
@@ -189,7 +189,7 @@
             int painAnimIndex = sharedData.random.Next(1, 7);
             PedEffects.PlayFacialAnim(convertedPed.thisPed, $"pain_{painAnimIndex.ToString()}", convertedPed.isMale);
 
-            WoundConfig woundConfig = sharedData.mainConfig.WoundConfig;
+            WoundConfig woundConfig = sharedData.mainConfig.woundConfig;
             float painfulThreshold = woundConfig.PainfulWoundPercent * pain.max;
             if (pain.diff >= painfulThreshold) {
 #if DEBUG

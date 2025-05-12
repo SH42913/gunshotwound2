@@ -23,8 +23,8 @@
         }
 
         public void OnUpdate(float deltaTime) {
-            PlayerConfig playerConfig = sharedData.mainConfig.PlayerConfig;
-            NpcConfig npcConfig = sharedData.mainConfig.NpcConfig;
+            PlayerConfig playerConfig = sharedData.mainConfig.playerConfig;
+            PedsConfig pedsConfig = sharedData.mainConfig.pedsConfig;
             foreach (Scellecs.Morpeh.Entity entity in justConvertedPeds) {
                 ref ConvertedPed convertedPed = ref convertedStash.Get(entity);
                 convertedPed.thisPed.CanSufferCriticalHits = false;
@@ -35,7 +35,7 @@
                 health.max = convertedPed.thisPed.MaxHealth - 1;
                 if (convertedPed.thisPed.Health > health.max) {
                     convertedPed.thisPed.Health = health.max;
-                } else if (!convertedPed.isPlayer && sharedData.mainConfig.NpcConfig.ScanOnlyDamaged) {
+                } else if (!convertedPed.isPlayer && sharedData.mainConfig.pedsConfig.ScanOnlyDamaged) {
                     convertedPed.thisPed.Health = health.max;
                 }
 
@@ -43,12 +43,12 @@
                     health.bleedingHealRate = playerConfig.BleedHealingSpeed;
                     Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, Game.Player, 0f);
                 } else {
-                    float maxRate = npcConfig.MaximalBleedStopSpeed;
+                    float maxRate = pedsConfig.MaximalBleedStopSpeed;
                     float minRate = 0.5f * maxRate;
                     health.bleedingHealRate = sharedData.random.NextFloat(minRate, maxRate);
 
-                    if (npcConfig.MinStartHealth > 0 && npcConfig.MaxStartHealth > 0) {
-                        int randomHealth = sharedData.random.Next(npcConfig.MinStartHealth, npcConfig.MaxStartHealth);
+                    if (pedsConfig.MinStartHealth > 0 && pedsConfig.MaxStartHealth > 0) {
+                        int randomHealth = sharedData.random.Next(pedsConfig.MinStartHealth, pedsConfig.MaxStartHealth);
                         convertedPed.thisPed.Health = WoundConfig.ConvertHealthToNative(randomHealth);
                     }
                 }

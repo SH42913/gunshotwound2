@@ -71,7 +71,8 @@
         }
 
         private bool CheckWeaponHashes(Ped ped, out uint hitWeapon, out PedHitData.WeaponTypes weaponType, out bool skipDamage) {
-            if (PedWasDamagedBy(sharedData.mainConfig.IgnoreHashes, ped, out hitWeapon)) {
+            WeaponConfig weaponConfig = sharedData.mainConfig.weaponConfig;
+            if (PedWasDamagedBy(weaponConfig.IgnoreHashes, ped, out hitWeapon)) {
 #if DEBUG
                 sharedData.logger.WriteInfo($"{BuildWeaponName(hitWeapon)} is ignore hash, it will be skipped");
 #endif
@@ -80,20 +81,19 @@
                 return true;
             }
 
-            MainConfig config = sharedData.mainConfig;
-            if (PedWasDamagedBy(config.LightImpactHashes, ped, out hitWeapon)) {
+            if (PedWasDamagedBy(weaponConfig.LightImpactHashes, ped, out hitWeapon)) {
                 weaponType = PedHitData.WeaponTypes.LightImpact;
-            } else if (PedWasDamagedBy(config.HeavyImpactHashes, ped, out hitWeapon)) {
+            } else if (PedWasDamagedBy(weaponConfig.HeavyImpactHashes, ped, out hitWeapon)) {
                 weaponType = PedHitData.WeaponTypes.HeavyImpact;
-            } else if (PedWasDamagedBy(config.CuttingHashes, ped, out hitWeapon)) {
+            } else if (PedWasDamagedBy(weaponConfig.CuttingHashes, ped, out hitWeapon)) {
                 weaponType = PedHitData.WeaponTypes.Cutting;
-            } else if (PedWasDamagedBy(config.SmallCaliberHashes, ped, out hitWeapon)) {
+            } else if (PedWasDamagedBy(weaponConfig.SmallCaliberHashes, ped, out hitWeapon)) {
                 weaponType = PedHitData.WeaponTypes.SmallCaliber;
-            } else if (PedWasDamagedBy(config.MediumCaliberHashes, ped, out hitWeapon)) {
+            } else if (PedWasDamagedBy(weaponConfig.MediumCaliberHashes, ped, out hitWeapon)) {
                 weaponType = PedHitData.WeaponTypes.MediumCaliber;
-            } else if (PedWasDamagedBy(config.HeavyCaliberHashes, ped, out hitWeapon)) {
+            } else if (PedWasDamagedBy(weaponConfig.HeavyCaliberHashes, ped, out hitWeapon)) {
                 weaponType = PedHitData.WeaponTypes.HeavyCaliber;
-            } else if (PedWasDamagedBy(config.ShotgunHashes, ped, out hitWeapon)) {
+            } else if (PedWasDamagedBy(weaponConfig.ShotgunHashes, ped, out hitWeapon)) {
                 weaponType = PedHitData.WeaponTypes.Shotgun;
             } else {
                 weaponType = PedHitData.WeaponTypes.Nothing;

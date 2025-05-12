@@ -24,9 +24,9 @@
         void IDisposable.Dispose() { }
 
         public void OnUpdate(float deltaTime) {
-            NpcConfig npcConfig = sharedData.mainConfig.NpcConfig;
-            float addRange = npcConfig.AddingPedRange;
-            if (addRange <= MainConfig.MINIMAL_RANGE_FOR_WOUNDED_PEDS) {
+            PedsConfig pedsConfig = sharedData.mainConfig.pedsConfig;
+            float addRange = pedsConfig.AddingPedRange;
+            if (addRange <= PedsConfig.MINIMAL_RANGE_FOR_WOUNDED_PEDS) {
                 return;
             }
 
@@ -67,7 +67,7 @@
                 return false;
             }
 
-            if (!sharedData.mainConfig.NpcConfig.ScanOnlyDamaged) {
+            if (!sharedData.mainConfig.pedsConfig.ScanOnlyDamaged) {
                 return true;
             }
 
@@ -75,7 +75,7 @@
         }
 
         private bool IsInTargetList(Ped pedToCheck, Ped playerPed) {
-            GswTargets targets = sharedData.mainConfig.NpcConfig.Targets;
+            GswTargets targets = sharedData.mainConfig.pedsConfig.Targets;
             if (targets == GswTargets.ALL) {
                 return true;
             }

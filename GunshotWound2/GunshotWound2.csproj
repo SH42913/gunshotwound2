@@ -55,9 +55,10 @@
   <ItemGroup>
     <Compile Include="Configs\LocaleConfig.cs"/>
     <Compile Include="Configs\MainConfig.cs"/>
-    <Compile Include="Configs\NpcConfig.cs"/>
+    <Compile Include="Configs\PedsConfig.cs" />
     <Compile Include="Configs\PainMoveSets.cs"/>
     <Compile Include="Configs\PlayerConfig.cs"/>
+    <Compile Include="Configs\WeaponConfig.cs" />
     <Compile Include="Configs\WoundConfig.cs"/>
     <Compile Include="CritsFeature\Actions\ArmsCrit.cs"/>
     <Compile Include="CritsFeature\Actions\GutsCrit.cs"/>

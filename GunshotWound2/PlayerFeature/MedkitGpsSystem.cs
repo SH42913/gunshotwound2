@@ -12,7 +12,7 @@
         private float timeToRefresh;
 
         public Scellecs.Morpeh.World World { get; set; }
-        private PlayerConfig PlayerConfig => sharedData.mainConfig.PlayerConfig;
+        private PlayerConfig PlayerConfig => sharedData.mainConfig.playerConfig;
 
         public MedkitGpsSystem(SharedData sharedData) {
             this.sharedData = sharedData;

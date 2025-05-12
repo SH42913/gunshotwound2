@@ -70,8 +70,8 @@
                     } else {
                         bool isHeadshot = crits.requestBodyPart == PedHitData.BodyParts.Head;
                         bool realSpineCrit = convertedPed.isPlayer
-                                ? sharedData.mainConfig.PlayerConfig.RealisticSpineDamage
-                                : sharedData.mainConfig.NpcConfig.RealisticSpineDamage;
+                                ? sharedData.mainConfig.playerConfig.RealisticSpineDamage
+                                : sharedData.mainConfig.pedsConfig.RealisticSpineDamage;
 
                         if (isHeadshot || realSpineCrit) {
                             ApplyCrit(entity, ref crits, ref convertedPed, Crits.Types.SpineDamaged, message: !isHeadshot);

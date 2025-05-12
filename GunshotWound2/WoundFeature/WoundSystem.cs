@@ -74,8 +74,8 @@
         private void CreateStunPain(Entity pedEntity, ref ConvertedPed convertedPed) {
             const float stunPainMult = 1.2f;
             float maxPain = convertedPed.isPlayer
-                    ? sharedData.mainConfig.PlayerConfig.MaximalPain
-                    : sharedData.mainConfig.NpcConfig.UpperMaximalPain;
+                    ? sharedData.mainConfig.playerConfig.MaximalPain
+                    : sharedData.mainConfig.pedsConfig.UpperMaximalPain;
 
             CreatePain(pedEntity, stunPainMult * maxPain);
             convertedPed.thisPed.PlayAmbientSpeech("PAIN_TAZER", GTA.SpeechModifier.InterruptShouted);
@@ -109,8 +109,8 @@
         private bool IsDeadlyWound(in PedHitData hitData, bool isPlayer) {
             return hitData.bodyPart == PedHitData.BodyParts.Head
                    && (isPlayer
-                           ? sharedData.mainConfig.PlayerConfig.InstantDeathHeadshot
-                           : sharedData.mainConfig.NpcConfig.InstantDeathHeadshot);
+                           ? sharedData.mainConfig.playerConfig.InstantDeathHeadshot
+                           : sharedData.mainConfig.pedsConfig.InstantDeathHeadshot);
         }
 
         private static void InstantKill(Entity pedEntity, string woundName) {
@@ -122,8 +122,8 @@
                 return;
             }
 
-            float deviation = sharedData.mainConfig.WoundConfig.DamageDeviation;
-            float mult = sharedData.mainConfig.WoundConfig.DamageMultiplier;
+            float deviation = sharedData.mainConfig.woundConfig.DamageDeviation;
+            float mult = sharedData.mainConfig.woundConfig.DamageMultiplier;
 
             float damageAmount = CalculateAmount(damage, deviation, mult);
             damageAmount = Math.Max(damageAmount, 1f);
@@ -135,15 +135,15 @@
                 return;
             }
 
-            float deviation = sharedData.mainConfig.WoundConfig.BleedingDeviation;
-            float mult = sharedData.mainConfig.WoundConfig.BleedingMultiplier;
+            float deviation = sharedData.mainConfig.woundConfig.BleedingDeviation;
+            float mult = sharedData.mainConfig.woundConfig.BleedingMultiplier;
             severity = CalculateAmount(severity, deviation, mult);
             pedEntity.CreateBleeding(severity, name, isInternal);
         }
 
         private void CreatePain(Entity pedEntity, float painAmount) {
-            float deviation = sharedData.mainConfig.WoundConfig.PainDeviation;
-            float mult = sharedData.mainConfig.WoundConfig.PainMultiplier;
+            float deviation = sharedData.mainConfig.woundConfig.PainDeviation;
+            float mult = sharedData.mainConfig.woundConfig.PainMultiplier;
 
             ref Pain pain = ref pedEntity.GetComponent<Pain>();
             pain.diff += CalculateAmount(painAmount, deviation, mult);

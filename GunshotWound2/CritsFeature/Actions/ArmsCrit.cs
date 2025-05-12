@@ -26,7 +26,7 @@
                 sharedData.cameraService.aimingShakeAmplitude += SHAKE_AMPLITUDE;
             }
 
-            if (!convertedPed.isPlayer || sharedData.mainConfig.PlayerConfig.CanDropWeapon) {
+            if (!convertedPed.isPlayer || sharedData.mainConfig.playerConfig.CanDropWeapon) {
                 convertedPed.thisPed.Weapons.Drop();
             }
 

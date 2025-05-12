@@ -35,17 +35,17 @@
                 convertedPed.thisPed = pedToConvert;
                 convertedPed.isMale = pedToConvert.Gender == Gender.Male;
 
-                NpcConfig npcConfig = sharedData.mainConfig.NpcConfig;
-                if (npcConfig.MinAccuracy > 0 && npcConfig.MaxAccuracy > 0 && pedToConvert.Accuracy > npcConfig.MinAccuracy) {
-                    pedToConvert.Accuracy = sharedData.random.Next(npcConfig.MinAccuracy, npcConfig.MaxAccuracy + 1);
+                PedsConfig pedsConfig = sharedData.mainConfig.pedsConfig;
+                if (pedsConfig.MinAccuracy > 0 && pedsConfig.MaxAccuracy > 0 && pedToConvert.Accuracy > pedsConfig.MinAccuracy) {
+                    pedToConvert.Accuracy = sharedData.random.Next(pedsConfig.MinAccuracy, pedsConfig.MaxAccuracy + 1);
                 }
 
                 convertedPed.defaultAccuracy = pedToConvert.Accuracy;
-                if (npcConfig.MinShootRate > 0 && npcConfig.MaxShootRate > 0) {
-                    pedToConvert.ShootRate = sharedData.random.Next(npcConfig.MinShootRate, npcConfig.MaxShootRate);
+                if (pedsConfig.MinShootRate > 0 && pedsConfig.MaxShootRate > 0) {
+                    pedToConvert.ShootRate = sharedData.random.Next(pedsConfig.MinShootRate, pedsConfig.MaxShootRate);
                 }
 
-                if (npcConfig.DontActivateRagdollFromBulletImpact) {
+                if (pedsConfig.DontActivateRagdollFromBulletImpact) {
                     convertedPed.thisPed.SetConfigFlag(PedConfigFlagToggles.DontActivateRagdollFromBulletImpact, true);
                 }
 

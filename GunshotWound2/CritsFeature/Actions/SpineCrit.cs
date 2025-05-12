@@ -14,7 +14,7 @@
             convertedPed.RequestPermanentRagdoll();
             convertedPed.hasSpineDamage = true;
 
-            if (!convertedPed.isPlayer || sharedData.mainConfig.PlayerConfig.CanDropWeapon) {
+            if (!convertedPed.isPlayer || sharedData.mainConfig.playerConfig.CanDropWeapon) {
                 convertedPed.thisPed.Weapons.Drop();
             }
         }

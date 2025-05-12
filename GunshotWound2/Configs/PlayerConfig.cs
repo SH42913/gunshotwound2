@@ -1,6 +1,9 @@
 ﻿// ReSharper disable InconsistentNaming
+
 namespace GunshotWound2.Configs {
     using System.Globalization;
+    using System.Xml.Linq;
+    using Utils;
 
     public sealed class PlayerConfig {
         public bool PoliceCanForgetYou;
@@ -21,6 +24,29 @@ namespace GunshotWound2.Configs {
         public float PainSlowMo;
 
         public PainMoveSets PainMoveSets;
+
+        public void FillFrom(XElement doc) {
+            XElement node = doc.Element("Player");
+            if (node == null) {
+                return;
+            }
+
+            MaximalPain = node.Element("MaximalPain").GetFloat();
+            PainRecoverSpeed = node.Element("PainRecoverySpeed").GetFloat();
+            BleedHealingSpeed = node.Element("BleedHealSpeed").GetFloat() / 1000f;
+            PoliceCanForgetYou = node.Element("PoliceCanForget").GetBool();
+            PedsWillIgnoreUnconsciousPlayer = node.Element("PedsWillIgnoreUnconsciousPlayer").GetBool();
+            CanDropWeapon = node.Element("CanDropWeapon").GetBool();
+            InstantDeathHeadshot = node.Element("HeadshotIsInstantDeath").GetBool();
+            RealisticSpineDamage = node.Element("RealisticSpineDamage").GetBool();
+            BlipsToMedkits = node.Element("BlipsToMedkits").GetBool();
+            TimeToRefreshMedkits = node.Element("BlipsToMedkits").GetFloat("RefreshTime");
+            MedkitModel = node.Element("BlipsToMedkits").GetString("ModelName");
+            PainSlowMo = node.Element("PainSlowMo").GetFloat();
+            MoneyForHelmet = node.Element("HelmetCost").GetInt();
+
+            PainMoveSets = PainMoveSets.FromXElement(node, "MoveSets");
+        }
 
         public override string ToString() {
             return $"{nameof(PlayerConfig)}:\n"
