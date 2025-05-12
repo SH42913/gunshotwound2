@@ -32,5 +32,6 @@
         public bool useRandomBodyPart;
         public string armorMessage;
         public Bone damagedBone;
+        public bool afterTakedown;
     }
 }

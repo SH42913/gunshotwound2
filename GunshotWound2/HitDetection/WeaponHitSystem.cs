@@ -39,10 +39,11 @@
                     continue;
                 }
 
-                bool isSpecialCase;
                 ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
-                if (CheckWeaponHashes(convertedPed.thisPed, out uint hitWeapon, out PedHitData.WeaponTypes weaponType,
-                                      out bool skipDamage)) {
+                Ped ped = convertedPed.thisPed;
+                bool isSpecialCase;
+
+                if (CheckWeaponHashes(ped, out uint hitWeapon, out PedHitData.WeaponTypes weaponType, out bool skipDamage)) {
                     isSpecialCase = false;
                 } else if (CheckSpecialCases(ref convertedPed, out weaponType, out skipDamage)) {
                     isSpecialCase = true;
@@ -54,8 +55,15 @@
                     continue;
                 }
 
+                if (hitData.afterTakedown) {
+#if DEBUG
+                    sharedData.logger.WriteInfo("Force HeavyImpact damage after takedown");
+#endif
+                    weaponType = PedHitData.WeaponTypes.HeavyImpact;
+                }
+
                 if (weaponType == PedHitData.WeaponTypes.Nothing) {
-                    PedEffects.TryGetLastDamageRecord(convertedPed.thisPed, out uint uintHash, out _);
+                    PedEffects.TryGetLastDamageRecord(ped, out uint uintHash, out _);
                     sharedData.logger.WriteWarning($"Can't detect weapon! Possible hash - {BuildWeaponName(uintHash)})");
                     sharedData.logger.WriteWarning("Make sure you have hash of this weapon in Weapons section of GSWConfig.xml");
                 } else {

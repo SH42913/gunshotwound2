@@ -99,6 +99,10 @@
                 return;
             }
 
+            if (hitData.afterTakedown) {
+                woundData.Pain *= sharedData.mainConfig.pedsConfig.TakedownPainMult;
+            }
+
             CreateDamage(pedEntity, woundData.Damage, woundData.Name);
             CreateBleeding(pedEntity, woundData.BleedSeverity, woundData.InternalBleeding, woundData.Name);
             CreatePain(pedEntity, woundData.Pain);

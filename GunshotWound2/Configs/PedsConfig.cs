@@ -31,6 +31,7 @@ namespace GunshotWound2.Configs {
         public bool DontActivateRagdollFromBulletImpact;
         public bool RealisticSpineDamage;
         public float ClosestPedRange;
+        public float TakedownPainMult;
 
         public int MinAccuracy;
         public int MaxAccuracy;
@@ -65,6 +66,7 @@ namespace GunshotWound2.Configs {
             DontActivateRagdollFromBulletImpact = node.Element("DontActivateRagdollFromBulletImpact").GetBool();
             RealisticSpineDamage = node.Element("RealisticSpineDamage").GetBool();
             ClosestPedRange = node.Element("ClosestPedRange").GetFloat();
+            TakedownPainMult = node.Element("TakedownPainMult").GetFloat();
 
             XElement healthNode = node.Element("CustomHealth");
             MinStartHealth = healthNode.GetInt("Min");

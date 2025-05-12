@@ -58,8 +58,23 @@
             foreach (Scellecs.Morpeh.Entity entity in convertedPeds) {
                 ref ConvertedPed convertedPed = ref convertedStash.Get(entity);
                 Ped ped = convertedPed.thisPed;
-                if (!ped.Exists() || !ped.IsAlive || ped.IsInvincible || PedEffects.IsPedInWrithe(ped)) {
+                if (!ped.Exists() || ped.IsInvincible || PedEffects.IsPedInWrithe(ped)) {
                     continue;
+                }
+
+                var wasKilledByTakedown = false;
+                if (ped.IsDead) {
+                    wasKilledByTakedown = ped.WasKilledByTakedown;
+                    if (wasKilledByTakedown) {
+#if DEBUG
+                        sharedData.logger.WriteInfo("Resurrecting ped after takedown");
+#endif
+                        ped.Resurrect();
+                        ped.Health = convertedPed.lastFrameHealth - 1;
+                        convertedPed.RequestRagdoll(5000, RagdollType.Balance);
+                    } else {
+                        continue;
+                    }
                 }
 
                 int healthDiff = convertedPed.lastFrameHealth - ped.Health;
@@ -71,6 +86,7 @@
                 entity.SetComponent(new PedHitData {
                     healthDiff = healthDiff,
                     armorDiff = armorDiff,
+                    afterTakedown = wasKilledByTakedown,
                 });
 
 #if DEBUG

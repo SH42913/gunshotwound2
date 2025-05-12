@@ -82,6 +82,9 @@
         It is based on Relationship between ped and player.
         By default, COMPANION and RESPECT is FALSE to ignore friendly peds by GSW. -->
 
+		<TakedownPainMult Value="1.0"/>
+		<!-- Heavy melee attacks(eg, by R key) will cause heavy impact damage, but with adjustable pain multiplier -->
+
 		<MaximalPain Min="60.0" Max="100.0"/>
 		<!-- Same as for player, but GSWPeds will have MaximalPain between Min and Max. -->
 
