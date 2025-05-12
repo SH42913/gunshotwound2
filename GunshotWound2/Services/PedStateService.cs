@@ -76,7 +76,17 @@
                 stringBuilder.Append(localeConfig.DeathReason);
                 stringBuilder.Append(": ");
                 stringBuilder.Append(color);
-                stringBuilder.Append(health.lastDamageReason ?? "UNKNOWN");
+
+                string reason = health.lastDamageReason;
+                if (!string.IsNullOrEmpty(health.lastDamageReason)) {
+                    stringBuilder.Append(reason);
+                } else if (!health.mostDangerousBleeding.IsNullOrDisposed()) {
+                    string name = health.mostDangerousBleeding.GetComponent<Bleeding>().name;
+                    stringBuilder.AppendFormat("{0} ({1})", localeConfig.BleedingReason, name);
+                } else {
+                    stringBuilder.AppendFormat("UNKNOWN");
+                }
+
                 stringBuilder.AppendEndOfLine();
             }
 

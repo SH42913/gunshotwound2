@@ -74,7 +74,7 @@
                     continue;
                 }
 
-                health.DealDamage(bleeding.severity * deltaTime, sharedData.localeConfig.BleedingReason);
+                health.DealDamage(bleeding.severity * deltaTime, reason: null);
                 bleeding.severity -= health.bleedingHealRate * deltaTime;
             }
         }
@@ -104,20 +104,24 @@
             }
 
             float maxBleeding = 0f;
+            Entity woundToBandage = null;
             Entity mostDangerWound = null;
             foreach (Entity entity in health.bleedingWounds) {
                 ref Bleeding bleeding = ref bleedingStash.Get(entity);
-                if (!bleeding.canBeBandaged) {
+                if (bleeding.severity <= maxBleeding) {
                     continue;
                 }
 
-                if (bleeding.severity > maxBleeding) {
-                    maxBleeding = bleeding.severity;
-                    mostDangerWound = entity;
+                mostDangerWound = entity;
+                maxBleeding = bleeding.severity;
+
+                if (bleeding.canBeBandaged) {
+                    woundToBandage = entity;
                 }
             }
 
-            health.bleedingToBandage = mostDangerWound;
+            health.mostDangerousBleeding = mostDangerWound;
+            health.bleedingToBandage = woundToBandage;
         }
     }
 }

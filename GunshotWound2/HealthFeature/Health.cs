@@ -15,6 +15,7 @@
 
         public float bleedingHealRate;
         public Entity bleedingToBandage;
+        public Entity mostDangerousBleeding;
         public HashSet<Entity> bleedingWounds;
     }
 
