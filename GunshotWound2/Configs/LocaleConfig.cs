@@ -136,7 +136,7 @@ namespace GunshotWound2.Configs {
         public string YourInventory;
         public string HandsAreBusy;
 
-        public string LocalizationAuthor;
+        public string TranslationAuthor;
 
         public static (bool success, string reason) TryToLoad(string scriptPath, LocaleConfig config, string language) {
             string path = Path.ChangeExtension(scriptPath, ".csv");

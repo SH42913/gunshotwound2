@@ -27,12 +27,15 @@
         public readonly struct Scheme {
             private readonly Keys key;
             private readonly Keys modifiers;
+            public readonly string description;
 
             public bool IsValid => key != Keys.None;
+            public bool HasModifiers => modifiers != Keys.None;
 
             public Scheme(Keys key, Keys modifiers) {
                 this.key = key;
                 this.modifiers = modifiers;
+                description = HasModifiers ? $"{modifiers.ToString()}+{key.ToString()}" : key.ToString();
             }
 
             public bool IsPressed(KeyEventArgs keyEventArgs) {

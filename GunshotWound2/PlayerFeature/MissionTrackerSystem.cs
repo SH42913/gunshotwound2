@@ -23,7 +23,8 @@
             bool currentMissionActive = Game.IsMissionActive;
             if (currentMissionActive != lastMissionActive) {
                 if (currentMissionActive) {
-                    sharedData.notifier.info.QueueMessage(sharedData.localeConfig.GswPauseTip);
+                    string message = string.Format(sharedData.localeConfig.GswPauseTip, sharedData.mainConfig.PauseKey.description);
+                    sharedData.notifier.info.QueueMessage(message);
                 }
 
                 lastMissionActive = currentMissionActive;

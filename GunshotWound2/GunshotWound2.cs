@@ -137,7 +137,7 @@
             builder.Append(sharedData.localeConfig.ThanksForUsing);
             builder.AppendEndOfLine();
             builder.AppendLine("~g~GunShot Wound ~r~2~s~\nby <C>SH42913</C>");
-            builder.Append($"Translated by {sharedData.localeConfig.LocalizationAuthor ?? "GSW2-community"}");
+            builder.Append($"Translated by {sharedData.localeConfig.TranslationAuthor ?? "GSW2-community"}");
             sharedData.notifier.ShowOne(builder.ToString(), blinking: true);
 
 #if DEBUG
