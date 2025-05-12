@@ -1,5 +1,6 @@
 namespace GunshotWound2.InventoryFeature {
     using System;
+    using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
 
@@ -19,36 +20,40 @@ namespace GunshotWound2.InventoryFeature {
 
         public void OnUpdate(float deltaTime) {
             foreach (Entity entity in requests) {
-                ref Inventory inventory = ref entity.GetComponent<Inventory>();
-                ref AddItemRequest request = ref entity.GetComponent<AddItemRequest>();
-                TryAddItem(ref inventory, request.item);
+                var request = entity.GetComponent<AddItemRequest>();
                 entity.RemoveComponent<AddItemRequest>();
+
+                bool isPlayer = entity.GetComponent<ConvertedPed>().isPlayer;
+                ref Inventory inventory = ref entity.GetComponent<Inventory>();
+                bool success = TryAddItem(ref inventory, request.item);
+                if (success && isPlayer) {
+                    (ItemTemplate item, int count) = request.item;
+                    string itemCountString = item.GetPluralTranslation(sharedData.localeConfig, count);
+                    string notification = $"{sharedData.localeConfig.FoundItems} {itemCountString}";
+                    sharedData.notifier.ShowOne(notification, blinking: false, Notifier.Color.GREEN);
+                }
             }
         }
 
         void IDisposable.Dispose() { }
 
-        private void TryAddItem(ref Inventory inventory, (ItemTemplate template, int count) tuple) {
-            if (!tuple.template.IsValid || tuple.count < 1) {
-                return;
+        private bool TryAddItem(ref Inventory inventory, (ItemTemplate template, int count) tuple) {
+            (ItemTemplate item, int count) = tuple;
+            if (!item.IsValid || count < 1) {
+                return false;
             }
 
-            AddItemToInventory(ref inventory, tuple.template, tuple.count);
-            int totalAmount = inventory.AmountOf(tuple.template);
+            AddItemToInventory(ref inventory, item, count);
+            int totalAmount = inventory.AmountOf(item);
 #if DEBUG
-            sharedData.logger.WriteInfo($"Added {tuple.count} of {tuple.template.internalName} to "
+            sharedData.logger.WriteInfo($"Added {count} of {item.internalName} to "
                                         + $"Inventory of {inventory.modelHash}, "
                                         + $"total count = {totalAmount}");
 #endif
-            var message = $"In your inventory: {totalAmount} of {tuple.template.internalName}"; // TODO: Localize
-            sharedData.notifier.ShowOne(message, blinking: false, Notifier.Color.GREEN);
+            return true;
         }
 
         private static void AddItemToInventory(ref Inventory inventory, ItemTemplate newItemTemplate, int count) {
-            if (count < 1) {
-                return;
-            }
-
             for (var i = 0; i < inventory.items.Count; i++) {
                 (ItemTemplate template, int inventoryCount) = inventory.items[i];
                 if (newItemTemplate.Equals(template)) {

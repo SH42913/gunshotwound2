@@ -29,14 +29,20 @@ namespace GunshotWound2.InventoryFeature {
         }
 
         public static bool Consume(this ref Inventory inventory, ItemTemplate itemTemplate, int amount = 1) {
-            for (var i = 0; i < inventory.items.Count; i++) {
+            for (int i = inventory.items.Count - 1; i >= 0; i--) {
                 (ItemTemplate template, int count) = inventory.items[i];
                 if (!itemTemplate.Equals(template)) {
                     continue;
                 }
 
                 if (count >= amount) {
-                    inventory.items[i] = (template, count - 1);
+                    int newAmount = count - amount;
+                    if (newAmount <= 0) {
+                        inventory.items.RemoveAt(i);
+                    } else {
+                        inventory.items[i] = (template, newAmount);
+                    }
+
                     return true;
                 } else {
                     break;

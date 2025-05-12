@@ -1,5 +1,6 @@
 namespace GunshotWound2.InventoryFeature {
     using System;
+    using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
 
@@ -53,45 +54,61 @@ namespace GunshotWound2.InventoryFeature {
 
         private void ProcessRequests() {
             foreach (Entity owner in requests) {
-                if (owner.Has<CurrentlyUsingItem>()) {
-#if DEBUG
-                    sharedData.logger.WriteInfo("Can't use item due hands are busy");
-#endif
-                    ShowError("Your hands are busy"); // TODO: Localize
-                    continue;
+                var request = owner.GetComponent<UseItemRequest>();
+                owner.RemoveComponent<UseItemRequest>();
+
+                bool success = TryProcessRequest(owner, request, out string message);
+                bool isPlayer = owner.GetComponent<ConvertedPed>().isPlayer;
+                if (isPlayer) {
+                    if (success) {
+                        ShowSuccess(message);
+
+                        string progressString = sharedData.localeConfig.GetTranslation(request.item.progressDescriptionKey);
+                        sharedData.uiService.ShowProgressIndicator(progressString);
+                    } else {
+                        ShowError(message);
+                    }
                 }
+            }
+        }
 
-                ref UseItemRequest request = ref owner.GetComponent<UseItemRequest>();
-                ref Inventory inventory = ref owner.GetComponent<Inventory>();
-                if (!inventory.Has(request.item)) {
+        private bool TryProcessRequest(Entity owner, UseItemRequest request, out string message) {
+            if (owner.Has<CurrentlyUsingItem>()) {
 #if DEBUG
-                    sharedData.logger.WriteInfo($"{inventory.modelHash} doesn't have enough of {request.item.internalName}");
+                sharedData.logger.WriteInfo("Can't use item due hands are busy");
 #endif
-                    ShowError($"In your inventory: 0 {request.item.internalName}"); // TODO: Localize
-                    continue;
-                }
+                message = sharedData.localeConfig.HandsAreBusy;
+                return false;
+            }
 
-                Entity target = request.target ?? owner;
-                if (request.item.startAction.Invoke(sharedData, owner, target, out string message)) {
-                    owner.SetComponent(new CurrentlyUsingItem {
-                        itemTemplate = request.item,
-                        target = target,
-                        remainingTime = request.item.duration,
-                    });
+            ref Inventory inventory = ref owner.GetComponent<Inventory>();
+            if (!inventory.Has(request.item)) {
+#if DEBUG
+                sharedData.logger.WriteInfo($"{inventory.modelHash} doesn't have enough of {request.item.internalName}");
+#endif
+                string itemCountString = request.item.GetPluralTranslation(sharedData.localeConfig, count: 0);
+                message = $"{sharedData.localeConfig.YourInventory} {itemCountString}";
+                return false;
+            }
+
+            Entity target = request.target ?? owner;
+            if (request.item.startAction.Invoke(sharedData, owner, target, out message)) {
+                owner.SetComponent(new CurrentlyUsingItem {
+                    itemTemplate = request.item,
+                    target = target,
+                    remainingTime = request.item.duration,
+                });
 
 #if DEBUG
-                    sharedData.logger.WriteInfo($"Success start {request.item.internalName} usage for {inventory.modelHash}");
+                sharedData.logger.WriteInfo($"Success start {request.item.internalName} usage for {inventory.modelHash}");
 #endif
 
-                    sharedData.uiService.ShowProgressIndicator(request.item.progressDescriptionKey); // TODO: Localize
-                    owner.RemoveComponent<UseItemRequest>();
-                    ShowSuccess(message);
-                } else {
+                return true;
+            } else {
 #if DEBUG
-                    sharedData.logger.WriteInfo($"{inventory.modelHash} failed start condition of {request.item.internalName}");
+                sharedData.logger.WriteInfo($"{inventory.modelHash} failed start condition of {request.item.internalName}");
 #endif
-                    ShowError(message);
-                }
+                return false;
             }
         }
 
