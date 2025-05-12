@@ -30,7 +30,7 @@ namespace GunshotWound2.InventoryFeature {
                     (ItemTemplate item, int count) = request.item;
                     string itemCountString = item.GetPluralTranslation(sharedData.localeConfig, count);
                     string notification = $"{sharedData.localeConfig.FoundItems} {itemCountString}";
-                    sharedData.notifier.ShowOne(notification, blinking: false, Notifier.Color.GREEN);
+                    sharedData.notifier.info.QueueMessage(notification, Notifier.Color.GREEN);
                 }
             }
         }

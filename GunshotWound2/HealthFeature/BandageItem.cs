@@ -51,7 +51,7 @@ namespace GunshotWound2.HealthFeature {
 #endif
 
             float timeToBandage = template.duration;
-            if (!convertedTarget.isRagdoll) {
+            if (!convertedTarget.isPlayer && !convertedTarget.isRagdoll) {
                 convertedTarget.thisPed.Task.StandStill(timeToBandage.ConvertToMilliSec());
             }
 

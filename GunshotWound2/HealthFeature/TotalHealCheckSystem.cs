@@ -1,5 +1,6 @@
 ﻿namespace GunshotWound2.HealthFeature {
     using System;
+    using InventoryFeature;
     using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
@@ -44,6 +45,13 @@
                     convertedPed.thisPed.Health = health.max;
                     convertedPed.thisPed.ClearBloodDamage();
                     entity.SetMarker<TotallyHealedEvent>();
+
+                    if (entity.Has<Inventory>()) {
+                        int count = sharedData.random.Next(1, 5);
+                        entity.SetComponent(new AddItemRequest {
+                            item = (BandageItem.template, count),
+                        });
+                    }
                 }
             }
         }

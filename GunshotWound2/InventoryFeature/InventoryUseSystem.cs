@@ -61,7 +61,7 @@ namespace GunshotWound2.InventoryFeature {
                 bool isPlayer = owner.GetComponent<ConvertedPed>().isPlayer;
                 if (isPlayer) {
                     if (success) {
-                        ShowSuccess(message);
+                        ShowSuccess(message, blinking: false);
 
                         string progressString = sharedData.localeConfig.GetTranslation(request.item.progressDescriptionKey);
                         sharedData.uiService.ShowProgressIndicator(progressString);
@@ -116,7 +116,7 @@ namespace GunshotWound2.InventoryFeature {
             ItemTemplate item = currentlyUsing.itemTemplate;
             if (item.progressAction.Invoke(sharedData, owner, currentlyUsing.target, out string message)) {
                 removeProgress = false;
-                ShowSuccess(message);
+                ShowSuccess(message, blinking: false);
                 return;
             }
 
@@ -134,7 +134,7 @@ namespace GunshotWound2.InventoryFeature {
                 int amount = inventory.AmountOf(item);
                 sharedData.logger.WriteInfo($"Item {item.internalName} of {inventory.modelHash} successfully used, amount={amount}");
 #endif
-                ShowSuccess(message);
+                ShowSuccess(message, blinking: true);
             } else {
 #if DEBUG
                 sharedData.logger.WriteInfo($"Item {item.internalName} of {inventory.modelHash} usage was failed during finish");
@@ -148,15 +148,16 @@ namespace GunshotWound2.InventoryFeature {
                 return;
             }
 
+            sharedData.notifier.HideOne(SUCCESS_POST);
             ERROR_POST = sharedData.notifier.ReplaceOne(message, blinking: true, ERROR_POST, Notifier.Color.RED);
         }
 
-        private void ShowSuccess(string message) {
+        private void ShowSuccess(string message, bool blinking) {
             if (string.IsNullOrEmpty(message)) {
                 return;
             }
 
-            SUCCESS_POST = sharedData.notifier.ReplaceOne(message, blinking: false, SUCCESS_POST, Notifier.Color.GREEN);
+            SUCCESS_POST = sharedData.notifier.ReplaceOne(message, blinking, SUCCESS_POST, Notifier.Color.GREEN);
         }
     }
 }
