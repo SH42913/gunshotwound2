@@ -6,8 +6,11 @@ namespace GunshotWound2.Configs {
     using System.Globalization;
     using System.Linq;
     using System.Xml.Linq;
+    using Utils;
 
     public sealed class WeaponConfig {
+        public bool UseSpecialStunDamage;
+
         public HashSet<uint> SmallCaliberHashes;
         public HashSet<uint> MediumCaliberHashes;
         public HashSet<uint> HeavyCaliberHashes;
@@ -24,6 +27,8 @@ namespace GunshotWound2.Configs {
             if (node == null) {
                 return;
             }
+
+            UseSpecialStunDamage = node.Element("UseSpecialStunDamage").GetBool();
 
             SmallCaliberHashes = ExtractWeaponHashes(node, "SmallCaliber");
             MediumCaliberHashes = ExtractWeaponHashes(node, "MediumCaliber");

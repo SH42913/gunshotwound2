@@ -145,6 +145,10 @@
 	<!-- Here you can determine weapons for every weapon types.
     Only Hash of weapon is valuable, names shown for readability only! -->
 	<Weapons>
+		<UseSpecialStunDamage Value="TRUE"/>
+		<!-- Any stun damage(eg StunGun/911657153) will drop target to unconscious.
+		If you're using LSPDFR, set to FALSE -->
+		
 		<SmallCaliber DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.4" ArmorDamage="4">
 			<!-- Pistol;PistolMk2;CombatPistol;SNSPistol;SNSPistolMk2;VintagePistol;MarksmanPistol;DoubleActionRevolver;APPistol;MicroSMG;MiniSMG;SMG;SMGMk2;CombatPDW;MachinePistol;CeramicPistol;PericoPistol; -->
 			<Hashes Hashes="453432689;3219281620;1593441988;3218215474;2285322324;137902532;3696079510;2548703416;584646201;324215364;3173288789;736523883;2024373456;171789620;3675956304;727643628;3514013252;"/>

@@ -72,6 +72,10 @@
         }
 
         private void CreateStunPain(Entity pedEntity, ref ConvertedPed convertedPed) {
+            if (sharedData.mainConfig.weaponConfig.UseSpecialStunDamage) {
+                return;
+            }
+
             const float stunPainMult = 1.2f;
             float maxPain = convertedPed.isPlayer
                     ? sharedData.mainConfig.playerConfig.MaximalPain
