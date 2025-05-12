@@ -8,6 +8,7 @@
     using PedsFeature;
     using PlayerFeature;
     using Scellecs.Morpeh;
+    using Utils;
 
     public sealed class WeaponHitSystem : ISystem {
         private const uint RAMMED_BY_CAR = 133987706;
@@ -132,43 +133,66 @@
             }
 
             skipDamage = false;
-            Vector3 pedVelocity = ped.Velocity;
             if (IsDamagedByWeapon(ped, RUN_OVER_CAR)) {
-                Vehicle possibleVehicle = GTA.World.GetClosestVehicle(ped.Position, 5f);
-                Vector3 vehicleVelocity = possibleVehicle != null ? possibleVehicle.Velocity : Vector3.Zero;
-                float relativeSpeed = (vehicleVelocity - pedVelocity).Length();
-
-#if DEBUG
-                string vehicleName = possibleVehicle?.DisplayName ?? "UNKNOWN";
-                sharedData.logger.WriteInfo($"It is run over car damage by {vehicleName}, relativeSpeed:{relativeSpeed}");
-#endif
-                if (relativeSpeed > MAX_LIGHT_IMPACT_SPEED) {
-                    weaponType = PedHitData.WeaponTypes.HeavyImpact;
-                } else if (relativeSpeed < 1f) {
-                    weaponType = PedHitData.WeaponTypes.Nothing;
-                    skipDamage = true;
-                } else {
-                    weaponType = PedHitData.WeaponTypes.LightImpact;
-                }
+                weaponType = HandleRunOverCar(ped, ref skipDamage);
             } else if (ped.IsFalling || ped.IsRagdoll || IsDamagedByWeapon(ped, FALL)) {
-                float pedSpeed = pedVelocity.Length();
-#if DEBUG
-                sharedData.logger.WriteInfo($"It is fall damage with speed {pedSpeed.ToString("F2")}");
-#endif
-                weaponType = pedSpeed >= MAX_LIGHT_IMPACT_SPEED
-                        ? PedHitData.WeaponTypes.HeavyImpact
-                        : PedHitData.WeaponTypes.LightImpact;
+                weaponType = HandleFalling(ped);
             } else if (IsDamagedByWeapon(ped, RAMMED_BY_CAR) || ped.IsInVehicle()) {
-#if DEBUG
-                sharedData.logger.WriteInfo("It is car impact damage");
-#endif
-                weaponType = PedHitData.WeaponTypes.HeavyImpact;
+                weaponType = HandleCarImpact(ped);
             } else {
                 sharedData.logger.WriteWarning("Unknown special case damage");
                 weaponType = PedHitData.WeaponTypes.Nothing;
             }
 
             return weaponType != PedHitData.WeaponTypes.Nothing;
+        }
+
+        private PedHitData.WeaponTypes HandleRunOverCar(Ped ped, ref bool skipDamage) {
+            Vehicle possibleVehicle = GTA.World.GetClosestVehicle(ped.Position, 5f);
+            Vector3 vehicleVelocity = possibleVehicle != null ? possibleVehicle.Velocity : Vector3.Zero;
+            float relativeSpeed = (vehicleVelocity - ped.Velocity).Length();
+
+#if DEBUG
+            string vehicleName = possibleVehicle?.DisplayName ?? "UNKNOWN";
+            sharedData.logger.WriteInfo($"It is run over car damage by {vehicleName}, relativeSpeed:{relativeSpeed}");
+#endif
+            if (relativeSpeed > MAX_LIGHT_IMPACT_SPEED) {
+                return PedHitData.WeaponTypes.HeavyImpact;
+            } else if (relativeSpeed < 1f) {
+                skipDamage = true;
+                return PedHitData.WeaponTypes.Nothing;
+            } else {
+                return PedHitData.WeaponTypes.LightImpact;
+            }
+        }
+
+        private PedHitData.WeaponTypes HandleFalling(Ped ped) {
+            float pedSpeed = ped.Velocity.Length();
+#if DEBUG
+            sharedData.logger.WriteInfo($"It is fall damage with speed {pedSpeed.ToString("F2")}");
+#endif
+            return pedSpeed >= MAX_LIGHT_IMPACT_SPEED
+                    ? PedHitData.WeaponTypes.HeavyImpact
+                    : PedHitData.WeaponTypes.LightImpact;
+        }
+
+        private PedHitData.WeaponTypes HandleCarImpact(Ped ped) {
+            Vehicle vehicle = ped.CurrentVehicle;
+            if (vehicle != null && vehicle.Driver == ped && !vehicle.Windows.AllWindowsIntact) {
+                const float chanceToGetCut = 0.3f;
+                PedHitData.WeaponTypes damageType = sharedData.random.IsTrueWithProbability(chanceToGetCut)
+                        ? PedHitData.WeaponTypes.Cutting
+                        : PedHitData.WeaponTypes.HeavyImpact;
+#if DEBUG
+                sharedData.logger.WriteInfo($"It is drive car impact damage: {damageType}");
+#endif
+                return damageType;
+            } else {
+#if DEBUG
+                sharedData.logger.WriteInfo("It is default car impact damage");
+#endif
+                return PedHitData.WeaponTypes.HeavyImpact;
+            }
         }
 
         private static bool PedWasDamagedBy(HashSet<uint> hashes, Ped target, out uint weapon) {
