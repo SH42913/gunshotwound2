@@ -136,10 +136,6 @@
 		<SelfHealingRate Value="0.03"/>
 		<!-- How fast you will heal if you have no bleeding -->
 
-		<MinimalChanceForArmorSave Value="0.2"/>
-		<!-- 0.6 means 60% chance to save your body on 1 armor point.
-        100 armor points will always 100% chance to save. -->
-
 		<MoveRateOnFullPain Value="0.8"/>
 		<!-- Move rate on 100% of pain -->
 
@@ -207,6 +203,12 @@
 			<Hashes Hashes="615608432;2694266206;4256991824;1198879012;1233104067;2939590305;1305664598;2138347493;1834241177;3056410471;2461879995;2339582971;4284007675;1936677264;"/>
 		</Ignore>
 	</Weapons>
+	
+	<Armor>
+		<MinimalChanceForArmorSave Value="0.2"/>
+		<!-- 0.6 means 60% chance to save your body on 1 armor point.
+        100 armor points will always 100% chance to save. -->
+	</Armor>
 
 	<Hotkeys>
 		<!-- If you don't want to use key, just remove KeyCode value or key itself.

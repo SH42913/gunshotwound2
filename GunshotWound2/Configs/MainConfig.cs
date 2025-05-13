@@ -17,6 +17,7 @@ namespace GunshotWound2.Configs {
         public readonly PedsConfig pedsConfig;
         public readonly PlayerConfig playerConfig;
         public readonly WeaponConfig weaponConfig;
+        public readonly ArmorConfig armorConfig;
 
         public InputListener.Scheme CheckSelfKey;
         public InputListener.Scheme CheckClosestKey;
@@ -40,6 +41,7 @@ namespace GunshotWound2.Configs {
             woundConfig = new WoundConfig();
             pedsConfig = new PedsConfig();
             weaponConfig = new WeaponConfig();
+            armorConfig = new ArmorConfig();
         }
 
         public void ApplyTo(Notifier notifier) {
@@ -79,23 +81,26 @@ namespace GunshotWound2.Configs {
 
             string section = null;
             try {
-                section = nameof(FillHotkeysFrom);
-                FillHotkeysFrom(doc);
-
                 section = nameof(PlayerConfig);
                 playerConfig.FillFrom(doc);
 
                 section = nameof(PedsConfig);
                 pedsConfig.FillFrom(doc);
 
-                section = nameof(FillNotifications);
-                FillNotifications(doc);
-
                 section = nameof(WoundConfig);
                 woundConfig.FillFrom(doc);
 
                 section = nameof(WeaponConfig);
                 weaponConfig.FillFrom(doc);
+
+                section = nameof(ArmorConfig);
+                armorConfig.FillFrom(doc);
+
+                section = nameof(FillHotkeysFrom);
+                FillHotkeysFrom(doc);
+
+                section = nameof(FillNotifications);
+                FillNotifications(doc);
             } catch (Exception e) {
                 return (false, $"Failed loading of {section}:\n{e.Message}");
             }

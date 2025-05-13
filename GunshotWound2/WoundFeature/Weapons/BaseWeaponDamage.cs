@@ -61,13 +61,13 @@
             }
 
             switch (hit.bodyPart) {
-                case PedHitData.BodyParts.Head:      return GetHeadWound();
-                case PedHitData.BodyParts.Neck:      return GetNeckWound();
-                case PedHitData.BodyParts.Chest: return GetUpperWound();
+                case PedHitData.BodyParts.Head:    return GetHeadWound();
+                case PedHitData.BodyParts.Neck:    return GetNeckWound();
+                case PedHitData.BodyParts.Chest:   return GetUpperWound();
                 case PedHitData.BodyParts.Abdomen: return GetLowerWound();
-                case PedHitData.BodyParts.Arm:       return GetArmWound();
-                case PedHitData.BodyParts.Leg:       return GetLegWound();
-                default:                             return null;
+                case PedHitData.BodyParts.Arm:     return GetArmWound();
+                case PedHitData.BodyParts.Leg:     return GetLegWound();
+                default:                           return null;
             }
         }
 
@@ -169,8 +169,8 @@
                 return false;
             }
 
-            WoundConfig woundConfig = sharedData.mainConfig.woundConfig;
-            float chanceToSave = woundConfig.MinimalChanceForArmorSave;
+            ArmorConfig armorConfig = sharedData.mainConfig.armorConfig;
+            float chanceToSave = armorConfig.MinimalChanceForArmorSave;
             if (chanceToSave >= 1f) {
 #if DEBUG
                 sharedData.logger.WriteInfo("Minimal chance for armor save is >1");
@@ -180,8 +180,8 @@
             }
 
             float armorPercent = ped.Armor / 100f;
-            float chanceForArmorPercent = 1f - woundConfig.MinimalChanceForArmorSave;
-            float saveProbability = woundConfig.MinimalChanceForArmorSave + chanceForArmorPercent * armorPercent;
+            float chanceForArmorPercent = 1f - armorConfig.MinimalChanceForArmorSave;
+            float saveProbability = armorConfig.MinimalChanceForArmorSave + chanceForArmorPercent * armorPercent;
             if (sharedData.random.IsTrueWithProbability(saveProbability)) {
 #if DEBUG
                 sharedData.logger.WriteInfo($"Armor deflected damage, save probability {saveProbability.ToString("F2")}");

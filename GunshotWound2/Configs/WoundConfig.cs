@@ -1,7 +1,6 @@
 ﻿// ReSharper disable InconsistentNaming
 
 namespace GunshotWound2.Configs {
-    using System.Collections.Generic;
     using System.Globalization;
     using System.Xml.Linq;
     using Utils;
@@ -27,8 +26,6 @@ namespace GunshotWound2.Configs {
         public bool UseCustomUnconsciousBehaviour;
         public float DelayedPainPercent;
 
-        public float MinimalChanceForArmorSave;
-
         public float SelfHealingRate;
 
         public void FillFrom(XElement doc) {
@@ -49,7 +46,6 @@ namespace GunshotWound2.Configs {
             PainfulWoundPercent = node.Element("PainfulWoundPercent").GetFloat();
             UseCustomUnconsciousBehaviour = node.Element("UseCustomUnconsciousBehaviour").GetBool();
             DelayedPainPercent = node.Element("DelayedPainPercent").GetFloat();
-            MinimalChanceForArmorSave = node.Element("MinimalChanceForArmorSave").GetFloat();
             SelfHealingRate = node.Element("SelfHealingRate").GetFloat();
         }
 
@@ -71,8 +67,7 @@ namespace GunshotWound2.Configs {
                    + $"D/P/B Deviations: {DamageDeviation.ToString("F2")}/{PainDeviation.ToString("F2")}/{BleedingDeviation.ToString("F2")}\n"
                    + $"{nameof(MoveRateOnFullPain)}: {MoveRateOnFullPain.ToString(CultureInfo.InvariantCulture)}\n"
                    + $"{nameof(MoveRateOnLegsCrit)}: {MoveRateOnLegsCrit.ToString(CultureInfo.InvariantCulture)}\n"
-                   + $"{nameof(RagdollOnPainfulWound)}: {RagdollOnPainfulWound.ToString()}\n"
-                   + $"{nameof(MinimalChanceForArmorSave)}: {MinimalChanceForArmorSave.ToString(CultureInfo.InvariantCulture)}";
+                   + $"{nameof(RagdollOnPainfulWound)}: {RagdollOnPainfulWound.ToString()}";
         }
     }
 }
