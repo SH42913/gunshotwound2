@@ -125,6 +125,7 @@
 
             try {
                 ClearExceptionLog();
+                sharedData.cameraService.useScreenEffects = sharedData.mainConfig.playerConfig.UseScreenEffects;
                 sharedData.mainConfig.ApplyTo(sharedData.notifier);
                 RegisterSystems();
             } catch (Exception e) {

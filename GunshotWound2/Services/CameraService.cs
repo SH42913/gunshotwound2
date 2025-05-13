@@ -9,6 +9,7 @@ namespace GunshotWound2.Services {
 
         private readonly SortedList<int, string> postFxList = new(4);
 
+        public bool useScreenEffects;
         public float aimingShakeAmplitude;
         public bool aimingShakeCritType;
 
@@ -110,11 +111,11 @@ namespace GunshotWound2.Services {
                 return;
             }
 
-            if (!string.IsNullOrEmpty(prev)) {
+            if (useScreenEffects && !string.IsNullOrEmpty(prev)) {
                 Function.Call(Hash.ANIMPOSTFX_STOP, prev);
             }
 
-            if (!string.IsNullOrEmpty(next)) {
+            if (useScreenEffects && !string.IsNullOrEmpty(next)) {
                 const int durationInMs = 5000;
                 const bool loop = true;
                 Function.Call(Hash.ANIMPOSTFX_PLAY, next, durationInMs, loop);
@@ -123,7 +124,7 @@ namespace GunshotWound2.Services {
 
         private void StopAllPostFx() {
 #if DEBUG
-            logger.WriteInfo($"Stop all PostFx");
+            logger.WriteInfo("Stop all PostFx");
 #endif
             postFxList.Clear();
             Function.Call(Hash.ANIMPOSTFX_STOP_ALL);

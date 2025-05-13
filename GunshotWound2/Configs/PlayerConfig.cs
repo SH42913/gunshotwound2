@@ -22,6 +22,7 @@ namespace GunshotWound2.Configs {
         public float PainRecoverSpeed;
         public float BleedHealingSpeed;
         public float PainSlowMo;
+        public bool UseScreenEffects;
 
         public PainMoveSets PainMoveSets;
 
@@ -43,6 +44,7 @@ namespace GunshotWound2.Configs {
             TimeToRefreshMedkits = node.Element("BlipsToMedkits").GetFloat("RefreshTime");
             MedkitModel = node.Element("BlipsToMedkits").GetString("ModelName");
             PainSlowMo = node.Element("PainSlowMo").GetFloat();
+            UseScreenEffects = node.Element("UseScreenEffects").GetBool();
             MoneyForHelmet = node.Element("HelmetCost").GetInt();
 
             PainMoveSets = PainMoveSets.FromXElement(node, "MoveSets");

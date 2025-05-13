@@ -30,6 +30,10 @@
         Be carefully, it will disable other SlowMo-mods.
         If you want to disable this option, set any negative value. -->
 
+		<UseScreenEffects Value="TRUE"/>
+		<!-- Use PostFX screen effects for more immersive experience.
+		If you feel nausea or effects annoy you, set value to FALSE. -->
+
 		<MaximalPain Value="100.0"/>
 		<!-- 100.0 mean when pain will more than 100 points you'll fall unconscious -->
 
