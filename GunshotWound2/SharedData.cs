@@ -18,6 +18,7 @@
         public readonly CameraService cameraService;
         public readonly UIService uiService;
         public readonly PedStateService pedStateService;
+        public readonly ModelCheckerService modelChecker;
 
         public readonly WorldService worldService;
         public readonly MainConfig mainConfig;
@@ -44,6 +45,7 @@
             mainConfig = new MainConfig();
             localeConfig = new LocaleConfig();
             pedStateService = new PedStateService(notifier, mainConfig, localeConfig);
+            modelChecker = new ModelCheckerService();
 
             playerEntity = null;
         }

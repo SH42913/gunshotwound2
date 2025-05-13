@@ -125,8 +125,7 @@
 
             try {
                 ClearExceptionLog();
-                sharedData.cameraService.useScreenEffects = sharedData.mainConfig.playerConfig.UseScreenEffects;
-                sharedData.mainConfig.ApplyTo(sharedData.notifier);
+                WhenConfigLoadedActions();
                 RegisterSystems();
             } catch (Exception e) {
                 HandleRuntimeException(e);
@@ -150,6 +149,12 @@
             sharedData.logger.WriteInfo($"GunShot Wound 2 ({Application.ProductVersion}) has started");
             isStarted = true;
             return true;
+        }
+
+        private void WhenConfigLoadedActions() {
+            sharedData.cameraService.useScreenEffects = sharedData.mainConfig.playerConfig.UseScreenEffects;
+            sharedData.modelChecker.Init(sharedData.mainConfig);
+            sharedData.mainConfig.ApplyTo(sharedData.notifier);
         }
 
         private void RegisterSystems() {

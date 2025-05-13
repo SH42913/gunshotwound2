@@ -6,7 +6,6 @@
 
     public sealed class MedkitGpsSystem : ILateSystem {
         private readonly SharedData sharedData;
-        private readonly Model healthPackModel;
         private readonly HashSet<int> markedMedkits;
         private readonly List<(Prop kit, Blip blip)> medkits;
         private float timeToRefresh;
@@ -17,7 +16,6 @@
         public MedkitGpsSystem(SharedData sharedData) {
             this.sharedData = sharedData;
 
-            healthPackModel = new Model(PlayerConfig.MedkitModel);
             markedMedkits = new HashSet<int>();
             medkits = new List<(Prop, Blip)>();
         }
@@ -40,9 +38,9 @@
         }
 
         private void MarkNewMedkits() {
-            foreach (Prop prop in GTA.World.GetAllPickupObjects()) {
-                if (!markedMedkits.Contains(prop.Handle) && prop.Model.Equals(healthPackModel)) {
-                    MarkMedkit(prop);
+            foreach (PickupObject pickup in sharedData.worldService.GetAllPickupObjects()) {
+                if (!markedMedkits.Contains(pickup.Handle) && sharedData.modelChecker.IsMedkit(pickup.Model)) {
+                    MarkMedkit(pickup);
                 }
             }
         }

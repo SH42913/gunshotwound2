@@ -9,9 +9,13 @@
         private readonly Dictionary<Ped, EcsEntity> convertedPeds;
         private readonly Queue<Ped> pedsToConvert;
 
+        private readonly List<PickupObject> pickupObjects;
+        private int pickupsRefreshFrame = -1;
+
         public WorldService(int startCapacity) {
             convertedPeds = new Dictionary<Ped, EcsEntity>(startCapacity, new PedComparer());
             pedsToConvert = new Queue<Ped>(startCapacity);
+            pickupObjects = new List<PickupObject>();
             forceRefreshRequest = true;
         }
 
@@ -47,6 +51,31 @@
                 ped = null;
                 return false;
             }
+        }
+
+        public IReadOnlyList<PickupObject> GetAllPickupObjects() {
+            int currentFrame = Game.FrameCount;
+            if (currentFrame == pickupsRefreshFrame) {
+                return pickupObjects;
+            }
+
+            int[] pickupsHandles = SHVDN.NativeMemory.GetPickupObjectHandles();
+            int pickupsCount = pickupsHandles.Length;
+            if (pickupObjects.Capacity < pickupsCount) {
+                pickupObjects.Capacity = pickupsCount;
+            }
+
+            pickupObjects.Clear();
+            for (var i = 0; i < pickupsCount; i++) {
+                int handle = pickupsHandles[i];
+                PickupObject pickupObject = PickupObject.FromHandle(handle);
+                if (pickupObject != null) {
+                    pickupObjects.Add(pickupObject);
+                }
+            }
+
+            pickupsRefreshFrame = currentFrame;
+            return pickupObjects;
         }
 
         public override string ToString() {

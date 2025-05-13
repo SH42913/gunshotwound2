@@ -88,6 +88,7 @@
     <Compile Include="PlayerFeature\PlayerCameraSystem.cs" />
     <Compile Include="PlayerFeature\PlayerDeathReportSystem.cs" />
     <Compile Include="Services\CameraService.cs" />
+    <Compile Include="Services\ModelCheckerService.cs" />
     <Compile Include="Services\PedStateService.cs" />
     <Compile Include="Services\UIService.cs" />
     <Compile Include="Services\WorldService.cs" />
