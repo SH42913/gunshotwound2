@@ -127,6 +127,9 @@
 		<RagdollOnPainfulWound Value="TRUE"/>
 		<!-- If TRUE - peds(including player) will set to short ragdoll on painful wounds -->
 
+		<UseCustomUnconsciousBehaviour Value="TRUE"/>
+		<!-- If TRUE - you will see various ped behaviour when they're unconscious, otherwise will be used common ragdoll -->
+
 		<SelfHealingRate Value="0.03"/>
 		<!-- How fast you will heal if you have no bleeding -->
 

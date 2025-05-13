@@ -140,6 +140,10 @@
                 return;
             }
 
+            if (!sharedData.mainConfig.woundConfig.UseCustomUnconsciousBehaviour) {
+                return;
+            }
+
             IWeightedRandomizer<int> randomizer = sharedData.weightRandom;
             randomizer.Clear();
             randomizer.Add(0);
