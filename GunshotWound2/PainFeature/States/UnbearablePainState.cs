@@ -12,6 +12,7 @@
 
     public sealed class UnbearablePainState : IPainState {
         public const float PAIN_THRESHOLD = 1f;
+        private const string CRAWL_ANIM_DICT = "move_injured_ground";
 
         private static readonly int[] NM_MESSAGES = { 787, };
 
@@ -228,9 +229,10 @@
 
             bool back;
             Quaternion quat;
+            Vector3 pedPosition = ped.Position;
             if (PedEffects.TryGetLastDamageRecord(ped, out _, out int attackerHandle)) {
                 GTA.Entity attacker = GTA.Entity.FromHandle(attackerHandle);
-                Vector3 dir = ped.Position - attacker.Position;
+                Vector3 dir = pedPosition - attacker.Position;
                 back = Vector3.Dot(ped.ForwardVector, dir) < 0;
                 quat = Quaternion.LookRotation(back ? -dir : dir);
             } else {
@@ -238,10 +240,7 @@
                 quat = Quaternion.LookRotation(Vector3.RandomXY());
             }
 
-            ped.Quaternion = quat;
-
             PedEffects.DetermineBoneSide(convertedPed.lastDamagedBone, out bool left, out bool right);
-            const string animDict = "move_injured_ground";
             string animName = back
                     ? "back_loop"
                     : left
@@ -250,17 +249,27 @@
                                     ? "sider_loop"
                                     : "front_loop";
 
-            const AnimationFlags flags = AnimationFlags.Loop | AnimationFlags.RagdollOnCollision | AnimationFlags.AbortOnWeaponDamage;
-            ped.Task.PlayAnimation(new CrClipAsset(animDict, animName),
-                                   AnimationBlendDelta.SlowBlendIn,
-                                   AnimationBlendDelta.InstantBlendOut,
-                                   duration: sharedData.random.Next(5000, 30000),
-                                   flags,
-                                   startPhase: 0f);
+            const AnimationFlags flags = AnimationFlags.Loop | AnimationFlags.AbortOnWeaponDamage;
+            int duration = sharedData.random.Next(5000, 30000);
 
-            convertedPed.forcedAnimation = (animDict, animName);
+            ped.Task.ClearAllImmediately();
+            ped.Task.PlayAnimationAdvanced(new CrClipAsset(CRAWL_ANIM_DICT, animName),
+                                           pedPosition,
+                                           quat.ToEuler(),
+                                           AnimationBlendDelta.SlowBlendIn,
+                                           AnimationBlendDelta.InstantBlendOut,
+                                           timeToPlay: duration,
+                                           flags);
+
+#if DEBUG
+            sharedData.logger.WriteInfo($"Selected animation = {animName} for {duration} ms");
+#endif
+            convertedPed.forcedAnimation = (CRAWL_ANIM_DICT, animName);
             convertedPed.RequestPermanentRagdoll();
-            convertedPed.nmHelper = GetInjuredOnGroundHelper(convertedPed, dontReachWithLeft: left, dontReachWithRight: right);
+
+            convertedPed.nmHelper = sharedData.random.IsTrueWithProbability(0.5f)
+                    ? GetInjuredOnGroundHelper(convertedPed, dontReachWithLeft: left, dontReachWithRight: right)
+                    : null;
         }
 
         private InjuredOnGroundHelper GetInjuredOnGroundHelper(in ConvertedPed convertedPed,

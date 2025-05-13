@@ -90,5 +90,10 @@
         public static void ResetMoveRate(this ref ConvertedPed convertedPed) {
             convertedPed.moveRate = 1f;
         }
+
+        public static bool HasForcedAnimation(this in ConvertedPed convertedPed) {
+            (string, string) animInfo = convertedPed.forcedAnimation;
+            return !string.IsNullOrEmpty(animInfo.Item1) && !string.IsNullOrEmpty(animInfo.Item2);
+        }
     }
 }
