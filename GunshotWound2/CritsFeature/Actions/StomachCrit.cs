@@ -1,4 +1,5 @@
 ﻿namespace GunshotWound2.CritsFeature {
+    using HitDetection;
     using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
@@ -17,7 +18,7 @@
 
         public override void Apply(Entity pedEntity, ref ConvertedPed convertedPed) {
             CreatePain(pedEntity, 30f);
-            CreateInternalBleeding(pedEntity, BLEEDING_SEVERITY);
+            CreateInternalBleeding(pedEntity, PedHitData.BodyParts.Abdomen, BLEEDING_SEVERITY);
             convertedPed.thisPed.PlayAmbientSpeech("PAIN_RAPIDS", GTA.SpeechModifier.InterruptShouted);
         }
 
@@ -29,7 +30,7 @@
             CreatePain(pedEntity, RUN_PAIN_MULT * sharedData.deltaTime);
             bool openNewBleeding = sharedData.random.IsTrueWithProbability(NEW_BLEEDING_CHANCE);
             if (openNewBleeding) {
-                CreateInternalBleeding(pedEntity, 0.5f * BLEEDING_SEVERITY);
+                CreateInternalBleeding(pedEntity, PedHitData.BodyParts.Abdomen, 0.5f * BLEEDING_SEVERITY);
                 ShowRunningWarningMessage(convertedPed);
             }
         }

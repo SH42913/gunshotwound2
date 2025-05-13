@@ -11,7 +11,7 @@
                 if (sharedData.TryGetPlayer(out Entity entity)) {
                     entity.SetComponent(new PedHitData {
                         weaponType = PedHitData.WeaponTypes.SmallCaliber,
-                        bodyPart = PedHitData.BodyParts.UpperBody,
+                        bodyPart = PedHitData.BodyParts.Chest,
                     });
                 }
             });

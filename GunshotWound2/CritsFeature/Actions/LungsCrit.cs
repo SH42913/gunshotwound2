@@ -1,5 +1,6 @@
 ﻿namespace GunshotWound2.CritsFeature {
     using GTA;
+    using HitDetection;
     using PedsFeature;
 
     public sealed class LungsCrit : BaseCrit {
@@ -12,7 +13,7 @@
 
         public override void Apply(Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
             CreatePain(pedEntity, 30f);
-            CreateInternalBleeding(pedEntity, 1f);
+            CreateInternalBleeding(pedEntity, PedHitData.BodyParts.Chest, 1f);
 
             convertedPed.thisPed.PlayAmbientSpeech("COUGH", SpeechModifier.InterruptShouted);
             convertedPed.BlockSprint();

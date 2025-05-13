@@ -1,5 +1,6 @@
 ﻿namespace GunshotWound2.CritsFeature {
     using HealthFeature;
+    using HitDetection;
     using PainFeature;
     using PedsFeature;
     using Scellecs.Morpeh;
@@ -37,8 +38,8 @@
             entity.GetComponent<Pain>().diff += amount;
         }
 
-        protected void CreateInternalBleeding(Entity pedEntity, float severity) {
-            pedEntity.CreateBleeding(severity, sharedData.localeConfig.InternalBleeding, isInternal: true);
+        protected void CreateInternalBleeding(Entity pedEntity, PedHitData.BodyParts bodyPart, float severity) {
+            pedEntity.CreateBleeding(bodyPart, severity, sharedData.localeConfig.InternalBleeding, isInternal: true);
         }
 
         protected void ShowRunningWarningMessage(in ConvertedPed convertedPed) {

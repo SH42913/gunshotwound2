@@ -63,8 +63,8 @@
             switch (hit.bodyPart) {
                 case PedHitData.BodyParts.Head:      return GetHeadWound();
                 case PedHitData.BodyParts.Neck:      return GetNeckWound();
-                case PedHitData.BodyParts.UpperBody: return GetUpperWound();
-                case PedHitData.BodyParts.LowerBody: return GetLowerWound();
+                case PedHitData.BodyParts.Chest: return GetUpperWound();
+                case PedHitData.BodyParts.Abdomen: return GetLowerWound();
                 case PedHitData.BodyParts.Arm:       return GetArmWound();
                 case PedHitData.BodyParts.Leg:       return GetLegWound();
                 default:                             return null;
@@ -114,8 +114,8 @@
                         return false;
                     }
 
-                case PedHitData.BodyParts.UpperBody:
-                case PedHitData.BodyParts.LowerBody:
+                case PedHitData.BodyParts.Chest:
+                case PedHitData.BodyParts.Abdomen:
                     break;
                 default:
                     armorWound = null;
@@ -129,11 +129,11 @@
             }
 
             switch (hit.bodyPart) {
-                case PedHitData.BodyParts.UpperBody:
+                case PedHitData.BodyParts.Chest:
                     hit.armorMessage = sharedData.localeConfig.ArmorSavedYourChest;
                     armorWound = GetUnderArmorWound(damageMult: 1f, painMult: 2f);
                     return true;
-                case PedHitData.BodyParts.LowerBody:
+                case PedHitData.BodyParts.Abdomen:
                     hit.armorMessage = sharedData.localeConfig.ArmorSavedYourLowerBody;
                     armorWound = GetUnderArmorWound(damageMult: 1f, painMult: 3f);
                     break;

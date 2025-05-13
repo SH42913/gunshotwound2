@@ -7,8 +7,8 @@
             Nothing,
             Head,
             Neck,
-            UpperBody,
-            LowerBody,
+            Chest,
+            Abdomen,
             Arm,
             Leg,
         }

@@ -99,8 +99,8 @@
         private Crits.Types GetRandomCritFor(PedHitData.BodyParts bodyPart) {
             switch (bodyPart) {
                 case PedHitData.BodyParts.Head:      return Crits.Types.SpineDamaged;
-                case PedHitData.BodyParts.UpperBody: return sharedData.random.Next(upperBodyCrits);
-                case PedHitData.BodyParts.LowerBody: return sharedData.random.Next(lowerBodyCrits);
+                case PedHitData.BodyParts.Chest: return sharedData.random.Next(upperBodyCrits);
+                case PedHitData.BodyParts.Abdomen: return sharedData.random.Next(lowerBodyCrits);
                 case PedHitData.BodyParts.Arm:       return Crits.Types.ArmsDamaged;
                 case PedHitData.BodyParts.Leg:       return Crits.Types.LegsDamaged;
                 default:                             return default;

@@ -18,6 +18,8 @@
 
         public World World { get; set; }
 
+        private WoundConfig WoundConfig => sharedData.mainConfig.woundConfig;
+
         public WoundSystem(SharedData sharedData) {
             this.sharedData = sharedData;
 
@@ -104,13 +106,12 @@
             }
 
             CreateDamage(pedEntity, woundData.Damage, woundData.Name);
-            CreateBleeding(pedEntity, woundData.BleedSeverity, woundData.InternalBleeding, woundData.Name);
+            CreateBleeding(pedEntity, hitData.bodyPart, woundData.BleedSeverity, woundData.InternalBleeding, woundData.Name);
             CreatePain(pedEntity, woundData.Pain);
             CreateCrit(pedEntity, woundData.HasCrits, hitData.bodyPart);
 
             if (woundData.ArterySevered) {
-                CreateBleeding(pedEntity, WoundConfig.MAX_SEVERITY_FOR_BANDAGE, isInternal: true,
-                               sharedData.localeConfig.SeveredArtery);
+                CreateArteryBleeding(pedEntity, hitData.bodyPart);
             }
         }
 
@@ -130,28 +131,33 @@
                 return;
             }
 
-            float deviation = sharedData.mainConfig.woundConfig.DamageDeviation;
-            float mult = sharedData.mainConfig.woundConfig.DamageMultiplier;
+            float deviation = WoundConfig.DamageDeviation;
+            float mult = WoundConfig.DamageMultiplier;
 
             float damageAmount = CalculateAmount(damage, deviation, mult);
             damageAmount = Math.Max(damageAmount, 1f);
             pedEntity.GetComponent<Health>().DealDamage(damageAmount, woundName);
         }
 
-        private void CreateBleeding(Entity pedEntity, float severity, bool isInternal, string name) {
+        private void CreateBleeding(Entity pedEntity, PedHitData.BodyParts bodyPart, float severity, bool isInternal, string name) {
             if (severity <= 0f) {
                 return;
             }
 
-            float deviation = sharedData.mainConfig.woundConfig.BleedingDeviation;
-            float mult = sharedData.mainConfig.woundConfig.BleedingMultiplier;
+            float deviation = WoundConfig.BleedingDeviation;
+            float mult = WoundConfig.BleedingMultiplier;
             severity = CalculateAmount(severity, deviation, mult);
-            pedEntity.CreateBleeding(severity, name, isInternal);
+            pedEntity.CreateBleeding(bodyPart, severity, name, isInternal);
+        }
+
+        private void CreateArteryBleeding(Entity pedEntity, PedHitData.BodyParts bodyPart) {
+            string name = sharedData.localeConfig.SeveredArtery;
+            CreateBleeding(pedEntity, bodyPart, WoundConfig.MAX_SEVERITY_FOR_BANDAGE, isInternal: true, name);
         }
 
         private void CreatePain(Entity pedEntity, float painAmount) {
-            float deviation = sharedData.mainConfig.woundConfig.PainDeviation;
-            float mult = sharedData.mainConfig.woundConfig.PainMultiplier;
+            float deviation = WoundConfig.PainDeviation;
+            float mult = WoundConfig.PainMultiplier;
 
             ref Pain pain = ref pedEntity.GetComponent<Pain>();
             pain.diff += CalculateAmount(painAmount, deviation, mult);

@@ -96,7 +96,7 @@
                     break;
                 case Bone.SkelSpine2:
                 case Bone.SkelSpine3:
-                    damagePart = PedHitData.BodyParts.UpperBody;
+                    damagePart = PedHitData.BodyParts.Chest;
                     break;
                 case Bone.SkelRoot:
                 case Bone.SkelSpineRoot:
@@ -105,7 +105,7 @@
                 case Bone.SkelPelvis:
                 case Bone.SkelPelvis1:
                 case Bone.SkelPelvisRoot:
-                    damagePart = PedHitData.BodyParts.LowerBody;
+                    damagePart = PedHitData.BodyParts.Abdomen;
                     break;
                 case Bone.SkelLeftThigh:
                 case Bone.SkelRightThigh:
