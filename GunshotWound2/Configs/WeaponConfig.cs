@@ -54,7 +54,27 @@ namespace GunshotWound2.Configs {
                 throw new Exception($"{weaponName}'s hashes is empty");
             }
 
-            return hashes.Split(MainConfig.Separator, StringSplitOptions.RemoveEmptyEntries).Select(uint.Parse).ToHashSet();
+            HashSet<uint> weaponHashes = hashes
+                                         .Split(MainConfig.Separator, StringSplitOptions.RemoveEmptyEntries)
+                                         .Select(uint.Parse)
+                                         .ToHashSet();
+
+            ValidateWeaponHashes(weaponName, weaponHashes);
+            return weaponHashes;
+        }
+
+        private static void ValidateWeaponHashes(string weaponName, HashSet<uint> weaponHashes) {
+            var invalidHashes = new HashSet<uint>();
+            foreach (uint weaponHash in weaponHashes) {
+                if (!SHVDN.NativeMemory.IsHashValidAsWeaponHash(weaponHash)) {
+                    invalidHashes.Add(weaponHash);
+                }
+            }
+
+            if (invalidHashes.Count > 0) {
+                string list = string.Join(";", invalidHashes);
+                throw new Exception($"There's invalid {weaponName} hashes: {list}");
+            }
         }
 
         private static Dictionary<string, float?[]> ExtractDamageSystemConfigs(XElement node) {

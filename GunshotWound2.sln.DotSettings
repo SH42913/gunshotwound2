@@ -420,6 +420,7 @@ public sealed class $COMPONENT$Provider : Scellecs.Morpeh.Providers.MonoProvider
   $END$
 }</s:String>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Avulsive/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=bullpup/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=crit/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=crits/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=lspdfr/@EntryIndexedValue">True</s:Boolean>
