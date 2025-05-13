@@ -136,8 +136,8 @@
 		<MoveRateOnLegsCrit Value="0.7"/>
 		<!-- Move rate when Legs are critically damaged -->
 
-		<OverallDamageMult Value="0.4"/>
-		<!-- Overall damage multiplier, 2.0 mean every wound will get x2 damage for ped -->
+		<OverallDamageMult Value="0.5"/>
+		<!-- Overall damage multiplier, 0.5 means every wound will deal 50% of damage to ped -->
 
 		<DamageDeviation Value="0.2"/>
 		<!-- 0.2 mean +-20% random damage -->
@@ -154,7 +154,7 @@
 	<Weapons>
 		<UseSpecialStunDamage Value="TRUE"/>
 		<!-- Any stun damage(eg StunGun/911657153) will drop target to unconscious.
-		If you're using LSPDFR, set to FALSE -->
+		If you're using LSPDFR, set value to FALSE and use default stun logic -->
 		
 		<SmallCaliber DamageMult="1.0" BleedingMult="1.0" PainMult="1.0" CritChance="0.4" ArmorDamage="4">
 			<!-- Pistol;PistolMk2;CombatPistol;SNSPistol;SNSPistolMk2;VintagePistol;MarksmanPistol;DoubleActionRevolver;APPistol;MicroSMG;MiniSMG;SMG;SMGMk2;CombatPDW;MachinePistol;CeramicPistol;PericoPistol; -->
