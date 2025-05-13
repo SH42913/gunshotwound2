@@ -25,7 +25,7 @@
 
 		<PainSlowMo Value="-1"/>
 		<!-- Adrenaline effect that slowdown time using player's pain.
-		0.7 mean TimeScale never be less than 70% of default time speed. 
+		0.7 means TimeScale never be less than 70% of default time speed. 
 		TimeScale will be calculated as 0.7 + painPercent(pain/maxPain).
         Be carefully, it will disable other SlowMo-mods.
         If you want to disable this option, set any negative value. -->
@@ -35,10 +35,10 @@
 		If you feel nausea or effects annoy you, set value to FALSE. -->
 
 		<MaximalPain Value="100.0"/>
-		<!-- 100.0 mean when pain will more than 100 points you'll fall unconscious -->
+		<!-- 100.0 means when pain will more than 100 points you'll fall unconscious -->
 
 		<PainRecoverySpeed Value="1.5"/>
-		<!-- 1.5 mean 1.5 pain points will be restored per 1 sec -->
+		<!-- 1.5 means 1.5 pain points will be restored per 1 sec -->
 
 		<BleedHealSpeed Value="2.0"/>
 		<!-- How quickly bleeding will heal by itself -->
@@ -51,7 +51,7 @@
         There are 3 states: Mild(<30%, currentPain/maximalPain), Average(<80%) and Intense(<100%) -->
 
 		<HelmetCost Value="40"/>
-		<!-- 40 mean you need $40 to buy a helmet. If you're using a skin changer, you need to set it to 0. -->
+		<!-- 40 means you need $40 to buy a helmet. If you're using a skin changer, you need to set it to 0. -->
 	</Player>
 
 	<Peds>
@@ -130,11 +130,14 @@
 		<UseCustomUnconsciousBehaviour Value="TRUE"/>
 		<!-- If TRUE - you will see various ped behaviour when they're unconscious, otherwise will be used common ragdoll -->
 
+		<DelayedPainPercent Value="0.3"/>
+		<!-- 0.3 means 30% of wound pain will be applied with delay(because of adrenaline) -->
+
 		<SelfHealingRate Value="0.03"/>
 		<!-- How fast you will heal if you have no bleeding -->
 
 		<MinimalChanceForArmorSave Value="0.2"/>
-		<!-- 0.6 mean 60% chance to save your body on 1 armor point.
+		<!-- 0.6 means 60% chance to save your body on 1 armor point.
         100 armor points will always 100% chance to save. -->
 
 		<MoveRateOnFullPain Value="0.8"/>
@@ -147,7 +150,7 @@
 		<!-- Overall damage multiplier, 0.5 means every wound will deal 50% of damage to ped -->
 
 		<DamageDeviation Value="0.2"/>
-		<!-- 0.2 mean +-20% random damage -->
+		<!-- 0.2 means +-20% random damage -->
 
 		<OverallBleedingMult Value="1.3"/>
 		<BleedingDeviation Value="0.2"/>

@@ -12,6 +12,7 @@
 
         private readonly SharedData sharedData;
         private readonly IPainState[] painStates;
+        private readonly int unbearableIndex;
 
         private Filter pedsWithPain;
         private Stash<ConvertedPed> pedStash;
@@ -30,6 +31,8 @@
                 new UnbearablePainState(sharedData),
                 new DeadlyPainState(sharedData),
             };
+
+            unbearableIndex = Array.FindIndex(painStates, x => x is UnbearablePainState);
         }
 
         public void OnAwake() {
@@ -51,6 +54,14 @@
                 ref ConvertedPed convertedPed = ref pedStash.Get(entity);
                 ref Pain pain = ref painStash.Get(entity);
                 if (pain.diff > 0f) {
+                    DelayPain(ref pain);
+
+                    float applied = ApplyPain(ref convertedPed, ref pain);
+#if DEBUG
+                    sharedData.logger.WriteInfo($"Increased pain for {applied.ToString("F2")} at {convertedPed.name}");
+#endif
+                } else if (pain.delayedDiff > 0) {
+                    UpdateDelayedPain(ref pain, deltaTime);
                     ApplyPain(ref convertedPed, ref pain);
                 } else if (pain.HasPain()) {
                     pain.amount -= pain.recoveryRate * deltaTime;
@@ -73,16 +84,53 @@
             }
         }
 
-        private void ApplyPain(ref ConvertedPed convertedPed, ref Pain pain) {
+        private void DelayPain(ref Pain pain) {
+            if (IsUnbearableState(pain)) {
+                return;
+            }
+
+            if (pain.diff <= 0f && pain.diff < pain.delayedDiff) {
+                return;
+            }
+
+            float toDelay = pain.diff * sharedData.mainConfig.woundConfig.DelayedPainPercent;
+            if (toDelay < 1f) {
+                return;
+            }
+
+            pain.diff -= toDelay;
+            pain.delayedDiff += toDelay;
+
+#if DEBUG
+            sharedData.logger.WriteInfo($"{toDelay.ToString("F2")} of pain delayed");
+#endif
+        }
+
+        private void UpdateDelayedPain(ref Pain pain, float deltaTime) {
+            if (pain.delayedDiff <= 0f) {
+                return;
+            }
+
+            if (deltaTime < pain.delayedDiff) {
+                pain.diff += deltaTime;
+                pain.delayedDiff -= deltaTime;
+            } else {
+                ApplyAllDelayedPain(ref pain);
+            }
+        }
+
+        private static void ApplyAllDelayedPain(ref Pain pain) {
+            pain.diff = pain.delayedDiff;
+            pain.delayedDiff = 0f;
+        }
+
+        private float ApplyPain(ref ConvertedPed convertedPed, ref Pain pain) {
             PlayPainEffects(ref convertedPed, ref pain);
 
             float diff = pain.diff;
             pain.amount += diff;
             pain.diff = 0f;
-
-#if DEBUG
-            sharedData.logger.WriteInfo($"Increased pain for {diff.ToString("F5")} at {convertedPed.name}");
-#endif
+            return diff;
         }
 
         private void RefreshPainState(Entity entity, ref ConvertedPed convertedPed, ref Pain pain) {
@@ -129,6 +177,10 @@
                 pain.currentState = curState;
                 RefreshMoveSet(ref convertedPed, curState);
                 RefreshMood(ref convertedPed, curState);
+            }
+
+            if (IsUnbearableState(pain)) {
+                ApplyAllDelayedPain(ref pain);
             }
 
             RefreshMoveRate(ref convertedPed, ref pain);
@@ -207,6 +259,10 @@
                     convertedPed.thisPed.Task.LeaveVehicle(GTA.LeaveVehicleFlags.BailOut);
                 }
             }
+        }
+
+        private bool IsUnbearableState(in Pain pain) {
+            return unbearableIndex >= 0 && Array.IndexOf(painStates, pain.currentState) == unbearableIndex;
         }
     }
 }

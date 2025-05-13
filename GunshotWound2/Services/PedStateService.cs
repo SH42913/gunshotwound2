@@ -150,6 +150,9 @@
 
             if (pain.TooMuchPain()) {
                 stringBuilder.AppendFormat(" ({0} sec)", pain.TimeToRecover().ToString("F1"));
+            } else if (pain.delayedDiff > 0f) {
+                Notifier.Color.ORANGE.AppendTo(stringBuilder);
+                stringBuilder.AppendFormat(" (+{0})", pain.DelayedPercent().ToString("P1"));
             }
 
             stringBuilder.SetDefaultColor();

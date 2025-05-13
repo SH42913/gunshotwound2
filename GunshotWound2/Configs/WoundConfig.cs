@@ -25,6 +25,7 @@ namespace GunshotWound2.Configs {
         public bool RagdollOnPainfulWound;
         public float PainfulWoundPercent;
         public bool UseCustomUnconsciousBehaviour;
+        public float DelayedPainPercent;
 
         public float MinimalChanceForArmorSave;
 
@@ -47,6 +48,7 @@ namespace GunshotWound2.Configs {
             RagdollOnPainfulWound = node.Element("RagdollOnPainfulWound").GetBool();
             PainfulWoundPercent = node.Element("PainfulWoundPercent").GetFloat();
             UseCustomUnconsciousBehaviour = node.Element("UseCustomUnconsciousBehaviour").GetBool();
+            DelayedPainPercent = node.Element("DelayedPainPercent").GetFloat();
             MinimalChanceForArmorSave = node.Element("MinimalChanceForArmorSave").GetFloat();
             SelfHealingRate = node.Element("SelfHealingRate").GetFloat();
         }
