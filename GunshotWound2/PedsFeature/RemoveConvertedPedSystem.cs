@@ -38,6 +38,8 @@
         }
 
         private void Remove(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) {
+            convertedPed.thisPed.MaxHealth = convertedPed.defaultMaxHealth;
+
             if (convertedPed.isPlayer) {
                 sharedData.cameraService.ClearAllEffects();
             }
@@ -51,9 +53,7 @@
 
         public void Dispose() {
             foreach (Scellecs.Morpeh.Entity entity in converted) {
-#if DEBUG
-                DeleteBlip(convertedStash.Get(entity));
-#endif
+                Remove(entity, ref convertedStash.Get(entity));
             }
         }
 

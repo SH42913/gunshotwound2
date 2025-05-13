@@ -27,16 +27,18 @@
             PedsConfig pedsConfig = sharedData.mainConfig.pedsConfig;
             foreach (Scellecs.Morpeh.Entity entity in justConvertedPeds) {
                 ref ConvertedPed convertedPed = ref convertedStash.Get(entity);
-                convertedPed.thisPed.CanSufferCriticalHits = false;
-                convertedPed.thisPed.DiesOnLowHealth = false;
-                convertedPed.thisPed.CanWrithe = false;
+                Ped ped = convertedPed.thisPed;
+                ped.CanSufferCriticalHits = false;
+                ped.DiesOnLowHealth = false;
+                ped.CanWrithe = false;
 
                 ref Health health = ref entity.AddOrGetComponent<Health>();
-                health.max = convertedPed.thisPed.MaxHealth - 1;
-                if (convertedPed.thisPed.Health > health.max) {
-                    convertedPed.thisPed.Health = health.max;
+                health.max = convertedPed.defaultMaxHealth;
+                ped.MaxHealth = health.max + 1;
+                if (ped.Health > health.max) {
+                    ped.Health = health.max;
                 } else if (!convertedPed.isPlayer && sharedData.mainConfig.pedsConfig.ScanOnlyDamaged) {
-                    convertedPed.thisPed.Health = health.max;
+                    ped.Health = health.max;
                 }
 
                 if (convertedPed.isPlayer) {
@@ -49,7 +51,7 @@
 
                     if (pedsConfig.MinStartHealth > 0 && pedsConfig.MaxStartHealth > 0) {
                         int randomHealth = sharedData.random.Next(pedsConfig.MinStartHealth, pedsConfig.MaxStartHealth);
-                        convertedPed.thisPed.Health = WoundConfig.ConvertHealthToNative(randomHealth);
+                        ped.Health = WoundConfig.ConvertHealthToNative(randomHealth);
                     }
                 }
             }

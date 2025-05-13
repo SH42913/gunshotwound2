@@ -12,6 +12,7 @@
         public bool isMale;
         public bool isPlayer;
 
+        public int defaultMaxHealth;
         public int lastFrameHealth;
         public int lastFrameArmor;
         public Bone lastDamagedBone;

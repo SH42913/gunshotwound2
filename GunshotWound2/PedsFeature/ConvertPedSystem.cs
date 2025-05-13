@@ -34,6 +34,7 @@
                 convertedPed.name = $"P{pedToConvert.Handle.ToString()}";
                 convertedPed.thisPed = pedToConvert;
                 convertedPed.isMale = pedToConvert.Gender == Gender.Male;
+                convertedPed.defaultMaxHealth = pedToConvert.MaxHealth;
 
                 PedsConfig pedsConfig = sharedData.mainConfig.pedsConfig;
                 if (pedsConfig.MinAccuracy > 0 && pedsConfig.MaxAccuracy > 0 && pedToConvert.Accuracy > pedsConfig.MinAccuracy) {
