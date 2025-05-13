@@ -1,6 +1,7 @@
 namespace GunshotWound2.Utils {
     using GTA;
     using GTA.Math;
+    using GTA.Native;
 
     // ReSharper disable once InconsistentNaming
     public static class GTAHelpers {
@@ -35,6 +36,10 @@ namespace GunshotWound2.Utils {
 
         public static int ConvertToMilliSec(this float timeInSec) {
             return (int)(timeInSec * 1000);
+        }
+
+        public static int GetPropTextureCount(Ped ped, PedPropAnchorPoint anchorPoint, int propIndex) {
+            return Function.Call<int>(Hash.GET_NUMBER_OF_PED_PROP_TEXTURE_VARIATIONS, ped, (int)anchorPoint, propIndex);
         }
     }
 }

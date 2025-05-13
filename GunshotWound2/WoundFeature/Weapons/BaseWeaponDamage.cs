@@ -56,7 +56,7 @@
                 return DefaultWound();
             }
 
-            if (TrySaveWithArmor(ref convertedPed, ref hit, out WoundData? armorWound)) {
+            if (TrySaveWithArmor(convertedPed.thisPed, ref hit, out WoundData? armorWound)) {
                 return armorWound;
             }
 
@@ -102,10 +102,11 @@
             };
         }
 
-        private bool TrySaveWithArmor(ref ConvertedPed convertedPed, ref PedHitData hit, out WoundData? armorWound) {
+        private bool TrySaveWithArmor(Ped ped, ref PedHitData hit, out WoundData? armorWound) {
             switch (hit.bodyPart) {
                 case PedHitData.BodyParts.Head:
-                    if (convertedPed.thisPed.IsWearingHelmet && sharedData.random.IsTrueWithProbability(HelmetSafeChance)) {
+                    bool hasHelmet = ped.IsWearingHelmet || sharedData.mainConfig.armorConfig.PedHasHelmet(ped);
+                    if (hasHelmet && sharedData.random.IsTrueWithProbability(HelmetSafeChance)) {
                         hit.armorMessage = sharedData.localeConfig.HelmetSavedYourHead;
                         armorWound = null;
                         return true;
@@ -122,7 +123,7 @@
                     return false;
             }
 
-            if (CheckArmorPenetration(convertedPed.thisPed, out string reason)) {
+            if (CheckArmorPenetration(ped, out string reason)) {
                 hit.armorMessage = reason;
                 armorWound = null;
                 return false;

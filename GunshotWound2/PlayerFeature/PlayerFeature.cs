@@ -1,4 +1,5 @@
 ﻿namespace GunshotWound2.PlayerFeature {
+    using System.Collections.Generic;
     using GTA;
     using Scellecs.Morpeh;
     using Utils;
@@ -45,13 +46,38 @@
                 return;
             }
 
+            PedProp headProp = ped.Style[PedPropAnchorPoint.Head];
+            if (headProp.Index != 0) {
+                headProp.SetVariation(0);
+                return;
+            }
+
             int moneyForHelmet = sharedData.mainConfig.playerConfig.MoneyForHelmet;
             if (player.Money <= 0 || player.Money >= moneyForHelmet) {
                 player.Money -= moneyForHelmet;
-                int helmetTextureId = sharedData.random.Next(0, 15);
-                ped.GiveHelmet(dontTakeOffHelmet: true, HelmetPropFlags.DefaultHelmet, helmetTextureId);
+                GiveRandomHelmet(sharedData, ped, headProp);
             } else {
                 sharedData.notifier.ShowOne(sharedData.localeConfig.DontHaveMoneyForHelmet, blinking: true, Notifier.Color.RED);
+            }
+        }
+
+        private static void GiveRandomHelmet(SharedData sharedData, Ped ped, PedProp headProp) {
+            var allHelmets = new List<int>(sharedData.mainConfig.armorConfig.HelmetPropIndexes);
+            for (int i = allHelmets.Count - 1; i >= 0; i--) {
+                if (!headProp.IsVariationValid(allHelmets[i])) {
+                    allHelmets.RemoveAt(i);
+                }
+            }
+
+            if (allHelmets.Count < 3 || sharedData.modelChecker.IsMainChar(ped.Model)) {
+                ped.GiveHelmet(dontTakeOffHelmet: true);
+            } else {
+                int helmetIndex = sharedData.random.NextFromCollection(allHelmets);
+
+                int textureCount = GTAHelpers.GetPropTextureCount(ped, PedPropAnchorPoint.Head, helmetIndex);
+                int textureIndex = sharedData.random.Next(0, textureCount);
+
+                headProp.SetVariation(helmetIndex + 1, textureIndex);
             }
         }
     }
