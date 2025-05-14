@@ -80,8 +80,8 @@
 
             const float stunPainMult = 1.2f;
             float maxPain = convertedPed.isPlayer
-                    ? sharedData.mainConfig.playerConfig.MaximalPain
-                    : sharedData.mainConfig.pedsConfig.UpperMaximalPain;
+                    ? sharedData.mainConfig.playerConfig.PainShockThreshold
+                    : sharedData.mainConfig.pedsConfig.MaxPainShockThreshold;
 
             CreatePain(pedEntity, stunPainMult * maxPain);
             convertedPed.thisPed.PlayAmbientSpeech("PAIN_TAZER", GTA.SpeechModifier.InterruptShouted);

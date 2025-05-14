@@ -27,12 +27,12 @@
                 ref Pain pain = ref entity.AddOrGetComponent<Pain>();
                 if (convertedPed.isPlayer) {
                     pain.recoveryRate = playerConfig.PainRecoverSpeed;
-                    pain.max = playerConfig.MaximalPain;
+                    pain.max = playerConfig.PainShockThreshold;
                 } else {
                     float maxRate = pedsConfig.MaximalPainRecoverSpeed;
                     float minRate = 0.5f * maxRate;
                     pain.recoveryRate = sharedData.random.NextFloat(minRate, maxRate);
-                    pain.max = sharedData.random.NextFloat(pedsConfig.LowerMaximalPain, pedsConfig.UpperMaximalPain);
+                    pain.max = sharedData.random.NextFloat(pedsConfig.MinPainShockThreshold, pedsConfig.MaxPainShockThreshold);
                 }
             }
         }

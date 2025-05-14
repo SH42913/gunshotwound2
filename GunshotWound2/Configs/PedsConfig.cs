@@ -46,8 +46,8 @@ namespace GunshotWound2.Configs {
         public int MaxStartHealth;
         public float MaximalBleedStopSpeed;
 
-        public float LowerMaximalPain;
-        public float UpperMaximalPain;
+        public float MinPainShockThreshold;
+        public float MaxPainShockThreshold;
         public float MaximalPainRecoverSpeed;
 
         public PainMoveSets MalePainMoveSets;
@@ -76,9 +76,9 @@ namespace GunshotWound2.Configs {
             MinStartHealth = healthNode.GetInt("Min");
             MaxStartHealth = healthNode.GetInt("Max");
 
-            XElement painNode = node.Element("MaximalPain");
-            LowerMaximalPain = painNode.GetFloat("Min");
-            UpperMaximalPain = painNode.GetFloat("Max");
+            XElement painNode = node.Element("PainShockThreshold");
+            MinPainShockThreshold = painNode.GetFloat("Min");
+            MaxPainShockThreshold = painNode.GetFloat("Max");
 
             XElement accuracyNode = node.Element("CustomAccuracy");
             MinAccuracy = accuracyNode.GetInt("Min");
@@ -135,7 +135,7 @@ namespace GunshotWound2.Configs {
                    + $"{nameof(ShowEnemyCriticalMessages)}: {ShowEnemyCriticalMessages.ToString()}\n"
                    + $"BleedStop: {MaximalBleedStopSpeed.ToString(CultureInfo.InvariantCulture)}\n"
                    + $"StartHealth: {MinStartHealth.ToString()} - {MaxStartHealth.ToString()}\n"
-                   + $"MaximalPain: {LowerMaximalPain.ToString(CultureInfo.InvariantCulture)} - {UpperMaximalPain.ToString(CultureInfo.InvariantCulture)}\n"
+                   + $"MaximalPain: {MinPainShockThreshold.ToString(CultureInfo.InvariantCulture)}-{MaxPainShockThreshold.ToString(CultureInfo.InvariantCulture)}\n"
                    + $"Accuracy: {MinAccuracy.ToString()} - {MaxAccuracy.ToString()}\n"
                    + $"ShootRate: {MinShootRate.ToString()} - {MaxShootRate.ToString()}\n"
                    + $"PainRecoverSpeed: {MaximalPainRecoverSpeed.ToString(CultureInfo.InvariantCulture)}";

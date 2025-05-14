@@ -18,7 +18,7 @@ namespace GunshotWound2.Configs {
 
         public int MoneyForHelmet;
 
-        public float MaximalPain;
+        public float PainShockThreshold;
         public float PainRecoverSpeed;
         public float BleedHealingSpeed;
         public float PainSlowMo;
@@ -32,7 +32,7 @@ namespace GunshotWound2.Configs {
                 return;
             }
 
-            MaximalPain = node.Element("MaximalPain").GetFloat();
+            PainShockThreshold = node.Element("PainShockThreshold").GetFloat();
             PainRecoverSpeed = node.Element("PainRecoverySpeed").GetFloat();
             BleedHealingSpeed = node.Element("BleedHealSpeed").GetFloat() / 1000f;
             PoliceCanForgetYou = node.Element("PoliceCanForget").GetBool();
@@ -53,7 +53,7 @@ namespace GunshotWound2.Configs {
         public override string ToString() {
             return $"{nameof(PlayerConfig)}:\n"
                    + $"{nameof(MoneyForHelmet)}: {MoneyForHelmet.ToString()}\n"
-                   + $"{nameof(MaximalPain)}: {MaximalPain.ToString(CultureInfo.InvariantCulture)}\n"
+                   + $"{nameof(PainShockThreshold)}: {PainShockThreshold.ToString(CultureInfo.InvariantCulture)}\n"
                    + $"{nameof(PainRecoverSpeed)}: {PainRecoverSpeed.ToString(CultureInfo.InvariantCulture)}\n"
                    + $"{nameof(BleedHealingSpeed)}: {BleedHealingSpeed.ToString(CultureInfo.InvariantCulture)}\n"
                    + $"{nameof(PainSlowMo)}: {PainSlowMo.ToString(CultureInfo.InvariantCulture)}";

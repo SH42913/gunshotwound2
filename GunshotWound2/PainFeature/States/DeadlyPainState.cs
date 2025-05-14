@@ -5,7 +5,7 @@
     using Scellecs.Morpeh;
 
     public sealed class DeadlyPainState : IPainState {
-        public float PainThreshold => WoundConfig.DEADLY_PAIN_PERCENT;
+        public float PainThreshold => sharedData.mainConfig.woundConfig.DeadlyPainShockPercent;
         public string Color => "~r~";
 
         private readonly SharedData sharedData;

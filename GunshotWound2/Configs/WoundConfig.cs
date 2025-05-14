@@ -7,7 +7,6 @@ namespace GunshotWound2.Configs {
 
     public sealed class WoundConfig {
         public const float MAX_SEVERITY_FOR_BANDAGE = 1f;
-        public const float DEADLY_PAIN_PERCENT = 3f;
         private const int HEALTH_CORRECTION = 100;
 
         public float DamageMultiplier;
@@ -25,6 +24,7 @@ namespace GunshotWound2.Configs {
         public float PainfulWoundPercent;
         public bool UseCustomUnconsciousBehaviour;
         public float DelayedPainPercent;
+        public float DeadlyPainShockPercent;
 
         public float SelfHealingRate;
 
@@ -46,6 +46,7 @@ namespace GunshotWound2.Configs {
             PainfulWoundPercent = node.Element("PainfulWoundPercent").GetFloat();
             UseCustomUnconsciousBehaviour = node.Element("UseCustomUnconsciousBehaviour").GetBool();
             DelayedPainPercent = node.Element("DelayedPainPercent").GetFloat();
+            DeadlyPainShockPercent = node.Element("DeadlyPainShockPercent").GetFloat();
             SelfHealingRate = node.Element("SelfHealingRate").GetFloat();
         }
 
