@@ -10,7 +10,7 @@ namespace GunshotWound2.Configs {
 
     public sealed class InventoryConfig {
         public readonly struct Loadout {
-            public readonly List<(ItemTemplate, int)> items;
+            public readonly List<(ItemTemplate template, int count)> items;
 
             public Loadout(List<(ItemTemplate, int)> items) {
                 this.items = items;
@@ -26,6 +26,11 @@ namespace GunshotWound2.Configs {
         private readonly ItemTemplate[] templates = new[] { BandageItem.template, };
 
         public Loadout DefaultLoadout;
+        public Loadout MedkitLoadout;
+
+        public Loadout BandagesLoadout = new(new List<(ItemTemplate, int)>() {
+            (BandageItem.template, 5),
+        });
 
         public void FillFrom(XElement doc) {
             XElement node = doc.Element("Inventory");
@@ -34,6 +39,7 @@ namespace GunshotWound2.Configs {
             }
 
             DefaultLoadout = GetLoadout(node.Element("DefaultLoadout"));
+            MedkitLoadout = GetLoadout(node.Element("MedkitLoadout"));
         }
 
         private Loadout GetLoadout(XElement node) {

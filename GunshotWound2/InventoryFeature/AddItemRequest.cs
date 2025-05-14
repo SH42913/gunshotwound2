@@ -1,9 +1,10 @@
 namespace GunshotWound2.InventoryFeature {
     using System;
+    using Configs;
     using Scellecs.Morpeh;
 
     [Serializable]
     public struct AddItemRequest : IComponent {
-        public (ItemTemplate template, int count) item;
+        public InventoryConfig.Loadout loadout;
     }
 }

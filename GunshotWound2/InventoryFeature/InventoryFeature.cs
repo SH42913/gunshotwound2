@@ -6,7 +6,7 @@ namespace GunshotWound2.InventoryFeature {
 
         public static void Create(SystemsGroup systemsGroup, SharedData sharedData) {
             systemsGroup.AddSystem(new InventoryInitSystem(sharedData));
-            systemsGroup.AddSystem(new InventoryPickupSystem(sharedData));
+            systemsGroup.AddSystem(new AddItemSystem(sharedData));
             systemsGroup.AddSystem(new InventoryUseSystem(sharedData));
 
 #if DEBUG

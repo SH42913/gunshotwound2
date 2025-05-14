@@ -79,11 +79,12 @@
     <Compile Include="InventoryFeature\Inventory.cs" />
     <Compile Include="InventoryFeature\InventoryFeature.cs" />
     <Compile Include="InventoryFeature\InventoryInitSystem.cs" />
-    <Compile Include="InventoryFeature\InventoryPickupSystem.cs" />
+    <Compile Include="InventoryFeature\AddItemSystem.cs" />
     <Compile Include="InventoryFeature\InventoryUseSystem.cs" />
     <Compile Include="InventoryFeature\ItemTemplate.cs" />
     <Compile Include="InventoryFeature\UseItemRequest.cs" />
     <Compile Include="PedsFeature\PedMovementSystem.cs" />
+    <Compile Include="PlayerFeature\ItemPickupSystem.cs" />
     <Compile Include="PlayerFeature\MedkitGpsSystem.cs" />
     <Compile Include="PlayerFeature\MissionTrackerSystem.cs" />
     <Compile Include="PlayerFeature\PlayerCameraSystem.cs" />

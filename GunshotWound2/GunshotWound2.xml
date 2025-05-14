@@ -223,6 +223,11 @@
 		<DefaultLoadout>
 			<Item Name="Bandages" Count="4"/>
 		</DefaultLoadout>
+
+        <!-- These items you'll receive when pickup Medkit -->
+		<MedkitLoadout>
+			<Item Name="Bandages" Count="2"/>
+		</MedkitLoadout>
 	</Inventory>
 
 	<Hotkeys>

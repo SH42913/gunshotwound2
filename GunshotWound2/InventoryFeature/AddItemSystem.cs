@@ -4,13 +4,13 @@ namespace GunshotWound2.InventoryFeature {
     using Scellecs.Morpeh;
     using Utils;
 
-    public sealed class InventoryPickupSystem : ILateSystem {
+    public sealed class AddItemSystem : ILateSystem {
         private readonly SharedData sharedData;
         private Filter requests;
 
         public World World { get; set; }
 
-        public InventoryPickupSystem(SharedData sharedData) {
+        public AddItemSystem(SharedData sharedData) {
             this.sharedData = sharedData;
         }
 
@@ -25,12 +25,12 @@ namespace GunshotWound2.InventoryFeature {
 
                 bool isPlayer = entity.GetComponent<ConvertedPed>().isPlayer;
                 ref Inventory inventory = ref entity.GetComponent<Inventory>();
-                bool success = TryAddItem(ref inventory, request.item);
-                if (success && isPlayer) {
-                    (ItemTemplate item, int count) = request.item;
-                    string itemCountString = item.GetPluralTranslation(sharedData.localeConfig, count);
-                    string notification = $"{sharedData.localeConfig.FoundItems} {itemCountString}";
-                    sharedData.notifier.info.QueueMessage(notification, Notifier.Color.GREEN);
+                foreach ((ItemTemplate template, int count) item in request.loadout.items) {
+                    if (TryAddItem(ref inventory, item) && isPlayer) {
+                        string itemCountString = item.template.GetPluralTranslation(sharedData.localeConfig, item.count);
+                        string notification = $"{sharedData.localeConfig.FoundItems} {itemCountString}";
+                        sharedData.notifier.info.QueueMessage(notification, Notifier.Color.GREEN);
+                    }
                 }
             }
         }
