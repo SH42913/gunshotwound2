@@ -41,14 +41,10 @@ namespace GunshotWound2.InventoryFeature {
 #endif
 
                 //TODO: Load state
-                FillWithDefaultItems(ref inventory);
+                sharedData.mainConfig.inventoryConfig.DefaultLoadout.ApplyToInventory(ref inventory);
             }
         }
 
         void IDisposable.Dispose() { }
-
-        private void FillWithDefaultItems(ref Inventory inventory) {
-            inventory.items.Add((HealthFeature.BandageItem.template, count: 5));
-        }
     }
 }

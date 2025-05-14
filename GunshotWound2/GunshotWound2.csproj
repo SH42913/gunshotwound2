@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configs\ArmorConfig.cs" />
+    <Compile Include="Configs\InventoryConfig.cs" />
     <Compile Include="Configs\LocaleConfig.cs"/>
     <Compile Include="Configs\MainConfig.cs"/>
     <Compile Include="Configs\PedsConfig.cs" />

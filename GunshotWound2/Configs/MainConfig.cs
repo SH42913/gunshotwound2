@@ -18,6 +18,7 @@ namespace GunshotWound2.Configs {
         public readonly PlayerConfig playerConfig;
         public readonly WeaponConfig weaponConfig;
         public readonly ArmorConfig armorConfig;
+        public readonly InventoryConfig inventoryConfig;
 
         public InputListener.Scheme CheckSelfKey;
         public InputListener.Scheme CheckClosestKey;
@@ -42,6 +43,7 @@ namespace GunshotWound2.Configs {
             pedsConfig = new PedsConfig();
             weaponConfig = new WeaponConfig();
             armorConfig = new ArmorConfig();
+            inventoryConfig = new InventoryConfig();
         }
 
         public void ApplyTo(Notifier notifier) {
@@ -95,6 +97,9 @@ namespace GunshotWound2.Configs {
 
                 section = nameof(ArmorConfig);
                 armorConfig.FillFrom(doc);
+
+                section = nameof(InventoryConfig);
+                inventoryConfig.FillFrom(doc);
 
                 section = nameof(FillHotkeysFrom);
                 FillHotkeysFrom(doc);
