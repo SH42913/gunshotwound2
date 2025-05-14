@@ -1,14 +1,14 @@
 ﻿namespace GunshotWound2.WoundFeature {
-    public sealed class SmallCaliberDamage : BaseGunDamage {
-        protected override bool CanPenetrateArmor => true;
-        protected override float HelmetSafeChance => 0.8f;
+    using Configs;
 
+    public sealed class SmallCaliberDamage : BaseGunDamage {
         protected override int GrazeWoundWeight => 1;
         protected override int FleshWoundWeight => 2;
         protected override int PenetratingWoundWeight => 6;
         protected override int PerforatingWoundWeight => 1;
         protected override int AvulsiveWoundWeight => 1;
+        protected override WeaponConfig.Stats Stats => sharedData.mainConfig.weaponConfig.SmallCaliber;
 
-        public SmallCaliberDamage(SharedData sharedData) : base(sharedData, "SmallCaliber") { }
+        public SmallCaliberDamage(SharedData sharedData) : base(sharedData) { }
     }
 }

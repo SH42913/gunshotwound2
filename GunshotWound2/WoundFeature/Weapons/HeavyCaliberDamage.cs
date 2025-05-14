@@ -1,14 +1,14 @@
 ﻿namespace GunshotWound2.WoundFeature {
-    public sealed class HeavyCaliberDamage : BaseGunDamage {
-        protected override bool CanPenetrateArmor => true;
-        protected override float HelmetSafeChance => 0.05f;
+    using Configs;
 
+    public sealed class HeavyCaliberDamage : BaseGunDamage {
         protected override int GrazeWoundWeight => 1;
         protected override int FleshWoundWeight => 1;
         protected override int PenetratingWoundWeight => 2;
         protected override int PerforatingWoundWeight => 2;
         protected override int AvulsiveWoundWeight => 4;
+        protected override WeaponConfig.Stats Stats => sharedData.mainConfig.weaponConfig.HeavyCaliber;
 
-        public HeavyCaliberDamage(SharedData sharedData) : base(sharedData, "HighCaliber") { }
+        public HeavyCaliberDamage(SharedData sharedData) : base(sharedData) { }
     }
 }

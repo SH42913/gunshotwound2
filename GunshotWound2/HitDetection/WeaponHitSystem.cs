@@ -89,22 +89,12 @@
                 return true;
             }
 
-            if (PedWasDamagedBy(weaponConfig.LightImpactHashes, ped, out hitWeapon)) {
-                weaponType = PedHitData.WeaponTypes.LightImpact;
-            } else if (PedWasDamagedBy(weaponConfig.HeavyImpactHashes, ped, out hitWeapon)) {
-                weaponType = PedHitData.WeaponTypes.HeavyImpact;
-            } else if (PedWasDamagedBy(weaponConfig.CuttingHashes, ped, out hitWeapon)) {
-                weaponType = PedHitData.WeaponTypes.Cutting;
-            } else if (PedWasDamagedBy(weaponConfig.SmallCaliberHashes, ped, out hitWeapon)) {
-                weaponType = PedHitData.WeaponTypes.SmallCaliber;
-            } else if (PedWasDamagedBy(weaponConfig.MediumCaliberHashes, ped, out hitWeapon)) {
-                weaponType = PedHitData.WeaponTypes.MediumCaliber;
-            } else if (PedWasDamagedBy(weaponConfig.HeavyCaliberHashes, ped, out hitWeapon)) {
-                weaponType = PedHitData.WeaponTypes.HeavyCaliber;
-            } else if (PedWasDamagedBy(weaponConfig.ShotgunHashes, ped, out hitWeapon)) {
-                weaponType = PedHitData.WeaponTypes.Shotgun;
-            } else {
-                weaponType = PedHitData.WeaponTypes.Nothing;
+            weaponType = PedHitData.WeaponTypes.Nothing;
+            foreach (WeaponConfig.Stats stats in sharedData.mainConfig.weaponConfig.AllStats) {
+                if (PedWasDamagedBy(stats.Hashes, ped, out hitWeapon)) {
+                    weaponType = stats.Type;
+                    break;
+                }
             }
 
             skipDamage = false;

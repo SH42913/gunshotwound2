@@ -1,23 +1,23 @@
 ﻿namespace GunshotWound2.WoundFeature {
     using System;
+    using Configs;
 
     public sealed class CuttingDamage : BaseWeaponDamage {
-        protected override float HelmetSafeChance => 0.5f;
-        protected override bool CanPenetrateArmor => false;
+        public CuttingDamage(SharedData sharedData) : base(sharedData) { }
 
-        public CuttingDamage(SharedData sharedData) : base(sharedData, "Cutting") { }
+        protected override WeaponConfig.Stats Stats => sharedData.mainConfig.weaponConfig.Cutting;
 
         protected override WoundData DefaultWound() {
             return CreateWound(sharedData.localeConfig.GrazeWound, 10f, 0.1f, 15f);
         }
 
         protected override WoundData GetHeadWound() {
-            randomizer.Clear();
-            randomizer.Add(0, 1);
-            randomizer.Add(1, 1);
-            randomizer.Add(2, 1);
+            Randomizer.Clear();
+            Randomizer.Add(0, 1);
+            Randomizer.Add(1, 1);
+            Randomizer.Add(2, 1);
 
-            switch (randomizer.NextWithReplacement()) {
+            switch (Randomizer.NextWithReplacement()) {
                 case 0:  return CreateIncisionWound(sharedData.localeConfig.BodyPartHead);
                 case 1:  return CreateLacerationWound(sharedData.localeConfig.BodyPartHead, 0.05f);
                 case 2:  return CreateHeavyBrainDamage(sharedData.localeConfig.HeavyBrainDamage);
@@ -26,12 +26,12 @@
         }
 
         protected override WoundData GetNeckWound() {
-            randomizer.Clear();
-            randomizer.Add(0, 5);
-            randomizer.Add(1, 3);
-            randomizer.Add(2, 1);
+            Randomizer.Clear();
+            Randomizer.Add(0, 5);
+            Randomizer.Add(1, 3);
+            Randomizer.Add(2, 1);
 
-            switch (randomizer.NextWithReplacement()) {
+            switch (Randomizer.NextWithReplacement()) {
                 case 0:  return CreateIncisionWound(sharedData.localeConfig.BodyPartNeck);
                 case 1:  return CreateLacerationWound(sharedData.localeConfig.BodyPartNeck, 0.5f);
                 case 2:  return CreateStabWound(sharedData.localeConfig.BodyPartNeck, 0.7f, true);
@@ -40,12 +40,12 @@
         }
 
         protected override WoundData GetUpperWound() {
-            randomizer.Clear();
-            randomizer.Add(0, 5);
-            randomizer.Add(1, 3);
-            randomizer.Add(2, 1);
+            Randomizer.Clear();
+            Randomizer.Add(0, 5);
+            Randomizer.Add(1, 3);
+            Randomizer.Add(2, 1);
 
-            switch (randomizer.NextWithReplacement()) {
+            switch (Randomizer.NextWithReplacement()) {
                 case 0:  return CreateIncisionWound(sharedData.localeConfig.BodyPartChest);
                 case 1:  return CreateLacerationWound(sharedData.localeConfig.BodyPartChest, 0.3f);
                 case 2:  return CreateStabWound(sharedData.localeConfig.BodyPartChest, 0.5f, true);
@@ -54,12 +54,12 @@
         }
 
         protected override WoundData GetLowerWound() {
-            randomizer.Clear();
-            randomizer.Add(0, 5);
-            randomizer.Add(1, 3);
-            randomizer.Add(2, 1);
+            Randomizer.Clear();
+            Randomizer.Add(0, 5);
+            Randomizer.Add(1, 3);
+            Randomizer.Add(2, 1);
 
-            switch (randomizer.NextWithReplacement()) {
+            switch (Randomizer.NextWithReplacement()) {
                 case 0:  return CreateIncisionWound(sharedData.localeConfig.BodyPartLowerBody);
                 case 1:  return CreateLacerationWound(sharedData.localeConfig.BodyPartLowerBody, 0.1f, true);
                 case 2:  return CreateStabWound(sharedData.localeConfig.BodyPartLowerBody, 0.3f, true);
@@ -68,12 +68,12 @@
         }
 
         protected override WoundData GetArmWound() {
-            randomizer.Clear();
-            randomizer.Add(0, 5);
-            randomizer.Add(1, 3);
-            randomizer.Add(2, 1);
+            Randomizer.Clear();
+            Randomizer.Add(0, 5);
+            Randomizer.Add(1, 3);
+            Randomizer.Add(2, 1);
 
-            switch (randomizer.NextWithReplacement()) {
+            switch (Randomizer.NextWithReplacement()) {
                 case 0:  return CreateIncisionWound(sharedData.localeConfig.BodyPartArm);
                 case 1:  return CreateLacerationWound(sharedData.localeConfig.BodyPartArm, 0.1f, true);
                 case 2:  return CreateStabWound(sharedData.localeConfig.BodyPartArm, 0.3f, true);
@@ -82,12 +82,12 @@
         }
 
         protected override WoundData GetLegWound() {
-            randomizer.Clear();
-            randomizer.Add(0, 5);
-            randomizer.Add(1, 3);
-            randomizer.Add(2, 1);
+            Randomizer.Clear();
+            Randomizer.Add(0, 5);
+            Randomizer.Add(1, 3);
+            Randomizer.Add(2, 1);
 
-            switch (randomizer.NextWithReplacement()) {
+            switch (Randomizer.NextWithReplacement()) {
                 case 0:  return CreateIncisionWound(sharedData.localeConfig.BodyPartLeg);
                 case 1:  return CreateLacerationWound(sharedData.localeConfig.BodyPartLeg, 0.3f, true);
                 case 2:  return CreateStabWound(sharedData.localeConfig.BodyPartLeg, 0.5f, true);

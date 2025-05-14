@@ -1,6 +1,6 @@
 ﻿namespace GunshotWound2.WoundFeature {
     public abstract class BaseImpactDamage : BaseWeaponDamage {
-        protected BaseImpactDamage(SharedData sharedData, string weaponClass) : base(sharedData, weaponClass) { }
+        protected BaseImpactDamage(SharedData sharedData) : base(sharedData) { }
 
         protected override WoundData DefaultWound() {
             return CreateWound(sharedData.localeConfig.LightBruise, 3f, -1f, 15f);

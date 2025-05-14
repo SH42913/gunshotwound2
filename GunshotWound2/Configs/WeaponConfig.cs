@@ -3,24 +3,56 @@
 namespace GunshotWound2.Configs {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
     using System.Xml.Linq;
+    using HitDetection;
     using Utils;
 
     public sealed class WeaponConfig {
-        public bool UseSpecialStunDamage;
+        public readonly struct Stats {
+            public readonly PedHitData.WeaponTypes Type;
+            public readonly HashSet<uint> Hashes;
+            public readonly float DamageMult;
+            public readonly float BleedMult;
+            public readonly float PainMult;
+            public readonly float CritChance;
+            public readonly int ArmorDamage;
+            public readonly bool CanPenetrateArmor;
+            public readonly float HelmetSafeChance;
 
-        public HashSet<uint> SmallCaliberHashes;
-        public HashSet<uint> MediumCaliberHashes;
-        public HashSet<uint> HeavyCaliberHashes;
-        public HashSet<uint> LightImpactHashes;
-        public HashSet<uint> HeavyImpactHashes;
-        public HashSet<uint> ShotgunHashes;
-        public HashSet<uint> CuttingHashes;
+            public Stats(PedHitData.WeaponTypes type,
+                         HashSet<uint> hashes,
+                         float damageMult,
+                         float bleedMult,
+                         float painMult,
+                         float critChance,
+                         int armorDamage,
+                         bool canPenetrateArmor,
+                         float helmetSafeChance) {
+                Type = type;
+                Hashes = hashes;
+                DamageMult = damageMult;
+                BleedMult = bleedMult;
+                PainMult = painMult;
+                CritChance = critChance;
+                ArmorDamage = armorDamage;
+                CanPenetrateArmor = canPenetrateArmor;
+                HelmetSafeChance = helmetSafeChance;
+            }
+        }
+
+        public bool UseSpecialStunDamage;
         public HashSet<uint> IgnoreHashes;
 
-        public Dictionary<string, float?[]> DamageSystemConfigs;
+        public Stats SmallCaliber;
+        public Stats MediumCaliber;
+        public Stats HeavyCaliber;
+        public Stats LightImpact;
+        public Stats HeavyImpact;
+        public Stats Shotgun;
+        public Stats Cutting;
+
+        public Stats[] AllStats;
 
         public void FillFrom(XElement doc) {
             XElement node = doc.Element("Weapons");
@@ -29,38 +61,55 @@ namespace GunshotWound2.Configs {
             }
 
             UseSpecialStunDamage = node.Element("UseSpecialStunDamage").GetBool();
+            IgnoreHashes = ExtractWeaponHashes(node.Element("Ignore"));
 
-            SmallCaliberHashes = ExtractWeaponHashes(node, "SmallCaliber");
-            MediumCaliberHashes = ExtractWeaponHashes(node, "MediumCaliber");
-            HeavyCaliberHashes = ExtractWeaponHashes(node, "HighCaliber");
-            LightImpactHashes = ExtractWeaponHashes(node, "LightImpact");
-            HeavyImpactHashes = ExtractWeaponHashes(node, "HeavyImpact");
-            ShotgunHashes = ExtractWeaponHashes(node, "Shotgun");
-            CuttingHashes = ExtractWeaponHashes(node, "Cutting");
-            IgnoreHashes = ExtractWeaponHashes(node, "Ignore");
+            XElement statsNode = node.Element(nameof(Stats))!;
+            SmallCaliber = GetStatsForWeapon(statsNode.Element(nameof(SmallCaliber)));
+            MediumCaliber = GetStatsForWeapon(statsNode.Element(nameof(MediumCaliber)));
+            HeavyCaliber = GetStatsForWeapon(statsNode.Element(nameof(HeavyCaliber)));
+            LightImpact = GetStatsForWeapon(statsNode.Element(nameof(LightImpact)));
+            HeavyImpact = GetStatsForWeapon(statsNode.Element(nameof(HeavyImpact)));
+            Shotgun = GetStatsForWeapon(statsNode.Element(nameof(Shotgun)));
+            Cutting = GetStatsForWeapon(statsNode.Element(nameof(Cutting)));
 
-            DamageSystemConfigs = ExtractDamageSystemConfigs(node);
+            AllStats = new[] {
+                SmallCaliber,
+                MediumCaliber,
+                HeavyCaliber,
+                LightImpact,
+                HeavyImpact,
+                Shotgun,
+                Cutting,
+            };
         }
 
-        private static HashSet<uint> ExtractWeaponHashes(XElement node, string weaponName) {
-            XElement weaponNode = node.Element(weaponName);
-            if (weaponNode == null) {
-                throw new Exception($"{weaponName} node not found!");
-            }
+        private static Stats GetStatsForWeapon(XElement weaponNode) {
+            string name = weaponNode.Name.LocalName;
+            var type = (PedHitData.WeaponTypes)Enum.Parse(typeof(PedHitData.WeaponTypes), name);
 
+            HashSet<uint> hashes = ExtractWeaponHashes(weaponNode);
+            ValidateWeaponHashes(name, hashes);
+
+            return new Stats(type,
+                             hashes,
+                             weaponNode.GetFloat(nameof(Stats.DamageMult)),
+                             weaponNode.GetFloat(nameof(Stats.BleedMult)),
+                             weaponNode.GetFloat(nameof(Stats.PainMult)),
+                             weaponNode.GetFloat(nameof(Stats.CritChance)),
+                             weaponNode.GetInt(nameof(Stats.ArmorDamage)),
+                             weaponNode.GetBool(nameof(Stats.CanPenetrateArmor)),
+                             weaponNode.GetFloat(nameof(Stats.HelmetSafeChance)));
+        }
+
+        private static HashSet<uint> ExtractWeaponHashes(XElement node) {
             const string name = "Hashes";
-            string hashes = weaponNode.Element(name)?.Attribute(name)?.Value;
-            if (string.IsNullOrEmpty(hashes)) {
-                throw new Exception($"{weaponName}'s hashes is empty");
-            }
-
-            HashSet<uint> weaponHashes = hashes
-                                         .Split(MainConfig.Separator, StringSplitOptions.RemoveEmptyEntries)
-                                         .Select(uint.Parse)
-                                         .ToHashSet();
-
-            ValidateWeaponHashes(weaponName, weaponHashes);
-            return weaponHashes;
+            string hashesString = node.Element(name)?.Attribute(name)?.Value;
+            return string.IsNullOrEmpty(hashesString)
+                    ? new HashSet<uint>()
+                    : hashesString
+                      .Split(MainConfig.Separator, StringSplitOptions.RemoveEmptyEntries)
+                      .Select(uint.Parse)
+                      .ToHashSet();
         }
 
         private static void ValidateWeaponHashes(string weaponName, HashSet<uint> weaponHashes) {
@@ -75,42 +124,6 @@ namespace GunshotWound2.Configs {
                 string list = string.Join(";", invalidHashes);
                 throw new Exception($"There's invalid {weaponName} hashes: {list}");
             }
-        }
-
-        private static Dictionary<string, float?[]> ExtractDamageSystemConfigs(XElement node) {
-            var dictionary = new Dictionary<string, float?[]>();
-            foreach (XElement element in node.Elements()) {
-                var multipliers = new float?[5];
-
-                XAttribute damageString = element.Attribute("DamageMult");
-                multipliers[0] = damageString != null
-                        ? float.Parse(damageString.Value, CultureInfo.InvariantCulture)
-                        : null;
-
-                XAttribute bleedingString = element.Attribute("BleedingMult");
-                multipliers[1] = bleedingString != null
-                        ? float.Parse(bleedingString.Value, CultureInfo.InvariantCulture)
-                        : null;
-
-                XAttribute painString = element.Attribute("PainMult");
-                multipliers[2] = painString != null
-                        ? float.Parse(painString.Value, CultureInfo.InvariantCulture)
-                        : null;
-
-                XAttribute critString = element.Attribute("CritChance");
-                multipliers[3] = critString != null
-                        ? float.Parse(critString.Value, CultureInfo.InvariantCulture)
-                        : null;
-
-                XAttribute armorString = element.Attribute("ArmorDamage");
-                multipliers[4] = armorString != null
-                        ? float.Parse(armorString.Value, CultureInfo.InvariantCulture)
-                        : null;
-
-                dictionary.Add(element.Name.LocalName, multipliers);
-            }
-
-            return dictionary;
         }
     }
 }

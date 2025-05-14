@@ -1,6 +1,5 @@
 ﻿namespace GunshotWound2.WoundFeature {
     using System;
-    using System.Collections.Generic;
     using Configs;
     using GTA;
     using HitDetection;
@@ -9,45 +8,12 @@
 
     public abstract class BaseWeaponDamage {
         protected readonly SharedData sharedData;
-        protected readonly Weighted_Randomizer.IWeightedRandomizer<int> randomizer;
 
-        private readonly float damageMultiplier;
-        private readonly float bleedingMultiplier;
-        private readonly float painMultiplier;
-        private readonly float critChance;
-        private readonly int armorDamage;
+        protected Weighted_Randomizer.IWeightedRandomizer<int> Randomizer => sharedData.weightRandom;
+        protected abstract WeaponConfig.Stats Stats { get; }
 
-        protected abstract bool CanPenetrateArmor { get; }
-        protected abstract float HelmetSafeChance { get; }
-
-        protected BaseWeaponDamage(SharedData sharedData, string weaponClass) {
+        protected BaseWeaponDamage(SharedData sharedData) {
             this.sharedData = sharedData;
-            randomizer = sharedData.weightRandom;
-
-            Dictionary<string, float?[]> damageSystemConfigs = sharedData.mainConfig.weaponConfig.DamageSystemConfigs;
-            if (damageSystemConfigs != null
-                && damageSystemConfigs.TryGetValue(weaponClass, out float?[] multsArray)
-                && multsArray.Length == 5) {
-                if (multsArray[0].HasValue) {
-                    damageMultiplier = multsArray[0].Value;
-                }
-
-                if (multsArray[1].HasValue) {
-                    bleedingMultiplier = multsArray[1].Value;
-                }
-
-                if (multsArray[2].HasValue) {
-                    painMultiplier = multsArray[2].Value;
-                }
-
-                if (multsArray[3].HasValue) {
-                    critChance = multsArray[3].Value;
-                }
-
-                if (multsArray[4].HasValue) {
-                    armorDamage = (int)multsArray[4].Value;
-                }
-            }
         }
 
         public WoundData? ProcessHit(ref ConvertedPed convertedPed, ref PedHitData hit) {
@@ -93,12 +59,12 @@
                                         bool internalBleeding = false) {
             return new WoundData {
                 Name = name,
-                Damage = damageMultiplier * damage,
-                Pain = painMultiplier * pain,
-                BleedSeverity = bleedingMultiplier * bleeding,
+                Damage = Stats.DamageMult * damage,
+                Pain = Stats.PainMult * pain,
+                BleedSeverity = Stats.BleedMult * bleeding,
                 InternalBleeding = internalBleeding,
                 ArterySevered = arteryDamageChance > 0 && sharedData.random.IsTrueWithProbability(arteryDamageChance),
-                HasCrits = hasCrits && (ignoreCritsChance || sharedData.random.IsTrueWithProbability(critChance)),
+                HasCrits = hasCrits && (ignoreCritsChance || sharedData.random.IsTrueWithProbability(Stats.CritChance)),
             };
         }
 
@@ -106,7 +72,7 @@
             switch (hit.bodyPart) {
                 case PedHitData.BodyParts.Head:
                     bool hasHelmet = ped.IsWearingHelmet || sharedData.mainConfig.armorConfig.PedHasHelmet(ped);
-                    if (hasHelmet && sharedData.random.IsTrueWithProbability(HelmetSafeChance)) {
+                    if (hasHelmet && sharedData.random.IsTrueWithProbability(Stats.HelmetSafeChance)) {
                         hit.armorMessage = sharedData.localeConfig.HelmetSavedYourHead;
                         armorWound = null;
                         return true;
@@ -153,7 +119,7 @@
                 return true;
             }
 
-            ped.Armor -= armorDamage;
+            ped.Armor -= Stats.ArmorDamage;
             if (ped.Armor <= 0) {
 #if DEBUG
                 sharedData.logger.WriteInfo("Armor is dead");
@@ -162,7 +128,7 @@
                 return true;
             }
 
-            if (!CanPenetrateArmor) {
+            if (!Stats.CanPenetrateArmor) {
 #if DEBUG
                 sharedData.logger.WriteInfo("Can't penetrate armor");
 #endif
@@ -199,14 +165,14 @@
         }
 
         private WoundData? GetUnderArmorWound(float damageMult, float painMult) {
-            if (armorDamage < 1) {
+            if (Stats.ArmorDamage < 1) {
                 return null;
             }
 
             return new WoundData {
                 Name = sharedData.localeConfig.ArmorInjury,
-                Damage = damageMult * armorDamage,
-                Pain = painMult * armorDamage,
+                Damage = damageMult * Stats.ArmorDamage,
+                Pain = painMult * Stats.ArmorDamage,
             };
         }
     }

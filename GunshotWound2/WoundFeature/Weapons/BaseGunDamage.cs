@@ -8,21 +8,21 @@
         protected abstract int PerforatingWoundWeight { get; }
         protected abstract int AvulsiveWoundWeight { get; }
 
-        protected BaseGunDamage(SharedData sharedData, string weaponClass) : base(sharedData, weaponClass) { }
+        protected BaseGunDamage(SharedData sharedData) : base(sharedData) { }
 
         protected override WoundData DefaultWound() {
             return CreateWound(sharedData.localeConfig.GrazeWound, 15f, 0.05f, 15f);
         }
 
         protected override WoundData GetHeadWound() {
-            randomizer.Clear();
-            randomizer.Add(0, GrazeWoundWeight);
-            randomizer.Add(1, FleshWoundWeight);
-            randomizer.Add(2, PenetratingWoundWeight);
-            randomizer.Add(3, PerforatingWoundWeight);
-            randomizer.Add(4, AvulsiveWoundWeight);
+            Randomizer.Clear();
+            Randomizer.Add(0, GrazeWoundWeight);
+            Randomizer.Add(1, FleshWoundWeight);
+            Randomizer.Add(2, PenetratingWoundWeight);
+            Randomizer.Add(3, PerforatingWoundWeight);
+            Randomizer.Add(4, AvulsiveWoundWeight);
 
-            switch (randomizer.NextWithReplacement()) {
+            switch (Randomizer.NextWithReplacement()) {
                 case 0:  return CreateGrazeWound(sharedData.localeConfig.BodyPartHead);
                 case 1:  return CreateFleshWound(sharedData.localeConfig.BodyPartHead, 0.25f);
                 case 2:  return CreateHeavyBrainDamage(sharedData.localeConfig.HeavyBrainDamage);
@@ -33,14 +33,14 @@
         }
 
         protected override WoundData GetNeckWound() {
-            randomizer.Clear();
-            randomizer.Add(0, GrazeWoundWeight);
-            randomizer.Add(1, FleshWoundWeight);
-            randomizer.Add(2, PenetratingWoundWeight);
-            randomizer.Add(3, PerforatingWoundWeight);
-            randomizer.Add(4, AvulsiveWoundWeight);
+            Randomizer.Clear();
+            Randomizer.Add(0, GrazeWoundWeight);
+            Randomizer.Add(1, FleshWoundWeight);
+            Randomizer.Add(2, PenetratingWoundWeight);
+            Randomizer.Add(3, PerforatingWoundWeight);
+            Randomizer.Add(4, AvulsiveWoundWeight);
 
-            switch (randomizer.NextWithReplacement()) {
+            switch (Randomizer.NextWithReplacement()) {
                 case 0:  return CreateGrazeWound(sharedData.localeConfig.BodyPartNeck);
                 case 1:  return CreateFleshWound(sharedData.localeConfig.BodyPartNeck, 0.05f);
                 case 2:  return CreatePenetratingWound(sharedData.localeConfig.BodyPartNeck, 0.2f, false);
@@ -51,14 +51,14 @@
         }
 
         protected override WoundData GetUpperWound() {
-            randomizer.Clear();
-            randomizer.Add(0, GrazeWoundWeight);
-            randomizer.Add(1, FleshWoundWeight);
-            randomizer.Add(2, PenetratingWoundWeight);
-            randomizer.Add(3, PerforatingWoundWeight);
-            randomizer.Add(4, AvulsiveWoundWeight);
+            Randomizer.Clear();
+            Randomizer.Add(0, GrazeWoundWeight);
+            Randomizer.Add(1, FleshWoundWeight);
+            Randomizer.Add(2, PenetratingWoundWeight);
+            Randomizer.Add(3, PerforatingWoundWeight);
+            Randomizer.Add(4, AvulsiveWoundWeight);
 
-            switch (randomizer.NextWithReplacement()) {
+            switch (Randomizer.NextWithReplacement()) {
                 case 0:  return CreateGrazeWound(sharedData.localeConfig.BodyPartChest);
                 case 1:  return CreateFleshWound(sharedData.localeConfig.BodyPartChest, 0.1f);
                 case 2:  return CreatePenetratingWound(sharedData.localeConfig.BodyPartChest, 0.2f, true);
@@ -69,14 +69,14 @@
         }
 
         protected override WoundData GetLowerWound() {
-            randomizer.Clear();
-            randomizer.Add(0, GrazeWoundWeight);
-            randomizer.Add(1, FleshWoundWeight);
-            randomizer.Add(2, PenetratingWoundWeight);
-            randomizer.Add(3, PerforatingWoundWeight);
-            randomizer.Add(4, AvulsiveWoundWeight);
+            Randomizer.Clear();
+            Randomizer.Add(0, GrazeWoundWeight);
+            Randomizer.Add(1, FleshWoundWeight);
+            Randomizer.Add(2, PenetratingWoundWeight);
+            Randomizer.Add(3, PerforatingWoundWeight);
+            Randomizer.Add(4, AvulsiveWoundWeight);
 
-            switch (randomizer.NextWithReplacement()) {
+            switch (Randomizer.NextWithReplacement()) {
                 case 0:  return CreateGrazeWound(sharedData.localeConfig.BodyPartLowerBody);
                 case 1:  return CreateFleshWound(sharedData.localeConfig.BodyPartLowerBody, 0.05f);
                 case 2:  return CreatePenetratingWound(sharedData.localeConfig.BodyPartLowerBody, 0.1f, true);
@@ -87,14 +87,14 @@
         }
 
         protected override WoundData GetArmWound() {
-            randomizer.Clear();
-            randomizer.Add(0, GrazeWoundWeight);
-            randomizer.Add(1, FleshWoundWeight);
-            randomizer.Add(2, PenetratingWoundWeight);
-            randomizer.Add(3, PerforatingWoundWeight);
-            randomizer.Add(4, AvulsiveWoundWeight);
+            Randomizer.Clear();
+            Randomizer.Add(0, GrazeWoundWeight);
+            Randomizer.Add(1, FleshWoundWeight);
+            Randomizer.Add(2, PenetratingWoundWeight);
+            Randomizer.Add(3, PerforatingWoundWeight);
+            Randomizer.Add(4, AvulsiveWoundWeight);
 
-            switch (randomizer.NextWithReplacement()) {
+            switch (Randomizer.NextWithReplacement()) {
                 case 0:  return CreateGrazeWound(sharedData.localeConfig.BodyPartArm);
                 case 1:  return CreateFleshWound(sharedData.localeConfig.BodyPartArm, 0.01f);
                 case 2:  return CreatePenetratingWound(sharedData.localeConfig.BodyPartArm, 0.05f, true);
@@ -105,14 +105,14 @@
         }
 
         protected override WoundData GetLegWound() {
-            randomizer.Clear();
-            randomizer.Add(0, GrazeWoundWeight);
-            randomizer.Add(1, FleshWoundWeight);
-            randomizer.Add(2, PenetratingWoundWeight);
-            randomizer.Add(3, PerforatingWoundWeight);
-            randomizer.Add(4, AvulsiveWoundWeight);
+            Randomizer.Clear();
+            Randomizer.Add(0, GrazeWoundWeight);
+            Randomizer.Add(1, FleshWoundWeight);
+            Randomizer.Add(2, PenetratingWoundWeight);
+            Randomizer.Add(3, PerforatingWoundWeight);
+            Randomizer.Add(4, AvulsiveWoundWeight);
 
-            switch (randomizer.NextWithReplacement()) {
+            switch (Randomizer.NextWithReplacement()) {
                 case 0:  return CreateGrazeWound(sharedData.localeConfig.BodyPartLeg);
                 case 1:  return CreateFleshWound(sharedData.localeConfig.BodyPartLeg, 0.05f);
                 case 2:  return CreatePenetratingWound(sharedData.localeConfig.BodyPartLeg, 0.1f, true);
