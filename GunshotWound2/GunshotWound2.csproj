@@ -73,7 +73,6 @@
     <Compile Include="CritsFeature\CritsFeature.cs"/>
     <Compile Include="CritsFeature\CritsSystem.cs"/>
     <Compile Include="HealthFeature\BandageItem.cs" />
-    <Compile Include="HealthFeature\BandageRequest.cs"/>
     <Compile Include="InventoryFeature\AddItemRequest.cs" />
     <Compile Include="InventoryFeature\CurrentlyUsingItem.cs" />
     <Compile Include="InventoryFeature\Inventory.cs" />

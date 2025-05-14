@@ -1,8 +1,12 @@
 ﻿namespace GunshotWound2.PlayerFeature {
     using System.Collections.Generic;
     using Configs;
+    using CritsFeature;
     using GTA;
+    using HealthFeature;
+    using InventoryFeature;
     using Scellecs.Morpeh;
+    using Utils;
 
     public sealed class MedkitGpsSystem : ILateSystem {
         private readonly SharedData sharedData;
@@ -34,7 +38,21 @@
 
             ClearMedkits(removeAll: false);
             MarkNewMedkits();
+            FlashBlipsIfNeed();
             timeToRefresh = PlayerConfig.TimeToRefreshMedkits;
+        }
+
+        private void FlashBlipsIfNeed() {
+            bool hasCrits = sharedData.playerEntity.Has<Crits>();
+            bool hasBandages = sharedData.playerEntity.GetComponent<Inventory>().Has(BandageItem.template);
+            if (!hasCrits && hasBandages) {
+                return;
+            }
+
+            foreach ((Prop _, Blip blip) in medkits) {
+                blip.IsFlashing = true;
+                blip.FlashTimeLeft = PlayerConfig.TimeToRefreshMedkits.ConvertToMilliSec();
+            }
         }
 
         private void MarkNewMedkits() {
