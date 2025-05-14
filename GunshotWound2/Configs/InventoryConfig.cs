@@ -27,6 +27,7 @@ namespace GunshotWound2.Configs {
 
         public Loadout DefaultLoadout;
         public Loadout MedkitLoadout;
+        public Loadout EmergencyVehicleLoadout;
 
         public Loadout BandagesLoadout = new(new List<(ItemTemplate, int)>() {
             (BandageItem.template, 5),
@@ -40,6 +41,7 @@ namespace GunshotWound2.Configs {
 
             DefaultLoadout = GetLoadout(node.Element("DefaultLoadout"));
             MedkitLoadout = GetLoadout(node.Element("MedkitLoadout"));
+            EmergencyVehicleLoadout = GetLoadout(node.Element("EmergencyVehicleLoadout"));
         }
 
         private Loadout GetLoadout(XElement node) {

@@ -226,8 +226,13 @@
 
         <!-- These items you'll receive when pickup Medkit -->
 		<MedkitLoadout>
-			<Item Name="Bandages" Count="2"/>
+			<Item Name="Bandages" Count="3"/>
 		</MedkitLoadout>
+
+        <!-- These items you'll receive when entering emergency vehicle -->
+		<EmergencyVehicleLoadout>
+			<Item Name="Bandages" Count="2"/>
+		</EmergencyVehicleLoadout>
 	</Inventory>
 
 	<Hotkeys>
