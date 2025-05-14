@@ -163,7 +163,7 @@
 
             float totalSeverity = HealthFeature.CalculateSeverityOfAllBleedingWounds(pedEntity);
             float timeToDeath = convertedPed.CalculateTimeToDeath(totalSeverity);
-            if (heavyCrit && timeToDeath <= 30f) {
+            if (heavyCrit && timeToDeath <= 30f && !convertedPed.isPlayer) {
                 randomizer.Add(3, 2);
             }
 
