@@ -285,8 +285,9 @@
                 StrongRollForce = sharedData.random.IsTrueWithProbability(0.5f),
             };
 
-            if (PedEffects.TryGetLastDamageRecord(convertedPed.thisPed, out _, out int handle)) {
-                helper.AttackerPos = GTA.Entity.FromHandle(handle).Position;
+            if (PedEffects.TryGetLastDamageRecord(convertedPed.thisPed, out _, out int handle) 
+                && PedEffects.TryGetPedByHandle(handle, out Ped attacker)) {
+                helper.AttackerPos = attacker.Position;
             }
 
             return helper;

@@ -93,10 +93,27 @@
         }
 
         public static bool TryGetLastDamageRecord(Ped ped, out uint weaponHash, out int attackerHandle) {
+            if (ped == null || !ped.Exists()) {
+                weaponHash = 0;
+                attackerHandle = 0;
+                return false;
+            }
+
             var record = NativeMemory.GetEntityDamageRecordEntryAtIndex(ped.MemoryAddress, 0);
             weaponHash = unchecked((uint)record.weaponHash);
             attackerHandle = record.attackerEntityHandle;
             return record.gameTime != 0;
+        }
+
+        public static bool TryGetPedByHandle(int handle, out Ped ped) {
+            Entity entity = Entity.FromHandle(handle);
+            if (entity.EntityType == EntityType.Ped) {
+                ped = (Ped)entity;
+                return true;
+            } else {
+                ped = null;
+                return false;
+            }
         }
 
         public static void DetermineBoneSide(Bone bone, out bool left, out bool right) {
