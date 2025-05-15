@@ -148,23 +148,25 @@
             IWeightedRandomizer<int> randomizer = sharedData.weightRandom;
             randomizer.Clear();
             randomizer.Add(0);
-            randomizer.Add(1, 3);
+            randomizer.Add(1, weight: 2);
 
-            ref Crits crits = ref pedEntity.GetComponent<Crits>();
-            bool legsDamaged = crits.HasActive(Crits.Types.LegsDamaged);
-            bool heavyCrit = crits.HasActive(Crits.Types.HeartDamaged)
-                             || crits.HasActive(Crits.Types.LungsDamaged)
-                             || crits.HasActive(Crits.Types.StomachDamaged)
-                             || crits.HasActive(Crits.Types.GutsDamaged);
+            if (!convertedPed.thisPed.IsInVehicle()) {
+                ref Crits crits = ref pedEntity.GetComponent<Crits>();
+                bool legsDamaged = crits.HasActive(Crits.Types.LegsDamaged);
+                bool heavyCrit = crits.HasActive(Crits.Types.HeartDamaged)
+                                 || crits.HasActive(Crits.Types.LungsDamaged)
+                                 || crits.HasActive(Crits.Types.StomachDamaged)
+                                 || crits.HasActive(Crits.Types.GutsDamaged);
 
-            if (heavyCrit || legsDamaged) {
-                randomizer.Add(2, 2);
-            }
+                if (heavyCrit || legsDamaged) {
+                    randomizer.Add(2);
+                }
 
-            float totalSeverity = HealthFeature.CalculateSeverityOfAllBleedingWounds(pedEntity);
-            float timeToDeath = convertedPed.CalculateTimeToDeath(totalSeverity);
-            if (heavyCrit && timeToDeath <= 30f && !convertedPed.isPlayer) {
-                randomizer.Add(3, 2);
+                float totalSeverity = HealthFeature.CalculateSeverityOfAllBleedingWounds(pedEntity);
+                float timeToDeath = convertedPed.CalculateTimeToDeath(totalSeverity);
+                if (heavyCrit && timeToDeath <= 30f && !convertedPed.isPlayer) {
+                    randomizer.Add(3);
+                }
             }
 
             switch (randomizer.NextWithReplacement()) {
