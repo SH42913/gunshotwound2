@@ -19,8 +19,8 @@ namespace GunshotWound2.InventoryFeature {
         }
 
         public void OnAwake() {
-            usages = World.Filter.With<CurrentlyUsingItem>().With<Inventory>();
-            requests = World.Filter.With<UseItemRequest>().With<Inventory>();
+            usages = World.Filter.With<ConvertedPed>().With<CurrentlyUsingItem>().With<Inventory>();
+            requests = World.Filter.With<ConvertedPed>().With<UseItemRequest>().With<Inventory>();
         }
 
         public void OnUpdate(float deltaTime) {
@@ -33,12 +33,15 @@ namespace GunshotWound2.InventoryFeature {
 
         private void ProcessUsages(float deltaTime) {
             foreach (Entity owner in usages) {
-                ref CurrentlyUsingItem currentUsing = ref owner.GetComponent<CurrentlyUsingItem>();
                 ref Inventory inventory = ref owner.GetComponent<Inventory>();
-
+                ref ConvertedPed convertedPed = ref owner.GetComponent<ConvertedPed>();
+                ref CurrentlyUsingItem currentUsing = ref owner.GetComponent<CurrentlyUsingItem>();
                 currentUsing.remainingTime -= deltaTime;
+
                 bool removeProgress;
-                if (currentUsing.remainingTime > 0f) {
+                if (!convertedPed.thisPed.Exists() || convertedPed.thisPed.IsDead) {
+                    removeProgress = true;
+                } else if (currentUsing.remainingTime > 0f) {
                     UpdateUsing(owner, inventory, currentUsing, out removeProgress);
                 } else {
                     HandleFinish(owner, ref inventory, currentUsing);
