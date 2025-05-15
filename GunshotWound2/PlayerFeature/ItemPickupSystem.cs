@@ -61,6 +61,10 @@ namespace GunshotWound2.PlayerFeature {
         private void CheckPedInSpecialVehicle() {
             foreach (Scellecs.Morpeh.Entity entity in pedsWithInventory) {
                 ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
+                if (convertedPed.isPlayer && !Game.Player.CanControlCharacter) {
+                    continue;
+                }
+
                 Vehicle vehicle = convertedPed.thisPed.CurrentVehicle;
                 if (vehicle == null || vehicle.ClassType != VehicleClass.Emergency) {
                     continue;
