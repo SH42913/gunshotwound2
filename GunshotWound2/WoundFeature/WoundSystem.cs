@@ -74,7 +74,7 @@
         }
 
         private void CreateStunPain(Entity pedEntity, ref ConvertedPed convertedPed) {
-            if (sharedData.mainConfig.weaponConfig.UseSpecialStunDamage) {
+            if (!sharedData.mainConfig.weaponConfig.UseSpecialStunDamage) {
                 return;
             }
 
