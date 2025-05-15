@@ -16,7 +16,7 @@
         void IInitializer.OnAwake() { }
 
         public void OnUpdate(float deltaTime) {
-            if (!sharedData.PlayerCanSeeNotification()) {
+            if (!sharedData.PlayerIsInitialized()) {
                 return;
             }
 

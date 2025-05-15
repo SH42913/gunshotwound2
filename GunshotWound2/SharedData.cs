@@ -55,17 +55,21 @@
             return !player.IsNullOrDisposed();
         }
 
-        public bool PlayerCanSeeNotification() {
+        public bool PlayerIsInitialized() {
             if (TryGetPlayer(out Entity entity) && entity.GetComponent<Health>().IsAlive()) {
-                if (GTA.Game.IsCutsceneActive || !GTA.GameplayCamera.IsRendering) {
-                    return false;
-                }
-
-                GTA.Player player = GTA.Game.Player;
-                return player.IsPlaying && player.CanControlCharacter;
+                return PlayerCanSeeNotification();
             } else {
                 return false;
             }
+        }
+
+        public bool PlayerCanSeeNotification() {
+            if (GTA.Game.IsCutsceneActive || !GTA.GameplayCamera.IsRendering) {
+                return false;
+            }
+        
+            GTA.Player player = GTA.Game.Player;
+            return player.IsPlaying && player.CanControlCharacter;
         }
 
         public bool TryGetClosestPedEntity(out GTA.Ped closestPed, out Entity closestPedEntity) {

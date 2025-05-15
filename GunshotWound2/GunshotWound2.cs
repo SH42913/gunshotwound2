@@ -17,6 +17,7 @@
 #if DEBUG
 
         // ReSharper disable once InconsistentNaming
+        // ReSharper disable once MemberCanBePrivate.Global
         public static SharedData sharedData;
 #else
         private readonly SharedData sharedData;
@@ -101,10 +102,11 @@
                 return true;
             }
 
-            if (Game.IsCutsceneActive) {
+            if (!sharedData.PlayerCanSeeNotification()) {
                 return false;
             }
 
+            sharedData.logger.WriteInfo("GSW2 is loading configs...");
             (bool success, string reason) = sharedData.mainConfig.TryToLoad(sharedData.scriptPath);
             if (!success) {
                 var message = $"GSW2 couldn't load config!\nReason:\n~r~{reason}";
@@ -114,6 +116,7 @@
                 return false;
             }
 
+            sharedData.logger.WriteInfo("GSW2 is loading localization...");
             (success, reason) = sharedData.localeConfig.TryToLoad(sharedData.scriptPath, sharedData.mainConfig.Language);
             if (!success) {
                 var message = $"GSW2 couldn't load localization!\nReason:\n~r~{reason}";
@@ -124,6 +127,7 @@
             }
 
             try {
+                sharedData.logger.WriteInfo("GSW2 is starting...");
                 ClearExceptionLog();
                 WhenConfigLoadedActions();
                 RegisterSystems();
