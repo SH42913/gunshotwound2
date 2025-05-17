@@ -1,6 +1,7 @@
 ﻿namespace GunshotWound2 {
     using System;
     using System.IO;
+    using System.Reflection;
     using System.Text;
     using System.Windows.Forms;
     using Configs;
@@ -11,6 +12,8 @@
 
     // ReSharper disable once UnusedType.Global
     public sealed class GunshotWound2 : Script {
+        private static readonly AssemblyName ASSEMBLY_NAME = Assembly.GetCallingAssembly().GetName();
+        private static readonly string SCRIPT_NAME = $"{ASSEMBLY_NAME.Name}({ASSEMBLY_NAME.Version})";
         private static readonly string EXCEPTION_LOG_PATH = Path.Combine(Application.StartupPath, "GSW2Exception.log");
         private static int PAUSE_POST;
 
@@ -42,7 +45,7 @@
             Tick += OnTick;
             Aborted += Cleanup;
 
-            sharedData.logger.WriteInfo("GSW2 is initializing...");
+            sharedData.logger.WriteInfo($"{SCRIPT_NAME} is initializing...");
         }
 
         private void OnTick(object sender, EventArgs eventArgs) {
@@ -150,7 +153,7 @@
             });
 #endif
 
-            sharedData.logger.WriteInfo($"GunShot Wound 2 ({Application.ProductVersion}) has started");
+            sharedData.logger.WriteInfo("GSW2 has started");
             isStarted = true;
             return true;
         }
@@ -192,8 +195,9 @@
         }
 
         private void HandleRuntimeException(Exception exception) {
-            File.WriteAllText(EXCEPTION_LOG_PATH, exception.ToString());
-            sharedData.logger.WriteError(exception.ToString());
+            var log = $"Exception in {SCRIPT_NAME}:\n{exception}";
+            File.WriteAllText(EXCEPTION_LOG_PATH, log);
+            sharedData.logger.WriteError(log);
             sharedData.notifier.ShowOne(sharedData.localeConfig.GswStopped, blinking: true, Notifier.Color.ORANGE);
             sharedData.notifier.ShowOne("There is a runtime error in GSW2, please report it to Github-issues or GSW discord!\n"
                                         + $"Log-File - {EXCEPTION_LOG_PATH} to Github-issues\n", blinking: true, Notifier.Color.RED);
