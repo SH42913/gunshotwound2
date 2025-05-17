@@ -4,30 +4,21 @@
     using Scellecs.Morpeh;
 
     public sealed class HitCleanSystem : ICleanupSystem {
-        private Filter damagedPeds;
+        private Filter hits;
+        private Stash<PedHitData> hitsStash;
 
         public World World { get; set; }
 
         public void OnAwake() {
-            damagedPeds = World.Filter.With<ConvertedPed>().With<PedHitData>();
+            hits = World.Filter.With<PedHitData>();
+            hitsStash = World.GetStash<PedHitData>();
         }
 
         void IDisposable.Dispose() { }
 
         public void OnUpdate(float deltaTime) {
-            // TODO: MoreGore compat, remove after implementation of bleeding decals
-            if (!damagedPeds.IsEmpty()) {
-                GTA.Script.Yield();
-            }
-
-            foreach (Entity pedEntity in damagedPeds) {
-                GTA.Ped ped = pedEntity.GetComponent<ConvertedPed>().thisPed;
-                if (ped != null && ped.Exists()) {
-                    ped.ClearLastWeaponDamage();
-                    ped.Bones.ClearLastDamaged();
-                }
-
-                pedEntity.RemoveComponent<PedHitData>();
+            foreach (Entity entity in hits) {
+                hitsStash.Remove(entity);
             }
         }
     }
