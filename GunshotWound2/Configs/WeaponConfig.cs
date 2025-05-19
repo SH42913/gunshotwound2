@@ -54,7 +54,7 @@ namespace GunshotWound2.Configs {
 
         public Stats[] AllStats;
 
-        public void FillFrom(XElement doc) {
+        public void FillFrom(XElement doc, ILogger logger) {
             XElement node = doc.Element("Weapons");
             if (node == null) {
                 return;
@@ -64,13 +64,13 @@ namespace GunshotWound2.Configs {
             IgnoreHashes = ExtractWeaponHashes(node.Element("Ignore"));
 
             XElement statsNode = node.Element(nameof(Stats))!;
-            SmallCaliber = GetStatsForWeapon(statsNode.Element(nameof(SmallCaliber)));
-            MediumCaliber = GetStatsForWeapon(statsNode.Element(nameof(MediumCaliber)));
-            HeavyCaliber = GetStatsForWeapon(statsNode.Element(nameof(HeavyCaliber)));
-            LightImpact = GetStatsForWeapon(statsNode.Element(nameof(LightImpact)));
-            HeavyImpact = GetStatsForWeapon(statsNode.Element(nameof(HeavyImpact)));
-            Shotgun = GetStatsForWeapon(statsNode.Element(nameof(Shotgun)));
-            Cutting = GetStatsForWeapon(statsNode.Element(nameof(Cutting)));
+            SmallCaliber = GetStatsForWeapon(statsNode.Element(nameof(SmallCaliber)), logger);
+            MediumCaliber = GetStatsForWeapon(statsNode.Element(nameof(MediumCaliber)), logger);
+            HeavyCaliber = GetStatsForWeapon(statsNode.Element(nameof(HeavyCaliber)), logger);
+            LightImpact = GetStatsForWeapon(statsNode.Element(nameof(LightImpact)), logger);
+            HeavyImpact = GetStatsForWeapon(statsNode.Element(nameof(HeavyImpact)), logger);
+            Shotgun = GetStatsForWeapon(statsNode.Element(nameof(Shotgun)), logger);
+            Cutting = GetStatsForWeapon(statsNode.Element(nameof(Cutting)), logger);
 
             AllStats = new[] {
                 SmallCaliber,
@@ -83,12 +83,15 @@ namespace GunshotWound2.Configs {
             };
         }
 
-        private static Stats GetStatsForWeapon(XElement weaponNode) {
+        private static Stats GetStatsForWeapon(XElement weaponNode, ILogger logger) {
             string name = weaponNode.Name.LocalName;
             var type = (PedHitData.WeaponTypes)Enum.Parse(typeof(PedHitData.WeaponTypes), name);
 
             HashSet<uint> hashes = ExtractWeaponHashes(weaponNode);
-            ValidateWeaponHashes(name, hashes);
+            ValidateWeaponHashes(hashes, out string invalidHashesString);
+            if (!string.IsNullOrEmpty(invalidHashesString)) {
+                logger.WriteWarning($"{name} has invalid hashes: {invalidHashesString}");
+            }
 
             return new Stats(type,
                              hashes,
@@ -112,7 +115,7 @@ namespace GunshotWound2.Configs {
                       .ToHashSet();
         }
 
-        private static void ValidateWeaponHashes(string weaponName, HashSet<uint> weaponHashes) {
+        private static void ValidateWeaponHashes(HashSet<uint> weaponHashes, out string invalidHashesString) {
             var invalidHashes = new HashSet<uint>();
             foreach (uint weaponHash in weaponHashes) {
                 if (!SHVDN.NativeMemory.IsHashValidAsWeaponHash(weaponHash)) {
@@ -120,10 +123,13 @@ namespace GunshotWound2.Configs {
                 }
             }
 
-            if (invalidHashes.Count > 0) {
-                string list = string.Join(";", invalidHashes);
-                throw new Exception($"There's invalid {weaponName} hashes: {list}");
+            if (invalidHashes.Count < 1) {
+                invalidHashesString = null;
+                return;
             }
+
+            invalidHashesString = string.Join(";", invalidHashes);
+            weaponHashes.ExceptWith(invalidHashes);
         }
     }
 }

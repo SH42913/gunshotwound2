@@ -67,7 +67,7 @@ namespace GunshotWound2.Configs {
             return $"{woundConfig}\n" + $"{pedsConfig}\n" + $"{playerConfig}";
         }
 
-        public (bool success, string reason) TryToLoad(string scriptPath) {
+        public (bool success, string reason) TryToLoad(string scriptPath, ILogger logger) {
             string path = Path.ChangeExtension(scriptPath, ".xml");
             if (!File.Exists(path)) {
                 return (false, "GSW Config was not found");
@@ -93,7 +93,7 @@ namespace GunshotWound2.Configs {
                 woundConfig.FillFrom(doc);
 
                 section = nameof(WeaponConfig);
-                weaponConfig.FillFrom(doc);
+                weaponConfig.FillFrom(doc, logger);
 
                 section = nameof(ArmorConfig);
                 armorConfig.FillFrom(doc);
