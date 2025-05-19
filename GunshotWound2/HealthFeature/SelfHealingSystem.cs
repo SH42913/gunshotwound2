@@ -1,6 +1,5 @@
 ﻿namespace GunshotWound2.HealthFeature {
     using System;
-    using GTA;
     using PedsFeature;
     using Scellecs.Morpeh;
 
@@ -11,7 +10,7 @@
         private Stash<ConvertedPed> pedStash;
         private Filter peds;
 
-        public Scellecs.Morpeh.World World { get; set; }
+        public World World { get; set; }
 
         public SelfHealingSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -24,7 +23,7 @@
         }
 
         public void OnUpdate(float deltaTime) {
-            foreach (Scellecs.Morpeh.Entity entity in peds) {
+            foreach (Entity entity in peds) {
                 ref Health health = ref healthStash.Get(entity);
                 if (health.isDead) {
                     continue;
@@ -34,9 +33,13 @@
                     continue;
                 }
 
-                Ped ped = pedStash.Get(entity).thisPed;
-                if (ped.Health + health.diff < health.max) {
-                    health.diff += sharedData.mainConfig.woundConfig.SelfHealingRate * sharedData.deltaTime;
+                ref ConvertedPed convertedPed = ref pedStash.Get(entity);
+                if (convertedPed.thisPed.Health + health.diff < health.max) {
+                    float selfHealingRate = convertedPed.isPlayer
+                            ? sharedData.mainConfig.playerConfig.SelfHealingRate
+                            : sharedData.mainConfig.pedsConfig.SelfHealingRate;
+
+                    health.diff += selfHealingRate * sharedData.deltaTime;
                 }
             }
         }

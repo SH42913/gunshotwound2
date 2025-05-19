@@ -26,8 +26,6 @@ namespace GunshotWound2.Configs {
         public float DelayedPainPercent;
         public float DeadlyPainShockPercent;
 
-        public float SelfHealingRate;
-
         public void FillFrom(XElement doc) {
             XElement node = doc.Element("Wounds");
             if (node == null) {
@@ -47,7 +45,6 @@ namespace GunshotWound2.Configs {
             UseCustomUnconsciousBehaviour = node.Element("UseCustomUnconsciousBehaviour").GetBool();
             DelayedPainPercent = node.Element("DelayedPainPercent").GetFloat();
             DeadlyPainShockPercent = node.Element("DeadlyPainShockPercent").GetFloat();
-            SelfHealingRate = node.Element("SelfHealingRate").GetFloat();
         }
 
         public bool IsBleedingCanBeBandaged(float severity) {

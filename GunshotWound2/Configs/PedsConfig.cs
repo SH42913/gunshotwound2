@@ -45,6 +45,7 @@ namespace GunshotWound2.Configs {
         public int MinStartHealth;
         public int MaxStartHealth;
         public float MaximalBleedStopSpeed;
+        public float SelfHealingRate;
 
         public float MinPainShockThreshold;
         public float MaxPainShockThreshold;
@@ -90,6 +91,7 @@ namespace GunshotWound2.Configs {
 
             MaximalPainRecoverSpeed = node.Element("PainRecoverySpeed").GetFloat();
             MaximalBleedStopSpeed = node.Element("BleedHealSpeed").GetFloat() / 1000f;
+            SelfHealingRate = node.Element("SelfHealingRate").GetFloat();
 
             MalePainMoveSets = PainMoveSets.FromXElement(node, "MaleMoveSets");
             FemalePainMoveSets = PainMoveSets.FromXElement(node, "FemaleMoveSets");

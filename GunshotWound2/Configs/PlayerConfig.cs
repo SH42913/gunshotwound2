@@ -23,6 +23,7 @@ namespace GunshotWound2.Configs {
         public float BleedHealingSpeed;
         public float PainSlowMo;
         public bool UseScreenEffects;
+        public float SelfHealingRate;
 
         public PainMoveSets PainMoveSets;
 
@@ -46,6 +47,7 @@ namespace GunshotWound2.Configs {
             PainSlowMo = node.Element("PainSlowMo").GetFloat();
             UseScreenEffects = node.Element("UseScreenEffects").GetBool();
             MoneyForHelmet = node.Element("HelmetCost").GetInt();
+            SelfHealingRate = node.Element("SelfHealingRate").GetFloat();
 
             PainMoveSets = PainMoveSets.FromXElement(node, "MoveSets");
         }

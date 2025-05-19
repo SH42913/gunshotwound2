@@ -43,6 +43,9 @@
 		<BleedHealSpeed Value="2.0"/>
 		<!-- How quickly bleeding will heal by itself -->
 
+		<SelfHealingRate Value="0.04"/>
+		<!-- How fast you will heal if you have no bleeding -->
+
 		<MoveSets MildPain="move_m@plodding;move_m@buzzed;move_m@gangster@generic;"
 				  AvgPain="move_m@depressed@a;move_m@injured;move_m@drunk@slightlydrunk;"
 				  IntensePain="move_m@drunk@a;move_m@drunk@moderatedrunk;move_m@drunk@verydrunk;"/>
@@ -111,6 +114,9 @@
 		Recommended to set 5-10, you don't want them shot too often :)
         If you want to use default game ShootRate, set any to -1. -->
 
+		<SelfHealingRate Value="0.02"/>
+		<!-- Same as for player -->
+
 		<PainRecoverySpeed Value="0.8"/>
 		<BleedHealSpeed Value="1.0"/>
 		<!-- Same as for player -->
@@ -135,9 +141,6 @@
 
 		<DeadlyPainShockPercent Value="3.0"/>
 		<!-- 3.0 means 300% of PainShockThreshold will lead to instant death by pain shock -->
-
-		<SelfHealingRate Value="0.03"/>
-		<!-- How fast you will heal if you have no bleeding -->
 
 		<MoveRateOnFullPain Value="0.8"/>
 		<!-- Move rate on 100% of pain -->
