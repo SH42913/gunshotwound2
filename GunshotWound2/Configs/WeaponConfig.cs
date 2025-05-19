@@ -5,7 +5,9 @@ namespace GunshotWound2.Configs {
     using System.Collections.Generic;
     using System.Linq;
     using System.Xml.Linq;
+    using GTA;
     using HitDetection;
+    using SHVDN;
     using Utils;
 
     public sealed class WeaponConfig {
@@ -81,6 +83,29 @@ namespace GunshotWound2.Configs {
                 Shotgun,
                 Cutting,
             };
+
+            SuggestWeapons(logger);
+        }
+
+        private void SuggestWeapons(ILogger logger) {
+            HashSet<uint>[] allHashSets = AllStats
+                                          .Select(x => x.Hashes)
+                                          .Append(IgnoreHashes)
+                                          .ToArray();
+
+            foreach (uint hash in NativeMemory.GetAllWeaponHashesForHumanPeds()) {
+                var alreadyRegistered = false;
+                foreach (HashSet<uint> set in allHashSets) {
+                    if (set.Contains(hash)) {
+                        alreadyRegistered = true;
+                        break;
+                    }
+                }
+
+                if (!alreadyRegistered) {
+                    logger.WriteInfo($"Weapon {BuildWeaponName(hash)} can be added to GSW2");
+                }
+            }
         }
 
         private static Stats GetStatsForWeapon(XElement weaponNode, ILogger logger) {
@@ -118,7 +143,7 @@ namespace GunshotWound2.Configs {
         private static void ValidateWeaponHashes(HashSet<uint> weaponHashes, out string invalidHashesString) {
             var invalidHashes = new HashSet<uint>();
             foreach (uint weaponHash in weaponHashes) {
-                if (!SHVDN.NativeMemory.IsHashValidAsWeaponHash(weaponHash)) {
+                if (!NativeMemory.IsHashValidAsWeaponHash(weaponHash)) {
                     invalidHashes.Add(weaponHash);
                 }
             }
@@ -130,6 +155,11 @@ namespace GunshotWound2.Configs {
 
             invalidHashesString = string.Join(";", invalidHashes);
             weaponHashes.ExceptWith(invalidHashes);
+        }
+
+        public static string BuildWeaponName(uint hash) {
+            string name = Weapon.GetHumanNameFromHash((WeaponHash)hash);
+            return $"{name}({hash.ToString()})";
         }
     }
 }

@@ -212,8 +212,7 @@
         }
 
         private static string BuildWeaponName(uint hash) {
-            string name = Weapon.GetHumanNameFromHash((WeaponHash)hash);
-            return $"{name}({hash.ToString()})";
+            return WeaponConfig.BuildWeaponName(hash);
         }
     }
 }
