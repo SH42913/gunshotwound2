@@ -57,7 +57,7 @@ namespace GunshotWound2.Configs {
 
         public Stats[] AllStats;
 
-        public void FillFrom(XElement doc, ILogger logger) {
+        public void FillFrom(XDocument doc, ILogger logger) {
             XElement node = doc.Element("Weapons");
             if (node == null) {
                 return;

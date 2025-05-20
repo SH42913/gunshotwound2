@@ -27,7 +27,7 @@ namespace GunshotWound2.Configs {
 
         public PainMoveSets PainMoveSets;
 
-        public void FillFrom(XElement doc) {
+        public void FillFrom(XDocument doc) {
             XElement node = doc.Element("Player");
             if (node == null) {
                 return;

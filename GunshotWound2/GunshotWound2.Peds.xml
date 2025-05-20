@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Peds>
+    <GSWScanRange Value="50"/>
+    <!-- It is range where the script scans other peds to convert them to GSWPeds. 
+    You also can change range in game, using Increase/DecreaseRange keys, check in Hotkey section.
+    If you have low FPS or want to disable GSWPeds, just set range as -1. -->
+
+    <ScanOnlyDamaged Value="FALSE"/>
+    <!-- If TRUE - GSW will mark ped as GSWPed only after first damage.
+    It will increase performance, but it can have bugs.
+    PedHealth, new Accuracy and ShootRate will apply only after first damage! -->
+
+    <HeadshotIsInstantDeath Value="FALSE"/>
+    <!-- Headshots in GSW2 are always deadly, but by default death takes some time(like IRL).
+    Set this Value to TRUE if you want peds will dead instantly when getting headshot. -->
+
+    <DontActivateRagdollFromBulletImpact Value="FALSE"/>
+    <!-- More realistic impact behaviour, but override euphoria mods reactions(must be FALSE if you use any) -->
+
+    <RealisticSpineDamage Value="TRUE"/>
+    <!-- If TRUE - peds will set to permanent ragdoll on spine damage.
+    If FALSE - peds will get legs and arms critical damage instead of permanent ragdoll. -->
+
+    <ClosestPedRange Value="2"/>
+    <!-- Range where GSW will look for closest ped when using keys like BandageClosestKey -->
+
+    <Targets COMPANION="FALSE" RESPECT="FALSE" LIKE="TRUE"
+             PEDESTRIAN="TRUE" NEUTRAL="TRUE"
+             DISLIKE="TRUE" HATE="TRUE"/>
+    <!-- You can select what types of Peds can be affected by GSW.
+    It is based on Relationship between ped and player.
+    By default, COMPANION and RESPECT is FALSE to ignore friendly peds by GSW. -->
+
+    <TakedownRagdollDurationMs Value="4000"/>
+    <!-- Heavy melee attack(eg, using R key) named takedown.
+    It will cause heavy impact damage with custom duration ragdoll. -->
+
+    <TakedownPainMult Value="1.0"/>
+    <!-- Adjustable pain multiplier for takedown wound -->
+
+    <PainShockThreshold Min="60.0" Max="100.0"/>
+    <!-- Same as for player, but GSWPeds will have random MaximalPain between Min and Max. -->
+
+    <CustomHealth Min="-1" Max="-1"/>
+    <!-- Peds will have random health between Min and Max.
+    Recommended to set 50-100, that will make missions more realistic.
+    If you want to use default game PedHealth, set any to -1 -->
+
+    <CustomAccuracy Min="-1" Max="-1"/>
+    <!-- Peds will get random accuracy between Min and Max.
+    Recommended to set 5-10, you don't want them hit every shot :)
+    If you want to use default game Accuracy, set any to -1. -->
+
+    <CustomShootRate Min="-1" Max="-1"/>
+    <!-- Peds will get random ShootRate between Min and Max.
+    Recommended to set 5-10, you don't want them shot too often :)
+    If you want to use default game ShootRate, set any to -1. -->
+
+    <SelfHealingRate Value="0.02"/>
+    <!-- Same as for player -->
+
+    <PainRecoverySpeed Value="0.8"/>
+    <BleedHealSpeed Value="1.0"/>
+    <!-- Same as for player -->
+
+    <MaleMoveSets MildPain="" AvgPain="" IntensePain=""/>
+    <FemaleMoveSets MildPain="" AvgPain="" IntensePain=""/>
+    <!-- Same as for player -->
+</Peds>

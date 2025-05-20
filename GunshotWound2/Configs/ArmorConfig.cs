@@ -12,7 +12,7 @@ namespace GunshotWound2.Configs {
         public float MinimalChanceForArmorSave;
         public HashSet<int> HelmetPropIndexes;
 
-        public void FillFrom(XElement doc) {
+        public void FillFrom(XDocument doc) {
             XElement node = doc.Element("Armor");
             if (node == null) {
                 return;

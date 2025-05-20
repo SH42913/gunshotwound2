@@ -26,7 +26,7 @@ namespace GunshotWound2.Configs {
         public float DelayedPainPercent;
         public float DeadlyPainShockPercent;
 
-        public void FillFrom(XElement doc) {
+        public void FillFrom(XDocument doc) {
             XElement node = doc.Element("Wounds");
             if (node == null) {
                 return;

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Player>
+    <PoliceCanForget Value="TRUE"/>
+    <!-- If TRUE - cops can forget you when you fall unconscious.
+    If you use Realism Dispatch Enhanced, better to set it FALSE-->
+
+    <PedsWillIgnoreUnconsciousPlayer Value="TRUE"/>
+    <!-- If TRUE - peds will not attack player while he's unconscious -->
+
+    <CanDropWeapon Value="FALSE"/>
+    <!-- If TRUE - player will lose a weapon on arm crits and when you fall unconscious.
+    Recommended to use with Pickups mod. -->
+
+    <HeadshotIsInstantDeath Value="FALSE"/>
+    <!-- Headshots in GSW2 are always deadly, but by default death takes some time(like IRL).
+    Set this Value to TRUE if you want player will dead instantly when getting headshot. -->
+
+    <BlipsToMedkits Value="TRUE" RefreshTime="2" ModelName="prop_ld_health_pack"/>
+    <!-- Add map blips to medkits around player, refresh time in seconds -->
+
+    <RealisticSpineDamage Value="TRUE"/>
+    <!-- If TRUE - player will set to permanent ragdoll on spine damage.
+    If FALSE - player will get legs and arms critical damage instead of permanent ragdoll. -->
+
+    <PainSlowMo Value="-1"/>
+    <!-- Adrenaline effect that slowdown time using player's pain.
+    0.7 means TimeScale never be less than 70% of default time speed. 
+    TimeScale will be calculated as 0.7 + painPercent(pain/maxPain).
+    Be carefully, it will disable other SlowMo-mods.
+    If you want to disable this option, set any negative value. -->
+
+    <UseScreenEffects Value="TRUE"/>
+    <!-- Use PostFX screen effects for more immersive experience.
+    If you feel nausea or effects annoy you, set value to FALSE. -->
+
+    <PainShockThreshold Value="100.0"/>
+    <!-- 100.0 means when pain will more than 100 player will fall unconscious -->
+
+    <PainRecoverySpeed Value="1.5"/>
+    <!-- 1.5 means 1.5 pain points will be restored per 1 sec -->
+
+    <BleedHealSpeed Value="2.0"/>
+    <!-- How quickly bleeding will heal by itself -->
+
+    <SelfHealingRate Value="0.04"/>
+    <!-- How fast you will heal if you have no bleeding -->
+
+    <MoveSets MildPain="move_m@plodding;move_m@buzzed;move_m@gangster@generic;"
+              AvgPain="move_m@depressed@a;move_m@injured;move_m@drunk@slightlydrunk;"
+              IntensePain="move_m@drunk@a;move_m@drunk@moderatedrunk;move_m@drunk@verydrunk;"/>
+    <!-- You can change pain MoveSets by yourself.
+    GSW supports many MoveSets(separated by ;), random will take one of them.
+    There are 3 states: Mild(<30%, currentPain/maximalPain), Average(<80%) and Intense(<100%) -->
+
+    <HelmetCost Value="40"/>
+    <!-- 40 means you need $40 to buy a helmet. If you're using a skin changer, you need to set it to 0. -->
+</Player>

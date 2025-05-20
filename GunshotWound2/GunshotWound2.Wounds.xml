@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wounds>
+    <PainfulWoundPercent Value="0.5"/>
+    <!-- Any wound with value more than PainfulWoundPercent * MaxPain will add painful-wound effects -->
+
+    <RagdollOnPainfulWound Value="TRUE"/>
+    <!-- If TRUE - peds(including player) will set to short ragdoll on painful wounds -->
+
+    <UseCustomUnconsciousBehaviour Value="TRUE"/>
+    <!-- If TRUE - you will see various ped behaviour when they're unconscious, otherwise will be used common ragdoll -->
+
+    <DelayedPainPercent Value="0.3"/>
+    <!-- 0.3 means 30% of wound pain will be applied with delay(because of adrenaline) -->
+
+    <DeadlyPainShockPercent Value="3.0"/>
+    <!-- 3.0 means 300% of PainShockThreshold will lead to instant death by pain shock -->
+
+    <MoveRateOnFullPain Value="0.8"/>
+    <!-- Move rate on 100% of pain -->
+
+    <MoveRateOnLegsCrit Value="0.7"/>
+    <!-- Move rate when Legs are critically damaged -->
+
+    <OverallDamageMult Value="0.5"/>
+    <!-- Overall damage multiplier, 0.5 means every wound will deal 50% of damage to ped -->
+
+    <DamageDeviation Value="0.2"/>
+    <!-- 0.2 means +-20% random damage -->
+
+    <OverallBleedingMult Value="1.3"/>
+    <BleedingDeviation Value="0.2"/>
+
+    <OverallPainMult Value="1.0"/>
+    <PainDeviation Value="0.2"/>
+</Wounds>

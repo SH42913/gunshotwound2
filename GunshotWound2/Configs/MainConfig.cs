@@ -2,10 +2,7 @@
 
 namespace GunshotWound2.Configs {
     using System;
-    using System.Collections.Generic;
-    using System.Globalization;
     using System.IO;
-    using System.Linq;
     using System.Xml.Linq;
     using PedsFeature;
     using Utils;
@@ -68,43 +65,38 @@ namespace GunshotWound2.Configs {
         }
 
         public (bool success, string reason) TryToLoad(string scriptPath, ILogger logger) {
-            string path = Path.ChangeExtension(scriptPath, ".xml");
-            if (!File.Exists(path)) {
-                return (false, "GSW Config was not found");
-            }
-
-            XElement doc;
-            try {
-                doc = XDocument.Load(path).Root;
-            } catch (Exception e) {
-                Console.WriteLine(e);
-                return (false, $"Incorrect XML file at {path}:\n{e.Message}");
-            }
-
             string section = null;
             try {
                 section = nameof(PlayerConfig);
+                XDocument doc = LoadDocument(scriptPath, "Player.xml");
                 playerConfig.FillFrom(doc);
 
                 section = nameof(PedsConfig);
+                doc = LoadDocument(scriptPath, "Peds.xml");
                 pedsConfig.FillFrom(doc);
 
                 section = nameof(WoundConfig);
+                doc = LoadDocument(scriptPath, "Wounds.xml");
                 woundConfig.FillFrom(doc);
 
                 section = nameof(WeaponConfig);
+                doc = LoadDocument(scriptPath, "Weapons.xml");
                 weaponConfig.FillFrom(doc, logger);
 
                 section = nameof(ArmorConfig);
+                doc = LoadDocument(scriptPath, "Armor.xml");
                 armorConfig.FillFrom(doc);
 
                 section = nameof(InventoryConfig);
+                doc = LoadDocument(scriptPath, "Inventory.xml");
                 inventoryConfig.FillFrom(doc);
 
                 section = nameof(FillHotkeysFrom);
+                doc = LoadDocument(scriptPath, "KeyBinds.xml");
                 FillHotkeysFrom(doc);
 
                 section = nameof(FillNotifications);
+                doc = LoadDocument(scriptPath, "Notifications.xml");
                 FillNotifications(doc);
             } catch (Exception e) {
                 return (false, $"Failed loading of {section}:\n{e.Message}");
@@ -113,8 +105,17 @@ namespace GunshotWound2.Configs {
             return (true, null);
         }
 
-        private void FillHotkeysFrom(XElement doc) {
-            XElement node = doc.Element("Hotkeys");
+        private static XDocument LoadDocument(string scriptPath, string sectionName) {
+            string path = Path.ChangeExtension(scriptPath, sectionName);
+            if (!File.Exists(path)) {
+                throw new Exception($"GSW Config was not found at {path}");
+            }
+
+            return XDocument.Load(path);
+        }
+
+        private void FillHotkeysFrom(XDocument doc) {
+            XElement node = doc.Element("KeyBinds");
             if (node == null) {
                 return;
             }
@@ -131,7 +132,7 @@ namespace GunshotWound2.Configs {
             PauseKey = node.Element("PauseKey").GetKeyScheme();
         }
 
-        private void FillNotifications(XElement doc) {
+        private void FillNotifications(XDocument doc) {
             XElement node = doc.Element("Notifications");
             if (node == null) {
                 return;

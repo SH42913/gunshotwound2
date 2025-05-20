@@ -54,7 +54,7 @@ namespace GunshotWound2.Configs {
         public PainMoveSets MalePainMoveSets;
         public PainMoveSets FemalePainMoveSets;
 
-        public void FillFrom(XElement doc) {
+        public void FillFrom(XDocument doc) {
             XElement node = doc.Element("Peds");
             if (node == null) {
                 return;

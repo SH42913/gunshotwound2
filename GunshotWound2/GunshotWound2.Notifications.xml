@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Notifications>
+    <Language Value="EN"/>
+    <!-- Available languages: EN,RU,DE,FR,PL,KR,PT-BR,SPA,SWE,JP,ZH-HK,ZN-CN,FA.
+    All translations(except EN and RU) were made by community and can be inaccurate.
+    Not every available language is fully translated, you still may see english translation.
+    You also may help to translate GSW2 to other languages here:
+    https://docs.google.com/spreadsheets/d/1TY0nSEJMDmypkYrcVUBlMG3HIAEW075dCOtxXgW5UJ0/edit 
+    And more languages will be available in next build! -->
+
+    <Info Value="TRUE"/>
+    <!-- Info notifications: Totally healed, Pain decreased, Pause in mission  -->
+
+    <OtherPeds Value="TRUE"/>
+    <!-- Notifications about other peds like "He coughs up blood" -->
+
+    <Wounds Value="TRUE"/>
+    <!-- Notifications about your wounds -->
+
+    <Critical Value="TRUE"/>
+    <!-- Important notifications about crits, heavy wounds, armor hits, etc -->
+</Notifications>
