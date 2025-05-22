@@ -25,13 +25,14 @@
             Stun,
         }
 
+        public Bone damagedBone;
         public BodyParts bodyPart;
+        public uint weaponHash;
         public WeaponTypes weaponType;
         public int healthDiff;
         public int armorDiff;
         public bool useRandomBodyPart;
         public string armorMessage;
-        public Bone damagedBone;
         public bool afterTakedown;
     }
 }

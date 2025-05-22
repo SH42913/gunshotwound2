@@ -2,6 +2,7 @@
     using GTA;
     using GTA.Native;
     using SHVDN;
+    using Utils;
 
     public static class PedEffects {
         public static bool TryRequestMoveSet(string moveSetName) {
@@ -92,17 +93,19 @@
             return Function.Call<bool>(Hash.IS_PED_IN_WRITHE, ped);
         }
 
-        public static bool TryGetLastDamageRecord(Ped ped, out uint weaponHash, out int attackerHandle) {
-            if (ped == null || !ped.Exists()) {
+        public static bool TryGetLastDamageRecord(Ped ped, out uint weaponHash, out int attackerHandle, out int gameTime) {
+            if (!ped.IsValid()) {
                 weaponHash = 0;
                 attackerHandle = 0;
+                gameTime = 0;
                 return false;
             }
 
             var record = NativeMemory.GetEntityDamageRecordEntryAtIndex(ped.MemoryAddress, 0);
             weaponHash = unchecked((uint)record.weaponHash);
             attackerHandle = record.attackerEntityHandle;
-            return record.gameTime != 0;
+            gameTime = record.gameTime;
+            return gameTime != 0;
         }
 
         public static bool TryGetPedByHandle(int handle, out Ped ped) {

@@ -218,11 +218,7 @@
             ped.BlockPermanentEvents = true;
 
             int loops = sharedData.random.Next(1, 5);
-            if (PedEffects.TryGetLastDamageRecord(ped, out _, out int attackerHandle)) {
-                PedEffects.StartWritheTask(ped, loops, (Ped)GTA.Entity.FromHandle(attackerHandle));
-            } else {
-                PedEffects.StartWritheTask(ped, loops);
-            }
+            PedEffects.StartWritheTask(ped, loops, convertedPed.lastAggressor);
         }
 
         private void StartCrawl(ref ConvertedPed convertedPed) {
@@ -232,9 +228,8 @@
             bool back;
             Quaternion quat;
             Vector3 pedPosition = ped.Position;
-            if (PedEffects.TryGetLastDamageRecord(ped, out _, out int attackerHandle)) {
-                GTA.Entity attacker = GTA.Entity.FromHandle(attackerHandle);
-                Vector3 dir = pedPosition - attacker.Position;
+            if (convertedPed.lastAggressor.IsValid()) {
+                Vector3 dir = pedPosition - convertedPed.lastAggressor.Position;
                 back = Vector3.Dot(ped.ForwardVector, dir) < 0;
                 quat = Quaternion.LookRotation(back ? -dir : dir);
             } else {
@@ -285,9 +280,8 @@
                 StrongRollForce = sharedData.random.IsTrueWithProbability(0.5f),
             };
 
-            if (PedEffects.TryGetLastDamageRecord(convertedPed.thisPed, out _, out int handle) 
-                && PedEffects.TryGetPedByHandle(handle, out Ped attacker)) {
-                helper.AttackerPos = attacker.Position;
+            if (convertedPed.lastAggressor.IsValid()) {
+                helper.AttackerPos = convertedPed.lastAggressor.Position;
             }
 
             return helper;

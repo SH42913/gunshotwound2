@@ -41,5 +41,9 @@ namespace GunshotWound2.Utils {
         public static int GetPropTextureCount(Ped ped, PedPropAnchorPoint anchorPoint, int propIndex) {
             return Function.Call<int>(Hash.GET_NUMBER_OF_PED_PROP_TEXTURE_VARIATIONS, ped, (int)anchorPoint, propIndex);
         }
+
+        public static bool IsValid(this Ped ped) {
+            return ped != null && ped.Exists();
+        }
     }
 }

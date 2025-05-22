@@ -63,10 +63,13 @@
                 }
 
                 if (weaponType == PedHitData.WeaponTypes.Nothing) {
-                    PedEffects.TryGetLastDamageRecord(ped, out uint uintHash, out _);
-                    sharedData.logger.WriteWarning($"Can't detect weapon! Possible hash - {BuildWeaponName(uintHash)})");
-                    sharedData.logger.WriteWarning("Make sure you have hash of this weapon in Weapons section of GSWConfig.xml");
+                    sharedData.logger.WriteWarning("Can't detect weapon!");
+                    PedEffects.TryGetLastDamageRecord(ped, out uint uintHash, out _, out int gameTime);
+                    int timeDiff = Game.GameTime - gameTime;
+                    sharedData.logger.WriteWarning($"Possible hash - {BuildWeaponName(uintHash)}, {timeDiff} frames ago");
+                    sharedData.logger.WriteWarning("Make sure you have this weapon in Weapons section of GunshotWound2.Weapons.xml");
                 } else {
+                    hitData.weaponHash = hitWeapon;
                     hitData.weaponType = weaponType;
                     hitData.useRandomBodyPart = isSpecialCase;
 #if DEBUG

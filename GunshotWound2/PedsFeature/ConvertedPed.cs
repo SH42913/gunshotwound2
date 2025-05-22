@@ -16,6 +16,7 @@
         public int lastFrameHealth;
         public int lastFrameArmor;
         public Bone lastDamagedBone;
+        public Ped lastAggressor;
 
         public (int time, RagdollType type) ragdollRequest;
         public bool permanentRagdoll;
