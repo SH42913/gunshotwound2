@@ -14,7 +14,8 @@
         private const uint RAMMED_BY_CAR = 133987706;
         private const uint RUN_OVER_CAR = 2741846334;
         private const uint FALL = 3452007600;
-        private const float MAX_LIGHT_IMPACT_SPEED = 8f;
+        private const float MAX_LIGHT_IMPACT_SPEED = 10f;
+        private const float MIN_FALL_SPEED = 2.5f;
 
         private readonly SharedData sharedData;
 
@@ -137,7 +138,7 @@
             if (IsDamagedByWeapon(ped, RUN_OVER_CAR)) {
                 weaponType = HandleRunOverCar(ped, ref skipDamage);
             } else if (ped.IsFalling || ped.IsRagdoll || IsDamagedByWeapon(ped, FALL)) {
-                weaponType = HandleFalling(ped);
+                weaponType = HandleFalling(ped, ref skipDamage);
             } else if (IsDamagedByWeapon(ped, RAMMED_BY_CAR) || ped.IsInVehicle()) {
                 weaponType = HandleCarImpact(ped);
             } else {
@@ -159,7 +160,7 @@
 #endif
             if (relativeSpeed > MAX_LIGHT_IMPACT_SPEED) {
                 return PedHitData.WeaponTypes.HeavyImpact;
-            } else if (relativeSpeed < 1f) {
+            } else if (relativeSpeed < MIN_FALL_SPEED) {
                 skipDamage = true;
                 return PedHitData.WeaponTypes.Nothing;
             } else {
@@ -167,14 +168,19 @@
             }
         }
 
-        private PedHitData.WeaponTypes HandleFalling(Ped ped) {
+        private PedHitData.WeaponTypes HandleFalling(Ped ped, ref bool skipDamage) {
             float pedSpeed = ped.Velocity.Length();
 #if DEBUG
             sharedData.logger.WriteInfo($"It is fall damage with speed {pedSpeed.ToString("F2")}");
 #endif
-            return pedSpeed >= MAX_LIGHT_IMPACT_SPEED
-                    ? PedHitData.WeaponTypes.HeavyImpact
-                    : PedHitData.WeaponTypes.LightImpact;
+            if (pedSpeed > MAX_LIGHT_IMPACT_SPEED) {
+                return PedHitData.WeaponTypes.HeavyImpact;
+            } else if (pedSpeed < MIN_FALL_SPEED) {
+                skipDamage = true;
+                return PedHitData.WeaponTypes.Nothing;
+            } else {
+                return PedHitData.WeaponTypes.LightImpact;
+            }
         }
 
         private PedHitData.WeaponTypes HandleCarImpact(Ped ped) {
