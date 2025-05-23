@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Wounds>
+<WoundConfig>
     <PainfulWoundPercent Value="0.5"/>
     <!-- Any wound with value more than PainfulWoundPercent * MaxPain will add painful-wound effects -->
 
@@ -32,4 +32,67 @@
 
     <OverallPainMult Value="1.0"/>
     <PainDeviation Value="0.2"/>
-</Wounds>
+
+    <Wounds>
+        <!--
+        Example:
+        <Wound Key="" LocKey="" Damage="" Bleed="" Pain="" ArteryChance="" IsInternal="" WithCrit="" ForceCrit=""/>
+        -->
+        <Wound Key="GrazeDefault" LocKey="GrazeWound"
+               Damage="10" Bleed="0.05" Pain="10"
+               ArteryChance="0" IsInternal="FALSE"
+               WithCrit="FALSE" ForceCrit="FALSE"/>
+
+        <!-- Impact wounds -->
+        <Wound Key="LightBruiseDefault" LocKey="LightBruise"
+               Damage="3" Pain="15"/>
+        <Wound Key="LightBruise" LocKey="LightBruiseOn"
+               Damage="3" Pain="15"/>
+        <Wound Key="MediumBruise" LocKey="MediumBruiseOn"
+               Damage="8" Pain="25"/>
+        <Wound Key="HeavyBruise" LocKey="HeavyBruiseOn"
+               Damage="10" Pain="39" WithCrit="TRUE"/>
+        <Wound Key="WindedFromImpact" LocKey="WindedFromImpact"
+               Damage="10" Pain="40"/>
+        <Wound Key="AbrasionWound" LocKey="AbrasionWoundOn"
+               Damage="3" Bleed="0.15" Pain="15"/>
+        <Wound Key="Blackout" LocKey="Blackout"
+               Damage="30" Pain="70"/> <!-- TODO Crit -->
+        <Wound Key="TraumaticBrainInjury" LocKey="TraumaticBrainInjury"
+               Damage="50" Bleed="4" Pain="130"/> <!-- TODO Crit -->
+        <Wound Key="BleedingInHead" LocKey="BleedingInHead"
+               Damage="50" Bleed="4" Pain="130"/> <!-- TODO Crit -->
+        <Wound Key="BrokenNeck" LocKey="BrokenNeck"
+               Damage="50" ArteryChance="0.7" WithCrit="TRUE"/> <!-- TODO Crit -->
+        <Wound Key="ClosedFracture" LocKey="ClosedFractureOf"
+               Damage="10" Bleed="0.4" Pain="40" IsInternal="TRUE" WithCrit="TRUE" ForceCrit="TRUE"/> <!-- TODO Crit -->
+
+        <!-- Cutting wounds -->
+        <Wound Key="IncisionWound" LocKey="IncisionWoundOn"
+               Damage="10" Bleed="0.3" Pain="20"/>
+        <Wound Key="LacerationWound" LocKey="LacerationWoundOn"
+               Damage="20" Bleed="0.8" Pain="30" ArteryChance="0.3" WithCrit="TRUE"/>
+        <Wound Key="StabWound" LocKey="StabWoundOn"
+               Damage="30" Bleed="0.6" Pain="40" ArteryChance="0.5" WithCrit="TRUE"/>
+        <Wound Key="HeavyBrainCut" LocKey="HeavyBrainDamage"
+               Damage="50" Bleed="4" Pain="130"/> <!-- TODO Crit -->
+
+        <!-- Gunshot wounds -->
+        <Wound Key="GrazeGsw" LocKey="GrazeGswOn"
+               Damage="15" Bleed="0.05" Pain="15"/>
+        <Wound Key="FleshGsw" LocKey="FleshGswOn"
+               Damage="20" Bleed="0.1" Pain="30" ArteryChance="0.1"/>
+        <Wound Key="PenetratingGsw" LocKey="PenetratingGswOn"
+               Damage="25" Bleed="0.2" Pain="40" ArteryChance="0.2" WithCrit="TRUE"/>
+        <Wound Key="PerforatingGsw" LocKey="PerforatingGswOn"
+               Damage="20" Bleed="0.25" Pain="40" ArteryChance="0.25" WithCrit="TRUE"/>
+        <Wound Key="AvulsiveGsw" LocKey="AvulsiveGswOn"
+               Damage="30" Bleed="0.30" Pain="50" ArteryChance="0.3" WithCrit="TRUE"/>
+        <Wound Key="HeavyBrainGsw" LocKey="HeavyBrainDamage"
+               Damage="50" Bleed="4" Pain="130"/> <!-- TODO Crit -->
+        <Wound Key="BulletFlyThroughHead" LocKey="BulletFlyThroughHead"
+               Damage="50" Bleed="4" Pain="130"/> <!-- TODO Crit -->
+        <Wound Key="BulletTornApartBrain" LocKey="BulletTornApartBrain"
+               Damage="50" Bleed="4" Pain="130"/> <!-- TODO Crit -->
+    </Wounds>
+</WoundConfig>

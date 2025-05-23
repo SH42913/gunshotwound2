@@ -45,26 +45,25 @@
         protected abstract WoundData GetArmWound();
         protected abstract WoundData GetLegWound();
 
-        protected WoundData CreateHeavyBrainDamage(string name) {
-            return CreateWound(name, 50f, 4f, 130f, hasCrits: true, ignoreCritsChance: true, internalBleeding: true);
-        }
+        protected WoundData CreateWound(string key, string bodyPart = null) {
+            if (!sharedData.mainConfig.woundConfig.Wounds.TryGetValue(key, out WoundConfig.Wound template)) {
+                sharedData.logger.WriteError($"Can't find wound {key}, will use default one");
+                return DefaultWound();
+            }
 
-        protected WoundData CreateWound(string name,
-                                        float damage,
-                                        float bleeding,
-                                        float pain,
-                                        float arteryDamageChance = -1,
-                                        bool hasCrits = false,
-                                        bool ignoreCritsChance = false,
-                                        bool internalBleeding = false) {
+            string name = sharedData.localeConfig.GetTranslation(template.LocKey);
+            if (!string.IsNullOrEmpty(bodyPart)) {
+                name = $"{name} {bodyPart}";
+            }
+
             return new WoundData {
                 Name = name,
-                Damage = Stats.DamageMult * damage,
-                Pain = Stats.PainMult * pain,
-                BleedSeverity = Stats.BleedMult * bleeding,
-                InternalBleeding = internalBleeding,
-                ArterySevered = arteryDamageChance > 0 && sharedData.random.IsTrueWithProbability(arteryDamageChance),
-                HasCrits = hasCrits && (ignoreCritsChance || sharedData.random.IsTrueWithProbability(Stats.CritChance)),
+                Damage = Stats.DamageMult * template.Damage,
+                Pain = Stats.PainMult * template.Pain,
+                BleedSeverity = Stats.BleedMult * template.Bleed,
+                InternalBleeding = template.IsInternal,
+                ArterySevered = template.ArteryChance > 0 && sharedData.random.IsTrueWithProbability(template.ArteryChance),
+                HasCrits = template.WithCrit && (template.ForceCrit || sharedData.random.IsTrueWithProbability(Stats.CritChance)),
             };
         }
 

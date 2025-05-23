@@ -3,32 +3,31 @@
         protected BaseImpactDamage(SharedData sharedData) : base(sharedData) { }
 
         protected override WoundData DefaultWound() {
-            return CreateWound(sharedData.localeConfig.LightBruise, 3f, -1f, 15f);
+            return CreateWound("LightBruiseDefault");
         }
 
-        protected WoundData AbrasionWoundOn(string position) {
-            return CreateWound($"{sharedData.localeConfig.AbrasionWoundOn} {position}", 3f, 0.15f, 15f);
+        protected WoundData AbrasionWoundOn(string bodyPart) {
+            return CreateWound("AbrasionWound", bodyPart);
         }
 
-        protected WoundData LightBruiseWound(string position) {
-            return CreateWound($"{sharedData.localeConfig.LightBruiseOn} {position}", 3f, -1f, 15f);
+        protected WoundData LightBruiseWound(string bodyPart) {
+            return CreateWound("LightBruise", bodyPart);
         }
 
-        protected WoundData MediumBruiseWound(string position) {
-            return CreateWound($"{sharedData.localeConfig.MediumBruiseOn} {position}", 8f, -1f, 25f, 0.001f);
+        protected WoundData MediumBruiseWound(string bodyPart) {
+            return CreateWound("MediumBruise", bodyPart);
         }
 
-        protected WoundData HeavyBruiseWound(string position, bool hasCrits) {
-            return CreateWound($"{sharedData.localeConfig.HeavyBruiseOn} {position}", 10f, -1f, 39f, 0.05f, hasCrits);
+        protected WoundData HeavyBruiseWound(string bodyPart) {
+            return CreateWound("HeavyBruise", bodyPart);
         }
 
         protected WoundData WindedFromImpact() {
-            return CreateWound(sharedData.localeConfig.WindedFromImpact, 10f, -1, 40f);
+            return CreateWound("WindedFromImpact");
         }
 
-        protected WoundData ClosedFracture(string position) {
-            var name = $"{sharedData.localeConfig.ClosedFractureOf} {position}";
-            return CreateWound(name, 10f, 0.2f, 40f, 0f, true, true, true);
+        protected WoundData ClosedFracture(string bodyPart) {
+            return CreateWound("ClosedFracture", bodyPart);
         }
     }
 }

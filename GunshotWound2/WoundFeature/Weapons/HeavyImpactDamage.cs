@@ -15,10 +15,10 @@
             Randomizer.Add(3, 1);
 
             switch (Randomizer.NextWithReplacement()) {
-                case 0:  return HeavyBruiseWound(sharedData.localeConfig.BodyPartHead, false);
-                case 1:  return CreateWound(sharedData.localeConfig.Blackout, 30f, -1, 70f);
-                case 2:  return CreateHeavyBrainDamage(sharedData.localeConfig.TraumaticBrainInjury);
-                case 3:  return CreateHeavyBrainDamage(sharedData.localeConfig.BleedingInHead);
+                case 0:  return HeavyBruiseWound(sharedData.localeConfig.BodyPartHead);
+                case 1:  return CreateWound("Blackout");
+                case 2:  return CreateWound("TraumaticBrainInjury");
+                case 3:  return CreateWound("BleedingInHead");
                 default: throw new InvalidOperationException();
             }
         }
@@ -29,10 +29,11 @@
             Randomizer.Add(1, 1);
             Randomizer.Add(2, 1);
 
+            string bodyPart = sharedData.localeConfig.BodyPartNeck;
             switch (Randomizer.NextWithReplacement()) {
-                case 0:  return MediumBruiseWound(sharedData.localeConfig.BodyPartNeck);
-                case 1:  return HeavyBruiseWound(sharedData.localeConfig.BodyPartNeck, false);
-                case 2:  return CreateWound(sharedData.localeConfig.BrokenNeck, 50f, -1, -1, 70f, true);
+                case 0:  return MediumBruiseWound(bodyPart);
+                case 1:  return HeavyBruiseWound(bodyPart);
+                case 2:  return CreateWound("BrokenNeck");
                 default: throw new InvalidOperationException();
             }
         }
@@ -44,11 +45,12 @@
             Randomizer.Add(2, 2);
             Randomizer.Add(3, 1);
 
+            string bodyPart = sharedData.localeConfig.BodyPartChest;
             switch (Randomizer.NextWithReplacement()) {
-                case 0:  return AbrasionWoundOn(sharedData.localeConfig.BodyPartChest);
-                case 1:  return MediumBruiseWound(sharedData.localeConfig.BodyPartChest);
-                case 2:  return MediumBruiseWound(sharedData.localeConfig.BodyPartChest);
-                case 3:  return ClosedFracture(sharedData.localeConfig.BodyPartChest);
+                case 0:  return AbrasionWoundOn(bodyPart);
+                case 1:  return MediumBruiseWound(bodyPart);
+                case 2:  return MediumBruiseWound(bodyPart);
+                case 3:  return ClosedFracture(bodyPart);
                 default: throw new InvalidOperationException();
             }
         }
@@ -59,10 +61,11 @@
             Randomizer.Add(1, 2);
             Randomizer.Add(2, 2);
 
+            string bodyPart = sharedData.localeConfig.BodyPartLowerBody;
             switch (Randomizer.NextWithReplacement()) {
-                case 0:  return AbrasionWoundOn(sharedData.localeConfig.BodyPartLowerBody);
-                case 1:  return MediumBruiseWound(sharedData.localeConfig.BodyPartLowerBody);
-                case 2:  return HeavyBruiseWound(sharedData.localeConfig.BodyPartLowerBody, true);
+                case 0:  return AbrasionWoundOn(bodyPart);
+                case 1:  return MediumBruiseWound(bodyPart);
+                case 2:  return HeavyBruiseWound(bodyPart);
                 default: throw new InvalidOperationException();
             }
         }
@@ -74,11 +77,12 @@
             Randomizer.Add(2, 1);
             Randomizer.Add(3, 1);
 
+            string bodyPart = sharedData.localeConfig.BodyPartArm;
             switch (Randomizer.NextWithReplacement()) {
-                case 0:  return AbrasionWoundOn(sharedData.localeConfig.BodyPartArm);
-                case 1:  return MediumBruiseWound(sharedData.localeConfig.BodyPartArm);
-                case 2:  return HeavyBruiseWound(sharedData.localeConfig.BodyPartArm, true);
-                case 3:  return ClosedFracture(sharedData.localeConfig.BodyPartArm);
+                case 0:  return AbrasionWoundOn(bodyPart);
+                case 1:  return MediumBruiseWound(bodyPart);
+                case 2:  return HeavyBruiseWound(bodyPart);
+                case 3:  return ClosedFracture(bodyPart);
                 default: throw new InvalidOperationException();
             }
         }
@@ -90,11 +94,12 @@
             Randomizer.Add(2, 1);
             Randomizer.Add(3, 1);
 
+            string bodyPart = sharedData.localeConfig.BodyPartLeg;
             switch (Randomizer.NextWithReplacement()) {
-                case 0:  return AbrasionWoundOn(sharedData.localeConfig.BodyPartLeg);
-                case 1:  return MediumBruiseWound(sharedData.localeConfig.BodyPartLeg);
-                case 2:  return HeavyBruiseWound(sharedData.localeConfig.BodyPartLeg, true);
-                case 3:  return ClosedFracture(sharedData.localeConfig.BodyPartLeg);
+                case 0:  return AbrasionWoundOn(bodyPart);
+                case 1:  return MediumBruiseWound(bodyPart);
+                case 2:  return HeavyBruiseWound(bodyPart);
+                case 3:  return ClosedFracture(bodyPart);
                 default: throw new InvalidOperationException();
             }
         }

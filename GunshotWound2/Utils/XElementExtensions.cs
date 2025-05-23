@@ -8,19 +8,19 @@
             return string.IsNullOrEmpty(attributeName) ? node?.Value : node?.Attribute(attributeName)?.Value;
         }
 
-        public static bool GetBool(this XElement node, string attributeName = "Value") {
+        public static bool GetBool(this XElement node, string attributeName = "Value", bool defaultValue = false) {
             string value = GetString(node, attributeName);
-            return !string.IsNullOrEmpty(value) && bool.Parse(value);
+            return bool.TryParse(value, out bool result) ? result : defaultValue;
         }
 
-        public static int GetInt(this XElement node, string attributeName = "Value") {
+        public static int GetInt(this XElement node, string attributeName = "Value", int defaultValue = 0) {
             string value = GetString(node, attributeName);
-            return int.Parse(value);
+            return int.TryParse(value, out int result) ? result : defaultValue;
         }
 
-        public static float GetFloat(this XElement node, string attributeName = "Value") {
+        public static float GetFloat(this XElement node, string attributeName = "Value", float defaultValue = 0f) {
             string value = GetString(node, attributeName);
-            return float.Parse(value, CultureInfo.InvariantCulture);
+            return float.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out float result) ? result : defaultValue;
         }
 
         private static Keys? GetKey(this XElement node, string attributeName) {

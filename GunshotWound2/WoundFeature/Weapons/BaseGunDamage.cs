@@ -11,7 +11,7 @@
         protected BaseGunDamage(SharedData sharedData) : base(sharedData) { }
 
         protected override WoundData DefaultWound() {
-            return CreateWound(sharedData.localeConfig.GrazeWound, 15f, 0.05f, 15f);
+            return CreateWound("GrazeDefault");
         }
 
         protected override WoundData GetHeadWound() {
@@ -22,12 +22,13 @@
             Randomizer.Add(3, PerforatingWoundWeight);
             Randomizer.Add(4, AvulsiveWoundWeight);
 
+            string bodyPart = sharedData.localeConfig.BodyPartHead;
             switch (Randomizer.NextWithReplacement()) {
-                case 0:  return CreateGrazeWound(sharedData.localeConfig.BodyPartHead);
-                case 1:  return CreateFleshWound(sharedData.localeConfig.BodyPartHead, 0.25f);
-                case 2:  return CreateHeavyBrainDamage(sharedData.localeConfig.HeavyBrainDamage);
-                case 3:  return CreateHeavyBrainDamage(sharedData.localeConfig.BulletFlyThroughHead);
-                case 4:  return CreateHeavyBrainDamage(sharedData.localeConfig.BulletTornApartBrain);
+                case 0:  return CreateGrazeWound(bodyPart);
+                case 1:  return CreateFleshWound(bodyPart);
+                case 2:  return CreateWound("HeavyBrainGsw");
+                case 3:  return CreateWound("BulletFlyThroughHead");
+                case 4:  return CreateWound("BulletTornApartBrain");
                 default: throw new InvalidOperationException();
             }
         }
@@ -40,12 +41,13 @@
             Randomizer.Add(3, PerforatingWoundWeight);
             Randomizer.Add(4, AvulsiveWoundWeight);
 
+            string bodyPart = sharedData.localeConfig.BodyPartNeck;
             switch (Randomizer.NextWithReplacement()) {
-                case 0:  return CreateGrazeWound(sharedData.localeConfig.BodyPartNeck);
-                case 1:  return CreateFleshWound(sharedData.localeConfig.BodyPartNeck, 0.05f);
-                case 2:  return CreatePenetratingWound(sharedData.localeConfig.BodyPartNeck, 0.2f, false);
-                case 3:  return CreatePerforatingWound(sharedData.localeConfig.BodyPartNeck, 0.1f, false);
-                case 4:  return CreateAvulsiveWound(sharedData.localeConfig.BodyPartNeck, 0.3f, false);
+                case 0:  return CreateGrazeWound(bodyPart);
+                case 1:  return CreateFleshWound(bodyPart);
+                case 2:  return CreatePenetratingWound(bodyPart);
+                case 3:  return CreatePerforatingWound(bodyPart);
+                case 4:  return CreateAvulsiveWound(bodyPart);
                 default: throw new InvalidOperationException();
             }
         }
@@ -58,12 +60,13 @@
             Randomizer.Add(3, PerforatingWoundWeight);
             Randomizer.Add(4, AvulsiveWoundWeight);
 
+            string bodyPart = sharedData.localeConfig.BodyPartChest;
             switch (Randomizer.NextWithReplacement()) {
-                case 0:  return CreateGrazeWound(sharedData.localeConfig.BodyPartChest);
-                case 1:  return CreateFleshWound(sharedData.localeConfig.BodyPartChest, 0.1f);
-                case 2:  return CreatePenetratingWound(sharedData.localeConfig.BodyPartChest, 0.2f, true);
-                case 3:  return CreatePerforatingWound(sharedData.localeConfig.BodyPartChest, 0.2f, true);
-                case 4:  return CreateAvulsiveWound(sharedData.localeConfig.BodyPartChest, 0.3f, true);
+                case 0:  return CreateGrazeWound(bodyPart);
+                case 1:  return CreateFleshWound(bodyPart);
+                case 2:  return CreatePenetratingWound(bodyPart);
+                case 3:  return CreatePerforatingWound(bodyPart);
+                case 4:  return CreateAvulsiveWound(bodyPart);
                 default: throw new InvalidOperationException();
             }
         }
@@ -76,12 +79,13 @@
             Randomizer.Add(3, PerforatingWoundWeight);
             Randomizer.Add(4, AvulsiveWoundWeight);
 
+            string bodyPart = sharedData.localeConfig.BodyPartLowerBody;
             switch (Randomizer.NextWithReplacement()) {
-                case 0:  return CreateGrazeWound(sharedData.localeConfig.BodyPartLowerBody);
-                case 1:  return CreateFleshWound(sharedData.localeConfig.BodyPartLowerBody, 0.05f);
-                case 2:  return CreatePenetratingWound(sharedData.localeConfig.BodyPartLowerBody, 0.1f, true);
-                case 3:  return CreatePerforatingWound(sharedData.localeConfig.BodyPartLowerBody, 0.2f, true);
-                case 4:  return CreateAvulsiveWound(sharedData.localeConfig.BodyPartLowerBody, 0.2f, true);
+                case 0:  return CreateGrazeWound(bodyPart);
+                case 1:  return CreateFleshWound(bodyPart);
+                case 2:  return CreatePenetratingWound(bodyPart);
+                case 3:  return CreatePerforatingWound(bodyPart);
+                case 4:  return CreateAvulsiveWound(bodyPart);
                 default: throw new InvalidOperationException();
             }
         }
@@ -94,12 +98,13 @@
             Randomizer.Add(3, PerforatingWoundWeight);
             Randomizer.Add(4, AvulsiveWoundWeight);
 
+            string bodyPart = sharedData.localeConfig.BodyPartArm;
             switch (Randomizer.NextWithReplacement()) {
-                case 0:  return CreateGrazeWound(sharedData.localeConfig.BodyPartArm);
-                case 1:  return CreateFleshWound(sharedData.localeConfig.BodyPartArm, 0.01f);
-                case 2:  return CreatePenetratingWound(sharedData.localeConfig.BodyPartArm, 0.05f, true);
-                case 3:  return CreatePerforatingWound(sharedData.localeConfig.BodyPartArm, 0.05f, true);
-                case 4:  return CreateAvulsiveWound(sharedData.localeConfig.BodyPartArm, 0.1f, true);
+                case 0:  return CreateGrazeWound(bodyPart);
+                case 1:  return CreateFleshWound(bodyPart);
+                case 2:  return CreatePenetratingWound(bodyPart);
+                case 3:  return CreatePerforatingWound(bodyPart);
+                case 4:  return CreateAvulsiveWound(bodyPart);
                 default: throw new InvalidOperationException();
             }
         }
@@ -112,34 +117,35 @@
             Randomizer.Add(3, PerforatingWoundWeight);
             Randomizer.Add(4, AvulsiveWoundWeight);
 
+            string bodyPart = sharedData.localeConfig.BodyPartLeg;
             switch (Randomizer.NextWithReplacement()) {
-                case 0:  return CreateGrazeWound(sharedData.localeConfig.BodyPartLeg);
-                case 1:  return CreateFleshWound(sharedData.localeConfig.BodyPartLeg, 0.05f);
-                case 2:  return CreatePenetratingWound(sharedData.localeConfig.BodyPartLeg, 0.1f, true);
-                case 3:  return CreatePerforatingWound(sharedData.localeConfig.BodyPartLeg, 0.1f, true);
-                case 4:  return CreateAvulsiveWound(sharedData.localeConfig.BodyPartLeg, 0.2f, true);
+                case 0:  return CreateGrazeWound(bodyPart);
+                case 1:  return CreateFleshWound(bodyPart);
+                case 2:  return CreatePenetratingWound(bodyPart);
+                case 3:  return CreatePerforatingWound(bodyPart);
+                case 4:  return CreateAvulsiveWound(bodyPart);
                 default: throw new InvalidOperationException();
             }
         }
 
-        private WoundData CreateGrazeWound(string position) {
-            return CreateWound($"{sharedData.localeConfig.GrazeGswOn} {position}", 15f, 0.05f, 15f);
+        private WoundData CreateGrazeWound(string bodyPart) {
+            return CreateWound("GrazeGsw", bodyPart);
         }
 
-        private WoundData CreateFleshWound(string position, float arteryChance) {
-            return CreateWound($"{sharedData.localeConfig.FleshGswOn} {position}", 20f, 0.1f, 30f, arteryChance);
+        private WoundData CreateFleshWound(string bodyPart) {
+            return CreateWound("FleshGsw", bodyPart);
         }
 
-        private WoundData CreatePenetratingWound(string position, float arteryChance, bool hasCrits) {
-            return CreateWound($"{sharedData.localeConfig.PenetratingGswOn} {position}", 25f, 0.2f, 40f, arteryChance, hasCrits);
+        private WoundData CreatePenetratingWound(string bodyPart) {
+            return CreateWound("PenetratingGsw", bodyPart);
         }
 
-        private WoundData CreatePerforatingWound(string position, float arteryChance, bool hasCrits) {
-            return CreateWound($"{sharedData.localeConfig.PerforatingGswOn} {position}", 20f, 0.25f, 40f, arteryChance, hasCrits);
+        private WoundData CreatePerforatingWound(string bodyPart) {
+            return CreateWound("PerforatingGsw", bodyPart);
         }
 
-        private WoundData CreateAvulsiveWound(string position, float arteryChance, bool hasCrits) {
-            return CreateWound($"{sharedData.localeConfig.AvulsiveGswOn} {position}", 30f, 0.30f, 50f, arteryChance, hasCrits);
+        private WoundData CreateAvulsiveWound(string bodyPart) {
+            return CreateWound("AvulsiveGsw", bodyPart);
         }
     }
 }

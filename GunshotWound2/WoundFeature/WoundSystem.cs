@@ -132,7 +132,7 @@
             }
 
             float deviation = WoundConfig.DamageDeviation;
-            float mult = WoundConfig.DamageMultiplier;
+            float mult = WoundConfig.OverallDamageMult;
 
             float damageAmount = CalculateAmount(damage, deviation, mult);
             damageAmount = Math.Max(damageAmount, 1f);
@@ -145,7 +145,7 @@
             }
 
             float deviation = WoundConfig.BleedingDeviation;
-            float mult = WoundConfig.BleedingMultiplier;
+            float mult = WoundConfig.OverallBleedingMult;
             severity = CalculateAmount(severity, deviation, mult);
             pedEntity.CreateBleeding(bodyPart, severity, name, isInternal);
         }
@@ -157,7 +157,7 @@
 
         private void CreatePain(Entity pedEntity, float painAmount) {
             float deviation = WoundConfig.PainDeviation;
-            float mult = WoundConfig.PainMultiplier;
+            float mult = WoundConfig.OverallPainMult;
 
             ref Pain pain = ref pedEntity.GetComponent<Pain>();
             pain.diff += CalculateAmount(painAmount, deviation, mult);
