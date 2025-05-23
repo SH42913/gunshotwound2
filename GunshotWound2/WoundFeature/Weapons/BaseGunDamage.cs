@@ -10,7 +10,7 @@
 
         protected BaseGunDamage(SharedData sharedData) : base(sharedData) { }
 
-        protected override WoundData DefaultWound() {
+        public override WoundData DefaultWound() {
             return CreateWound("GrazeDefault");
         }
 

@@ -2,7 +2,7 @@
     public abstract class BaseImpactDamage : BaseWeaponDamage {
         protected BaseImpactDamage(SharedData sharedData) : base(sharedData) { }
 
-        protected override WoundData DefaultWound() {
+        public override WoundData DefaultWound() {
             return CreateWound("LightBruiseDefault");
         }
 

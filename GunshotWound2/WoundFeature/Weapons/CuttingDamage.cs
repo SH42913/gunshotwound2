@@ -5,9 +5,9 @@
     public sealed class CuttingDamage : BaseWeaponDamage {
         public CuttingDamage(SharedData sharedData) : base(sharedData) { }
 
-        protected override WeaponConfig.Stats Stats => sharedData.mainConfig.weaponConfig.Cutting;
+        public override WeaponConfig.Stats Stats => sharedData.mainConfig.weaponConfig.Cutting;
 
-        protected override WoundData DefaultWound() {
+        public override WoundData DefaultWound() {
             return CreateWound("GrazeDefault");
         }
 

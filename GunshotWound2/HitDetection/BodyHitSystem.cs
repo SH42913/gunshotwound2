@@ -40,7 +40,8 @@
 #endif
                 } else {
                     hitData.bodyPart = GetDamagedBodyPart(convertedPed.thisPed, out Bone damagedBone);
-                    hitData.damagedBone = damagedBone;
+                    convertedPed.lastDamagedBone = damagedBone;
+
                     if (hitData.bodyPart == PedHitData.BodyParts.Nothing) {
                         sharedData.logger.WriteError($"Can't detect part by bone {damagedBone}");
                     } else {

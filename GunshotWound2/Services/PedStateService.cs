@@ -96,41 +96,17 @@
         }
 
         private void ShowArmor(ref ConvertedPed convertedPed) {
-            int armor = convertedPed.thisPed.Armor;
-            if (armor <= 0) {
+            if (!mainConfig.armorConfig.TryGetArmorLevel(convertedPed.thisPed, out ArmorConfig.Level armorLevel)) {
                 return;
             }
 
-            Notifier.Color color;
-            string message;
-            switch (armor) {
-                case > 80:
-                    color = Notifier.Color.GREEN;
-                    message = localeConfig.ArmorClassV;
-                    break;
-                case > 60:
-                    color = Notifier.Color.GREEN;
-                    message = localeConfig.ArmorClassIV;
-                    break;
-                case > 40:
-                    color = Notifier.Color.YELLOW;
-                    message = localeConfig.ArmorClassIII;
-                    break;
-                case > 20:
-                    color = Notifier.Color.ORANGE;
-                    message = localeConfig.ArmorClassII;
-                    break;
-                default:
-                    color = Notifier.Color.RED;
-                    message = localeConfig.ArmorClassI;
-                    break;
-            }
-
+            string message = localeConfig.GetTranslation(armorLevel.LocKey);
+            string color = armorLevel.ColorPrefix;
             stringBuilder.AppendEndOfLine();
             stringBuilder.Append(color);
             stringBuilder.Append(message);
 #if DEBUG
-            stringBuilder.AppendFormat(" ({0})", armor.ToString());
+            stringBuilder.AppendFormat(" ({0})", convertedPed.thisPed.Armor.ToString());
 #endif
             stringBuilder.SetDefaultColor();
         }

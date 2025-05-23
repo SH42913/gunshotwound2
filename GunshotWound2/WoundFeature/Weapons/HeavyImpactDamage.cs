@@ -3,7 +3,7 @@
     using Configs;
 
     public sealed class HeavyImpactDamage : BaseImpactDamage {
-        protected override WeaponConfig.Stats Stats => sharedData.mainConfig.weaponConfig.HeavyImpact;
+        public override WeaponConfig.Stats Stats => sharedData.mainConfig.weaponConfig.HeavyImpact;
 
         public HeavyImpactDamage(SharedData sharedData) : base(sharedData) { }
 

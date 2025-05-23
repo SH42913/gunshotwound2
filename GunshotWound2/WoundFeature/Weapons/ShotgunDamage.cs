@@ -7,7 +7,7 @@
         protected override int PenetratingWoundWeight => 5;
         protected override int PerforatingWoundWeight => 0;
         protected override int AvulsiveWoundWeight => 2;
-        protected override WeaponConfig.Stats Stats => sharedData.mainConfig.weaponConfig.Shotgun;
+        public override WeaponConfig.Stats Stats => sharedData.mainConfig.weaponConfig.Shotgun;
 
         public ShotgunDamage(SharedData sharedData) : base(sharedData) { }
     }

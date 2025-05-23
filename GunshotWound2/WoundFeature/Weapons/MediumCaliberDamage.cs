@@ -7,7 +7,7 @@
         protected override int PenetratingWoundWeight => 5;
         protected override int PerforatingWoundWeight => 6;
         protected override int AvulsiveWoundWeight => 1;
-        protected override WeaponConfig.Stats Stats => sharedData.mainConfig.weaponConfig.MediumCaliber;
+        public override WeaponConfig.Stats Stats => sharedData.mainConfig.weaponConfig.MediumCaliber;
 
         public MediumCaliberDamage(SharedData sharedData) : base(sharedData) { }
     }

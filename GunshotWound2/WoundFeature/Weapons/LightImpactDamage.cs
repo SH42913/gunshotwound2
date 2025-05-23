@@ -3,7 +3,7 @@
     using Configs;
 
     public sealed class LightImpactDamage : BaseImpactDamage {
-        protected override WeaponConfig.Stats Stats => sharedData.mainConfig.weaponConfig.LightImpact;
+        public override WeaponConfig.Stats Stats => sharedData.mainConfig.weaponConfig.LightImpact;
 
         public LightImpactDamage(SharedData sharedData) : base(sharedData) { }
 
