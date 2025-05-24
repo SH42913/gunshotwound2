@@ -71,7 +71,7 @@
 
             WoundData? wound;
             Ped ped = convertedPed.thisPed;
-            if (hitData.bodyPart == PedHitData.BodyParts.Nothing) {
+            if (!hitData.bodyPart.IsValid) {
                 sharedData.logger.WriteWarning("Hit has no bodyPart, will be used default wound");
                 wound = weaponDamage.DefaultWound();
             } else if (armorChecker.TrySave(ref convertedPed, hitData, weaponDamage.Stats, out WoundData? armorWound)) {
@@ -84,7 +84,11 @@
             ped.Health += hitData.healthDiff;
 
 #if DEBUG
-            sharedData.logger.WriteInfo(wound.HasValue ? $"New wound {wound.Value.ToString()} " : "No wound created");
+            if (wound.HasValue) {
+                sharedData.logger.WriteInfo($"New wound {wound.Value.ToString()} ");
+            } else {
+                sharedData.logger.WriteWarning("No wound created!");
+            }
 #endif
             ProcessWound(pedEntity, ref hitData, ref wound, convertedPed.isPlayer);
             SendWoundInfo(pedEntity, convertedPed, wound);
@@ -133,7 +137,7 @@
         }
 
         private bool IsDeadlyWound(in PedHitData hitData, bool isPlayer) {
-            return hitData.bodyPart == PedHitData.BodyParts.Head
+            return hitData.bodyPart.Key == "Head"
                    && (isPlayer
                            ? sharedData.mainConfig.playerConfig.InstantDeathHeadshot
                            : sharedData.mainConfig.pedsConfig.InstantDeathHeadshot);
@@ -157,7 +161,7 @@
         }
 
         private void CreateBleeding(Scellecs.Morpeh.Entity pedEntity,
-                                    PedHitData.BodyParts bodyPart,
+                                    in BodyPartConfig.BodyPart bodyPart,
                                     float severity,
                                     bool isInternal,
                                     string name) {
@@ -171,7 +175,7 @@
             pedEntity.CreateBleeding(bodyPart, severity, name, isInternal);
         }
 
-        private void CreateArteryBleeding(Scellecs.Morpeh.Entity pedEntity, PedHitData.BodyParts bodyPart) {
+        private void CreateArteryBleeding(Scellecs.Morpeh.Entity pedEntity, BodyPartConfig.BodyPart bodyPart) {
             string name = sharedData.localeConfig.SeveredArtery;
             CreateBleeding(pedEntity, bodyPart, WoundConfig.MAX_SEVERITY_FOR_BANDAGE, isInternal: true, name);
         }
@@ -184,7 +188,7 @@
             pain.diff += CalculateAmount(painAmount, deviation, mult);
         }
 
-        private static void CreateCrit(Scellecs.Morpeh.Entity pedEntity, bool hasCrits, PedHitData.BodyParts hitBodyPart) {
+        private static void CreateCrit(Scellecs.Morpeh.Entity pedEntity, bool hasCrits, BodyPartConfig.BodyPart hitBodyPart) {
             if (hasCrits) {
                 pedEntity.AddOrGetComponent<Crits>().requestBodyPart = hitBodyPart;
             }

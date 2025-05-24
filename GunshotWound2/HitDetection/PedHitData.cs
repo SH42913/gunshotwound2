@@ -1,17 +1,8 @@
 ﻿namespace GunshotWound2.HitDetection {
+    using Configs;
     using Scellecs.Morpeh;
 
     public struct PedHitData : IComponent {
-        public enum BodyParts {
-            Nothing,
-            Head,
-            Neck,
-            Chest,
-            Abdomen,
-            Arm,
-            Leg,
-        }
-
         public enum WeaponTypes {
             Nothing,
             LightImpact,
@@ -24,7 +15,7 @@
             Stun,
         }
 
-        public BodyParts bodyPart;
+        public BodyPartConfig.BodyPart bodyPart;
         public uint weaponHash;
         public WeaponTypes weaponType;
         public int healthDiff;

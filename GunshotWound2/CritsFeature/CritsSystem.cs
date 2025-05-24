@@ -1,4 +1,5 @@
 ﻿namespace GunshotWound2.CritsFeature {
+    using Configs;
     using HealthFeature;
     using HitDetection;
     using PedsFeature;
@@ -59,7 +60,7 @@
                 ref ConvertedPed convertedPed = ref pedStash.Get(entity);
                 if (totallyHealedStash.Has(entity)) {
                     CancelAllCrits(entity, ref crits, ref convertedPed);
-                } else if (crits.requestBodyPart != PedHitData.BodyParts.Nothing) {
+                } else if (crits.requestBodyPart.IsValid) {
                     Crits.Types newCrit = GetRandomCritFor(crits.requestBodyPart);
 #if DEBUG
                     sharedData.logger.WriteInfo($"Random crit {newCrit} for {crits.requestBodyPart} at {convertedPed.name}");
@@ -68,7 +69,7 @@
                     if (newCrit != Crits.Types.SpineDamaged) {
                         ApplyCrit(entity, ref crits, ref convertedPed, newCrit);
                     } else {
-                        bool isHeadshot = crits.requestBodyPart == PedHitData.BodyParts.Head;
+                        bool isHeadshot = crits.requestBodyPart.Key == "Head";
                         bool realSpineCrit = convertedPed.isPlayer
                                 ? sharedData.mainConfig.playerConfig.RealisticSpineDamage
                                 : sharedData.mainConfig.pedsConfig.RealisticSpineDamage;
@@ -96,14 +97,18 @@
             }
         }
 
-        private Crits.Types GetRandomCritFor(PedHitData.BodyParts bodyPart) {
-            switch (bodyPart) {
-                case PedHitData.BodyParts.Head:      return Crits.Types.SpineDamaged;
-                case PedHitData.BodyParts.Chest: return sharedData.random.Next(upperBodyCrits);
-                case PedHitData.BodyParts.Abdomen: return sharedData.random.Next(lowerBodyCrits);
-                case PedHitData.BodyParts.Arm:       return Crits.Types.ArmsDamaged;
-                case PedHitData.BodyParts.Leg:       return Crits.Types.LegsDamaged;
-                default:                             return default;
+        private Crits.Types GetRandomCritFor(BodyPartConfig.BodyPart bodyPart) {
+            switch (bodyPart.Key) {
+                case "Head":    return Crits.Types.SpineDamaged;
+                case "Chest":   return sharedData.random.Next(upperBodyCrits);
+                case "Abdomen": return sharedData.random.Next(lowerBodyCrits);
+                case "LeftArm":
+                case "RightArm":
+                    return Crits.Types.ArmsDamaged;
+                case "LeftLeg":
+                case "RightLeg":
+                    return Crits.Types.LegsDamaged;
+                default:        return default;
             }
         }
 

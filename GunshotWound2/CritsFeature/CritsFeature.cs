@@ -1,5 +1,7 @@
 ﻿namespace GunshotWound2.CritsFeature {
+    using Configs;
     using Scellecs.Morpeh;
+    using Utils;
 
     public static class CritsFeature {
         public static void Create(SystemsGroup systemsGroup, SharedData sharedData) {
@@ -8,10 +10,8 @@
 #if DEBUG
             sharedData.cheatListener.Register("GSW_RANDOM_CRIT", () => {
                 if (sharedData.TryGetPlayer(out Entity player)) {
-                    System.Type enumType = typeof(HitDetection.PedHitData.BodyParts);
-                    var bodyParts = (HitDetection.PedHitData.BodyParts[])System.Enum.GetValues(enumType);
-                    int randomIndex = sharedData.random.Next(0, bodyParts.Length);
-                    player.AddOrGetComponent<Crits>().requestBodyPart = bodyParts[randomIndex];
+                    BodyPartConfig.BodyPart[] bodyParts = sharedData.mainConfig.bodyPartConfig.BodyParts;
+                    player.AddOrGetComponent<Crits>().requestBodyPart = sharedData.random.Next(bodyParts);
                 }
             });
 #endif

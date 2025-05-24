@@ -1,18 +1,19 @@
 ﻿namespace GunshotWound2.HitDetection {
     using System;
+    using Configs;
     using GTA;
-    using GTA.Native;
     using PedsFeature;
     using Scellecs.Morpeh;
+    using Utils;
 
     public sealed class BodyHitSystem : ISystem {
-        private static readonly PedHitData.BodyParts[] PARTS = (PedHitData.BodyParts[])Enum.GetValues(typeof(PedHitData.BodyParts));
-
         private readonly SharedData sharedData;
 
         private Filter damagedPeds;
 
         public Scellecs.Morpeh.World World { get; set; }
+
+        private BodyPartConfig BodyPartConfig => sharedData.mainConfig.bodyPartConfig;
 
         public BodyHitSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -33,21 +34,22 @@
 
                 ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
                 if (hitData.useRandomBodyPart) {
-                    int index = sharedData.random.Next(1, PARTS.Length);
-                    hitData.bodyPart = PARTS[index];
+                    hitData.bodyPart = sharedData.random.Next(BodyPartConfig.BodyParts);
 #if DEBUG
                     sharedData.logger.WriteInfo($"Damaged random part is {hitData.bodyPart} of {convertedPed.name}");
 #endif
                 } else {
-                    hitData.bodyPart = GetDamagedBodyPart(convertedPed.thisPed, out Bone damagedBone);
+                    Bone damagedBone = convertedPed.thisPed.Bones.LastDamaged.Tag;
                     convertedPed.lastDamagedBone = damagedBone;
 
-                    if (hitData.bodyPart == PedHitData.BodyParts.Nothing) {
-                        sharedData.logger.WriteError($"Can't detect part by bone {damagedBone}");
-                    } else {
+                    if (BodyPartConfig.TryGetBodyPartByBone(damagedBone, out BodyPartConfig.BodyPart bodyPart)) {
+                        hitData.bodyPart = bodyPart;
 #if DEBUG
-                        sharedData.logger.WriteInfo($"Damaged part is {hitData.bodyPart}, bone {damagedBone} at {convertedPed.name}");
+                        sharedData.logger.WriteInfo($"Damaged part is {bodyPart.Key}, bone {damagedBone} at {convertedPed.name}");
 #endif
+                    } else {
+                        hitData.bodyPart = default;
+                        sharedData.logger.WriteError($"Can't detect part by bone {damagedBone}");
                     }
                 }
             }
@@ -68,7 +70,7 @@
                 return true;
             }
 
-            if (hitData.bodyPart != PedHitData.BodyParts.Nothing) {
+            if (hitData.bodyPart.IsValid) {
 #if DEBUG
                 sharedData.logger.WriteInfo("Skip body part detection, 'cause it's already detected");
 #endif
@@ -76,63 +78,6 @@
             }
 
             return false;
-        }
-
-        // ReSharper disable once CyclomaticComplexity
-        private unsafe PedHitData.BodyParts GetDamagedBodyPart(Ped ped, out Bone damagedBone) {
-            var damagedBoneNum = 0;
-            int* x = &damagedBoneNum;
-            Function.Call(Hash.GET_PED_LAST_DAMAGE_BONE, ped, x);
-            if (!Enum.TryParse(damagedBoneNum.ToString(), out damagedBone)) {
-                sharedData.logger.WriteError($"Can't parse bone {damagedBone}");
-                return PedHitData.BodyParts.Nothing;
-            }
-
-            PedHitData.BodyParts damagePart = default;
-            switch (damagedBone) {
-                case Bone.SkelHead: damagePart = PedHitData.BodyParts.Head; break;
-                case Bone.SkelNeck1:
-                case Bone.SkelNeck2:
-                    damagePart = PedHitData.BodyParts.Neck;
-                    break;
-                case Bone.SkelSpine2:
-                case Bone.SkelSpine3:
-                    damagePart = PedHitData.BodyParts.Chest;
-                    break;
-                case Bone.SkelRoot:
-                case Bone.SkelSpineRoot:
-                case Bone.SkelSpine0:
-                case Bone.SkelSpine1:
-                case Bone.SkelPelvis:
-                case Bone.SkelPelvis1:
-                case Bone.SkelPelvisRoot:
-                    damagePart = PedHitData.BodyParts.Abdomen;
-                    break;
-                case Bone.SkelLeftThigh:
-                case Bone.SkelRightThigh:
-                case Bone.SkelLeftToe0:
-                case Bone.SkelLeftToe1:
-                case Bone.SkelRightToe0:
-                case Bone.SkelRightToe1:
-                case Bone.SkelLeftFoot:
-                case Bone.SkelRightFoot:
-                case Bone.SkelLeftCalf:
-                case Bone.SkelRightCalf:
-                    damagePart = PedHitData.BodyParts.Leg;
-                    break;
-                case Bone.SkelLeftUpperArm:
-                case Bone.SkelRightUpperArm:
-                case Bone.SkelLeftClavicle:
-                case Bone.SkelRightClavicle:
-                case Bone.SkelLeftForearm:
-                case Bone.SkelRightForearm:
-                case Bone.SkelLeftHand:
-                case Bone.SkelRightHand:
-                    damagePart = PedHitData.BodyParts.Arm;
-                    break;
-            }
-
-            return damagePart;
         }
     }
 }

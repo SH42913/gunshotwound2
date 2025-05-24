@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Configs\ArmorConfig.cs" />
+    <Compile Include="Configs\BodyPartConfig.cs" />
     <Compile Include="Configs\InventoryConfig.cs" />
     <Compile Include="Configs\LocaleConfig.cs"/>
     <Compile Include="Configs\MainConfig.cs"/>
@@ -171,6 +172,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="GunshotWound2.Armor.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GunshotWound2.BodyParts.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="GunshotWound2.Inventory.xml">

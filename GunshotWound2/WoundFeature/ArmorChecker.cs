@@ -15,8 +15,8 @@ namespace GunshotWound2.WoundFeature {
 
         public bool TrySave(ref ConvertedPed convertedPed, in PedHitData hit, in WeaponConfig.Stats stats, out WoundData? armorWound) {
             Ped ped = convertedPed.thisPed;
-            switch (hit.bodyPart) {
-                case PedHitData.BodyParts.Head:
+            switch (hit.bodyPart.Key) {
+                case "Head":
                     bool hasHelmet = ped.IsWearingHelmet || sharedData.mainConfig.armorConfig.PedHasHelmet(ped);
                     if (hasHelmet && sharedData.random.IsTrueWithProbability(stats.HelmetSafeChance)) {
                         ShowArmorMessage(convertedPed, sharedData.localeConfig.HelmetSavedYourHead);
@@ -27,8 +27,8 @@ namespace GunshotWound2.WoundFeature {
                         return false;
                     }
 
-                case PedHitData.BodyParts.Chest:
-                case PedHitData.BodyParts.Abdomen:
+                case "Chest":
+                case "Abdomen":
                     break;
                 default:
                     armorWound = null;
@@ -41,12 +41,12 @@ namespace GunshotWound2.WoundFeature {
                 return false;
             }
 
-            switch (hit.bodyPart) {
-                case PedHitData.BodyParts.Chest:
+            switch (hit.bodyPart.Key) {
+                case "Chest":
                     ShowArmorMessage(convertedPed, sharedData.localeConfig.ArmorSavedYourChest);
                     armorWound = GetUnderArmorWound(stats.ArmorDamage, damageMult: 1f, painMult: 2f);
                     return true;
-                case PedHitData.BodyParts.Abdomen:
+                case "Abdomen":
                     ShowArmorMessage(convertedPed, sharedData.localeConfig.ArmorSavedYourLowerBody);
                     armorWound = GetUnderArmorWound(stats.ArmorDamage, damageMult: 1f, painMult: 3f);
                     break;
@@ -83,7 +83,7 @@ namespace GunshotWound2.WoundFeature {
                 reason = null;
                 return false;
             }
-            
+
             float chanceToSave = armorConfig.MinimalChanceForArmorSave;
             if (chanceToSave >= 1f) {
                 sharedData.logger.WriteWarning("Minimal chance for armor save is >1");

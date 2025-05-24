@@ -16,6 +16,7 @@ namespace GunshotWound2.Configs {
         public readonly WeaponConfig weaponConfig;
         public readonly ArmorConfig armorConfig;
         public readonly InventoryConfig inventoryConfig;
+        public readonly BodyPartConfig bodyPartConfig;
 
         public InputListener.Scheme CheckSelfKey;
         public InputListener.Scheme CheckClosestKey;
@@ -41,6 +42,7 @@ namespace GunshotWound2.Configs {
             weaponConfig = new WeaponConfig();
             armorConfig = new ArmorConfig();
             inventoryConfig = new InventoryConfig();
+            bodyPartConfig = new BodyPartConfig();
         }
 
         public void ApplyTo(Notifier notifier) {
@@ -90,6 +92,10 @@ namespace GunshotWound2.Configs {
                 section = nameof(InventoryConfig);
                 doc = LoadDocument(scriptPath, "Inventory.xml");
                 inventoryConfig.FillFrom(doc);
+
+                section = nameof(BodyPartConfig);
+                doc = LoadDocument(scriptPath, "BodyParts.xml");
+                bodyPartConfig.FillFrom(doc);
 
                 section = nameof(FillHotkeysFrom);
                 doc = LoadDocument(scriptPath, "KeyBinds.xml");

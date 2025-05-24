@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BodyParts>
+    <BodyPart Key="Head" LocKey="BodyPartHead" Bones="SkelHead;"/>
+    <BodyPart Key="Neck" LocKey="BodyPartNeck" Bones="SkelNeck1;SkelNeck2;"/>
+    <BodyPart Key="Chest" LocKey="BodyPartChest" Bones="SkelSpine2;SkelSpine3;"/>
+    <BodyPart Key="Abdomen" LocKey="BodyPartLowerBody" Bones="SkelSpineRoot;SkelSpine0;SkelSpine1;"/>
+    <BodyPart Key="Pelvis" LocKey="BodyPartLowerBody" Bones="SkelRoot;SkelPelvisRoot;SkelPelvis;SkelPelvis1;"/>
+    <BodyPart Key="LeftLeg" LocKey="BodyPartLeg"
+              Bones="SkelLeftThigh;SkelLeftToe0;SkelLeftToe1;SkelLeftFoot;SkelLeftCalf;"/>
+    <BodyPart Key="RightLeg" LocKey="BodyPartLeg"
+              Bones="SkelRightThigh;SkelRightToe0;SkelRightToe1;SkelRightFoot;SkelRightCalf;"/>
+    <BodyPart Key="LeftArm" LocKey="BodyPartArm"
+              Bones="SkelLeftUpperArm;SkelLeftClavicle;SkelLeftForearm;SkelLeftHand;"/>
+    <BodyPart Key="RightArm" LocKey="BodyPartArm"
+              Bones="SkelRightUpperArm;SkelRightClavicle;SkelRightForearm;SkelRightHand;"/>
+</BodyParts>

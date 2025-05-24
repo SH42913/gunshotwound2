@@ -1,5 +1,6 @@
 ﻿namespace GunshotWound2.CritsFeature {
     using System;
+    using Configs;
     using HitDetection;
     using Scellecs.Morpeh;
 
@@ -17,7 +18,7 @@
             HeartDamaged = 1 << 6,
         }
 
-        public PedHitData.BodyParts requestBodyPart;
+        public BodyPartConfig.BodyPart requestBodyPart;
         public Types active;
     }
 

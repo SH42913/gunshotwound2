@@ -14,14 +14,21 @@
         }
 
         public WoundData? ProcessHit(ref PedHitData hit) {
-            switch (hit.bodyPart) {
-                case PedHitData.BodyParts.Head:    return GetHeadWound();
-                case PedHitData.BodyParts.Neck:    return GetNeckWound();
-                case PedHitData.BodyParts.Chest:   return GetUpperWound();
-                case PedHitData.BodyParts.Abdomen: return GetLowerWound();
-                case PedHitData.BodyParts.Arm:     return GetArmWound();
-                case PedHitData.BodyParts.Leg:     return GetLegWound();
-                default:                           return null;
+            switch (hit.bodyPart.Key) {
+                case "Head":  return GetHeadWound();
+                case "Neck":  return GetNeckWound();
+                case "Chest": return GetUpperWound();
+                case "Abdomen":
+                case "Pelvis":
+                    return GetLowerWound();
+                case "LeftArm":
+                case "RightArm":
+                    return GetArmWound();
+                case "LeftLeg":
+                case "RightLeg":
+                    return GetLegWound();
+
+                default: return null;
             }
         }
 
