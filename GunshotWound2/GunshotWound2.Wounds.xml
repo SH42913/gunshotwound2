@@ -21,7 +21,7 @@
     <MoveRateOnLegsCrit Value="0.7"/>
     <!-- Move rate when Legs are critically damaged -->
 
-    <OverallDamageMult Value="0.5"/>
+    <OverallDamageMult Value="1"/>
     <!-- Overall damage multiplier, 0.5 means every wound will deal 50% of damage to ped -->
 
     <DamageDeviation Value="0.2"/>
@@ -39,44 +39,44 @@
         <Wound Key="" LocKey="" Damage="" Bleed="" Pain="" ArteryChance="" IsInternal="" WithCrit="" ForceCrit=""/>
         -->
         <Wound Key="GrazeDefault" LocKey="GrazeWound"
-               Damage="10" Bleed="0.05" Pain="10"
+               Damage="5" Bleed="0.05" Pain="10"
                ArteryChance="0" IsInternal="FALSE"
                WithCrit="FALSE" ForceCrit="FALSE"/>
 
         <!-- Impact wounds -->
         <Wound Key="LightBruiseDefault" LocKey="LightBruise"
-               Damage="3" Pain="15"/>
+               Damage="2" Pain="15"/>
         <Wound Key="LightBruise" LocKey="LightBruiseOn"
-               Damage="3" Pain="15"/>
+               Damage="2" Pain="15"/>
         <Wound Key="MediumBruise" LocKey="MediumBruiseOn"
-               Damage="8" Pain="25"/>
+               Damage="4" Pain="25"/>
         <Wound Key="HeavyBruise" LocKey="HeavyBruiseOn"
-               Damage="10" Pain="39" WithCrit="TRUE"/>
+               Damage="5" Pain="39" WithCrit="TRUE"/>
         <Wound Key="WindedFromImpact" LocKey="WindedFromImpact"
-               Damage="10" Pain="40"/>
+               Damage="5" Pain="40"/>
         <Wound Key="AbrasionWound" LocKey="AbrasionWoundOn"
-               Damage="3" Bleed="0.15" Pain="15"/>
+               Damage="2" Bleed="0.15" Pain="15"/>
         <Wound Key="Blackout" LocKey="Blackout"
-               Damage="30" Pain="70"/>
+               Damage="15" Pain="70"/>
 
         <!-- Cutting wounds -->
         <Wound Key="IncisionWound" LocKey="IncisionWoundOn"
-               Damage="10" Bleed="0.3" Pain="20"/>
+               Damage="5" Bleed="0.3" Pain="20"/>
         <Wound Key="LacerationWound" LocKey="LacerationWoundOn"
-               Damage="20" Bleed="0.8" Pain="30" ArteryChance="0.3" WithCrit="TRUE"/>
+               Damage="10" Bleed="0.8" Pain="30" ArteryChance="0.3" WithCrit="TRUE"/>
         <Wound Key="StabWound" LocKey="StabWoundOn"
-               Damage="30" Bleed="0.6" Pain="40" ArteryChance="0.5" WithCrit="TRUE"/>
+               Damage="15" Bleed="0.6" Pain="40" ArteryChance="0.5" WithCrit="TRUE"/>
 
         <!-- Gunshot wounds -->
         <Wound Key="GrazeGsw" LocKey="GrazeGswOn"
-               Damage="15" Bleed="0.05" Pain="15"/>
+               Damage="7" Bleed="0.05" Pain="15"/>
         <Wound Key="FleshGsw" LocKey="FleshGswOn"
-               Damage="20" Bleed="0.1" Pain="30" ArteryChance="0.1"/>
+               Damage="10" Bleed="0.1" Pain="30" ArteryChance="0.1"/>
         <Wound Key="PenetratingGsw" LocKey="PenetratingGswOn"
-               Damage="25" Bleed="0.2" Pain="40" ArteryChance="0.2" WithCrit="TRUE"/>
+               Damage="15" Bleed="0.2" Pain="40" ArteryChance="0.2" WithCrit="TRUE"/>
         <Wound Key="PerforatingGsw" LocKey="PerforatingGswOn"
-               Damage="20" Bleed="0.25" Pain="40" ArteryChance="0.25" WithCrit="TRUE"/>
+               Damage="15" Bleed="0.25" Pain="40" ArteryChance="0.25" WithCrit="TRUE"/>
         <Wound Key="AvulsiveGsw" LocKey="AvulsiveGswOn"
-               Damage="30" Bleed="0.30" Pain="50" ArteryChance="0.3" WithCrit="TRUE"/>
+               Damage="15" Bleed="0.30" Pain="50" ArteryChance="0.3" WithCrit="TRUE"/>
     </Wounds>
 </WoundConfig>
