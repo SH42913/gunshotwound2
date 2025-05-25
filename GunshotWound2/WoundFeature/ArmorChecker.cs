@@ -48,7 +48,7 @@ namespace GunshotWound2.WoundFeature {
 
             ped.Armor -= weapon.ArmorDamage;
             LocaleConfig localeConfig = sharedData.localeConfig;
-            if (!armorConfig.TryGetArmorLevel(ped.Armor, out armorLevel)) {
+            if (!armorConfig.TryGetArmorLevel(ped.Armor, out _)) {
 #if DEBUG
                 sharedData.logger.WriteInfo("Armor is dead");
 #endif
@@ -89,7 +89,7 @@ namespace GunshotWound2.WoundFeature {
 
         private bool CheckArmorPenetration(Ped ped, in WeaponConfig.Weapon weapon) {
             ArmorConfig armorConfig = sharedData.mainConfig.armorConfig;
-            if (!weapon.CanPenetrateArmor) {
+            if (string.IsNullOrEmpty(weapon.SafeArmorLevel)) {
 #if DEBUG
                 sharedData.logger.WriteInfo("Can't penetrate armor");
 #endif
@@ -102,7 +102,15 @@ namespace GunshotWound2.WoundFeature {
                 return false;
             }
 
-            float armorPercent = ped.Armor / 100f;
+            ArmorConfig.Level weaponSafeLevel = sharedData.mainConfig.armorConfig.GetArmorLevelByKey(weapon.SafeArmorLevel);
+            float armorPercent = (float)ped.Armor / weaponSafeLevel.MaxValue;
+            if (armorPercent >= 1f) {
+#if DEBUG
+                sharedData.logger.WriteInfo($"{weapon.Key} can't penetrate safe armor level {weapon.SafeArmorLevel}({ped.Armor})");
+#endif
+                return false;
+            }
+
             float chanceForArmorPercent = 1f - armorConfig.MinimalChanceForArmorSave;
             float saveProbability = armorConfig.MinimalChanceForArmorSave + chanceForArmorPercent * armorPercent;
             if (sharedData.random.IsTrueWithProbability(saveProbability)) {

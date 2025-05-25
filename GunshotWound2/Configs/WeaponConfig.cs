@@ -20,7 +20,7 @@ namespace GunshotWound2.Configs {
             public readonly float PainMult;
             public readonly float CritChance;
             public readonly int ArmorDamage;
-            public readonly bool CanPenetrateArmor;
+            public readonly string SafeArmorLevel;
             public readonly float HelmetSafeChance;
 
             public bool IsValid => !string.IsNullOrEmpty(Key);
@@ -33,7 +33,7 @@ namespace GunshotWound2.Configs {
                           float painMult,
                           float critChance,
                           int armorDamage,
-                          bool canPenetrateArmor,
+                          string safeArmorLevel,
                           float helmetSafeChance) {
                 Key = key;
                 Hashes = hashes;
@@ -43,7 +43,7 @@ namespace GunshotWound2.Configs {
                 PainMult = painMult;
                 CritChance = critChance;
                 ArmorDamage = armorDamage;
-                CanPenetrateArmor = canPenetrateArmor;
+                SafeArmorLevel = safeArmorLevel;
                 HelmetSafeChance = helmetSafeChance;
             }
         }
@@ -123,7 +123,7 @@ namespace GunshotWound2.Configs {
                               weaponNode.GetFloat(nameof(Weapon.PainMult), defaultValue: 1f),
                               weaponNode.GetFloat(nameof(Weapon.CritChance), defaultValue: 0f),
                               weaponNode.GetInt(nameof(Weapon.ArmorDamage), defaultValue: 0),
-                              weaponNode.GetBool(nameof(Weapon.CanPenetrateArmor), defaultValue: false),
+                              weaponNode.GetString(nameof(Weapon.SafeArmorLevel)),
                               weaponNode.GetFloat(nameof(Weapon.HelmetSafeChance), defaultValue: 0f));
         }
 

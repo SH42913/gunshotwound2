@@ -45,6 +45,16 @@ namespace GunshotWound2.Configs {
             return HelmetPropIndexes.Contains(currentIndex);
         }
 
+        public Level GetArmorLevelByKey(string key) {
+            foreach (Level level in Levels) {
+                if (level.Key == key) {
+                    return level;
+                }
+            }
+
+            throw new Exception($"There's no level with key {key}");
+        }
+
         public bool TryGetArmorLevel(int armor, out Level level) {
             if (armor < 1) {
                 level = default;

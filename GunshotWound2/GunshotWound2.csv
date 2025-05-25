@@ -49,11 +49,11 @@ PainIncreasedMessage,You feel terrible...,Вы чувствуете себя х�
 PainDecreasedMessage,You feel better,Вы чувствуете себя лучше,,,,,,,,痛みが軽減（通知）,疼痛減輕（提示）,疼痛减轻（提示）,,Sinusta tuntuu paremmalta
 TotallyHealedMessage,You are totally healed!,Вы абсолютно здоровы,,,,,,,,完全に回復（通知）,完全康復（提示）,完全康复（提示）,,Olet täysin parantunut!
 ,,,,,,,,,,,,,,
-ArmorClassI,Armor would protect against knives,Бронежилет защищает от ножа,,,,,,,,アーマークラス I,護甲等級 I,护甲等级 I,,Panssari suojaa veitsiltä
-ArmorClassII,Armor would protect against pistols,Бронежилет защищает от пистолета,,,,,,,,アーマークラス II,護甲等級 II,护甲等级 II,,Panssari suojaa pistooleilta
-ArmorClassIII,Armor would protect against shotguns,Бронежилет защищает от дробовика,,,,,,,,アーマークラス III,護甲等級 III,护甲等级 III,,Panssari suojaa haulikoilta
-ArmorClassIV,Armor would protect against light rifles,Бронежилет защищает от лёгких винтовок,,,,,,,,アーマークラス IV,護甲等級 IV,护甲等级 IV,,Panssari suojaa pienikaliiperisilta kivääreiltä
-ArmorClassV,Armor would protect against heavy rifles,Бронежилет защищает от тяжёлых винтовок,,,,,,,,アーマークラス V,護甲等級 V,护甲等级 V,,Panssari suojaa isokaliiperisilta kivääreiltä
+ArmorClassI,Armor Level I (melee),Броня I класса защиты (ближний бой),,,,,,,,アーマークラス I,護甲等級 I,护甲等级 I,,Panssari suojaa veitsiltä
+ArmorClassII,Armor Level II (pistols),Броня II класса защиты (пистолеты),,,,,,,,アーマークラス II,護甲等級 II,护甲等级 II,,Panssari suojaa pistooleilta
+ArmorClassIII,Armor Level III (shotguns),Броня III класса защиты (дробовики),,,,,,,,アーマークラス III,護甲等級 III,护甲等级 III,,Panssari suojaa haulikoilta
+ArmorClassIV,Armor Level IV (carbines),Броня IV класса защиты (карабины),,,,,,,,アーマークラス IV,護甲等級 IV,护甲等级 IV,,Panssari suojaa pienikaliiperisilta kivääreiltä
+ArmorClassV,Armor Level V (rifles),Броня V класса защиты (винтовки),,,,,,,,アーマークラス V,護甲等級 V,护甲等级 V,,Panssari suojaa isokaliiperisilta kivääreiltä
 ,,,,,,,,,,,,,,
 ,"Write correctly! Eg, ""Critical damaged nerves heart legs""",,,,,,,,,,,,,
 Crits,Critical damaged,Критически повреждены,Kritischer Schaden an,Dégât critique,Krytyczne obrażenia,치명적인 손상,Dano critico,Daño critico a ,Critical damage to,重傷,重創,重创,Critical damaged,Kriittisesti vahingoittunut
