@@ -10,7 +10,7 @@
             sharedData.cheatListener.Register("GSW_RANDOM_HIT", () => {
                 if (sharedData.TryGetPlayer(out Entity entity)) {
                     entity.SetComponent(new PedHitData {
-                        weaponType = PedHitData.WeaponTypes.SmallCaliber,
+                        weaponType = sharedData.mainConfig.weaponConfig.AllWeapons[0],
                         bodyPart = sharedData.mainConfig.bodyPartConfig.GetBodyPartByKey("Chest"),
                     });
                 }

@@ -12,8 +12,9 @@ namespace GunshotWound2.Configs {
 
     public sealed class WeaponConfig {
         public readonly struct Stats {
-            public readonly PedHitData.WeaponTypes Type;
+            public readonly string Key;
             public readonly HashSet<uint> Hashes;
+            public readonly (string key, int weight)[] Wounds;
             public readonly float DamageMult;
             public readonly float BleedMult;
             public readonly float PainMult;
@@ -22,8 +23,11 @@ namespace GunshotWound2.Configs {
             public readonly bool CanPenetrateArmor;
             public readonly float HelmetSafeChance;
 
-            public Stats(PedHitData.WeaponTypes type,
+            public bool IsValid => !string.IsNullOrEmpty(Key);
+
+            public Stats(string key,
                          HashSet<uint> hashes,
+                         (string key, int weight)[] wounds,
                          float damageMult,
                          float bleedMult,
                          float painMult,
@@ -31,8 +35,9 @@ namespace GunshotWound2.Configs {
                          int armorDamage,
                          bool canPenetrateArmor,
                          float helmetSafeChance) {
-                Type = type;
+                Key = key;
                 Hashes = hashes;
+                Wounds = wounds;
                 DamageMult = damageMult;
                 BleedMult = bleedMult;
                 PainMult = painMult;
@@ -43,18 +48,16 @@ namespace GunshotWound2.Configs {
             }
         }
 
+        private const string STUN_KEY = "Stun";
+
         public bool UseSpecialStunDamage;
         public HashSet<uint> IgnoreSet;
+        public Stats[] AllWeapons;
 
-        public Stats SmallCaliber;
-        public Stats MediumCaliber;
-        public Stats HeavyCaliber;
-        public Stats LightImpact;
-        public Stats HeavyImpact;
-        public Stats Shotgun;
-        public Stats Cutting;
-
-        public Stats[] AllStats;
+        public Stats StunStats => AllWeapons.First(x => x.Key == STUN_KEY);
+        public Stats LightImpactStats => AllWeapons.First(x => x.Key == "LightImpact");
+        public Stats HeavyImpactStats => AllWeapons.First(x => x.Key == "HeavyImpact");
+        public Stats CuttingStats => AllWeapons.First(x => x.Key == "Cutting");
 
         public void FillFrom(XDocument doc, ILogger logger) {
             XElement node = doc.Element(nameof(WeaponConfig))!;
@@ -62,29 +65,13 @@ namespace GunshotWound2.Configs {
             IgnoreSet = ExtractWeaponHashes(node.Element(nameof(IgnoreSet)), logger);
 
             XElement statsNode = node.Element(nameof(Stats))!;
-            SmallCaliber = GetStatsForWeapon(statsNode.Element(nameof(SmallCaliber)), logger);
-            MediumCaliber = GetStatsForWeapon(statsNode.Element(nameof(MediumCaliber)), logger);
-            HeavyCaliber = GetStatsForWeapon(statsNode.Element(nameof(HeavyCaliber)), logger);
-            LightImpact = GetStatsForWeapon(statsNode.Element(nameof(LightImpact)), logger);
-            HeavyImpact = GetStatsForWeapon(statsNode.Element(nameof(HeavyImpact)), logger);
-            Shotgun = GetStatsForWeapon(statsNode.Element(nameof(Shotgun)), logger);
-            Cutting = GetStatsForWeapon(statsNode.Element(nameof(Cutting)), logger);
-
-            AllStats = new[] {
-                SmallCaliber,
-                MediumCaliber,
-                HeavyCaliber,
-                LightImpact,
-                HeavyImpact,
-                Shotgun,
-                Cutting,
-            };
+            AllWeapons = statsNode.Elements().Select(x => GetStatsForWeapon(x, logger)).ToArray();
 
             SuggestWeapons(logger);
         }
 
         private void SuggestWeapons(ILogger logger) {
-            HashSet<uint>[] allHashSets = AllStats
+            HashSet<uint>[] allHashSets = AllWeapons
                                           .Select(x => x.Hashes)
                                           .Append(IgnoreSet)
                                           .ToArray();
@@ -106,18 +93,26 @@ namespace GunshotWound2.Configs {
 
         private static Stats GetStatsForWeapon(XElement weaponNode, ILogger logger) {
             string name = weaponNode.Name.LocalName;
-            var type = (PedHitData.WeaponTypes)Enum.Parse(typeof(PedHitData.WeaponTypes), name);
             HashSet<uint> hashes = ExtractWeaponHashes(weaponNode, logger);
+            (string, int)[] wounds = ExtractWounds(weaponNode);
 
-            return new Stats(type,
+            return new Stats(name,
                              hashes,
-                             weaponNode.GetFloat(nameof(Stats.DamageMult)),
-                             weaponNode.GetFloat(nameof(Stats.BleedMult)),
-                             weaponNode.GetFloat(nameof(Stats.PainMult)),
-                             weaponNode.GetFloat(nameof(Stats.CritChance)),
-                             weaponNode.GetInt(nameof(Stats.ArmorDamage)),
-                             weaponNode.GetBool(nameof(Stats.CanPenetrateArmor)),
-                             weaponNode.GetFloat(nameof(Stats.HelmetSafeChance)));
+                             wounds,
+                             weaponNode.GetFloat(nameof(Stats.DamageMult), defaultValue: 1f),
+                             weaponNode.GetFloat(nameof(Stats.BleedMult), defaultValue: 1f),
+                             weaponNode.GetFloat(nameof(Stats.PainMult), defaultValue: 1f),
+                             weaponNode.GetFloat(nameof(Stats.CritChance), defaultValue: 0f),
+                             weaponNode.GetInt(nameof(Stats.ArmorDamage), defaultValue: 0),
+                             weaponNode.GetBool(nameof(Stats.CanPenetrateArmor), defaultValue: false),
+                             weaponNode.GetFloat(nameof(Stats.HelmetSafeChance), defaultValue: 1f));
+        }
+
+        private static (string, int)[] ExtractWounds(XElement weaponNode) {
+            XElement woundsNode = weaponNode.Element(nameof(Stats.Wounds))!;
+            return woundsNode.Elements("Item")
+                             .Select(x => (x.GetString("Key"), x.GetInt("Weight")))
+                             .ToArray();
         }
 
         private static HashSet<uint> ExtractWeaponHashes(XElement node, ILogger logger) {

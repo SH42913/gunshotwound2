@@ -105,16 +105,6 @@
     <Compile Include="WoundFeature\ArmorChecker.cs" />
     <Compile Include="WoundFeature\WoundFeature.cs" />
     <Compile Include="WoundFeature\WoundData.cs" />
-    <Compile Include="WoundFeature\Weapons\BaseWeaponDamage.cs" />
-    <Compile Include="WoundFeature\Weapons\BaseGunDamage.cs" />
-    <Compile Include="WoundFeature\Weapons\BaseImpactDamage.cs" />
-    <Compile Include="WoundFeature\Weapons\CuttingDamage.cs" />
-    <Compile Include="WoundFeature\Weapons\HeavyImpactDamage.cs" />
-    <Compile Include="WoundFeature\Weapons\HeavyCaliberDamage.cs" />
-    <Compile Include="WoundFeature\Weapons\LightImpactDamage.cs" />
-    <Compile Include="WoundFeature\Weapons\MediumCaliberDamage.cs" />
-    <Compile Include="WoundFeature\Weapons\ShotgunDamage.cs" />
-    <Compile Include="WoundFeature\Weapons\SmallCaliberDamage.cs" />
     <Compile Include="WoundFeature\WoundSystem.cs" />
     <Compile Include="HealthFeature\Bleeding.cs" />
     <Compile Include="HealthFeature\BleedingSystem.cs" />

@@ -14,7 +14,6 @@
     public sealed class WoundSystem : ILateSystem {
         private readonly SharedData sharedData;
         private readonly ArmorChecker armorChecker;
-        private readonly Dictionary<PedHitData.WeaponTypes, BaseWeaponDamage> weaponDamages;
 
         private Filter damagedPeds;
 
@@ -25,16 +24,6 @@
         public WoundSystem(SharedData sharedData) {
             this.sharedData = sharedData;
             armorChecker = new ArmorChecker(sharedData);
-
-            weaponDamages = new Dictionary<PedHitData.WeaponTypes, BaseWeaponDamage>(7) {
-                { PedHitData.WeaponTypes.LightImpact, new LightImpactDamage(sharedData) },
-                { PedHitData.WeaponTypes.HeavyImpact, new HeavyImpactDamage(sharedData) },
-                { PedHitData.WeaponTypes.Cutting, new CuttingDamage(sharedData) },
-                { PedHitData.WeaponTypes.SmallCaliber, new SmallCaliberDamage(sharedData) },
-                { PedHitData.WeaponTypes.MediumCaliber, new MediumCaliberDamage(sharedData) },
-                { PedHitData.WeaponTypes.HeavyCaliber, new HeavyCaliberDamage(sharedData) },
-                { PedHitData.WeaponTypes.Shotgun, new ShotgunDamage(sharedData) },
-            };
         }
 
         public void OnAwake() {
@@ -52,20 +41,15 @@
         void IDisposable.Dispose() { }
 
         private void ProcessHit(Scellecs.Morpeh.Entity pedEntity, ref PedHitData hitData, ref ConvertedPed convertedPed) {
-            if (hitData.weaponType == PedHitData.WeaponTypes.Nothing) {
+            if (!hitData.weaponType.IsValid) {
 #if DEBUG
-                sharedData.logger.WriteWarning("Wound with no weapon");
+                sharedData.logger.WriteInfo("Hit with no weapon");
 #endif
                 return;
             }
 
-            if (hitData.weaponType == PedHitData.WeaponTypes.Stun) {
+            if (hitData.weaponType.Key == "Stun") {
                 CreateStunPain(pedEntity, ref convertedPed);
-                return;
-            }
-
-            if (!weaponDamages.TryGetValue(hitData.weaponType, out BaseWeaponDamage weaponDamage)) {
-                sharedData.logger.WriteWarning($"Doesn't support {hitData.weaponType}");
                 return;
             }
 
@@ -73,11 +57,21 @@
             Ped ped = convertedPed.thisPed;
             if (!hitData.bodyPart.IsValid) {
                 sharedData.logger.WriteWarning("Hit has no bodyPart, will be used default wound");
-                wound = weaponDamage.DefaultWound();
-            } else if (armorChecker.TrySave(ref convertedPed, hitData, weaponDamage.Stats, out WoundData? armorWound)) {
+                WoundConfig.Wound woundTemplate = sharedData.mainConfig.woundConfig.Wounds["GrazeDefault"];
+                wound = new WoundData(sharedData.localeConfig, sharedData.random, woundTemplate, hitData);
+            } else if (armorChecker.TrySave(ref convertedPed, hitData, hitData.weaponType, out WoundData? armorWound)) {
                 wound = armorWound;
             } else {
-                wound = weaponDamage.ProcessHit(ref hitData);
+                var weightRandom = sharedData.weightRandom;
+                weightRandom.Clear();
+                for (var i = 0; i < hitData.weaponType.Wounds.Length; i++) {
+                    weightRandom.Add(i, hitData.weaponType.Wounds[i].weight);
+                }
+
+                int woundIndex = weightRandom.NextWithRemoval();
+                string woundKey = hitData.weaponType.Wounds[woundIndex].key;
+                WoundConfig.Wound woundTemplate = sharedData.mainConfig.woundConfig.Wounds[woundKey];
+                wound = new WoundData(sharedData.localeConfig, sharedData.random, woundTemplate, hitData);
             }
 
             ped.Armor += hitData.armorDiff;

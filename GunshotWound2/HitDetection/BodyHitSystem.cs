@@ -56,16 +56,9 @@
         }
 
         private bool ShouldSkipDetection(ref PedHitData hitData) {
-            if (hitData.weaponType == PedHitData.WeaponTypes.Nothing) {
+            if (!hitData.weaponType.IsValid) {
 #if DEBUG
-                sharedData.logger.WriteWarning("Skip body part detection, 'cause there's no weapon");
-#endif
-                return true;
-            }
-
-            if (hitData.weaponType == PedHitData.WeaponTypes.Stun) {
-#if DEBUG
-                sharedData.logger.WriteInfo("Skip body part detection, 'cause stun weapon don't need that");
+                sharedData.logger.WriteInfo("Skip body part detection, 'cause there's no weapon");
 #endif
                 return true;
             }

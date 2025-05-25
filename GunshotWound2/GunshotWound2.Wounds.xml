@@ -44,8 +44,6 @@
                WithCrit="FALSE" ForceCrit="FALSE"/>
 
         <!-- Impact wounds -->
-        <Wound Key="LightBruiseDefault" LocKey="LightBruise"
-               Damage="2" Pain="15"/>
         <Wound Key="LightBruise" LocKey="LightBruiseOn"
                Damage="2" Pain="15"/>
         <Wound Key="MediumBruise" LocKey="MediumBruiseOn"
@@ -53,11 +51,11 @@
         <Wound Key="HeavyBruise" LocKey="HeavyBruiseOn"
                Damage="5" Pain="39" WithCrit="TRUE"/>
         <Wound Key="WindedFromImpact" LocKey="WindedFromImpact"
-               Damage="5" Pain="40"/>
+               Damage="5" Pain="40"/> <!-- CRIT -->
         <Wound Key="AbrasionWound" LocKey="AbrasionWoundOn"
                Damage="2" Bleed="0.15" Pain="15"/>
         <Wound Key="Blackout" LocKey="Blackout"
-               Damage="15" Pain="70"/>
+               Damage="15" Pain="70"/> <!-- CRIT -->
 
         <!-- Cutting wounds -->
         <Wound Key="IncisionWound" LocKey="IncisionWoundOn"
@@ -75,8 +73,11 @@
         <Wound Key="PenetratingGsw" LocKey="PenetratingGswOn"
                Damage="15" Bleed="0.2" Pain="40" ArteryChance="0.2" WithCrit="TRUE"/>
         <Wound Key="PerforatingGsw" LocKey="PerforatingGswOn"
-               Damage="15" Bleed="0.25" Pain="40" ArteryChance="0.25" WithCrit="TRUE"/>
+               Damage="10" Bleed="0.3" Pain="30" ArteryChance="0.25" WithCrit="TRUE"/>
         <Wound Key="AvulsiveGsw" LocKey="AvulsiveGswOn"
-               Damage="15" Bleed="0.30" Pain="50" ArteryChance="0.3" WithCrit="TRUE"/>
+               Damage="15" Bleed="0.35" Pain="50" ArteryChance="0.3" WithCrit="TRUE"/>
+        
+        <!-- Special -->
+        <Wound Key="StunPain" LocKey="StunPain" Pain="120"/>
     </Wounds>
 </WoundConfig>
