@@ -1,6 +1,5 @@
 ﻿namespace GunshotWound2.WoundFeature {
     using System;
-    using System.Collections.Generic;
     using Configs;
     using CritsFeature;
     using GTA;
@@ -49,7 +48,7 @@
             }
 
             if (hitData.weaponType.Key == nameof(WeaponConfig.Stun)) {
-                CreateStunPain(pedEntity, ref convertedPed, hitData);
+                CreateStunPain(pedEntity, ref convertedPed);
                 return;
             }
 
@@ -80,16 +79,19 @@
             SendWoundInfo(pedEntity, convertedPed, wound);
         }
 
-        private void CreateStunPain(Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed, in PedHitData hitData) {
+        private void CreateStunPain(Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
             if (!sharedData.mainConfig.weaponConfig.UseSpecialStunDamage) {
                 return;
             }
 
-            WoundConfig.Wound woundTemplate = GetRandomWoundTemplate(hitData.weaponType);
-#if DEBUG
-            sharedData.logger.WriteInfo($"Applying special stun damage {woundTemplate.Key} to {convertedPed.name}");
-#endif
-            CreatePain(pedEntity, woundTemplate.Pain);
+            const float stunPainMult = 1.2f;
+            float maxPain = convertedPed.isPlayer
+                    ? sharedData.mainConfig.playerConfig.PainShockThreshold
+                    : sharedData.mainConfig.pedsConfig.MaxPainShockThreshold;
+
+            ref Pain pain = ref pedEntity.GetComponent<Pain>();
+            pain.diff += (stunPainMult * maxPain - pain.amount);
+
             convertedPed.thisPed.PlayAmbientSpeech("PAIN_TAZER", SpeechModifier.InterruptShouted);
         }
 
@@ -128,7 +130,7 @@
         }
 
         private bool IsDeadlyWound(in PedHitData hitData, bool isPlayer) {
-            return hitData.bodyPart.Key == "Head"
+            return hitData.bodyPart.Bones.Contains((int)Bone.SkelHead)
                    && (isPlayer
                            ? sharedData.mainConfig.playerConfig.InstantDeathHeadshot
                            : sharedData.mainConfig.pedsConfig.InstantDeathHeadshot);
