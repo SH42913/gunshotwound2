@@ -14,19 +14,16 @@ namespace GunshotWound2.Configs {
             public readonly string LocKey;
             public readonly int MaxValue;
             public readonly string ColorPrefix;
-
-            public Level(string key, string locKey, int maxValue, string colorPrefix) {
-                Key = key;
-                LocKey = locKey;
-                MaxValue = maxValue;
-                ColorPrefix = colorPrefix;
-            }
+            public readonly HashSet<string> Parts;
 
             public Level(XElement node) {
                 Key = node.GetString(nameof(Key));
                 LocKey = node.GetString(nameof(LocKey));
                 MaxValue = node.GetInt(nameof(MaxValue));
                 ColorPrefix = node.GetString(nameof(ColorPrefix));
+                Parts = node.GetString(nameof(Parts))
+                            .Split(MainConfig.Separator, StringSplitOptions.RemoveEmptyEntries)
+                            .ToHashSet();
             }
         }
 
@@ -48,8 +45,7 @@ namespace GunshotWound2.Configs {
             return HelmetPropIndexes.Contains(currentIndex);
         }
 
-        public bool TryGetArmorLevel(Ped ped, out Level level) {
-            int armor = ped.Armor;
+        public bool TryGetArmorLevel(int armor, out Level level) {
             if (armor < 1) {
                 level = default;
                 return false;

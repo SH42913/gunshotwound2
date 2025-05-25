@@ -13,81 +13,92 @@ namespace GunshotWound2.WoundFeature {
             this.sharedData = sharedData;
         }
 
-        public bool TrySave(ref ConvertedPed convertedPed, in PedHitData hit, in WeaponConfig.Weapon weapon, out WoundData? armorWound) {
-            Ped ped = convertedPed.thisPed;
-            switch (hit.bodyPart.Key) {
-                case "Head":
-                    bool hasHelmet = ped.IsWearingHelmet || sharedData.mainConfig.armorConfig.PedHasHelmet(ped);
-                    if (hasHelmet && sharedData.random.IsTrueWithProbability(weapon.HelmetSafeChance)) {
-                        ShowArmorMessage(convertedPed, sharedData.localeConfig.HelmetSavedYourHead);
-                        armorWound = null;
-                        return true;
-                    } else {
-                        armorWound = null;
-                        return false;
-                    }
-
-                case "Chest":
-                case "Abdomen":
-                    break;
-                default:
-                    armorWound = null;
-                    return false;
-            }
-
-            if (CheckArmorPenetration(ped, weapon, out string reason)) {
-                ShowArmorMessage(convertedPed, reason);
+        public bool TrySave(ref ConvertedPed convertedPed,
+                            in PedHitData hit,
+                            in WeaponConfig.Weapon weapon,
+                            out WoundData? armorWound) {
+            if (!hit.bodyPart.IsValid) {
                 armorWound = null;
                 return false;
             }
 
-            switch (hit.bodyPart.Key) {
-                case "Chest":
-                    ShowArmorMessage(convertedPed, sharedData.localeConfig.ArmorSavedYourChest);
-                    armorWound = GetUnderArmorWound(weapon.ArmorDamage, damageMult: 1f, painMult: 2f);
-                    return true;
-                case "Abdomen":
-                    ShowArmorMessage(convertedPed, sharedData.localeConfig.ArmorSavedYourLowerBody);
-                    armorWound = GetUnderArmorWound(weapon.ArmorDamage, damageMult: 1f, painMult: 3f);
-                    break;
-                default: throw new ArgumentOutOfRangeException();
+            if (hit.bodyPart.Bones.Contains((int)Bone.SkelHead)) {
+                armorWound = null;
+                return CheckHelmetPenetration(convertedPed, weapon);
             }
+
+            Ped ped = convertedPed.thisPed;
+            ArmorConfig armorConfig = sharedData.mainConfig.armorConfig;
+            if (!armorConfig.TryGetArmorLevel(ped.Armor, out ArmorConfig.Level armorLevel)) {
+#if DEBUG
+                sharedData.logger.WriteInfo("Has no armor");
+#endif
+                armorWound = null;
+                return false;
+            }
+
+            bool hitArmor = armorLevel.Parts.Contains(hit.bodyPart.Key);
+            if (!hitArmor) {
+#if DEBUG
+                sharedData.logger.WriteInfo("Was not touch armor");
+#endif
+                armorWound = null;
+                return false;
+            }
+
+            ped.Armor -= weapon.ArmorDamage;
+            LocaleConfig localeConfig = sharedData.localeConfig;
+            if (!armorConfig.TryGetArmorLevel(ped.Armor, out armorLevel)) {
+#if DEBUG
+                sharedData.logger.WriteInfo("Armor is dead");
+#endif
+                ShowArmorMessage(convertedPed, localeConfig.ArmorDestroyed);
+                armorWound = null;
+                return false;
+            }
+
+            if (CheckArmorPenetration(ped, weapon)) {
+                ShowArmorMessage(convertedPed, localeConfig.ArmorPenetrated);
+                armorWound = null;
+                return false;
+            }
+
+            ShowArmorMessage(convertedPed, localeConfig.ArmorProtectedYou);
+
+            armorWound = weapon.ArmorDamage > 0
+                    ? new WoundData {
+                        Name = $"{localeConfig.ArmorInjury} ({localeConfig.GetTranslation(hit.bodyPart.LocKey)})",
+                        Damage = weapon.DamageMult * weapon.ArmorDamage,
+                        Pain = weapon.PainMult * weapon.ArmorDamage,
+                    }
+                    : null;
 
             return true;
         }
 
-        private bool CheckArmorPenetration(Ped ped, WeaponConfig.Weapon weaponWeapon, out string reason) {
-            if (ped.Armor < 1) {
-#if DEBUG
-                sharedData.logger.WriteInfo("Has no armor");
-#endif
-                reason = null;
+        private bool CheckHelmetPenetration(in ConvertedPed convertedPed, in WeaponConfig.Weapon weapon) {
+            Ped ped = convertedPed.thisPed;
+            bool hasHelmet = ped.IsWearingHelmet || sharedData.mainConfig.armorConfig.PedHasHelmet(ped);
+            if (hasHelmet && sharedData.random.IsTrueWithProbability(weapon.HelmetSafeChance)) {
+                ShowArmorMessage(convertedPed, sharedData.localeConfig.HelmetProtectedYou);
                 return true;
+            } else {
+                return false;
             }
+        }
 
-            ped.Armor -= weaponWeapon.ArmorDamage;
-
+        private bool CheckArmorPenetration(Ped ped, in WeaponConfig.Weapon weapon) {
             ArmorConfig armorConfig = sharedData.mainConfig.armorConfig;
-            if (!armorConfig.TryGetArmorLevel(ped, out ArmorConfig.Level armorLevel)) {
-#if DEBUG
-                sharedData.logger.WriteInfo("Armor is dead");
-#endif
-                reason = sharedData.localeConfig.ArmorDestroyed;
-                return true;
-            }
-
-            if (!weaponWeapon.CanPenetrateArmor) {
+            if (!weapon.CanPenetrateArmor) {
 #if DEBUG
                 sharedData.logger.WriteInfo("Can't penetrate armor");
 #endif
-                reason = null;
                 return false;
             }
 
             float chanceToSave = armorConfig.MinimalChanceForArmorSave;
             if (chanceToSave >= 1f) {
                 sharedData.logger.WriteWarning("Minimal chance for armor save is >1");
-                reason = null;
                 return false;
             }
 
@@ -98,27 +109,13 @@ namespace GunshotWound2.WoundFeature {
 #if DEBUG
                 sharedData.logger.WriteInfo($"Armor deflected damage, save probability {saveProbability.ToString("F2")}");
 #endif
-                reason = null;
                 return false;
             }
 
 #if DEBUG
             sharedData.logger.WriteInfo($"Armor penetrated, save probability {saveProbability.ToString("F2")}");
 #endif
-            reason = sharedData.localeConfig.ArmorPenetrated;
             return true;
-        }
-
-        private WoundData? GetUnderArmorWound(float armorDamage, float damageMult, float painMult) {
-            if (armorDamage < 1) {
-                return null;
-            }
-
-            return new WoundData {
-                Name = sharedData.localeConfig.ArmorInjury,
-                Damage = damageMult * armorDamage,
-                Pain = painMult * armorDamage,
-            };
         }
 
         private void ShowArmorMessage(in ConvertedPed convertedPed, string message) {

@@ -96,7 +96,7 @@
         }
 
         private void ShowArmor(ref ConvertedPed convertedPed) {
-            if (!mainConfig.armorConfig.TryGetArmorLevel(convertedPed.thisPed, out ArmorConfig.Level armorLevel)) {
+            if (!mainConfig.armorConfig.TryGetArmorLevel(convertedPed.thisPed.Armor, out ArmorConfig.Level armorLevel)) {
                 return;
             }
 

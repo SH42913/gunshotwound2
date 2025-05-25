@@ -10,46 +10,10 @@ namespace GunshotWound2.Configs {
     public sealed class LocaleConfig {
         private Localization localization;
 
-        public string HelmetSavedYourHead;
-        public string ArmorSavedYourChest;
-        public string ArmorSavedYourLowerBody;
+        public string HelmetProtectedYou;
+        public string ArmorProtectedYou;
         public string ArmorPenetrated;
         public string ArmorInjury;
-
-        public string BodyPartHead;
-        public string BodyPartNeck;
-        public string BodyPartChest;
-        public string BodyPartLowerBody;
-        public string BodyPartArm;
-        public string BodyPartLeg;
-
-        public string GrazeWound;
-        public string GrazeGswOn;
-        public string FleshGswOn;
-        public string PenetratingGswOn;
-        public string PerforatingGswOn;
-        public string AvulsiveGswOn;
-
-        public string HeavyBrainDamage;
-        public string BulletFlyThroughHead;
-        public string BulletTornApartBrain;
-
-        public string LightBruise;
-        public string LightBruiseOn;
-        public string MediumBruiseOn;
-        public string HeavyBruiseOn;
-        public string AbrasionWoundOn;
-        public string WindedFromImpact;
-
-        public string IncisionWoundOn;
-        public string LacerationWoundOn;
-        public string StabWoundOn;
-
-        public string Blackout;
-        public string BleedingInHead;
-        public string TraumaticBrainInjury;
-        public string BrokenNeck;
-        public string ClosedFractureOf;
 
         public string YourHealth;
         public string HisHealth;
@@ -59,12 +23,6 @@ namespace GunshotWound2.Configs {
         public string PainIncreasedMessage;
         public string PainDecreasedMessage;
         public string TotallyHealedMessage;
-
-        public string ArmorClassI;
-        public string ArmorClassII;
-        public string ArmorClassIII;
-        public string ArmorClassIV;
-        public string ArmorClassV;
 
         public string Crits;
         public string NervesCrit;
