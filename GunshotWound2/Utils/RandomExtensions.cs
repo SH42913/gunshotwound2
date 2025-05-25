@@ -1,6 +1,7 @@
 ﻿namespace GunshotWound2.Utils {
     using System;
     using System.Collections.Generic;
+    using Weighted_Randomizer;
 
     public static class RandomExtensions {
         public static bool IsTrueWithProbability(this Random random, double probability) {
@@ -38,6 +39,16 @@
             }
 
             throw new Exception("Must not happen!");
+        }
+
+        public static T GetValueWithWeights<T>(this IWeightedRandomizer<int> random, (T value, int weight)[] array) {
+            random.Clear();
+            for (var i = 0; i < array.Length; i++) {
+                random.Add(i, array[i].weight);
+            }
+
+            int woundIndex = random.NextWithRemoval();
+            return array[woundIndex].value;
         }
     }
 }

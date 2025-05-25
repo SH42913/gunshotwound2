@@ -94,14 +94,7 @@
         }
 
         private WoundConfig.Wound GetRandomWoundTemplate(in WeaponConfig.Weapon weapon) {
-            var weightRandom = sharedData.weightRandom;
-            weightRandom.Clear();
-            for (var i = 0; i < weapon.Wounds.Length; i++) {
-                weightRandom.Add(i, weapon.Wounds[i].weight);
-            }
-
-            int woundIndex = weightRandom.NextWithRemoval();
-            string woundKey = weapon.Wounds[woundIndex].key;
+            string woundKey = sharedData.weightRandom.GetValueWithWeights(weapon.Wounds);
             WoundConfig.Wound woundTemplate = sharedData.mainConfig.woundConfig.Wounds[woundKey];
             return woundTemplate;
         }

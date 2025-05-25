@@ -1,20 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <BodyParts>
-    <BodyPart Key="Head" LocKey="BodyPartHead" Bones="SkelHead;" Crits="BleedingInHead;HeavyBrainDamage;"/>
-    <BodyPart Key="Neck" LocKey="BodyPartNeck" Bones="SkelNeck1;SkelNeck2;" Crits="BrokenNeck;"/>
-    <BodyPart Key="Chest" LocKey="BodyPartChest"
-              Bones="SkelSpine2;SkelSpine3;" Crits="PuncturedLungs;PuncturedHeart;ShatteredSpine;"/>
+    <BodyPart Key="Head" LocKey="BodyPartHead" Bones="SkelHead;" CritChance="1">
+        <Crit Key="BleedingInHead" Weight="1"/>
+        <Crit Key="HeavyBrainDamage" Weight="1"/>
+    </BodyPart>
+
+    <BodyPart Key="Neck" LocKey="BodyPartNeck" Bones="SkelNeck1;SkelNeck2;" CritChance="0.5">
+        <Crit Key="BrokenNeck" Weight="1"/>
+    </BodyPart>
+
+    <BodyPart Key="Chest" LocKey="BodyPartChest" Bones="SkelSpine2;SkelSpine3;" CritChance="1">
+        <Crit Key="PuncturedLungs" Weight="2"/>
+        <Crit Key="PuncturedHeart" Weight="2"/>
+        <Crit Key="ShatteredSpine" Weight="1"/>
+    </BodyPart>
+
     <BodyPart Key="Abdomen" LocKey="BodyPartLowerBody"
-              Bones="SkelSpineRoot;SkelSpine0;SkelSpine1;" Crits="PuncturedStomach;PuncturedGuts;ShatteredSpine;"/>
-    <BodyPart Key="Pelvis" LocKey="BodyPartLowerBody"
-              Bones="SkelRoot;SkelPelvisRoot;SkelPelvis;SkelPelvis1;" Crits="PuncturedGuts;"/>
+              Bones="SkelSpineRoot;SkelSpine0;SkelSpine1;" CritChance="0.8">
+        <Crit Key="PuncturedStomach" Weight="2"/>
+        <Crit Key="PuncturedGuts" Weight="2"/>
+        <Crit Key="ShatteredSpine" Weight="1"/>
+    </BodyPart>
+
+    <BodyPart Key="Pelvis" LocKey="BodyPartLowerBody" Bones="SkelRoot;SkelPelvisRoot;SkelPelvis;SkelPelvis1;"
+              CritChance="0.5">
+        <Crit Key="PuncturedGuts" Weight="2"/>
+    </BodyPart>
+
+    <BodyPart Key="LeftShoulder" LocKey="BodyPartArm" Bones="SkelLeftClavicle;" CritChance="1">
+        <Crit Key="ClosedFractureArm" Weight="1"/>
+    </BodyPart>
+    <BodyPart Key="RightShoulder" LocKey="BodyPartArm" Bones="SkelRightClavicle;" CritChance="1">
+        <Crit Key="ClosedFractureArm" Weight="1"/>
+    </BodyPart>
+
+    <BodyPart Key="LeftArm" LocKey="BodyPartArm" Bones="SkelLeftUpperArm;SkelLeftForearm;SkelLeftHand;"
+              CritChance="0.8">
+        <Crit Key="ClosedFractureArm" Weight="1"/>
+    </BodyPart>
+    <BodyPart Key="RightArm" LocKey="BodyPartArm" Bones="SkelRightUpperArm;SkelRightForearm;SkelRightHand;"
+              CritChance="0.8">
+        <Crit Key="ClosedFractureArm" Weight="1"/>
+    </BodyPart>
+
     <BodyPart Key="LeftLeg" LocKey="BodyPartLeg"
-              Bones="SkelLeftThigh;SkelLeftToe0;SkelLeftToe1;SkelLeftFoot;SkelLeftCalf;" Crits="ClosedFractureLeg;"/>
+              Bones="SkelLeftThigh;SkelLeftToe0;SkelLeftToe1;SkelLeftFoot;SkelLeftCalf;" CritChance="0.8">
+        <Crit Key="ClosedFractureLeg" Weight="1"/>
+    </BodyPart>
     <BodyPart Key="RightLeg" LocKey="BodyPartLeg"
-              Bones="SkelRightThigh;SkelRightToe0;SkelRightToe1;SkelRightFoot;SkelRightCalf;"
-              Crits="ClosedFractureLeg;"/>
-    <BodyPart Key="LeftArm" LocKey="BodyPartArm"
-              Bones="SkelLeftUpperArm;SkelLeftClavicle;SkelLeftForearm;SkelLeftHand;" Crits="ClosedFractureArm;"/>
-    <BodyPart Key="RightArm" LocKey="BodyPartArm"
-              Bones="SkelRightUpperArm;SkelRightClavicle;SkelRightForearm;SkelRightHand;" Crits="ClosedFractureArm;"/>
+              Bones="SkelRightThigh;SkelRightToe0;SkelRightToe1;SkelRightFoot;SkelRightCalf;" CritChance="0.8">
+        <Crit Key="ClosedFractureLeg" Weight="1"/>
+    </BodyPart>
 </BodyParts>

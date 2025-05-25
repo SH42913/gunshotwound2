@@ -13,7 +13,8 @@ namespace GunshotWound2.Configs {
             public readonly string Key;
             public readonly string LocKey;
             public readonly HashSet<int> Bones;
-            public readonly string[] Crits;
+            public readonly (string key, int weight)[] Crits;
+            public readonly float CritChance;
 
             public bool IsValid => !string.IsNullOrEmpty(Key);
 
@@ -25,9 +26,11 @@ namespace GunshotWound2.Configs {
                             .Select(GetIntOfBone)
                             .ToHashSet();
 
-                Crits = node.GetString(nameof(Crits))
-                            .Split(MainConfig.Separator, StringSplitOptions.RemoveEmptyEntries)
+                Crits = node.Elements("Crit")
+                            .Select(x => (x.GetString("Key"), x.GetInt("Weight")))
                             .ToArray();
+
+                CritChance = node.GetFloat(nameof(CritChance));
             }
 
             private static int GetIntOfBone(string boneName) {

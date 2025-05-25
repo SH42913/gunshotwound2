@@ -46,34 +46,45 @@
                 if (totallyHealedStash.Has(entity)) {
                     CancelAllCritEffects(entity, ref crits, ref convertedPed);
                 } else if (crits.requestBodyPart.IsValid) {
-                    CritsConfig.Crit crit = GetRandomCritFor(crits.requestBodyPart);
-#if DEBUG
-                    sharedData.logger.WriteInfo($"Selected crit {crit.Key} for {crits.requestBodyPart.Key} at {convertedPed.name}");
-#endif
-
-                    string critName = sharedData.localeConfig.GetTranslation(crit.LocKey);
-                    entity.GetComponent<Pain>().diff += crit.Pain;
-                    entity.GetComponent<Health>().DealDamage(crit.Damage, critName);
-                    entity.CreateBleeding(crits.requestBodyPart, crit.Bleed, critName, isInternal: true);
-
-                    if (crit.Effect != Crits.Effects.SpineCrit) {
-                        ApplyCritEffect(entity, ref crits, ref convertedPed, crit.Effect, crit.Message);
-                    } else {
-                        bool realSpineCrit = convertedPed.isPlayer
-                                ? sharedData.mainConfig.playerConfig.RealisticSpineDamage
-                                : sharedData.mainConfig.pedsConfig.RealisticSpineDamage;
-
-                        if (realSpineCrit) {
-                            ApplyCritEffect(entity, ref crits, ref convertedPed, Crits.Effects.SpineCrit, crit.Message);
-                        } else {
-                            ApplyCritEffect(entity, ref crits, ref convertedPed, Crits.Effects.ArmsCrit, crit.Message);
-                            ApplyCritEffect(entity, ref crits, ref convertedPed, Crits.Effects.LegsCrit, crit.Message);
-                        }
-                    }
-
+                    ProcessRequest(entity, ref crits, ref convertedPed);
                     crits.requestBodyPart = default;
                 } else {
                     IterateCritEffects(entity, ref crits, ref convertedPed);
+                }
+            }
+        }
+
+        private void ProcessRequest(Entity entity, ref Crits crits, ref ConvertedPed convertedPed) {
+            if (!sharedData.random.IsTrueWithProbability(crits.requestBodyPart.CritChance)) {
+#if DEBUG
+                sharedData.logger.WriteInfo($"Ignore crit for {crits.requestBodyPart.Key} at {convertedPed.name}");
+#endif
+                return;
+            }
+
+            string critKey = sharedData.weightRandom.GetValueWithWeights(crits.requestBodyPart.Crits);
+            CritsConfig.Crit crit = sharedData.mainConfig.critsConfig.GetCritByKey(critKey);
+#if DEBUG
+            sharedData.logger.WriteInfo($"Selected crit {crit.Key} for {crits.requestBodyPart.Key} at {convertedPed.name}");
+#endif
+
+            string critName = sharedData.localeConfig.GetTranslation(crit.LocKey);
+            entity.GetComponent<Pain>().diff += crit.Pain;
+            entity.GetComponent<Health>().DealDamage(crit.Damage, critName);
+            entity.CreateBleeding(crits.requestBodyPart, crit.Bleed, critName, isInternal: true);
+
+            if (crit.Effect != Crits.Effects.SpineCrit) {
+                ApplyCritEffect(entity, ref crits, ref convertedPed, crit.Effect, crit.Message);
+            } else {
+                bool realSpineCrit = convertedPed.isPlayer
+                        ? sharedData.mainConfig.playerConfig.RealisticSpineDamage
+                        : sharedData.mainConfig.pedsConfig.RealisticSpineDamage;
+
+                if (realSpineCrit) {
+                    ApplyCritEffect(entity, ref crits, ref convertedPed, Crits.Effects.SpineCrit, crit.Message);
+                } else {
+                    ApplyCritEffect(entity, ref crits, ref convertedPed, Crits.Effects.ArmsCrit, crit.Message);
+                    ApplyCritEffect(entity, ref crits, ref convertedPed, Crits.Effects.LegsCrit, crit.Message);
                 }
             }
         }
@@ -84,11 +95,6 @@
                 ref ConvertedPed convertedPed = ref pedStash.Get(entity);
                 CancelAllCritEffects(entity, ref crits, ref convertedPed);
             }
-        }
-
-        private CritsConfig.Crit GetRandomCritFor(BodyPartConfig.BodyPart bodyPart) {
-            string critKey = sharedData.random.Next(bodyPart.Crits);
-            return sharedData.mainConfig.critsConfig.GetCritByKey(critKey);
         }
 
         private void ApplyCritEffect(Entity entity,
