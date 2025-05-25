@@ -48,8 +48,8 @@
                 return;
             }
 
-            if (hitData.weaponType.Key == "Stun") {
-                CreateStunPain(pedEntity, ref convertedPed);
+            if (hitData.weaponType.Key == nameof(WeaponConfig.Stun)) {
+                CreateStunPain(pedEntity, ref convertedPed, hitData);
                 return;
             }
 
@@ -62,15 +62,7 @@
             } else if (armorChecker.TrySave(ref convertedPed, hitData, hitData.weaponType, out WoundData? armorWound)) {
                 wound = armorWound;
             } else {
-                var weightRandom = sharedData.weightRandom;
-                weightRandom.Clear();
-                for (var i = 0; i < hitData.weaponType.Wounds.Length; i++) {
-                    weightRandom.Add(i, hitData.weaponType.Wounds[i].weight);
-                }
-
-                int woundIndex = weightRandom.NextWithRemoval();
-                string woundKey = hitData.weaponType.Wounds[woundIndex].key;
-                WoundConfig.Wound woundTemplate = sharedData.mainConfig.woundConfig.Wounds[woundKey];
+                WoundConfig.Wound woundTemplate = GetRandomWoundTemplate(hitData.weaponType);
                 wound = new WoundData(sharedData.localeConfig, sharedData.random, woundTemplate, hitData);
             }
 
@@ -88,18 +80,30 @@
             SendWoundInfo(pedEntity, convertedPed, wound);
         }
 
-        private void CreateStunPain(Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
+        private void CreateStunPain(Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed, in PedHitData hitData) {
             if (!sharedData.mainConfig.weaponConfig.UseSpecialStunDamage) {
                 return;
             }
 
-            const float stunPainMult = 1.2f;
-            float maxPain = convertedPed.isPlayer
-                    ? sharedData.mainConfig.playerConfig.PainShockThreshold
-                    : sharedData.mainConfig.pedsConfig.MaxPainShockThreshold;
-
-            CreatePain(pedEntity, stunPainMult * maxPain);
+            WoundConfig.Wound woundTemplate = GetRandomWoundTemplate(hitData.weaponType);
+#if DEBUG
+            sharedData.logger.WriteInfo($"Applying special stun damage {woundTemplate.Key} to {convertedPed.name}");
+#endif
+            CreatePain(pedEntity, woundTemplate.Pain);
             convertedPed.thisPed.PlayAmbientSpeech("PAIN_TAZER", SpeechModifier.InterruptShouted);
+        }
+
+        private WoundConfig.Wound GetRandomWoundTemplate(in WeaponConfig.Weapon weapon) {
+            var weightRandom = sharedData.weightRandom;
+            weightRandom.Clear();
+            for (var i = 0; i < weapon.Wounds.Length; i++) {
+                weightRandom.Add(i, weapon.Wounds[i].weight);
+            }
+
+            int woundIndex = weightRandom.NextWithRemoval();
+            string woundKey = weapon.Wounds[woundIndex].key;
+            WoundConfig.Wound woundTemplate = sharedData.mainConfig.woundConfig.Wounds[woundKey];
+            return woundTemplate;
         }
 
         private void ProcessWound(Scellecs.Morpeh.Entity pedEntity, ref PedHitData hitData, ref WoundData? wound, bool isPlayer) {

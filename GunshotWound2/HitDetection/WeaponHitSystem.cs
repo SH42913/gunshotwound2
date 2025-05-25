@@ -1,7 +1,6 @@
 ﻿namespace GunshotWound2.HitDetection {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Configs;
     using GTA;
     using GTA.Math;
@@ -9,20 +8,15 @@
     using PedsFeature;
     using PlayerFeature;
     using Scellecs.Morpeh;
-    using Utils;
 
     public sealed class WeaponHitSystem : ISystem {
-        private const uint RAMMED_BY_CAR = 133987706;
-        private const uint RUN_OVER_CAR = 2741846334;
-        private const uint FALL = 3452007600;
-        private const float MAX_LIGHT_IMPACT_SPEED = 10f;
-        private const float MIN_FALL_SPEED = 2.5f;
-
         private readonly SharedData sharedData;
 
         private Filter damagedPeds;
 
         public Scellecs.Morpeh.World World { get; set; }
+
+        private WeaponConfig WeaponConfig => sharedData.mainConfig.weaponConfig;
 
         public WeaponHitSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -48,7 +42,7 @@
                 Ped ped = convertedPed.thisPed;
                 bool isSpecialCase;
 
-                if (CheckWeaponHashes(ped, out uint hitWeapon, out WeaponConfig.Stats weaponType, out bool skipDamage)) {
+                if (CheckWeaponHashes(ped, out uint hitWeapon, out WeaponConfig.Weapon weaponType, out bool skipDamage)) {
                     isSpecialCase = false;
                 } else if (CheckSpecialCases(ref convertedPed, out weaponType, out skipDamage)) {
                     isSpecialCase = true;
@@ -62,9 +56,9 @@
 
                 if (hitData.afterTakedown) {
 #if DEBUG
-                    sharedData.logger.WriteInfo("Force HeavyImpact damage after takedown");
+                    sharedData.logger.WriteInfo("Set special weapon for takedown");
 #endif
-                    weaponType = sharedData.mainConfig.weaponConfig.HeavyImpactStats;
+                    weaponType = WeaponConfig.Takedown;
                 }
 
                 if (!weaponType.IsValid) {
@@ -86,8 +80,8 @@
             }
         }
 
-        private bool CheckWeaponHashes(Ped ped, out uint hitWeapon, out WeaponConfig.Stats weaponType, out bool skipDamage) {
-            WeaponConfig weaponConfig = sharedData.mainConfig.weaponConfig;
+        private bool CheckWeaponHashes(Ped ped, out uint hitWeapon, out WeaponConfig.Weapon weaponType, out bool skipDamage) {
+            WeaponConfig weaponConfig = WeaponConfig;
             if (PedWasDamagedBy(weaponConfig.IgnoreSet, ped, out hitWeapon)) {
 #if DEBUG
                 sharedData.logger.WriteInfo($"{BuildWeaponName(hitWeapon)} is ignore hash, it will be skipped");
@@ -98,7 +92,7 @@
             }
 
             weaponType = default;
-            foreach (WeaponConfig.Stats stats in sharedData.mainConfig.weaponConfig.AllWeapons) {
+            foreach (WeaponConfig.Weapon stats in WeaponConfig.Weapons) {
                 if (PedWasDamagedBy(stats.Hashes, ped, out hitWeapon)) {
                     weaponType = stats;
                     break;
@@ -109,18 +103,18 @@
             return weaponType.IsValid;
         }
 
-        private bool CheckSpecialCases(ref ConvertedPed convertedPed, out WeaponConfig.Stats weaponType, out bool skipDamage) {
+        private bool CheckSpecialCases(ref ConvertedPed convertedPed, out WeaponConfig.Weapon weaponType, out bool skipDamage) {
             Ped ped = convertedPed.thisPed;
             if (ped.IsBeingStunned) {
 #if DEBUG
                 sharedData.logger.WriteInfo("It is STUN damage");
 #endif
-                weaponType = sharedData.mainConfig.weaponConfig.StunStats;
+                weaponType = WeaponConfig.Stun;
                 skipDamage = false;
                 return true;
             }
 
-            if (ped.IsOnFire) {
+            if (ped.IsOnFire || IsDamagedByWeapon(ped, WeaponConfig.WEAPON_FIRE)) {
 #if DEBUG
                 sharedData.logger.WriteInfo("It is FIRE damage, it will be skipped");
 #endif
@@ -129,7 +123,8 @@
                 return true;
             }
 
-            if (convertedPed.isPlayer && PlayerEffects.GetStaminaRemaining() >= 99f) {
+            if (convertedPed.isPlayer && PlayerEffects.GetStaminaRemaining() >= 99f
+                || IsDamagedByWeapon(ped, WeaponConfig.WEAPON_EXHAUSTION)) {
 #if DEBUG
                 sharedData.logger.WriteInfo("It is EXHAUSTION damage, it will be skipped");
 #endif
@@ -139,11 +134,11 @@
             }
 
             skipDamage = false;
-            if (IsDamagedByWeapon(ped, RUN_OVER_CAR)) {
+            if (IsDamagedByWeapon(ped, WeaponConfig.WEAPON_RUN_OVER_BY_CAR)) {
                 weaponType = HandleRunOverCar(ped, ref skipDamage);
-            } else if (ped.IsFalling || ped.IsRagdoll || IsDamagedByWeapon(ped, FALL)) {
+            } else if (IsDamagedByWeapon(ped, WeaponConfig.WEAPON_FALL) || ped.IsFalling || ped.IsRagdoll) {
                 weaponType = HandleFalling(ped, ref skipDamage);
-            } else if (IsDamagedByWeapon(ped, RAMMED_BY_CAR) || ped.IsInVehicle()) {
+            } else if (IsDamagedByWeapon(ped, WeaponConfig.WEAPON_RAMMED_BY_CAR)) {
                 weaponType = HandleCarImpact(ped);
             } else {
                 sharedData.logger.WriteWarning("Unknown special case damage");
@@ -153,7 +148,7 @@
             return weaponType.IsValid;
         }
 
-        private WeaponConfig.Stats HandleRunOverCar(Ped ped, ref bool skipDamage) {
+        private WeaponConfig.Weapon HandleRunOverCar(Ped ped, ref bool skipDamage) {
             Vehicle possibleVehicle = GTA.World.GetClosestVehicle(ped.Position, 5f);
             Vector3 vehicleVelocity = possibleVehicle != null ? possibleVehicle.Velocity : Vector3.Zero;
             float relativeSpeed = (vehicleVelocity - ped.Velocity).Length();
@@ -162,47 +157,43 @@
             string vehicleName = possibleVehicle?.DisplayName ?? "UNKNOWN";
             sharedData.logger.WriteInfo($"It is run over car damage by {vehicleName}, relativeSpeed:{relativeSpeed}");
 #endif
-            if (relativeSpeed > MAX_LIGHT_IMPACT_SPEED) {
-                return sharedData.mainConfig.weaponConfig.HeavyImpactStats;
-            } else if (relativeSpeed < MIN_FALL_SPEED) {
+            if (relativeSpeed > WeaponConfig.HardRunOverThreshold) {
+                return WeaponConfig.HardRunOverCar;
+            } else if (relativeSpeed < WeaponConfig.LightRunOverThreshold) {
                 skipDamage = true;
                 return default;
             } else {
-                return sharedData.mainConfig.weaponConfig.LightImpactStats;
+                return WeaponConfig.LightRunOverCar;
             }
         }
 
-        private WeaponConfig.Stats HandleFalling(Ped ped, ref bool skipDamage) {
+        private WeaponConfig.Weapon HandleFalling(Ped ped, ref bool skipDamage) {
             float pedSpeed = ped.Velocity.Length();
 #if DEBUG
             sharedData.logger.WriteInfo($"It is fall damage with speed {pedSpeed.ToString("F2")}");
 #endif
-            if (pedSpeed > MAX_LIGHT_IMPACT_SPEED) {
-                return sharedData.mainConfig.weaponConfig.HeavyImpactStats;
-            } else if (pedSpeed < MIN_FALL_SPEED) {
+            if (pedSpeed > WeaponConfig.HardFallThreshold) {
+                return WeaponConfig.HardFall;
+            } else if (pedSpeed < WeaponConfig.LightFallThreshold) {
                 skipDamage = true;
                 return default;
             } else {
-                return sharedData.mainConfig.weaponConfig.LightImpactStats;
+                return WeaponConfig.LightFall;
             }
         }
 
-        private WeaponConfig.Stats HandleCarImpact(Ped ped) {
+        private WeaponConfig.Weapon HandleCarImpact(Ped ped) {
             Vehicle vehicle = ped.CurrentVehicle;
-            if (vehicle != null && vehicle.Driver == ped && !vehicle.Windows.AllWindowsIntact) {
-                const float chanceToGetCut = 0.3f;
-                WeaponConfig.Stats damageType = sharedData.random.IsTrueWithProbability(chanceToGetCut)
-                        ? sharedData.mainConfig.weaponConfig.CuttingStats
-                        : sharedData.mainConfig.weaponConfig.HeavyImpactStats;
+            if (vehicle != null) {
 #if DEBUG
-                sharedData.logger.WriteInfo($"It is drive car impact damage: {damageType}");
+                sharedData.logger.WriteInfo($"It is car crash damage at speed {vehicle.Speed}");
 #endif
-                return damageType;
+                return WeaponConfig.CarCrash;
             } else {
 #if DEBUG
-                sharedData.logger.WriteInfo("It is default car impact damage");
+                sharedData.logger.WriteInfo("It is car crash damage, but ped is not in vehicle");
 #endif
-                return sharedData.mainConfig.weaponConfig.HeavyImpactStats;
+                return WeaponConfig.CarCrash;
             }
         }
 

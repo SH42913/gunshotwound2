@@ -20,7 +20,7 @@
     </IgnoreSet>
 
     <!-- Here you can determine weapons with its name or hash for every weapon types -->
-    <Stats>
+    <Weapons>
         <SmallCaliber DamageMult="1.0" BleedMult="1.0" PainMult="1.0" CritChance="0.4" ArmorDamage="4"
                       CanPenetrateArmor="TRUE" HelmetSafeChance="0.8">
             <Hashes Hashes="PISTOL;PISTOL_MK2;COMBATPISTOL;SNSPISTOL;SNSPISTOL_MK2;VINTAGEPISTOL;MARKSMANPISTOL;DOUBLEACTION;APPISTOL;MICROSMG;MINISMG;SMG;SMG_MK2;COMBATPDW;MACHINEPISTOL;CERAMICPISTOL;TECPISTOL;"/>
@@ -99,11 +99,63 @@
             </Wounds>
         </Cutting>
 
-        <!-- Special -->
-        <Stun>
+        <HeliCrash>
+            <Hashes Hashes="HELI_CRASH;"/>
+            <Wounds>
+                <Item Key="HeavyBruise" Weight="1"/>
+                <Item Key="LacerationWound" Weight="1"/>
+            </Wounds>
+        </HeliCrash>
+
+        <!-- Special section, no weapon names here -->
+        <!-- Do not rename these weapons, but you may edit attributes and wounds -->
+        <Stun HelmetSafeChance="1">
             <Wounds>
                 <Item Key="StunPain" Weight="1"/>
             </Wounds>
         </Stun>
-    </Stats>
+
+        <Takedown CritChance="0.5" HelmetSafeChance="0.5">
+            <Wounds>
+                <Item Key="HeavyBruise" Weight="1"/>
+            </Wounds>
+        </Takedown>
+
+        <LightFall MinSpeed="2.5" HelmetSafeChance="1">
+            <Wounds>
+                <Item Key="AbrasionWound" Weight="1"/>
+                <Item Key="LightBruise" Weight="1"/>
+                <Item Key="MediumBruise" Weight="1"/>
+            </Wounds>
+        </LightFall>
+
+        <HardFall MinSpeed="15" CritChance="1" HelmetSafeChance="0.9">
+            <Wounds>
+                <Item Key="HeavyBruise" Weight="1"/>
+            </Wounds>
+        </HardFall>
+
+        <LightRunOverCar MinSpeed="2.5">
+            <Wounds>
+                <Item Key="LightBruise" Weight="6"/>
+                <Item Key="MediumBruise" Weight="3"/>
+                <Item Key="HeavyBruise" Weight="1"/>
+            </Wounds>
+        </LightRunOverCar>
+
+        <HardRunOverCar MinSpeed="15">
+            <Wounds>
+                <Item Key="MediumBruise" Weight="2"/>
+                <Item Key="HeavyBruise" Weight="1"/>
+            </Wounds>
+        </HardRunOverCar>
+
+        <CarCrash CritChance="0.5" HelmetSafeChance="1">
+            <Wounds>
+                <Item Key="IncisionWound" Weight="1"/>
+                <Item Key="LacerationWound" Weight="1"/>
+                <Item Key="HeavyBruise" Weight="3"/>
+            </Wounds>
+        </CarCrash>
+    </Weapons>
 </WeaponConfig>

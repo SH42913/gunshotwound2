@@ -13,12 +13,12 @@ namespace GunshotWound2.WoundFeature {
             this.sharedData = sharedData;
         }
 
-        public bool TrySave(ref ConvertedPed convertedPed, in PedHitData hit, in WeaponConfig.Stats stats, out WoundData? armorWound) {
+        public bool TrySave(ref ConvertedPed convertedPed, in PedHitData hit, in WeaponConfig.Weapon weapon, out WoundData? armorWound) {
             Ped ped = convertedPed.thisPed;
             switch (hit.bodyPart.Key) {
                 case "Head":
                     bool hasHelmet = ped.IsWearingHelmet || sharedData.mainConfig.armorConfig.PedHasHelmet(ped);
-                    if (hasHelmet && sharedData.random.IsTrueWithProbability(stats.HelmetSafeChance)) {
+                    if (hasHelmet && sharedData.random.IsTrueWithProbability(weapon.HelmetSafeChance)) {
                         ShowArmorMessage(convertedPed, sharedData.localeConfig.HelmetSavedYourHead);
                         armorWound = null;
                         return true;
@@ -35,7 +35,7 @@ namespace GunshotWound2.WoundFeature {
                     return false;
             }
 
-            if (CheckArmorPenetration(ped, stats, out string reason)) {
+            if (CheckArmorPenetration(ped, weapon, out string reason)) {
                 ShowArmorMessage(convertedPed, reason);
                 armorWound = null;
                 return false;
@@ -44,11 +44,11 @@ namespace GunshotWound2.WoundFeature {
             switch (hit.bodyPart.Key) {
                 case "Chest":
                     ShowArmorMessage(convertedPed, sharedData.localeConfig.ArmorSavedYourChest);
-                    armorWound = GetUnderArmorWound(stats.ArmorDamage, damageMult: 1f, painMult: 2f);
+                    armorWound = GetUnderArmorWound(weapon.ArmorDamage, damageMult: 1f, painMult: 2f);
                     return true;
                 case "Abdomen":
                     ShowArmorMessage(convertedPed, sharedData.localeConfig.ArmorSavedYourLowerBody);
-                    armorWound = GetUnderArmorWound(stats.ArmorDamage, damageMult: 1f, painMult: 3f);
+                    armorWound = GetUnderArmorWound(weapon.ArmorDamage, damageMult: 1f, painMult: 3f);
                     break;
                 default: throw new ArgumentOutOfRangeException();
             }
@@ -56,7 +56,7 @@ namespace GunshotWound2.WoundFeature {
             return true;
         }
 
-        private bool CheckArmorPenetration(Ped ped, WeaponConfig.Stats weaponStats, out string reason) {
+        private bool CheckArmorPenetration(Ped ped, WeaponConfig.Weapon weaponWeapon, out string reason) {
             if (ped.Armor < 1) {
 #if DEBUG
                 sharedData.logger.WriteInfo("Has no armor");
@@ -65,7 +65,7 @@ namespace GunshotWound2.WoundFeature {
                 return true;
             }
 
-            ped.Armor -= weaponStats.ArmorDamage;
+            ped.Armor -= weaponWeapon.ArmorDamage;
 
             ArmorConfig armorConfig = sharedData.mainConfig.armorConfig;
             if (!armorConfig.TryGetArmorLevel(ped, out ArmorConfig.Level armorLevel)) {
@@ -76,7 +76,7 @@ namespace GunshotWound2.WoundFeature {
                 return true;
             }
 
-            if (!weaponStats.CanPenetrateArmor) {
+            if (!weaponWeapon.CanPenetrateArmor) {
 #if DEBUG
                 sharedData.logger.WriteInfo("Can't penetrate armor");
 #endif

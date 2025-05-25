@@ -36,7 +36,7 @@
                 if (hitData.useRandomBodyPart) {
                     hitData.bodyPart = sharedData.random.Next(BodyPartConfig.BodyParts);
 #if DEBUG
-                    sharedData.logger.WriteInfo($"Damaged random part is {hitData.bodyPart} of {convertedPed.name}");
+                    sharedData.logger.WriteInfo($"Damaged random part is {hitData.bodyPart.Key} of {convertedPed.name}");
 #endif
                 } else {
                     Bone damagedBone = convertedPed.thisPed.Bones.LastDamaged.Tag;

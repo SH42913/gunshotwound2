@@ -5,7 +5,7 @@
     public struct PedHitData : IComponent {
         public BodyPartConfig.BodyPart bodyPart;
         public uint weaponHash;
-        public WeaponConfig.Stats weaponType;
+        public WeaponConfig.Weapon weaponType;
         public int healthDiff;
         public int armorDiff;
         public bool useRandomBodyPart;
