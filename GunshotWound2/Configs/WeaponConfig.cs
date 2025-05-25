@@ -4,7 +4,6 @@ namespace GunshotWound2.Configs {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using System.Xml.Linq;
     using GTA;
     using HitDetection;
@@ -45,7 +44,7 @@ namespace GunshotWound2.Configs {
         }
 
         public bool UseSpecialStunDamage;
-        public HashSet<uint> IgnoreHashes;
+        public HashSet<uint> IgnoreSet;
 
         public Stats SmallCaliber;
         public Stats MediumCaliber;
@@ -58,13 +57,9 @@ namespace GunshotWound2.Configs {
         public Stats[] AllStats;
 
         public void FillFrom(XDocument doc, ILogger logger) {
-            XElement node = doc.Element("Weapons");
-            if (node == null) {
-                return;
-            }
-
-            UseSpecialStunDamage = node.Element("UseSpecialStunDamage").GetBool();
-            IgnoreHashes = ExtractWeaponHashes(node.Element("Ignore"), logger);
+            XElement node = doc.Element(nameof(WeaponConfig))!;
+            UseSpecialStunDamage = node.Element(nameof(UseSpecialStunDamage)).GetBool();
+            IgnoreSet = ExtractWeaponHashes(node.Element(nameof(IgnoreSet)), logger);
 
             XElement statsNode = node.Element(nameof(Stats))!;
             SmallCaliber = GetStatsForWeapon(statsNode.Element(nameof(SmallCaliber)), logger);
@@ -91,7 +86,7 @@ namespace GunshotWound2.Configs {
         private void SuggestWeapons(ILogger logger) {
             HashSet<uint>[] allHashSets = AllStats
                                           .Select(x => x.Hashes)
-                                          .Append(IgnoreHashes)
+                                          .Append(IgnoreSet)
                                           .ToArray();
 
             foreach (uint hash in NativeMemory.GetAllWeaponHashesForHumanPeds()) {
@@ -126,24 +121,32 @@ namespace GunshotWound2.Configs {
         }
 
         private static HashSet<uint> ExtractWeaponHashes(XElement node, ILogger logger) {
-            const string name = "Hashes";
-            string hashesString = node.Element(name)!.Attribute(name)!.Value;
-            string[] splitStrings = hashesString.Split(MainConfig.Separator, StringSplitOptions.RemoveEmptyEntries);
-            var set = new HashSet<uint>(splitStrings.Length);
-            foreach (string weaponString in splitStrings) {
-                if (!uint.TryParse(weaponString, out uint hash)) {
-                    const string prefix = "WEAPON_";
-                    hash = StringHash.AtStringHashUtf8(prefix + weaponString.ToUpper());
-                }
-
-                if (NativeMemory.IsHashValidAsWeaponHash(hash)) {
-                    set.Add(hash);
-                } else {
-                    logger.WriteWarning($"{weaponString}({hash.ToString()}) is not valid weapon. GSW2 will ignore it.");
+            var set = new HashSet<uint>();
+            foreach (XElement element in node.Elements()) {
+                const string attributeName = "Hashes";
+                string attributeValue = element.GetString(attributeName);
+                if (!string.IsNullOrEmpty(attributeValue)) {
+                    ParseStringToSet(attributeValue);
                 }
             }
 
             return set;
+
+            void ParseStringToSet(string stringOfHashes) {
+                string[] splitStrings = stringOfHashes.Split(MainConfig.Separator, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string weaponString in splitStrings) {
+                    if (!uint.TryParse(weaponString, out uint hash)) {
+                        const string prefix = "WEAPON_";
+                        hash = StringHash.AtStringHashUtf8(prefix + weaponString.ToUpper());
+                    }
+
+                    if (NativeMemory.IsHashValidAsWeaponHash(hash)) {
+                        set.Add(hash);
+                    } else {
+                        logger.WriteWarning($"{weaponString}({hash.ToString()}) is not valid weapon. GSW2 will ignore it.");
+                    }
+                }
+            }
         }
 
         public static string BuildWeaponName(uint hash) {

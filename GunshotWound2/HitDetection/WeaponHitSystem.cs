@@ -84,7 +84,7 @@
 
         private bool CheckWeaponHashes(Ped ped, out uint hitWeapon, out PedHitData.WeaponTypes weaponType, out bool skipDamage) {
             WeaponConfig weaponConfig = sharedData.mainConfig.weaponConfig;
-            if (PedWasDamagedBy(weaponConfig.IgnoreHashes, ped, out hitWeapon)) {
+            if (PedWasDamagedBy(weaponConfig.IgnoreSet, ped, out hitWeapon)) {
 #if DEBUG
                 sharedData.logger.WriteInfo($"{BuildWeaponName(hitWeapon)} is ignore hash, it will be skipped");
 #endif

@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Weapons>
+<WeaponConfig>
     <UseSpecialStunDamage Value="TRUE"/>
     <!-- Any stun damage(eg StunGun/911657153) will drop target to unconscious.
     If you're using LSPDFR, set value to FALSE and use default stun logic -->
 
-    <Ignore>
-        <!-- GSW2 will ignore these weapons, so it will deal vanilla damage -->
-        <Hashes Hashes="MOLOTOV;BZGAS;SMOKEGRENADE;FLAREGUN;FLARE;FIREEXTINGUISHER;PETROLCAN;DIGISCANNER;2803906140;4222310262;966099553;BRIEFCASE;BRIEFCASE_02;FLARE;ACIDPACKAGE;GRENADELAUNCHER_SMOKE;BLEEDING;DROWNING;DROWNING_IN_VEHICLE;HAZARDCAN;METALDETECTOR;FERTILIZERCAN;HACKINGDEVICE;"/>
-    </Ignore>
+    <!-- GSW2 will ignore these weapons, so they will deal vanilla damage -->
+    <IgnoreSet>
+        <Explosives Hashes="EXPLOSION;GRENADE;STICKYBOMB;PROXMINE;PIPEBOMB;"/>
+        <Projectiles Hashes="PASSENGER_ROCKET;AIRSTRIKE_ROCKET;VEHICLE_ROCKET;ARENA_HOMING_MISSILE;"/>
+        <Launchers Hashes="GRENADELAUNCHER;RPG;STINGER;HOMINGLAUNCHER;COMPACTLAUNCHER;FIREWORK;EMPLAUNCHER;"/>
+        <Fire Hashes="MOLOTOV;FLARE;"/>
+        <Gas Hashes="BZGAS;SMOKEGRENADE;GRENADELAUNCHER_SMOKE;FIREEXTINGUISHER;"/>
+        <Stun Hashes="STUNGUN;ELECTRIC_FENCE;TRANQUILIZER;STUNGUN_MP;STUNROD;"/>
+        <Gadgets Hashes="HACKINGDEVICE;2803906140;4222310262;"/>
+        <Props Hashes="PETROLCAN;DIGISCANNER;BRIEFCASE;BRIEFCASE_02;ACIDPACKAGE;HAZARDCAN;METALDETECTOR;FERTILIZERCAN;GARBAGEBAG;HANDCUFFS;"/>
+        <Animals Hashes="TIGER_SHARK;HAMMERHEAD_SHARK;KILLER_WHALE;"/>
+        <RayGuns Hashes="RAYPISTOL;RAYCARBINE;RAYMINIGUN;"/>
+        <Misc Hashes="BLEEDING;DROWNING;DROWNING_IN_VEHICLE;REMOTESNIPER;966099553;"/>
+    </IgnoreSet>
 
     <!-- Here you can determine weapons with its name or hash for every weapon types -->
     <Stats>
@@ -28,22 +38,22 @@
 
         <HeavyCaliber DamageMult="1.3" BleedMult="1.5" PainMult="1.4" CritChance="0.8" ArmorDamage="20"
                       CanPenetrateArmor="TRUE" HelmetSafeChance="0.1">
-            <Hashes Hashes="MG;COMBATMG_MK2;ASSAULTRIFLE;HEAVYSNIPER;HEAVYSNIPER_MK2;MARKSMANRIFLE;MARKSMANRIFLE_MK2;MINIGUN;MUSKET;SNIPERRIFLE;RAILGUN;RAILGUNXM3;PRECISIONRIFLE;HEAVYRIFLE;"/>
+            <Hashes Hashes="MG;COMBATMG_MK2;ASSAULTRIFLE;HEAVYSNIPER;HEAVYSNIPER_MK2;MARKSMANRIFLE;MARKSMANRIFLE_MK2;MINIGUN;MUSKET;SNIPERRIFLE;RAILGUN;RAILGUNXM3;PRECISIONRIFLE;HEAVYRIFLE;ARENA_MACHINE_GUN;AIR_DEFENCE_GUN;"/>
         </HeavyCaliber>
 
         <LightImpact DamageMult="1.0" BleedMult="1.0" PainMult="0.8" CritChance="0.1" ArmorDamage="0"
                      CanPenetrateArmor="FALSE" HelmetSafeChance="1">
-            <Hashes Hashes="UNARMED;SNOWBALL;NIGHTSTICK;KNUCKLE;FLASHLIGHT;BALL;HIT_BY_WATER_CANNON;PIG;CANDYCANE;SNOWLAUNCHER;"/>
+            <Hashes Hashes="UNARMED;SNOWBALL;NIGHTSTICK;KNUCKLE;FLASHLIGHT;BALL;HIT_BY_WATER_CANNON;PIG;CANDYCANE;SNOWLAUNCHER;SMALL_DOG;HEN;RABBIT;BIRD_CRAP;"/>
         </LightImpact>
 
         <HeavyImpact DamageMult="1.0" BleedMult="1.0" PainMult="1.1" CritChance="0.7" ArmorDamage="0"
                      CanPenetrateArmor="FALSE" HelmetSafeChance="0.9">
-            <Hashes Hashes="BOAR;HAMMER;CROWBAR;BAT;GOLFCLUB;POOLCUE;WRENCH;COW;DEER;STONE_HATCHET;"/>
+            <Hashes Hashes="BOAR;HAMMER;CROWBAR;BAT;GOLFCLUB;POOLCUE;WRENCH;COW;DEER;FLAREGUN;"/>
         </HeavyImpact>
 
         <Cutting DamageMult="1.0" BleedMult="1.0" PainMult="1.0" CritChance="0.5" ArmorDamage="1"
                  CanPenetrateArmor="FALSE" HelmetSafeChance="0.9">
-            <Hashes Hashes="KNIFE;BATTLEAXE;BOTTLE;DAGGER;HATCHET;MACHETE;SWITCHBLADE;ANIMAL;COUGAR;BARBED_WIRE;"/>
+            <Hashes Hashes="KNIFE;BATTLEAXE;BOTTLE;DAGGER;HATCHET;STONE_HATCHET;MACHETE;SWITCHBLADE;ANIMAL;COUGAR;BARBED_WIRE;ANIMAL_RETRIEVER;COYOTE;CAT;"/>
         </Cutting>
     </Stats>
-</Weapons>
+</WeaponConfig>
