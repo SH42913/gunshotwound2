@@ -16,8 +16,6 @@
         public LegsCrit(SharedData sharedData) : base(sharedData) { }
 
         public override void Apply(Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
-            CreatePain(pedEntity, 20f);
-
             RagdollType ragdollType = convertedPed.thisPed.IsRunning ? RagdollType.Balance : RagdollType.Relax;
             convertedPed.RequestRagdoll(RAGDOLL_TIME_IN_MS, ragdollType);
             convertedPed.hasBrokenLegs = true;

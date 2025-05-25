@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Crits>
+    <Crit Key="ClosedFractureArm" LocKey="ClosedFractureOf" Effect="ArmsCrit" Message="TRUE"
+          Damage="10" Bleed="0.5" Pain="20"/>
+    <Crit Key="ClosedFractureLeg" LocKey="ClosedFractureOf" Effect="LegsCrit" Message="TRUE"
+          Damage="10" Bleed="0.5" Pain="20"/>
+    <Crit Key="PuncturedLungs" LocKey="InternalBleeding" Effect="LungsCrit" Message="TRUE"
+          Damage="20" Bleed="1" Pain="30"/>
+    <Crit Key="PuncturedHeart" LocKey="InternalBleeding" Effect="HeartCrit" Message="TRUE"
+          Damage="30" Bleed="2.5" Pain="30"/>
+    <Crit Key="PuncturedStomach" LocKey="InternalBleeding" Effect="StomachCrit" Message="TRUE"
+          Damage="10" Bleed="0.5" Pain="30"/>
+    <Crit Key="PuncturedGuts" LocKey="InternalBleeding" Effect="GutsCrit" Message="TRUE"
+          Damage="10" Bleed="0.5" Pain="30"/>
+    <Crit Key="BleedingInHead" LocKey="BleedingInHead" Effect="SpineCrit" Message="FALSE"
+          Damage="50" Bleed="4" Pain="130"/>
+    <Crit Key="HeavyBrainDamage" LocKey="HeavyBrainDamage" Effect="SpineCrit" Message="FALSE"
+          Damage="50" Bleed="4" Pain="130"/>
+    <Crit Key="ShatteredSpine" LocKey="BrokenNeck" Effect="SpineCrit" Message="TRUE"
+          Damage="50" Bleed="3" Pain="110"/>
+    <Crit Key="BrokenNeck" LocKey="BrokenNeck" Effect="SpineCrit" Message="TRUE"
+          Damage="50" Bleed="3" Pain="110"/>
+    <!-- weapon specific
+    <Crit Key="TraumaticBrainInjury" LocKey="TraumaticBrainInjury" Effect="SpineCrit"
+          Damage="50" Bleed="4" Pain="130"/>
+    <Crit Key="BulletFlyThroughHead" LocKey="BulletFlyThroughHead" Effect="SpineCrit"
+          Damage="50" Bleed="4" Pain="130"/>
+    <Crit Key="BulletTornApartBrain" LocKey="BulletTornApartBrain" Effect="SpineCrit"
+          Damage="50" Bleed="4" Pain="130"/>
+          -->
+</Crits>

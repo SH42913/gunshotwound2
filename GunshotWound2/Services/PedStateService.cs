@@ -171,7 +171,7 @@
 
         private void ShowCrits(Entity pedEntity) {
             ref Crits crits = ref pedEntity.GetComponent<Crits>();
-            if (crits.active == Crits.Types.Nothing) {
+            if (crits.activeEffects == Crits.Effects.Nothing) {
                 return;
             }
 
@@ -179,37 +179,37 @@
             stringBuilder.Append(localeConfig.Crits);
             stringBuilder.Append(" ~r~");
 
-            if (crits.HasActive(Crits.Types.SpineDamaged)) {
+            if (crits.HasActive(Crits.Effects.SpineCrit)) {
                 stringBuilder.Append(localeConfig.NervesCrit);
                 stringBuilder.AppendSpace();
             }
 
-            if (crits.HasActive(Crits.Types.HeartDamaged)) {
+            if (crits.HasActive(Crits.Effects.HeartCrit)) {
                 stringBuilder.Append(localeConfig.HeartCrit);
                 stringBuilder.AppendSpace();
             }
 
-            if (crits.HasActive(Crits.Types.LungsDamaged)) {
+            if (crits.HasActive(Crits.Effects.LungsCrit)) {
                 stringBuilder.Append(localeConfig.LungsCrit);
                 stringBuilder.AppendSpace();
             }
 
-            if (crits.HasActive(Crits.Types.StomachDamaged)) {
+            if (crits.HasActive(Crits.Effects.StomachCrit)) {
                 stringBuilder.Append(localeConfig.StomachCrit);
                 stringBuilder.AppendSpace();
             }
 
-            if (crits.HasActive(Crits.Types.GutsDamaged)) {
+            if (crits.HasActive(Crits.Effects.GutsCrit)) {
                 stringBuilder.Append(localeConfig.GutsCrit);
                 stringBuilder.AppendSpace();
             }
 
-            if (crits.HasActive(Crits.Types.ArmsDamaged)) {
+            if (crits.HasActive(Crits.Effects.ArmsCrit)) {
                 stringBuilder.Append(localeConfig.ArmsCrit);
                 stringBuilder.AppendSpace();
             }
 
-            if (crits.HasActive(Crits.Types.LegsDamaged)) {
+            if (crits.HasActive(Crits.Effects.LegsCrit)) {
                 stringBuilder.Append(localeConfig.LegsCrit);
                 stringBuilder.AppendSpace();
             }

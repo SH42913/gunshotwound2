@@ -14,9 +14,6 @@
         public HeartCrit(SharedData sharedData) : base(sharedData) { }
 
         public override void Apply(Entity pedEntity, ref ConvertedPed convertedPed) {
-            CreatePain(pedEntity, 30f);
-            CreateInternalBleeding(pedEntity, sharedData.mainConfig.bodyPartConfig.GetBodyPartByKey("Chest"), 2.5f);
-
             convertedPed.thisPed.PlayAmbientSpeech("COUGH", GTA.SpeechModifier.InterruptShouted);
             convertedPed.RequestRagdoll(6000);
             convertedPed.nmMessages = NM_MESSAGES;

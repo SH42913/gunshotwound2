@@ -152,11 +152,11 @@
 
             if (!convertedPed.thisPed.IsInVehicle()) {
                 ref Crits crits = ref pedEntity.GetComponent<Crits>();
-                bool legsDamaged = crits.HasActive(Crits.Types.LegsDamaged);
-                bool heavyCrit = crits.HasActive(Crits.Types.HeartDamaged)
-                                 || crits.HasActive(Crits.Types.LungsDamaged)
-                                 || crits.HasActive(Crits.Types.StomachDamaged)
-                                 || crits.HasActive(Crits.Types.GutsDamaged);
+                bool legsDamaged = crits.HasActive(Crits.Effects.LegsCrit);
+                bool heavyCrit = crits.HasActive(Crits.Effects.HeartCrit)
+                                 || crits.HasActive(Crits.Effects.LungsCrit)
+                                 || crits.HasActive(Crits.Effects.StomachCrit)
+                                 || crits.HasActive(Crits.Effects.GutsCrit);
 
                 if (heavyCrit || legsDamaged) {
                     randomizer.Add(2);

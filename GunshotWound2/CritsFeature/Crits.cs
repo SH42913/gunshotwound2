@@ -7,24 +7,24 @@
     [Serializable]
     public struct Crits : IComponent {
         [Flags]
-        public enum Types {
+        public enum Effects {
             Nothing = 0,
-            LegsDamaged = 1 << 0,
-            ArmsDamaged = 1 << 1,
-            SpineDamaged = 1 << 2,
-            GutsDamaged = 1 << 3,
-            StomachDamaged = 1 << 4,
-            LungsDamaged = 1 << 5,
-            HeartDamaged = 1 << 6,
+            LegsCrit = 1 << 0,
+            ArmsCrit = 1 << 1,
+            SpineCrit = 1 << 2,
+            GutsCrit = 1 << 3,
+            StomachCrit = 1 << 4,
+            LungsCrit = 1 << 5,
+            HeartCrit = 1 << 6,
         }
 
         public BodyPartConfig.BodyPart requestBodyPart;
-        public Types active;
+        public Effects activeEffects;
     }
 
     public static class CritsExtensions {
-        public static bool HasActive(this in Crits crits, Crits.Types value) {
-            return (crits.active & value) == value;
+        public static bool HasActive(this in Crits crits, Crits.Effects value) {
+            return (crits.activeEffects & value) == value;
         }
     }
 }

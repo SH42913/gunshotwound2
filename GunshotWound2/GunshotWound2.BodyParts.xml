@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <BodyParts>
-    <BodyPart Key="Head" LocKey="BodyPartHead" Bones="SkelHead;"/>
-    <BodyPart Key="Neck" LocKey="BodyPartNeck" Bones="SkelNeck1;SkelNeck2;"/>
-    <BodyPart Key="Chest" LocKey="BodyPartChest" Bones="SkelSpine2;SkelSpine3;"/>
-    <BodyPart Key="Abdomen" LocKey="BodyPartLowerBody" Bones="SkelSpineRoot;SkelSpine0;SkelSpine1;"/>
-    <BodyPart Key="Pelvis" LocKey="BodyPartLowerBody" Bones="SkelRoot;SkelPelvisRoot;SkelPelvis;SkelPelvis1;"/>
+    <BodyPart Key="Head" LocKey="BodyPartHead" Bones="SkelHead;" Crits="BleedingInHead;HeavyBrainDamage;"/>
+    <BodyPart Key="Neck" LocKey="BodyPartNeck" Bones="SkelNeck1;SkelNeck2;" Crits="BrokenNeck;"/>
+    <BodyPart Key="Chest" LocKey="BodyPartChest"
+              Bones="SkelSpine2;SkelSpine3;" Crits="PuncturedLungs;PuncturedHeart;ShatteredSpine;"/>
+    <BodyPart Key="Abdomen" LocKey="BodyPartLowerBody"
+              Bones="SkelSpineRoot;SkelSpine0;SkelSpine1;" Crits="PuncturedStomach;PuncturedGuts;ShatteredSpine;"/>
+    <BodyPart Key="Pelvis" LocKey="BodyPartLowerBody"
+              Bones="SkelRoot;SkelPelvisRoot;SkelPelvis;SkelPelvis1;" Crits="PuncturedGuts;"/>
     <BodyPart Key="LeftLeg" LocKey="BodyPartLeg"
-              Bones="SkelLeftThigh;SkelLeftToe0;SkelLeftToe1;SkelLeftFoot;SkelLeftCalf;"/>
+              Bones="SkelLeftThigh;SkelLeftToe0;SkelLeftToe1;SkelLeftFoot;SkelLeftCalf;" Crits="ClosedFractureLeg;"/>
     <BodyPart Key="RightLeg" LocKey="BodyPartLeg"
-              Bones="SkelRightThigh;SkelRightToe0;SkelRightToe1;SkelRightFoot;SkelRightCalf;"/>
+              Bones="SkelRightThigh;SkelRightToe0;SkelRightToe1;SkelRightFoot;SkelRightCalf;"
+              Crits="ClosedFractureLeg;"/>
     <BodyPart Key="LeftArm" LocKey="BodyPartArm"
-              Bones="SkelLeftUpperArm;SkelLeftClavicle;SkelLeftForearm;SkelLeftHand;"/>
+              Bones="SkelLeftUpperArm;SkelLeftClavicle;SkelLeftForearm;SkelLeftHand;" Crits="ClosedFractureArm;"/>
     <BodyPart Key="RightArm" LocKey="BodyPartArm"
-              Bones="SkelRightUpperArm;SkelRightClavicle;SkelRightForearm;SkelRightHand;"/>
+              Bones="SkelRightUpperArm;SkelRightClavicle;SkelRightForearm;SkelRightHand;" Crits="ClosedFractureArm;"/>
 </BodyParts>

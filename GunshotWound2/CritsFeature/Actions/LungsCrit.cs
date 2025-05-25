@@ -12,9 +12,6 @@
         public LungsCrit(SharedData sharedData) : base(sharedData) { }
 
         public override void Apply(Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
-            CreatePain(pedEntity, 30f);
-            CreateInternalBleeding(pedEntity, sharedData.mainConfig.bodyPartConfig.GetBodyPartByKey("Chest"), 1f);
-
             convertedPed.thisPed.PlayAmbientSpeech("COUGH", SpeechModifier.InterruptShouted);
             convertedPed.BlockSprint();
 

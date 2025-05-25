@@ -2,29 +2,14 @@
     using Configs;
     using HealthFeature;
     using HitDetection;
+    using PainFeature;
     using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
 
     public sealed class CritsSystem : ILateSystem {
         private readonly SharedData sharedData;
-        private readonly (Crits.Types, BaseCrit)[] critActions;
-
-        private readonly Crits.Types[] upperBodyCrits = {
-            Crits.Types.SpineDamaged,
-            Crits.Types.LungsDamaged,
-            Crits.Types.HeartDamaged,
-            Crits.Types.LungsDamaged,
-            Crits.Types.HeartDamaged,
-        };
-
-        private readonly Crits.Types[] lowerBodyCrits = {
-            Crits.Types.SpineDamaged,
-            Crits.Types.StomachDamaged,
-            Crits.Types.GutsDamaged,
-            Crits.Types.StomachDamaged,
-            Crits.Types.GutsDamaged,
-        };
+        private readonly (Crits.Effects, BaseCrit)[] critEffects;
 
         private Filter pedsWithCrits;
         private Stash<Crits> critsStash;
@@ -36,14 +21,14 @@
         public CritsSystem(SharedData sharedData) {
             this.sharedData = sharedData;
 
-            critActions = new (Crits.Types, BaseCrit)[] {
-                (Crits.Types.ArmsDamaged, new ArmsCrit(this.sharedData)),
-                (Crits.Types.GutsDamaged, new GutsCrit(this.sharedData)),
-                (Crits.Types.HeartDamaged, new HeartCrit(this.sharedData)),
-                (Crits.Types.LegsDamaged, new LegsCrit(this.sharedData)),
-                (Crits.Types.LungsDamaged, new LungsCrit(this.sharedData)),
-                (Crits.Types.SpineDamaged, new SpineCrit(this.sharedData)),
-                (Crits.Types.StomachDamaged, new StomachCrit(this.sharedData)),
+            critEffects = new (Crits.Effects, BaseCrit)[] {
+                (Crits.Effects.ArmsCrit, new ArmsCrit(this.sharedData)),
+                (Crits.Effects.LegsCrit, new LegsCrit(this.sharedData)),
+                (Crits.Effects.HeartCrit, new HeartCrit(this.sharedData)),
+                (Crits.Effects.LungsCrit, new LungsCrit(this.sharedData)),
+                (Crits.Effects.GutsCrit, new GutsCrit(this.sharedData)),
+                (Crits.Effects.StomachCrit, new StomachCrit(this.sharedData)),
+                (Crits.Effects.SpineCrit, new SpineCrit(this.sharedData)),
             };
         }
 
@@ -59,32 +44,36 @@
                 ref Crits crits = ref critsStash.Get(entity);
                 ref ConvertedPed convertedPed = ref pedStash.Get(entity);
                 if (totallyHealedStash.Has(entity)) {
-                    CancelAllCrits(entity, ref crits, ref convertedPed);
+                    CancelAllCritEffects(entity, ref crits, ref convertedPed);
                 } else if (crits.requestBodyPart.IsValid) {
-                    Crits.Types newCrit = GetRandomCritFor(crits.requestBodyPart);
+                    CritsConfig.Crit crit = GetRandomCritFor(crits.requestBodyPart);
 #if DEBUG
-                    sharedData.logger.WriteInfo($"Random crit {newCrit} for {crits.requestBodyPart} at {convertedPed.name}");
+                    sharedData.logger.WriteInfo($"Selected crit {crit.Key} for {crits.requestBodyPart.Key} at {convertedPed.name}");
 #endif
 
-                    if (newCrit != Crits.Types.SpineDamaged) {
-                        ApplyCrit(entity, ref crits, ref convertedPed, newCrit);
+                    string critName = sharedData.localeConfig.GetTranslation(crit.LocKey);
+                    entity.GetComponent<Pain>().diff += crit.Pain;
+                    entity.GetComponent<Health>().DealDamage(crit.Damage, critName);
+                    entity.CreateBleeding(crits.requestBodyPart, crit.Bleed, critName, isInternal: true);
+
+                    if (crit.Effect != Crits.Effects.SpineCrit) {
+                        ApplyCritEffect(entity, ref crits, ref convertedPed, crit.Effect, crit.Message);
                     } else {
-                        bool isHeadshot = crits.requestBodyPart.Key == "Head";
                         bool realSpineCrit = convertedPed.isPlayer
                                 ? sharedData.mainConfig.playerConfig.RealisticSpineDamage
                                 : sharedData.mainConfig.pedsConfig.RealisticSpineDamage;
 
-                        if (isHeadshot || realSpineCrit) {
-                            ApplyCrit(entity, ref crits, ref convertedPed, Crits.Types.SpineDamaged, message: !isHeadshot);
+                        if (realSpineCrit) {
+                            ApplyCritEffect(entity, ref crits, ref convertedPed, Crits.Effects.SpineCrit, crit.Message);
                         } else {
-                            ApplyCrit(entity, ref crits, ref convertedPed, Crits.Types.ArmsDamaged);
-                            ApplyCrit(entity, ref crits, ref convertedPed, Crits.Types.LegsDamaged);
+                            ApplyCritEffect(entity, ref crits, ref convertedPed, Crits.Effects.ArmsCrit, crit.Message);
+                            ApplyCritEffect(entity, ref crits, ref convertedPed, Crits.Effects.LegsCrit, crit.Message);
                         }
                     }
 
                     crits.requestBodyPart = default;
                 } else {
-                    IterateCrits(entity, ref crits, ref convertedPed);
+                    IterateCritEffects(entity, ref crits, ref convertedPed);
                 }
             }
         }
@@ -93,37 +82,27 @@
             foreach (Entity entity in pedsWithCrits) {
                 ref Crits crits = ref critsStash.Get(entity);
                 ref ConvertedPed convertedPed = ref pedStash.Get(entity);
-                CancelAllCrits(entity, ref crits, ref convertedPed);
+                CancelAllCritEffects(entity, ref crits, ref convertedPed);
             }
         }
 
-        private Crits.Types GetRandomCritFor(BodyPartConfig.BodyPart bodyPart) {
-            switch (bodyPart.Key) {
-                case "Head":    return Crits.Types.SpineDamaged;
-                case "Chest":   return sharedData.random.Next(upperBodyCrits);
-                case "Abdomen": return sharedData.random.Next(lowerBodyCrits);
-                case "LeftArm":
-                case "RightArm":
-                    return Crits.Types.ArmsDamaged;
-                case "LeftLeg":
-                case "RightLeg":
-                    return Crits.Types.LegsDamaged;
-                default:        return default;
-            }
+        private CritsConfig.Crit GetRandomCritFor(BodyPartConfig.BodyPart bodyPart) {
+            string critKey = sharedData.random.Next(bodyPart.Crits);
+            return sharedData.mainConfig.critsConfig.GetCritByKey(critKey);
         }
 
-        private void ApplyCrit(Entity entity,
-                               ref Crits crits,
-                               ref ConvertedPed convertedPed,
-                               Crits.Types newCrit,
-                               bool message = true) {
-            foreach ((Crits.Types type, BaseCrit action) in critActions) {
+        private void ApplyCritEffect(Entity entity,
+                                     ref Crits crits,
+                                     ref ConvertedPed convertedPed,
+                                     Crits.Effects newCrit,
+                                     bool message) {
+            foreach ((Crits.Effects type, BaseCrit action) in critEffects) {
                 if (newCrit != type || crits.HasActive(type)) {
                     continue;
                 }
 
 #if DEBUG
-                sharedData.logger.WriteInfo($"Apply crit for {convertedPed.name} - {type}");
+                sharedData.logger.WriteInfo($"Apply crit effect for {convertedPed.name} - {type}");
 #endif
 
                 if (message) {
@@ -131,21 +110,21 @@
                 }
 
                 action.Apply(entity, ref convertedPed);
-                crits.active |= type;
+                crits.activeEffects |= type;
                 crits.requestBodyPart = default;
             }
         }
 
-        private void IterateCrits(Entity entity, ref Crits crits, ref ConvertedPed convertedPed) {
-            foreach ((Crits.Types type, BaseCrit action) in critActions) {
+        private void IterateCritEffects(Entity entity, ref Crits crits, ref ConvertedPed convertedPed) {
+            foreach ((Crits.Effects type, BaseCrit action) in critEffects) {
                 if (crits.HasActive(type)) {
                     action.EveryFrame(entity, ref convertedPed);
                 }
             }
         }
 
-        private void CancelAllCrits(Entity entity, ref Crits crits, ref ConvertedPed convertedPed) {
-            foreach ((Crits.Types type, BaseCrit action) in critActions) {
+        private void CancelAllCritEffects(Entity entity, ref Crits crits, ref ConvertedPed convertedPed) {
+            foreach ((Crits.Effects type, BaseCrit action) in critEffects) {
                 if (crits.HasActive(type)) {
                     action.Cancel(entity, ref convertedPed);
                 }

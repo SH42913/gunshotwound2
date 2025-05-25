@@ -13,6 +13,7 @@ namespace GunshotWound2.Configs {
             public readonly string Key;
             public readonly string LocKey;
             public readonly HashSet<int> Bones;
+            public readonly string[] Crits;
 
             public bool IsValid => !string.IsNullOrEmpty(Key);
 
@@ -23,6 +24,10 @@ namespace GunshotWound2.Configs {
                             .Split(MainConfig.Separator, StringSplitOptions.RemoveEmptyEntries)
                             .Select(GetIntOfBone)
                             .ToHashSet();
+
+                Crits = node.GetString(nameof(Crits))
+                            .Split(MainConfig.Separator, StringSplitOptions.RemoveEmptyEntries)
+                            .ToArray();
             }
 
             private static int GetIntOfBone(string boneName) {
