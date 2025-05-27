@@ -147,8 +147,8 @@ namespace GunshotWound2.Configs {
 
         private static (string, int)[] ExtractWounds(XElement weaponNode) {
             XElement woundsNode = weaponNode.Element(nameof(Weapon.Wounds))!;
-            return woundsNode.Elements("Item")
-                             .Select(x => (x.GetString("Key"), x.GetInt("Weight")))
+            return woundsNode.Elements(nameof(WoundConfig.Wound))
+                             .Select(x => (x.GetString(nameof(WoundConfig.Wound.Key)), x.GetInt(MainConfig.WEIGHT_ATTRIBUTE_NAME)))
                              .ToArray();
         }
 

@@ -59,9 +59,16 @@
                 sharedData.logger.WriteWarning($"Hit has no bodyPart, {hitData.bodyPart.Key} will be used");
             }
 
-            WoundConfig.Wound wound = armorChecker.TrySave(ref convertedPed, hitData, out WoundConfig.Wound armorWound)
-                    ? armorWound
-                    : GetRandomWoundTemplate(hitData.weaponType);
+            WoundConfig.Wound wound;
+            if (armorChecker.TrySave(ref convertedPed, hitData, out WoundConfig.Wound armorWound)) {
+                wound = armorWound;
+            } else {
+                string woundKey = sharedData.weightRandom.GetValueWithWeights(hitData.weaponType.Wounds);
+#if DEBUG
+                sharedData.logger.WriteInfo($"Selected wound {woundKey}");
+#endif
+                wound = sharedData.mainConfig.woundConfig.Wounds[woundKey];
+            }
 
             Ped ped = convertedPed.thisPed;
             ped.Armor += hitData.armorDiff;
@@ -92,12 +99,6 @@
             pain.diff += stunPainMult * maxPain - pain.amount;
 
             convertedPed.thisPed.PlayAmbientSpeech("PAIN_TAZER", SpeechModifier.InterruptShouted);
-        }
-
-        private WoundConfig.Wound GetRandomWoundTemplate(in WeaponConfig.Weapon weapon) {
-            string woundKey = sharedData.weightRandom.GetValueWithWeights(weapon.Wounds);
-            WoundConfig.Wound woundTemplate = sharedData.mainConfig.woundConfig.Wounds[woundKey];
-            return woundTemplate;
         }
 
         private void ProcessWound(EcsEntity entity, in PedHitData hitData, in WoundConfig.Wound wound, in ConvertedPed convertedPed) {

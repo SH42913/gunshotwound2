@@ -4,31 +4,39 @@
               Bones="SkelHead;"
               TraumaChance="1">
         <BluntTraumas>
-            <Trauma Key="NasalFracture" Weight="1"/>
-            <Trauma Key="Blackout" Weight="1"/>
-            <Trauma Key="Concussion" Weight="1"/>
-            <Trauma Key="BrainHematoma" Weight="1"/>
-            <Trauma Key="SkullFracture" Weight="1"/>
-            <Trauma Key="BleedingInHead" Weight="1"/>
+            <Trauma Key="NasalFracture" Weight="15"/>
+            <Trauma Key="Blackout" Weight="20"/>
+            <Trauma Key="Concussion" Weight="30"/>
+            <Trauma Key="BrainHematoma" Weight="20"/>
+            <Trauma Key="SkullFracture" Weight="10"/>
+            <Trauma Key="BleedingInHead" Weight="5"/>
         </BluntTraumas>
         <PenetratingTraumas>
             <Trauma Key="PenetratingSkullFracture" Weight="1"/>
             <Trauma Key="BleedingInHead" Weight="1"/>
+            <Trauma Key="BrainHematoma" Weight="1"/>
+            <Trauma Key="SkullFracture" Weight="1"/>
         </PenetratingTraumas>
     </BodyPart>
 
     <BodyPart Key="Neck" LocKey="BodyParts.Neck"
               Bones="SkelNeck1;SkelNeck2;"
-              TraumaChance="0.5">
+              TraumaChance="1">
         <BluntTraumas>
-            <Trauma Key="LightArterialBleed" Weight="1"/>
-            <Trauma Key="SpineFracture" Weight="1"/>
-            <Trauma Key="TrachealInjury" Weight="1"/>
+            <Trauma Key="TrachealInjury" Weight="20"/>
+            <Trauma Key="NeckSpineFracture" Weight="30"/>
+            <Trauma Key="Blackout" Weight="20"/>
+            <Trauma Key="GreatVesselBleed" Weight="10"/>
+            <Trauma Key="Concussion" Weight="10"/>
+            <Trauma Key="LightArterialBleed" Weight="10"/>
         </BluntTraumas>
         <PenetratingTraumas>
-            <Trauma Key="GreatVesselBleed" Weight="1"/>
-            <Trauma Key="SpineFracture" Weight="1"/>
-            <Trauma Key="TrachealInjury" Weight="1"/>
+            <Trauma Key="GreatVesselBleed" Weight="30"/>
+            <Trauma Key="TrachealInjury" Weight="20"/>
+            <Trauma Key="NeckSpineFracture" Weight="15"/>
+            <Trauma Key="LightArterialBleed" Weight="15"/>
+            <Trauma Key="HeavyArterialBleed" Weight="10"/>
+            <Trauma Key="Blackout" Weight="10"/>
         </PenetratingTraumas>
     </BodyPart>
 
@@ -36,71 +44,97 @@
               Bones="SkelSpine2;SkelSpine3;"
               TraumaChance="1">
         <BluntTraumas>
-            <Trauma Key="RibFractures" Weight="2"/>
-            <Trauma Key="Hemothorax" Weight="2"/>
-            <Trauma Key="HeartInjury" Weight="2"/>
-            <Trauma Key="LungsInjury" Weight="2"/>
-            <Trauma Key="SpineFracture" Weight="1"/>
+            <Trauma Key="RibFractures" Weight="30"/>
+            <Trauma Key="SpineFracture" Weight="25"/>
+            <Trauma Key="LungsInjury" Weight="20"/>
+            <Trauma Key="Hemothorax" Weight="10"/>
+            <Trauma Key="HeartInjury" Weight="5"/>
+            <Trauma Key="Pneumothorax" Weight="5"/>
+            <Trauma Key="LightArterialBleed" Weight="5"/>
         </BluntTraumas>
         <PenetratingTraumas>
-            <Trauma Key="RibFractures" Weight="2"/>
-            <Trauma Key="Pneumothorax" Weight="2"/>
-            <Trauma Key="HeartInjury" Weight="2"/>
-            <Trauma Key="LungsInjury" Weight="2"/>
-            <Trauma Key="LightArterialBleed" Weight="1"/>
-            <Trauma Key="HeavyArterialBleed" Weight="1"/>
-            <Trauma Key="SpineFracture" Weight="1"/>
+            <Trauma Key="HeartInjury" Weight="30"/>
+            <Trauma Key="LungsInjury" Weight="20"/>
+            <Trauma Key="SpineFracture" Weight="15"/>
+            <Trauma Key="Hemothorax" Weight="15"/>
+            <Trauma Key="Pneumothorax" Weight="10"/>
+            <Trauma Key="HeavyArterialBleed" Weight="10"/>
         </PenetratingTraumas>
     </BodyPart>
 
     <BodyPart Key="Abdomen" LocKey="BodyParts.Abdomen"
               Bones="SkelSpineRoot;SkelSpine0;SkelSpine1;"
-              TraumaChance="0.9">
+              TraumaChance="1">
         <BluntTraumas>
-            <Trauma Key="Hemoperitoneum" Weight="2"/>
-            <Trauma Key="StomachInjury" Weight="2"/>
-            <Trauma Key="LiverInjury" Weight="2"/>
-            <Trauma Key="BowelInjury" Weight="1"/>
-            <Trauma Key="SpineFracture" Weight="1"/>
+            <Trauma Key="LiverInjury" Weight="25"/>
+            <Trauma Key="StomachInjury" Weight="25"/>
+            <Trauma Key="Hemoperitoneum" Weight="20"/>
+            <Trauma Key="BowelInjury" Weight="15"/>
+            <Trauma Key="LightArterialBleed" Weight="10"/>
+            <Trauma Key="ClosedFracturePelvis" Weight="5"/>
         </BluntTraumas>
         <PenetratingTraumas>
-            <Trauma Key="LightArterialBleed" Weight="3"/>
-            <Trauma Key="StomachInjury" Weight="2"/>
-            <Trauma Key="LiverInjury" Weight="2"/>
-            <Trauma Key="BowelInjury" Weight="1"/>
-            <Trauma Key="SpineFracture" Weight="1"/>
+            <Trauma Key="LiverInjury" Weight="30"/>
+            <Trauma Key="Hemoperitoneum" Weight="25"/>
+            <Trauma Key="BowelInjury" Weight="20"/>
+            <Trauma Key="StomachInjury" Weight="15"/>
+            <Trauma Key="HeavyArterialBleed" Weight="10"/>
         </PenetratingTraumas>
     </BodyPart>
 
     <BodyPart Key="Pelvis" LocKey="BodyParts.Pelvis"
               Bones="SkelRoot;SkelPelvisRoot;SkelPelvis;SkelPelvis1;"
-              TraumaChance="0.8">
+              TraumaChance="1">
         <BluntTraumas>
-            <Trauma Key="Hemoperitoneum" Weight="2"/>
-            <Trauma Key="BowelInjury" Weight="1"/>
-            <Trauma Key="ClosedFracturePelvis" Weight="1"/>
+            <Trauma Key="ClosedFracturePelvis" Weight="35"/>
+            <Trauma Key="SpineFracture" Weight="20"/>
+            <Trauma Key="Hemoperitoneum" Weight="20"/>
+            <Trauma Key="LightArterialBleed" Weight="10"/>
+            <Trauma Key="BowelInjury" Weight="10"/>
+            <Trauma Key="HeavyArterialBleed" Weight="5"/>
         </BluntTraumas>
         <PenetratingTraumas>
-            <Trauma Key="LightArterialBleed" Weight="2"/>
-            <Trauma Key="BowelInjury" Weight="1"/>
-            <Trauma Key="ClosedFracturePelvis" Weight="1"/>
+            <Trauma Key="ClosedFracturePelvis" Weight="25"/>
+            <Trauma Key="BowelInjury" Weight="20"/>
+            <Trauma Key="Hemoperitoneum" Weight="15"/>
+            <Trauma Key="SpineFracture" Weight="15"/>
+            <Trauma Key="HeavyArterialBleed" Weight="15"/>
+            <Trauma Key="LightArterialBleed" Weight="10"/>
         </PenetratingTraumas>
     </BodyPart>
 
     <BodyPart Key="LeftShoulder" LocKey="BodyParts.LeftShoulder" Bones="SkelLeftClavicle;" TraumaChance="1">
         <BluntTraumas>
-            <Trauma Key="ClosedFractureArm" Weight="1"/>
+            <Trauma Key="DislocatedShoulder" Weight="40"/>
+            <Trauma Key="ClosedFractureArm" Weight="35"/>
+            <Trauma Key="LightArterialBleed" Weight="10"/>
+            <Trauma Key="RibFractures" Weight="10"/>
+            <Trauma Key="Blackout" Weight="5"/>
         </BluntTraumas>
         <PenetratingTraumas>
-            <Trauma Key="ClosedFractureArm" Weight="1"/>
+            <Trauma Key="ClosedFractureArm" Weight="25"/>
+            <Trauma Key="LightArterialBleed" Weight="25"/>
+            <Trauma Key="DislocatedShoulder" Weight="15"/>
+            <Trauma Key="RibFractures" Weight="10"/>
+            <Trauma Key="HeavyArterialBleed" Weight="10"/>
+            <Trauma Key="LungsInjury" Weight="15"/>
         </PenetratingTraumas>
     </BodyPart>
     <BodyPart Key="RightShoulder" LocKey="BodyParts.RightShoulder" Bones="SkelRightClavicle;" TraumaChance="1">
         <BluntTraumas>
-            <Trauma Key="ClosedFractureArm" Weight="1"/>
+            <Trauma Key="DislocatedShoulder" Weight="40"/>
+            <Trauma Key="ClosedFractureArm" Weight="35"/>
+            <Trauma Key="LightArterialBleed" Weight="10"/>
+            <Trauma Key="RibFractures" Weight="10"/>
+            <Trauma Key="Blackout" Weight="5"/>
         </BluntTraumas>
         <PenetratingTraumas>
-            <Trauma Key="ClosedFractureArm" Weight="1"/>
+            <Trauma Key="ClosedFractureArm" Weight="25"/>
+            <Trauma Key="LightArterialBleed" Weight="25"/>
+            <Trauma Key="DislocatedShoulder" Weight="15"/>
+            <Trauma Key="RibFractures" Weight="10"/>
+            <Trauma Key="HeavyArterialBleed" Weight="10"/>
+            <Trauma Key="LungsInjury" Weight="15"/>
         </PenetratingTraumas>
     </BodyPart>
 
@@ -109,10 +143,12 @@
               TraumaChance="1">
         <BluntTraumas>
             <Trauma Key="ClosedFractureArm" Weight="1"/>
+            <Trauma Key="LightArterialBleed" Weight="1"/>
         </BluntTraumas>
         <PenetratingTraumas>
-            <Trauma Key="LightArterialBleed" Weight="2"/>
             <Trauma Key="ClosedFractureArm" Weight="1"/>
+            <Trauma Key="LightArterialBleed" Weight="1"/>
+            <Trauma Key="HeavyArterialBleed" Weight="1"/>
         </PenetratingTraumas>
     </BodyPart>
     <BodyPart Key="RightArm" LocKey="BodyParts.RightArm"
@@ -120,10 +156,12 @@
               TraumaChance="1">
         <BluntTraumas>
             <Trauma Key="ClosedFractureArm" Weight="1"/>
+            <Trauma Key="LightArterialBleed" Weight="1"/>
         </BluntTraumas>
         <PenetratingTraumas>
-            <Trauma Key="LightArterialBleed" Weight="2"/>
             <Trauma Key="ClosedFractureArm" Weight="1"/>
+            <Trauma Key="LightArterialBleed" Weight="1"/>
+            <Trauma Key="HeavyArterialBleed" Weight="1"/>
         </PenetratingTraumas>
     </BodyPart>
 
@@ -131,24 +169,26 @@
               Bones="SkelLeftThigh;SkelLeftToe0;SkelLeftToe1;SkelLeftFoot;SkelLeftCalf;"
               TraumaChance="1">
         <BluntTraumas>
-            <Trauma Key="ClosedFractureLeg" Weight="1"/>
+            <Trauma Key="ClosedFractureArm" Weight="1"/>
+            <Trauma Key="LightArterialBleed" Weight="1"/>
         </BluntTraumas>
         <PenetratingTraumas>
-            <Trauma Key="HeavyArterialBleed" Weight="1"/>
+            <Trauma Key="ClosedFractureArm" Weight="1"/>
             <Trauma Key="LightArterialBleed" Weight="1"/>
-            <Trauma Key="ClosedFractureLeg" Weight="1"/>
+            <Trauma Key="HeavyArterialBleed" Weight="1"/>
         </PenetratingTraumas>
     </BodyPart>
     <BodyPart Key="RightLeg" LocKey="BodyParts.RightLeg"
               Bones="SkelRightThigh;SkelRightToe0;SkelRightToe1;SkelRightFoot;SkelRightCalf;"
               TraumaChance="1">
         <BluntTraumas>
-            <Trauma Key="ClosedFractureLeg" Weight="1"/>
+            <Trauma Key="ClosedFractureArm" Weight="1"/>
+            <Trauma Key="LightArterialBleed" Weight="1"/>
         </BluntTraumas>
         <PenetratingTraumas>
-            <Trauma Key="HeavyArterialBleed" Weight="1"/>
+            <Trauma Key="ClosedFractureArm" Weight="1"/>
             <Trauma Key="LightArterialBleed" Weight="1"/>
-            <Trauma Key="ClosedFractureLeg" Weight="1"/>
+            <Trauma Key="HeavyArterialBleed" Weight="1"/>
         </PenetratingTraumas>
     </BodyPart>
 </BodyParts>
