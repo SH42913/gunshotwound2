@@ -56,7 +56,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Configs\ArmorConfig.cs" />
     <Compile Include="Configs\BodyPartConfig.cs" />
-    <Compile Include="Configs\CritsConfig.cs" />
+    <Compile Include="Configs\TraumaConfig.cs" />
     <Compile Include="Configs\InventoryConfig.cs" />
     <Compile Include="Configs\LocaleConfig.cs"/>
     <Compile Include="Configs\MainConfig.cs"/>
@@ -65,17 +65,16 @@
     <Compile Include="Configs\PlayerConfig.cs"/>
     <Compile Include="Configs\WeaponConfig.cs" />
     <Compile Include="Configs\WoundConfig.cs"/>
-    <Compile Include="CritsFeature\Actions\ArmsCrit.cs"/>
-    <Compile Include="CritsFeature\Actions\GutsCrit.cs"/>
-    <Compile Include="CritsFeature\Actions\HeartCrit.cs"/>
-    <Compile Include="CritsFeature\Actions\BaseCrit.cs"/>
-    <Compile Include="CritsFeature\Actions\LegsCrit.cs"/>
-    <Compile Include="CritsFeature\Actions\LungsCrit.cs"/>
-    <Compile Include="CritsFeature\Actions\SpineCrit.cs"/>
-    <Compile Include="CritsFeature\Actions\StomachCrit.cs"/>
-    <Compile Include="CritsFeature\Crits.cs"/>
-    <Compile Include="CritsFeature\CritsFeature.cs"/>
-    <Compile Include="CritsFeature\CritsSystem.cs"/>
+    <Compile Include="TraumaFeature\Actions\ArmsTraumaEffect.cs" />
+    <Compile Include="TraumaFeature\Actions\HeartTraumaEffect.cs" />
+    <Compile Include="TraumaFeature\Actions\BaseTraumaEffect.cs" />
+    <Compile Include="TraumaFeature\Actions\LegsTraumaEffect.cs" />
+    <Compile Include="TraumaFeature\Actions\LungsTraumaEffect.cs" />
+    <Compile Include="TraumaFeature\Actions\SpineTraumaEffect.cs" />
+    <Compile Include="TraumaFeature\Actions\AbdomenTraumaEffect.cs" />
+    <Compile Include="TraumaFeature\Traumas.cs" />
+    <Compile Include="TraumaFeature\TraumaFeature.cs" />
+    <Compile Include="TraumaFeature\TraumaSystem.cs" />
     <Compile Include="HealthFeature\BandageItem.cs" />
     <Compile Include="HitDetection\AggressorDetectSystem.cs" />
     <Compile Include="InventoryFeature\AddItemRequest.cs" />
@@ -167,7 +166,7 @@
     <Content Include="GunshotWound2.BodyParts.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GunshotWound2.Crits.xml">
+    <Content Include="GunshotWound2.Traumas.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="GunshotWound2.Inventory.xml">

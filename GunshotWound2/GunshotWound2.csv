@@ -1,5 +1,6 @@
 KEY,EN,RU,DE,FR,PL,KR,PT-BR,SPA,SWE,JP,ZH-HK,ZN-CN,FA,FI
-Green color is a new strings,,,,,,,,,,,,,,
+Green for a new strings,,,,,,,,,,,,,,
+Black for removed strings,,,,,,,,,,,,,,
 HelmetProtectedYou,Your helmet saved your head,Шлем спас вашу голову,Dein Helm rettete dein Leben,Votre casque a protégé votre tête,Hełm uratował ci głowe,헬멧이 당신의 머리를 구했다,Seu capacete salvou sua cabeça,El casco te protegió la cabeza,Din hjälm skyddade ditt huvud,ヘルメットが命を救った,頭盔救了你的命,头盔救了你的命,کلاه ایمنی سر شما را نجات داد,Kypäräsi pelasti pääsi
 ArmorProtectedYou,Your body armor has protected you,Бронежилет спас вас,,,,,,,,,,,,
 ArmorPenetrated,Your armor was penetrated,Бронежилет был пробит,Deine Rüstung wurde durchdrungen,Votre armure a été pénétrée,Przebicie kamizelki,당신의 갑옷이 뚫렸다,Sua armadura foi penetrada,Tu chaleco antibalas fue penetrado,Din rustning penetrerades,アーマーが貫通された,護甲被穿透,护甲被穿透,زره شما مورد نفوذ قرار گرفته,Panssarisi lävistettiin
@@ -20,8 +21,6 @@ PerforatingGswOn,Perforating GSW on,Сквозное огнестрельное 
 AvulsiveGswOn,Avulsive GSW on,Рваное огнестрельное ранение на,Fleisch-reissende Schussverletzung an,Avulsive GSW on,Oskurowanie postrzeleniem na,격렬한 총상 어디에,Ferimento a bala avulsivo no/a,Avulsion GSW,Avulsive GSW on,引き裂かれた銃傷,撕裂性槍傷於,撕裂性枪伤于,Avulsive GSW on,Luodin aiheuttama ihorepeämä
 ,,,,,,,,,,,,,,
 HeavyBrainDamage,Heavy brain damage,Тяжелое повреждение мозга,Schwerer Hirnschaden,Lourds dégâts cérébraux,Poważne uszkodzenie mózgu,심각한 뇌 손상,Dano cerebral pesado,Daño cerebral grave,Heavy brain damage,重度の脳損傷,嚴重腦損傷,严重脑损伤,Heavy brain damage,Vakava aivovahinko
-BulletFlyThroughHead,A bullet has penetrated skull,Пуля прошла вашу голову насквозь,,La balle a pénétré le crâne,,,,,,弾が頭部を貫通,子彈貫穿頭部,子弹贯穿头部,,Luoti on lävistänyt kallon
-BulletTornApartBrain,A bullet has fractured skull,Пуля разорвала ваш череп на куски,,La balle a fracturé le crâne,,,,,,弾が脳を引き裂いた,子彈撕裂大腦,子弹撕裂大脑,,Luoti on murtanut kallon
 ,,,,,,,,,,,,,,
 LightBruise,Light bruise,Легкий ушиб,Leichte Prellung,Léger bleu,Lekkie zacięcie,가벼운 타박상,Ferimento leve,Moraton leve,Light bruise,軽度のあざ,輕度瘀傷,轻度瘀伤,Light bruise,Pieni mustelma
 LightBruiseOn,Light bruise on,Легкий ушиб на,Leichte Prellung an,Léger bleu activé,Lekkie zacięcie na,가벼운 타박상 ,Ferimento leve no/a,Moraton leve en ,Light bruise on,軽度のあざ,輕度瘀傷於,轻度瘀伤于,Light bruise on,Pieni mustelma
@@ -38,7 +37,6 @@ Blackout,Blackout possible,Возможна потеря сознания,Mögli
 BleedingInHead,Intracranial bleeding,Кровотечение в мозг,Kopfblutung,Saignement à la tête,Krwawienie wnętrzoczaskowe,머리에서 출혈,Hemorragia na cabeça,Hemorragia intercraneal,Intracranial bleeding,頭部出血,頭部出血,头部出血,Intracranial bleeding,Kallonsisäistä verenvuotoa
 TraumaticBrainInjury,Traumatic brain injury,Тяжелая травма головного мозга,Schädeltrauma,Lésion cérébrale traumatique,Traumatyczne uszkodzenie mózgu,외상성 뇌 손상,Traumatismo crâniano,Traumatismo cerebral,Traumatic brain injury,外傷性脳損傷,創傷性腦損傷,创伤性脑损伤,Traumatic brain injury,Vakava aivovamma
 BrokenNeck,Damage to cervical vertebrae,Повреждение шейных позвонков,Gebrochenes Genick,Nuque brisée,Złamany lub skręcony kark; uszkodzenie rdzeniu kręgowego,목이 부러짐,Pescoço quebrado,Cuello roto o dañado; vertebra cervical dañada,Broken or sprained neck; damage to cervical vertebrae,頚椎骨折,頸椎骨折,颈椎骨折,Damage to cervical vertebrae,Kaulanikama vahingoittunut
-ClosedFractureOf,Closed fracture of,Закрытый перелом в,,,,,,,,閉鎖的骨折,閉合性骨折,闭合性骨折,,Suljettu murtuma
 ,,,,,,,,,,,,,,
 YourHealth,Your health,Ваше здоровье,,Votre santé,,,,,,あなたの健康状態,你的健康狀況,你的健康状况,,Sinun terveys
 HisHealth,His health,Его здоровье,,Sa santé,,,,,,彼の健康状態,他的健康狀況,他的健康状况,,Hänen terveys
@@ -51,8 +49,8 @@ TotallyHealedMessage,You are totally healed!,Вы абсолютно здоро�
 ,,,,,,,,,,,,,,
 ArmorClassI,Armor Level I (melee),Броня I класса защиты (ближний бой),,,,,,,,アーマークラス I,護甲等級 I,护甲等级 I,,Panssari suojaa veitsiltä
 ArmorClassII,Armor Level II (pistols),Броня II класса защиты (пистолеты),,,,,,,,アーマークラス II,護甲等級 II,护甲等级 II,,Panssari suojaa pistooleilta
-ArmorClassIII,Armor Level III (shotguns),Броня III класса защиты (дробовики),,,,,,,,アーマークラス III,護甲等級 III,护甲等级 III,,Panssari suojaa haulikoilta
-ArmorClassIV,Armor Level IV (carbines),Броня IV класса защиты (карабины),,,,,,,,アーマークラス IV,護甲等級 IV,护甲等级 IV,,Panssari suojaa pienikaliiperisilta kivääreiltä
+ArmorClassIII,Armor Level III (carbines),Броня III класса защиты (дробовики),,,,,,,,アーマークラス III,護甲等級 III,护甲等级 III,,Panssari suojaa haulikoilta
+ArmorClassIV,Armor Level IV (rifles),Броня IV класса защиты (карабины),,,,,,,,アーマークラス IV,護甲等級 IV,护甲等级 IV,,Panssari suojaa pienikaliiperisilta kivääreiltä
 ArmorClassV,Armor Level V (rifles),Броня V класса защиты (винтовки),,,,,,,,アーマークラス V,護甲等級 V,护甲等级 V,,Panssari suojaa isokaliiperisilta kivääreiltä
 ,,,,,,,,,,,,,,
 ,"Write correctly! Eg, ""Critical damaged nerves heart legs""",,,,,,,,,,,,,
@@ -100,7 +98,7 @@ PlayerLegsCritMessage,You feel awful pain in your leg,Вы чувствуете 
 ManLegsCritMessage,His leg looks broken,Его нога выглядит плохо,Sein Bein sieht sehr schlecht aus,Sa jambe a l'air cassé,Złamał nogi,그의 다리의 상태가 매우 않 좋다,Ele parece ter quebrado a perna,Su pierna parece estar rota,His leg looks broken,男性の脚の重傷（通知）,男性腿部重創（提示）,男性腿部重创（提示）,His leg looks broken,Hänen jalkansa näyttää murtuneelta
 WomanLegsCritMessage,Her leg looks broken,Ее нога выглядит плохо,Ihr Bein sieht sehr schlecht aus,Sa jambe a l'air cassé,Złamała nogi,그녀의 다리의 상태가 매우 않 좋다,Ela parece ter quebrado a perna,Su pierna parece estar rota,Her leg looks broken,女性の脚の重傷（通知）,女性腿部重創（提示）,女性腿部重创（提示）,Her leg looks broken,Hänen jalkansa näyttää murtuneelta
 ,,,,,,,,,,,,,,
-UnbearablePainMessage,You lose consciousness from the overwhelming pain,У вас болевой шок! Вы теряете сознание!,Du bist im Schock und verlierst das Bewusstsein!,"Vous avez un choc de douleur, vous perdez conscience !",Boli cię zbyt mocno! Tracisz przytomność,당신은 통증 쇼크를 얻었다! 당신은 의식을 읽었다!,A dor foi tanta que você perdeu a consciencia,Pierdes la consciencia debido a un alto dolor,You lose consciousness from overwhelming pain,耐え難い痛み,難以忍受的疼痛,难以忍受的疼痛  ,You lose consciousness from the overwhelming pain,Menetät tajuntasi sietämättömästä kivun määrästä
+UnbearablePainMessage,You lose consciousness from the overwhelming pain,Вы теряете сознание от болевого шока,Du bist im Schock und verlierst das Bewusstsein!,"Vous avez un choc de douleur, vous perdez conscience !",Boli cię zbyt mocno! Tracisz przytomność,당신은 통증 쇼크를 얻었다! 당신은 의식을 읽었다!,A dor foi tanta que você perdeu a consciencia,Pierdes la consciencia debido a un alto dolor,You lose consciousness from overwhelming pain,耐え難い痛み,難以忍受的疼痛,难以忍受的疼痛  ,You lose consciousness from the overwhelming pain,Menetät tajuntasi sietämättömästä kivun määrästä
 ,,,,,,,,,,,,,,
 AddingRange,Radius to Scan,Радиус поиска,,,,,,,,範囲拡大,範圍增加,范围增加,,Skannauksen kantama
 RemovingRange,Radius to Remove,Радиус удаления,,,,,,,,範囲縮小,範圍減少,范围减少,,Poistamisen kantama
@@ -112,7 +110,6 @@ GswIsWorking,GSW2 is working,Работа GSW2 продолжается,GSW2 ist
 GswPauseTip,You can pause GSW2 while in mission using {0} button,Вы можете приостановить GSW2 во время миссии используя клавишу {0},,,,,,,,銃傷の一時停止通知,槍傷暫停提示,枪伤暂停提示,,On mahdollista pysäyttää GSW2 tehtävän aikana painamalla {0}
 ,,,,,,,,,,,,,,
 AlreadyBandaging,You are already bandaging,Вы уже накладываете бинты,,,,,,,,すでに包帯を巻いている,已經在包紮,已经在包扎,,Olet valmiiksi sitomassa
-DontHaveMoneyForBandage,You do not have enough money for a bandage,Недостаточно денег на перевязку,Du hast nicht genug Geld für Verband,Vous n'avez pas assez d'argent pour acheter un bandage,Nie masz wystarczającej ilości pieniędzy na opatrunek,당신은 붕대를 사기에 충분한 돈을 가지고 있지 않다,Você não tem dinheiro suficiente para curativos,No tienes suficiente dinero para una venda,You don't have enough money for a bandage,絆創膏を買うお金がない,沒有錢買絆帶,没有钱买绷带,You don't have enough money for a bandage,Sinulla ei ole tarpeeksi rahaa siteeseen
 YouTryToBandage,You're trying to bandage. You need to stand still for {0} seconds!,Вы пытаетесь наложить бинты. Нужно стоять без движения {0} секунд!,,,,,,,,包帯を巻こうとしている,嘗試包紮,尝试包扎,,Yrität sitoa. Sinun täytyy seisoa paikalla {0} sekunnin ajan!
 BandagingProgress,You're applying bandages,Вы накладываете бинты,,,,,,,,,,,,
 BandageFailed,Bandaging has failed. You need to stand still to apply a bandage!,Перевязка не удалась. Нужно стоять без движения!,Verbinden schlug fehl. Du must stillstehen zum verbinden!,Vous n'avez pas réussi à vous mettre un bandage. Vous ne devez pas bouger pour appliquer un bandage !,Bandażowanie nie udało się. Podczas nakładania opatrunku nie ruszaj się!,붕대 감기가 실패했다 붕대를 감을때 까지 서있어야 한다,Não conseguiu se enfaixar. Você precisa ficar parado para se enfaixar!,La curación ha fallado. ¡Necesitas estar quieto para vendarte!,Bandaging is failed. You need to stand still for apply a bandage!,包帯巻き失敗,包紮失敗,包扎失败,Bandaging has failed. You need to stand still to apply a bandage!,Sitominen epäonnistui. Sinun täytyy seisoa paikalla asettaaksesi siteen!
@@ -121,7 +118,7 @@ ArmorDestroyed,Your armor falls apart,Ваш бронежилет развали
 PainShockDeath,You have died of pain shock,Вы погибли от болевого шока,Du bist an einem Schock gestorben,Vous êtes mort du choc de douleur,Umarłeś z powodu nadmiaru bólu (Wstrząs bólowy),당신은 통증 때문에 죽었다,Você não resistiu a dor,Has muerto por una conmocion,You have died of shock,激痛でショック死,疼痛休克致死,疼痛休克致死,You have died of shock,Kuolit kipušokkiin
 DeathReason,Death reason,Причина смерти,,,,,,,,死亡原因,死亡原因,死亡原因,,Kuolinsyy
 BleedingReason,Bleeding,Кровотечение,,,,,,,,出血原因,出血原因,出血原因,,Verenvuoto
-RunningWithScissors,Running with {0} damage is not a good idea,"Бегать, когда поврежден {0}, не очень хорошая идея",,,,,,,,はさみを持ったまま走っている（警告）,拿著剪刀亂跑（警告）,拿着剪刀乱跑（警告）,,{0} Terveydellä juokseminen ei ole hyvä idea
+RunningWithScissors,Running with major injury is not a good idea,Бегать с серьёзным ранением не очень хорошая идея,,,,,,,,はさみを持ったまま走っている（警告）,拿著剪刀亂跑（警告）,拿着剪刀乱跑（警告）,,{0} Terveydellä juokseminen ei ole hyvä idea
 ,,,,,,,,,,,,,,
 FoundItems,You've got:,Вы получили:,,,,,,,,,,,,
 YourInventory,In inventory:,В инвентаре:,,,,,,,,,,,,
@@ -133,6 +130,65 @@ HandsAreBusy,Your hands are unavailable,Ваши руки недоступны,,
 CheckHelpMessage,You can use {0} button to check your health state,Чтобы проверить своё здоровье используйте клавишу {0},,,,,,,,ヘルプ情報を確認する,檢查幫助資訊,检查帮助信息,,Paina {0} tarkastaaksesi terveytesi
 BandageHelpMessage,You can use {0} button to bandage your bleeding wounds,Чтобы перебинтовать кровоточащие раны используйте клавишу {0},,,,,,,,包帯のヘルプ情報,包紮幫助資訊,包扎帮助信息,,Paina {0} sitoaksesi vuotavat haavat
 PainkillerHelpMessage,You can use {0} button to use painkillers to reduce your pain,Чтобы принять обезбаливающие используйте клавишу {0},,,,,,,,鎮痛剤のヘルプ情報,止痛藥幫助資訊,止痛药帮助信息,,Paina {0} vähentääksesi kipua käyttämällä särkylääkkeitä
-MedkitsHelpMessage,You may find bandages and painkillers in medkits or ambulance/police cars,Вы можете найти бинты и обезбаливающие в аптечках и спец-машинах,,,,,,,,医療キットのヘルプ情報,醫藥包幫助資訊,医药包帮助信息,,Voit löytää sideharsoja ja särkylääkkeitä ensiapulaukuista tai ambulanssi -ja poliisiautoista
+MedkitsHelpMessage,You may find bandages and painkillers in medkits and emergency cars,Вы можете найти бинты и обезбаливающие в аптечках и спец-машинах,,,,,,,,医療キットのヘルプ情報,醫藥包幫助資訊,医药包帮助信息,,Voit löytää sideharsoja ja särkylääkkeitä ensiapulaukuista tai ambulanssi -ja poliisiautoista
+,,,,,,,,,,,,,,
+BodyParts.Head,Head,Голова,,,,,,,,,,,,
+BodyParts.Neck,Neck,Шея,,,,,,,,,,,,
+BodyParts.Chest,Chest,Грудь,,,,,,,,,,,,
+BodyParts.Abdomen,Abdomen,Живот,,,,,,,,,,,,
+BodyParts.Pelvis,Pelvis,Таз,,,,,,,,,,,,
+BodyParts.LeftShoulder,L.Shoulder,Л.Плечо,,,,,,,,,,,,
+BodyParts.RightShoulder,R.Shoulder,П.Плечо,,,,,,,,,,,,
+BodyParts.LeftArm,L.Arm,Л.Рука,,,,,,,,,,,,
+BodyParts.RightArm,R.Arm,П.Рука,,,,,,,,,,,,
+BodyParts.LeftLeg,L.Leg,Л.Нога,,,,,,,,,,,,
+BodyParts.RightLeg,R.Leg,П.Нога,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+Wounds.Gsw.Grazing,Grazing GSW,Скользящее огнестрельное ранение,,,,,,,,,,,,
+Wounds.Gsw.Flesh,Flesh GSW,Касательное огнестрельное ранение,,,,,,,,,,,,
+Wounds.Gsw.Penetrating,Penetrating GSW,Слепое огнестрельное ранение,,,,,,,,,,,,
+Wounds.Gsw.Perforating,Perforating GSW,Сквозное огнестрельное ранение,,,,,,,,,,,,
+Wounds.Gsw.Lacerating,Lacerating GSW,Рваное огнестрельное ранение,,,,,,,,,,,,
+Wounds.Gsw.Avulsive,Avulsive GSW,Разрывающее огнестрельное ранение,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+Wounds.Cut.Incised,Incised wound,Резаная рана,,,,,,,,,,,,
+Wounds.Cut.DeepIncised,Deep incised wound,Глубокая резаная рана,,,,,,,,,,,,
+Wounds.Cut.Slash,Slash wound,Секущая рана,,,,,,,,,,,,
+Wounds.Cut.Laceration,Laceration wound,Рваная рана,,,,,,,,,,,,
+Wounds.Cut.Stab,Stab wound,Колотая рана,,,,,,,,,,,,
+Wounds.Cut.Chop,Chop wound,Рубленая рана,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+Wounds.Blunt.LightBruise,Light bruise,Легкий ушиб,,,,,,,,,,,,
+Wounds.Blunt.MediumBruise,Medium bruise,Средний ушиб,,,,,,,,,,,,
+Wounds.Blunt.HeavyBruise,Heavy bruise,Серьезный ушиб,,,,,,,,,,,,
+Wounds.Blunt.Hematoma,Hematoma,Гематома,,,,,,,,,,,,
+Wounds.Blunt.Abrasion,Abrasion wound,Ссадина,,,,,,,,,,,,
+Wounds.Blunt.Laceration,Laceration blunt wound,Рваная рана от удара,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+TraumaType,Trauma,Травма,,,,,,,,,,,,
+Traumas.ClosedFracture,Closed bone fracture,Закрытый перелом,,,,,,,,,,,,
+Traumas.SkullFracture,Skull fracture,Перелом костей черепа,,,,,,,,,,,,
+Traumas.BleedingInHead,Intracerebral hemorrhage,Кровоизлияние в мозг,,,,,,,,,,,,
+Traumas.SpineFracture,Cervical spine fracture,Перелом шейных позвонков,,,,,,,,,,,,
+Traumas.RibFractures,Rib fractures,Переломы рёбер,,,,,,,,,,,,
+Traumas.CardiacInjury,Cardiac injury,Повреждение сердца,,,,,,,,,,,,
+Traumas.TrachealInjurt,Tracheal injury,Повреждение трахеи,,,,,,,,,,,,
+Traumas.PulmonaryInjury,Pulmonary injury,Повреждение легких,,,,,,,,,,,,
+Traumas.StomachInjury,Stomach injury,Повреждение желудка,,,,,,,,,,,,
+Traumas.BowelInjury,Bowel injury,Повреждение кишечника,,,,,,,,,,,,
+Traumas.LiverInjury,Liver injury,Повреждение печени,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+Traumas.Blunt.NasalFracture,Nasal fracture,Перелом носа,,,,,,,,,,,,
+Traumas.Blunt.BlackoutChance,Possible blackout,Возможная потеря сознания,,,,,,,,,,,,
+Traumas.Blunt.Concussion,Consussion,Сотрясение мозга,,,,,,,,,,,,
+Traumas.Blunt.BrainHematoma,Epidural hematoma,Подчерепная гематома,,,,,,,,,,,,
+Traumas.Blunt.Hemothorax,Hemothorax,Гемоторакс ,,,,,,,,,,,,
+Traumas.Blunt.Hemoperitoneum,Hemoperitoneum,Гемоперитонеум ,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+Traumas.Penet.ArterialBleed,Arterial bleed,Повреждение артерии,,,,,,,,,,,,
+Traumas.Penet.GreatBleed,Great vessel injury,Повреждение аорты,,,,,,,,,,,,
+Traumas.Penet.Pneumothorax,Pneumothorax,Пневмоторакс,,,,,,,,,,,,
+Traumas.Penet.CranialInjury,Penetrating cranial injury,Проникающее ранение черепа,,,,,,,,,,,,
+Traumas.Blunt.NasalFracture,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,
 TranslationAuthor,"SH42913, sob, Bleak_Perspective",SH42913,gand,JaminFR,MicroPanda123,kim GI,"AwesomeSmile, TheBrunoCA",,,"Ranshiine, HunterLies","Kwansy, HunterLies",HunterLies,,volc

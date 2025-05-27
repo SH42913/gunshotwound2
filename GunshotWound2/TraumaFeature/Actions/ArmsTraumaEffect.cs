@@ -1,19 +1,18 @@
-﻿namespace GunshotWound2.CritsFeature {
+﻿namespace GunshotWound2.TraumaFeature {
     using PedsFeature;
     using Scellecs.Morpeh;
 
-    public sealed class ArmsCrit : BaseCrit {
+    public sealed class ArmsTraumaEffect : BaseTraumaEffect {
         private const float SHAKE_AMPLITUDE = 1f;
         private static readonly int[] NM_MESSAGES = { 155, };
 
-        protected override string CritName => sharedData.localeConfig.ArmsCrit;
-        protected override string PlayerMessage => sharedData.localeConfig.PlayerArmsCritMessage;
-        protected override string ManMessage => sharedData.localeConfig.ManArmsCritMessage;
-        protected override string WomanMessage => sharedData.localeConfig.WomanArmsCritMessage;
+        public override string PlayerMessage => sharedData.localeConfig.PlayerArmsCritMessage;
+        public override string ManMessage => sharedData.localeConfig.ManArmsCritMessage;
+        public override string WomanMessage => sharedData.localeConfig.WomanArmsCritMessage;
 
-        public ArmsCrit(SharedData sharedData) : base(sharedData) { }
+        public ArmsTraumaEffect(SharedData sharedData) : base(sharedData) { }
 
-        public override void Apply(Entity pedEntity, ref ConvertedPed convertedPed) {
+        public override void Apply(Entity entity, ref ConvertedPed convertedPed) {
             convertedPed.hasHandsTremor = true;
             convertedPed.thisPed.PlayAmbientSpeech("DEATH_HIGH_MEDIUM", GTA.SpeechModifier.InterruptShouted);
 
@@ -33,9 +32,9 @@
             }
         }
 
-        public override void EveryFrame(Entity pedEntity, ref ConvertedPed convertedPed) { }
+        public override void EveryFrame(Entity entity, ref ConvertedPed convertedPed) { }
 
-        public override void Cancel(Entity pedEntity, ref ConvertedPed convertedPed) {
+        public override void Cancel(Entity entity, ref ConvertedPed convertedPed) {
             convertedPed.hasHandsTremor = false;
             if (convertedPed.isPlayer) {
                 sharedData.cameraService.aimingShakeCritType = false;

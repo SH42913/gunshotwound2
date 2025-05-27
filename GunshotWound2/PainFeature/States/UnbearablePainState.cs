@@ -1,12 +1,12 @@
 ﻿namespace GunshotWound2.PainFeature.States {
     using System;
-    using CritsFeature;
     using GTA;
     using GTA.Math;
     using GTA.NaturalMotion;
     using PedsFeature;
     using HealthFeature;
     using Scellecs.Morpeh;
+    using TraumaFeature;
     using Utils;
     using Weighted_Randomizer;
 
@@ -151,12 +151,11 @@
             randomizer.Add(1, weight: 2);
 
             if (!convertedPed.thisPed.IsInVehicle()) {
-                ref Crits crits = ref pedEntity.GetComponent<Crits>();
-                bool legsDamaged = crits.HasActive(Crits.Effects.LegsCrit);
-                bool heavyCrit = crits.HasActive(Crits.Effects.HeartCrit)
-                                 || crits.HasActive(Crits.Effects.LungsCrit)
-                                 || crits.HasActive(Crits.Effects.StomachCrit)
-                                 || crits.HasActive(Crits.Effects.GutsCrit);
+                ref Traumas traumas = ref pedEntity.GetComponent<Traumas>();
+                bool legsDamaged = traumas.HasActive(Traumas.Effects.LegsCrit);
+                bool heavyCrit = traumas.HasActive(Traumas.Effects.HeartCrit)
+                                 || traumas.HasActive(Traumas.Effects.LungsCrit)
+                                 || traumas.HasActive(Traumas.Effects.AbdomenCrit);
 
                 if (heavyCrit || legsDamaged) {
                     randomizer.Add(2);

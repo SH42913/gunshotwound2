@@ -1,11 +1,11 @@
 ﻿namespace GunshotWound2.PlayerFeature {
     using System.Collections.Generic;
     using Configs;
-    using CritsFeature;
     using GTA;
     using HealthFeature;
     using InventoryFeature;
     using Scellecs.Morpeh;
+    using TraumaFeature;
     using Utils;
 
     public sealed class MedkitGpsSystem : ILateSystem {
@@ -43,7 +43,7 @@
         }
 
         private void FlashBlipsIfNeed() {
-            bool hasCrits = sharedData.playerEntity.Has<Crits>();
+            bool hasCrits = sharedData.playerEntity.Has<Traumas>();
             bool hasBandages = sharedData.playerEntity.GetComponent<Inventory>().Has(BandageItem.template);
             if (!hasCrits && hasBandages) {
                 return;

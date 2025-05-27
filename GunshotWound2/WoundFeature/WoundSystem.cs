@@ -1,13 +1,13 @@
 ﻿namespace GunshotWound2.WoundFeature {
     using System;
     using Configs;
-    using CritsFeature;
     using GTA;
     using HealthFeature;
     using HitDetection;
     using PainFeature;
     using PedsFeature;
     using Scellecs.Morpeh;
+    using TraumaFeature;
     using Utils;
     using EcsEntity = Scellecs.Morpeh.Entity;
     using EcsWorld = Scellecs.Morpeh.World;
@@ -142,7 +142,7 @@
 
             bool causeTrauma = wound.CanCauseTrauma && sharedData.random.IsTrueWithProbability(hitData.weaponType.ChanceToCauseTrauma);
             if (causeTrauma) {
-                entity.AddOrGetComponent<Crits>().requestBodyPart = hitData.bodyPart;
+                entity.AddOrGetComponent<Traumas>().requestBodyPart = hitData.bodyPart;
             }
 
             SendWoundInfo(convertedPed, health, hitData, woundName, finalBleed, finalPain, causeTrauma);

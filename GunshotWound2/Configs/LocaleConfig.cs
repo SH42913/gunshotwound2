@@ -55,10 +55,6 @@ namespace GunshotWound2.Configs {
         public string ManStomachCritMessage;
         public string WomanStomachCritMessage;
 
-        public string PlayerGutsCritMessage;
-        public string ManGutsCritMessage;
-        public string WomanGutsCritMessage;
-
         public string PlayerArmsCritMessage;
         public string ManArmsCritMessage;
         public string WomanArmsCritMessage;
