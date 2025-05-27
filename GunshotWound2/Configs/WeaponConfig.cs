@@ -6,45 +6,47 @@ namespace GunshotWound2.Configs {
     using System.Linq;
     using System.Xml.Linq;
     using GTA;
-    using HitDetection;
     using SHVDN;
     using Utils;
 
     public sealed class WeaponConfig {
         public readonly struct Weapon {
             public readonly string Key;
+            public readonly string ShortDesc;
             public readonly HashSet<uint> Hashes;
             public readonly (string key, int weight)[] Wounds;
             public readonly float DamageMult;
             public readonly float BleedMult;
             public readonly float PainMult;
-            public readonly float CritChance;
-            public readonly int ArmorDamage;
-            public readonly string SafeArmorLevel;
+            public readonly float ChanceToCauseTrauma;
             public readonly float HelmetSafeChance;
+            public readonly string SafeArmorLevel;
+            public readonly int ArmorDamage;
 
             public bool IsValid => !string.IsNullOrEmpty(Key);
 
             public Weapon(string key,
+                          string shortDesc,
                           HashSet<uint> hashes,
                           (string key, int weight)[] wounds,
                           float damageMult,
                           float bleedMult,
                           float painMult,
-                          float critChance,
-                          int armorDamage,
+                          float chanceToCauseTrauma,
+                          float helmetSafeChance,
                           string safeArmorLevel,
-                          float helmetSafeChance) {
+                          int armorDamage) {
                 Key = key;
+                ShortDesc = shortDesc;
                 Hashes = hashes;
                 Wounds = wounds;
                 DamageMult = damageMult;
                 BleedMult = bleedMult;
                 PainMult = painMult;
-                CritChance = critChance;
-                ArmorDamage = armorDamage;
-                SafeArmorLevel = safeArmorLevel;
+                ChanceToCauseTrauma = chanceToCauseTrauma;
                 HelmetSafeChance = helmetSafeChance;
+                SafeArmorLevel = safeArmorLevel;
+                ArmorDamage = armorDamage;
             }
         }
 
@@ -111,20 +113,19 @@ namespace GunshotWound2.Configs {
         }
 
         private static Weapon GetStatsForWeapon(XElement weaponNode, ILogger logger) {
-            string name = weaponNode.Name.LocalName;
+            string key = weaponNode.Name.LocalName;
             HashSet<uint> hashes = ExtractWeaponHashes(weaponNode, logger);
             (string, int)[] wounds = ExtractWounds(weaponNode);
 
-            return new Weapon(name,
-                              hashes,
-                              wounds,
-                              weaponNode.GetFloat(nameof(Weapon.DamageMult), defaultValue: 1f),
-                              weaponNode.GetFloat(nameof(Weapon.BleedMult), defaultValue: 1f),
-                              weaponNode.GetFloat(nameof(Weapon.PainMult), defaultValue: 1f),
-                              weaponNode.GetFloat(nameof(Weapon.CritChance), defaultValue: 0f),
-                              weaponNode.GetInt(nameof(Weapon.ArmorDamage), defaultValue: 0),
-                              weaponNode.GetString(nameof(Weapon.SafeArmorLevel)),
-                              weaponNode.GetFloat(nameof(Weapon.HelmetSafeChance), defaultValue: 0f));
+            string shortDesc = weaponNode.GetString(nameof(Weapon.ShortDesc));
+            float damageMult = weaponNode.GetFloat(nameof(Weapon.DamageMult), defaultValue: 1f);
+            float bleedMult = weaponNode.GetFloat(nameof(Weapon.BleedMult), defaultValue: 1f);
+            float painMult = weaponNode.GetFloat(nameof(Weapon.PainMult), defaultValue: 1f);
+            float traumaChance = weaponNode.GetFloat(nameof(Weapon.ChanceToCauseTrauma), defaultValue: 0f);
+            float helmetChance = weaponNode.GetFloat(nameof(Weapon.HelmetSafeChance), defaultValue: 0f);
+            string safeArmorLevel = weaponNode.GetString(nameof(Weapon.SafeArmorLevel));
+            int armorDamage = weaponNode.GetInt(nameof(Weapon.ArmorDamage), defaultValue: 0);
+            return new Weapon(key, shortDesc, hashes, wounds, damageMult, bleedMult, painMult, traumaChance, helmetChance, safeArmorLevel, armorDamage);
         }
 
         private static (string, int)[] ExtractWounds(XElement weaponNode) {

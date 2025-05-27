@@ -9,6 +9,8 @@
     using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
+    using EcsEntity = Scellecs.Morpeh.Entity;
+    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class WoundSystem : ILateSystem {
         private readonly SharedData sharedData;
@@ -16,7 +18,7 @@
 
         private Filter damagedPeds;
 
-        public Scellecs.Morpeh.World World { get; set; }
+        public EcsWorld World { get; set; }
 
         private WoundConfig WoundConfig => sharedData.mainConfig.woundConfig;
 
@@ -30,16 +32,16 @@
         }
 
         public void OnUpdate(float deltaTime) {
-            foreach (Scellecs.Morpeh.Entity pedEntity in damagedPeds) {
-                ref PedHitData hitData = ref pedEntity.GetComponent<PedHitData>();
-                ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
-                ProcessHit(pedEntity, ref hitData, ref convertedPed);
+            foreach (EcsEntity entity in damagedPeds) {
+                ref PedHitData hitData = ref entity.GetComponent<PedHitData>();
+                ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
+                ProcessHit(entity, ref hitData, ref convertedPed);
             }
         }
 
         void IDisposable.Dispose() { }
 
-        private void ProcessHit(Scellecs.Morpeh.Entity pedEntity, ref PedHitData hitData, ref ConvertedPed convertedPed) {
+        private void ProcessHit(EcsEntity entity, ref PedHitData hitData, ref ConvertedPed convertedPed) {
             if (!hitData.weaponType.IsValid) {
 #if DEBUG
                 sharedData.logger.WriteInfo("Hit with no weapon");
@@ -48,38 +50,35 @@
             }
 
             if (hitData.weaponType.Key == nameof(WeaponConfig.Stun)) {
-                CreateStunPain(pedEntity, ref convertedPed);
+                CreateStunPain(entity, ref convertedPed);
                 return;
             }
 
-            WoundData? wound;
-            Ped ped = convertedPed.thisPed;
             if (!hitData.bodyPart.IsValid) {
-                sharedData.logger.WriteWarning("Hit has no bodyPart, will be used default wound");
-                WoundConfig.Wound woundTemplate = sharedData.mainConfig.woundConfig.Wounds["GrazeDefault"];
-                wound = new WoundData(sharedData.localeConfig, sharedData.random, woundTemplate, hitData);
-            } else if (armorChecker.TrySave(ref convertedPed, hitData, hitData.weaponType, out WoundData? armorWound)) {
-                wound = armorWound;
-            } else {
-                WoundConfig.Wound woundTemplate = GetRandomWoundTemplate(hitData.weaponType);
-                wound = new WoundData(sharedData.localeConfig, sharedData.random, woundTemplate, hitData);
+                hitData.bodyPart = sharedData.mainConfig.bodyPartConfig.GetBodyPartByBone(Bone.SkelRoot);
+                sharedData.logger.WriteWarning($"Hit has no bodyPart, {hitData.bodyPart.Key} will be used");
             }
 
+            WoundConfig.Wound wound = armorChecker.TrySave(ref convertedPed, hitData, out WoundConfig.Wound armorWound)
+                    ? armorWound
+                    : GetRandomWoundTemplate(hitData.weaponType);
+
+            Ped ped = convertedPed.thisPed;
             ped.Armor += hitData.armorDiff;
             ped.Health += hitData.healthDiff;
 
 #if DEBUG
-            if (wound.HasValue) {
-                sharedData.logger.WriteInfo($"New wound {wound.Value.ToString()} ");
+            if (!wound.IsValid) {
+                sharedData.logger.WriteWarning("No wound created or wound is invalid!");
             } else {
-                sharedData.logger.WriteWarning("No wound created!");
+                sharedData.logger.WriteInfo($"New wound {wound.ToString()} ");
             }
 #endif
-            ProcessWound(pedEntity, ref hitData, ref wound, convertedPed.isPlayer);
-            SendWoundInfo(pedEntity, convertedPed, wound);
+
+            ProcessWound(entity, hitData, wound, convertedPed);
         }
 
-        private void CreateStunPain(Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
+        private void CreateStunPain(EcsEntity pedEntity, ref ConvertedPed convertedPed) {
             if (!sharedData.mainConfig.weaponConfig.UseSpecialStunDamage) {
                 return;
             }
@@ -90,7 +89,7 @@
                     : sharedData.mainConfig.pedsConfig.MaxPainShockThreshold;
 
             ref Pain pain = ref pedEntity.GetComponent<Pain>();
-            pain.diff += (stunPainMult * maxPain - pain.amount);
+            pain.diff += stunPainMult * maxPain - pain.amount;
 
             convertedPed.thisPed.PlayAmbientSpeech("PAIN_TAZER", SpeechModifier.InterruptShouted);
         }
@@ -101,32 +100,52 @@
             return woundTemplate;
         }
 
-        private void ProcessWound(Scellecs.Morpeh.Entity pedEntity, ref PedHitData hitData, ref WoundData? wound, bool isPlayer) {
-            if (!wound.HasValue) {
+        private void ProcessWound(EcsEntity entity, in PedHitData hitData, in WoundConfig.Wound wound, in ConvertedPed convertedPed) {
+            if (!wound.IsValid) {
                 return;
             }
 
-            WoundData woundData = wound.Value;
-            if (IsDeadlyWound(hitData, isPlayer)) {
+            string woundName = sharedData.localeConfig.GetTranslation(wound.LocKey);
+            ref Health health = ref entity.GetComponent<Health>();
+            if (IsDeadlyWound(hitData, convertedPed.isPlayer)) {
 #if DEBUG
                 sharedData.logger.WriteInfo("It's deadly wound");
 #endif
-                InstantKill(pedEntity, woundData.Name);
+                health.InstantKill(woundName);
                 return;
             }
 
-            if (hitData.afterTakedown) {
-                woundData.Pain *= sharedData.mainConfig.pedsConfig.TakedownPainMult;
+            if (wound.Damage > 0f) {
+                float mult = hitData.weaponType.DamageMult * WoundConfig.OverallDamageMult;
+                float damageAmount = CalculateAmount(wound.Damage, WoundConfig.DamageDeviation, mult);
+                damageAmount = Math.Max(damageAmount, 1f);
+                health.DealDamage(damageAmount, woundName);
             }
 
-            CreateDamage(pedEntity, woundData.Damage, woundData.Name);
-            CreateBleeding(pedEntity, hitData.bodyPart, woundData.BleedSeverity, woundData.InternalBleeding, woundData.Name);
-            CreatePain(pedEntity, woundData.Pain);
-            CreateCrit(pedEntity, woundData.HasCrits, hitData.bodyPart);
-
-            if (woundData.ArterySevered) {
-                CreateArteryBleeding(pedEntity, hitData.bodyPart);
+            var finalBleed = 0f;
+            if (wound.Bleed > 0f) {
+                float mult = hitData.weaponType.BleedMult * WoundConfig.OverallBleedingMult;
+                finalBleed = CalculateAmount(wound.Bleed, WoundConfig.BleedingDeviation, mult);
+                entity.CreateBleeding(hitData.bodyPart, finalBleed, woundName, hitData.weaponType.ShortDesc, isInternal: false);
             }
+
+            var finalPain = 0f;
+            if (wound.Pain > 0f) {
+                float mult = hitData.weaponType.PainMult * WoundConfig.OverallPainMult;
+                if (hitData.afterTakedown) {
+                    mult *= sharedData.mainConfig.pedsConfig.TakedownPainMult;
+                }
+
+                finalPain = CalculateAmount(wound.Pain, WoundConfig.PainDeviation, mult);
+                entity.GetComponent<Pain>().diff += finalPain;
+            }
+
+            bool causeTrauma = wound.CanCauseTrauma && sharedData.random.IsTrueWithProbability(hitData.weaponType.ChanceToCauseTrauma);
+            if (causeTrauma) {
+                entity.AddOrGetComponent<Crits>().requestBodyPart = hitData.bodyPart;
+            }
+
+            SendWoundInfo(convertedPed, health, hitData, woundName, finalBleed, finalPain, causeTrauma);
         }
 
         private bool IsDeadlyWound(in PedHitData hitData, bool isPlayer) {
@@ -136,81 +155,32 @@
                            : sharedData.mainConfig.pedsConfig.InstantDeathHeadshot);
         }
 
-        private static void InstantKill(Scellecs.Morpeh.Entity pedEntity, string woundName) {
-            pedEntity.GetComponent<Health>().InstantKill(woundName);
-        }
-
-        private void CreateDamage(Scellecs.Morpeh.Entity pedEntity, float damage, string woundName) {
-            if (damage <= 0f) {
+        private void SendWoundInfo(in ConvertedPed convertedPed,
+                                   in Health health,
+                                   in PedHitData hitData,
+                                   string woundName,
+                                   float finalBleed,
+                                   float finalPain,
+                                   bool causeTrauma) {
+            if (!convertedPed.isPlayer) {
                 return;
             }
 
-            float deviation = WoundConfig.DamageDeviation;
-            float mult = WoundConfig.OverallDamageMult;
-
-            float damageAmount = CalculateAmount(damage, deviation, mult);
-            damageAmount = Math.Max(damageAmount, 1f);
-            pedEntity.GetComponent<Health>().DealDamage(damageAmount, woundName);
-        }
-
-        private void CreateBleeding(Scellecs.Morpeh.Entity pedEntity,
-                                    in BodyPartConfig.BodyPart bodyPart,
-                                    float severity,
-                                    bool isInternal,
-                                    string name) {
-            if (severity <= 0f) {
-                return;
-            }
-
-            float deviation = WoundConfig.BleedingDeviation;
-            float mult = WoundConfig.OverallBleedingMult;
-            severity = CalculateAmount(severity, deviation, mult);
-            pedEntity.CreateBleeding(bodyPart, severity, name, isInternal);
-        }
-
-        private void CreateArteryBleeding(Scellecs.Morpeh.Entity pedEntity, BodyPartConfig.BodyPart bodyPart) {
-            string name = sharedData.localeConfig.SeveredArtery;
-            CreateBleeding(pedEntity, bodyPart, WoundConfig.MAX_SEVERITY_FOR_BANDAGE, isInternal: true, name);
-        }
-
-        private void CreatePain(Scellecs.Morpeh.Entity pedEntity, float painAmount) {
-            float deviation = WoundConfig.PainDeviation;
-            float mult = WoundConfig.OverallPainMult;
-
-            ref Pain pain = ref pedEntity.GetComponent<Pain>();
-            pain.diff += CalculateAmount(painAmount, deviation, mult);
-        }
-
-        private static void CreateCrit(Scellecs.Morpeh.Entity pedEntity, bool hasCrits, BodyPartConfig.BodyPart hitBodyPart) {
-            if (hasCrits) {
-                pedEntity.AddOrGetComponent<Crits>().requestBodyPart = hitBodyPart;
-            }
-        }
-
-        private void SendWoundInfo(Scellecs.Morpeh.Entity pedEntity,
-                                   in ConvertedPed convertedPed,
-                                   in WoundData? wound) {
-            if (!convertedPed.isPlayer || !wound.HasValue) {
-                return;
-            }
-
+            const float criticalPain = 50f;
             Notifier.Entry notifier;
-            WoundData woundData = wound.Value;
-            ref Health health = ref pedEntity.GetComponent<Health>();
-            if (woundData.HasCrits
-                || woundData.ArterySevered
-                || woundData.BleedSeverity > health.CalculateDeadlyBleedingThreshold(convertedPed)) {
+            if (causeTrauma
+                || finalPain > criticalPain
+                || finalBleed > health.CalculateDeadlyBleedingThreshold(convertedPed)) {
                 notifier = sharedData.notifier.critical;
             } else {
                 notifier = sharedData.notifier.wounds;
             }
 
-            Notifier.Color bleedingColor = health.GetBleedingColor(convertedPed, woundData.BleedSeverity);
-            notifier.QueueMessage(woundData.Name, bleedingColor);
+            string bodyPart = sharedData.localeConfig.GetTranslation(hitData.bodyPart.LocKey);
+            woundName = $"{woundName} ({bodyPart})";
 
-            if (woundData.ArterySevered) {
-                notifier.QueueMessage(sharedData.localeConfig.SeveredArteryMessage);
-            }
+            Notifier.Color bleedingColor = health.GetBleedingColor(convertedPed, finalBleed);
+            notifier.QueueMessage(woundName, bleedingColor);
         }
 
         private float CalculateAmount(float baseAmount, float deviation, float mult) {

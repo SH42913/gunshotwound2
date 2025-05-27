@@ -159,7 +159,13 @@
 
                 Notifier.Color color = health.GetBleedingColor(convertedPed, bleeding.severity);
                 stringBuilder.Append(color);
-                stringBuilder.Append(bleeding.name);
+
+                string bodyPart = localeConfig.GetTranslation(bleeding.bodyPart.LocKey);
+                if (string.IsNullOrEmpty(bleeding.reason)) {
+                    stringBuilder.AppendFormat("{0} ({1})", bleeding.name, bodyPart);
+                } else {
+                    stringBuilder.AppendFormat("{0} ({1}, {2})", bleeding.name, bodyPart, bleeding.reason);
+                }
 
                 if (isBleedingToBandage && currentlyUsing.itemTemplate.IsBandage() && currentlyUsing.target == pedEntity) {
                     stringBuilder.AppendFormat(" ~g~({0})", currentlyUsing.ProgressPercent().ToString("P1"));

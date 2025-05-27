@@ -49,15 +49,14 @@ namespace GunshotWound2.Configs {
             BodyParts = partsNode.Elements(nameof(BodyPart)).Select(x => new BodyPart(x)).ToArray();
         }
 
-        public bool TryGetBodyPartByBone(Bone bone, out BodyPart bodyPart) {
-            return TryGetBodyPartByBoneIndex((int)bone, out bodyPart);
+        public BodyPart GetBodyPartByBone(Bone bone) {
+            return GetBodyPartByBoneIndex((int)bone);
         }
 
-        public bool TryGetBodyPartByBoneIndex(int index, out BodyPart bodyPart) {
+        public BodyPart GetBodyPartByBoneIndex(int index) {
             foreach (BodyPart part in BodyParts) {
                 if (part.Bones.Contains(index)) {
-                    bodyPart = part;
-                    return true;
+                    return part;
                 }
             }
 

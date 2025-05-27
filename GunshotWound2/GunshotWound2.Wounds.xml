@@ -36,45 +36,30 @@
     <Wounds>
         <!--
         Example:
-        <Wound Key="" LocKey="" Damage="" Bleed="" Pain="" ArteryChance="" IsInternal="" WithCrit="" ForceCrit=""/>
+        <Wound Key="" LocKey="" IsBlunt="" Damage="" Bleed="" Pain="" CanCauseTrauma=""/>
         -->
-        <Wound Key="GrazeDefault" LocKey="GrazeWound"
-               Damage="5" Bleed="0.05" Pain="10"
-               ArteryChance="0" IsInternal="FALSE"
-               WithCrit="FALSE" ForceCrit="FALSE"/>
 
         <!-- Impact wounds -->
-        <Wound Key="LightBruise" LocKey="LightBruiseOn"
-               Damage="2" Pain="15"/>
-        <Wound Key="MediumBruise" LocKey="MediumBruiseOn"
-               Damage="4" Pain="25"/>
-        <Wound Key="HeavyBruise" LocKey="HeavyBruiseOn"
-               Damage="5" Pain="39" WithCrit="TRUE"/>
-        <Wound Key="WindedFromImpact" LocKey="WindedFromImpact"
-               Damage="5" Pain="40"/> <!-- CRIT -->
-        <Wound Key="AbrasionWound" LocKey="AbrasionWoundOn"
-               Damage="2" Bleed="0.15" Pain="15"/>
-        <Wound Key="Blackout" LocKey="Blackout"
-               Damage="15" Pain="70"/> <!-- CRIT -->
+        <Wound Key="LightBruise" LocKey="LightBruiseOn" IsBlunt="TRUE" Damage="2" Pain="15"/>
+        <Wound Key="MediumBruise" LocKey="MediumBruiseOn" IsBlunt="TRUE" Damage="4" Pain="25"/>
+        <Wound Key="HeavyBruise" LocKey="HeavyBruiseOn" IsBlunt="TRUE" CanCauseTrauma="TRUE" Damage="5" Pain="39"/>
+        <Wound Key="AbrasionWound" LocKey="AbrasionWoundOn" IsBlunt="TRUE" Damage="2" Bleed="0.15" Pain="15"/>
 
         <!-- Cutting wounds -->
-        <Wound Key="IncisionWound" LocKey="IncisionWoundOn"
-               Damage="5" Bleed="0.3" Pain="20"/>
-        <Wound Key="LacerationWound" LocKey="LacerationWoundOn"
-               Damage="10" Bleed="0.8" Pain="30" ArteryChance="0.3" WithCrit="TRUE"/>
-        <Wound Key="StabWound" LocKey="StabWoundOn"
-               Damage="15" Bleed="0.6" Pain="40" ArteryChance="0.5" WithCrit="TRUE"/>
+        <Wound Key="IncisionWound" LocKey="IncisionWoundOn" Damage="5" Bleed="0.3" Pain="20"/>
+        <Wound Key="LacerationWound" LocKey="LacerationWoundOn" CanCauseTrauma="TRUE"
+               Damage="10" Bleed="0.8" Pain="30"/>
+        <Wound Key="StabWound" LocKey="StabWoundOn" CanCauseTrauma="TRUE"
+               Damage="15" Bleed="0.6" Pain="40"/>
 
         <!-- Gunshot wounds -->
-        <Wound Key="GrazeGsw" LocKey="GrazeGswOn"
-               Damage="7" Bleed="0.05" Pain="15"/>
-        <Wound Key="FleshGsw" LocKey="FleshGswOn"
-               Damage="10" Bleed="0.1" Pain="30" ArteryChance="0.1"/>
-        <Wound Key="PenetratingGsw" LocKey="PenetratingGswOn"
-               Damage="15" Bleed="0.2" Pain="40" ArteryChance="0.2" WithCrit="TRUE"/>
-        <Wound Key="PerforatingGsw" LocKey="PerforatingGswOn"
-               Damage="10" Bleed="0.3" Pain="30" ArteryChance="0.25" WithCrit="TRUE"/>
-        <Wound Key="AvulsiveGsw" LocKey="AvulsiveGswOn"
-               Damage="15" Bleed="0.35" Pain="50" ArteryChance="0.3" WithCrit="TRUE"/>
+        <Wound Key="GrazeGsw" LocKey="GrazeGswOn" Damage="7" Bleed="0.05" Pain="15"/>
+        <Wound Key="FleshGsw" LocKey="FleshGswOn" Damage="10" Bleed="0.1" Pain="30"/>
+        <Wound Key="PenetratingGsw" LocKey="PenetratingGswOn" CanCauseTrauma="TRUE"
+               Damage="15" Bleed="0.2" Pain="40"/>
+        <Wound Key="PerforatingGsw" LocKey="PerforatingGswOn" CanCauseTrauma="TRUE"
+               Damage="10" Bleed="0.3" Pain="30"/>
+        <Wound Key="AvulsiveGsw" LocKey="AvulsiveGswOn" CanCauseTrauma="TRUE"
+               Damage="15" Bleed="0.35" Pain="50"/>
     </Wounds>
 </WoundConfig>

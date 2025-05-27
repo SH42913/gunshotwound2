@@ -42,15 +42,10 @@
                     Bone damagedBone = convertedPed.thisPed.Bones.LastDamaged.Tag;
                     convertedPed.lastDamagedBone = damagedBone;
 
-                    if (BodyPartConfig.TryGetBodyPartByBone(damagedBone, out BodyPartConfig.BodyPart bodyPart)) {
-                        hitData.bodyPart = bodyPart;
+                    hitData.bodyPart = BodyPartConfig.GetBodyPartByBone(damagedBone);
 #if DEBUG
-                        sharedData.logger.WriteInfo($"Damaged part is {bodyPart.Key}, bone {damagedBone} at {convertedPed.name}");
+                    sharedData.logger.WriteInfo($"Damaged part is {hitData.bodyPart.Key}, bone {damagedBone} at {convertedPed.name}");
 #endif
-                    } else {
-                        hitData.bodyPart = default;
-                        sharedData.logger.WriteError($"Can't detect part by bone {damagedBone}");
-                    }
                 }
             }
         }

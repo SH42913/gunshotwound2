@@ -6,18 +6,26 @@
         public Entity target;
         public BodyPartConfig.BodyPart bodyPart;
         public string name;
+        public string reason;
         public float severity;
         public bool isInternal;
+
         public bool isProcessed;
     }
 
     public static class BleedingExtensions {
-        public static void CreateBleeding(this Entity target, in BodyPartConfig.BodyPart bodyPart, float severity, string name, bool isInternal = false) {
+        public static void CreateBleeding(this Entity target,
+                                          in BodyPartConfig.BodyPart bodyPart,
+                                          float severity,
+                                          string name,
+                                          string reason,
+                                          bool isInternal) {
             ref Bleeding bleeding = ref target.world.CreateEntity().AddComponent<Bleeding>();
             bleeding.target = target;
             bleeding.bodyPart = bodyPart;
-            bleeding.severity = severity;
             bleeding.name = name;
+            bleeding.reason = reason;
+            bleeding.severity = severity;
             bleeding.isInternal = isInternal;
         }
     }

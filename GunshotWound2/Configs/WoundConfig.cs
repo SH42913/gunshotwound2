@@ -11,44 +11,56 @@ namespace GunshotWound2.Configs {
         public readonly struct Wound {
             public readonly string Key;
             public readonly string LocKey;
+            public readonly bool IsBlunt;
             public readonly float Damage;
             public readonly float Bleed;
             public readonly float Pain;
-            public readonly float ArteryChance;
-            public readonly bool IsInternal;
-            public readonly bool WithCrit;
-            public readonly bool ForceCrit;
+            public readonly bool CanCauseTrauma;
+
+            public bool IsValid => !string.IsNullOrEmpty(Key);
 
             public Wound(string key,
-                            string locKey,
-                            float damage,
-                            float bleed,
-                            float pain,
-                            float arteryChance,
-                            bool isInternal,
-                            bool withCrit,
-                            bool forceCrit) {
+                         string locKey,
+                         bool isBlunt,
+                         float damage = 0f,
+                         float bleed = 0f,
+                         float pain = 0f,
+                         bool canCauseTrauma = false) {
                 Key = key;
                 LocKey = locKey;
+                IsBlunt = isBlunt;
                 Damage = damage;
                 Bleed = bleed;
                 Pain = pain;
-                ArteryChance = arteryChance;
-                IsInternal = isInternal;
-                WithCrit = withCrit;
-                ForceCrit = forceCrit;
+                CanCauseTrauma = canCauseTrauma;
             }
 
-            public Wound(XElement node) {
-                Key = node.GetString(nameof(Key));
-                LocKey = node.GetString(nameof(LocKey));
-                Damage = node.GetFloat(nameof(Damage));
-                Bleed = node.GetFloat(nameof(Bleed));
-                Pain = node.GetFloat(nameof(Pain));
-                ArteryChance = node.GetFloat(nameof(ArteryChance));
-                IsInternal = node.GetBool(nameof(IsInternal));
-                WithCrit = node.GetBool(nameof(WithCrit));
-                ForceCrit = node.GetBool(nameof(ForceCrit));
+            public Wound(XElement node) : this(key: node.GetString(nameof(Key)),
+                                               locKey: node.GetString(nameof(LocKey)),
+                                               isBlunt: node.GetBool(nameof(IsBlunt)),
+                                               damage: node.GetFloat(nameof(Damage)),
+                                               bleed: node.GetFloat(nameof(Bleed)),
+                                               pain: node.GetFloat(nameof(Pain)),
+                                               canCauseTrauma: node.GetBool(nameof(CanCauseTrauma))) { }
+
+            public Wound Clone(float? damage = null, float? bleed = null, float? pain = null, bool? canCauseTrauma = null) {
+                return new Wound(Key,
+                                 LocKey,
+                                 IsBlunt,
+                                 damage ?? Damage,
+                                 bleed ?? Bleed,
+                                 pain ?? Pain,
+                                 canCauseTrauma ?? CanCauseTrauma);
+            }
+
+            public override string ToString() {
+                const string format = "F";
+                string blunt = IsBlunt ? "(blunt)" : "";
+                var damage = Damage.ToString(format);
+                var pain = Pain.ToString(format);
+                var bleed = Bleed.ToString(format);
+                var trauma = CanCauseTrauma.ToString();
+                return $"{Key}{blunt} D:{damage} P:{pain} B:{bleed} T:{trauma}";
             }
         }
 

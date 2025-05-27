@@ -13,7 +13,6 @@ namespace GunshotWound2.Configs {
         public string HelmetProtectedYou;
         public string ArmorProtectedYou;
         public string ArmorPenetrated;
-        public string ArmorInjury;
 
         public string YourHealth;
         public string HisHealth;
@@ -38,8 +37,7 @@ namespace GunshotWound2.Configs {
         public string DontHaveMoneyForHelmet;
 
         public string InternalBleeding;
-        public string SeveredArtery;
-        public string SeveredArteryMessage;
+        public string TraumaType;
 
         public string PlayerNervesCritMessage;
         public string ManNervesCritMessage;

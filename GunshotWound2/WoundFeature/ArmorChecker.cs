@@ -1,5 +1,4 @@
 namespace GunshotWound2.WoundFeature {
-    using System;
     using Configs;
     using GTA;
     using HitDetection;
@@ -7,6 +6,8 @@ namespace GunshotWound2.WoundFeature {
     using Utils;
 
     public sealed class ArmorChecker {
+        private static readonly WoundConfig.Wound ARMOR_INJURY = new(key: "ArmorInjury", locKey: "ArmorInjury", isBlunt: true);
+
         private readonly SharedData sharedData;
 
         public ArmorChecker(SharedData sharedData) {
@@ -15,16 +16,15 @@ namespace GunshotWound2.WoundFeature {
 
         public bool TrySave(ref ConvertedPed convertedPed,
                             in PedHitData hit,
-                            in WeaponConfig.Weapon weapon,
-                            out WoundData? armorWound) {
+                            out WoundConfig.Wound armorWound) {
             if (!hit.bodyPart.IsValid) {
-                armorWound = null;
+                armorWound = default;
                 return false;
             }
 
             if (hit.bodyPart.Bones.Contains((int)Bone.SkelHead)) {
-                armorWound = null;
-                return CheckHelmetPenetration(convertedPed, weapon);
+                armorWound = default;
+                return CheckHelmetPenetration(convertedPed, hit.weaponType);
             }
 
             Ped ped = convertedPed.thisPed;
@@ -33,7 +33,7 @@ namespace GunshotWound2.WoundFeature {
 #if DEBUG
                 sharedData.logger.WriteInfo("Has no armor");
 #endif
-                armorWound = null;
+                armorWound = default;
                 return false;
             }
 
@@ -42,36 +42,35 @@ namespace GunshotWound2.WoundFeature {
 #if DEBUG
                 sharedData.logger.WriteInfo("Was not touch armor");
 #endif
-                armorWound = null;
+                armorWound = default;
                 return false;
             }
 
-            ped.Armor -= weapon.ArmorDamage;
+            ped.Armor -= hit.weaponType.ArmorDamage;
             LocaleConfig localeConfig = sharedData.localeConfig;
             if (!armorConfig.TryGetArmorLevel(ped.Armor, out _)) {
 #if DEBUG
                 sharedData.logger.WriteInfo("Armor is dead");
 #endif
                 ShowArmorMessage(convertedPed, localeConfig.ArmorDestroyed);
-                armorWound = null;
+                armorWound = default;
                 return false;
             }
 
-            if (CheckArmorPenetration(ped, weapon)) {
+            if (CheckArmorPenetration(ped, hit.weaponType)) {
                 ShowArmorMessage(convertedPed, localeConfig.ArmorPenetrated);
-                armorWound = null;
+                armorWound = default;
                 return false;
             }
 
             ShowArmorMessage(convertedPed, localeConfig.ArmorProtectedYou);
 
-            armorWound = weapon.ArmorDamage > 0
-                    ? new WoundData {
-                        Name = $"{localeConfig.ArmorInjury} ({localeConfig.GetTranslation(hit.bodyPart.LocKey)})",
-                        Damage = weapon.DamageMult * weapon.ArmorDamage,
-                        Pain = weapon.PainMult * weapon.ArmorDamage,
-                    }
-                    : null;
+            if (hit.weaponType.ArmorDamage > 0) {
+                // TODO bool canCauseTrauma = 
+                armorWound = ARMOR_INJURY.Clone(damage: hit.weaponType.ArmorDamage, pain: hit.weaponType.ArmorDamage);
+            } else {
+                armorWound = default;
+            }
 
             return true;
         }

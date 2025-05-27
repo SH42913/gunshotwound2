@@ -69,9 +69,10 @@
 #endif
 
             string critName = sharedData.localeConfig.GetTranslation(crit.LocKey);
+            string reason = sharedData.localeConfig.TraumaType;
             entity.GetComponent<Pain>().diff += crit.Pain;
             entity.GetComponent<Health>().DealDamage(crit.Damage, critName);
-            entity.CreateBleeding(crits.requestBodyPart, crit.Bleed, critName, isInternal: true);
+            entity.CreateBleeding(crits.requestBodyPart, crit.Bleed, critName, reason, isInternal: true);
 
             if (crit.Effect != Crits.Effects.SpineCrit) {
                 ApplyCritEffect(entity, ref crits, ref convertedPed, crit.Effect, crit.Message);
