@@ -42,7 +42,7 @@ namespace GunshotWound2.Configs {
                 }
             }
 
-            throw new Exception($"There's no Crit with key {key}");
+            throw new Exception($"There's no {nameof(Trauma)} with key {key}");
         }
     }
 }

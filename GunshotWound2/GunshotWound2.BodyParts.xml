@@ -1,31 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <BodyParts>
     <BodyPart Key="Head" LocKey="BodyParts.Head" Bones="SkelHead;" CritChance="1">
-        <Crit Key="NasalFracture" Weight="1"/>
+        <Crit Key="SkullFracture" Weight="1"/>
         <Crit Key="BleedingInHead" Weight="1"/>
-        <Crit Key="HeavyBrainDamage" Weight="1"/>
     </BodyPart>
 
-    <BodyPart Key="Neck" LocKey="BodyParts.Neck" Bones="SkelNeck1;SkelNeck2;" CritChance="0.5">
-        <Crit Key="BrokenNeck" Weight="1"/>
+    <BodyPart Key="Neck" LocKey="BodyParts.Neck"
+              Bones="SkelNeck1;SkelNeck2;"
+              CritChance="0.5">
+        <Crit Key="GreatVesselBleed" Weight="1"/>
+        <Crit Key="SpineFracture" Weight="1"/>
+        <Crit Key="TrachealInjury" Weight="1"/>
     </BodyPart>
 
-    <BodyPart Key="Chest" LocKey="BodyParts.Chest" Bones="SkelSpine2;SkelSpine3;" CritChance="1">
-        <Crit Key="PuncturedLungs" Weight="2"/>
-        <Crit Key="PuncturedHeart" Weight="2"/>
-        <Crit Key="ShatteredSpine" Weight="1"/>
+    <BodyPart Key="Chest" LocKey="BodyParts.Chest"
+              Bones="SkelSpine2;SkelSpine3;"
+              CritChance="1">
+        <Crit Key="HeavyArterialBleed" Weight="3"/>
+        <Crit Key="RibFractures" Weight="2"/>
+        <Crit Key="HeartInjury" Weight="2"/>
+        <Crit Key="LungsInjury" Weight="2"/>
+        <Crit Key="SpineFracture" Weight="1"/>
     </BodyPart>
 
     <BodyPart Key="Abdomen" LocKey="BodyParts.Abdomen"
-              Bones="SkelSpineRoot;SkelSpine0;SkelSpine1;" CritChance="0.8">
-        <Crit Key="PuncturedStomach" Weight="2"/>
-        <Crit Key="PuncturedGuts" Weight="2"/>
-        <Crit Key="ShatteredSpine" Weight="1"/>
+              Bones="SkelSpineRoot;SkelSpine0;SkelSpine1;"
+              CritChance="0.9">
+        <Crit Key="LightArterialBleed" Weight="3"/>
+        <Crit Key="StomachInjury" Weight="2"/>
+        <Crit Key="LiverInjury" Weight="2"/>
+        <Crit Key="BowelInjury" Weight="2"/>
+        <Crit Key="SpineFracture" Weight="1"/>
     </BodyPart>
 
-    <BodyPart Key="Pelvis" LocKey="BodyParts.Pelvis" Bones="SkelRoot;SkelPelvisRoot;SkelPelvis;SkelPelvis1;"
-              CritChance="0.5">
-        <Crit Key="PuncturedGuts" Weight="2"/>
+    <BodyPart Key="Pelvis" LocKey="BodyParts.Pelvis"
+              Bones="SkelRoot;SkelPelvisRoot;SkelPelvis;SkelPelvis1;"
+              CritChance="0.8">
+        <Crit Key="LightArterialBleed" Weight="2"/>
+        <Crit Key="BowelInjury" Weight="1"/>
+        <Crit Key="ClosedFracturePelvis" Weight="1"/>
     </BodyPart>
 
     <BodyPart Key="LeftShoulder" LocKey="BodyParts.LeftShoulder" Bones="SkelLeftClavicle;" CritChance="1">
@@ -35,21 +48,31 @@
         <Crit Key="ClosedFractureArm" Weight="1"/>
     </BodyPart>
 
-    <BodyPart Key="LeftArm" LocKey="BodyParts.LeftArm" Bones="SkelLeftUpperArm;SkelLeftForearm;SkelLeftHand;"
-              CritChance="0.8">
+    <BodyPart Key="LeftArm" LocKey="BodyParts.LeftArm"
+              Bones="SkelLeftUpperArm;SkelLeftForearm;SkelLeftHand;"
+              CritChance="1">
+        <Crit Key="LightArterialBleed" Weight="2"/>
         <Crit Key="ClosedFractureArm" Weight="1"/>
     </BodyPart>
-    <BodyPart Key="RightArm" LocKey="BodyParts.RightArm" Bones="SkelRightUpperArm;SkelRightForearm;SkelRightHand;"
-              CritChance="0.8">
+    <BodyPart Key="RightArm" LocKey="BodyParts.RightArm"
+              Bones="SkelRightUpperArm;SkelRightForearm;SkelRightHand;"
+              CritChance="1">
+        <Crit Key="LightArterialBleed" Weight="2"/>
         <Crit Key="ClosedFractureArm" Weight="1"/>
     </BodyPart>
 
     <BodyPart Key="LeftLeg" LocKey="BodyParts.LeftLeg"
-              Bones="SkelLeftThigh;SkelLeftToe0;SkelLeftToe1;SkelLeftFoot;SkelLeftCalf;" CritChance="0.8">
+              Bones="SkelLeftThigh;SkelLeftToe0;SkelLeftToe1;SkelLeftFoot;SkelLeftCalf;"
+              CritChance="1">
+        <Crit Key="HeavyArterialBleed" Weight="1"/>
+        <Crit Key="LightArterialBleed" Weight="1"/>
         <Crit Key="ClosedFractureLeg" Weight="1"/>
     </BodyPart>
     <BodyPart Key="RightLeg" LocKey="BodyParts.RightLeg"
-              Bones="SkelRightThigh;SkelRightToe0;SkelRightToe1;SkelRightFoot;SkelRightCalf;" CritChance="0.8">
+              Bones="SkelRightThigh;SkelRightToe0;SkelRightToe1;SkelRightFoot;SkelRightCalf;"
+              CritChance="1">
+        <Crit Key="HeavyArterialBleed" Weight="1"/>
+        <Crit Key="LightArterialBleed" Weight="1"/>
         <Crit Key="ClosedFractureLeg" Weight="1"/>
     </BodyPart>
 </BodyParts>

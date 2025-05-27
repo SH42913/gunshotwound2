@@ -100,7 +100,7 @@ namespace GunshotWound2.Configs {
                 bodyPartConfig.FillFrom(doc);
 
                 section = nameof(TraumaConfig);
-                doc = LoadDocument(scriptPath, "Crits.xml");
+                doc = LoadDocument(scriptPath, "Traumas.xml");
                 traumaConfig.FillFrom(doc);
 
                 section = nameof(FillHotkeysFrom);
