@@ -18,5 +18,5 @@
     <!-- Notifications about your wounds -->
 
     <Critical Value="TRUE"/>
-    <!-- Important notifications about crits, heavy wounds, armor hits, etc -->
+    <!-- Important notifications about traumas, heavy wounds, armor hits, etc -->
 </Notifications>

@@ -142,7 +142,9 @@
 
             bool causeTrauma = wound.CanCauseTrauma && sharedData.random.IsTrueWithProbability(hitData.weaponType.ChanceToCauseTrauma);
             if (causeTrauma) {
-                entity.AddOrGetComponent<Traumas>().requestBodyPart = hitData.bodyPart;
+                ref Traumas traumas = ref entity.AddOrGetComponent<Traumas>();
+                traumas.requestBodyPart = hitData.bodyPart;
+                traumas.forBluntDamage = wound.IsBlunt;
             }
 
             SendWoundInfo(convertedPed, health, hitData, woundName, finalBleed, finalPain, causeTrauma);

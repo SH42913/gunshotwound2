@@ -8,6 +8,7 @@ namespace GunshotWound2.Configs {
     using Utils;
 
     public sealed class MainConfig {
+        public const string WEIGHT_ATTRIBUTE_NAME = "Weight";
         public static readonly char[] Separator = { ';' };
 
         public readonly WoundConfig woundConfig;

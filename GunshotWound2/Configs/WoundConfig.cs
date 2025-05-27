@@ -76,7 +76,7 @@ namespace GunshotWound2.Configs {
         public float BleedingDeviation;
 
         public float MoveRateOnFullPain;
-        public float MoveRateOnLegsCrit;
+        public float MoveRateOnLegsTrauma;
 
         public bool RagdollOnPainfulWound;
         public float PainfulWoundPercent;
@@ -90,7 +90,7 @@ namespace GunshotWound2.Configs {
             XElement node = doc.Element(nameof(WoundConfig))!;
 
             MoveRateOnFullPain = node.Element(nameof(MoveRateOnFullPain)).GetFloat();
-            MoveRateOnLegsCrit = node.Element(nameof(MoveRateOnLegsCrit)).GetFloat();
+            MoveRateOnLegsTrauma = node.Element(nameof(MoveRateOnLegsTrauma)).GetFloat();
             OverallDamageMult = node.Element(nameof(OverallDamageMult)).GetFloat();
             DamageDeviation = node.Element(nameof(DamageDeviation)).GetFloat();
             OverallPainMult = node.Element(nameof(OverallPainMult)).GetFloat();
@@ -124,7 +124,7 @@ namespace GunshotWound2.Configs {
                    + $"D/P/B Mults: {OverallDamageMult.ToString("F2")}/{OverallPainMult.ToString("F2")}/{OverallBleedingMult.ToString("F2")}\n"
                    + $"D/P/B Deviations: {DamageDeviation.ToString("F2")}/{PainDeviation.ToString("F2")}/{BleedingDeviation.ToString("F2")}\n"
                    + $"{nameof(MoveRateOnFullPain)}: {MoveRateOnFullPain.ToString(CultureInfo.InvariantCulture)}\n"
-                   + $"{nameof(MoveRateOnLegsCrit)}: {MoveRateOnLegsCrit.ToString(CultureInfo.InvariantCulture)}\n"
+                   + $"{nameof(MoveRateOnLegsTrauma)}: {MoveRateOnLegsTrauma.ToString(CultureInfo.InvariantCulture)}\n"
                    + $"{nameof(RagdollOnPainfulWound)}: {RagdollOnPainfulWound.ToString()}";
         }
     }

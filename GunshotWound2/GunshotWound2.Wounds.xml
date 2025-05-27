@@ -18,8 +18,8 @@
     <MoveRateOnFullPain Value="0.8"/>
     <!-- Move rate on 100% of pain -->
 
-    <MoveRateOnLegsCrit Value="0.7"/>
-    <!-- Move rate when Legs are critically damaged -->
+    <MoveRateOnLegsTrauma Value="0.7"/>
+    <!-- Move rate when Legs has major injury -->
 
     <OverallDamageMult Value="1"/>
     <!-- Overall damage multiplier, 0.5 means every wound will deal 50% of damage to ped -->

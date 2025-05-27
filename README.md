@@ -17,8 +17,8 @@ If ped doesn't have armor or armor was penetrated, the script selects type of wo
 Every new wound applies pain to the ped. If the total pain is more than maximal pain ped can handle, ped falls to ragdoll and stay until pain decreases(pain overwhelming simulation). 
 Pain will make ped slower, change movement animation and reduce its accuracy. For the player, pain will disable and lock Special abilities and sprint. Pain decreases over time.\
 Most of the wounds create bleeding. Every bleeding step by step decreases ped's health, but wounds heal by themselves over time. Player can bandage self to reduce time to heal bleeding.\
-Any wound also may create critical damage, like broken arm bone, punctured lungs, severed artery, etc. It will create additional pain, bleeding, and other effects.\
-When ped got full health in any way - all pain, every bleeding and crits will heal instantly. So, if you can heal all your wounds - find a med-pack or use a trainer to heal yourself. \
+Any wound also may create trauma, like broken arm bone, punctured lungs, severed artery, etc. It will create additional pain, bleeding, and other effects.\
+When ped got full health in any way - all pain, every bleeding and trauma will heal instantly. So, if you can heal all your wounds - find a med-pack or use a trainer to heal yourself. \
 _Currently, GSW2 doesn't support vehicle weapons._
 
 ## Additional features

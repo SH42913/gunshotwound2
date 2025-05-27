@@ -31,14 +31,14 @@ namespace GunshotWound2.Configs {
         public Trauma[] Traumas;
 
         public void FillFrom(XDocument doc) {
-            XElement critsNode = doc.Element(nameof(Traumas))!;
-            Traumas = critsNode.Elements(nameof(Trauma)).Select(x => new Trauma(x)).ToArray();
+            XElement traumasNode = doc.Element(nameof(Traumas))!;
+            Traumas = traumasNode.Elements(nameof(Trauma)).Select(x => new Trauma(x)).ToArray();
         }
 
         public Trauma GetTraumaByKey(string key) {
-            foreach (Trauma crit in Traumas) {
-                if (crit.Key == key) {
-                    return crit;
+            foreach (Trauma trauma in Traumas) {
+                if (trauma.Key == key) {
+                    return trauma;
                 }
             }
 

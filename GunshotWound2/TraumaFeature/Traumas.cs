@@ -8,15 +8,16 @@
         [Flags]
         public enum Effects {
             Nothing = 0,
-            LegsCrit = 1 << 0,
-            ArmsCrit = 1 << 1,
-            SpineCrit = 1 << 2,
-            AbdomenCrit = 1 << 3,
-            LungsCrit = 1 << 4,
-            HeartCrit = 1 << 5,
+            Legs = 1 << 0,
+            Arms = 1 << 1,
+            Spine = 1 << 2,
+            Abdomen = 1 << 3,
+            Lungs = 1 << 4,
+            Heart = 1 << 5,
         }
 
         public BodyPartConfig.BodyPart requestBodyPart;
+        public bool forBluntDamage;
         public Effects activeEffects;
     }
 

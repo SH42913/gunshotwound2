@@ -23,15 +23,6 @@ namespace GunshotWound2.Configs {
         public string PainDecreasedMessage;
         public string TotallyHealedMessage;
 
-        public string Crits;
-        public string NervesCrit;
-        public string HeartCrit;
-        public string LungsCrit;
-        public string StomachCrit;
-        public string GutsCrit;
-        public string ArmsCrit;
-        public string LegsCrit;
-
         public string Wounds;
 
         public string DontHaveMoneyForHelmet;

@@ -152,18 +152,18 @@
 
             if (!convertedPed.thisPed.IsInVehicle()) {
                 ref Traumas traumas = ref pedEntity.GetComponent<Traumas>();
-                bool legsDamaged = traumas.HasActive(Traumas.Effects.LegsCrit);
-                bool heavyCrit = traumas.HasActive(Traumas.Effects.HeartCrit)
-                                 || traumas.HasActive(Traumas.Effects.LungsCrit)
-                                 || traumas.HasActive(Traumas.Effects.AbdomenCrit);
+                bool legsDamaged = traumas.HasActive(Traumas.Effects.Legs);
+                bool majorInjury = traumas.HasActive(Traumas.Effects.Heart)
+                                 || traumas.HasActive(Traumas.Effects.Lungs)
+                                 || traumas.HasActive(Traumas.Effects.Abdomen);
 
-                if (heavyCrit || legsDamaged) {
+                if (majorInjury || legsDamaged) {
                     randomizer.Add(2);
                 }
 
                 float totalSeverity = HealthFeature.CalculateSeverityOfAllBleedingWounds(pedEntity);
                 float timeToDeath = convertedPed.CalculateTimeToDeath(totalSeverity);
-                if (heavyCrit && timeToDeath <= 30f && !convertedPed.isPlayer) {
+                if (majorInjury && timeToDeath <= 30f && !convertedPed.isPlayer) {
                     randomizer.Add(3);
                 }
             }

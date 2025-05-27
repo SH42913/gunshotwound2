@@ -21,12 +21,12 @@
             this.sharedData = sharedData;
 
             effects = new (Traumas.Effects, BaseTraumaEffect)[] {
-                (Traumas.Effects.ArmsCrit, new ArmsTraumaEffect(this.sharedData)),
-                (Traumas.Effects.LegsCrit, new LegsTraumaEffect(this.sharedData)),
-                (Traumas.Effects.HeartCrit, new HeartTraumaEffect(this.sharedData)),
-                (Traumas.Effects.LungsCrit, new LungsTraumaEffect(this.sharedData)),
-                (Traumas.Effects.AbdomenCrit, new AbdomenTraumaEffect(this.sharedData)),
-                (Traumas.Effects.SpineCrit, new SpineTraumaEffect(this.sharedData)),
+                (Traumas.Effects.Arms, new ArmsTraumaEffect(this.sharedData)),
+                (Traumas.Effects.Legs, new LegsTraumaEffect(this.sharedData)),
+                (Traumas.Effects.Heart, new HeartTraumaEffect(this.sharedData)),
+                (Traumas.Effects.Lungs, new LungsTraumaEffect(this.sharedData)),
+                (Traumas.Effects.Abdomen, new AbdomenTraumaEffect(this.sharedData)),
+                (Traumas.Effects.Spine, new SpineTraumaEffect(this.sharedData)),
             };
         }
 
@@ -53,37 +53,40 @@
         }
 
         private void ProcessRequest(Entity entity, ref Traumas traumas, ref ConvertedPed convertedPed) {
-            if (!sharedData.random.IsTrueWithProbability(traumas.requestBodyPart.CritChance)) {
+            if (!sharedData.random.IsTrueWithProbability(traumas.requestBodyPart.TraumaChance)) {
 #if DEBUG
-                sharedData.logger.WriteInfo($"Ignore crit for {traumas.requestBodyPart.Key} at {convertedPed.name}");
+                sharedData.logger.WriteInfo($"Skip trauma for {traumas.requestBodyPart.Key} at {convertedPed.name}");
 #endif
                 return;
             }
 
-            string critKey = sharedData.weightRandom.GetValueWithWeights(traumas.requestBodyPart.Crits);
-            TraumaConfig.Trauma trauma = sharedData.mainConfig.traumaConfig.GetTraumaByKey(critKey);
-#if DEBUG
-            sharedData.logger.WriteInfo($"Selected crit {trauma.Key} for {traumas.requestBodyPart.Key} at {convertedPed.name}");
-#endif
+            var possibleTraumas = traumas.forBluntDamage
+                    ? traumas.requestBodyPart.BluntTraumas
+                    : traumas.requestBodyPart.PenetratingTraumas;
 
-            string critName = sharedData.localeConfig.GetTranslation(trauma.LocKey);
+            string traumaKey = sharedData.weightRandom.GetValueWithWeights(possibleTraumas);
+#if DEBUG
+            sharedData.logger.WriteInfo($"Selected crit {traumaKey} for {traumas.requestBodyPart.Key} at {convertedPed.name}");
+#endif
+            TraumaConfig.Trauma trauma = sharedData.mainConfig.traumaConfig.GetTraumaByKey(traumaKey);
+            string traumaName = sharedData.localeConfig.GetTranslation(trauma.LocKey);
             string reason = sharedData.localeConfig.TraumaType;
             entity.GetComponent<Pain>().diff += trauma.Pain;
-            entity.GetComponent<Health>().DealDamage(trauma.Damage, critName);
-            entity.CreateBleeding(traumas.requestBodyPart, trauma.Bleed, critName, reason, isInternal: true);
+            entity.GetComponent<Health>().DealDamage(trauma.Damage, traumaName);
+            entity.CreateBleeding(traumas.requestBodyPart, trauma.Bleed, traumaName, reason, isInternal: true);
 
-            if (trauma.Effect != Traumas.Effects.SpineCrit) {
+            if (trauma.Effect != Traumas.Effects.Spine) {
                 ApplyTraumaEffect(entity, ref traumas, ref convertedPed, trauma.Effect, trauma.EffectMessage);
             } else {
-                bool realSpineCrit = convertedPed.isPlayer
+                bool realSpineTrauma = convertedPed.isPlayer
                         ? sharedData.mainConfig.playerConfig.RealisticSpineDamage
                         : sharedData.mainConfig.pedsConfig.RealisticSpineDamage;
 
-                if (realSpineCrit) {
-                    ApplyTraumaEffect(entity, ref traumas, ref convertedPed, Traumas.Effects.SpineCrit, trauma.EffectMessage);
+                if (realSpineTrauma) {
+                    ApplyTraumaEffect(entity, ref traumas, ref convertedPed, Traumas.Effects.Spine, trauma.EffectMessage);
                 } else {
-                    ApplyTraumaEffect(entity, ref traumas, ref convertedPed, Traumas.Effects.ArmsCrit, trauma.EffectMessage);
-                    ApplyTraumaEffect(entity, ref traumas, ref convertedPed, Traumas.Effects.LegsCrit, trauma.EffectMessage);
+                    ApplyTraumaEffect(entity, ref traumas, ref convertedPed, Traumas.Effects.Arms, trauma.EffectMessage);
+                    ApplyTraumaEffect(entity, ref traumas, ref convertedPed, Traumas.Effects.Legs, trauma.EffectMessage);
                 }
             }
         }

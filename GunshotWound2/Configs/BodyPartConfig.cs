@@ -13,8 +13,9 @@ namespace GunshotWound2.Configs {
             public readonly string Key;
             public readonly string LocKey;
             public readonly HashSet<int> Bones;
-            public readonly (string key, int weight)[] Crits;
-            public readonly float CritChance;
+            public readonly (string key, int weight)[] BluntTraumas;
+            public readonly (string key, int weight)[] PenetratingTraumas;
+            public readonly float TraumaChance;
 
             public bool IsValid => !string.IsNullOrEmpty(Key);
 
@@ -26,11 +27,9 @@ namespace GunshotWound2.Configs {
                             .Select(GetIntOfBone)
                             .ToHashSet();
 
-                Crits = node.Elements("Crit")
-                            .Select(x => (x.GetString("Key"), x.GetInt("Weight")))
-                            .ToArray();
-
-                CritChance = node.GetFloat(nameof(CritChance));
+                BluntTraumas = ExtractTraumas(node.Element(nameof(BluntTraumas)));
+                PenetratingTraumas = ExtractTraumas(node.Element(nameof(PenetratingTraumas)));
+                TraumaChance = node.GetFloat(nameof(TraumaChance));
             }
 
             private static int GetIntOfBone(string boneName) {
@@ -39,6 +38,12 @@ namespace GunshotWound2.Configs {
                 } else {
                     throw new Exception($"Can't parse bone {boneName}");
                 }
+            }
+
+            private static (string, int)[] ExtractTraumas(XElement node) {
+                return node.Elements(nameof(TraumaConfig.Trauma))
+                           .Select(x => (x.GetString(nameof(TraumaConfig.Trauma.Key)), x.GetInt(MainConfig.WEIGHT_ATTRIBUTE_NAME)))
+                           .ToArray();
             }
         }
 

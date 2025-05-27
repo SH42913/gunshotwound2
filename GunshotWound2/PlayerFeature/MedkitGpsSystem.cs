@@ -43,9 +43,9 @@
         }
 
         private void FlashBlipsIfNeed() {
-            bool hasCrits = sharedData.playerEntity.Has<Traumas>();
+            bool hasTraumas = sharedData.playerEntity.Has<Traumas>();
             bool hasBandages = sharedData.playerEntity.GetComponent<Inventory>().Has(BandageItem.template);
-            if (!hasCrits && hasBandages) {
+            if (!hasTraumas && hasBandages) {
                 return;
             }
 

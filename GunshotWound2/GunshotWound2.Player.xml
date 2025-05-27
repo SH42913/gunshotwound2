@@ -8,7 +8,7 @@
     <!-- If TRUE - peds will not attack player while he's unconscious -->
 
     <CanDropWeapon Value="FALSE"/>
-    <!-- If TRUE - player will lose a weapon on arm crits and when you fall unconscious.
+    <!-- If TRUE - player will lose a weapon on arm injury or when fall unconscious.
     Recommended to use with Pickups mod. -->
 
     <HeadshotIsInstantDeath Value="FALSE"/>
