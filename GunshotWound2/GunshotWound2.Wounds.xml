@@ -40,26 +40,53 @@
         -->
 
         <!-- Impact wounds -->
-        <Wound Key="LightBruise" LocKey="LightBruiseOn" IsBlunt="TRUE" Damage="2" Pain="15"/>
-        <Wound Key="MediumBruise" LocKey="MediumBruiseOn" IsBlunt="TRUE" Damage="4" Pain="25"/>
-        <Wound Key="HeavyBruise" LocKey="HeavyBruiseOn" IsBlunt="TRUE" CanCauseTrauma="TRUE" Damage="5" Pain="39"/>
-        <Wound Key="AbrasionWound" LocKey="AbrasionWoundOn" IsBlunt="TRUE" Damage="2" Bleed="0.15" Pain="15"/>
+        <Wound Key="LightBruise" LocKey="Wounds.Blunt.LightBruise"
+               IsBlunt="TRUE" Damage="1" Pain="15"/>
+        <Wound Key="MediumBruise" LocKey="Wounds.Blunt.MediumBruise"
+               IsBlunt="TRUE" Damage="2" Pain="25"/>
+        <Wound Key="HeavyBruise" LocKey="Wounds.Blunt.HeavyBruise"
+               IsBlunt="TRUE" CanCauseTrauma="TRUE"
+               Damage="4" Pain="39"/>
+        <Wound Key="BluntHematoma" LocKey="Wounds.Blunt.Hematoma"
+               IsBlunt="TRUE" Damage="2" Bleed="0.05" Pain="15"/>
+        <Wound Key="BluntAbrasion" LocKey="Wounds.Blunt.Abrasion"
+               IsBlunt="TRUE" Damage="2" Bleed="0.1" Pain="15"/>
+        <Wound Key="BluntLaceration" LocKey="Wounds.Blunt.Laceration"
+               IsBlunt="TRUE" Damage="2" Bleed="0.3" Pain="15"/>
 
         <!-- Cutting wounds -->
-        <Wound Key="IncisionWound" LocKey="IncisionWoundOn" Damage="5" Bleed="0.3" Pain="20"/>
-        <Wound Key="LacerationWound" LocKey="LacerationWoundOn" CanCauseTrauma="TRUE"
+        <Wound Key="IncisedCut" LocKey="Wounds.Cut.Incised"
+               Damage="5" Bleed="0.2" Pain="15"/>
+        <Wound Key="DeepIncisedCut" LocKey="Wounds.Cut.DeepIncised"
+               Damage="5" Bleed="0.5" Pain="20"/>
+        <Wound Key="SlashCut" LocKey="Wounds.Cut.Slash"
+               Damage="10" Bleed="0.6" Pain="25"/>
+        <Wound Key="LacerationCut" LocKey="Wounds.Cut.Laceration"
+               CanCauseTrauma="TRUE"
                Damage="10" Bleed="0.8" Pain="30"/>
-        <Wound Key="StabWound" LocKey="StabWoundOn" CanCauseTrauma="TRUE"
+        <Wound Key="StabCut" LocKey="Wounds.Cut.Stab"
+               CanCauseTrauma="TRUE"
                Damage="15" Bleed="0.6" Pain="40"/>
+        <Wound Key="ChopCut" LocKey="Wounds.Cut.Chop"
+               CanCauseTrauma="TRUE"
+               Damage="20" Bleed="1" Pain="50"/>
 
         <!-- Gunshot wounds -->
-        <Wound Key="GrazeGsw" LocKey="GrazeGswOn" Damage="7" Bleed="0.05" Pain="15"/>
-        <Wound Key="FleshGsw" LocKey="FleshGswOn" Damage="10" Bleed="0.1" Pain="30"/>
-        <Wound Key="PenetratingGsw" LocKey="PenetratingGswOn" CanCauseTrauma="TRUE"
+        <Wound Key="GrazeGsw" LocKey="Wounds.Gsw.Grazing"
+               Damage="7" Bleed="0.1" Pain="15"/>
+        <Wound Key="FleshGsw" LocKey="Wounds.Gsw.Flesh"
+               Damage="10" Bleed="0.2" Pain="25"/>
+        <Wound Key="PenetratingGsw" LocKey="Wounds.Gsw.Penetrating"
+               CanCauseTrauma="TRUE"
                Damage="15" Bleed="0.2" Pain="40"/>
-        <Wound Key="PerforatingGsw" LocKey="PerforatingGswOn" CanCauseTrauma="TRUE"
-               Damage="10" Bleed="0.3" Pain="30"/>
-        <Wound Key="AvulsiveGsw" LocKey="AvulsiveGswOn" CanCauseTrauma="TRUE"
-               Damage="15" Bleed="0.35" Pain="50"/>
+        <Wound Key="PerforatingGsw" LocKey="Wounds.Gsw.Perforating"
+               CanCauseTrauma="TRUE"
+               Damage="10" Bleed="0.4" Pain="30"/>
+        <Wound Key="LaceratingGsw" LocKey="Wounds.Gsw.Lacerating"
+               CanCauseTrauma="TRUE"
+               Damage="15" Bleed="0.6" Pain="30"/>
+        <Wound Key="AvulsiveGsw" LocKey="Wounds.Gsw.Avulsive"
+               CanCauseTrauma="TRUE"
+               Damage="15" Bleed="0.8" Pain="50"/>
     </Wounds>
 </WoundConfig>
