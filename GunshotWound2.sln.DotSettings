@@ -307,9 +307,11 @@
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=939EAE5855DDCC459C270870E67E9ECA/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=939EAE5855DDCC459C270870E67E9ECA/Text/@EntryValue">$HEADER$namespace $NAMESPACE$ {
     using Scellecs.Morpeh;
+    using EcsEntity = Scellecs.Morpeh.Entity;
+    using EcsWorld = Scellecs.Morpeh.World;
     public sealed class $CLASS$ : $SYSTEMTYPE$ {
         private readonly SharedData sharedData;
-        public World World { get; set; }
+        public EcsWorld World { get; set; }
         public $CLASS$(SharedData sharedData) { this.sharedData = sharedData; }
         public void OnAwake() {$END$}
         public void OnUpdate(float deltaTime) {}
