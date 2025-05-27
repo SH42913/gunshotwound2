@@ -50,11 +50,11 @@ namespace GunshotWound2.Configs {
             }
         }
 
-        public const uint WEAPON_FALL = 3452007600;
-        public const uint WEAPON_EXHAUSTION = 910830060;
-        public const uint WEAPON_FIRE = 3750660587;
-        public const uint WEAPON_RAMMED_BY_CAR = 133987706;
-        public const uint WEAPON_RUN_OVER_BY_CAR = 2741846334;
+        public uint WEAPON_FALL;
+        public uint WEAPON_EXHAUSTION;
+        public uint WEAPON_FIRE;
+        public uint WEAPON_RAMMED_BY_CAR;
+        public uint WEAPON_RUN_OVER_BY_CAR;
 
         public bool UseSpecialStunDamage;
         public HashSet<uint> IgnoreSet;
@@ -87,6 +87,13 @@ namespace GunshotWound2.Configs {
             HardFallThreshold = weaponsNode.Element(nameof(HardFall)).GetFloat(minSpeedName);
             LightRunOverThreshold = weaponsNode.Element(nameof(LightRunOverCar)).GetFloat(minSpeedName);
             HardRunOverThreshold = weaponsNode.Element(nameof(HardRunOverCar)).GetFloat(minSpeedName);
+
+            const string prefix = "";
+            TryGetWeaponHash(nameof(WEAPON_FALL), out WEAPON_FALL, prefix);
+            TryGetWeaponHash(nameof(WEAPON_EXHAUSTION), out WEAPON_EXHAUSTION, prefix);
+            TryGetWeaponHash(nameof(WEAPON_FIRE), out WEAPON_FIRE, prefix);
+            TryGetWeaponHash(nameof(WEAPON_RAMMED_BY_CAR), out WEAPON_RAMMED_BY_CAR, prefix);
+            TryGetWeaponHash(nameof(WEAPON_RUN_OVER_BY_CAR), out WEAPON_RUN_OVER_BY_CAR, prefix);
 
             SuggestWeapons(logger);
         }
@@ -125,7 +132,17 @@ namespace GunshotWound2.Configs {
             float helmetChance = weaponNode.GetFloat(nameof(Weapon.HelmetSafeChance), defaultValue: 0f);
             string safeArmorLevel = weaponNode.GetString(nameof(Weapon.SafeArmorLevel));
             int armorDamage = weaponNode.GetInt(nameof(Weapon.ArmorDamage), defaultValue: 0);
-            return new Weapon(key, shortDesc, hashes, wounds, damageMult, bleedMult, painMult, traumaChance, helmetChance, safeArmorLevel, armorDamage);
+            return new Weapon(key,
+                              shortDesc,
+                              hashes,
+                              wounds,
+                              damageMult,
+                              bleedMult,
+                              painMult,
+                              traumaChance,
+                              helmetChance,
+                              safeArmorLevel,
+                              armorDamage);
         }
 
         private static (string, int)[] ExtractWounds(XElement weaponNode) {
@@ -150,18 +167,21 @@ namespace GunshotWound2.Configs {
             void ParseStringToSet(string stringOfHashes) {
                 string[] splitStrings = stringOfHashes.Split(MainConfig.Separator, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string weaponString in splitStrings) {
-                    if (!uint.TryParse(weaponString, out uint hash)) {
-                        const string prefix = "WEAPON_";
-                        hash = StringHash.AtStringHashUtf8(prefix + weaponString.ToUpper());
-                    }
-
-                    if (NativeMemory.IsHashValidAsWeaponHash(hash)) {
+                    if (TryGetWeaponHash(weaponString, out uint hash)) {
                         set.Add(hash);
                     } else {
                         logger.WriteWarning($"{weaponString}({hash.ToString()}) is not valid weapon. GSW2 will ignore it.");
                     }
                 }
             }
+        }
+
+        private static bool TryGetWeaponHash(string weaponString, out uint hash, string prefix = "WEAPON_") {
+            if (!uint.TryParse(weaponString, out hash)) {
+                hash = StringHash.AtStringHashUtf8(prefix + weaponString.ToUpper());
+            }
+
+            return NativeMemory.IsHashValidAsWeaponHash(hash);
         }
 
         public static string BuildWeaponName(uint hash) {
