@@ -17,13 +17,12 @@ namespace GunshotWound2.Configs {
         public string YourHealth;
         public string HisHealth;
         public string HerHealth;
-        public string Dead;
         public string Pain;
-        public string PainIncreasedMessage;
         public string PainDecreasedMessage;
         public string TotallyHealedMessage;
 
         public string Wounds;
+        public string WoundLeadsToTrauma;
 
         public string DontHaveMoneyForHelmet;
 

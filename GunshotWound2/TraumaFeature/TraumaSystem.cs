@@ -53,13 +53,6 @@
         }
 
         private void ProcessRequest(Entity entity, ref Traumas traumas, ref ConvertedPed convertedPed) {
-            if (!sharedData.random.IsTrueWithProbability(traumas.requestBodyPart.TraumaChance)) {
-#if DEBUG
-                sharedData.logger.WriteInfo($"Skip trauma for {traumas.requestBodyPart.Key} at {convertedPed.name}");
-#endif
-                return;
-            }
-
             var possibleTraumas = traumas.forBluntDamage
                     ? traumas.requestBodyPart.BluntTraumas
                     : traumas.requestBodyPart.PenetratingTraumas;

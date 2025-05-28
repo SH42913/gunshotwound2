@@ -156,6 +156,10 @@
                 return false;
             }
 
+            if (!sharedData.random.IsTrueWithProbability(hitData.bodyPart.TraumaChance)) {
+                return false;
+            }
+
             if (hitData.bodyPart.IgnoreWeaponTraumaChance) {
                 return true;
             }
@@ -193,7 +197,8 @@
             }
 
             string bodyPart = sharedData.localeConfig.GetTranslation(hitData.bodyPart.LocKey);
-            woundName = $"{woundName} ({bodyPart})";
+            string traumaMessage = causeTrauma ? sharedData.localeConfig.WoundLeadsToTrauma : "";
+            woundName = $"{woundName} ({bodyPart}) {traumaMessage}";
 
             Notifier.Color bleedingColor = health.GetBleedingColor(convertedPed, finalBleed);
             notifier.QueueMessage(woundName, bleedingColor);
