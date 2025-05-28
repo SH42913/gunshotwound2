@@ -27,7 +27,7 @@
         protected void CreateInternalBleeding(Entity entity, BodyPartConfig.BodyPart bodyPart, float severity) {
             string name = sharedData.localeConfig.InternalBleeding;
             string reason = sharedData.localeConfig.TraumaType;
-            entity.CreateBleeding(bodyPart, severity, name, reason, isInternal: true);
+            entity.CreateBleeding(bodyPart, severity, name, reason, isTrauma: true);
         }
 
         protected void ShowRunningWarningMessage(in ConvertedPed convertedPed) {

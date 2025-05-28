@@ -76,7 +76,10 @@
                 }
 
                 health.DealDamage(bleeding.severity * deltaTime, reason: null);
-                bleeding.severity -= health.bleedingHealRate * deltaTime;
+
+                if (!bleeding.isTrauma) {
+                    bleeding.severity -= health.bleedingHealRate * deltaTime;
+                }
             }
         }
 
@@ -114,7 +117,7 @@
                 mostDangerWound = entity;
                 maxBleeding = bleeding.severity;
 
-                bool ableToBandage = !bleeding.isInternal && woundConfig.IsBleedingCanBeBandaged(bleeding.severity);
+                bool ableToBandage = !bleeding.isTrauma && woundConfig.IsBleedingCanBeBandaged(bleeding.severity);
                 if (ableToBandage) {
                     woundToBandage = entity;
                 }

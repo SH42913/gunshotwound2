@@ -8,7 +8,7 @@
         public string name;
         public string reason;
         public float severity;
-        public bool isInternal;
+        public bool isTrauma;
 
         public bool isProcessed;
     }
@@ -19,14 +19,14 @@
                                           float severity,
                                           string name,
                                           string reason,
-                                          bool isInternal) {
+                                          bool isTrauma) {
             ref Bleeding bleeding = ref target.world.CreateEntity().AddComponent<Bleeding>();
             bleeding.target = target;
             bleeding.bodyPart = bodyPart;
             bleeding.name = name;
             bleeding.reason = reason;
             bleeding.severity = severity;
-            bleeding.isInternal = isInternal;
+            bleeding.isTrauma = isTrauma;
         }
     }
 }

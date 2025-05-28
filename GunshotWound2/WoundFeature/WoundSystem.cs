@@ -127,7 +127,7 @@
             if (wound.Bleed > 0f) {
                 float mult = hitData.weaponType.BleedMult * WoundConfig.OverallBleedingMult;
                 finalBleed = CalculateAmount(wound.Bleed, WoundConfig.BleedingDeviation, mult);
-                entity.CreateBleeding(hitData.bodyPart, finalBleed, woundName, hitData.weaponType.ShortDesc, isInternal: false);
+                entity.CreateBleeding(hitData.bodyPart, finalBleed, woundName, hitData.weaponType.ShortDesc, isTrauma: false);
             }
 
             var finalPain = 0f;

@@ -73,7 +73,7 @@
             string reason = sharedData.localeConfig.TraumaType;
             entity.GetComponent<Pain>().diff += trauma.Pain;
             entity.GetComponent<Health>().DealDamage(trauma.Damage, traumaName);
-            entity.CreateBleeding(traumas.requestBodyPart, trauma.Bleed, traumaName, reason, isInternal: true);
+            entity.CreateBleeding(traumas.requestBodyPart, trauma.Bleed, traumaName, reason, isTrauma: true);
 
             if (trauma.Effect != Traumas.Effects.Spine) {
                 ApplyTraumaEffect(entity, ref traumas, ref convertedPed, trauma.Effect, trauma.EffectMessage);
