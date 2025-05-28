@@ -25,26 +25,26 @@
     <!-- Lethal -->
     <Trauma Key="SkullFracture" LocKey="Traumas.SkullFracture"
             Damage="10" Pain="40" Bleed="0.2"
-            Effect="SpineTraumaEffect" EffectMessage="FALSE"/>
+            Effect="Spine" EffectMessage="FALSE"/>
     <Trauma Key="BleedingInHead" LocKey="Traumas.BleedingInHead"
             Damage="15" Pain="60" Bleed="0.4"
-            Effect="SpineTraumaEffect" EffectMessage="FALSE"/>
+            Effect="Spine" EffectMessage="FALSE"/>
     <Trauma Key="PenetratingSkullFracture" LocKey="Traumas.Penet.CranialInjury"
             Damage="20" Pain="80" Bleed="0.6"
-            Effect="SpineTraumaEffect" EffectMessage="FALSE"/>
+            Effect="Spine" EffectMessage="FALSE"/>
 
     <!-- Neck -->
     <Trauma Key="GreatVesselBleed" LocKey="Traumas.Penet.GreatBleed"
             Damage="10" Pain="35" Bleed="0.6"/>
     <Trauma Key="NeckSpineFracture" LocKey="Traumas.NeckSpineFracture"
             Damage="8" Pain="50" Bleed="0.05"
-            Effect="SpineTraumaEffect"/>
+            Effect="Spine"/>
     <Trauma Key="SpineFracture" LocKey="Traumas.SpineFracture"
             Damage="8" Pain="50" Bleed="0.05"
-            Effect="SpineTraumaEffect"/>
+            Effect="Spine"/>
     <Trauma Key="TrachealInjury" LocKey="Traumas.TrachealInjury"
             Damage="6" Pain="30" Bleed="0.15"
-            Effect="LungsTraumaEffect"/>
+            Effect="Lungs"/>
 
     <!-- Chest -->
     <Trauma Key="RibFractures" LocKey="Traumas.RibFractures"
@@ -53,43 +53,43 @@
             Damage="6" Pain="35" Bleed="0.3"/>
     <Trauma Key="HeartInjury" LocKey="Traumas.CardiacInjury"
             Damage="15" Pain="60" Bleed="0.55"
-            Effect="HeartTraumaEffect"/>
+            Effect="Heart"/>
     <Trauma Key="LungsInjury" LocKey="Traumas.PulmonaryInjury"
             Damage="10" Pain="40" Bleed="0.25"
-            Effect="LungsTraumaEffect"/>
+            Effect="Lungs"/>
     <Trauma Key="Pneumothorax" LocKey="Traumas.Penet.Pneumothorax"
             Damage="5" Pain="30" Bleed="0.05"
-            Effect="LungsTraumaEffect"/>
+            Effect="Lungs"/>
 
     <!-- Abdomen -->
     <Trauma Key="StomachInjury" LocKey="Traumas.StomachInjury"
             Damage="5" Pain="30" Bleed="0.1"
-            Effect="AbdomenTraumaEffect"/>
+            Effect="Abdomen"/>
     <Trauma Key="LiverInjury" LocKey="Traumas.LiverInjury"
             Damage="10" Pain="45" Bleed="0.4"
-            Effect="AbdomenTraumaEffect"/>
+            Effect="Abdomen"/>
     <Trauma Key="Hemoperitoneum" LocKey="Traumas.Blunt.Hemoperitoneum"
             Damage="6" Pain="35" Bleed="0.3"
-            Effect="AbdomenTraumaEffect"/>
+            Effect="Abdomen"/>
 
     <!-- Pelvis -->
     <Trauma Key="BowelInjury" LocKey="Traumas.BowelInjury"
             Damage="4" Pain="30" Bleed="0.08"
-            Effect="AbdomenTraumaEffect"/>
+            Effect="Abdomen"/>
     <Trauma Key="ClosedFracturePelvis" LocKey="Traumas.ClosedFracture"
             Damage="7" Pain="45" Bleed="0.25"
-            Effect="LegsTraumaEffect"/>
+            Effect="Legs"/>
 
     <!-- Arms -->
     <Trauma Key="ClosedFractureArm" LocKey="Traumas.ClosedFracture"
             Damage="3" Pain="30" Bleed="0.02"
-            Effect="ArmsTraumaEffect"/>
+            Effect="Arms"/>
     <Trauma Key="DislocatedShoulder" LocKey="Traumas.Blunt.DislocShoulder"
             Damage="1" Pain="35"
-            Effect="ArmsTraumaEffect"/>
+            Effect="Arms"/>
 
     <!-- Legs -->
     <Trauma Key="ClosedFractureLeg" LocKey="Traumas.ClosedFracture"
             Damage="4" Pain="35" Bleed="0.05"
-            Effect="LegsTraumaEffect"/>
+            Effect="Legs"/>
 </Traumas>
