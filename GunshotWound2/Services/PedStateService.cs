@@ -69,7 +69,7 @@
             ShowPain(pedEntity, health);
             ShowArmor(ref convertedPed);
             ShowBleedingWounds(pedEntity, ref convertedPed, ref health, ref currentlyUsing);
-            ShowInventory(ref inventory, ref currentlyUsing);
+            ShowInventory(ref inventory, ref currentlyUsing, health);
             return stringBuilder.ToString();
         }
 
@@ -83,7 +83,6 @@
             int currentHealth = WoundConfig.ConvertHealthFromNative(convertedPed.thisPed.Health);
             int maxHealth = WoundConfig.ConvertHealthFromNative(health.max);
             float healthPercent = (float)currentHealth / maxHealth;
-            string healthPercentText = healthPercent <= 0 ? localeConfig.Dead : healthPercent.ToString("P0");
 
             Notifier.Color color;
             if (healthPercent >= 0.75f) {
@@ -97,13 +96,12 @@
             }
 
             stringBuilder.SetDefaultColor();
-            stringBuilder.Append(healthType);
-            stringBuilder.Append(": ");
-            stringBuilder.Append(color);
-            stringBuilder.Append(healthPercentText);
-            if (healthPercent <= 0f) {
-                stringBuilder.AppendEndOfLine();
-                stringBuilder.SetDefaultColor();
+            if (healthPercent > 0f) {
+                stringBuilder.Append(healthType);
+                stringBuilder.Append(": ");
+                stringBuilder.Append(color);
+                stringBuilder.Append(healthPercent.ToString("P0"));
+            } else {
                 stringBuilder.Append(localeConfig.DeathReason);
                 stringBuilder.Append(": ");
                 stringBuilder.Append(color);
@@ -117,8 +115,6 @@
                 } else {
                     stringBuilder.AppendFormat("UNKNOWN");
                 }
-
-                stringBuilder.AppendEndOfLine();
             }
 
             stringBuilder.SetDefaultColor();
@@ -211,8 +207,8 @@
             bleedBuffer.Clear();
         }
 
-        private void ShowInventory(ref Inventory inventory, ref CurrentlyUsingItem currentlyUsing) {
-            if (inventory.items == null || inventory.items.Count < 1) {
+        private void ShowInventory(ref Inventory inventory, ref CurrentlyUsingItem currentlyUsing, in Health health) {
+            if (inventory.items == null || inventory.items.Count < 1 || health.isDead) {
                 return;
             }
 
