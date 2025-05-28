@@ -88,6 +88,7 @@
             health.bleedingWounds.Add(entity);
             health.bleedingToBandage = null;
             bleeding.isProcessed = true;
+            bleeding.processedTime = GTA.Game.GameTime;
         }
 
         private void RefreshBleedingToBandage() {

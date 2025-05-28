@@ -11,6 +11,7 @@
         public bool isTrauma;
 
         public bool isProcessed;
+        public int processedTime;
     }
 
     public static class BleedingExtensions {

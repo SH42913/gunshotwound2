@@ -1,4 +1,5 @@
 ﻿namespace GunshotWound2.Services {
+    using System.Collections.Generic;
     using System.Text;
     using Configs;
     using HealthFeature;
@@ -9,11 +10,41 @@
     using Utils;
 
     public sealed class PedStateService {
+        private readonly struct BleedDesc {
+            public readonly string name;
+            public readonly string reason;
+            public readonly float severity;
+            public readonly string bodyPartLocKey;
+            public readonly bool toBeBandaged;
+
+            private readonly int time;
+            private readonly bool isTrauma;
+
+            public BleedDesc(in Bleeding bleeding, bool toBeBandaged) {
+                name = bleeding.name;
+                reason = bleeding.reason;
+                severity = bleeding.severity;
+                bodyPartLocKey = bleeding.bodyPart.LocKey;
+                this.toBeBandaged = toBeBandaged;
+
+                time = bleeding.processedTime;
+                isTrauma = bleeding.isTrauma;
+            }
+
+            public int CompareTo(in BleedDesc other) {
+                int timeCompare = time.CompareTo(other.time);
+                return timeCompare == 0
+                        ? isTrauma.CompareTo(other.isTrauma)
+                        : timeCompare;
+            }
+        }
+
         private readonly Notifier notifier;
         private readonly MainConfig mainConfig;
         private readonly LocaleConfig localeConfig;
 
         private readonly StringBuilder stringBuilder = new();
+        private readonly List<BleedDesc> bleedBuffer = new();
         private int lastPost;
 
         public PedStateService(Notifier notifier, MainConfig mainConfig, LocaleConfig localeConfig) {
@@ -35,7 +66,7 @@
 
             stringBuilder.Clear();
             ShowHealth(ref convertedPed, ref health);
-            ShowPain(pedEntity);
+            ShowPain(pedEntity, health);
             ShowArmor(ref convertedPed);
             ShowBleedingWounds(pedEntity, ref convertedPed, ref health, ref currentlyUsing);
             ShowInventory(ref inventory, ref currentlyUsing);
@@ -109,9 +140,9 @@
             stringBuilder.SetDefaultColor();
         }
 
-        private void ShowPain(Entity pedEntity) {
+        private void ShowPain(Entity pedEntity, in Health health) {
             ref Pain pain = ref pedEntity.GetComponent<Pain>();
-            if (pain.currentState == null) {
+            if (pain.currentState == null || health.isDead) {
                 return;
             }
 
@@ -148,29 +179,36 @@
 
             foreach (Entity bleedingEntity in health.bleedingWounds) {
                 ref Bleeding bleeding = ref bleedingEntity.GetComponent<Bleeding>();
-                bool isBleedingToBandage = health.bleedingToBandage == bleedingEntity;
+                if (bleeding.isProcessed) {
+                    bool isBleedingToBandage = health.bleedingToBandage == bleedingEntity;
+                    bleedBuffer.Add(new BleedDesc(bleeding, isBleedingToBandage));
+                }
+            }
 
+            bleedBuffer.Sort((x, y) => x.CompareTo(y));
+            foreach (BleedDesc bleeding in bleedBuffer) {
                 stringBuilder.AppendEndOfLine();
-                if (isBleedingToBandage) {
+                if (bleeding.toBeBandaged) {
                     stringBuilder.Append("~g~-> ");
                 }
 
                 Notifier.Color color = health.GetBleedingColor(convertedPed, bleeding.severity);
                 stringBuilder.Append(color);
 
-                string bodyPart = localeConfig.GetTranslation(bleeding.bodyPart.LocKey);
+                string bodyPart = localeConfig.GetTranslation(bleeding.bodyPartLocKey);
                 if (string.IsNullOrEmpty(bleeding.reason)) {
                     stringBuilder.AppendFormat("{0} ({1})", bleeding.name, bodyPart);
                 } else {
                     stringBuilder.AppendFormat("{0} ({1}, {2})", bleeding.name, bodyPart, bleeding.reason);
                 }
 
-                if (isBleedingToBandage && currentlyUsing.itemTemplate.IsBandage() && currentlyUsing.target == pedEntity) {
+                if (bleeding.toBeBandaged && currentlyUsing.itemTemplate.IsBandage() && currentlyUsing.target == pedEntity) {
                     stringBuilder.AppendFormat(" ~g~({0})", currentlyUsing.ProgressPercent().ToString("P1"));
                 }
             }
 
             stringBuilder.SetDefaultColor();
+            bleedBuffer.Clear();
         }
 
         private void ShowInventory(ref Inventory inventory, ref CurrentlyUsingItem currentlyUsing) {
