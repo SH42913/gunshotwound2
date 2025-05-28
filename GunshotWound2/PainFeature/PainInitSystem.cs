@@ -26,7 +26,7 @@
                 ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
                 ref Pain pain = ref entity.AddOrGetComponent<Pain>();
                 if (convertedPed.isPlayer) {
-                    pain.recoveryRate = playerConfig.PainRecoverSpeed;
+                    pain.recoveryRate = playerConfig.PainRecoverySpeed;
                     pain.max = playerConfig.PainShockThreshold;
                 } else {
                     float maxRate = pedsConfig.MaximalPainRecoverSpeed;

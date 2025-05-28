@@ -15,7 +15,7 @@ namespace GunshotWound2.Configs {
         public int MoneyForHelmet;
 
         public float PainShockThreshold;
-        public float PainRecoverSpeed;
+        public float PainRecoverySpeed;
         public float BleedHealingSpeed;
         public float PainSlowMo;
         public bool UseScreenEffects;
@@ -29,7 +29,7 @@ namespace GunshotWound2.Configs {
             XElement root = doc.Element(nameof(PlayerConfig))!;
 
             PainShockThreshold = root.Element(nameof(PainShockThreshold)).GetFloat();
-            PainRecoverSpeed = root.Element(nameof(PainRecoverSpeed)).GetFloat();
+            PainRecoverySpeed = root.Element(nameof(PainRecoverySpeed)).GetFloat();
             BleedHealingSpeed = root.Element("BleedHealSpeed").GetFloat() / 1000f;
             PoliceCanForgetYou = root.Element("PoliceCanForget").GetBool();
             PedsWillIgnoreUnconsciousPlayer = root.Element(nameof(PedsWillIgnoreUnconsciousPlayer)).GetBool();
@@ -50,7 +50,7 @@ namespace GunshotWound2.Configs {
             return $"{nameof(PlayerConfig)}:\n"
                    + $"{nameof(MoneyForHelmet)}: {MoneyForHelmet.ToString()}\n"
                    + $"{nameof(PainShockThreshold)}: {PainShockThreshold.ToString(CultureInfo.InvariantCulture)}\n"
-                   + $"{nameof(PainRecoverSpeed)}: {PainRecoverSpeed.ToString(CultureInfo.InvariantCulture)}\n"
+                   + $"{nameof(PainRecoverySpeed)}: {PainRecoverySpeed.ToString(CultureInfo.InvariantCulture)}\n"
                    + $"{nameof(BleedHealingSpeed)}: {BleedHealingSpeed.ToString(CultureInfo.InvariantCulture)}\n"
                    + $"{nameof(PainSlowMo)}: {PainSlowMo.ToString(CultureInfo.InvariantCulture)}";
         }
