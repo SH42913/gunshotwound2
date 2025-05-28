@@ -2,7 +2,7 @@
 <BodyParts>
     <BodyPart Key="Head" LocKey="BodyParts.Head"
               Bones="SkelHead;"
-              TraumaChance="1">
+              TraumaChance="0.95" IgnoreWeaponTraumaChance="TRUE">
         <BluntTraumas>
             <Trauma Key="NasalFracture" Weight="15"/>
             <Trauma Key="Blackout" Weight="20"/>

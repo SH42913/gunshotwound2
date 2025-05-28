@@ -141,14 +141,27 @@
                 entity.GetComponent<Pain>().diff += finalPain;
             }
 
-            bool causeTrauma = wound.CanCauseTrauma && sharedData.random.IsTrueWithProbability(hitData.weaponType.ChanceToCauseTrauma);
-            if (causeTrauma) {
+            bool shouldRequestTrauma = ShouldRequestTrauma(wound, hitData);
+            if (shouldRequestTrauma) {
                 ref Traumas traumas = ref entity.AddOrGetComponent<Traumas>();
                 traumas.requestBodyPart = hitData.bodyPart;
                 traumas.forBluntDamage = wound.IsBlunt;
             }
 
-            SendWoundInfo(convertedPed, health, hitData, woundName, finalBleed, finalPain, causeTrauma);
+            SendWoundInfo(convertedPed, health, hitData, woundName, finalBleed, finalPain, shouldRequestTrauma);
+        }
+
+        private bool ShouldRequestTrauma(in WoundConfig.Wound wound, in PedHitData hitData) {
+            if (!wound.CanCauseTrauma) {
+                return false;
+            }
+
+            if (hitData.bodyPart.IgnoreWeaponTraumaChance) {
+                return true;
+            }
+
+            float weaponTraumaChance = hitData.weaponType.ChanceToCauseTrauma;
+            return sharedData.random.IsTrueWithProbability(weaponTraumaChance);
         }
 
         private bool IsDeadlyWound(in PedHitData hitData, bool isPlayer) {

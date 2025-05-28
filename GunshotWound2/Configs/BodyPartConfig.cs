@@ -16,6 +16,7 @@ namespace GunshotWound2.Configs {
             public readonly (string key, int weight)[] BluntTraumas;
             public readonly (string key, int weight)[] PenetratingTraumas;
             public readonly float TraumaChance;
+            public readonly bool IgnoreWeaponTraumaChance;
 
             public bool IsValid => !string.IsNullOrEmpty(Key);
 
@@ -30,6 +31,7 @@ namespace GunshotWound2.Configs {
                 BluntTraumas = ExtractTraumas(node.Element(nameof(BluntTraumas)));
                 PenetratingTraumas = ExtractTraumas(node.Element(nameof(PenetratingTraumas)));
                 TraumaChance = node.GetFloat(nameof(TraumaChance));
+                IgnoreWeaponTraumaChance = node.GetBool(nameof(IgnoreWeaponTraumaChance));
             }
 
             private static int GetIntOfBone(string boneName) {
