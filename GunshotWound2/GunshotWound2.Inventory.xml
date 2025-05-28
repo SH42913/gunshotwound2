@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Inventory>
+<InventoryConfig>
+    <BlipsToMedkits Value="TRUE" RefreshTime="2" ModelName="prop_ld_health_pack"/>
+    <!-- Add map blips to medkits around player, refresh time in seconds -->
+
     <!-- GSW will give these items to every new character with inventory -->
     <DefaultLoadout>
-        <Item Name="Bandages" Count="4"/>
+        <Item Key="Bandages" Count="4"/>
     </DefaultLoadout>
 
     <!-- These items you'll receive when pickup Medkit -->
     <MedkitLoadout>
-        <Item Name="Bandages" Count="3"/>
+        <Item Key="Bandages" Count="3"/>
     </MedkitLoadout>
 
     <!-- These items you'll receive when entering emergency vehicle -->
     <EmergencyVehicleLoadout>
-        <Item Name="Bandages" Count="2"/>
+        <Item Key="Bandages" Count="2"/>
     </EmergencyVehicleLoadout>
-</Inventory>
+</InventoryConfig>

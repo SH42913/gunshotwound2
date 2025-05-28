@@ -8,6 +8,12 @@ namespace GunshotWound2.Configs {
     using Utils;
 
     public sealed class MainConfig {
+        public interface IConfig {
+            public string sectionName { get; }
+            public void FillFrom(XDocument doc);
+            public void Validate(MainConfig mainConfig, ILogger logger);
+        }
+
         public const string WEIGHT_ATTRIBUTE_NAME = "Weight";
         public static readonly char[] Separator = { ';' };
 
@@ -37,6 +43,8 @@ namespace GunshotWound2.Configs {
         public bool WoundsMessages = true;
         public bool CriticalMessages = true;
 
+        private readonly IConfig[] configs;
+
         public MainConfig() {
             playerConfig = new PlayerConfig();
             woundConfig = new WoundConfig();
@@ -46,6 +54,18 @@ namespace GunshotWound2.Configs {
             inventoryConfig = new InventoryConfig();
             bodyPartConfig = new BodyPartConfig();
             traumaConfig = new TraumaConfig();
+
+            // order is loading order
+            configs = new IConfig[] {
+                playerConfig,
+                pedsConfig,
+                inventoryConfig,
+                woundConfig,
+                traumaConfig,
+                bodyPartConfig,
+                armorConfig,
+                weaponConfig,
+            };
         }
 
         public void ApplyTo(Notifier notifier) {
@@ -72,40 +92,13 @@ namespace GunshotWound2.Configs {
         public (bool success, string reason) TryToLoad(string scriptPath, ILogger logger) {
             string section = null;
             try {
-                section = nameof(PlayerConfig);
-                XDocument doc = LoadDocument(scriptPath, "Player.xml");
-                playerConfig.FillFrom(doc);
-
-                section = nameof(PedsConfig);
-                doc = LoadDocument(scriptPath, "Peds.xml");
-                pedsConfig.FillFrom(doc);
-
-                section = nameof(WoundConfig);
-                doc = LoadDocument(scriptPath, "Wounds.xml");
-                woundConfig.FillFrom(doc);
-
-                section = nameof(WeaponConfig);
-                doc = LoadDocument(scriptPath, "Weapons.xml");
-                weaponConfig.FillFrom(doc, logger);
-
-                section = nameof(ArmorConfig);
-                doc = LoadDocument(scriptPath, "Armor.xml");
-                armorConfig.FillFrom(doc);
-
-                section = nameof(InventoryConfig);
-                doc = LoadDocument(scriptPath, "Inventory.xml");
-                inventoryConfig.FillFrom(doc);
-
-                section = nameof(BodyPartConfig);
-                doc = LoadDocument(scriptPath, "BodyParts.xml");
-                bodyPartConfig.FillFrom(doc);
-
-                section = nameof(TraumaConfig);
-                doc = LoadDocument(scriptPath, "Traumas.xml");
-                traumaConfig.FillFrom(doc);
+                foreach (IConfig config in configs) {
+                    section = config.sectionName;
+                    config.FillFrom(LoadDocument(scriptPath, section));
+                }
 
                 section = nameof(FillHotkeysFrom);
-                doc = LoadDocument(scriptPath, "KeyBinds.xml");
+                XDocument doc = LoadDocument(scriptPath, "KeyBinds.xml");
                 FillHotkeysFrom(doc);
 
                 section = nameof(FillNotifications);
@@ -116,6 +109,12 @@ namespace GunshotWound2.Configs {
             }
 
             return (true, null);
+        }
+
+        public void ValidateConfigs(ILogger logger) {
+            foreach (IConfig config in configs) {
+                config.Validate(this, logger);
+            }
         }
 
         private static XDocument LoadDocument(string scriptPath, string sectionName) {

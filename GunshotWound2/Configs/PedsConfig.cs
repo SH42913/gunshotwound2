@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+
 // ReSharper disable InconsistentNaming
 
 namespace GunshotWound2.Configs {
@@ -18,7 +19,7 @@ namespace GunshotWound2.Configs {
         RESPECT = 1 << 6,
     }
 
-    public sealed class PedsConfig {
+    public sealed class PedsConfig : MainConfig.IConfig {
         public const float MINIMAL_RANGE_FOR_WOUNDED_PEDS = 0;
         public const float ADDING_TO_REMOVING_MULTIPLIER = 2;
 
@@ -31,9 +32,6 @@ namespace GunshotWound2.Configs {
         public bool DontActivateRagdollFromBulletImpact;
         public bool RealisticSpineDamage;
         public float ClosestPedRange;
-
-        public int TakedownRagdollDurationMs;
-        public float TakedownPainMult;
 
         public int MinAccuracy;
         public int MaxAccuracy;
@@ -54,49 +52,45 @@ namespace GunshotWound2.Configs {
         public PainMoveSets MalePainMoveSets;
         public PainMoveSets FemalePainMoveSets;
 
-        public void FillFrom(XDocument doc) {
-            XElement node = doc.Element("Peds");
-            if (node == null) {
-                return;
-            }
+        public string sectionName => "Peds.xml";
 
-            AddingPedRange = node.Element("GSWScanRange").GetFloat();
+        public void FillFrom(XDocument doc) {
+            XElement root = doc.Element(nameof(PedsConfig))!;
+
+            AddingPedRange = root.Element("GSWScanRange").GetFloat();
             RemovePedRange = AddingPedRange * ADDING_TO_REMOVING_MULTIPLIER;
 
-            ShowEnemyCriticalMessages = node.Element("CriticalMessages").GetBool();
-            ScanOnlyDamaged = node.Element("ScanOnlyDamaged").GetBool();
-            InstantDeathHeadshot = node.Element("HeadshotIsInstantDeath").GetBool();
-            DontActivateRagdollFromBulletImpact = node.Element("DontActivateRagdollFromBulletImpact").GetBool();
-            RealisticSpineDamage = node.Element("RealisticSpineDamage").GetBool();
-            ClosestPedRange = node.Element("ClosestPedRange").GetFloat();
+            ShowEnemyCriticalMessages = root.Element("CriticalMessages").GetBool();
+            ScanOnlyDamaged = root.Element(nameof(ScanOnlyDamaged)).GetBool();
+            InstantDeathHeadshot = root.Element("HeadshotIsInstantDeath").GetBool();
+            DontActivateRagdollFromBulletImpact = root.Element(nameof(DontActivateRagdollFromBulletImpact)).GetBool();
+            RealisticSpineDamage = root.Element(nameof(RealisticSpineDamage)).GetBool();
+            ClosestPedRange = root.Element(nameof(ClosestPedRange)).GetFloat();
 
-            TakedownRagdollDurationMs = node.Element("TakedownRagdollDurationMs").GetInt();
-            TakedownPainMult = node.Element("TakedownPainMult").GetFloat();
-
-            XElement healthNode = node.Element("CustomHealth");
+            XElement healthNode = root.Element("CustomHealth");
             MinStartHealth = healthNode.GetInt("Min");
             MaxStartHealth = healthNode.GetInt("Max");
 
-            XElement painNode = node.Element("PainShockThreshold");
+            XElement painNode = root.Element("PainShockThreshold");
             MinPainShockThreshold = painNode.GetFloat("Min");
             MaxPainShockThreshold = painNode.GetFloat("Max");
 
-            XElement accuracyNode = node.Element("CustomAccuracy");
+            XElement accuracyNode = root.Element("CustomAccuracy");
             MinAccuracy = accuracyNode.GetInt("Min");
             MaxAccuracy = accuracyNode.GetInt("Max");
 
-            XElement rateNode = node.Element("CustomShootRate");
+            XElement rateNode = root.Element("CustomShootRate");
             MinShootRate = rateNode.GetInt("Min");
             MaxShootRate = rateNode.GetInt("Max");
 
-            MaximalPainRecoverSpeed = node.Element("PainRecoverySpeed").GetFloat();
-            MaximalBleedStopSpeed = node.Element("BleedHealSpeed").GetFloat() / 1000f;
-            SelfHealingRate = node.Element("SelfHealingRate").GetFloat();
+            MaximalPainRecoverSpeed = root.Element("PainRecoverySpeed").GetFloat();
+            MaximalBleedStopSpeed = root.Element("BleedHealSpeed").GetFloat() / 1000f;
+            SelfHealingRate = root.Element(nameof(SelfHealingRate)).GetFloat();
 
-            MalePainMoveSets = PainMoveSets.FromXElement(node, "MaleMoveSets");
-            FemalePainMoveSets = PainMoveSets.FromXElement(node, "FemaleMoveSets");
+            MalePainMoveSets = PainMoveSets.FromXElement(root, nameof(MalePainMoveSets));
+            FemalePainMoveSets = PainMoveSets.FromXElement(root, nameof(FemalePainMoveSets));
 
-            XElement targetsNode = node.Element("Targets");
+            XElement targetsNode = root.Element("Targets");
             GswTargets targets = 0;
             if (targetsNode.GetBool("COMPANION")) {
                 targets |= GswTargets.COMPANION;
@@ -128,6 +122,8 @@ namespace GunshotWound2.Configs {
 
             Targets = targets;
         }
+
+        public void Validate(MainConfig mainConfig, ILogger logger) { }
 
         public override string ToString() {
             return $"{nameof(PedsConfig)}:\n"

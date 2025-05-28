@@ -7,7 +7,7 @@ namespace GunshotWound2.Configs {
     using System.Xml.Linq;
     using Utils;
 
-    public sealed class WoundConfig {
+    public sealed class WoundConfig : MainConfig.IConfig {
         public readonly struct Wound {
             public readonly string Key;
             public readonly string LocKey;
@@ -84,28 +84,38 @@ namespace GunshotWound2.Configs {
         public float DelayedPainPercent;
         public float DeadlyPainShockPercent;
 
+        public int TakedownRagdollDurationMs;
+        public float TakedownPainMult;
+
         public Dictionary<string, Wound> Wounds;
 
+        public string sectionName => "Wounds.xml";
+
         public void FillFrom(XDocument doc) {
-            XElement node = doc.Element(nameof(WoundConfig))!;
+            XElement root = doc.Element(nameof(WoundConfig))!;
 
-            MoveRateOnFullPain = node.Element(nameof(MoveRateOnFullPain)).GetFloat();
-            MoveRateOnLegsTrauma = node.Element(nameof(MoveRateOnLegsTrauma)).GetFloat();
-            OverallDamageMult = node.Element(nameof(OverallDamageMult)).GetFloat();
-            DamageDeviation = node.Element(nameof(DamageDeviation)).GetFloat();
-            OverallPainMult = node.Element(nameof(OverallPainMult)).GetFloat();
-            PainDeviation = node.Element(nameof(PainDeviation)).GetFloat();
-            OverallBleedingMult = node.Element(nameof(OverallBleedingMult)).GetFloat();
-            BleedingDeviation = node.Element(nameof(BleedingDeviation)).GetFloat();
-            RagdollOnPainfulWound = node.Element(nameof(RagdollOnPainfulWound)).GetBool();
-            PainfulWoundPercent = node.Element(nameof(PainfulWoundPercent)).GetFloat();
-            UseCustomUnconsciousBehaviour = node.Element(nameof(UseCustomUnconsciousBehaviour)).GetBool();
-            DelayedPainPercent = node.Element(nameof(DelayedPainPercent)).GetFloat();
-            DeadlyPainShockPercent = node.Element(nameof(DeadlyPainShockPercent)).GetFloat();
+            MoveRateOnFullPain = root.Element(nameof(MoveRateOnFullPain)).GetFloat();
+            MoveRateOnLegsTrauma = root.Element(nameof(MoveRateOnLegsTrauma)).GetFloat();
+            OverallDamageMult = root.Element(nameof(OverallDamageMult)).GetFloat();
+            DamageDeviation = root.Element(nameof(DamageDeviation)).GetFloat();
+            OverallPainMult = root.Element(nameof(OverallPainMult)).GetFloat();
+            PainDeviation = root.Element(nameof(PainDeviation)).GetFloat();
+            OverallBleedingMult = root.Element(nameof(OverallBleedingMult)).GetFloat();
+            BleedingDeviation = root.Element(nameof(BleedingDeviation)).GetFloat();
+            RagdollOnPainfulWound = root.Element(nameof(RagdollOnPainfulWound)).GetBool();
+            PainfulWoundPercent = root.Element(nameof(PainfulWoundPercent)).GetFloat();
+            UseCustomUnconsciousBehaviour = root.Element(nameof(UseCustomUnconsciousBehaviour)).GetBool();
+            DelayedPainPercent = root.Element(nameof(DelayedPainPercent)).GetFloat();
+            DeadlyPainShockPercent = root.Element(nameof(DeadlyPainShockPercent)).GetFloat();
 
-            XElement itemsNode = node.Element(nameof(Wounds))!;
+            XElement itemsNode = root.Element(nameof(Wounds))!;
             Wounds = itemsNode.Elements(nameof(Wound)).Select(x => new Wound(x)).ToDictionary(x => x.Key);
+
+            TakedownRagdollDurationMs = root.Element(nameof(TakedownRagdollDurationMs)).GetInt();
+            TakedownPainMult = root.Element(nameof(TakedownPainMult)).GetFloat();
         }
+
+        public void Validate(MainConfig mainConfig, ILogger logger) { }
 
         public bool IsBleedingCanBeBandaged(float severity) {
             return severity <= OverallBleedingMult * MAX_SEVERITY_FOR_BANDAGE;

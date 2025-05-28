@@ -15,6 +15,13 @@
     <DeadlyPainShockPercent Value="3.0"/>
     <!-- 3.0 means 300% of PainShockThreshold will lead to instant death by pain shock -->
 
+    <TakedownRagdollDurationMs Value="4000"/>
+    <!-- Heavy melee attack(eg, using R key) named takedown.
+    It will cause heavy impact damage with custom duration ragdoll. -->
+
+    <TakedownPainMult Value="1.0"/>
+    <!-- Adjustable pain multiplier for takedown wound -->
+
     <MoveRateOnFullPain Value="0.8"/>
     <!-- Move rate on 100% of pain -->
 

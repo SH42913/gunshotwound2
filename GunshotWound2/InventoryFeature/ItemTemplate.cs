@@ -3,7 +3,7 @@ namespace GunshotWound2.InventoryFeature {
     using Configs;
 
     public readonly struct ItemTemplate : IEquatable<ItemTemplate> {
-        public readonly string internalName;
+        public readonly string key;
         public readonly string pluralKey;
         public readonly string progressDescriptionKey;
         public readonly float duration;
@@ -11,16 +11,16 @@ namespace GunshotWound2.InventoryFeature {
         public readonly InventoryFeature.ItemAction progressAction;
         public readonly InventoryFeature.ItemAction finishAction;
 
-        public bool IsValid => !string.IsNullOrEmpty(internalName);
+        public bool IsValid => !string.IsNullOrEmpty(key);
 
-        public ItemTemplate(string internalName,
+        public ItemTemplate(string key,
                             string pluralKey,
                             string progressDescriptionKey,
                             float duration,
                             InventoryFeature.ItemAction startAction,
                             InventoryFeature.ItemAction progressAction,
                             InventoryFeature.ItemAction finishAction) {
-            this.internalName = internalName;
+            this.key = key;
             this.pluralKey = pluralKey;
             this.progressDescriptionKey = progressDescriptionKey;
             this.duration = duration;
@@ -30,7 +30,7 @@ namespace GunshotWound2.InventoryFeature {
         }
 
         public bool Equals(ItemTemplate other) {
-            return internalName == other.internalName;
+            return key == other.key;
         }
 
         public override bool Equals(object obj) {
@@ -38,7 +38,7 @@ namespace GunshotWound2.InventoryFeature {
         }
 
         public override int GetHashCode() {
-            return (internalName != null ? internalName.GetHashCode() : 0);
+            return (key != null ? key.GetHashCode() : 0);
         }
     }
 

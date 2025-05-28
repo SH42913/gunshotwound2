@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Player>
+<PlayerConfig>
     <PoliceCanForget Value="TRUE"/>
     <!-- If TRUE - cops can forget you when you fall unconscious.
     If you use Realism Dispatch Enhanced, better to set it FALSE-->
@@ -14,9 +14,6 @@
     <HeadshotIsInstantDeath Value="FALSE"/>
     <!-- Headshots in GSW2 are always deadly, but by default death takes some time(like IRL).
     Set this Value to TRUE if you want player will dead instantly when getting headshot. -->
-
-    <BlipsToMedkits Value="TRUE" RefreshTime="2" ModelName="prop_ld_health_pack"/>
-    <!-- Add map blips to medkits around player, refresh time in seconds -->
 
     <RealisticSpineDamage Value="TRUE"/>
     <!-- If TRUE - player will set to permanent ragdoll on spine damage.
@@ -54,4 +51,4 @@
 
     <HelmetCost Value="40"/>
     <!-- 40 means you need $40 to buy a helmet. If you're using a skin changer, you need to set it to 0. -->
-</Player>
+</PlayerConfig>

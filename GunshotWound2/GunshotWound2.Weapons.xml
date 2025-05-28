@@ -9,7 +9,7 @@
         <Explosives Hashes="EXPLOSION;GRENADE;STICKYBOMB;PROXMINE;PIPEBOMB;"/>
         <Projectiles Hashes="PASSENGER_ROCKET;AIRSTRIKE_ROCKET;VEHICLE_ROCKET;ARENA_HOMING_MISSILE;"/>
         <Launchers Hashes="GRENADELAUNCHER;RPG;STINGER;HOMINGLAUNCHER;COMPACTLAUNCHER;FIREWORK;EMPLAUNCHER;"/>
-        <Fire Hashes="MOLOTOV;FLARE;"/>
+        <Fire Hashes="MOLOTOV;FLARE;FLAREGUN;"/>
         <Gas Hashes="BZGAS;SMOKEGRENADE;GRENADELAUNCHER_SMOKE;FIREEXTINGUISHER;"/>
         <Gadgets Hashes="HACKINGDEVICE;2803906140;4222310262;"/>
         <Props Hashes="PETROLCAN;DIGISCANNER;BRIEFCASE;BRIEFCASE_02;ACIDPACKAGE;HAZARDCAN;METALDETECTOR;FERTILIZERCAN;GARBAGEBAG;HANDCUFFS;"/>
@@ -266,7 +266,7 @@
         <!-- Cutting -->
         <Cutting DamageMult="1.0" BleedMult="1.0" PainMult="1.0" ChanceToCauseTrauma="0.2"
                  ArmorDamage="1" HelmetSafeChance="0.9">
-            <Hashes Hashes="KNIFE;BOTTLE;DAGGER;SWITCHBLADE;"/>
+            <Hashes Hashes="KNIFE;BOTTLE;DAGGER;SWITCHBLADE;BARBED_WIRE;"/>
             <Wounds>
                 <Wound Key="IncisedCut" Weight="30"/>
                 <Wound Key="DeepIncisedCut" Weight="20"/>
@@ -289,7 +289,7 @@
 
         <!-- Blunt -->
         <LightBlunt DamageMult="1.0" BleedMult="1.0" PainMult="1.0" ChanceToCauseTrauma="0.1" HelmetSafeChance="1">
-            <Hashes Hashes="UNARMED;SNOWBALL;BALL;CANDYCANE;"/>
+            <Hashes Hashes="UNARMED;SNOWBALL;SNOWLAUNCHER;BALL;CANDYCANE;"/>
             <Wounds>
                 <Wound Key="LightBruise" Weight="50"/>
                 <Wound Key="MediumBruise" Weight="30"/>
@@ -298,7 +298,7 @@
             </Wounds>
         </LightBlunt>
         <PoliceBlunt DamageMult="1.0" BleedMult="1.0" PainMult="1.0" ChanceToCauseTrauma="0.2" HelmetSafeChance="1">
-            <Hashes Hashes="NIGHTSTICK;FLASHLIGHT;POOLCUE;"/>
+            <Hashes Hashes="NIGHTSTICK;FLASHLIGHT;POOLCUE;HIT_BY_WATER_CANNON;"/>
             <Wounds>
                 <Wound Key="MediumBruise" Weight="35"/>
                 <Wound Key="HeavyBruise" Weight="20"/>
@@ -335,7 +335,7 @@
             <Hashes Hashes="HELI_CRASH;"/>
             <Wounds>
                 <Wound Key="HeavyBruise" Weight="1"/>
-                <Wound Key="LacerationWound" Weight="1"/>
+                <Wound Key="LacerationCut" Weight="1"/>
             </Wounds>
         </HeliCrash>
 

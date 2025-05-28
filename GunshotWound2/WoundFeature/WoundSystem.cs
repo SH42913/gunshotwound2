@@ -134,7 +134,7 @@
             if (wound.Pain > 0f) {
                 float mult = hitData.weaponType.PainMult * WoundConfig.OverallPainMult;
                 if (hitData.afterTakedown) {
-                    mult *= sharedData.mainConfig.pedsConfig.TakedownPainMult;
+                    mult *= sharedData.mainConfig.woundConfig.TakedownPainMult;
                 }
 
                 finalPain = CalculateAmount(wound.Pain, WoundConfig.PainDeviation, mult);

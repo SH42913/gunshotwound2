@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Peds>
+<PedsConfig>
     <GSWScanRange Value="50"/>
     <!-- It is range where the script scans other peds to convert them to GSWPeds. 
     You also can change range in game, using Increase/DecreaseRange keys, check in Hotkey section.
@@ -31,13 +31,6 @@
     It is based on Relationship between ped and player.
     By default, COMPANION and RESPECT is FALSE to ignore friendly peds by GSW. -->
 
-    <TakedownRagdollDurationMs Value="4000"/>
-    <!-- Heavy melee attack(eg, using R key) named takedown.
-    It will cause heavy impact damage with custom duration ragdoll. -->
-
-    <TakedownPainMult Value="1.0"/>
-    <!-- Adjustable pain multiplier for takedown wound -->
-
     <PainShockThreshold Min="60.0" Max="100.0"/>
     <!-- Same as for player, but GSWPeds will have random MaximalPain between Min and Max. -->
 
@@ -66,4 +59,4 @@
     <MaleMoveSets MildPain="" AvgPain="" IntensePain=""/>
     <FemaleMoveSets MildPain="" AvgPain="" IntensePain=""/>
     <!-- Same as for player -->
-</Peds>
+</PedsConfig>

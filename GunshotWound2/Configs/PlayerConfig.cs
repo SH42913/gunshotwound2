@@ -5,16 +5,12 @@ namespace GunshotWound2.Configs {
     using System.Xml.Linq;
     using Utils;
 
-    public sealed class PlayerConfig {
+    public sealed class PlayerConfig : MainConfig.IConfig {
         public bool PoliceCanForgetYou;
         public bool PedsWillIgnoreUnconsciousPlayer;
         public bool CanDropWeapon;
         public bool InstantDeathHeadshot;
         public bool RealisticSpineDamage;
-
-        public bool BlipsToMedkits;
-        public float TimeToRefreshMedkits;
-        public string MedkitModel;
 
         public int MoneyForHelmet;
 
@@ -27,30 +23,28 @@ namespace GunshotWound2.Configs {
 
         public PainMoveSets PainMoveSets;
 
+        public string sectionName => "Player.xml";
+
         public void FillFrom(XDocument doc) {
-            XElement node = doc.Element("Player");
-            if (node == null) {
-                return;
-            }
+            XElement root = doc.Element(nameof(PlayerConfig))!;
 
-            PainShockThreshold = node.Element("PainShockThreshold").GetFloat();
-            PainRecoverSpeed = node.Element("PainRecoverySpeed").GetFloat();
-            BleedHealingSpeed = node.Element("BleedHealSpeed").GetFloat() / 1000f;
-            PoliceCanForgetYou = node.Element("PoliceCanForget").GetBool();
-            PedsWillIgnoreUnconsciousPlayer = node.Element("PedsWillIgnoreUnconsciousPlayer").GetBool();
-            CanDropWeapon = node.Element("CanDropWeapon").GetBool();
-            InstantDeathHeadshot = node.Element("HeadshotIsInstantDeath").GetBool();
-            RealisticSpineDamage = node.Element("RealisticSpineDamage").GetBool();
-            BlipsToMedkits = node.Element("BlipsToMedkits").GetBool();
-            TimeToRefreshMedkits = node.Element("BlipsToMedkits").GetFloat("RefreshTime");
-            MedkitModel = node.Element("BlipsToMedkits").GetString("ModelName");
-            PainSlowMo = node.Element("PainSlowMo").GetFloat();
-            UseScreenEffects = node.Element("UseScreenEffects").GetBool();
-            MoneyForHelmet = node.Element("HelmetCost").GetInt();
-            SelfHealingRate = node.Element("SelfHealingRate").GetFloat();
+            PainShockThreshold = root.Element(nameof(PainShockThreshold)).GetFloat();
+            PainRecoverSpeed = root.Element(nameof(PainRecoverSpeed)).GetFloat();
+            BleedHealingSpeed = root.Element("BleedHealSpeed").GetFloat() / 1000f;
+            PoliceCanForgetYou = root.Element("PoliceCanForget").GetBool();
+            PedsWillIgnoreUnconsciousPlayer = root.Element(nameof(PedsWillIgnoreUnconsciousPlayer)).GetBool();
+            CanDropWeapon = root.Element(nameof(CanDropWeapon)).GetBool();
+            InstantDeathHeadshot = root.Element("HeadshotIsInstantDeath").GetBool();
+            RealisticSpineDamage = root.Element(nameof(RealisticSpineDamage)).GetBool();
+            PainSlowMo = root.Element(nameof(PainSlowMo)).GetFloat();
+            UseScreenEffects = root.Element(nameof(UseScreenEffects)).GetBool();
+            MoneyForHelmet = root.Element("HelmetCost").GetInt();
+            SelfHealingRate = root.Element(nameof(SelfHealingRate)).GetFloat();
 
-            PainMoveSets = PainMoveSets.FromXElement(node, "MoveSets");
+            PainMoveSets = PainMoveSets.FromXElement(root, "MoveSets");
         }
+
+        public void Validate(MainConfig mainConfig, ILogger logger) { }
 
         public override string ToString() {
             return $"{nameof(PlayerConfig)}:\n"

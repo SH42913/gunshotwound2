@@ -8,7 +8,7 @@ namespace GunshotWound2.Configs {
     using GTA;
     using Utils;
 
-    public sealed class BodyPartConfig {
+    public sealed class BodyPartConfig : MainConfig.IConfig {
         public readonly struct BodyPart {
             public readonly string Key;
             public readonly string LocKey;
@@ -49,23 +49,43 @@ namespace GunshotWound2.Configs {
 
         public BodyPart[] BodyParts;
 
+        public string sectionName => "BodyParts.xml";
+
         public void FillFrom(XDocument doc) {
-            XElement partsNode = doc.Element(nameof(BodyParts))!;
-            BodyParts = partsNode.Elements(nameof(BodyPart)).Select(x => new BodyPart(x)).ToArray();
+            BodyParts = doc.Element(nameof(BodyParts))!
+                           .Elements(nameof(BodyPart))
+                           .Select(x => new BodyPart(x))
+                           .ToArray();
+        }
+
+        public void Validate(MainConfig mainConfig, ILogger logger) {
+            foreach (BodyPart bodyPart in BodyParts) {
+                foreach ((string key, int _) in bodyPart.BluntTraumas) {
+                    if (!IsValidTrauma(key)) {
+                        logger.WriteWarning($"{bodyPart.Key} has invalid blunt trauma {key}");
+                    }
+                }
+
+                foreach ((string key, int _) in bodyPart.PenetratingTraumas) {
+                    if (!IsValidTrauma(key)) {
+                        logger.WriteWarning($"{bodyPart.Key} has invalid penetrating trauma {key}");
+                    }
+                }
+            }
+
+            bool IsValidTrauma(string key) {
+                return mainConfig.traumaConfig.Traumas.ContainsKey(key);
+            }
         }
 
         public BodyPart GetBodyPartByBone(Bone bone) {
-            return GetBodyPartByBoneIndex((int)bone);
-        }
-
-        public BodyPart GetBodyPartByBoneIndex(int index) {
             foreach (BodyPart part in BodyParts) {
-                if (part.Bones.Contains(index)) {
+                if (part.Bones.Contains((int)bone)) {
                     return part;
                 }
             }
 
-            throw new Exception($"There's no BodyPart for index {index}");
+            throw new Exception($"There's no BodyPart for bone {bone}");
         }
 
         public BodyPart GetBodyPartByKey(string key) {

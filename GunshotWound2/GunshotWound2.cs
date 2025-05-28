@@ -119,6 +119,9 @@
                 return false;
             }
 
+            sharedData.logger.WriteInfo("GSW2 is validating configs...");
+            sharedData.mainConfig.ValidateConfigs(sharedData.logger);
+
             sharedData.logger.WriteInfo("GSW2 is loading localization...");
             (success, reason) = sharedData.localeConfig.TryToLoad(sharedData.scriptPath, sharedData.mainConfig.Language);
             if (!success) {

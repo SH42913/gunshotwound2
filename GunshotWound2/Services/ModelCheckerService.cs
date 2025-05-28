@@ -16,7 +16,7 @@ namespace GunshotWound2.Services {
         }
 
         public void Init(MainConfig mainConfig) {
-            healthPackModelHash = GetHashByName(mainConfig.playerConfig.MedkitModel);
+            healthPackModelHash = GetHashByName(mainConfig.inventoryConfig.MedkitModel);
         }
 
         public bool IsMedkit(Model model) {

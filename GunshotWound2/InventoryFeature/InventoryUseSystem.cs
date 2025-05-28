@@ -87,7 +87,7 @@ namespace GunshotWound2.InventoryFeature {
             ref Inventory inventory = ref owner.GetComponent<Inventory>();
             if (!inventory.Has(request.item)) {
 #if DEBUG
-                sharedData.logger.WriteInfo($"{inventory.modelHash} doesn't have enough of {request.item.internalName}");
+                sharedData.logger.WriteInfo($"{inventory.modelHash} doesn't have enough of {request.item.key}");
 #endif
                 string itemCountString = request.item.GetPluralTranslation(sharedData.localeConfig, count: 0);
                 message = $"{sharedData.localeConfig.YourInventory} {itemCountString}";
@@ -103,13 +103,13 @@ namespace GunshotWound2.InventoryFeature {
                 });
 
 #if DEBUG
-                sharedData.logger.WriteInfo($"Success start {request.item.internalName} usage for {inventory.modelHash}");
+                sharedData.logger.WriteInfo($"Success start {request.item.key} usage for {inventory.modelHash}");
 #endif
 
                 return true;
             } else {
 #if DEBUG
-                sharedData.logger.WriteInfo($"{inventory.modelHash} failed start condition of {request.item.internalName}");
+                sharedData.logger.WriteInfo($"{inventory.modelHash} failed start condition of {request.item.key}");
 #endif
                 return false;
             }
@@ -124,7 +124,7 @@ namespace GunshotWound2.InventoryFeature {
             }
 
 #if DEBUG
-            sharedData.logger.WriteInfo($"Item {item.internalName} of {inventory.modelHash} was canceled during progress");
+            sharedData.logger.WriteInfo($"Item {item.key} of {inventory.modelHash} was canceled during progress");
 #endif
             ShowError(message);
             removeProgress = true;
@@ -135,12 +135,12 @@ namespace GunshotWound2.InventoryFeature {
             if (item.finishAction.Invoke(sharedData, owner, currentlyUsing.target, out string message) && inventory.Consume(item)) {
 #if DEBUG
                 int amount = inventory.AmountOf(item);
-                sharedData.logger.WriteInfo($"Item {item.internalName} of {inventory.modelHash} successfully used, amount={amount}");
+                sharedData.logger.WriteInfo($"Item {item.key} of {inventory.modelHash} successfully used, amount={amount}");
 #endif
                 ShowSuccess(message, blinking: true);
             } else {
 #if DEBUG
-                sharedData.logger.WriteInfo($"Item {item.internalName} of {inventory.modelHash} usage was failed during finish");
+                sharedData.logger.WriteInfo($"Item {item.key} of {inventory.modelHash} usage was failed during finish");
 #endif
                 ShowError(message);
             }

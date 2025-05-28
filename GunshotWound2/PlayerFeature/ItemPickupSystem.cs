@@ -49,7 +49,7 @@ namespace GunshotWound2.PlayerFeature {
 #endif
 
                         entity.SetComponent(new AddItemRequest {
-                            loadout = sharedData.mainConfig.inventoryConfig.MedkitLoadout,
+                            items = sharedData.mainConfig.inventoryConfig.MedkitLoadout.items,
                         });
 
                         break;
@@ -75,7 +75,7 @@ namespace GunshotWound2.PlayerFeature {
                     sharedData.logger.WriteInfo($"Ped {convertedPed.name} just entered vehicle {vehicle.DisplayName}");
 #endif
                     entity.SetComponent(new AddItemRequest {
-                        loadout = sharedData.mainConfig.inventoryConfig.EmergencyVehicleLoadout,
+                        items = sharedData.mainConfig.inventoryConfig.EmergencyVehicleLoadout.items,
                     });
                 }
             }

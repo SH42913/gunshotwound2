@@ -68,7 +68,7 @@
 #if DEBUG
             sharedData.logger.WriteInfo($"Selected crit {traumaKey} for {traumas.requestBodyPart.Key} at {convertedPed.name}");
 #endif
-            TraumaConfig.Trauma trauma = sharedData.mainConfig.traumaConfig.GetTraumaByKey(traumaKey);
+            TraumaConfig.Trauma trauma = sharedData.mainConfig.traumaConfig.Traumas[traumaKey];
             string traumaName = sharedData.localeConfig.GetTranslation(trauma.LocKey);
             string reason = sharedData.localeConfig.TraumaType;
             entity.GetComponent<Pain>().diff += trauma.Pain;

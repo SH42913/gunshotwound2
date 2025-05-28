@@ -9,7 +9,7 @@ namespace GunshotWound2.Configs {
     using SHVDN;
     using Utils;
 
-    public sealed class WeaponConfig {
+    public sealed class WeaponConfig : MainConfig.IConfig {
         public readonly struct Weapon {
             public readonly string Key;
             public readonly string ShortDesc;
@@ -74,13 +74,17 @@ namespace GunshotWound2.Configs {
         public Weapon HardRunOverCar => Weapons.First(x => x.Key == nameof(HardRunOverCar));
         public Weapon CarCrash => Weapons.First(x => x.Key == nameof(CarCrash));
 
-        public void FillFrom(XDocument doc, ILogger logger) {
-            XElement node = doc.Element(nameof(WeaponConfig))!;
-            UseSpecialStunDamage = node.Element(nameof(UseSpecialStunDamage)).GetBool();
-            IgnoreSet = ExtractWeaponHashes(node.Element(nameof(IgnoreSet)), logger);
+        public string sectionName => "Weapons.xml";
 
-            XElement weaponsNode = node.Element(nameof(Weapons))!;
-            Weapons = weaponsNode.Elements().Select(x => GetStatsForWeapon(x, logger)).ToArray();
+        private readonly List<string> invalidWeapons = new();
+
+        public void FillFrom(XDocument doc) {
+            XElement root = doc.Element(nameof(WeaponConfig))!;
+            UseSpecialStunDamage = root.Element(nameof(UseSpecialStunDamage)).GetBool();
+            IgnoreSet = ExtractWeaponHashes(root.Element(nameof(IgnoreSet)));
+
+            XElement weaponsNode = root.Element(nameof(Weapons))!;
+            Weapons = weaponsNode.Elements().Select(GetStatsForWeapon).ToArray();
 
             const string minSpeedName = "MinSpeed";
             LightFallThreshold = weaponsNode.Element(nameof(LightFall)).GetFloat(minSpeedName);
@@ -89,11 +93,32 @@ namespace GunshotWound2.Configs {
             HardRunOverThreshold = weaponsNode.Element(nameof(HardRunOverCar)).GetFloat(minSpeedName);
 
             const string prefix = "";
-            TryGetWeaponHash(nameof(WEAPON_FALL), out WEAPON_FALL, prefix);
-            TryGetWeaponHash(nameof(WEAPON_EXHAUSTION), out WEAPON_EXHAUSTION, prefix);
-            TryGetWeaponHash(nameof(WEAPON_FIRE), out WEAPON_FIRE, prefix);
-            TryGetWeaponHash(nameof(WEAPON_RAMMED_BY_CAR), out WEAPON_RAMMED_BY_CAR, prefix);
-            TryGetWeaponHash(nameof(WEAPON_RUN_OVER_BY_CAR), out WEAPON_RUN_OVER_BY_CAR, prefix);
+            WEAPON_FALL = GetWeaponHash(nameof(WEAPON_FALL), prefix);
+            WEAPON_EXHAUSTION = GetWeaponHash(nameof(WEAPON_EXHAUSTION), prefix);
+            WEAPON_FIRE = GetWeaponHash(nameof(WEAPON_FIRE), prefix);
+            WEAPON_RAMMED_BY_CAR = GetWeaponHash(nameof(WEAPON_RAMMED_BY_CAR), prefix);
+            WEAPON_RUN_OVER_BY_CAR = GetWeaponHash(nameof(WEAPON_RUN_OVER_BY_CAR), prefix);
+        }
+
+        public void Validate(MainConfig mainConfig, ILogger logger) {
+            foreach (string invalidWeapon in invalidWeapons) {
+                logger.WriteWarning($"{invalidWeapon} is not valid weapon. GSW2 will ignore it.");
+            }
+
+            foreach (Weapon weapon in Weapons) {
+                foreach ((string key, int _) in weapon.Wounds) {
+                    if (!mainConfig.woundConfig.Wounds.ContainsKey(key)) {
+                        logger.WriteWarning($"{weapon.Key} has invalid wound {key}");
+                    }
+                }
+
+                bool isValidArmor = string.IsNullOrEmpty(weapon.SafeArmorLevel)
+                                    || Array.Exists(mainConfig.armorConfig.Levels, x => x.Key == weapon.SafeArmorLevel);
+
+                if (!isValidArmor) {
+                    logger.WriteWarning($"{weapon.Key} has invalid armor level {weapon.SafeArmorLevel}");
+                }
+            }
 
             SuggestWeapons(logger);
         }
@@ -119,9 +144,9 @@ namespace GunshotWound2.Configs {
             }
         }
 
-        private static Weapon GetStatsForWeapon(XElement weaponNode, ILogger logger) {
+        private Weapon GetStatsForWeapon(XElement weaponNode) {
             string key = weaponNode.Name.LocalName;
-            HashSet<uint> hashes = ExtractWeaponHashes(weaponNode, logger);
+            HashSet<uint> hashes = ExtractWeaponHashes(weaponNode);
             (string, int)[] wounds = ExtractWounds(weaponNode);
 
             string shortDesc = weaponNode.GetString(nameof(Weapon.ShortDesc));
@@ -152,36 +177,35 @@ namespace GunshotWound2.Configs {
                              .ToArray();
         }
 
-        private static HashSet<uint> ExtractWeaponHashes(XElement node, ILogger logger) {
+        private HashSet<uint> ExtractWeaponHashes(XElement node) {
             var set = new HashSet<uint>();
             foreach (XElement element in node.Elements()) {
                 const string attributeName = "Hashes";
                 string attributeValue = element.GetString(attributeName);
-                if (!string.IsNullOrEmpty(attributeValue)) {
-                    ParseStringToSet(attributeValue);
+                if (string.IsNullOrEmpty(attributeValue)) {
+                    continue;
+                }
+
+                string[] splitStrings = attributeValue.Split(MainConfig.Separator, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string weaponString in splitStrings) {
+                    uint hash = GetWeaponHash(weaponString);
+                    if (NativeMemory.IsHashValidAsWeaponHash(hash)) {
+                        set.Add(hash);
+                    } else {
+                        invalidWeapons.Add(weaponString);
+                    }
                 }
             }
 
             return set;
-
-            void ParseStringToSet(string stringOfHashes) {
-                string[] splitStrings = stringOfHashes.Split(MainConfig.Separator, StringSplitOptions.RemoveEmptyEntries);
-                foreach (string weaponString in splitStrings) {
-                    if (TryGetWeaponHash(weaponString, out uint hash)) {
-                        set.Add(hash);
-                    } else {
-                        logger.WriteWarning($"{weaponString}({hash.ToString()}) is not valid weapon. GSW2 will ignore it.");
-                    }
-                }
-            }
         }
 
-        private static bool TryGetWeaponHash(string weaponString, out uint hash, string prefix = "WEAPON_") {
-            if (!uint.TryParse(weaponString, out hash)) {
+        private static uint GetWeaponHash(string weaponString, string prefix = "WEAPON_") {
+            if (!uint.TryParse(weaponString, out uint hash)) {
                 hash = StringHash.AtStringHashUtf8(prefix + weaponString.ToUpper());
             }
 
-            return NativeMemory.IsHashValidAsWeaponHash(hash);
+            return hash;
         }
 
         public static string BuildWeaponName(uint hash) {

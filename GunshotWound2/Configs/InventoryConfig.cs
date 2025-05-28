@@ -1,70 +1,55 @@
 // ReSharper disable InconsistentNaming
 
 namespace GunshotWound2.Configs {
-    using System;
-    using System.Collections.Generic;
+    using System.Linq;
     using System.Xml.Linq;
-    using HealthFeature;
-    using InventoryFeature;
     using Utils;
 
-    public sealed class InventoryConfig {
+    public sealed class InventoryConfig : MainConfig.IConfig {
         public readonly struct Loadout {
-            public readonly List<(ItemTemplate template, int count)> items;
+            public readonly (string Key, int Count)[] items;
 
-            public Loadout(List<(ItemTemplate, int)> items) {
+            public Loadout((string, int)[] items) {
                 this.items = items;
-            }
-
-            public void ApplyToInventory(ref Inventory inventory) {
-                foreach ((ItemTemplate, int) item in items) {
-                    inventory.items.Add(item);
-                }
             }
         }
 
-        private readonly ItemTemplate[] templates = new[] { BandageItem.template, };
+        public bool BlipsToMedkits;
+        public float TimeToRefreshMedkits;
+        public string MedkitModel;
 
         public Loadout DefaultLoadout;
         public Loadout MedkitLoadout;
         public Loadout EmergencyVehicleLoadout;
 
-        public Loadout BandagesLoadout = new(new List<(ItemTemplate, int)>() {
-            (BandageItem.template, 5),
-        });
+        public string sectionName => "Inventory.xml";
 
         public void FillFrom(XDocument doc) {
-            XElement node = doc.Element("Inventory");
-            if (node == null) {
-                return;
-            }
+            XElement root = doc.Element(nameof(InventoryConfig))!;
+            DefaultLoadout = GetLoadout(root, nameof(DefaultLoadout));
+            MedkitLoadout = GetLoadout(root, nameof(MedkitLoadout));
+            EmergencyVehicleLoadout = GetLoadout(root, nameof(EmergencyVehicleLoadout));
 
-            DefaultLoadout = GetLoadout(node.Element("DefaultLoadout"));
-            MedkitLoadout = GetLoadout(node.Element("MedkitLoadout"));
-            EmergencyVehicleLoadout = GetLoadout(node.Element("EmergencyVehicleLoadout"));
+            XElement medkitNode = root.Element(nameof(BlipsToMedkits));
+            BlipsToMedkits = medkitNode.GetBool();
+            TimeToRefreshMedkits = medkitNode.GetFloat("RefreshTime");
+            MedkitModel = medkitNode.GetString("ModelName");
         }
 
-        private Loadout GetLoadout(XElement node) {
-            var list = new List<(ItemTemplate, int)>();
+        public void Validate(MainConfig mainConfig, ILogger logger) { }
 
-            foreach (XElement element in node.Elements("Item")) {
-                string name = element.GetString("Name");
-                int count = element.GetInt("Count");
-                ItemTemplate template = GetItemTemplateByName(name);
-                list.Add((template, count));
-            }
+        private static Loadout GetLoadout(XElement root, string loadoutName) {
+            XElement node = root.Element(loadoutName)!;
 
-            return new Loadout(list);
-        }
+            (string key, int count)[] items = node.Elements("Item")
+                                                  .Select(x => {
+                                                      string key = x.GetString("Key");
+                                                      int count = x.GetInt("Count");
+                                                      return (key, count);
+                                                  })
+                                                  .ToArray();
 
-        private ItemTemplate GetItemTemplateByName(string name) {
-            foreach (ItemTemplate template in templates) {
-                if (template.internalName == name) {
-                    return template;
-                }
-            }
-
-            throw new Exception($"There's no item {name}");
+            return new Loadout(items);
         }
     }
 }

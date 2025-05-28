@@ -2,12 +2,13 @@
 
 namespace GunshotWound2.Configs {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Xml.Linq;
     using TraumaFeature;
     using Utils;
 
-    public sealed class TraumaConfig {
+    public sealed class TraumaConfig : MainConfig.IConfig {
         public readonly struct Trauma {
             public readonly string Key;
             public readonly string LocKey;
@@ -28,21 +29,17 @@ namespace GunshotWound2.Configs {
             }
         }
 
-        public Trauma[] Traumas;
+        public Dictionary<string, Trauma> Traumas;
+
+        public string sectionName => "Traumas.xml";
 
         public void FillFrom(XDocument doc) {
-            XElement traumasNode = doc.Element(nameof(Traumas))!;
-            Traumas = traumasNode.Elements(nameof(Trauma)).Select(x => new Trauma(x)).ToArray();
+            Traumas = doc.Element(nameof(Traumas))!
+                         .Elements(nameof(Trauma))
+                         .Select(x => new Trauma(x))
+                         .ToDictionary(x => x.Key);
         }
 
-        public Trauma GetTraumaByKey(string key) {
-            foreach (Trauma trauma in Traumas) {
-                if (trauma.Key == key) {
-                    return trauma;
-                }
-            }
-
-            throw new Exception($"There's no {nameof(Trauma)} with key {key}");
-        }
+        public void Validate(MainConfig mainConfig, ILogger logger) { }
     }
 }

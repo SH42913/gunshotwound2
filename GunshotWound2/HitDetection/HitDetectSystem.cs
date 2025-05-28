@@ -72,7 +72,7 @@
                         ped.Resurrect();
                         ped.Health = convertedPed.lastFrameHealth - 1;
 
-                        int ragdollDuration = sharedData.mainConfig.pedsConfig.TakedownRagdollDurationMs;
+                        int ragdollDuration = sharedData.mainConfig.woundConfig.TakedownRagdollDurationMs;
                         convertedPed.RequestRagdoll(ragdollDuration, RagdollType.Balance);
                     } else {
                         continue;

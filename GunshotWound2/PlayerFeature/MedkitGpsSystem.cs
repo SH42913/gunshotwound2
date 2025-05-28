@@ -15,7 +15,7 @@
         private float timeToRefresh;
 
         public Scellecs.Morpeh.World World { get; set; }
-        private PlayerConfig PlayerConfig => sharedData.mainConfig.playerConfig;
+        private InventoryConfig InventoryConfig => sharedData.mainConfig.inventoryConfig;
 
         public MedkitGpsSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -27,7 +27,7 @@
         void IInitializer.OnAwake() { }
 
         public void OnUpdate(float deltaTime) {
-            if (!PlayerConfig.BlipsToMedkits || !sharedData.TryGetPlayer(out _)) {
+            if (!InventoryConfig.BlipsToMedkits || !sharedData.TryGetPlayer(out _)) {
                 return;
             }
 
@@ -39,7 +39,7 @@
             ClearMedkits(removeAll: false);
             MarkNewMedkits();
             FlashBlipsIfNeed();
-            timeToRefresh = PlayerConfig.TimeToRefreshMedkits;
+            timeToRefresh = InventoryConfig.TimeToRefreshMedkits;
         }
 
         private void FlashBlipsIfNeed() {
@@ -51,7 +51,7 @@
 
             foreach ((Prop _, Blip blip) in medkits) {
                 blip.IsFlashing = true;
-                blip.FlashTimeLeft = PlayerConfig.TimeToRefreshMedkits.ConvertToMilliSec();
+                blip.FlashTimeLeft = InventoryConfig.TimeToRefreshMedkits.ConvertToMilliSec();
             }
         }
 

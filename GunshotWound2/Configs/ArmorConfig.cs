@@ -8,7 +8,7 @@ namespace GunshotWound2.Configs {
     using GTA;
     using Utils;
 
-    public sealed class ArmorConfig {
+    public sealed class ArmorConfig : MainConfig.IConfig {
         public readonly struct Level {
             public readonly string Key;
             public readonly string LocKey;
@@ -31,13 +31,29 @@ namespace GunshotWound2.Configs {
         public HashSet<int> HelmetPropIndexes;
         public Level[] Levels;
 
+        public string sectionName => "Armor.xml";
+
         public void FillFrom(XDocument doc) {
             XElement node = doc.Element(nameof(ArmorConfig))!;
             MinimalChanceForArmorSave = node.Element(nameof(MinimalChanceForArmorSave)).GetFloat();
             HelmetPropIndexes = ExtractHelmets(node);
 
-            XElement levelsNode = node.Element(nameof(Levels))!;
-            Levels = levelsNode.Elements(nameof(Level)).Select(x => new Level(x)).OrderBy(x => x.MaxValue).ToArray();
+            Levels = node.Element(nameof(Levels))!
+                         .Elements(nameof(Level))
+                         .Select(x => new Level(x))
+                         .OrderBy(x => x.MaxValue)
+                         .ToArray();
+        }
+
+        public void Validate(MainConfig mainConfig, ILogger logger) {
+            foreach (Level level in Levels) {
+                foreach (string key in level.Parts) {
+                    var isValid = Array.Exists(mainConfig.bodyPartConfig.BodyParts, x => x.Key == key);
+                    if (!isValid) {
+                        logger.WriteWarning($"{level.Key} has invalid body part {key}");
+                    }
+                }
+            }
         }
 
         public bool PedHasHelmet(Ped ped) {

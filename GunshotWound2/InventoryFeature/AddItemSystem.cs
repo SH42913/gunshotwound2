@@ -25,9 +25,15 @@ namespace GunshotWound2.InventoryFeature {
 
                 bool isPlayer = entity.GetComponent<ConvertedPed>().isPlayer;
                 ref Inventory inventory = ref entity.GetComponent<Inventory>();
-                foreach ((ItemTemplate template, int count) item in request.loadout.items) {
-                    if (TryAddItem(ref inventory, item) && isPlayer) {
-                        string itemCountString = item.template.GetPluralTranslation(sharedData.localeConfig, item.count);
+                foreach ((string key, int count) in request.items) {
+                    ItemTemplate item = InventoryFeature.GetTemplateByKey(key);
+                    if (!item.IsValid) {
+                        sharedData.logger.WriteError($"There's no item template with key {key}");
+                        continue;
+                    }
+
+                    if (TryAddItem(ref inventory, item, count) && isPlayer) {
+                        string itemCountString = item.GetPluralTranslation(sharedData.localeConfig, count);
                         string notification = $"{sharedData.localeConfig.FoundItems} {itemCountString}";
                         sharedData.notifier.info.QueueMessage(notification, Notifier.Color.GREEN);
                     }
@@ -37,8 +43,7 @@ namespace GunshotWound2.InventoryFeature {
 
         void IDisposable.Dispose() { }
 
-        private bool TryAddItem(ref Inventory inventory, (ItemTemplate template, int count) tuple) {
-            (ItemTemplate item, int count) = tuple;
+        private bool TryAddItem(ref Inventory inventory, ItemTemplate item, int count) {
             if (!item.IsValid || count < 1) {
                 return false;
             }
@@ -46,7 +51,7 @@ namespace GunshotWound2.InventoryFeature {
             AddItemToInventory(ref inventory, item, count);
             int totalAmount = inventory.AmountOf(item);
 #if DEBUG
-            sharedData.logger.WriteInfo($"Added {count} of {item.internalName} to "
+            sharedData.logger.WriteInfo($"Added {count} of {item.key} to "
                                         + $"Inventory of {inventory.modelHash}, "
                                         + $"total count = {totalAmount}");
 #endif

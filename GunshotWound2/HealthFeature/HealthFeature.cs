@@ -41,7 +41,7 @@
             sharedData.cheatListener.Register("GSW_FREE_BANDAGES", () => {
                 if (sharedData.TryGetPlayer(out Entity entity)) {
                     entity.SetComponent(new AddItemRequest {
-                        loadout = sharedData.mainConfig.inventoryConfig.BandagesLoadout,
+                        items = new (string Key, int Count)[] { (BandageItem.KEY, 5) },
                     });
                 }
             });

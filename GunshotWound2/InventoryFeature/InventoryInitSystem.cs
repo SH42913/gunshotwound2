@@ -41,7 +41,12 @@ namespace GunshotWound2.InventoryFeature {
 #endif
 
                 //TODO: Load state
-                sharedData.mainConfig.inventoryConfig.DefaultLoadout.ApplyToInventory(ref inventory);
+                foreach ((string key, int count) in sharedData.mainConfig.inventoryConfig.DefaultLoadout.items) {
+                    ItemTemplate item = InventoryFeature.GetTemplateByKey(key);
+                    if (item.IsValid) {
+                        inventory.items.Add((item, count));
+                    }
+                }
             }
         }
 
