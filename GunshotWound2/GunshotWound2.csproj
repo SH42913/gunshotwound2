@@ -56,6 +56,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Configs\ArmorConfig.cs" />
     <Compile Include="Configs\BodyPartConfig.cs" />
+    <Compile Include="Configs\DBPContainer.cs" />
     <Compile Include="Configs\TraumaConfig.cs" />
     <Compile Include="Configs\InventoryConfig.cs" />
     <Compile Include="Configs\LocaleConfig.cs"/>

@@ -13,11 +13,9 @@ namespace GunshotWound2.Configs {
         public readonly struct Weapon {
             public readonly string Key;
             public readonly string ShortDesc;
+            public readonly DBPContainer DBPMults;
             public readonly HashSet<uint> Hashes;
             public readonly (string key, int weight)[] Wounds;
-            public readonly float DamageMult;
-            public readonly float BleedMult;
-            public readonly float PainMult;
             public readonly float ChanceToCauseTrauma;
             public readonly float HelmetSafeChance;
             public readonly string SafeArmorLevel;
@@ -27,22 +25,18 @@ namespace GunshotWound2.Configs {
 
             public Weapon(string key,
                           string shortDesc,
+                          DBPContainer dbpMults,
                           HashSet<uint> hashes,
                           (string key, int weight)[] wounds,
-                          float damageMult,
-                          float bleedMult,
-                          float painMult,
                           float chanceToCauseTrauma,
                           float helmetSafeChance,
                           string safeArmorLevel,
                           int armorDamage) {
                 Key = key;
                 ShortDesc = shortDesc;
+                DBPMults = dbpMults;
                 Hashes = hashes;
                 Wounds = wounds;
-                DamageMult = damageMult;
-                BleedMult = bleedMult;
-                PainMult = painMult;
                 ChanceToCauseTrauma = chanceToCauseTrauma;
                 HelmetSafeChance = helmetSafeChance;
                 SafeArmorLevel = safeArmorLevel;
@@ -150,20 +144,16 @@ namespace GunshotWound2.Configs {
             (string, int)[] wounds = ExtractWounds(weaponNode);
 
             string shortDesc = weaponNode.GetString(nameof(Weapon.ShortDesc));
-            float damageMult = weaponNode.GetFloat(nameof(Weapon.DamageMult), defaultValue: 1f);
-            float bleedMult = weaponNode.GetFloat(nameof(Weapon.BleedMult), defaultValue: 1f);
-            float painMult = weaponNode.GetFloat(nameof(Weapon.PainMult), defaultValue: 1f);
+            var dbp = new DBPContainer(weaponNode, isMult: true);
             float traumaChance = weaponNode.GetFloat(nameof(Weapon.ChanceToCauseTrauma), defaultValue: 0f);
             float helmetChance = weaponNode.GetFloat(nameof(Weapon.HelmetSafeChance), defaultValue: 0f);
             string safeArmorLevel = weaponNode.GetString(nameof(Weapon.SafeArmorLevel));
             int armorDamage = weaponNode.GetInt(nameof(Weapon.ArmorDamage), defaultValue: 0);
             return new Weapon(key,
                               shortDesc,
+                              dbp,
                               hashes,
                               wounds,
-                              damageMult,
-                              bleedMult,
-                              painMult,
                               traumaChance,
                               helmetChance,
                               safeArmorLevel,

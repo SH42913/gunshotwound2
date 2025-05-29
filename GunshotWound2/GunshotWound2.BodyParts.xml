@@ -2,6 +2,7 @@
 <BodyParts>
     <BodyPart Key="Head" LocKey="BodyParts.Head"
               Bones="SkelHead;"
+              DamageMult="1.0" BleedMult="0.9" PainMult="1.0"
               TraumaChance="0.95" IgnoreWeaponTraumaChance="TRUE">
         <BluntTraumas>
             <Trauma Key="NasalFracture" Weight="15"/>
@@ -21,6 +22,7 @@
 
     <BodyPart Key="Neck" LocKey="BodyParts.Neck"
               Bones="SkelNeck1;SkelNeck2;"
+              DamageMult="0.9" BleedMult="1.0" PainMult="1.0"
               TraumaChance="1">
         <BluntTraumas>
             <Trauma Key="TrachealInjury" Weight="20"/>
@@ -42,6 +44,7 @@
 
     <BodyPart Key="Chest" LocKey="BodyParts.Chest"
               Bones="SkelSpine2;SkelSpine3;"
+              DamageMult="0.85" BleedMult="0.8" PainMult="0.9"
               TraumaChance="1">
         <BluntTraumas>
             <Trauma Key="RibFractures" Weight="30"/>
@@ -64,6 +67,7 @@
 
     <BodyPart Key="Abdomen" LocKey="BodyParts.Abdomen"
               Bones="SkelSpineRoot;SkelSpine0;SkelSpine1;"
+              DamageMult="0.7" BleedMult="1.0" PainMult="0.8"
               TraumaChance="1">
         <BluntTraumas>
             <Trauma Key="LiverInjury" Weight="25"/>
@@ -83,6 +87,7 @@
     </BodyPart>
 
     <BodyPart Key="Pelvis" LocKey="BodyParts.Pelvis"
+              DamageMult="0.65" BleedMult="0.9" PainMult="0.85"
               Bones="SkelRoot;SkelPelvisRoot;SkelPelvis;SkelPelvis1;"
               TraumaChance="1">
         <BluntTraumas>
@@ -103,7 +108,10 @@
         </PenetratingTraumas>
     </BodyPart>
 
-    <BodyPart Key="LeftShoulder" LocKey="BodyParts.LeftShoulder" Bones="SkelLeftClavicle;" TraumaChance="1">
+    <BodyPart Key="LeftShoulder" LocKey="BodyParts.LeftShoulder" 
+              Bones="SkelLeftClavicle;"
+              DamageMult="0.5" BleedMult="0.5" PainMult="0.6"
+              TraumaChance="1">
         <BluntTraumas>
             <Trauma Key="DislocatedShoulder" Weight="40"/>
             <Trauma Key="ClosedFractureArm" Weight="35"/>
@@ -120,7 +128,10 @@
             <Trauma Key="LungsInjury" Weight="15"/>
         </PenetratingTraumas>
     </BodyPart>
-    <BodyPart Key="RightShoulder" LocKey="BodyParts.RightShoulder" Bones="SkelRightClavicle;" TraumaChance="1">
+    <BodyPart Key="RightShoulder" LocKey="BodyParts.RightShoulder" 
+              Bones="SkelRightClavicle;"
+              DamageMult="0.5" BleedMult="0.5" PainMult="0.6"
+              TraumaChance="1">
         <BluntTraumas>
             <Trauma Key="DislocatedShoulder" Weight="40"/>
             <Trauma Key="ClosedFractureArm" Weight="35"/>
@@ -140,6 +151,7 @@
 
     <BodyPart Key="LeftArm" LocKey="BodyParts.LeftArm"
               Bones="SkelLeftUpperArm;SkelLeftForearm;SkelLeftHand;"
+              DamageMult="0.45" BleedMult="0.7" PainMult="0.6"
               TraumaChance="1">
         <BluntTraumas>
             <Trauma Key="ClosedFractureArm" Weight="1"/>
@@ -153,6 +165,7 @@
     </BodyPart>
     <BodyPart Key="RightArm" LocKey="BodyParts.RightArm"
               Bones="SkelRightUpperArm;SkelRightForearm;SkelRightHand;"
+              DamageMult="0.45" BleedMult="0.7" PainMult="0.6"
               TraumaChance="1">
         <BluntTraumas>
             <Trauma Key="ClosedFractureArm" Weight="1"/>
@@ -167,6 +180,7 @@
 
     <BodyPart Key="LeftLeg" LocKey="BodyParts.LeftLeg"
               Bones="SkelLeftThigh;SkelLeftToe0;SkelLeftToe1;SkelLeftFoot;SkelLeftCalf;"
+              DamageMult="0.5" BleedMult="0.8" PainMult="0.7"
               TraumaChance="1">
         <BluntTraumas>
             <Trauma Key="ClosedFractureArm" Weight="1"/>
@@ -180,6 +194,7 @@
     </BodyPart>
     <BodyPart Key="RightLeg" LocKey="BodyParts.RightLeg"
               Bones="SkelRightThigh;SkelRightToe0;SkelRightToe1;SkelRightFoot;SkelRightCalf;"
+              DamageMult="0.5" BleedMult="0.8" PainMult="0.7"
               TraumaChance="1">
         <BluntTraumas>
             <Trauma Key="ClosedFractureArm" Weight="1"/>

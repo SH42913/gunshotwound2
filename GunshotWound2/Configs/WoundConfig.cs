@@ -12,9 +12,7 @@ namespace GunshotWound2.Configs {
             public readonly string Key;
             public readonly string LocKey;
             public readonly bool IsBlunt;
-            public readonly float Damage;
-            public readonly float Bleed;
-            public readonly float Pain;
+            public readonly DBPContainer DBP;
             public readonly bool CanCauseTrauma;
 
             public bool IsValid => !string.IsNullOrEmpty(Key);
@@ -29,51 +27,39 @@ namespace GunshotWound2.Configs {
                 Key = key;
                 LocKey = locKey;
                 IsBlunt = isBlunt;
-                Damage = damage;
-                Bleed = bleed;
-                Pain = pain;
+                DBP = new DBPContainer(damage, bleed, pain);
                 CanCauseTrauma = canCauseTrauma;
             }
 
-            public Wound(XElement node) : this(key: node.GetString(nameof(Key)),
-                                               locKey: node.GetString(nameof(LocKey)),
-                                               isBlunt: node.GetBool(nameof(IsBlunt)),
-                                               damage: node.GetFloat(nameof(Damage)),
-                                               bleed: node.GetFloat(nameof(Bleed)),
-                                               pain: node.GetFloat(nameof(Pain)),
-                                               canCauseTrauma: node.GetBool(nameof(CanCauseTrauma))) { }
+            public Wound(XElement node) {
+                Key = node.GetString(nameof(Key));
+                LocKey = node.GetString(nameof(LocKey));
+                IsBlunt = node.GetBool(nameof(IsBlunt));
+                DBP = new DBPContainer(node, isMult: false);
+                CanCauseTrauma = node.GetBool(nameof(CanCauseTrauma));
+            }
 
             public Wound Clone(float? damage = null, float? bleed = null, float? pain = null, bool? canCauseTrauma = null) {
                 return new Wound(Key,
                                  LocKey,
                                  IsBlunt,
-                                 damage ?? Damage,
-                                 bleed ?? Bleed,
-                                 pain ?? Pain,
+                                 damage ?? DBP.damage,
+                                 bleed ?? DBP.bleed,
+                                 pain ?? DBP.pain,
                                  canCauseTrauma ?? CanCauseTrauma);
             }
 
             public override string ToString() {
-                const string format = "F";
                 string blunt = IsBlunt ? "(blunt)" : "";
-                var damage = Damage.ToString(format);
-                var pain = Pain.ToString(format);
-                var bleed = Bleed.ToString(format);
-                var trauma = CanCauseTrauma.ToString();
-                return $"{Key}{blunt} D:{damage} P:{pain} B:{bleed} T:{trauma}";
+                return $"{Key}{blunt} {DBP.ToString()} T:{CanCauseTrauma.ToString()}";
             }
         }
 
         public const float MAX_SEVERITY_FOR_BANDAGE = 1f;
         private const int HEALTH_CORRECTION = 100;
 
-        public float OverallDamageMult;
-        public float OverallPainMult;
-        public float OverallBleedingMult;
-
-        public float DamageDeviation;
-        public float PainDeviation;
-        public float BleedingDeviation;
+        public DBPContainer GlobalMultipliers;
+        public DBPContainer GlobalDeviations;
 
         public float MoveRateOnFullPain;
         public float MoveRateOnLegsTrauma;
@@ -85,7 +71,7 @@ namespace GunshotWound2.Configs {
         public float DeadlyPainShockPercent;
 
         public int TakedownRagdollDurationMs;
-        public float TakedownPainMult;
+        public DBPContainer TakedownMults;
 
         public Dictionary<string, Wound> Wounds;
 
@@ -94,14 +80,11 @@ namespace GunshotWound2.Configs {
         public void FillFrom(XDocument doc) {
             XElement root = doc.Element(nameof(WoundConfig))!;
 
+            GlobalMultipliers = new DBPContainer(root.Element(nameof(GlobalMultipliers)), isMult: true);
+            GlobalDeviations = new DBPContainer(root.Element(nameof(GlobalDeviations)), isMult: false);
+
             MoveRateOnFullPain = root.Element(nameof(MoveRateOnFullPain)).GetFloat();
             MoveRateOnLegsTrauma = root.Element(nameof(MoveRateOnLegsTrauma)).GetFloat();
-            OverallDamageMult = root.Element(nameof(OverallDamageMult)).GetFloat();
-            DamageDeviation = root.Element(nameof(DamageDeviation)).GetFloat();
-            OverallPainMult = root.Element(nameof(OverallPainMult)).GetFloat();
-            PainDeviation = root.Element(nameof(PainDeviation)).GetFloat();
-            OverallBleedingMult = root.Element(nameof(OverallBleedingMult)).GetFloat();
-            BleedingDeviation = root.Element(nameof(BleedingDeviation)).GetFloat();
             RagdollOnPainfulWound = root.Element(nameof(RagdollOnPainfulWound)).GetBool();
             PainfulWoundPercent = root.Element(nameof(PainfulWoundPercent)).GetFloat();
             UseCustomUnconsciousBehaviour = root.Element(nameof(UseCustomUnconsciousBehaviour)).GetBool();
@@ -111,14 +94,15 @@ namespace GunshotWound2.Configs {
             XElement itemsNode = root.Element(nameof(Wounds))!;
             Wounds = itemsNode.Elements(nameof(Wound)).Select(x => new Wound(x)).ToDictionary(x => x.Key);
 
-            TakedownRagdollDurationMs = root.Element(nameof(TakedownRagdollDurationMs)).GetInt();
-            TakedownPainMult = root.Element(nameof(TakedownPainMult)).GetFloat();
+            XElement takedownNode = root.Element("Takedown");
+            TakedownRagdollDurationMs = root.Element("RagdollDurationMs").GetInt();
+            TakedownMults = new DBPContainer(takedownNode, isMult: true);
         }
 
         public void Validate(MainConfig mainConfig, ILogger logger) { }
 
         public bool IsBleedingCanBeBandaged(float severity) {
-            return severity <= OverallBleedingMult * MAX_SEVERITY_FOR_BANDAGE;
+            return severity <= GlobalMultipliers.bleed * MAX_SEVERITY_FOR_BANDAGE;
         }
 
         public static int ConvertHealthFromNative(int health) {
@@ -131,8 +115,8 @@ namespace GunshotWound2.Configs {
 
         public override string ToString() {
             return $"{nameof(WoundConfig)}:\n"
-                   + $"D/P/B Mults: {OverallDamageMult.ToString("F2")}/{OverallPainMult.ToString("F2")}/{OverallBleedingMult.ToString("F2")}\n"
-                   + $"D/P/B Deviations: {DamageDeviation.ToString("F2")}/{PainDeviation.ToString("F2")}/{BleedingDeviation.ToString("F2")}\n"
+                   + $"Mults: {GlobalMultipliers.ToString()}\n"
+                   + $"Deviations: {GlobalDeviations.ToString()}\n"
                    + $"{nameof(MoveRateOnFullPain)}: {MoveRateOnFullPain.ToString(CultureInfo.InvariantCulture)}\n"
                    + $"{nameof(MoveRateOnLegsTrauma)}: {MoveRateOnLegsTrauma.ToString(CultureInfo.InvariantCulture)}\n"
                    + $"{nameof(RagdollOnPainfulWound)}: {RagdollOnPainfulWound.ToString()}";

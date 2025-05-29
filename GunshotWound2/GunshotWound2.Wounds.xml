@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WoundConfig>
-    <PainfulWoundPercent Value="0.5"/>
-    <!-- Any wound with value more than PainfulWoundPercent * MaxPain will add painful-wound effects -->
+    <GlobalMultipliers DamageMult="1.0" BleedMult="1.0" PainMult="1.0"/>
+    <!-- 0.5 for Damage means every wound will deal 50% of its damage to ped -->
 
-    <RagdollOnPainfulWound Value="TRUE"/>
-    <!-- If TRUE - peds(including player) will set to short ragdoll on painful wounds -->
+    <GlobalDeviations Damage="0.2" Bleed="0.2" Pain="0.2"/>
+    <!-- 0.2 for Damage means +-20% to damage value of every new wound -->
+
+    <Takedown RagdollDurationMs="4000" DamageMult="1.0" BleedMult="1.0" PainMult="1.0"/>
+    <!-- Heavy melee attack(eg, using R key) named "takedown".
+    It will cause special wound with custom duration ragdoll. -->
 
     <UseCustomUnconsciousBehaviour Value="TRUE"/>
     <!-- If TRUE - you will see various ped behaviour when they're unconscious, otherwise will be used common ragdoll -->
@@ -15,30 +19,17 @@
     <DeadlyPainShockPercent Value="3.0"/>
     <!-- 3.0 means 300% of PainShockThreshold will lead to instant death by pain shock -->
 
-    <TakedownRagdollDurationMs Value="4000"/>
-    <!-- Heavy melee attack(eg, using R key) named takedown.
-    It will cause heavy impact damage with custom duration ragdoll. -->
+    <PainfulWoundPercent Value="0.5"/>
+    <!-- Any wound with value more than PainfulWoundPercent * MaxPain will add painful-wound effects -->
 
-    <TakedownPainMult Value="1.0"/>
-    <!-- Adjustable pain multiplier for takedown wound -->
+    <RagdollOnPainfulWound Value="TRUE"/>
+    <!-- If TRUE - peds(including player) will set to short ragdoll on painful wounds -->
 
     <MoveRateOnFullPain Value="0.8"/>
     <!-- Move rate on 100% of pain -->
 
     <MoveRateOnLegsTrauma Value="0.7"/>
     <!-- Move rate when Legs has major injury -->
-
-    <OverallDamageMult Value="1.0"/>
-    <!-- Overall damage multiplier, 0.5 means every wound will deal 50% of damage to ped -->
-
-    <DamageDeviation Value="0.2"/>
-    <!-- 0.2 means +-20% random damage -->
-
-    <OverallBleedingMult Value="1.0"/>
-    <BleedingDeviation Value="0.2"/>
-
-    <OverallPainMult Value="1.0"/>
-    <PainDeviation Value="0.2"/>
 
     <Wounds>
         <!--

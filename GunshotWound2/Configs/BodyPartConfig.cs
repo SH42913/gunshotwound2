@@ -12,6 +12,7 @@ namespace GunshotWound2.Configs {
         public readonly struct BodyPart {
             public readonly string Key;
             public readonly string LocKey;
+            public readonly DBPContainer DBPMults;
             public readonly HashSet<int> Bones;
             public readonly (string key, int weight)[] BluntTraumas;
             public readonly (string key, int weight)[] PenetratingTraumas;
@@ -23,6 +24,8 @@ namespace GunshotWound2.Configs {
             public BodyPart(XElement node) {
                 Key = node.GetString(nameof(Key));
                 LocKey = node.GetString(nameof(LocKey));
+                DBPMults = new DBPContainer(node, isMult: true);
+                
                 Bones = node.GetString(nameof(Bones))
                             .Split(MainConfig.Separator, StringSplitOptions.RemoveEmptyEntries)
                             .Select(GetIntOfBone)

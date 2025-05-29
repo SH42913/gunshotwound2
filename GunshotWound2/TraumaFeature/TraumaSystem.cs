@@ -64,9 +64,10 @@
             TraumaConfig.Trauma trauma = sharedData.mainConfig.traumaConfig.Traumas[traumaKey];
             string traumaName = sharedData.localeConfig.GetTranslation(trauma.LocKey);
             string reason = sharedData.localeConfig.TraumaType;
-            entity.GetComponent<Pain>().diff += trauma.Pain;
-            entity.GetComponent<Health>().DealDamage(trauma.Damage, traumaName);
-            entity.CreateBleeding(traumas.requestBodyPart, trauma.Bleed, traumaName, reason, isTrauma: true);
+            DBPContainer dbp = trauma.DBP * sharedData.mainConfig.woundConfig.GlobalMultipliers * traumas.requestBodyPart.DBPMults;
+            entity.GetComponent<Pain>().diff += dbp.pain;
+            entity.GetComponent<Health>().DealDamage(dbp.damage, traumaName);
+            entity.CreateBleeding(traumas.requestBodyPart, dbp.bleed, traumaName, reason, isTrauma: true);
 
             if (trauma.Effect != Traumas.Effects.Spine) {
                 ApplyTraumaEffect(entity, ref traumas, ref convertedPed, trauma.Effect, trauma.EffectMessage);

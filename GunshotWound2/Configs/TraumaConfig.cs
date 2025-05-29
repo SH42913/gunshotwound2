@@ -12,20 +12,16 @@ namespace GunshotWound2.Configs {
         public readonly struct Trauma {
             public readonly string Key;
             public readonly string LocKey;
+            public readonly DBPContainer DBP;
             public readonly Traumas.Effects Effect;
             public readonly bool EffectMessage;
-            public readonly float Damage;
-            public readonly float Bleed;
-            public readonly float Pain;
 
             public Trauma(XElement node) {
                 Key = node.GetString(nameof(Key));
                 LocKey = node.GetString(nameof(LocKey));
+                DBP = new DBPContainer(node, isMult: false);
                 Enum.TryParse(node.GetString(nameof(Effect)), out Effect);
                 EffectMessage = node.GetBool(nameof(EffectMessage), defaultValue: true);
-                Damage = node.GetFloat(nameof(Damage));
-                Bleed = node.GetFloat(nameof(Bleed));
-                Pain = node.GetFloat(nameof(Pain));
             }
         }
 

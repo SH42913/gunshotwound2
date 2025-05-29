@@ -116,29 +116,22 @@
                 return;
             }
 
-            if (wound.Damage > 0f) {
-                float mult = hitData.weaponType.DamageMult * WoundConfig.OverallDamageMult;
-                float damageAmount = CalculateAmount(wound.Damage, WoundConfig.DamageDeviation, mult);
-                damageAmount = Math.Max(damageAmount, 1f);
-                health.DealDamage(damageAmount, woundName);
+            DBPContainer dbp = wound.DBP.Deviate(sharedData.random, sharedData.mainConfig.woundConfig.GlobalDeviations);
+            dbp *= WoundConfig.GlobalMultipliers * hitData.weaponType.DBPMults * hitData.bodyPart.DBPMults;
+            if (hitData.afterTakedown) {
+                dbp *= WoundConfig.TakedownMults;
             }
 
-            var finalBleed = 0f;
-            if (wound.Bleed > 0f) {
-                float mult = hitData.weaponType.BleedMult * WoundConfig.OverallBleedingMult;
-                finalBleed = CalculateAmount(wound.Bleed, WoundConfig.BleedingDeviation, mult);
-                entity.CreateBleeding(hitData.bodyPart, finalBleed, woundName, hitData.weaponType.ShortDesc, isTrauma: false);
+            if (dbp.damage > 0f) {
+                health.DealDamage(dbp.damage, woundName);
             }
 
-            var finalPain = 0f;
-            if (wound.Pain > 0f) {
-                float mult = hitData.weaponType.PainMult * WoundConfig.OverallPainMult;
-                if (hitData.afterTakedown) {
-                    mult *= sharedData.mainConfig.woundConfig.TakedownPainMult;
-                }
+            if (dbp.bleed > 0f) {
+                entity.CreateBleeding(hitData.bodyPart, dbp.bleed, woundName, hitData.weaponType.ShortDesc, isTrauma: false);
+            }
 
-                finalPain = CalculateAmount(wound.Pain, WoundConfig.PainDeviation, mult);
-                entity.GetComponent<Pain>().diff += finalPain;
+            if (dbp.pain > 0f) {
+                entity.GetComponent<Pain>().diff += dbp.pain;
             }
 
             bool shouldRequestTrauma = ShouldRequestTrauma(wound, hitData);
@@ -148,7 +141,7 @@
                 traumas.forBluntDamage = wound.IsBlunt;
             }
 
-            SendWoundInfo(convertedPed, health, hitData, woundName, finalBleed, finalPain, shouldRequestTrauma);
+            SendWoundInfo(convertedPed, health, hitData, woundName, dbp.bleed, dbp.pain, shouldRequestTrauma);
         }
 
         private bool ShouldRequestTrauma(in WoundConfig.Wound wound, in PedHitData hitData) {
@@ -202,13 +195,6 @@
 
             Notifier.Color bleedingColor = health.GetBleedingColor(convertedPed, finalBleed);
             notifier.QueueMessage(woundName, bleedingColor);
-        }
-
-        private float CalculateAmount(float baseAmount, float deviation, float mult) {
-            float damageDeviation = baseAmount > 0 ? deviation * baseAmount : 0;
-            baseAmount += sharedData.random.NextFloat(-damageDeviation, damageDeviation);
-            baseAmount *= mult;
-            return baseAmount;
         }
     }
 }
