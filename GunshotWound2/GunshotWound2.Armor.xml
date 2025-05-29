@@ -10,12 +10,20 @@
     <!-- You can add here prop indexes that GSW will use as helmets -->
 
     <Levels>
-        <Level Key="ClassI" LocKey="ArmorClassI" MaxValue="20" ColorPrefix="~r~" Parts="Chest;Abdomen;"/>
-        <Level Key="ClassII" LocKey="ArmorClassII" MaxValue="40" ColorPrefix="~o~" Parts="Chest;Abdomen;"/>
-        <Level Key="ClassIII" LocKey="ArmorClassIII" MaxValue="60" ColorPrefix="~y~" Parts="Neck;Chest;Abdomen;"/>
-        <Level Key="ClassIV" LocKey="ArmorClassIV" MaxValue="80" ColorPrefix="~g~"
-               Parts="Neck;Chest;Abdomen;LeftShoulder;RightShoulder;"/>
-        <Level Key="ClassV" LocKey="ArmorClassV" MaxValue="200" ColorPrefix="~g~"
-               Parts="Neck;Chest;Abdomen;LeftShoulder;RightShoulder;Pelvis;"/>
+        <Level Key="ClassI" LocKey="ArmorClassI"
+               Parts="Chest;Abdomen;"
+               MaxValue="20" ColorPrefix="~r~" TraumaPadEfficiency="0"/>
+        <Level Key="ClassII" LocKey="ArmorClassII"
+               Parts="Chest;Abdomen;"
+               MaxValue="40" ColorPrefix="~o~" TraumaPadEfficiency="0.2"/>
+        <Level Key="ClassIII" LocKey="ArmorClassIII"
+               Parts="Neck;Chest;Abdomen;"
+               MaxValue="60" ColorPrefix="~y~" TraumaPadEfficiency="0.4"/>
+        <Level Key="ClassIV" LocKey="ArmorClassIV"
+               Parts="Neck;Chest;Abdomen;LeftShoulder;RightShoulder;"
+               MaxValue="80" ColorPrefix="~g~" TraumaPadEfficiency="0.6"/>
+        <Level Key="ClassV" LocKey="ArmorClassV"
+               Parts="Neck;Chest;Abdomen;LeftShoulder;RightShoulder;Pelvis;"
+               MaxValue="200" ColorPrefix="~g~" TraumaPadEfficiency="0.8"/>
     </Levels>
 </ArmorConfig>

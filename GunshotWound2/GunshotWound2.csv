@@ -1,10 +1,10 @@
 KEY,EN,RU,DE,FR,PL,KR,PT-BR,SPA,SWE,JP,ZH-HK,ZN-CN,FA,FI
-Green for a new strings,,,,,,,,,,,,,,
+Green for new strings,,,,,,,,,,,,,,
 Black for removed strings,,,,,,,,,,,,,,
 HelmetProtectedYou,Your helmet saved your head,Шлем спас вашу голову,Dein Helm rettete dein Leben,Votre casque a protégé votre tête,Hełm uratował ci głowe,헬멧이 당신의 머리를 구했다,Seu capacete salvou sua cabeça,El casco te protegió la cabeza,Din hjälm skyddade ditt huvud,ヘルメットが命を救った,頭盔救了你的命,头盔救了你的命,کلاه ایمنی سر شما را نجات داد,Kypäräsi pelasti pääsi
 ArmorProtectedYou,Your body armor has protected you,Бронежилет спас вас,,,,,,,,,,,,
 ArmorPenetrated,Your armor was penetrated,Бронежилет был пробит,Deine Rüstung wurde durchdrungen,Votre armure a été pénétrée,Przebicie kamizelki,당신의 갑옷이 뚫렸다,Sua armadura foi penetrada,Tu chaleco antibalas fue penetrado,Din rustning penetrerades,アーマーが貫通された,護甲被穿透,护甲被穿透,زره شما مورد نفوذ قرار گرفته,Panssarisi lävistettiin
-ArmorInjury,Blunt force injury under armor,Заброневая травма,,,,,,,,アーマーが損傷した,護甲受損,护甲受损,,Tylppä vamma panssarin alla
+ArmorBluntTrauma,Behind-armor blunt trauma,Заброневая травма,,,,,,,,アーマーが損傷した,護甲受損,护甲受损,,Tylppä vamma panssarin alla
 ,"Write body parts correctly! Eg, ""Flesh wound on head""",,,,,,,,,,,,,
 BodyPartHead,head,голове,Kopf,tête,głowie,머리,cabeça,Cabeza,huvud,頭部,頭部,头部,سر,päässä
 BodyPartNeck,neck,шее,Hals,cou,szyji,목,pescoço,cuello,nacke,首,頸部,颈部,گردن,niskassa

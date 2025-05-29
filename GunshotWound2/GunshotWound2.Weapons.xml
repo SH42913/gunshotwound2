@@ -63,7 +63,7 @@
 
         <Firearm12GA_00Buck ShortDesc="12GA #00"
                             DamageMult="1.2" BleedMult="1.7" PainMult="1.5" ChanceToCauseTrauma="0.9"
-                            SafeArmorLevel="ClassII" ArmorDamage="8" HelmetSafeChance="0.9">
+                            SafeArmorLevel="ClassIII" ArmorDamage="8" HelmetSafeChance="0.9">
             <Shotguns Hashes="PUMPSHOTGUN;PUMPSHOTGUN_MK2;SAWNOFFSHOTGUN;BULLPUPSHOTGUN;DBSHOTGUN;COMBATSHOTGUN;"/>
             <AutoShotguns Hashes="AUTOSHOTGUN;HEAVYSHOTGUN;ASSAULTSHOTGUN;"/>
             <Wounds>
@@ -145,7 +145,7 @@
 
         <Firearm762x51_FMJ ShortDesc="7.62x51 FMJ"
                            DamageMult="1.6" BleedMult="1.7" PainMult="1.5" ChanceToCauseTrauma="0.98"
-                           SafeArmorLevel="ClassV" ArmorDamage="20" HelmetSafeChance="0.01">
+                           SafeArmorLevel="ClassV" ArmorDamage="25" HelmetSafeChance="0.01">
             <Rifles Hashes="BATTLERIFLE;MARKSMANRIFLE_MK2;SNIPERRIFLE;PRECISIONRIFLE;HEAVYRIFLE;"/>
             <MGs Hashes="COMBATMG_MK2;MINIGUN;ARENA_MACHINE_GUN;AIR_DEFENCE_GUN;"/>
             <Wounds>
@@ -159,7 +159,7 @@
 
         <Firearm40SW_FMJ ShortDesc=".40 SW FMJ"
                          DamageMult="1.2" BleedMult="1.2" PainMult="1.3" ChanceToCauseTrauma="0.5"
-                         SafeArmorLevel="ClassII" ArmorDamage="4" HelmetSafeChance="0.8">
+                         SafeArmorLevel="ClassII" ArmorDamage="6" HelmetSafeChance="0.8">
             <Pistols Hashes="COMBATPISTOL;SNSPISTOL_MK2;"/>
             <Wounds>
                 <Wound Key="FleshGsw" Weight="15"/>

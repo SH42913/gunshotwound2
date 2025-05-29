@@ -6,7 +6,7 @@ namespace GunshotWound2.WoundFeature {
     using Utils;
 
     public sealed class ArmorChecker {
-        private static readonly WoundConfig.Wound ARMOR_INJURY = new(key: "ArmorInjury", locKey: "ArmorInjury", isBlunt: true);
+        private static readonly WoundConfig.Wound ARMOR_INJURY = new(key: "ArmorInjury", locKey: "ArmorBluntTrauma", isBlunt: true);
 
         private readonly SharedData sharedData;
 
@@ -46,9 +46,10 @@ namespace GunshotWound2.WoundFeature {
                 return false;
             }
 
-            ped.Armor -= hit.weaponType.ArmorDamage;
+            int armorDamage = hit.weaponType.ArmorDamage;
+            ped.Armor -= armorDamage;
             LocaleConfig localeConfig = sharedData.localeConfig;
-            if (!armorConfig.TryGetArmorLevel(ped.Armor, out _)) {
+            if (!armorConfig.TryGetArmorLevel(ped.Armor, out armorLevel)) {
 #if DEBUG
                 sharedData.logger.WriteInfo("Armor is dead");
 #endif
@@ -65,9 +66,11 @@ namespace GunshotWound2.WoundFeature {
 
             ShowArmorMessage(convertedPed, localeConfig.ArmorProtectedYou);
 
-            if (hit.weaponType.ArmorDamage > 0) {
-                // TODO bool canCauseTrauma = 
-                armorWound = ARMOR_INJURY.Clone(damage: hit.weaponType.ArmorDamage, pain: hit.weaponType.ArmorDamage);
+            if (armorDamage > 0 && armorLevel.TraumaPadEfficiency < 1f) {
+                float traumaPadAbsorbed = armorDamage * armorLevel.TraumaPadEfficiency;
+                float bluntDamage = armorDamage - traumaPadAbsorbed;
+                bool canCauseTrauma = armorLevel.MaxValue / bluntDamage < 10;
+                armorWound = ARMOR_INJURY.Clone(damage: bluntDamage, pain: bluntDamage, canCauseTrauma: canCauseTrauma);
             } else {
                 armorWound = default;
             }

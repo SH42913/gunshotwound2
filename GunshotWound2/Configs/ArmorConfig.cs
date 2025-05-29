@@ -15,6 +15,7 @@ namespace GunshotWound2.Configs {
             public readonly int MaxValue;
             public readonly string ColorPrefix;
             public readonly HashSet<string> Parts;
+            public readonly float TraumaPadEfficiency;
 
             public Level(XElement node) {
                 Key = node.GetString(nameof(Key));
@@ -24,6 +25,8 @@ namespace GunshotWound2.Configs {
                 Parts = node.GetString(nameof(Parts))
                             .Split(MainConfig.Separator, StringSplitOptions.RemoveEmptyEntries)
                             .ToHashSet();
+
+                TraumaPadEfficiency = node.GetFloat(nameof(TraumaPadEfficiency));
             }
         }
 
