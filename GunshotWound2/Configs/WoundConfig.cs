@@ -95,7 +95,7 @@ namespace GunshotWound2.Configs {
             Wounds = itemsNode.Elements(nameof(Wound)).Select(x => new Wound(x)).ToDictionary(x => x.Key);
 
             XElement takedownNode = root.Element("Takedown");
-            TakedownRagdollDurationMs = root.Element("RagdollDurationMs").GetInt();
+            TakedownRagdollDurationMs = takedownNode.GetInt("RagdollDurationMs");
             TakedownMults = new DBPContainer(takedownNode, isMult: true);
         }
 

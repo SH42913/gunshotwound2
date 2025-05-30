@@ -54,13 +54,6 @@
                     continue;
                 }
 
-                if (hitData.afterTakedown) {
-#if DEBUG
-                    sharedData.logger.WriteInfo("Set special weapon for takedown");
-#endif
-                    weaponType = WeaponConfig.Takedown;
-                }
-
                 if (!weaponType.IsValid) {
                     sharedData.logger.WriteWarning("Can't detect weapon!");
                     PedEffects.TryGetLastDamageRecord(ped, out uint uintHash, out _, out int gameTime);

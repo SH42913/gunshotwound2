@@ -21,6 +21,7 @@ namespace GunshotWound2.Configs {
             public readonly string SafeArmorLevel;
             public readonly int ArmorDamage;
             public readonly int Pellets;
+            public readonly string TakedownWound;
 
             public bool IsValid => !string.IsNullOrEmpty(Key);
 
@@ -33,7 +34,8 @@ namespace GunshotWound2.Configs {
                           float helmetSafeChance,
                           string safeArmorLevel,
                           int armorDamage,
-                          int pellets) {
+                          int pellets,
+                          string takedownWound) {
                 Key = key;
                 ShortDesc = shortDesc;
                 DBPMults = dbpMults;
@@ -44,6 +46,7 @@ namespace GunshotWound2.Configs {
                 SafeArmorLevel = safeArmorLevel;
                 ArmorDamage = armorDamage;
                 Pellets = pellets;
+                TakedownWound = takedownWound;
             }
         }
 
@@ -64,7 +67,6 @@ namespace GunshotWound2.Configs {
         public float HardRunOverThreshold;
 
         public Weapon Stun => Weapons.First(x => x.Key == nameof(Stun));
-        public Weapon Takedown => Weapons.First(x => x.Key == nameof(Takedown));
         public Weapon LightFall => Weapons.First(x => x.Key == nameof(LightFall));
         public Weapon HardFall => Weapons.First(x => x.Key == nameof(HardFall));
         public Weapon LightRunOverCar => Weapons.First(x => x.Key == nameof(LightRunOverCar));
@@ -107,6 +109,10 @@ namespace GunshotWound2.Configs {
                     if (!mainConfig.woundConfig.Wounds.ContainsKey(key)) {
                         logger.WriteWarning($"{weapon.Key} has invalid wound {key}");
                     }
+                }
+
+                if (!string.IsNullOrEmpty(weapon.TakedownWound) && !mainConfig.woundConfig.Wounds.ContainsKey(weapon.TakedownWound)) {
+                    logger.WriteWarning($"{weapon.Key} has invalid TakedownWound {weapon.TakedownWound}");
                 }
 
                 bool isValidArmor = string.IsNullOrEmpty(weapon.SafeArmorLevel)
@@ -153,6 +159,7 @@ namespace GunshotWound2.Configs {
             string safeArmorLevel = weaponNode.GetString(nameof(Weapon.SafeArmorLevel));
             int armorDamage = weaponNode.GetInt(nameof(Weapon.ArmorDamage), defaultValue: 0);
             int pellets = weaponNode.GetInt(nameof(Weapon.Pellets), defaultValue: 1);
+            string takedownWound = weaponNode.Element(nameof(Weapon.TakedownWound)).GetString(nameof(WoundConfig.Wound.Key));
             return new Weapon(key,
                               shortDesc,
                               dbp,
@@ -162,7 +169,8 @@ namespace GunshotWound2.Configs {
                               helmetChance,
                               safeArmorLevel,
                               armorDamage,
-                              pellets);
+                              pellets,
+                              takedownWound);
         }
 
         private static (string, int)[] ExtractWounds(XElement weaponNode) {

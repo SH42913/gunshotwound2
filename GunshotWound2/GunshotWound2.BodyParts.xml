@@ -22,7 +22,7 @@
     <BodyPart Key="Neck" LocKey="BodyParts.Neck"
               Bones="SkelNeck1;SkelNeck2;"
               DamageMult="0.9" BleedMult="1.0" PainMult="1.0"
-              TraumaChance="1">
+              TraumaChance="0.9" IgnoreWeaponTraumaChance="TRUE">
         <BluntTraumas>
             <Trauma Key="TrachealInjury" Weight="20"/>
             <Trauma Key="NeckSpineFracture" Weight="30"/>
