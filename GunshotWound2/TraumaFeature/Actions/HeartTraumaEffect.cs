@@ -17,7 +17,7 @@
             convertedPed.nmMessages = NM_MESSAGES;
 
             if (convertedPed.isPlayer) {
-                sharedData.cameraService.SetHeartCritEffect(true);
+                sharedData.cameraService.SetHeartInjuryEffect(true);
             }
         }
 
@@ -25,7 +25,7 @@
 
         public override void Cancel(Entity entity, ref ConvertedPed convertedPed) {
             if (convertedPed.isPlayer) {
-                sharedData.cameraService.SetHeartCritEffect(false);
+                sharedData.cameraService.SetHeartInjuryEffect(false);
             }
         }
     }

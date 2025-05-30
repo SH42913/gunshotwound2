@@ -27,6 +27,7 @@
                 (Traumas.Effects.Lungs, new LungsTraumaEffect(this.sharedData)),
                 (Traumas.Effects.Abdomen, new AbdomenTraumaEffect(this.sharedData)),
                 (Traumas.Effects.Spine, new SpineTraumaEffect(this.sharedData)),
+                (Traumas.Effects.Head, new HeadTraumaEffect(this.sharedData)),
             };
         }
 

@@ -8,6 +8,8 @@ namespace GunshotWound2.PlayerFeature {
     public sealed class PlayerCameraSystem : ILateSystem {
         private readonly SharedData sharedData;
 
+        private bool wasBleed;
+
         public World World { get; set; }
 
         public PlayerCameraSystem(SharedData sharedData) {
@@ -23,7 +25,11 @@ namespace GunshotWound2.PlayerFeature {
                 cameraService.SetAimingShake(exist && convertedPed.thisPed.IsAiming);
 
                 ref Health health = ref entity.GetComponent<Health>(out exist);
-                cameraService.SetBleedingEffect(exist && health.HasBleedingWounds());
+                bool hasBleedingWounds = exist && health.HasBleedingWounds();
+                if (wasBleed != hasBleedingWounds) {
+                    cameraService.SetBleedingEffect(hasBleedingWounds);
+                    wasBleed = hasBleedingWounds;
+                }
             } else {
                 cameraService.SetAimingShake(false);
             }

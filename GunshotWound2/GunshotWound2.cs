@@ -151,7 +151,7 @@
             sharedData.notifier.ShowOne(builder.ToString(), blinking: true);
 
 #if DEBUG
-            sharedData.cheatListener.Register("GSW_TEST", () => {
+            sharedData.cheatListener.Register("TEST", () => {
                 //
             });
 #endif

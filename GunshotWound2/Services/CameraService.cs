@@ -5,6 +5,13 @@ namespace GunshotWound2.Services {
     using Utils;
 
     public sealed class CameraService {
+        private const int HEAD_INJURY_PRIORITY = 0;
+        private const int UNCONSCIOUS_PRIORITY = 1;
+        private const int HEART_INJURY_PRIORITY = 2;
+        private const int LUNGS_INJURY_PRIORITY = 3;
+        private const int BLEED_EFFECT_PRIORITY = 4;
+        private const int PAIN_EFFECT_PRIORITY = 5;
+
         private readonly ILogger logger;
 
         private readonly SortedList<int, string> postFxList = new(4);
@@ -42,42 +49,46 @@ namespace GunshotWound2.Services {
             Function.Call(Hash.SET_FLASH, 0, 0, 100, 500, 100);
         }
 
+        public void SetHeadInjuryEffect(bool value) {
+#if DEBUG
+            logger.WriteInfo($"{nameof(SetHeadInjuryEffect)} with {value.ToString()}");
+#endif
+            SetPostFx(HEAD_INJURY_PRIORITY, "DeathFailOut", value);
+        }
+
         public void SetUnconsciousEffect(bool value) {
 #if DEBUG
             logger.WriteInfo($"{nameof(SetUnconsciousEffect)} with {value.ToString()}");
 #endif
-            SetPostFx(priority: 1, "DeathFailOut", value);
+            SetPostFx(UNCONSCIOUS_PRIORITY, "DeathFailOut", value);
         }
 
-        public void SetHeartCritEffect(bool value) {
+        public void SetHeartInjuryEffect(bool value) {
 #if DEBUG
-            logger.WriteInfo($"{nameof(SetHeartCritEffect)} with {value.ToString()}");
+            logger.WriteInfo($"{nameof(SetHeartInjuryEffect)} with {value.ToString()}");
 #endif
-            SetPostFx(priority: 2, "DrugsDrivingIn", value);
+            SetPostFx(HEART_INJURY_PRIORITY, "DrugsDrivingIn", value);
         }
 
-        public void SetLungsCritEffect(bool value) {
+        public void SetLungsInjuryEffect(bool value) {
 #if DEBUG
-            logger.WriteInfo($"{nameof(SetLungsCritEffect)} with {value.ToString()}");
+            logger.WriteInfo($"{nameof(SetLungsInjuryEffect)} with {value.ToString()}");
 #endif
-            SetPostFx(priority: 3, "LostTimeNight", value);
+            SetPostFx(LUNGS_INJURY_PRIORITY, "LostTimeNight", value);
         }
 
         public void SetBleedingEffect(bool value) {
-            const int priority = 4;
-            if (postFxList.ContainsKey(priority) != value) {
 #if DEBUG
-                logger.WriteInfo($"{nameof(SetBleedingEffect)} with {value.ToString()}");
+            logger.WriteInfo($"{nameof(SetBleedingEffect)} with {value.ToString()}");
 #endif
-                SetPostFx(priority, "CrossLine", value);
-            }
+            SetPostFx(BLEED_EFFECT_PRIORITY, "CrossLine", value);
         }
 
         public void SetPainEffect(bool value) {
 #if DEBUG
             logger.WriteInfo($"{nameof(SetPainEffect)} with {value.ToString()}");
 #endif
-            SetPostFx(priority: 5, "FocusIn", value);
+            SetPostFx(PAIN_EFFECT_PRIORITY, "FocusIn", value);
         }
 
         public void ClearAllEffects() {
@@ -93,10 +104,13 @@ namespace GunshotWound2.Services {
                 prev = postFxList.Values[0];
             }
 
-            if (value) {
-                postFxList.Add(priority, name);
-            } else {
-                postFxList.Remove(priority);
+            bool isActive = postFxList.ContainsKey(priority);
+            if (isActive != value) {
+                if (value) {
+                    postFxList.Add(priority, name);
+                } else {
+                    postFxList.Remove(priority);
+                }
             }
 
             string next = null;

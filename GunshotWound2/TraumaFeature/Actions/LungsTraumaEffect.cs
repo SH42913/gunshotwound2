@@ -14,7 +14,7 @@
             convertedPed.BlockSprint();
 
             if (convertedPed.isPlayer) {
-                sharedData.cameraService.SetLungsCritEffect(true);
+                sharedData.cameraService.SetLungsInjuryEffect(true);
             }
         }
 
@@ -24,7 +24,7 @@
             convertedPed.UnBlockSprint();
 
             if (convertedPed.isPlayer) {
-                sharedData.cameraService.SetLungsCritEffect(false);
+                sharedData.cameraService.SetLungsInjuryEffect(false);
             }
         }
     }

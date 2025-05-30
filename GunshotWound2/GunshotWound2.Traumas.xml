@@ -25,13 +25,13 @@
     <!-- Lethal -->
     <Trauma Key="SkullFracture" LocKey="Traumas.SkullFracture"
             Damage="10" Pain="40" Bleed="0.2"
-            Effect="Spine" EffectMessage="FALSE"/>
+            Effect="Head" EffectMessage="FALSE"/>
     <Trauma Key="BleedingInHead" LocKey="Traumas.BleedingInHead"
             Damage="15" Pain="60" Bleed="0.4"
-            Effect="Spine" EffectMessage="FALSE"/>
+            Effect="Head" EffectMessage="FALSE"/>
     <Trauma Key="PenetratingSkullFracture" LocKey="Traumas.Penet.CranialInjury"
             Damage="20" Pain="80" Bleed="0.6"
-            Effect="Spine" EffectMessage="FALSE"/>
+            Effect="Head" EffectMessage="FALSE"/>
 
     <!-- Neck -->
     <Trauma Key="GreatVesselBleed" LocKey="Traumas.Penet.GreatBleed"

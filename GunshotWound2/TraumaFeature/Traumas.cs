@@ -14,6 +14,7 @@
             Abdomen = 1 << 3,
             Lungs = 1 << 4,
             Heart = 1 << 5,
+            Head = 1 << 6,
         }
 
         public BodyPartConfig.BodyPart requestBodyPart;
