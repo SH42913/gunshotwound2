@@ -46,7 +46,7 @@ namespace GunshotWound2.WoundFeature {
                 return false;
             }
 
-            int armorDamage = hit.weaponType.ArmorDamage;
+            int armorDamage = hit.weaponType.ArmorDamage * hit.hits;
             ped.Armor -= armorDamage;
             LocaleConfig localeConfig = sharedData.localeConfig;
             if (!armorConfig.TryGetArmorLevel(ped.Armor, out armorLevel)) {

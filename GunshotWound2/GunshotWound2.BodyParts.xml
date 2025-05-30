@@ -3,7 +3,7 @@
     <BodyPart Key="Head" LocKey="BodyParts.Head"
               Bones="SkelHead;"
               DamageMult="1.0" BleedMult="0.9" PainMult="1.0"
-              TraumaChance="0.95" IgnoreWeaponTraumaChance="TRUE">
+              TraumaChance="1" IgnoreWeaponTraumaChance="TRUE">
         <BluntTraumas>
             <Trauma Key="NasalFracture" Weight="15"/>
             <Trauma Key="Blackout" Weight="20"/>
@@ -15,7 +15,6 @@
         <PenetratingTraumas>
             <Trauma Key="PenetratingSkullFracture" Weight="1"/>
             <Trauma Key="BleedingInHead" Weight="1"/>
-            <Trauma Key="BrainHematoma" Weight="1"/>
             <Trauma Key="SkullFracture" Weight="1"/>
         </PenetratingTraumas>
     </BodyPart>

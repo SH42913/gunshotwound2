@@ -10,5 +10,6 @@
         public int armorDiff;
         public bool useRandomBodyPart;
         public bool afterTakedown;
+        public int hits;
     }
 }

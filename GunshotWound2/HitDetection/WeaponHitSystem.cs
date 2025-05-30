@@ -70,6 +70,7 @@
                 } else {
                     hitData.weaponHash = hitWeapon;
                     hitData.weaponType = weaponType;
+                    hitData.hits = 1;
                     hitData.useRandomBodyPart = isSpecialCase;
 #if DEBUG
                     string weaponName = BuildWeaponName(hitWeapon);

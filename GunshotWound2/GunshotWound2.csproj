@@ -66,6 +66,7 @@
     <Compile Include="Configs\PlayerConfig.cs"/>
     <Compile Include="Configs\WeaponConfig.cs" />
     <Compile Include="Configs\WoundConfig.cs"/>
+    <Compile Include="HitDetection\MultiBulletHitSystem.cs" />
     <Compile Include="TraumaFeature\Actions\ArmsTraumaEffect.cs" />
     <Compile Include="TraumaFeature\Actions\HeartTraumaEffect.cs" />
     <Compile Include="TraumaFeature\Actions\BaseTraumaEffect.cs" />

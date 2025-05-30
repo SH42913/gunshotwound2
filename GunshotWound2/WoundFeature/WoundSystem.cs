@@ -54,11 +54,37 @@
                 return;
             }
 
+            Ped ped = convertedPed.thisPed;
+            ped.Armor += hitData.armorDiff;
+            ped.Health += hitData.healthDiff;
+
             if (!hitData.bodyPart.IsValid) {
                 hitData.bodyPart = sharedData.mainConfig.bodyPartConfig.GetBodyPartByBone(Bone.SkelRoot);
                 sharedData.logger.WriteWarning($"Hit has no bodyPart, {hitData.bodyPart.Key} will be used");
             }
 
+            if (hitData.hits == 1) {
+                ProcessOneHit(entity, hitData, ref convertedPed);
+            } else if (hitData.hits > hitData.weaponType.Pellets / 2) {
+                ProcessOneHit(entity, hitData, ref convertedPed);
+            } else {
+                ProcessMultiHit(entity, hitData, ref convertedPed);
+            }
+        }
+
+        private void ProcessMultiHit(EcsEntity entity, PedHitData hitData, ref ConvertedPed convertedPed) {
+            int savedHits = hitData.hits;
+            hitData.hits = 1;
+
+            Random random = sharedData.random;
+            BodyPartConfig.BodyPart[] bodyParts = sharedData.mainConfig.bodyPartConfig.BodyParts;
+            for (int i = 0; i < savedHits; i++) {
+                ProcessOneHit(entity, hitData, ref convertedPed);
+                hitData.bodyPart = random.Next(bodyParts);
+            }
+        }
+
+        private void ProcessOneHit(EcsEntity entity, in PedHitData hitData, ref ConvertedPed convertedPed) {
             WoundConfig.Wound wound;
             if (armorChecker.TrySave(ref convertedPed, hitData, out WoundConfig.Wound armorWound)) {
                 wound = armorWound;
@@ -69,10 +95,6 @@
 #endif
                 wound = sharedData.mainConfig.woundConfig.Wounds[woundKey];
             }
-
-            Ped ped = convertedPed.thisPed;
-            ped.Armor += hitData.armorDiff;
-            ped.Health += hitData.healthDiff;
 
 #if DEBUG
             if (!wound.IsValid) {
@@ -118,6 +140,7 @@
 
             DBPContainer dbp = wound.DBP.Deviate(sharedData.random, sharedData.mainConfig.woundConfig.GlobalDeviations);
             dbp *= WoundConfig.GlobalMultipliers * hitData.weaponType.DBPMults * hitData.bodyPart.DBPMults;
+            dbp *= hitData.hits;
             if (hitData.afterTakedown) {
                 dbp *= WoundConfig.TakedownMults;
             }
@@ -134,17 +157,21 @@
                 entity.GetComponent<Pain>().diff += dbp.pain;
             }
 
-            bool shouldRequestTrauma = ShouldRequestTrauma(wound, hitData);
-            if (shouldRequestTrauma) {
+            bool shouldCreateTrauma = ShouldCreateTrauma(wound, hitData);
+            if (shouldCreateTrauma) {
                 ref Traumas traumas = ref entity.AddOrGetComponent<Traumas>();
                 traumas.requestBodyPart = hitData.bodyPart;
                 traumas.forBluntDamage = wound.IsBlunt;
             }
 
-            SendWoundInfo(convertedPed, health, hitData, woundName, dbp.bleed, dbp.pain, shouldRequestTrauma);
+#if DEBUG
+            sharedData.logger.WriteInfo($"Final wound DBP:{dbp.ToString()} trauma:{shouldCreateTrauma}");
+#endif
+
+            SendWoundInfo(convertedPed, health, hitData, woundName, dbp.bleed, dbp.pain, shouldCreateTrauma);
         }
 
-        private bool ShouldRequestTrauma(in WoundConfig.Wound wound, in PedHitData hitData) {
+        private bool ShouldCreateTrauma(in WoundConfig.Wound wound, in PedHitData hitData) {
             if (!wound.CanCauseTrauma) {
                 return false;
             }
@@ -157,7 +184,7 @@
                 return true;
             }
 
-            float weaponTraumaChance = hitData.weaponType.ChanceToCauseTrauma;
+            float weaponTraumaChance = hitData.weaponType.ChanceToCauseTrauma * hitData.hits;
             return sharedData.random.IsTrueWithProbability(weaponTraumaChance);
         }
 

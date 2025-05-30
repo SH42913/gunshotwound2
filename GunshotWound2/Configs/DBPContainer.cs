@@ -56,6 +56,13 @@ namespace GunshotWound2.Configs {
             return new DBPContainer(damage, bleed, pain);
         }
 
+        public static DBPContainer operator *(in DBPContainer first, float mult) {
+            float damage = first.damage * mult;
+            float bleed = first.bleed * mult;
+            float pain = first.pain * mult;
+            return new DBPContainer(damage, bleed, pain);
+        }
+
         public override string ToString() {
             const string format = "F2";
             return $"D:{damage.ToString(format)} P:{pain.ToString(format)} B:{bleed.ToString(format)}";

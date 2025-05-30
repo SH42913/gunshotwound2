@@ -61,19 +61,42 @@
             </Wounds>
         </Firearm9x19_AP>
 
-        <Firearm12GA_00Buck ShortDesc="12GA #00"
-                            DamageMult="1.2" BleedMult="1.7" PainMult="1.5" ChanceToCauseTrauma="0.9"
-                            SafeArmorLevel="ClassIII" ArmorDamage="8" HelmetSafeChance="0.9">
-            <Shotguns Hashes="PUMPSHOTGUN;PUMPSHOTGUN_MK2;SAWNOFFSHOTGUN;BULLPUPSHOTGUN;DBSHOTGUN;COMBATSHOTGUN;"/>
-            <AutoShotguns Hashes="AUTOSHOTGUN;HEAVYSHOTGUN;ASSAULTSHOTGUN;"/>
+        <Firearm12GA_00Buck ShortDesc="12GA #00" Pellets="8"
+                            DamageMult="0.75" BleedMult="0.9" PainMult="1.0" ChanceToCauseTrauma="0.2"
+                            SafeArmorLevel="ClassII" ArmorDamage="3" HelmetSafeChance="0.95">
+            <Shotguns Hashes="PUMPSHOTGUN;PUMPSHOTGUN_MK2;SAWNOFFSHOTGUN;BULLPUPSHOTGUN;DBSHOTGUN;"/>
             <Wounds>
-                <Wound Key="FleshGsw" Weight="1"/>
-                <Wound Key="PenetratingGsw" Weight="1"/>
-                <Wound Key="PerforatingGsw" Weight="1"/>
-                <Wound Key="LaceratingGsw" Weight="1"/>
-                <Wound Key="AvulsiveGsw" Weight="1"/>
+                <Wound Key="FleshGsw" Weight="30"/>
+                <Wound Key="PenetratingGsw" Weight="40"/>
+                <Wound Key="LaceratingGsw" Weight="25"/>
+                <Wound Key="AvulsiveGsw" Weight="5"/>
             </Wounds>
         </Firearm12GA_00Buck>
+
+        <Firearm12GA_000Buck ShortDesc="12GA #000" Pellets="6"
+                            DamageMult="0.95" BleedMult="1.0" PainMult="1.2" ChanceToCauseTrauma="0.3"
+                            SafeArmorLevel="ClassIII" ArmorDamage="6" HelmetSafeChance="0.5">
+            <Shotguns Hashes="COMBATSHOTGUN;"/>
+            <AutoShotguns Hashes="AUTOSHOTGUN;ASSAULTSHOTGUN;"/>
+            <Wounds>
+                <Wound Key="FleshGsw" Weight="25"/>
+                <Wound Key="PenetratingGsw" Weight="45"/>
+                <Wound Key="LaceratingGsw" Weight="25"/>
+                <Wound Key="AvulsiveGsw" Weight="5"/>
+            </Wounds>
+        </Firearm12GA_000Buck>
+
+        <Firearm12GA_Slug ShortDesc="12GA Slug"
+                            DamageMult="1.8" BleedMult="1.7" PainMult="1.9" ChanceToCauseTrauma="0.95"
+                            SafeArmorLevel="ClassIV" ArmorDamage="20" HelmetSafeChance="0.05">
+            <AutoShotguns Hashes="MUSKET;HEAVYSHOTGUN;"/>
+            <Wounds>
+                <Wound Key="PenetratingGsw" Weight="15"/>
+                <Wound Key="PerforatingGsw" Weight="30"/>
+                <Wound Key="LaceratingGsw" Weight="30"/>
+                <Wound Key="AvulsiveGsw" Weight="25"/>
+            </Wounds>
+        </Firearm12GA_Slug>
 
         <Firearm223Rem_HP ShortDesc=".223Rem HP"
                           DamageMult="1.6" BleedMult="2.0" PainMult="1.8" ChanceToCauseTrauma="0.85"
@@ -251,7 +274,7 @@
 
         <Railguns DamageMult="3.0" BleedMult="2.5" PainMult="2.5" ChanceToCauseTrauma="1"
                   SafeArmorLevel="ClassV" ArmorDamage="50" HelmetSafeChance="0">
-            <Hashes Hashes="MUSKET;RAILGUN;RAILGUNXM3;"/>
+            <Hashes Hashes="RAILGUN;RAILGUNXM3;"/>
             <Wounds>
                 <Wound Key="AvulsiveGsw" Weight="40"/>
                 <Wound Key="PerforatingGsw" Weight="40"/>

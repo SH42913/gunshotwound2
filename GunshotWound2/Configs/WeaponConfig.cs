@@ -20,6 +20,7 @@ namespace GunshotWound2.Configs {
             public readonly float HelmetSafeChance;
             public readonly string SafeArmorLevel;
             public readonly int ArmorDamage;
+            public readonly int Pellets;
 
             public bool IsValid => !string.IsNullOrEmpty(Key);
 
@@ -31,7 +32,8 @@ namespace GunshotWound2.Configs {
                           float chanceToCauseTrauma,
                           float helmetSafeChance,
                           string safeArmorLevel,
-                          int armorDamage) {
+                          int armorDamage,
+                          int pellets) {
                 Key = key;
                 ShortDesc = shortDesc;
                 DBPMults = dbpMults;
@@ -41,6 +43,7 @@ namespace GunshotWound2.Configs {
                 HelmetSafeChance = helmetSafeChance;
                 SafeArmorLevel = safeArmorLevel;
                 ArmorDamage = armorDamage;
+                Pellets = pellets;
             }
         }
 
@@ -149,6 +152,7 @@ namespace GunshotWound2.Configs {
             float helmetChance = weaponNode.GetFloat(nameof(Weapon.HelmetSafeChance), defaultValue: 0f);
             string safeArmorLevel = weaponNode.GetString(nameof(Weapon.SafeArmorLevel));
             int armorDamage = weaponNode.GetInt(nameof(Weapon.ArmorDamage), defaultValue: 0);
+            int pellets = weaponNode.GetInt(nameof(Weapon.Pellets), defaultValue: 1);
             return new Weapon(key,
                               shortDesc,
                               dbp,
@@ -157,7 +161,8 @@ namespace GunshotWound2.Configs {
                               traumaChance,
                               helmetChance,
                               safeArmorLevel,
-                              armorDamage);
+                              armorDamage,
+                              pellets);
         }
 
         private static (string, int)[] ExtractWounds(XElement weaponNode) {
