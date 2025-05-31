@@ -6,7 +6,6 @@
 
     public sealed class AbdomenTraumaEffect : BaseTraumaEffect {
         private const float NEW_BLEEDING_CHANCE = 0.25f / 100f;
-        private const float RUN_PAIN_MULT = 1f;
         private const float BLEEDING_SEVERITY = 0.5f;
 
         private static readonly int[] NM_MESSAGES = { 1119, };
@@ -29,7 +28,6 @@
                 return;
             }
 
-            CreatePain(entity, RUN_PAIN_MULT * sharedData.deltaTime);
             bool openNewBleeding = sharedData.random.IsTrueWithProbability(NEW_BLEEDING_CHANCE);
             if (openNewBleeding) {
                 BodyPartConfig.BodyPart bodyPart = sharedData.mainConfig.bodyPartConfig.GetBodyPartByKey("Abdomen");

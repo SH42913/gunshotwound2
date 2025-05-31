@@ -24,7 +24,6 @@ namespace GunshotWound2.TraumaFeature {
 
         public override void EveryFrame(Entity entity, ref ConvertedPed convertedPed) {
             if (!convertedPed.isRagdoll) {
-                ;
                 convertedPed.RequestPermanentRagdoll();
             }
         }

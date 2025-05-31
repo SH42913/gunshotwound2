@@ -15,6 +15,8 @@ namespace GunshotWound2.Configs {
             public readonly DBPContainer DBP;
             public readonly Traumas.Effects Effect;
             public readonly bool EffectMessage;
+            public readonly float PainRateWhenMoving;
+            public readonly float PainRateWhenRunning;
 
             public Trauma(XElement node) {
                 Key = node.GetString(nameof(Key));
@@ -22,6 +24,8 @@ namespace GunshotWound2.Configs {
                 DBP = new DBPContainer(node, isMult: false);
                 Enum.TryParse(node.GetString(nameof(Effect)), out Effect);
                 EffectMessage = node.GetBool(nameof(EffectMessage), defaultValue: true);
+                PainRateWhenMoving = node.GetFloat(nameof(PainRateWhenMoving));
+                PainRateWhenRunning = node.GetFloat(nameof(PainRateWhenRunning));
             }
         }
 

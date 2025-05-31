@@ -5,7 +5,6 @@
 
     public sealed class LegsTraumaEffect : BaseTraumaEffect {
         private const int RAGDOLL_TIME_IN_MS = 2000;
-        private const float RUN_PAIN_MULT = 1f;
         private const float RUN_RAGDOLL_CHANCE = 0.1f / 100f;
 
         public override string PlayerMessage => sharedData.localeConfig.PlayerLegsCritMessage;
@@ -36,7 +35,6 @@
                 return;
             }
 
-            CreatePain(entity, RUN_PAIN_MULT * sharedData.deltaTime);
             bool painRagdoll = sharedData.random.IsTrueWithProbability(RUN_RAGDOLL_CHANCE);
             if (painRagdoll) {
                 convertedPed.RequestRagdoll(RAGDOLL_TIME_IN_MS, RagdollType.Balance);

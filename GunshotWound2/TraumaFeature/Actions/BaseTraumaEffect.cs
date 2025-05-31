@@ -20,10 +20,6 @@
         public abstract void EveryFrame(Entity entity, ref ConvertedPed convertedPed);
         public abstract void Cancel(Entity entity, ref ConvertedPed convertedPed);
 
-        protected void CreatePain(Entity entity, float amount) {
-            entity.GetComponent<Pain>().diff += amount;
-        }
-
         protected void CreateInternalBleeding(Entity entity, BodyPartConfig.BodyPart bodyPart, float severity) {
             string name = sharedData.localeConfig.InternalBleeding;
             string reason = sharedData.localeConfig.TraumaType;

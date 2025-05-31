@@ -16,6 +16,7 @@
                     entity.SetComponent(new PedHitData {
                         weaponType = sharedData.random.Next(weaponConfig.Weapons),
                         bodyPart = sharedData.random.Next(bodyPartConfig.BodyParts),
+                        hits = 1,
                     });
                 }
             });

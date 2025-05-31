@@ -44,11 +44,13 @@
             Effect="Spine"/>
     <Trauma Key="TrachealInjury" LocKey="Traumas.TrachealInjury"
             Damage="6" Pain="30" Bleed="0.15"
+            PainRateWhenMoving="0.6" PainRateWhenRunning="1.2"
             Effect="Lungs"/>
 
     <!-- Chest -->
     <Trauma Key="RibFractures" LocKey="Traumas.RibFractures"
-            Damage="3" Pain="25" Bleed="0.01"/>
+            Damage="3" Pain="25" Bleed="0.01"
+            PainRateWhenMoving="0.8" PainRateWhenRunning="1.4"/>
     <Trauma Key="Hemothorax" LocKey="Traumas.Blunt.Hemothorax"
             Damage="6" Pain="35" Bleed="0.3"/>
     <Trauma Key="HeartInjury" LocKey="Traumas.CardiacInjury"
@@ -56,17 +58,21 @@
             Effect="Heart"/>
     <Trauma Key="LungsInjury" LocKey="Traumas.PulmonaryInjury"
             Damage="10" Pain="40" Bleed="0.25"
+            PainRateWhenMoving="0.6" PainRateWhenRunning="1.2"
             Effect="Lungs"/>
     <Trauma Key="Pneumothorax" LocKey="Traumas.Penet.Pneumothorax"
             Damage="5" Pain="30" Bleed="0.05"
+            PainRateWhenMoving="0.7" PainRateWhenRunning="1.3"
             Effect="Lungs"/>
 
     <!-- Abdomen -->
     <Trauma Key="StomachInjury" LocKey="Traumas.StomachInjury"
             Damage="5" Pain="30" Bleed="0.1"
+            PainRateWhenRunning="0.9"
             Effect="Abdomen"/>
     <Trauma Key="LiverInjury" LocKey="Traumas.LiverInjury"
             Damage="10" Pain="45" Bleed="0.4"
+            PainRateWhenRunning="1.1"
             Effect="Abdomen"/>
     <Trauma Key="Hemoperitoneum" LocKey="Traumas.Blunt.Hemoperitoneum"
             Damage="6" Pain="35" Bleed="0.3"
@@ -75,9 +81,11 @@
     <!-- Pelvis -->
     <Trauma Key="BowelInjury" LocKey="Traumas.BowelInjury"
             Damage="4" Pain="30" Bleed="0.08"
+            PainRateWhenRunning="1"
             Effect="Abdomen"/>
     <Trauma Key="ClosedFracturePelvis" LocKey="Traumas.ClosedFracture"
             Damage="7" Pain="45" Bleed="0.25"
+            PainRateWhenMoving="0.9" PainRateWhenRunning="1.8"
             Effect="Legs"/>
 
     <!-- Arms -->
@@ -91,5 +99,6 @@
     <!-- Legs -->
     <Trauma Key="ClosedFractureLeg" LocKey="Traumas.ClosedFracture"
             Damage="4" Pain="35" Bleed="0.05"
+            PainRateWhenMoving="1" PainRateWhenRunning="2"
             Effect="Legs"/>
 </Traumas>

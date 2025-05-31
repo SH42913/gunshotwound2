@@ -182,11 +182,11 @@
               DamageMult="0.5" BleedMult="0.8" PainMult="0.7"
               TraumaChance="1">
         <BluntTraumas>
-            <Trauma Key="ClosedFractureArm" Weight="1"/>
+            <Trauma Key="ClosedFractureLeg" Weight="1"/>
             <Trauma Key="LightArterialBleed" Weight="1"/>
         </BluntTraumas>
         <PenetratingTraumas>
-            <Trauma Key="ClosedFractureArm" Weight="1"/>
+            <Trauma Key="ClosedFractureLeg" Weight="1"/>
             <Trauma Key="LightArterialBleed" Weight="1"/>
             <Trauma Key="HeavyArterialBleed" Weight="1"/>
         </PenetratingTraumas>
@@ -196,11 +196,11 @@
               DamageMult="0.5" BleedMult="0.8" PainMult="0.7"
               TraumaChance="1">
         <BluntTraumas>
-            <Trauma Key="ClosedFractureArm" Weight="1"/>
+            <Trauma Key="ClosedFractureLeg" Weight="1"/>
             <Trauma Key="LightArterialBleed" Weight="1"/>
         </BluntTraumas>
         <PenetratingTraumas>
-            <Trauma Key="ClosedFractureArm" Weight="1"/>
+            <Trauma Key="ClosedFractureLeg" Weight="1"/>
             <Trauma Key="LightArterialBleed" Weight="1"/>
             <Trauma Key="HeavyArterialBleed" Weight="1"/>
         </PenetratingTraumas>

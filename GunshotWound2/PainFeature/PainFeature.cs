@@ -4,6 +4,7 @@
     public static class PainFeature {
         public static void Create(SystemsGroup systemsGroup, SharedData sharedData) {
             systemsGroup.AddSystem(new PainInitSystem(sharedData));
+            systemsGroup.AddSystem(new PainGeneratingSystem(sharedData));
             systemsGroup.AddSystem(new PainChangeSystem(sharedData));
 
 #if DEBUG

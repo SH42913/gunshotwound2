@@ -68,7 +68,17 @@
             DBPContainer dbp = trauma.DBP * sharedData.mainConfig.woundConfig.GlobalMultipliers * traumas.requestBodyPart.DBPMults;
             entity.GetComponent<Pain>().diff += dbp.pain;
             entity.GetComponent<Health>().DealDamage(dbp.damage, traumaName);
-            entity.CreateBleeding(traumas.requestBodyPart, dbp.bleed, traumaName, reason, isTrauma: true);
+
+            if (dbp.bleed > 0f) {
+                Entity bleedingEntity = entity.CreateBleeding(traumas.requestBodyPart, dbp.bleed, traumaName, reason, isTrauma: true);
+                if (trauma.PainRateWhenMoving > 0f || trauma.PainRateWhenRunning > 0f) {
+                    bleedingEntity.SetComponent(new PainGenerator {
+                        target = entity,
+                        moveRate = trauma.PainRateWhenMoving,
+                        runRate = trauma.PainRateWhenRunning,
+                    });
+                }
+            }
 
             if (trauma.Effect != Traumas.Effects.Spine) {
                 ApplyTraumaEffect(entity, ref traumas, ref convertedPed, trauma.Effect, trauma.EffectMessage);
