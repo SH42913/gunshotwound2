@@ -54,6 +54,8 @@
         }
 
         public void Check(Entity pedEntity) {
+            notifier.HideAllLast();
+
             string message = BuildString(pedEntity);
             lastPost = notifier.ReplaceOne(message, blinking: true, lastPost);
         }

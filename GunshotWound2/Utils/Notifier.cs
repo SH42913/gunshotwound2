@@ -10,6 +10,9 @@
 
         private readonly StringBuilder stringBuilder;
 
+        private readonly int[] lastHandles = new int[10];
+        private int lastHandleIndex;
+
         public Notifier() {
             stringBuilder = new StringBuilder();
             info = new Entry(Color.COMMON, stringBuilder);
@@ -27,7 +30,10 @@
 
         public int ShowOne(string message, bool blinking, Color color = default) {
             color.AppendTo(ref message);
-            return Notification.PostTicker(message, blinking)?.Handle ?? 0;
+            int handle = Notification.PostTicker(message, blinking)?.Handle ?? 0;
+            lastHandles[lastHandleIndex] = handle;
+            lastHandleIndex = ++lastHandleIndex % lastHandles.Length;
+            return handle;
         }
 
         public int ReplaceOne(string message, bool blinking, int oldPost, Color color = default) {
@@ -38,6 +44,20 @@
 
         public void HideOne(int handle) {
             Notification.Hide(handle);
+        }
+
+        public void HideAllLast(bool flushQueue = true) {
+            for (int i = 0; i < lastHandles.Length; i++) {
+                ref int handle = ref lastHandles[i];
+                if (handle != 0) {
+                    HideOne(handle);
+                    handle = 0;
+                }
+            }
+
+            if (flushQueue) {
+                GTA.Native.Function.Call(GTA.Native.Hash.THEFEED_FLUSH_QUEUE);
+            }
         }
 
         public sealed class Entry {
