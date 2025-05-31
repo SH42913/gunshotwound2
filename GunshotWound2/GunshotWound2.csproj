@@ -69,6 +69,7 @@
     <Compile Include="HitDetection\MultiBulletHitSystem.cs" />
     <Compile Include="PainFeature\PainGenerator.cs" />
     <Compile Include="PainFeature\PainGeneratingSystem.cs" />
+    <Compile Include="PainFeature\PainStateSystem.cs" />
     <Compile Include="TraumaFeature\Actions\ArmsTraumaEffect.cs" />
     <Compile Include="TraumaFeature\Actions\HeadTraumaEffect.cs" />
     <Compile Include="TraumaFeature\Actions\HeartTraumaEffect.cs" />

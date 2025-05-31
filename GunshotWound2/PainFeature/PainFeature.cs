@@ -6,6 +6,7 @@
             systemsGroup.AddSystem(new PainInitSystem(sharedData));
             systemsGroup.AddSystem(new PainGeneratingSystem(sharedData));
             systemsGroup.AddSystem(new PainChangeSystem(sharedData));
+            systemsGroup.AddSystem(new PainStateSystem(sharedData));
 
 #if DEBUG
             sharedData.cheatListener.Register("GSW_RANDOM_PAIN", () => {
