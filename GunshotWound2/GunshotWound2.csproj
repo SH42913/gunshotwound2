@@ -72,6 +72,7 @@
     <Compile Include="PainFeature\PainkillersEffect.cs" />
     <Compile Include="PainFeature\PainkillersItem.cs" />
     <Compile Include="PainFeature\PainStateSystem.cs" />
+    <Compile Include="PlayerFeature\PlayerPainRecoverySystem.cs" />
     <Compile Include="TraumaFeature\Actions\ArmsTraumaEffect.cs" />
     <Compile Include="TraumaFeature\Actions\HeadTraumaEffect.cs" />
     <Compile Include="TraumaFeature\Actions\HeartTraumaEffect.cs" />

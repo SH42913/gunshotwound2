@@ -1,6 +1,7 @@
 ﻿namespace GunshotWound2.PlayerFeature {
     using System.Collections.Generic;
     using GTA;
+    using PainFeature;
     using Scellecs.Morpeh;
     using Utils;
     using EcsEntity = Scellecs.Morpeh.Entity;
@@ -14,6 +15,7 @@
             systemsGroup.AddSystem(new MissionTrackerSystem(sharedData));
             systemsGroup.AddSystem(new PlayerCameraSystem(sharedData));
             systemsGroup.AddSystem(new ItemPickupSystem(sharedData));
+            systemsGroup.AddSystem(new PlayerPainRecoverySystem(sharedData));
 
             sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.CheckSelfKey, () => CheckPlayer(sharedData));
             sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.HelmetKey, () => ToggleHelmet(sharedData));
@@ -25,8 +27,8 @@
             });
 
             sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.PainkillersSelfKey, () => {
-                if (sharedData.TryGetPlayer(out EcsEntity playerEntity)) {
-                    PainFeature.PainFeature.UsePainkillers(playerEntity);
+                if (sharedData.TryGetPlayer(out EcsEntity playerEntity) && !playerEntity.GetComponent<Pain>().TooMuchPain()) {
+                    PainFeature.UsePainkillers(playerEntity);
                 }
             });
 

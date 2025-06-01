@@ -57,7 +57,7 @@
                 }
 
                 if (painkillersActive) {
-                    UpdatePainkillersEffect(entity, convertedPed, ref painkillersEffect, deltaTime);
+                    UpdatePainkillersEffect(entity, convertedPed, ref pain, ref painkillersEffect, deltaTime);
                 }
             }
         }
@@ -120,8 +120,12 @@
 
         private void UpdatePainkillersEffect(Entity entity,
                                              in ConvertedPed convertedPed,
+                                             ref Pain pain,
                                              ref PainkillersEffect painkillersEffect,
                                              float deltaTime) {
+            pain.delayedDiff = 0f;
+            pain.amount = Math.Min(pain.amount, pain.max);
+
             painkillersEffect.remainingTime -= deltaTime;
             if (painkillersEffect.remainingTime <= 0f) {
                 painkillersStash.Remove(entity);

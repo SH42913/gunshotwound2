@@ -68,10 +68,6 @@ namespace GunshotWound2.PainFeature {
                 target.GetComponent<ConvertedPed>().thisPed.PlayAmbientSpeech("GENERIC_THANKS");
             }
 
-            ref Pain pain = ref target.GetComponent<Pain>();
-            pain.delayedDiff = 0f;
-            pain.amount = Math.Min(pain.amount, pain.max);
-
             target.SetComponent(new PainkillersEffect {
                 rate = sharedData.mainConfig.inventoryConfig.PainkillersRate,
                 remainingTime = sharedData.mainConfig.inventoryConfig.PainkillersDuration,
