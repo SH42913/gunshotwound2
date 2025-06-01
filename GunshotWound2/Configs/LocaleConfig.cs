@@ -81,6 +81,7 @@ namespace GunshotWound2.Configs {
         public string AnyItemProgress;
         public string StayStillWhileUsingItem;
         public string PainkillersSuccess;
+        public string PainkillersRemainingTime;
 
         public string TranslationAuthor;
 

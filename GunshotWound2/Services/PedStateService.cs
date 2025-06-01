@@ -158,6 +158,14 @@
                 stringBuilder.AppendFormat(" (+{0})", pain.DelayedPercent().ToString("P1"));
             }
 
+            ref PainkillersEffect painkillersEffect = ref pedEntity.GetComponent<PainkillersEffect>(out bool painkillersActive);
+            if (painkillersActive) {
+                float remainingTime = painkillersEffect.remainingTime;
+                stringBuilder.AppendEndOfLine();
+                stringBuilder.Append(Notifier.Color.GREEN);
+                stringBuilder.AppendFormat("{0}: {1} sec", localeConfig.PainkillersRemainingTime, remainingTime.ToString("F1"));
+            }
+
             stringBuilder.SetDefaultColor();
         }
 

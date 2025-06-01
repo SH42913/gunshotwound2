@@ -125,6 +125,7 @@ Inventory.Bandages.Plural,{0} bandages,{0} бинтов,,,,,,,,X個の絆創膏,
 Inventory.Painkillers.Plural,{0} painkillers,{0} обезболивающих,,,,,,,,X個の鎮痛剤,X止痛藥,X止痛药,,{0] särkylääkettä
 PainkillersQTE,Tap {0} button {1} more times to use painkillers,Нажмите кнопку {0} ещё {1} раз чтобы использовать обезболивающие,,,,,,,,鎮痛剤を使用する（通知）,使用止痛藥（提示）,使用止痛药（提示）,,Paina {0} vielä {1} kertaa käyttääksesi särkylääkkeitä
 PainkillersSuccess,Painkillers was successfully used,Обезболивающие успешно использованы,,,,,,,,,,,,
+PainkillersRemainingTime,Painkillers effect,Эффект от обезболивающих,,,,,,,,,,,,
 BandagingProgress,You're applying bandages,Вы накладываете бинты,,,,,,,,,,,,
 AnyItemProgress,You're using item,Вы используете предмет,,,,,,,,,,,,
 HandsAreBusy,Your hands are unavailable,Ваши руки недоступны,,,,,,,,,,,,
