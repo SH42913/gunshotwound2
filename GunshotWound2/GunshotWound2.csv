@@ -109,9 +109,8 @@ GswIsPaused,GSW2 is paused,Работа GSW2 приостановлена,GSW2 i
 GswIsWorking,GSW2 is working,Работа GSW2 продолжается,GSW2 ist bereit,GSW2 fonctionne,GSW2 działa,GSW2가 작둥중이다,GSW2 está funcionando,GSW2 esta funcionando,GSW2 is working,銃傷処理中,槍傷正在處理,枪伤正在处理,GSW2 is working,GSW2 on päällä
 GswPauseTip,You can pause GSW2 while in mission using {0} button,Вы можете приостановить GSW2 во время миссии используя клавишу {0},,,,,,,,銃傷の一時停止通知,槍傷暫停提示,枪伤暂停提示,,On mahdollista pysäyttää GSW2 tehtävän aikana painamalla {0}
 ,,,,,,,,,,,,,,
-AlreadyBandaging,You are already bandaging,Вы уже накладываете бинты,,,,,,,,すでに包帯を巻いている,已經在包紮,已经在包扎,,Olet valmiiksi sitomassa
-YouTryToBandage,You're trying to bandage. You need to stand still for {0} seconds!,Вы пытаетесь наложить бинты. Нужно стоять без движения {0} секунд!,,,,,,,,包帯を巻こうとしている,嘗試包紮,尝试包扎,,Yrität sitoa. Sinun täytyy seisoa paikalla {0} sekunnin ajan!
-BandagingProgress,You're applying bandages,Вы накладываете бинты,,,,,,,,,,,,
+YouTryToBandage,You're trying to bandage {0},Вы пытаетесь наложить бинты на {0},,,,,,,,包帯を巻こうとしている,嘗試包紮,尝试包扎,,Yrität sitoa. Sinun täytyy seisoa paikalla {0} sekunnin ajan!
+YouTryToUsePainkillers,You're trying to use painkillers,Вы пытаетесь использовать обезболивающие,,,,,,,,包帯を巻こうとしている,嘗試包紮,尝试包扎,,Yrität sitoa. Sinun täytyy seisoa paikalla {0} sekunnin ajan!
 BandageFailed,Bandaging has failed. You need to stand still to apply a bandage!,Перевязка не удалась. Нужно стоять без движения!,Verbinden schlug fehl. Du must stillstehen zum verbinden!,Vous n'avez pas réussi à vous mettre un bandage. Vous ne devez pas bouger pour appliquer un bandage !,Bandażowanie nie udało się. Podczas nakładania opatrunku nie ruszaj się!,붕대 감기가 실패했다 붕대를 감을때 까지 서있어야 한다,Não conseguiu se enfaixar. Você precisa ficar parado para se enfaixar!,La curación ha fallado. ¡Necesitas estar quieto para vendarte!,Bandaging is failed. You need to stand still for apply a bandage!,包帯巻き失敗,包紮失敗,包扎失败,Bandaging has failed. You need to stand still to apply a bandage!,Sitominen epäonnistui. Sinun täytyy seisoa paikalla asettaaksesi siteen!
 BandageSuccess,You applied a bandage to {0},Вы наложили бинт на {0},Du hast {0} verbunden,Vous avez appliqué un bandage à {0},Założyłeś bandaż na {0},당신은 {0} 에 붕대를 감았다,Você conseguiu enfaixar seu/sua {0},Has aplicado una venda a {0},You applied bandage to {0},包帯巻き成功,包紮成功,包扎成功,You applied a bandage to {0},Side on {0}
 ArmorDestroyed,Your armor falls apart,Ваш бронежилет развалился на куски,Deine Rüstung ist kaputt,Votre blindage tombe en morceaux,Twoja zbroja została zniszczona!,당신의 갑옷이 떨어졌다,Sua armadura quebrou!,Tu chaleco se desprende,Your armor falls apart,アーマーが損傷した,護甲受損,护甲损坏,Your armor falls apart,Panssarisi hajoaa 
@@ -122,15 +121,19 @@ RunningWithScissors,Running with major injury is not a good idea,Бегать с
 ,,,,,,,,,,,,,,
 FoundItems,You've got:,Вы получили:,,,,,,,,,,,,
 YourInventory,In inventory:,В инвентаре:,,,,,,,,,,,,
-XBandages,{0} bandages,{0} бинтов,,,,,,,,X個の絆創膏,X絆帶,X绷带,,{0} sideharsoa
-XPainkillers,{0} painkillers,{0} обезбаливающих,,,,,,,,X個の鎮痛剤,X止痛藥,X止痛药,,{0] särkylääkettä
-UsePainkillerMessage,Tap {0} button {1} more times to use painkillers,Нажмите кнопку {0} ещё {1} раз чтобы использовать обезбаливающие,,,,,,,,鎮痛剤を使用する（通知）,使用止痛藥（提示）,使用止痛药（提示）,,Paina {0} vielä {1} kertaa käyttääksesi särkylääkkeitä
+Inventory.Bandages.Plural,{0} bandages,{0} бинтов,,,,,,,,X個の絆創膏,X絆帶,X绷带,,{0} sideharsoa
+Inventory.Painkillers.Plural,{0} painkillers,{0} обезболивающих,,,,,,,,X個の鎮痛剤,X止痛藥,X止痛药,,{0] särkylääkettä
+PainkillersQTE,Tap {0} button {1} more times to use painkillers,Нажмите кнопку {0} ещё {1} раз чтобы использовать обезболивающие,,,,,,,,鎮痛剤を使用する（通知）,使用止痛藥（提示）,使用止痛药（提示）,,Paina {0} vielä {1} kertaa käyttääksesi särkylääkkeitä
+PainkillersSuccess,Painkillers was successfully used,Обезболивающие успешно использованы,,,,,,,,,,,,
+BandagingProgress,You're applying bandages,Вы накладываете бинты,,,,,,,,,,,,
+AnyItemProgress,You're using item,Вы используете предмет,,,,,,,,,,,,
 HandsAreBusy,Your hands are unavailable,Ваши руки недоступны,,,,,,,,,,,,
+StayStillWhileUsingItem,You need to stand still while using item!,Во время использования предмета нужно стоять без движения!,,,,,,,,,,,,
 ,,,,,,,,,,,,,,
 CheckHelpMessage,You can use {0} button to check your health state,Чтобы проверить своё здоровье используйте клавишу {0},,,,,,,,ヘルプ情報を確認する,檢查幫助資訊,检查帮助信息,,Paina {0} tarkastaaksesi terveytesi
 BandageHelpMessage,You can use {0} button to bandage your bleeding wounds,Чтобы перебинтовать кровоточащие раны используйте клавишу {0},,,,,,,,包帯のヘルプ情報,包紮幫助資訊,包扎帮助信息,,Paina {0} sitoaksesi vuotavat haavat
-PainkillerHelpMessage,You can use {0} button to use painkillers to reduce your pain,Чтобы принять обезбаливающие используйте клавишу {0},,,,,,,,鎮痛剤のヘルプ情報,止痛藥幫助資訊,止痛药帮助信息,,Paina {0} vähentääksesi kipua käyttämällä särkylääkkeitä
-MedkitsHelpMessage,You may find bandages and painkillers in medkits and emergency cars,Вы можете найти бинты и обезбаливающие в аптечках и спец-машинах,,,,,,,,医療キットのヘルプ情報,醫藥包幫助資訊,医药包帮助信息,,Voit löytää sideharsoja ja särkylääkkeitä ensiapulaukuista tai ambulanssi -ja poliisiautoista
+PainkillerHelpMessage,You can use {0} button to use painkillers to reduce your pain,Чтобы принять обезболивающие используйте клавишу {0},,,,,,,,鎮痛剤のヘルプ情報,止痛藥幫助資訊,止痛药帮助信息,,Paina {0} vähentääksesi kipua käyttämällä särkylääkkeitä
+MedkitsHelpMessage,You may find bandages and painkillers in medkits and emergency cars,Вы можете найти бинты и обезболивающие в аптечках и спец-машинах,,,,,,,,医療キットのヘルプ情報,醫藥包幫助資訊,医药包帮助信息,,Voit löytää sideharsoja ja särkylääkkeitä ensiapulaukuista tai ambulanssi -ja poliisiautoista
 ,,,,,,,,,,,,,,
 BodyParts.Head,Head,Голова,,,,,,,,,,,,
 BodyParts.Neck,Neck,Шея,,,,,,,,,,,,

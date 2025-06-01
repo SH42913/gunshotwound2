@@ -15,8 +15,9 @@ namespace GunshotWound2.InventoryFeature {
 
         public static ItemTemplate GetTemplateByKey(string key) {
             switch (key) {
-                case HealthFeature.BandageItem.KEY: return HealthFeature.BandageItem.template;
-                default:                            return default;
+                case HealthFeature.BandageItem.KEY:   return HealthFeature.BandageItem.template;
+                case PainFeature.PainkillersItem.KEY: return PainFeature.PainkillersItem.template;
+                default:                              return default;
             }
         }
     }

@@ -3,6 +3,7 @@
     using GTA;
     using Scellecs.Morpeh;
     using Utils;
+    using EcsEntity = Scellecs.Morpeh.Entity;
 
     public static class PlayerFeature {
         public static void Create(SystemsGroup systemsGroup, SharedData sharedData) {
@@ -17,9 +18,15 @@
             sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.CheckSelfKey, () => CheckPlayer(sharedData));
             sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.HelmetKey, () => ToggleHelmet(sharedData));
 
-            sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.BandageSelfKey, () => {
-                if (sharedData.TryGetPlayer(out Scellecs.Morpeh.Entity playerEntity)) {
+            sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.BandagesSelfKey, () => {
+                if (sharedData.TryGetPlayer(out EcsEntity playerEntity)) {
                     HealthFeature.HealthFeature.StartBandaging(playerEntity);
+                }
+            });
+
+            sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.PainkillersSelfKey, () => {
+                if (sharedData.TryGetPlayer(out EcsEntity playerEntity)) {
+                    PainFeature.PainFeature.UsePainkillers(playerEntity);
                 }
             });
 
@@ -30,7 +37,7 @@
         }
 
         private static void CheckPlayer(SharedData sharedData) {
-            if (sharedData.TryGetPlayer(out Scellecs.Morpeh.Entity playerEntity)) {
+            if (sharedData.TryGetPlayer(out EcsEntity playerEntity)) {
                 sharedData.pedStateService.Check(playerEntity);
             }
         }

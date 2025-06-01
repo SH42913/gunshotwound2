@@ -11,14 +11,21 @@
     <!-- Works like CheckSelfKey, but checks the closest ped.
     Default: Shift + L on keyboard. -->
 
-    <BandageSelfKey KeyCode="K" Modifiers=""/>
-    <!-- Applied bandages to you. It will cost $15(can be changed in BandageCost).
-    When Shift is pressed - will bandage the closest ped.
+    <BandagesSelfKey KeyCode="K" Modifiers=""/>
+    <!-- Applied bandages to you. When Shift is pressed - will bandage the closest ped.
     Default: K on keyboard. -->
 
-    <BandageClosestKey KeyCode="K" Modifiers="Shift"/>
-    <!-- Works like BandageSelfKey, but bandages the closest ped.
+    <BandagesClosestKey KeyCode="K" Modifiers="Shift"/>
+    <!-- Works like BandagesSelfKey, but bandages the closest ped.
     Default: Shift + K on keyboard. -->
+
+    <PainkillersSelfKey KeyCode="J" Modifiers=""/>
+    <!-- Use painkillers. When Shift is pressed - will use for the closest ped.
+    Default: J on keyboard. -->
+
+    <PainkillersClosestKey KeyCode="J" Modifiers="Shift"/>
+    <!-- Works like PainkillerSelfKey, but painkillers will be used for the closest ped.
+    Default: Shift + J on keyboard. -->
 
     <DeathKey KeyCode="Delete" Modifiers=""/>
     <!-- Instant death. Useful if you're stuck in a deadly situation and don't want to wait for slow death.
@@ -27,11 +34,11 @@
     <!-- <HealKey KeyCode="" Modifiers="" /> -->
     <!-- Besides, you can set a key for instant heal -->
 
-    <GetHelmetKey KeyCode="J" Modifiers=""/>
+    <GetHelmetKey KeyCode="L" Modifiers="Alt"/>
     <!-- Give to player motorbike helmet if the player has $40(can be changed in HelmetCost section).
     Helmet can save your head from impact and weapons.
     If the player already has a helmet, this hotkey will remove it.
-    Default: J on keyboard. -->
+    Default: Alt + L on keyboard. -->
 
     <IncreaseRangeKey KeyCode="PageUp" Modifiers=""/>
     <!-- Increase GSW2 scan range.

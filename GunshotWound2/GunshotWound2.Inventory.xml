@@ -3,18 +3,23 @@
     <BlipsToMedkits Value="TRUE" RefreshTime="2" ModelName="prop_ld_health_pack"/>
     <!-- Add map blips to medkits around player, refresh time in seconds -->
 
+    <Painkillers Rate="1" Duration="30"/>
+
     <!-- GSW will give these items to every new character with inventory -->
     <DefaultLoadout>
         <Item Key="Bandages" Count="4"/>
+        <Item Key="Painkillers" Count="2"/>
     </DefaultLoadout>
 
     <!-- These items you'll receive when pickup Medkit -->
     <MedkitLoadout>
         <Item Key="Bandages" Count="3"/>
+        <Item Key="Painkillers" Count="1"/>
     </MedkitLoadout>
 
-    <!-- These items you'll receive when entering emergency vehicle -->
+    <!-- These items you'll receive when entering emergency vehicle first time -->
     <EmergencyVehicleLoadout>
         <Item Key="Bandages" Count="2"/>
+        <Item Key="Painkillers" Count="1"/>
     </EmergencyVehicleLoadout>
 </InventoryConfig>

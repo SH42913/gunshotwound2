@@ -18,7 +18,8 @@
             inputListener.RegisterHotkey(mainConfig.IncreaseRangeKey, () => ChangeRange(sharedData, 5f));
             inputListener.RegisterHotkey(mainConfig.DecreaseRangeKey, () => ChangeRange(sharedData, -5f));
             inputListener.RegisterHotkey(mainConfig.CheckClosestKey, () => CheckClosestPed(sharedData));
-            inputListener.RegisterHotkey(mainConfig.BandageClosestKey, () => BandageClosestPed(sharedData));
+            inputListener.RegisterHotkey(mainConfig.BandagesClosestKey, () => BandageClosestPed(sharedData));
+            inputListener.RegisterHotkey(mainConfig.PainkillersClosestKey, () => PainkillersToClosestPed(sharedData));
 
 #if DEBUG
             sharedData.cheatListener.Register("GSW_TEST_RAGDOLL", () => {
@@ -64,6 +65,12 @@
         private static void BandageClosestPed(SharedData sharedData) {
             if (sharedData.TryGetPlayer(out Entity playerEntity) && sharedData.TryGetClosestPedEntity(out _, out Entity entity)) {
                 HealthFeature.HealthFeature.StartBandaging(entity, medic: playerEntity);
+            }
+        }
+
+        private static void PainkillersToClosestPed(SharedData sharedData) {
+            if (sharedData.TryGetPlayer(out Entity playerEntity) && sharedData.TryGetClosestPedEntity(out _, out Entity entity)) {
+                PainFeature.PainFeature.UsePainkillers(entity, medic: playerEntity);
             }
         }
     }

@@ -66,7 +66,10 @@ namespace GunshotWound2.InventoryFeature {
                     if (success) {
                         ShowSuccess(message, blinking: false);
 
-                        string progressString = sharedData.localeConfig.GetTranslation(request.item.progressDescriptionKey);
+                        string progressString = !string.IsNullOrEmpty(request.item.progressDescriptionKey)
+                                ? sharedData.localeConfig.GetTranslation(request.item.progressDescriptionKey)
+                                : sharedData.localeConfig.AnyItemProgress;
+
                         sharedData.uiService.ShowProgressIndicator(progressString);
                     } else {
                         ShowError(message);

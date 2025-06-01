@@ -1,4 +1,5 @@
 ﻿namespace GunshotWound2.PainFeature {
+    using InventoryFeature;
     using Scellecs.Morpeh;
 
     public static class PainFeature {
@@ -22,6 +23,22 @@
                 }
             });
 #endif
+
+            sharedData.cheatListener.Register("GSW_FREE_PAINKILLERS", () => {
+                if (sharedData.TryGetPlayer(out Entity entity)) {
+                    entity.SetComponent(new AddItemRequest {
+                        items = new (string Key, int Count)[] { (PainkillersItem.KEY, 3) },
+                    });
+                }
+            });
+        }
+
+        public static void UsePainkillers(Entity target, Entity medic = null) {
+            medic ??= target;
+            medic.SetComponent(new UseItemRequest {
+                target = target,
+                item = PainkillersItem.template,
+            });
         }
     }
 }

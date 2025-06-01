@@ -65,6 +65,7 @@ namespace GunshotWound2.Configs {
         public string GswPauseTip;
 
         public string YouTryToBandage;
+        public string YouTryToUsePainkillers;
         public string BandageFailed;
         public string BandageSuccess;
 
@@ -77,6 +78,9 @@ namespace GunshotWound2.Configs {
         public string FoundItems;
         public string YourInventory;
         public string HandsAreBusy;
+        public string AnyItemProgress;
+        public string StayStillWhileUsingItem;
+        public string PainkillersSuccess;
 
         public string TranslationAuthor;
 

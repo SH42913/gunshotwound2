@@ -18,6 +18,9 @@ namespace GunshotWound2.Configs {
         public float TimeToRefreshMedkits;
         public string MedkitModel;
 
+        public float PainkillersRate;
+        public float PainkillersDuration;
+
         public Loadout DefaultLoadout;
         public Loadout MedkitLoadout;
         public Loadout EmergencyVehicleLoadout;
@@ -34,6 +37,10 @@ namespace GunshotWound2.Configs {
             BlipsToMedkits = medkitNode.GetBool();
             TimeToRefreshMedkits = medkitNode.GetFloat("RefreshTime");
             MedkitModel = medkitNode.GetString("ModelName");
+
+            XElement painkillersNode = root.Element("Painkillers");
+            PainkillersRate = painkillersNode.GetFloat("Rate");
+            PainkillersDuration = painkillersNode.GetFloat("Duration");
         }
 
         public void Validate(MainConfig mainConfig, ILogger logger) { }

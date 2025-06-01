@@ -28,8 +28,10 @@ namespace GunshotWound2.Configs {
 
         public InputListener.Scheme CheckSelfKey;
         public InputListener.Scheme CheckClosestKey;
-        public InputListener.Scheme BandageSelfKey;
-        public InputListener.Scheme BandageClosestKey;
+        public InputListener.Scheme BandagesSelfKey;
+        public InputListener.Scheme BandagesClosestKey;
+        public InputListener.Scheme PainkillersSelfKey;
+        public InputListener.Scheme PainkillersClosestKey;
         public InputListener.Scheme DeathKey;
         public InputListener.Scheme HealKey;
         public InputListener.Scheme HelmetKey;
@@ -127,21 +129,19 @@ namespace GunshotWound2.Configs {
         }
 
         private void FillHotkeysFrom(XDocument doc) {
-            XElement node = doc.Element("KeyBinds");
-            if (node == null) {
-                return;
-            }
-
-            CheckSelfKey = node.Element("CheckSelfKey").GetKeyScheme();
-            CheckClosestKey = node.Element("CheckClosestKey").GetKeyScheme();
-            BandageSelfKey = node.Element("BandageSelfKey").GetKeyScheme();
-            BandageClosestKey = node.Element("BandageClosestKey").GetKeyScheme();
-            DeathKey = node.Element("DeathKey").GetKeyScheme();
-            HealKey = node.Element("HealKey").GetKeyScheme();
-            HelmetKey = node.Element("GetHelmetKey").GetKeyScheme();
-            IncreaseRangeKey = node.Element("IncreaseRangeKey").GetKeyScheme();
-            DecreaseRangeKey = node.Element("DecreaseRangeKey").GetKeyScheme();
-            PauseKey = node.Element("PauseKey").GetKeyScheme();
+            XElement root = doc.Element("KeyBinds")!;
+            CheckSelfKey = root.Element(nameof(CheckSelfKey)).GetKeyScheme();
+            CheckClosestKey = root.Element(nameof(CheckClosestKey)).GetKeyScheme();
+            BandagesSelfKey = root.Element(nameof(BandagesSelfKey)).GetKeyScheme();
+            BandagesClosestKey = root.Element(nameof(BandagesClosestKey)).GetKeyScheme();
+            PainkillersSelfKey = root.Element(nameof(PainkillersSelfKey)).GetKeyScheme();
+            PainkillersClosestKey = root.Element(nameof(PainkillersClosestKey)).GetKeyScheme();
+            DeathKey = root.Element(nameof(DeathKey)).GetKeyScheme();
+            HealKey = root.Element(nameof(HealKey)).GetKeyScheme();
+            HelmetKey = root.Element("GetHelmetKey").GetKeyScheme();
+            IncreaseRangeKey = root.Element(nameof(IncreaseRangeKey)).GetKeyScheme();
+            DecreaseRangeKey = root.Element(nameof(DecreaseRangeKey)).GetKeyScheme();
+            PauseKey = root.Element(nameof(PauseKey)).GetKeyScheme();
         }
 
         private void FillNotifications(XDocument doc) {

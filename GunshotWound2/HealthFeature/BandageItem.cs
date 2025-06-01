@@ -7,7 +7,7 @@ namespace GunshotWound2.HealthFeature {
     public static class BandageItem {
         public const string KEY = "Bandages";
         public static ItemTemplate template = new(key: KEY,
-                                                  pluralKey: "XBandages",
+                                                  pluralKey: "Inventory.Bandages.Plural",
                                                   progressDescriptionKey: "BandagingProgress",
                                                   duration: 3f,
                                                   StartAction,
@@ -46,17 +46,17 @@ namespace GunshotWound2.HealthFeature {
                 return false;
             }
 
-            convertedTarget.thisPed.PlayAmbientSpeech("FIGHT_RUN"); // TODO: Decide on start or on finish
+            convertedTarget.thisPed.PlayAmbientSpeech("GENERIC_CURSE_HIGH");
 #if DEBUG
             sharedData.logger.WriteInfo($"Bandaging of {convertedTarget.name} started");
 #endif
 
-            float timeToBandage = template.duration;
             if (!convertedTarget.isPlayer && !convertedTarget.isRagdoll) {
-                convertedTarget.thisPed.Task.StandStill(timeToBandage.ConvertToMilliSec());
+                convertedTarget.thisPed.Task.StandStill(template.duration.ConvertToMilliSec());
             }
 
-            message = string.Format(sharedData.localeConfig.YouTryToBandage, timeToBandage.ToString("F1"));
+            string bleedingName = health.bleedingToBandage.GetComponent<Bleeding>().name;
+            message = string.Format(sharedData.localeConfig.YouTryToBandage, bleedingName);
             return true;
         }
 
@@ -74,6 +74,10 @@ namespace GunshotWound2.HealthFeature {
         }
 
         private static bool FinishAction(SharedData sharedData, Entity owner, Entity target, out string message) {
+            if (owner != target) {
+                target.GetComponent<ConvertedPed>().thisPed.PlayAmbientSpeech("GENERIC_THANKS");
+            }
+            
             ref Health health = ref target.GetComponent<Health>();
             ref Bleeding bleeding = ref health.bleedingToBandage.GetComponent<Bleeding>();
             bleeding.severity *= 0.5f;
@@ -93,20 +97,12 @@ namespace GunshotWound2.HealthFeature {
 
         private static bool CheckBandagingConditions(GTA.Ped target, GTA.Ped medic) {
             if (target == medic) {
-                return CheckPedIsStandStill(target);
+                return target.IsStopped;
             }
 
-            return CheckTargetIsAbleToBandage(target)
-                   && CheckPedIsStandStill(medic)
+            return (target.IsRagdoll || target.IsStopped)
+                   && medic.IsStopped
                    && GTA.World.GetDistance(target.Position, medic.Position) <= MAX_BANDAGE_RANGE;
-        }
-
-        private static bool CheckPedIsStandStill(GTA.Ped thisPed) {
-            return thisPed.IsIdle && thisPed.IsStopped;
-        }
-
-        private static bool CheckTargetIsAbleToBandage(GTA.Ped targetPed) {
-            return targetPed.IsRagdoll || CheckPedIsStandStill(targetPed);
         }
 
         public static bool IsBandage(this ItemTemplate item) {
