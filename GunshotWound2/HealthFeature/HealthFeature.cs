@@ -56,8 +56,8 @@
         }
 
         public static float CalculateSeverityOfAllBleedingWounds(Entity entity) {
-            ref Health health = ref entity.GetComponent<Health>();
-            if (!health.HasBleedingWounds()) {
+            ref Health health = ref entity.GetComponent<Health>(out bool exist);
+            if (!exist || !health.HasBleedingWounds()) {
                 return 0f;
             }
 

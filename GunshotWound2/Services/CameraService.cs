@@ -85,9 +85,9 @@ namespace GunshotWound2.Services {
             SetPostFx(LUNGS_INJURY_PRIORITY, "LostTimeNight", value, true);
         }
 
-        public void SetBleedingEffect(bool value) {
+        public void SetHeavyBleedingEffect(bool value) {
 #if DEBUG
-            logger.WriteInfo($"{nameof(SetBleedingEffect)} with {value.ToString()}");
+            logger.WriteInfo($"{nameof(SetHeavyBleedingEffect)} with {value.ToString()}");
 #endif
             SetPostFx(BLEED_EFFECT_PRIORITY, "CrossLine", value, true);
         }
@@ -96,7 +96,7 @@ namespace GunshotWound2.Services {
 #if DEBUG
             logger.WriteInfo($"{nameof(SetPainEffect)} with {value.ToString()}");
 #endif
-            SetPostFx(PAIN_EFFECT_PRIORITY, "FocusIn", value, true);
+            SetPostFx(PAIN_EFFECT_PRIORITY, "FocusIn", value, false);
         }
 
         public void ClearAllEffects() {
