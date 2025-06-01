@@ -57,21 +57,9 @@
                 }
 
                 if (painkillersActive) {
-                    painkillersEffect.remainingTime -= deltaTime;
-                    if (painkillersEffect.remainingTime <= 0f) {
-                        painkillersStash.Remove(entity);
-#if DEBUG
-                        sharedData.logger.WriteInfo("Painkillers effect has ended");
-#endif
-                    }
+                    UpdatePainkillersEffect(entity, convertedPed, ref painkillersEffect, deltaTime);
                 }
             }
-        }
-
-        private void RecoverPain(ref Pain pain, ref PainkillersEffect painkillersEffect, float deltaTime) {
-            pain.amount -= painkillersEffect.rate * deltaTime;
-            pain.amount -= pain.recoveryRate * deltaTime;
-            pain.amount = Math.Max(pain.amount, 0f);
         }
 
         void IDisposable.Dispose() { }
@@ -128,6 +116,29 @@
             pain.amount += diff;
             pain.diff = 0f;
             return diff;
+        }
+
+        private void UpdatePainkillersEffect(Entity entity,
+                                             in ConvertedPed convertedPed,
+                                             ref PainkillersEffect painkillersEffect,
+                                             float deltaTime) {
+            painkillersEffect.remainingTime -= deltaTime;
+            if (painkillersEffect.remainingTime <= 0f) {
+                painkillersStash.Remove(entity);
+#if DEBUG
+                sharedData.logger.WriteInfo("Painkillers effect has ended");
+#endif
+                sharedData.cameraService.SetPainkillersEffect(false);
+            } else if (convertedPed.isPlayer && !painkillersEffect.effectIsActive) {
+                sharedData.cameraService.SetPainkillersEffect(true);
+                painkillersEffect.effectIsActive = true;
+            }
+        }
+
+        private void RecoverPain(ref Pain pain, ref PainkillersEffect painkillersEffect, float deltaTime) {
+            pain.amount -= painkillersEffect.rate * deltaTime;
+            pain.amount -= pain.recoveryRate * deltaTime;
+            pain.amount = Math.Max(pain.amount, 0f);
         }
 
         private void PlayPainEffects(ref ConvertedPed convertedPed, ref Pain pain) {

@@ -6,5 +6,6 @@ namespace GunshotWound2.PainFeature {
     public struct PainkillersEffect : IComponent {
         public float rate;
         public float remainingTime;
+        public bool effectIsActive;
     }
 }
