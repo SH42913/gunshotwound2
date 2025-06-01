@@ -13,6 +13,7 @@
         private Stash<ConvertedPed> pedStash;
         private Stash<Pain> painStash;
         private Stash<TotallyHealedEvent> totallyHealedStash;
+        private Stash<PainkillersEffect> painkillersStash;
 
         public World World { get; set; }
 
@@ -25,6 +26,7 @@
             pedStash = World.GetStash<ConvertedPed>();
             painStash = World.GetStash<Pain>();
             totallyHealedStash = World.GetStash<TotallyHealedEvent>();
+            painkillersStash = World.GetStash<PainkillersEffect>();
         }
 
         public void OnUpdate(float deltaTime) {
@@ -37,8 +39,11 @@
                 }
 
                 ref ConvertedPed convertedPed = ref pedStash.Get(entity);
+                ref PainkillersEffect painkillersEffect = ref painkillersStash.Get(entity, out bool painkillersActive);
                 if (pain.diff > 0f) {
-                    DelayPain(ref pain);
+                    if (!painkillersActive) {
+                        DelayPain(ref pain);
+                    }
 
                     float applied = ApplyPain(ref convertedPed, ref pain);
 #if DEBUG
@@ -48,10 +53,25 @@
                     UpdateDelayedPain(ref pain, deltaTime);
                     ApplyPain(ref convertedPed, ref pain);
                 } else if (pain.HasPain()) {
-                    pain.amount -= pain.recoveryRate * deltaTime;
-                    pain.amount = Math.Max(pain.amount, 0f);
+                    RecoverPain(ref pain, ref painkillersEffect, deltaTime);
+                }
+
+                if (painkillersActive) {
+                    painkillersEffect.remainingTime -= deltaTime;
+                    if (painkillersEffect.remainingTime <= 0f) {
+                        painkillersStash.Remove(entity);
+#if DEBUG
+                        sharedData.logger.WriteInfo("Painkillers effect has ended");
+#endif
+                    }
                 }
             }
+        }
+
+        private void RecoverPain(ref Pain pain, ref PainkillersEffect painkillersEffect, float deltaTime) {
+            pain.amount -= painkillersEffect.rate * deltaTime;
+            pain.amount -= pain.recoveryRate * deltaTime;
+            pain.amount = Math.Max(pain.amount, 0f);
         }
 
         void IDisposable.Dispose() { }

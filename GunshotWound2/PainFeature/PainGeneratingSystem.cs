@@ -13,6 +13,7 @@ namespace GunshotWound2.PainFeature {
         private Stash<PainGenerator> generatorStash;
         private Stash<ConvertedPed> pedStash;
         private Stash<Pain> painStash;
+        private Stash<PainkillersEffect> painkillersStash;
 
         public EcsWorld World { get; set; }
 
@@ -26,21 +27,26 @@ namespace GunshotWound2.PainFeature {
             generatorStash = World.GetStash<PainGenerator>();
             pedStash = World.GetStash<ConvertedPed>();
             painStash = World.GetStash<Pain>();
+            painkillersStash = World.GetStash<PainkillersEffect>();
         }
 
         public void OnUpdate(float deltaTime) {
             DBPContainer multipliers = sharedData.mainConfig.woundConfig.GlobalMultipliers;
             foreach (EcsEntity entity in generators) {
                 ref PainGenerator generator = ref generatorStash.Get(entity);
+                EcsEntity target = generator.target;
+                if (painkillersStash.Has(target)) {
+                    continue;
+                }
 
-                ref Pain targetPain = ref painStash.Get(generator.target, out bool hasPain);
+                ref Pain targetPain = ref painStash.Get(target, out bool hasPain);
                 if (!hasPain) {
                     sharedData.logger.WriteWarning($"{nameof(PainGenerator)} target has no {nameof(Pain)} component");
                     generatorStash.Remove(entity);
                     continue;
                 }
 
-                ref ConvertedPed convertedPed = ref pedStash.Get(generator.target, out bool hasPed);
+                ref ConvertedPed convertedPed = ref pedStash.Get(target, out bool hasPed);
                 if (!hasPed) {
                     sharedData.logger.WriteWarning($"{nameof(PainGenerator)} target has no {nameof(ConvertedPed)}");
                     generatorStash.Remove(entity);
