@@ -50,7 +50,7 @@
                 int newHealth = oldHealth + currentDiff;
                 convertedPed.thisPed.Health = newHealth;
 
-#if DEBUG
+#if DEBUG && DEBUG_EVERY_FRAME
                 var healthString = $"{oldHealth.ToString()} -> {newHealth.ToString()} / Max:{health.max.ToString()}";
                 sharedData.logger.WriteInfo($"Changed health: {currentDiff.ToString()} to {convertedPed.name}. {healthString}");
 #endif

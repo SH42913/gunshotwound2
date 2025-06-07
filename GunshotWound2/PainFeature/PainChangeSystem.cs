@@ -45,9 +45,11 @@
                         DelayPain(ref pain);
                     }
 
+#if DEBUG && DEBUG_EVERY_FRAME
                     float applied = ApplyPain(ref convertedPed, ref pain);
-#if DEBUG
                     sharedData.logger.WriteInfo($"Increased pain for {applied} to {pain.amount} at {convertedPed.name}");
+#else
+                    ApplyPain(ref convertedPed, ref pain);
 #endif
                 } else if (pain.delayedDiff > 0) {
                     UpdateDelayedPain(ref pain, deltaTime);
