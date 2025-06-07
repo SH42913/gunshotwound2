@@ -72,6 +72,8 @@
     <Compile Include="PainFeature\PainkillersEffect.cs" />
     <Compile Include="PainFeature\PainkillersItem.cs" />
     <Compile Include="PainFeature\PainStateSystem.cs" />
+    <Compile Include="PlayerFeature\MissionTrackerSystem.cs" />
+    <Compile Include="PlayerFeature\PlayerHelpSystem.cs" />
     <Compile Include="PlayerFeature\PlayerPainRecoverySystem.cs" />
     <Compile Include="TraumaFeature\Actions\ArmsTraumaEffect.cs" />
     <Compile Include="TraumaFeature\Actions\HeadTraumaEffect.cs" />
@@ -98,7 +100,6 @@
     <Compile Include="PedsFeature\PedMovementSystem.cs" />
     <Compile Include="PlayerFeature\ItemPickupSystem.cs" />
     <Compile Include="PlayerFeature\MedkitGpsSystem.cs" />
-    <Compile Include="PlayerFeature\MissionTrackerSystem.cs" />
     <Compile Include="PlayerFeature\PlayerCameraSystem.cs" />
     <Compile Include="PlayerFeature\PlayerDeathReportSystem.cs" />
     <Compile Include="Services\CameraService.cs" />

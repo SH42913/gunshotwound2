@@ -83,6 +83,13 @@ namespace GunshotWound2.Configs {
         public string PainkillersSuccess;
         public string PainkillersRemainingTime;
         public string PainkillersQTE;
+        
+        public string CheckHelpMessage;
+        public string BandageHelpMessage;
+        public string PainkillerHelpMessage;
+        public string MedkitsHelpMessage;
+        public string ClosestPedHelpMessage;
+        public string DeathKeyHelpMessage;
 
         public string TranslationAuthor;
 

@@ -2,6 +2,7 @@ namespace GunshotWound2.PlayerFeature {
     using System;
     using InventoryFeature;
     using PainFeature;
+    using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
     using EcsEntity = Scellecs.Morpeh.Entity;
@@ -35,8 +36,9 @@ namespace GunshotWound2.PlayerFeature {
                 return;
             }
 
+            ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
             bool hasPainkillers = entity.GetComponent<Inventory>().Has(PainkillersItem.template);
-            if (tooMuchPain && hasPainkillers) {
+            if (tooMuchPain && hasPainkillers && !convertedPed.hasSpineDamage) {
                 remainingClicks = (int)(pain.Percent() * 10);
 #if DEBUG
                 sharedData.logger.WriteInfo($"Starting pain recovery, remaining clicks = {remainingClicks}");

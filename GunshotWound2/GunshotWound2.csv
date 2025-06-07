@@ -134,7 +134,9 @@ StayStillWhileUsingItem,You need to stand still while using item!,Во врем�
 CheckHelpMessage,You can use {0} button to check your health state,Чтобы проверить своё здоровье используйте клавишу {0},,,,,,,,ヘルプ情報を確認する,檢查幫助資訊,检查帮助信息,,Paina {0} tarkastaaksesi terveytesi
 BandageHelpMessage,You can use {0} button to bandage your bleeding wounds,Чтобы перебинтовать кровоточащие раны используйте клавишу {0},,,,,,,,包帯のヘルプ情報,包紮幫助資訊,包扎帮助信息,,Paina {0} sitoaksesi vuotavat haavat
 PainkillerHelpMessage,You can use {0} button to use painkillers to reduce your pain,Чтобы принять обезболивающие используйте клавишу {0},,,,,,,,鎮痛剤のヘルプ情報,止痛藥幫助資訊,止痛药帮助信息,,Paina {0} vähentääksesi kipua käyttämällä särkylääkkeitä
+ClosestPedHelpMessage,You can use {0} to interact with peds around you,Вы можете использовать {0} для взаимодействия с окружающими,,,,,,,,鎮痛剤のヘルプ情報,止痛藥幫助資訊,止痛药帮助信息,,Paina {0} vähentääksesi kipua käyttämällä särkylääkkeitä
 MedkitsHelpMessage,You may find bandages and painkillers in medkits and emergency cars,Вы можете найти бинты и обезболивающие в аптечках и спец-машинах,,,,,,,,医療キットのヘルプ情報,醫藥包幫助資訊,医药包帮助信息,,Voit löytää sideharsoja ja särkylääkkeitä ensiapulaukuista tai ambulanssi -ja poliisiautoista
+DeathKeyHelpMessage,"If you don't want to wait for slow death, use {0}","Если вы не хотите медленно умирать, используйте {0}",,,,,,,,,,,,
 ,,,,,,,,,,,,,,
 BodyParts.Head,Head,Голова,,,,,,,,,,,,
 BodyParts.Neck,Neck,Шея,,,,,,,,,,,,
