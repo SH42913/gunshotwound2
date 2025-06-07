@@ -38,11 +38,12 @@
             }
 
             ref (int time, RagdollType type) ragdollRequest = ref convertedPed.ragdollRequest;
-            if (convertedPed.permanentRagdoll && ragdollRequest.time >= 0) {
+            if (convertedPed.permanentRagdoll && !inRagdoll && ragdollRequest.time >= 0) {
 #if DEBUG
-                sharedData.logger.WriteInfo($"Applying permanent ragdoll to {convertedPed.name}");
+                sharedData.logger.WriteInfo($"Force permanent ragdoll to {convertedPed.name}, task={ped.IsRunningRagdollTask}");
 #endif
                 ragdollRequest = (-1, RagdollType.Relax);
+                convertedPed.ragdollRequest = ragdollRequest;
             }
 
             if (ragdollRequest.time == 0) {
