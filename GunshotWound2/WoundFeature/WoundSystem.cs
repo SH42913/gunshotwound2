@@ -148,7 +148,13 @@
 
             DBPContainer dbp = wound.DBP.Deviate(sharedData.random, sharedData.mainConfig.woundConfig.GlobalDeviations);
             dbp *= WoundConfig.GlobalMultipliers * hitData.weaponType.DBPMults * hitData.bodyPart.DBPMults;
-            dbp *= hitData.hits;
+
+            string reason = hitData.weaponType.ShortDesc;
+            if (hitData.hits > 1) {
+                dbp *= hitData.hits;
+                reason += $" x{hitData.hits.ToString()}";
+            }
+
             if (hitData.afterTakedown) {
                 dbp *= WoundConfig.TakedownMults;
             }
@@ -158,7 +164,7 @@
             }
 
             if (dbp.bleed > 0f) {
-                entity.CreateBleeding(hitData.bodyPart, dbp.bleed, woundName, hitData.weaponType.ShortDesc, isTrauma: false);
+                entity.CreateBleeding(hitData.bodyPart, dbp.bleed, woundName, reason, isTrauma: false);
             }
 
             if (dbp.pain > 0f) {
@@ -173,7 +179,7 @@
             }
 
 #if DEBUG
-            sharedData.logger.WriteInfo($"Final wound DBP:{dbp.ToString()} trauma:{shouldCreateTrauma}");
+            sharedData.logger.WriteInfo($"Final wound DBP:{dbp.ToString()} trauma:{shouldCreateTrauma} by {reason}");
 #endif
 
             SendWoundInfo(convertedPed, health, hitData, woundName, dbp.bleed, dbp.pain, shouldCreateTrauma);

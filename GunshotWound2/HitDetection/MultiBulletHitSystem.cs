@@ -37,6 +37,11 @@ namespace GunshotWound2.HitDetection {
 #if DEBUG
                 sharedData.logger.WriteInfo($"Possible hit count {possibleHits}, dealt={dealtDamage} perPellet={damagePerPellet}");
 #endif
+                if (possibleHits < 1) {
+                    hitData.weaponType = default;
+                    continue;
+                }
+
                 hitData.hits = Clamp(possibleHits, 1, hitData.weaponType.Pellets);
                 Function.Call(Hash.SET_WEAPON_DAMAGE_MODIFIER, hitData.weaponHash, DAMAGE_MODIFIER);
             }
@@ -56,7 +61,7 @@ namespace GunshotWound2.HitDetection {
             }
         }
 
-        private int Clamp(int value, int min, int max) {
+        private static int Clamp(int value, int min, int max) {
             if (value >= max) {
                 return max;
             } else if (value <= min) {

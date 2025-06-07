@@ -65,7 +65,7 @@
         </Firearm9x19_AP>
 
         <Firearm12GA_00Buck ShortDesc="12GA #00" Pellets="8"
-                            DamageMult="0.75" BleedMult="0.9" PainMult="1.0" ChanceToCauseTrauma="0.2"
+                            DamageMult="0.75" BleedMult="0.9" PainMult="0.8" ChanceToCauseTrauma="0.2"
                             SafeArmorLevel="ClassII" ArmorDamage="3" HelmetSafeChance="0.95">
             <Shotguns Hashes="PUMPSHOTGUN;PUMPSHOTGUN_MK2;SAWNOFFSHOTGUN;BULLPUPSHOTGUN;DBSHOTGUN;"/>
             <TakedownWound Key="MediumBruise"/>
@@ -78,7 +78,7 @@
         </Firearm12GA_00Buck>
 
         <Firearm12GA_000Buck ShortDesc="12GA #000" Pellets="6"
-                            DamageMult="0.95" BleedMult="1.0" PainMult="1.2" ChanceToCauseTrauma="0.3"
+                            DamageMult="0.95" BleedMult="1.0" PainMult="1.0" ChanceToCauseTrauma="0.3"
                             SafeArmorLevel="ClassIII" ArmorDamage="6" HelmetSafeChance="0.5">
             <Shotguns Hashes="COMBATSHOTGUN;"/>
             <AutoShotguns Hashes="AUTOSHOTGUN;ASSAULTSHOTGUN;"/>
