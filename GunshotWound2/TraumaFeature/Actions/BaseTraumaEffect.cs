@@ -20,12 +20,6 @@
         public abstract void EveryFrame(Entity entity, ref ConvertedPed convertedPed);
         public abstract void Cancel(Entity entity, ref ConvertedPed convertedPed);
 
-        protected void CreateInternalBleeding(Entity entity, BodyPartConfig.BodyPart bodyPart, float severity) {
-            string name = sharedData.localeConfig.InternalBleeding;
-            string reason = sharedData.localeConfig.TraumaType;
-            entity.CreateBleeding(bodyPart, severity, name, reason, isTrauma: true);
-        }
-
         protected void ShowRunningWarningMessage(in ConvertedPed convertedPed) {
             if (convertedPed.isPlayer) {
                 string message = sharedData.localeConfig.RunningWithScissors;
