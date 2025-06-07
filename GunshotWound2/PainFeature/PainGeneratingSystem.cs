@@ -1,6 +1,7 @@
 namespace GunshotWound2.PainFeature {
     using System;
     using Configs;
+    using GTA;
     using PedsFeature;
     using Scellecs.Morpeh;
     using EcsEntity = Scellecs.Morpeh.Entity;
@@ -58,11 +59,12 @@ namespace GunshotWound2.PainFeature {
                 }
 
                 var totalNewPain = 0f;
-                if (generator.moveRate > 0f && convertedPed.thisPed.IsWalking) {
+                Ped ped = convertedPed.thisPed;
+                if (generator.moveRate > 0f && ped.IsWalking) {
                     totalNewPain += generator.moveRate * multipliers.pain * deltaTime;
                 }
 
-                if (generator.runRate > 0f && (convertedPed.thisPed.IsRunning || convertedPed.thisPed.IsSprinting)) {
+                if (generator.runRate > 0f && (ped.IsRunning || ped.IsSprinting)) {
                     totalNewPain += generator.runRate * multipliers.pain * deltaTime;
                 }
 

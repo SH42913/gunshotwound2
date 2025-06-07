@@ -35,6 +35,8 @@
                 if (totallyHealedStash.Has(entity)) {
                     pain.amount = 0f;
                     pain.diff = 0f;
+                    pain.delayedDiff = 0f;
+                    pain.currentState = null;
                     continue;
                 }
 
