@@ -78,8 +78,9 @@
         </Firearm12GA_00Buck>
 
         <Firearm12GA_000Buck ShortDesc="12GA #000" Pellets="6"
-                            DamageMult="0.95" BleedMult="1.0" PainMult="1.0" ChanceToCauseTrauma="0.3"
-                            SafeArmorLevel="ClassIII" ArmorDamage="6" HelmetSafeChance="0.5">
+                             DamageMult="0.95" BleedMult="1.0" PainMult="1.0" ChanceToCauseTrauma="0.3"
+                             SafeArmorLevel="ClassIII" ArmorDamage="6" HelmetSafeChance="0.5">
+            <!-- If you want to add here other shotguns, you need to edit your weapons.meta and make them shoot 6 bullet per shot -->
             <Shotguns Hashes="COMBATSHOTGUN;"/>
             <AutoShotguns Hashes="AUTOSHOTGUN;ASSAULTSHOTGUN;"/>
             <TakedownWound Key="MediumBruise"/>
@@ -92,8 +93,9 @@
         </Firearm12GA_000Buck>
 
         <Firearm12GA_Slug ShortDesc="12GA Slug"
-                            DamageMult="1.8" BleedMult="1.7" PainMult="1.9" ChanceToCauseTrauma="0.95"
-                            SafeArmorLevel="ClassIV" ArmorDamage="20" HelmetSafeChance="0.05">
+                          DamageMult="1.8" BleedMult="1.7" PainMult="1.9" ChanceToCauseTrauma="0.95"
+                          SafeArmorLevel="ClassIV" ArmorDamage="20" HelmetSafeChance="0.05">
+            <!-- If you want to add here other shotguns, you need to edit your weapons.meta and make them shoot 1 bullet per shot -->
             <AutoShotguns Hashes="MUSKET;HEAVYSHOTGUN;"/>
             <TakedownWound Key="MediumBruise"/>
             <Wounds>
@@ -103,6 +105,50 @@
                 <Wound Key="AvulsiveGsw" Weight="25"/>
             </Wounds>
         </Firearm12GA_Slug>
+
+        <Firearm12GA_RubberBuckshot ShortDesc="12GA Rubber Buckshot" Pellets="8"
+                                    DamageMult="0.2" BleedMult="0" PainMult="1.8" ChanceToCauseTrauma="0.2"
+                                    SafeArmorLevel="ClassI" ArmorDamage="0" HelmetSafeChance="1">
+            <Shotguns Hashes=""/>
+            <TakedownWound Key="MediumBruise"/>
+            <Wounds>
+                <Wound Key="LightBruise" Weight="30"/>
+                <Wound Key="MediumBruise" Weight="35"/>
+                <Wound Key="HeavyBruise" Weight="10"/>
+                <Wound Key="BluntHematoma" Weight="10"/>
+                <Wound Key="BluntAbrasion" Weight="10"/>
+            </Wounds>
+        </Firearm12GA_RubberBuckshot>
+
+        <Firearm12GA_BeanBag ShortDesc="12GA Bean Bag"
+                             DamageMult="0.3" BleedMult="0" PainMult="1.5" ChanceToCauseTrauma="0.4"
+                             SafeArmorLevel="ClassI" ArmorDamage="0" HelmetSafeChance="1">
+            <!-- If you want to add here shotguns, make sure it shoots 1 bullet per shot in your weapons.meta -->
+            <Shotguns Hashes=""/>
+            <TakedownWound Key="MediumBruise"/>
+            <Wounds>
+                <Wound Key="LightBruise" Weight="15"/>
+                <Wound Key="MediumBruise" Weight="35"/>
+                <Wound Key="HeavyBruise" Weight="20"/>
+                <Wound Key="BluntHematoma" Weight="15"/>
+                <Wound Key="BluntAbrasion" Weight="10"/>
+            </Wounds>
+        </Firearm12GA_BeanBag>
+
+        <Firearm12GA_RubberSlug ShortDesc="12GA Rubber Slug"
+                                DamageMult="0.4" BleedMult="0" PainMult="2.2" ChanceToCauseTrauma="0.5"
+                                SafeArmorLevel="ClassI" ArmorDamage="0" HelmetSafeChance="1">
+            <!-- If you want to add here shotguns, make sure it shoots 1 bullet per shot in your weapons.meta -->
+            <Shotguns Hashes=""/>
+            <TakedownWound Key="MediumBruise"/>
+            <Wounds>
+                <Wound Key="LightBruise" Weight="10"/>
+                <Wound Key="MediumBruise" Weight="25"/>
+                <Wound Key="HeavyBruise" Weight="30"/>
+                <Wound Key="BluntHematoma" Weight="25"/>
+                <Wound Key="BluntAbrasion" Weight="10"/>
+            </Wounds>
+        </Firearm12GA_RubberSlug>
 
         <Firearm223Rem_HP ShortDesc=".223Rem HP"
                           DamageMult="1.6" BleedMult="2.0" PainMult="1.8" ChanceToCauseTrauma="0.85"

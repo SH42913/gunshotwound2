@@ -87,6 +87,10 @@
 
             weaponType = default;
             foreach (WeaponConfig.Weapon stats in WeaponConfig.Weapons) {
+                if (stats.Hashes == null || stats.Hashes.Count < 1) {
+                    continue;
+                }
+
                 if (PedWasDamagedBy(stats.Hashes, ped, out hitWeapon)) {
                     weaponType = stats;
                     break;
