@@ -167,7 +167,7 @@
                            SafeArmorLevel="ClassV" ArmorDamage="20" HelmetSafeChance="0.05">
             <Rifles Hashes="ASSAULTRIFLE;;ASSAULTRIFLE_MK2;MARKSMANRIFLE;"/>
             <MGs Hashes="MG;"/>
-            <TakedownWound Key="MediumBruise"/>
+            <TakedownWound Key="HeavyBruise"/>
             <Wounds>
                 <Wound Key="PenetratingGsw" Weight="20"/>
                 <Wound Key="PerforatingGsw" Weight="30"/>
@@ -182,7 +182,7 @@
                            SafeArmorLevel="ClassV" ArmorDamage="25" HelmetSafeChance="0.01">
             <Rifles Hashes="BATTLERIFLE;MARKSMANRIFLE_MK2;SNIPERRIFLE;PRECISIONRIFLE;HEAVYRIFLE;"/>
             <MGs Hashes="COMBATMG_MK2;MINIGUN;ARENA_MACHINE_GUN;AIR_DEFENCE_GUN;"/>
-            <TakedownWound Key="MediumBruise"/>
+            <TakedownWound Key="HeavyBruise"/>
             <Wounds>
                 <Wound Key="PenetratingGsw" Weight="15"/>
                 <Wound Key="PerforatingGsw" Weight="35"/>
@@ -281,7 +281,7 @@
                            DamageMult="2.5" BleedMult="2.2" PainMult="2.0" ChanceToCauseTrauma="1"
                            SafeArmorLevel="ClassV" ArmorDamage="30" HelmetSafeChance="0">
             <Rifles Hashes="HEAVYSNIPER;HEAVYSNIPER_MK2;"/>
-            <TakedownWound Key="MediumBruise"/>
+            <TakedownWound Key="HeavyBruise"/>
             <Wounds>
                 <Wound Key="PerforatingGsw" Weight="40"/>
                 <Wound Key="LaceratingGsw" Weight="20"/>
