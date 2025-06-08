@@ -90,6 +90,7 @@
             public static readonly Color YELLOW = new("~y~");
             public static readonly Color ORANGE = new("~o~");
             public static readonly Color RED = new("~r~");
+            public static readonly Color GREY = new("~t~");
 
             public readonly string prefix;
 

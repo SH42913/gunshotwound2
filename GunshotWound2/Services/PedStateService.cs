@@ -82,31 +82,11 @@
                             ? localeConfig.HisHealth
                             : localeConfig.HerHealth;
 
-            int currentHealth = WoundConfig.ConvertHealthFromNative(convertedPed.thisPed.Health);
-            int maxHealth = WoundConfig.ConvertHealthFromNative(health.max);
-            float healthPercent = (float)currentHealth / maxHealth;
-
-            Notifier.Color color;
-            if (healthPercent >= 0.75f) {
-                color = Notifier.Color.GREEN;
-            } else if (healthPercent > 0.5f) {
-                color = Notifier.Color.YELLOW;
-            } else if (healthPercent > 0.25f) {
-                color = Notifier.Color.ORANGE;
-            } else {
-                color = Notifier.Color.RED;
-            }
-
             stringBuilder.SetDefaultColor();
-            if (healthPercent > 0f) {
-                stringBuilder.Append(healthType);
-                stringBuilder.Append(": ");
-                stringBuilder.Append(color);
-                stringBuilder.Append(healthPercent.ToString("P0"));
-            } else {
+            if (health.isDead) {
                 stringBuilder.Append(localeConfig.DeathReason);
                 stringBuilder.Append(": ");
-                stringBuilder.Append(color);
+                Notifier.Color.RED.AppendTo(stringBuilder);
 
                 string reason = health.lastDamageReason;
                 if (!string.IsNullOrEmpty(health.lastDamageReason)) {
@@ -117,6 +97,41 @@
                 } else {
                     stringBuilder.AppendFormat("UNKNOWN");
                 }
+            } else {
+                int currentHealth = WoundConfig.ConvertHealthFromNative(convertedPed.thisPed.Health);
+                int maxHealth = WoundConfig.ConvertHealthFromNative(health.max);
+                float healthPercent = (float)currentHealth / maxHealth;
+
+                stringBuilder.Append(healthType);
+                stringBuilder.Append(": ");
+                stringBuilder.Append("<C>");
+
+                Notifier.Color color = healthPercent switch {
+                    >= 0.85f => Notifier.Color.GREEN,
+                    > 0.6f   => Notifier.Color.YELLOW,
+                    > 0.3f   => Notifier.Color.ORANGE,
+                    _        => Notifier.Color.RED,
+                };
+
+                color.AppendTo(stringBuilder);
+
+                var greyColor = false;
+                for (int i = 0, max = 20; i < max; i++) {
+                    float symbolPercent = (float)(i + 1) / max;
+                    if (!greyColor && symbolPercent > healthPercent) {
+                        Notifier.Color.GREY.AppendTo(stringBuilder);
+                        greyColor = true;
+                    }
+
+                    stringBuilder.Append('I');
+                }
+
+                stringBuilder.Append("</C>");
+
+#if DEBUG
+                stringBuilder.SetDefaultColor();
+                stringBuilder.AppendFormat(" ({0})", healthPercent.ToString("P0"));
+#endif
             }
 
             stringBuilder.SetDefaultColor();
@@ -199,7 +214,7 @@
                 }
 
                 Notifier.Color color = health.GetBleedingColor(convertedPed, bleeding.severity);
-                stringBuilder.Append(color);
+                color.AppendTo(stringBuilder);
 
                 string bodyPart = localeConfig.GetTranslation(bleeding.bodyPartLocKey);
                 if (string.IsNullOrEmpty(bleeding.reason)) {
