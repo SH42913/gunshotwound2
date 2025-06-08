@@ -159,14 +159,33 @@
                 return;
             }
 
-            float painPercent = pain.Percent();
             stringBuilder.AppendEndOfLine();
             stringBuilder.Append(localeConfig.Pain);
             stringBuilder.Append(": ");
+            stringBuilder.Append("<C>");
             stringBuilder.Append(pain.currentState.Color);
-            stringBuilder.Append(painPercent.ToString("P1"));
+
+            var grayColor = false;
+            float painPercent = pain.Percent();
+            for (int i = 0, max = 10; i < max; i++) {
+                float symbolPercent = (float)(i + 1) / max;
+                if (!grayColor && symbolPercent > painPercent) {
+                    Notifier.Color.GREY.AppendTo(stringBuilder);
+                    grayColor = true;
+                }
+
+                stringBuilder.Append('I');
+            }
+
+            stringBuilder.Append("</C>");
+
+#if DEBUG
+            stringBuilder.SetDefaultColor();
+            stringBuilder.AppendFormat(" ({0})", painPercent.ToString("P0"));
+#endif
 
             if (pain.TooMuchPain()) {
+                Notifier.Color.RED.AppendTo(stringBuilder);
                 stringBuilder.AppendFormat(" ({0} sec)", pain.TimeToRecover().ToString("F1"));
             } else if (pain.delayedDiff > 0f) {
                 Notifier.Color.ORANGE.AppendTo(stringBuilder);
@@ -177,7 +196,7 @@
             if (painkillersActive) {
                 float remainingTime = painkillersEffect.remainingTime;
                 stringBuilder.AppendEndOfLine();
-                stringBuilder.Append(Notifier.Color.GREEN);
+                Notifier.Color.GREEN.AppendTo(stringBuilder);
                 stringBuilder.AppendFormat("{0}: {1} sec", localeConfig.PainkillersRemainingTime, remainingTime.ToString("F1"));
             }
 
