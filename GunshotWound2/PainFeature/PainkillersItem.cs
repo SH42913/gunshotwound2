@@ -1,9 +1,10 @@
 namespace GunshotWound2.PainFeature {
-    using System;
+    using GTA;
     using InventoryFeature;
     using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
+    using EcsEntity = Scellecs.Morpeh.Entity;
 
     public static class PainkillersItem {
         public const string KEY = "Painkillers";
@@ -17,7 +18,7 @@ namespace GunshotWound2.PainFeature {
 
         private const float MAX_USE_RANGE = 3f;
 
-        private static bool StartAction(SharedData sharedData, Entity owner, Entity target, out string message) {
+        private static bool StartAction(SharedData sharedData, EcsEntity owner, EcsEntity target, out string message) {
             if (owner.IsNullOrDisposed() || !owner.Has<ConvertedPed>()) {
                 sharedData.logger.WriteError("Trying to use painkillers by invalid medic");
                 message = null;
@@ -51,7 +52,7 @@ namespace GunshotWound2.PainFeature {
             return true;
         }
 
-        private static bool ProgressAction(SharedData sharedData, Entity owner, Entity target, out string message) {
+        private static bool ProgressAction(SharedData sharedData, EcsEntity owner, EcsEntity target, out string message) {
             ref ConvertedPed convertedMedic = ref owner.GetComponent<ConvertedPed>();
             ref ConvertedPed convertedTarget = ref target.GetComponent<ConvertedPed>();
             if (CheckConditions(convertedTarget.thisPed, convertedMedic.thisPed)) {
@@ -63,9 +64,10 @@ namespace GunshotWound2.PainFeature {
             }
         }
 
-        private static bool FinishAction(SharedData sharedData, Entity owner, Entity target, out string message) {
-            if (owner != target) {
-                target.GetComponent<ConvertedPed>().thisPed.PlayAmbientSpeech("GENERIC_THANKS");
+        private static bool FinishAction(SharedData sharedData, EcsEntity owner, EcsEntity target, out string message) {
+            ref ConvertedPed convertedTarget = ref target.GetComponent<ConvertedPed>();
+            if (owner != target && !convertedTarget.isRagdoll) {
+                convertedTarget.thisPed.PlayAmbientSpeech("GENERIC_THANKS", SpeechModifier.AllowRepeat);
             }
 
             target.SetComponent(new PainkillersEffect {
@@ -77,9 +79,14 @@ namespace GunshotWound2.PainFeature {
             return true;
         }
 
-        private static bool CheckConditions(GTA.Ped target, GTA.Ped medic) {
+        private static bool CheckConditions(Ped target, Ped medic) {
             if (target == medic) {
                 return target.IsStopped;
+            }
+
+            Vehicle vehicle = medic.CurrentVehicle;
+            if (vehicle != null) {
+                return vehicle == target.CurrentVehicle && medic.IsStopped && target.IsStopped;
             }
 
             return (target.IsRagdoll || target.IsStopped)

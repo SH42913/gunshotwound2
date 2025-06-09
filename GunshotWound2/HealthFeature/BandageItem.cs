@@ -1,8 +1,10 @@
 namespace GunshotWound2.HealthFeature {
+    using GTA;
     using InventoryFeature;
     using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
+    using EcsEntity = Scellecs.Morpeh.Entity;
 
     public static class BandageItem {
         public const string KEY = "Bandages";
@@ -16,7 +18,7 @@ namespace GunshotWound2.HealthFeature {
 
         private const float MAX_BANDAGE_RANGE = 3f;
 
-        private static bool StartAction(SharedData sharedData, Entity owner, Entity target, out string message) {
+        private static bool StartAction(SharedData sharedData, EcsEntity owner, EcsEntity target, out string message) {
             if (owner.IsNullOrDisposed() || !owner.Has<ConvertedPed>()) {
                 sharedData.logger.WriteError("Trying to bandage by invalid medic");
                 message = null;
@@ -45,8 +47,6 @@ namespace GunshotWound2.HealthFeature {
                 message = sharedData.localeConfig.BandageFailed;
                 return false;
             }
-
-            convertedTarget.thisPed.PlayAmbientSpeech("GENERIC_CURSE_HIGH");
 #if DEBUG
             sharedData.logger.WriteInfo($"Bandaging of {convertedTarget.name} started");
 #endif
@@ -55,12 +55,14 @@ namespace GunshotWound2.HealthFeature {
                 convertedTarget.thisPed.Task.StandStill(template.duration.ConvertToMilliSec());
             }
 
+            convertedTarget.thisPed.PlayAmbientSpeech("GENERIC_CURSE_HIGH", SpeechModifier.ForceShouted);
+
             string bleedingName = health.bleedingToBandage.GetComponent<Bleeding>().name;
             message = string.Format(sharedData.localeConfig.YouTryToBandage, bleedingName);
             return true;
         }
 
-        private static bool ProgressAction(SharedData sharedData, Entity owner, Entity target, out string message) {
+        private static bool ProgressAction(SharedData sharedData, EcsEntity owner, EcsEntity target, out string message) {
             ref Health health = ref target.GetComponent<Health>();
             ref ConvertedPed convertedMedic = ref owner.GetComponent<ConvertedPed>();
             ref ConvertedPed convertedTarget = ref target.GetComponent<ConvertedPed>();
@@ -73,11 +75,12 @@ namespace GunshotWound2.HealthFeature {
             }
         }
 
-        private static bool FinishAction(SharedData sharedData, Entity owner, Entity target, out string message) {
-            if (owner != target) {
-                target.GetComponent<ConvertedPed>().thisPed.PlayAmbientSpeech("GENERIC_THANKS");
+        private static bool FinishAction(SharedData sharedData, EcsEntity owner, EcsEntity target, out string message) {
+            ref ConvertedPed convertedTarget = ref target.GetComponent<ConvertedPed>();
+            if (owner != target && !convertedTarget.isRagdoll) {
+                convertedTarget.thisPed.PlayAmbientSpeech("GENERIC_THANKS", SpeechModifier.AllowRepeat);
             }
-            
+
             ref Health health = ref target.GetComponent<Health>();
             ref Bleeding bleeding = ref health.bleedingToBandage.GetComponent<Bleeding>();
             bleeding.severity *= 0.5f;
@@ -95,9 +98,14 @@ namespace GunshotWound2.HealthFeature {
                    && CheckBandagingConditions(convertedTarget.thisPed, convertedMedic.thisPed);
         }
 
-        private static bool CheckBandagingConditions(GTA.Ped target, GTA.Ped medic) {
+        private static bool CheckBandagingConditions(Ped target, Ped medic) {
             if (target == medic) {
                 return target.IsStopped;
+            }
+
+            Vehicle vehicle = medic.CurrentVehicle;
+            if (vehicle != null) {
+                return vehicle == target.CurrentVehicle && medic.IsStopped && target.IsStopped;
             }
 
             return (target.IsRagdoll || target.IsStopped)

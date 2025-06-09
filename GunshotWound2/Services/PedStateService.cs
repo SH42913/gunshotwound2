@@ -209,7 +209,10 @@
                 Notifier.Color color = health.GetBleedingColor(convertedPed, bleeding.severity);
                 color.AppendTo(stringBuilder);
 
-                string bodyPart = localeConfig.GetTranslation(bleeding.bodyPartLocKey);
+                string bodyPart = !string.IsNullOrEmpty(bleeding.bodyPartLocKey)
+                        ? localeConfig.GetTranslation(bleeding.bodyPartLocKey)
+                        : "UNKNOWN";
+
                 if (string.IsNullOrEmpty(bleeding.reason)) {
                     stringBuilder.AppendFormat("{0} ({1})", bleeding.name, bodyPart);
                 } else {
