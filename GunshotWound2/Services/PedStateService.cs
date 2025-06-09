@@ -67,6 +67,7 @@
             ref CurrentlyUsingItem currentlyUsing = ref pedEntity.GetComponent<CurrentlyUsingItem>();
 
             stringBuilder.Clear();
+            stringBuilder.Append("<C></C>");
             ShowHealth(ref convertedPed, ref health);
             ShowPain(pedEntity, health);
             ShowArmor(ref convertedPed);
@@ -104,7 +105,6 @@
 
                 stringBuilder.Append(healthType);
                 stringBuilder.Append(": ");
-                stringBuilder.Append("<C>");
 
                 Notifier.Color color = healthPercent switch {
                     >= 0.85f => Notifier.Color.GREEN,
@@ -113,20 +113,7 @@
                     _        => Notifier.Color.RED,
                 };
 
-                color.AppendTo(stringBuilder);
-
-                var greyColor = false;
-                for (int i = 0, max = 20; i < max; i++) {
-                    float symbolPercent = (float)(i + 1) / max;
-                    if (!greyColor && symbolPercent > healthPercent) {
-                        Notifier.Color.GREY.AppendTo(stringBuilder);
-                        greyColor = true;
-                    }
-
-                    stringBuilder.Append('I');
-                }
-
-                stringBuilder.Append("</C>");
+                ShowGauge(healthPercent, color);
 
 #if DEBUG
                 stringBuilder.SetDefaultColor();
@@ -162,22 +149,9 @@
             stringBuilder.AppendEndOfLine();
             stringBuilder.Append(localeConfig.Pain);
             stringBuilder.Append(": ");
-            stringBuilder.Append("<C>");
-            stringBuilder.Append(pain.currentState.Color);
 
-            var grayColor = false;
             float painPercent = pain.Percent();
-            for (int i = 0, max = 10; i < max; i++) {
-                float symbolPercent = (float)(i + 1) / max;
-                if (!grayColor && symbolPercent > painPercent) {
-                    Notifier.Color.GREY.AppendTo(stringBuilder);
-                    grayColor = true;
-                }
-
-                stringBuilder.Append('I');
-            }
-
-            stringBuilder.Append("</C>");
+            ShowGauge(painPercent, pain.currentState.Color);
 
 #if DEBUG
             stringBuilder.SetDefaultColor();
@@ -267,6 +241,24 @@
                     stringBuilder.AppendFormat(" ({0})", currentlyUsing.ProgressPercent().ToString("P1"));
                 }
             }
+        }
+
+        private void ShowGauge(float targetPercent, in Notifier.Color baseColor) {
+            stringBuilder.Append("<C>");
+            baseColor.AppendTo(stringBuilder);
+
+            var greyColor = false;
+            for (int i = 0, max = 10; i < max; i++) {
+                float symbolPercent = (float)(i + 1) / max;
+                if (!greyColor && symbolPercent > targetPercent) {
+                    Notifier.Color.GREY.AppendTo(stringBuilder);
+                    greyColor = true;
+                }
+
+                stringBuilder.Append('|');
+            }
+
+            stringBuilder.Append("</C>");
         }
     }
 }

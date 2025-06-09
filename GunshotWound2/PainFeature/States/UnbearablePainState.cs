@@ -33,7 +33,7 @@
         };
 
         public float PainThreshold => PAIN_THRESHOLD;
-        public string Color => "~r~";
+        public Notifier.Color Color => Notifier.Color.RED;
 
         private readonly ConvertedPed.AfterRagdollAction writheAction;
 

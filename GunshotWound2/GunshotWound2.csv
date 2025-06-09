@@ -38,11 +38,11 @@ BleedingInHead,Intracranial bleeding,Кровотечение в мозг,Kopfbl
 TraumaticBrainInjury,Traumatic brain injury,Тяжелая травма головного мозга,Schädeltrauma,Lésion cérébrale traumatique,Traumatyczne uszkodzenie mózgu,외상성 뇌 손상,Traumatismo crâniano,Traumatismo cerebral,Traumatic brain injury,外傷性脳損傷,創傷性腦損傷,创伤性脑损伤,Traumatic brain injury,Vakava aivovamma
 BrokenNeck,Damage to cervical vertebrae,Повреждение шейных позвонков,Gebrochenes Genick,Nuque brisée,Złamany lub skręcony kark; uszkodzenie rdzeniu kręgowego,목이 부러짐,Pescoço quebrado,Cuello roto o dañado; vertebra cervical dañada,Broken or sprained neck; damage to cervical vertebrae,頚椎骨折,頸椎骨折,颈椎骨折,Damage to cervical vertebrae,Kaulanikama vahingoittunut
 ,,,,,,,,,,,,,,
-YourHealth,Your health,Ваше здоровье,,Votre santé,,,,,,あなたの健康状態,你的健康狀況,你的健康状况,,Sinun terveys
-HisHealth,His health,Его здоровье,,Sa santé,,,,,,彼の健康状態,他的健康狀況,他的健康状况,,Hänen terveys
-HerHealth,Her health,Её здоровье,,Sa santé,,,,,,彼女の健康状態,她的健康狀況,她的健康状况,,Hänen terveys
+YourHealth,Your Blood Volume,Ваш объём крови,,Votre santé,,,,,,あなたの健康状態,你的健康狀況,你的健康状况,,Sinun terveys
+HisHealth,His Blood Volume,Его объём крови,,Sa santé,,,,,,彼の健康状態,他的健康狀況,他的健康状况,,Hänen terveys
+HerHealth,Her Blood Volume,Её объём крови,,Sa santé,,,,,,彼女の健康状態,她的健康狀況,她的健康状况,,Hänen terveys
 Dead,Dead,Мёртв,,Mort,,,,,,死亡,死亡,死亡,,Kuollut
-Pain,Pain,Боль,Schmerz,Douleur,Ból,통증,Dor,Dolor,Pain,痛み,疼痛,疼痛,Pain,Kipu
+Pain,Pain level,Уровень боли,,,,,,,,,,,,
 PainIncreasedMessage,You feel terrible...,Вы чувствуете себя хуже...,,,,,,,,痛みが増す（通知）,疼痛加劇（提示）,疼痛加剧（提示）,,Sinulla on huono olo...
 PainDecreasedMessage,You feel better,Вы чувствуете себя лучше,,,,,,,,痛みが軽減（通知）,疼痛減輕（提示）,疼痛减轻（提示）,,Sinusta tuntuu paremmalta
 TotallyHealedMessage,You are totally healed!,Вы абсолютно здоровы,,,,,,,,完全に回復（通知）,完全康復（提示）,完全康复（提示）,,Olet täysin parantunut!
@@ -118,6 +118,7 @@ PainShockDeath,You have died of pain shock,Вы погибли от болево
 DeathReason,Death reason,Причина смерти,,,,,,,,死亡原因,死亡原因,死亡原因,,Kuolinsyy
 BleedingReason,Bleeding,Кровотечение,,,,,,,,出血原因,出血原因,出血原因,,Verenvuoto
 RunningWithScissors,Running with major injury is not a good idea,Бегать с серьёзным ранением не очень хорошая идея,,,,,,,,はさみを持ったまま走っている（警告）,拿著剪刀亂跑（警告）,拿着剪刀乱跑（警告）,,{0} Terveydellä juokseminen ei ole hyvä idea
+CBV,Circulating blood volume,Объем циркулирующей крови,,,,,,,,,,,,
 ,,,,,,,,,,,,,,
 FoundItems,You've got:,Вы получили:,,,,,,,,,,,,
 YourInventory,In inventory:,В инвентаре:,,,,,,,,,,,,

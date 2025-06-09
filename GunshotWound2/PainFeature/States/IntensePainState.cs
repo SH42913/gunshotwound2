@@ -1,7 +1,7 @@
 ﻿namespace GunshotWound2.PainFeature.States {
-    using Configs;
     using PedsFeature;
     using Scellecs.Morpeh;
+    using Utils;
 
     public sealed class IntensePainState : IPainState {
         private const float SHAKE_AMPLITUDE = 1f;
@@ -14,7 +14,7 @@
         };
 
         public float PainThreshold => 0.6f;
-        public string Color => "~o~";
+        public Notifier.Color Color => Notifier.Color.ORANGE;
 
         private readonly SharedData sharedData;
 

@@ -1,12 +1,12 @@
 ﻿namespace GunshotWound2.PainFeature.States {
-    using Configs;
     using HealthFeature;
     using PedsFeature;
     using Scellecs.Morpeh;
+    using Utils;
 
     public sealed class DeadlyPainState : IPainState {
         public float PainThreshold => sharedData.mainConfig.woundConfig.DeadlyPainShockPercent;
-        public string Color => "~r~";
+        public Notifier.Color Color => Notifier.Color.RED;
 
         private readonly SharedData sharedData;
 
