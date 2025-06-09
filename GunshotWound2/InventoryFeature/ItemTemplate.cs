@@ -6,6 +6,9 @@ namespace GunshotWound2.InventoryFeature {
         public readonly string key;
         public readonly string pluralKey;
         public readonly string progressDescriptionKey;
+        public readonly (string dict, string name) selfAnimation;
+        public readonly (string dict, string name) otherAnimation;
+        public readonly (string dict, string name) otherRagdollAnimation;
         public readonly float duration;
         public readonly InventoryFeature.ItemAction startAction;
         public readonly InventoryFeature.ItemAction progressAction;
@@ -17,6 +20,9 @@ namespace GunshotWound2.InventoryFeature {
                             string pluralKey,
                             string progressDescriptionKey,
                             float duration,
+                            (string, string) selfAnimation,
+                            (string, string) otherAnimation,
+                            (string, string) otherRagdollAnimation,
                             InventoryFeature.ItemAction startAction,
                             InventoryFeature.ItemAction progressAction,
                             InventoryFeature.ItemAction finishAction) {
@@ -24,6 +30,9 @@ namespace GunshotWound2.InventoryFeature {
             this.pluralKey = pluralKey;
             this.progressDescriptionKey = progressDescriptionKey;
             this.duration = duration;
+            this.selfAnimation = selfAnimation;
+            this.otherAnimation = otherAnimation;
+            this.otherRagdollAnimation = otherRagdollAnimation;
             this.startAction = startAction;
             this.progressAction = progressAction;
             this.finishAction = finishAction;

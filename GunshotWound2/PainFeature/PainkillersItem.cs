@@ -12,6 +12,9 @@ namespace GunshotWound2.PainFeature {
                                                   pluralKey: "Inventory.Painkillers.Plural",
                                                   progressDescriptionKey: null,
                                                   duration: 2f,
+                                                  selfAnimation: ("mp_player_intdrink", "loop_bottle"),
+                                                  otherAnimation: ("mp_common", "givetake1_b"),
+                                                  otherRagdollAnimation: ("amb@medic@standing@tendtodead@idle_a", "idle_c"),
                                                   StartAction,
                                                   ProgressAction,
                                                   FinishAction);

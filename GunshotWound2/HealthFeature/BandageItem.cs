@@ -11,7 +11,12 @@ namespace GunshotWound2.HealthFeature {
         public static ItemTemplate template = new(key: KEY,
                                                   pluralKey: "Inventory.Bandages.Plural",
                                                   progressDescriptionKey: "BandagingProgress",
-                                                  duration: 3f,
+                                                  duration: 5f,
+                                                  selfAnimation: ("move_m@_idles@shake_off", "shakeoff_1"),
+                                                  otherAnimation: (
+                                                      "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer"),
+                                                  otherRagdollAnimation: (
+                                                      "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer"),
                                                   StartAction,
                                                   ProgressAction,
                                                   FinishAction);
