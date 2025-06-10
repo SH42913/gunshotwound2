@@ -39,7 +39,7 @@
 
             ref (int time, RagdollType type) ragdollRequest = ref convertedPed.ragdollRequest;
             if (convertedPed.permanentRagdoll && !inRagdoll && ragdollRequest.time >= 0) {
-#if DEBUG
+#if DEBUG && DEBUG_EVERY_FRAME
                 sharedData.logger.WriteInfo($"Force permanent ragdoll to {convertedPed.name}, task={ped.IsRunningRagdollTask}");
 #endif
                 ragdollRequest = (-1, RagdollType.Relax);
@@ -81,7 +81,7 @@
         }
 
         private void ApplyRagdoll(ref ConvertedPed convertedPed, ref (int time, RagdollType type) ragdollRequest) {
-#if DEBUG
+#if DEBUG && DEBUG_EVERY_FRAME
             var time = ragdollRequest.time.ToString();
             sharedData.logger.WriteInfo($"Ragdoll for {convertedPed.name} time={time}");
 #endif
@@ -89,12 +89,12 @@
             // ReSharper disable once InconsistentNaming
             bool canPlayNM = !convertedPed.hasSpineDamage;
             if (canPlayNM && convertedPed.nmHelper != null) {
-#if DEBUG
+#if DEBUG && DEBUG_EVERY_FRAME
                 sharedData.logger.WriteInfo($"Playing NM helper: {convertedPed.nmHelper.GetType().FullName}");
 #endif
                 convertedPed.nmHelper.Start();
             } else if (canPlayNM && convertedPed.nmMessages != null) {
-#if DEBUG
+#if DEBUG && DEBUG_EVERY_FRAME
                 sharedData.logger.WriteInfo($"Playing NM messages: {string.Join(" ,", convertedPed.nmMessages)}");
 #endif
                 Function.Call(Hash.SET_PED_TO_RAGDOLL, convertedPed.thisPed.Handle, 10000, ragdollRequest.time, 1, 1, 1, 0);
