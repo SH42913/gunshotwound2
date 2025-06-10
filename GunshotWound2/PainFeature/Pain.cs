@@ -27,7 +27,7 @@
         }
 
         public static bool TooMuchPain(this in Pain pain) {
-            return pain.Percent() > UnbearablePainState.PAIN_THRESHOLD;
+            return pain.Percent() >= 1f;
         }
 
         public static float TimeToRecover(this in Pain pain) {

@@ -30,6 +30,14 @@
             health.lastDamageReason = reason;
         }
 
+        public static bool IsDamaged(this in Health health, in ConvertedPed convertedPed) {
+            return convertedPed.thisPed.Health < health.max;
+        }
+
+        public static float Percent(this in Health health, in ConvertedPed convertedPed) {
+            return (float)convertedPed.TotalHealth() / Configs.WoundConfig.ConvertHealthFromNative(health.max);
+        }
+
         public static bool IsAlive(this in Health health) {
             return !health.isDead;
         }

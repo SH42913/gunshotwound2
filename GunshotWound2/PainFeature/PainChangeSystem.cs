@@ -69,7 +69,7 @@
         void IDisposable.Dispose() { }
 
         private void DelayPain(ref Pain pain) {
-            if (IsUnbearableState(pain)) {
+            if (pain.TooMuchPain()) {
                 return;
             }
 
@@ -91,7 +91,7 @@
         }
 
         private void UpdateDelayedPain(ref Pain pain, float deltaTime) {
-            if (IsUnbearableState(pain)) {
+            if (pain.TooMuchPain()) {
                 ApplyAllDelayedPain(ref pain);
                 return;
             }
@@ -113,6 +113,7 @@
             pain.delayedDiff = 0f;
         }
 
+        // ReSharper disable once UnusedMethodReturnValue.Local due used under DEBUG_EVERY_FRAME
         private float ApplyPain(ref ConvertedPed convertedPed, ref Pain pain) {
             PlayPainEffects(ref convertedPed, ref pain);
 
@@ -175,10 +176,6 @@
                     convertedPed.thisPed.Task.LeaveVehicle(GTA.LeaveVehicleFlags.BailOut);
                 }
             }
-        }
-
-        private static bool IsUnbearableState(in Pain pain) {
-            return pain.currentState is UnbearablePainState || pain.currentState is DeadlyPainState;
         }
     }
 }
