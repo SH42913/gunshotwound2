@@ -5,7 +5,6 @@ namespace GunshotWound2.PlayerFeature {
     using HealthFeature;
     using InventoryFeature;
     using PainFeature;
-    using PainFeature.States;
     using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
@@ -96,7 +95,7 @@ namespace GunshotWound2.PlayerFeature {
 
         private bool TryShowPainkillersHelp(EcsEntity playerEntity) {
             ref Pain pain = ref playerEntity.GetComponent<Pain>();
-            if (pain.currentState is IntensePainState) {
+            if (pain.Percent() > 0.8f) {
                 string key = WrapKey(sharedData.mainConfig.PainkillersSelfKey);
                 string message = string.Format(sharedData.localeConfig.PainkillerHelpMessage, key);
                 ShowHelpTip(message);
@@ -108,7 +107,7 @@ namespace GunshotWound2.PlayerFeature {
 
         private bool TryShowDeathKeyHelp(EcsEntity playerEntity, bool hasPainkillers) {
             ref Pain pain = ref playerEntity.GetComponent<Pain>();
-            if (pain.currentState is UnbearablePainState && !hasPainkillers) {
+            if (pain.TooMuchPain() && !hasPainkillers) {
                 Show();
                 return true;
             } else if (playerEntity.GetComponent<ConvertedPed>().hasSpineDamage) {
