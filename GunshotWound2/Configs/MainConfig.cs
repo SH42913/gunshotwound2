@@ -91,7 +91,7 @@ namespace GunshotWound2.Configs {
             return $"{woundConfig}\n" + $"{pedsConfig}\n" + $"{playerConfig}";
         }
 
-        public (bool success, string reason) TryToLoad(string scriptPath, ILogger logger) {
+        public (bool success, string reason, string trace) TryToLoad(string scriptPath) {
             string section = null;
             try {
                 foreach (IConfig config in configs) {
@@ -107,10 +107,10 @@ namespace GunshotWound2.Configs {
                 doc = LoadDocument(scriptPath, "Notifications.xml");
                 FillNotifications(doc);
             } catch (Exception e) {
-                return (false, $"Failed loading of {section}:\n{e.Message}");
+                return (false, $"Failed loading of {section}:\n{e.Message}", e.StackTrace);
             }
 
-            return (true, null);
+            return (true, null, null);
         }
 
         public void ValidateConfigs(ILogger logger) {

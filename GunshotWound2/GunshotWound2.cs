@@ -110,11 +110,12 @@
             }
 
             sharedData.logger.WriteInfo("GSW2 is loading configs...");
-            (bool success, string reason) = sharedData.mainConfig.TryToLoad(sharedData.scriptPath, sharedData.logger);
+            (bool success, string reason, string trace) = sharedData.mainConfig.TryToLoad(sharedData.scriptPath);
             if (!success) {
                 var message = $"GSW2 couldn't load config!\nReason:\n~r~{reason}";
                 sharedData.notifier.ShowOne(message, blinking: true);
                 sharedData.logger.WriteError(message);
+                sharedData.logger.WriteInfo(trace);
                 Abort();
                 return false;
             }
