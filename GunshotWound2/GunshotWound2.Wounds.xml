@@ -25,12 +25,6 @@
     <RagdollOnPainfulWound Value="TRUE"/>
     <!-- If TRUE - peds(including player) will set to short ragdoll on painful wounds -->
 
-    <MoveRateOnFullPain Value="0.8"/>
-    <!-- Move rate on 100% of pain -->
-
-    <MoveRateOnLegsTrauma Value="0.7"/>
-    <!-- Move rate when Legs has major injury -->
-
     <Wounds>
         <!--
         Example:

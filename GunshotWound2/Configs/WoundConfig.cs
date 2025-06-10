@@ -61,9 +61,6 @@ namespace GunshotWound2.Configs {
         public DBPContainer GlobalMultipliers;
         public DBPContainer GlobalDeviations;
 
-        public float MoveRateOnFullPain;
-        public float MoveRateOnLegsTrauma;
-
         public bool RagdollOnPainfulWound;
         public float PainfulWoundPercent;
         public bool UseCustomUnconsciousBehaviour;
@@ -83,8 +80,6 @@ namespace GunshotWound2.Configs {
             GlobalMultipliers = new DBPContainer(root.Element(nameof(GlobalMultipliers)), isMult: true);
             GlobalDeviations = new DBPContainer(root.Element(nameof(GlobalDeviations)), isMult: false);
 
-            MoveRateOnFullPain = root.Element(nameof(MoveRateOnFullPain)).GetFloat();
-            MoveRateOnLegsTrauma = root.Element(nameof(MoveRateOnLegsTrauma)).GetFloat();
             RagdollOnPainfulWound = root.Element(nameof(RagdollOnPainfulWound)).GetBool();
             PainfulWoundPercent = root.Element(nameof(PainfulWoundPercent)).GetFloat();
             UseCustomUnconsciousBehaviour = root.Element(nameof(UseCustomUnconsciousBehaviour)).GetBool();
@@ -117,8 +112,6 @@ namespace GunshotWound2.Configs {
             return $"{nameof(WoundConfig)}:\n"
                    + $"Mults: {GlobalMultipliers.ToString()}\n"
                    + $"Deviations: {GlobalDeviations.ToString()}\n"
-                   + $"{nameof(MoveRateOnFullPain)}: {MoveRateOnFullPain.ToString(CultureInfo.InvariantCulture)}\n"
-                   + $"{nameof(MoveRateOnLegsTrauma)}: {MoveRateOnLegsTrauma.ToString(CultureInfo.InvariantCulture)}\n"
                    + $"{nameof(RagdollOnPainfulWound)}: {RagdollOnPainfulWound.ToString()}";
         }
     }

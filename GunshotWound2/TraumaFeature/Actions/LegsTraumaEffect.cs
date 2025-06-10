@@ -18,7 +18,7 @@
             convertedPed.RequestRagdoll(RAGDOLL_TIME_IN_MS, ragdollType);
             convertedPed.hasBrokenLegs = true;
 
-            convertedPed.moveRate = sharedData.mainConfig.woundConfig.MoveRateOnLegsTrauma;
+            convertedPed.moveRate = 0.8f;
             convertedPed.BlockSprint();
 
             convertedPed.thisPed.PlayAmbientSpeech("DEATH_HIGH_MEDIUM", SpeechModifier.InterruptShouted);
