@@ -45,5 +45,9 @@ namespace GunshotWound2.Utils {
         public static bool IsValid(this Ped ped) {
             return ped != null && ped.Exists();
         }
+
+        public static bool StandsStill(this Ped ped) {
+            return ped.IsStopped;
+        }
     }
 }

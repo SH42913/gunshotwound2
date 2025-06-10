@@ -19,8 +19,6 @@ namespace GunshotWound2.PainFeature {
                                                   ProgressAction,
                                                   FinishAction);
 
-        private const float MAX_USE_RANGE = 3f;
-
         private static bool StartAction(SharedData sharedData, EcsEntity owner, EcsEntity target, out string message) {
             if (owner.IsNullOrDisposed() || !owner.Has<ConvertedPed>()) {
                 sharedData.logger.WriteError("Trying to use painkillers by invalid medic");
@@ -28,13 +26,13 @@ namespace GunshotWound2.PainFeature {
                 return false;
             }
 
-            ref ConvertedPed convertedMedic = ref owner.GetComponent<ConvertedPed>();
+            ref ConvertedPed convertedOwner = ref owner.GetComponent<ConvertedPed>();
             ref ConvertedPed convertedTarget = ref target.GetComponent<ConvertedPed>();
 #if DEBUG
-            sharedData.logger.WriteInfo($"Start use painkillers to {convertedTarget.name} by {convertedMedic.name}");
+            sharedData.logger.WriteInfo($"Start use painkillers to {convertedTarget.name} by {convertedOwner.name}");
 #endif
 
-            if (!CheckConditions(convertedTarget.thisPed, convertedMedic.thisPed)) {
+            if (!ItemTemplate.IsAbleToInteract(convertedOwner.thisPed, convertedTarget.thisPed)) {
 #if DEBUG
                 sharedData.logger.WriteInfo("Wrong conditions for painkillers");
 #endif
@@ -56,9 +54,9 @@ namespace GunshotWound2.PainFeature {
         }
 
         private static bool ProgressAction(SharedData sharedData, EcsEntity owner, EcsEntity target, out string message) {
-            ref ConvertedPed convertedMedic = ref owner.GetComponent<ConvertedPed>();
+            ref ConvertedPed convertedOwner = ref owner.GetComponent<ConvertedPed>();
             ref ConvertedPed convertedTarget = ref target.GetComponent<ConvertedPed>();
-            if (CheckConditions(convertedTarget.thisPed, convertedMedic.thisPed)) {
+            if (ItemTemplate.IsAbleToInteract(convertedOwner.thisPed, convertedTarget.thisPed)) {
                 message = null;
                 return true;
             } else {
@@ -80,21 +78,6 @@ namespace GunshotWound2.PainFeature {
 
             message = sharedData.localeConfig.PainkillersSuccess;
             return true;
-        }
-
-        private static bool CheckConditions(Ped target, Ped medic) {
-            if (target == medic) {
-                return target.IsStopped;
-            }
-
-            Vehicle vehicle = medic.CurrentVehicle;
-            if (vehicle != null) {
-                return vehicle == target.CurrentVehicle && medic.IsStopped && target.IsStopped;
-            }
-
-            return (target.IsRagdoll || target.IsStopped)
-                   && medic.IsStopped
-                   && GTA.World.GetDistance(target.Position, medic.Position) <= MAX_USE_RANGE;
         }
     }
 }

@@ -1,8 +1,12 @@
 namespace GunshotWound2.InventoryFeature {
     using System;
     using Configs;
+    using GTA;
+    using Utils;
 
     public readonly struct ItemTemplate : IEquatable<ItemTemplate> {
+        private const float MAX_USE_RANGE = 3f;
+
         public readonly string key;
         public readonly string pluralKey;
         public readonly string progressDescriptionKey;
@@ -48,6 +52,21 @@ namespace GunshotWound2.InventoryFeature {
 
         public override int GetHashCode() {
             return (key != null ? key.GetHashCode() : 0);
+        }
+
+        public static bool IsAbleToInteract(Ped owner, Ped target) {
+            if (target == owner) {
+                return target.StandsStill();
+            }
+
+            Vehicle vehicle = owner.CurrentVehicle;
+            if (vehicle != null) {
+                return vehicle == target.CurrentVehicle && owner.StandsStill() && target.StandsStill();
+            }
+
+            return (target.IsRagdoll || target.StandsStill())
+                   && owner.StandsStill()
+                   && owner.IsInRange(target.Position, MAX_USE_RANGE);
         }
     }
 

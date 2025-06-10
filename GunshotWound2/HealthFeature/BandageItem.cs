@@ -13,15 +13,11 @@ namespace GunshotWound2.HealthFeature {
                                                   progressDescriptionKey: "BandagingProgress",
                                                   duration: 5f,
                                                   selfAnimation: ("move_m@_idles@shake_off", "shakeoff_1"),
-                                                  otherAnimation: (
-                                                      "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer"),
-                                                  otherRagdollAnimation: (
-                                                      "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer"),
+                                                  otherAnimation: ("anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer"),
+                                                  otherRagdollAnimation: ("anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer"),
                                                   StartAction,
                                                   ProgressAction,
                                                   FinishAction);
-
-        private const float MAX_BANDAGE_RANGE = 3f;
 
         private static bool StartAction(SharedData sharedData, EcsEntity owner, EcsEntity target, out string message) {
             if (owner.IsNullOrDisposed() || !owner.Has<ConvertedPed>()) {
@@ -100,22 +96,7 @@ namespace GunshotWound2.HealthFeature {
                                                      in Health health) {
             return !health.isDead
                    && !health.bleedingToBandage.IsNullOrDisposed()
-                   && CheckBandagingConditions(convertedTarget.thisPed, convertedMedic.thisPed);
-        }
-
-        private static bool CheckBandagingConditions(Ped target, Ped medic) {
-            if (target == medic) {
-                return target.IsStopped;
-            }
-
-            Vehicle vehicle = medic.CurrentVehicle;
-            if (vehicle != null) {
-                return vehicle == target.CurrentVehicle && medic.IsStopped && target.IsStopped;
-            }
-
-            return (target.IsRagdoll || target.IsStopped)
-                   && medic.IsStopped
-                   && GTA.World.GetDistance(target.Position, medic.Position) <= MAX_BANDAGE_RANGE;
+                   && ItemTemplate.IsAbleToInteract(convertedMedic.thisPed, convertedTarget.thisPed);
         }
 
         public static bool IsBandage(this ItemTemplate item) {
