@@ -49,6 +49,10 @@
         }
 
         private void OnTick(object sender, EventArgs eventArgs) {
+            if (Game.IsPaused) {
+                return;
+            }
+
             sharedData.deltaTime = Game.LastFrameTime;
             sharedData.deltaTimeInMs = (int)(sharedData.deltaTime * 1000f);
             if (!IsStarted()) {
@@ -64,12 +68,16 @@
         }
 
         private void OnKeyUp(object sender, KeyEventArgs eventArgs) {
+            if (Game.IsPaused) {
+                return;
+            }
+
             if (sharedData.mainConfig.PauseKey.IsPressed(eventArgs)) {
                 TogglePause();
                 return;
             }
 
-            if (isStarted && !isPaused) {
+            if (isStarted && !isPaused && Game.Player.CanControlCharacter) {
                 sharedData.inputListener.ConsumeKeyUp(eventArgs);
             }
         }
