@@ -53,7 +53,7 @@ namespace GunshotWound2.InventoryFeature {
                 }
 
                 if (removeProgress) {
-                    convertedPed.thisPed.Task.ClearAll();
+                    convertedPed.thisPed.Task.ClearSecondary();
                     sharedData.uiService.HideProgressIndicator();
                     owner.RemoveComponent<CurrentlyUsingItem>();
                 }
