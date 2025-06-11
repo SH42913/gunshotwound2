@@ -105,15 +105,7 @@
 
                 stringBuilder.Append(healthType);
                 stringBuilder.Append(": ");
-
-                Notifier.Color color = healthPercent switch {
-                    >= 0.85f => Notifier.Color.GREEN,
-                    > 0.6f   => Notifier.Color.YELLOW,
-                    > 0.3f   => Notifier.Color.ORANGE,
-                    _        => Notifier.Color.RED,
-                };
-
-                ShowGauge(healthPercent, color);
+                ShowGauge(healthPercent, health.statusColor);
 
 #if DEBUG
                 stringBuilder.SetDefaultColor();
@@ -142,7 +134,7 @@
 
         private void ShowPain(Entity pedEntity, in Health health) {
             ref Pain pain = ref pedEntity.GetComponent<Pain>();
-            if (pain.currentState == null || health.isDead) {
+            if (!pain.HasPain() || health.isDead) {
                 return;
             }
 
@@ -151,7 +143,7 @@
             stringBuilder.Append(": ");
 
             float painPercent = pain.Percent();
-            ShowGauge(painPercent, pain.currentState.Color);
+            ShowGauge(painPercent, pain.statusColor);
 
 #if DEBUG
             stringBuilder.SetDefaultColor();

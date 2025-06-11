@@ -49,8 +49,8 @@ namespace GunshotWound2.Configs {
         public float MaxPainShockThreshold;
         public float MaximalPainRecoverSpeed;
 
-        public PainMoveSets MalePainMoveSets;
-        public PainMoveSets FemalePainMoveSets;
+        public StatusMoveSets MaleStatusMoveSets;
+        public StatusMoveSets FemaleStatusMoveSets;
 
         public string sectionName => "Peds.xml";
 
@@ -87,8 +87,8 @@ namespace GunshotWound2.Configs {
             MaximalBleedStopSpeed = root.Element("BleedHealSpeed").GetFloat() / 1000f;
             SelfHealingRate = root.Element(nameof(SelfHealingRate)).GetFloat();
 
-            MalePainMoveSets = PainMoveSets.FromXElement(root, nameof(MalePainMoveSets));
-            FemalePainMoveSets = PainMoveSets.FromXElement(root, nameof(FemalePainMoveSets));
+            MaleStatusMoveSets = StatusMoveSets.FromXElement(root, nameof(MaleStatusMoveSets));
+            FemaleStatusMoveSets = StatusMoveSets.FromXElement(root, nameof(FemaleStatusMoveSets));
 
             XElement targetsNode = root.Element("Targets");
             GswTargets targets = 0;

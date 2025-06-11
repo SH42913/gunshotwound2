@@ -4,7 +4,6 @@ namespace GunshotWound2.Configs {
     using System;
     using System.IO;
     using System.Xml.Linq;
-    using PedsFeature;
     using Utils;
 
     public sealed class MainConfig {
@@ -75,16 +74,6 @@ namespace GunshotWound2.Configs {
             notifier.peds.show = PedsMessages;
             notifier.wounds.show = WoundsMessages;
             notifier.critical.show = CriticalMessages;
-        }
-
-        public PainMoveSets GetPainMoveSetsFor(in ConvertedPed convertedPed) {
-            if (convertedPed.isPlayer) {
-                return playerConfig.PainMoveSets;
-            } else if (convertedPed.isMale) {
-                return pedsConfig.MalePainMoveSets;
-            } else {
-                return pedsConfig.FemalePainMoveSets;
-            }
         }
 
         public override string ToString() {

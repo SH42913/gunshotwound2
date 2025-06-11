@@ -46,7 +46,6 @@
             convertedPed.hasBrokenLegs = false;
             convertedPed.ResetMoveRate();
             convertedPed.UnBlockSprint();
-            convertedPed.thisPed.SetConfigFlag(PedConfigFlagToggles.IsInjured, false);
         }
     }
 }

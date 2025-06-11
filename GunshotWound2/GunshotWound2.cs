@@ -176,6 +176,7 @@
             TraumaFeature.TraumaFeature.Create(commonSystems, sharedData);
             HealthFeature.HealthFeature.Create(ecsWorld, commonSystems, sharedData);
             PainFeature.PainFeature.Create(commonSystems, sharedData);
+            StatusFeature.StatusFeature.Create(commonSystems, sharedData);
             InventoryFeature.InventoryFeature.Create(commonSystems, sharedData);
         }
         #endregion

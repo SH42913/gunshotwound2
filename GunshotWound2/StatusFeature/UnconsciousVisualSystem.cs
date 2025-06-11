@@ -1,139 +1,45 @@
-﻿namespace GunshotWound2.PainFeature.States {
+namespace GunshotWound2.StatusFeature {
     using System;
     using GTA;
     using GTA.Math;
     using GTA.NaturalMotion;
     using PedsFeature;
-    using HealthFeature;
     using Scellecs.Morpeh;
     using TraumaFeature;
     using Utils;
     using Weighted_Randomizer;
+    using EcsEntity = Scellecs.Morpeh.Entity;
+    using EcsWorld = Scellecs.Morpeh.World;
 
-    public sealed class UnbearablePainState : IPainState {
-        public const float PAIN_THRESHOLD = 1f;
+    public sealed class UnconsciousVisualSystem : ILateSystem {
         private const string CRAWL_ANIM_DICT = "move_injured_ground";
 
-        private static readonly int[] NM_MESSAGES = { 787, };
-
-        private static readonly string[] NON_PLAYER_DEATH_AMBIENT = {
-            "DYING_HELP", "DYING_MOAN", "DYING_PLEAD",
-        };
-
-        private static readonly string[] PLAYER_DEATH_AMBIENT = {
-            "DEATH_HIGH_LONG", "DEATH_HIGH_MEDIUM", "DEATH_UNDERWATER",
-        };
-
-        private static readonly string[] MOODS = {
-            "dead_1",
-            "dead_2",
-            "mood_sleeping_1",
-            "mood_knockout_1",
-            "pose_aiming_1",
-        };
-
-        public float PainThreshold => PAIN_THRESHOLD;
-        public Notifier.Color Color => Notifier.Color.RED;
-
+        private readonly SharedData sharedData;
         private readonly ConvertedPed.AfterRagdollAction writheAction;
 
-        private readonly SharedData sharedData;
+        public EcsWorld World { get; set; }
+        private Filter requests;
 
-        public UnbearablePainState(SharedData sharedData) {
+        public UnconsciousVisualSystem(SharedData sharedData) {
             this.sharedData = sharedData;
 
             writheAction = StartWrithe;
         }
 
-        public void ApplyPainIncreased(Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
-            ref Pain pain = ref pedEntity.GetComponent<Pain>();
-            if (pain.Percent() - PainThreshold < 0.1f) {
-                pain.diff += 0.2f * pain.max;
-            }
+        public void OnAwake() {
+            requests = World.Filter.With<UnconsciousVisualRequest>().With<ConvertedPed>();
+        }
 
-            convertedPed.isRestrictToDrive = true;
-            SelectVisualBehaviour(pedEntity, ref convertedPed);
-
-            int deathAnimIndex = sharedData.random.Next(1, 3);
-            PedEffects.PlayFacialAnim(convertedPed.thisPed, $"die_{deathAnimIndex.ToString()}", convertedPed.isMale);
-            convertedPed.thisPed.StopCurrentPlayingSpeech();
-
-            if (convertedPed.isPlayer) {
-                PlayerOnlyCase(ref convertedPed);
-            } else {
-                NonPlayerCase(ref convertedPed);
+        public void OnUpdate(float deltaTime) {
+            foreach (EcsEntity entity in requests) {
+                SelectVisualBehaviour(entity, ref entity.GetComponent<ConvertedPed>());
+                entity.RemoveComponent<UnconsciousVisualRequest>();
             }
         }
 
-        public void ApplyPainDecreased(Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
-            convertedPed.ResetRagdoll();
-            convertedPed.isRestrictToDrive = false;
+        void IDisposable.Dispose() { }
 
-            PedEffects.StopAnimation(convertedPed.thisPed, convertedPed.forcedAnimation);
-            convertedPed.forcedAnimation = default;
-
-            if (convertedPed.isPlayer) {
-                SetPlayerIsIgnoredByPeds(Game.Player, false);
-                sharedData.cameraService.SetUnconsciousEffect(false);
-            }
-        }
-
-        public bool TryGetMoveSets(in ConvertedPed convertedPed, out string[] moveSets) {
-            moveSets = null;
-            return false;
-        }
-
-        public bool TryGetMoodSets(in ConvertedPed convertedPed, out string[] moodSets) {
-            moodSets = MOODS;
-            return true;
-        }
-
-        private void PlayerOnlyCase(ref ConvertedPed convertedPed) {
-            string speech = sharedData.random.Next(PLAYER_DEATH_AMBIENT);
-            convertedPed.thisPed.PlayAmbientSpeech(speech, SpeechModifier.InterruptShouted);
-
-            Player player = Game.Player;
-            if (player.Wanted.WantedLevel <= 2) {
-                SetPlayerIsIgnoredByPeds(Game.Player, true);
-                if (sharedData.mainConfig.playerConfig.PoliceCanForgetYou) {
-                    const bool delayLawResponse = false;
-                    player.Wanted.SetWantedLevel(0, delayLawResponse);
-                    player.Wanted.ApplyWantedLevelChangeNow(delayLawResponse);
-                }
-            }
-
-            if (sharedData.mainConfig.playerConfig.CanDropWeapon) {
-                convertedPed.thisPed.Weapons.Drop();
-            }
-
-            if (!convertedPed.hasSpineDamage) {
-                sharedData.notifier.critical.QueueMessage(sharedData.localeConfig.UnbearablePainMessage);
-            }
-
-            sharedData.cameraService.SetUnconsciousEffect(true);
-        }
-
-        private void NonPlayerCase(ref ConvertedPed convertedPed) {
-            Ped ped = convertedPed.thisPed;
-            ped.Weapons.Drop();
-
-            string speech = sharedData.random.Next(NON_PLAYER_DEATH_AMBIENT);
-            ped.PlayAmbientSpeech(speech, SpeechModifier.InterruptShouted);
-
-            bool isInVehicle = ped.IsInVehicle();
-            bool notDriver = ped.SeatIndex != VehicleSeat.Driver;
-            if (isInVehicle && notDriver && sharedData.random.IsTrueWithProbability(0.5f)) {
-                ped.Task.LeaveVehicle(LeaveVehicleFlags.BailOut);
-            }
-        }
-
-        private void SetPlayerIsIgnoredByPeds(Player player, bool value) {
-            if (sharedData.mainConfig.playerConfig.PedsWillIgnoreUnconsciousPlayer) {
-                player.Wanted.SetEveryoneIgnorePlayer(value);
-            }
-        }
-
-        private void SelectVisualBehaviour(Scellecs.Morpeh.Entity pedEntity, ref ConvertedPed convertedPed) {
+        private void SelectVisualBehaviour(EcsEntity entity, ref ConvertedPed convertedPed) {
             if (convertedPed.hasSpineDamage) {
 #if DEBUG
                 sharedData.logger.WriteInfo("No visual behaviour due Spine Damage");
@@ -151,10 +57,11 @@
             randomizer.Add(1, weight: 2);
 
             if (!convertedPed.thisPed.IsInVehicle()) {
-                ref Traumas traumas = ref pedEntity.GetComponent<Traumas>();
-                bool majorInjury = traumas.HasActive(Traumas.Effects.Heart)
-                                 || traumas.HasActive(Traumas.Effects.Lungs)
-                                 || traumas.HasActive(Traumas.Effects.Abdomen);
+                ref Traumas traumas = ref entity.GetComponent<Traumas>(out bool hasTraumas);
+                bool majorInjury = hasTraumas
+                                   && (traumas.HasActive(Traumas.Effects.Heart)
+                                       || traumas.HasActive(Traumas.Effects.Lungs)
+                                       || traumas.HasActive(Traumas.Effects.Abdomen));
 
                 // TODO: Restore later
                 // bool legsDamaged = traumas.HasActive(Traumas.Effects.Legs);
@@ -162,7 +69,7 @@
                 //     randomizer.Add(2);
                 // }
 
-                float totalSeverity = HealthFeature.CalculateSeverityOfAllBleedingWounds(pedEntity);
+                float totalSeverity = HealthFeature.HealthFeature.CalculateSeverityOfAllBleedingWounds(entity);
                 float timeToDeath = convertedPed.CalculateTimeToDeath(totalSeverity);
                 if (majorInjury && timeToDeath <= 30f && !convertedPed.isPlayer) {
                     randomizer.Add(3);

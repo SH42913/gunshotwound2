@@ -4,7 +4,6 @@
     using HealthFeature;
     using PedsFeature;
     using Scellecs.Morpeh;
-    using States;
 
     public sealed class PainChangeSystem : ILateSystem {
         private readonly SharedData sharedData;
@@ -36,7 +35,6 @@
                     pain.amount = 0f;
                     pain.diff = 0f;
                     pain.delayedDiff = 0f;
-                    pain.currentState = null;
                     continue;
                 }
 
@@ -51,11 +49,11 @@
                     float applied = ApplyPain(ref convertedPed, ref pain);
                     sharedData.logger.WriteInfo($"Increased pain for {applied} to {pain.amount} at {convertedPed.name}");
 #else
-                    ApplyPain(ref convertedPed, ref pain);
+                    ApplyPain(entity, ref convertedPed, ref pain);
 #endif
                 } else if (pain.delayedDiff > 0) {
                     UpdateDelayedPain(ref pain, deltaTime);
-                    ApplyPain(ref convertedPed, ref pain);
+                    ApplyPain(entity, ref convertedPed, ref pain);
                 } else if (pain.HasPain()) {
                     RecoverPain(ref pain, ref painkillersEffect, deltaTime);
                 }
@@ -114,12 +112,27 @@
         }
 
         // ReSharper disable once UnusedMethodReturnValue.Local due used under DEBUG_EVERY_FRAME
-        private float ApplyPain(ref ConvertedPed convertedPed, ref Pain pain) {
+        private float ApplyPain(Entity entity, ref ConvertedPed convertedPed, ref Pain pain) {
             PlayPainEffects(ref convertedPed, ref pain);
 
+            bool wasTooMuch = pain.TooMuchPain();
             float diff = pain.diff;
             pain.amount += diff;
             pain.diff = 0f;
+
+            float percent = pain.Percent();
+            if (percent >= sharedData.mainConfig.woundConfig.DeadlyPainShockPercent) {
+#if DEBUG
+                sharedData.logger.WriteInfo($"{convertedPed.name} is dead due to pain shock");
+#endif
+                entity.GetComponent<Health>().InstantKill(sharedData.localeConfig.PainShockDeath);
+            } else if (!wasTooMuch && percent >= 1f) {
+                const float ensurePainOverflow = 0.15f;
+                if (percent - 1f < ensurePainOverflow) {
+                    pain.diff += ensurePainOverflow * pain.max;
+                }
+            }
+
             return diff;
         }
 

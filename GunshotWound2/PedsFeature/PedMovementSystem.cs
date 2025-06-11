@@ -1,6 +1,9 @@
 ﻿namespace GunshotWound2.PedsFeature {
+    using GTA;
     using PlayerFeature;
     using Scellecs.Morpeh;
+    using EcsEntity = Scellecs.Morpeh.Entity;
+    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class PedMovementSystem : ILateSystem {
         private const float DEFAULT_MOVE_RATE = 1f;
@@ -10,7 +13,7 @@
         private Filter peds;
         private Stash<ConvertedPed> pedStash;
 
-        public World World { get; set; }
+        public EcsWorld World { get; set; }
 
         public PedMovementSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -22,7 +25,7 @@
         }
 
         public void OnUpdate(float deltaTime) {
-            foreach (Entity entity in peds) {
+            foreach (EcsEntity entity in peds) {
                 ref ConvertedPed convertedPed = ref pedStash.Get(entity);
                 if (convertedPed.thisPed.IsInVehicle()) {
                     VehicleMovement(ref convertedPed);
@@ -37,7 +40,7 @@
                 return;
             }
 
-            GTA.Vehicle vehicle = convertedPed.thisPed.CurrentVehicle;
+            Vehicle vehicle = convertedPed.thisPed.CurrentVehicle;
             if (vehicle.Driver != convertedPed.thisPed) {
                 return;
             }
@@ -70,7 +73,7 @@
             }
 
             if (convertedPed.sprintBlockers > 0) {
-                convertedPed.thisPed.SetConfigFlag(GTA.PedConfigFlagToggles.IsInjured, true);
+                convertedPed.thisPed.SetConfigFlag(PedConfigFlagToggles.IsInjured, true);
                 if (convertedPed.isPlayer) {
                     PlayerEffects.SetSprint(false);
                 }
@@ -80,11 +83,19 @@
         }
 
         public void Dispose() {
-            foreach (Entity entity in peds) {
+            foreach (EcsEntity entity in peds) {
                 ref ConvertedPed convertedPed = ref pedStash.Get(entity);
-                PedEffects.OverrideMoveRate(convertedPed.thisPed, DEFAULT_MOVE_RATE);
+                Ped ped = convertedPed.thisPed;
+                PedEffects.OverrideMoveRate(ped, DEFAULT_MOVE_RATE);
                 if (convertedPed.hasCustomMoveSet) {
-                    PedEffects.ResetMoveSet(convertedPed.thisPed);
+                    PedEffects.ResetMoveSet(ped);
+                }
+
+                if (convertedPed.sprintBlockers > 0) {
+                    ped.SetConfigFlag(PedConfigFlagToggles.IsInjured, false);
+                    if (convertedPed.isPlayer) {
+                        PlayerEffects.SetSprint(true);
+                    }
                 }
             }
         }

@@ -139,6 +139,13 @@ ClosestPedHelpMessage,You can use {0} to interact with peds around you,Вы мо
 MedkitsHelpMessage,You may find bandages and painkillers in medkits and emergency cars,Вы можете найти бинты и обезболивающие в аптечках и спец-машинах,,,,,,,,医療キットのヘルプ情報,醫藥包幫助資訊,医药包帮助信息,,Voit löytää sideharsoja ja särkylääkkeitä ensiapulaukuista tai ambulanssi -ja poliisiautoista
 DeathKeyHelpMessage,"If you don't want to wait for slow death, use {0}","Если вы не хотите медленно умирать, используйте {0}",,,,,,,,,,,,
 ,,,,,,,,,,,,,,
+Status,Status,Статус,,,,,,,,,,,,
+Status.Stable,Stable,Стабилен,,,,,,,,,,,,
+Status.Warning,Warning,Нестабилен,,,,,,,,,,,,
+Status.Distressed,Distressed,Дезориентация,,,,,,,,,,,,
+Status.Critical,Critical,Угроза жизни,,,,,,,,,,,,
+Status.Unconscious,Unconscious,Без сознания,,,,,,,,,,,,
+,,,,,,,,,,,,,,
 BodyParts.Head,Head,Голова,,,,,,,,,,,,
 BodyParts.Neck,Neck,Шея,,,,,,,,,,,,
 BodyParts.Chest,Chest,Грудь,,,,,,,,,,,,

@@ -25,6 +25,14 @@ namespace GunshotWound2.Services {
             this.logger = logger;
         }
 
+        public void IncreaseShakeAmplitude() {
+            aimingShakeAmplitude += 1f;
+        }
+
+        public void DecreaseShakeAmplitude() {
+            aimingShakeAmplitude -= 1f;
+        }
+
         public void SetAimingShake(bool needShaking) {
             bool isShaking = GameplayCamera.IsShaking;
             if (isShaking == needShaking) {

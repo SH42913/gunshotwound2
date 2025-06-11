@@ -42,13 +42,6 @@
     <SelfHealingRate Value="0.04"/>
     <!-- How fast you will heal if you have no bleeding -->
 
-    <MoveSets MildPain="move_m@plodding;move_m@buzzed;move_m@gangster@generic;"
-              AvgPain="move_m@depressed@a;move_m@injured;move_m@drunk@slightlydrunk;"
-              IntensePain="move_m@drunk@a;move_m@drunk@moderatedrunk;move_m@drunk@verydrunk;"/>
-    <!-- You can change pain MoveSets by yourself.
-    GSW supports many MoveSets(separated by ;), random will take one of them.
-    There are 3 states: Mild(<30%, currentPain/maximalPain), Average(<80%) and Intense(<100%) -->
-
     <HelmetCost Value="40"/>
     <!-- 40 means you need $40 to buy a helmet. If you're using a skin changer, you need to set it to 0. -->
 </PlayerConfig>

@@ -21,8 +21,6 @@ namespace GunshotWound2.Configs {
         public bool UseScreenEffects;
         public float SelfHealingRate;
 
-        public PainMoveSets PainMoveSets;
-
         public string sectionName => "Player.xml";
 
         public void FillFrom(XDocument doc) {
@@ -40,8 +38,6 @@ namespace GunshotWound2.Configs {
             UseScreenEffects = root.Element(nameof(UseScreenEffects)).GetBool();
             MoneyForHelmet = root.Element("HelmetCost").GetInt();
             SelfHealingRate = root.Element(nameof(SelfHealingRate)).GetFloat();
-
-            PainMoveSets = PainMoveSets.FromXElement(root, "MoveSets");
         }
 
         public void Validate(MainConfig mainConfig, ILogger logger) { }

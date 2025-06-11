@@ -1,7 +1,7 @@
 ﻿namespace GunshotWound2.PainFeature {
     using System;
     using Scellecs.Morpeh;
-    using States;
+    using Utils;
 
     [Serializable]
     public struct Pain : IComponent {
@@ -10,7 +10,7 @@
         public float delayedDiff;
         public float recoveryRate;
         public float max;
-        public IPainState currentState;
+        public Notifier.Color statusColor;
     }
 
     public static class PainExtensions {

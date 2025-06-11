@@ -3,10 +3,11 @@
     using GTA.Native;
     using GTA.NaturalMotion;
     using Scellecs.Morpeh;
+    using StatusFeature;
 
     public struct ConvertedPed : IComponent {
         public delegate void AfterRagdollAction(ref ConvertedPed convertedPed);
-        
+
         public string name;
         public Ped thisPed;
         public bool isMale;
@@ -17,6 +18,7 @@
         public int lastFrameArmor;
         public Bone lastDamagedBone;
         public Ped lastAggressor;
+        public IPedStatus status;
 
         public (int time, RagdollType type) ragdollRequest;
         public bool permanentRagdoll;
@@ -53,7 +55,7 @@
         public static int TotalHealth(this in ConvertedPed convertedPed) {
             return Configs.WoundConfig.ConvertHealthFromNative(convertedPed.thisPed.Health);
         }
-        
+
         public static void RequestRagdoll(this ref ConvertedPed convertedPed, int timeInMs, RagdollType type = RagdollType.Relax) {
             if (convertedPed.ragdollRequest.time >= 0 && !convertedPed.permanentRagdoll) {
                 convertedPed.ragdollRequest = (timeInMs, type);

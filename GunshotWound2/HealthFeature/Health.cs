@@ -17,6 +17,7 @@
         public Entity bleedingToBandage;
         public Entity mostDangerousBleeding;
         public HashSet<Entity> bleedingWounds;
+        public Notifier.Color statusColor;
     }
 
     public static class HealthExtensions {

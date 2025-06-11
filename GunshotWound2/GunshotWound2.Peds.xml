@@ -56,7 +56,10 @@
     <BleedHealSpeed Value="1.0"/>
     <!-- Same as for player -->
 
-    <MaleMoveSets MildPain="" AvgPain="" IntensePain=""/>
-    <FemaleMoveSets MildPain="" AvgPain="" IntensePain=""/>
-    <!-- Same as for player -->
+    <!-- MoveSets for various ped status. GSW supports many MoveSets(separated by ;), random will take one of them. -->
+    <MaleStatusMoveSets Warning="move_m@plodding;move_m@buzzed;move_m@gangster@generic;"
+                        Distressed="move_m@depressed@a;move_m@injured;move_m@drunk@slightlydrunk;"
+                        Critical="move_m@drunk@a;move_m@drunk@moderatedrunk;move_m@drunk@verydrunk;"/>
+
+    <FemaleStatusMoveSets Warning="" Distressed="" Critical=""/>
 </PedsConfig>
