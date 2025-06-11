@@ -53,7 +53,7 @@ namespace GunshotWound2.InventoryFeature {
                 }
 
                 if (removeProgress) {
-                    convertedPed.thisPed.Task.ClearSecondary();
+                    convertedPed.thisPed.Task.ClearAll();
                     sharedData.uiService.HideProgressIndicator();
                     owner.RemoveComponent<CurrentlyUsingItem>();
                 }
@@ -107,27 +107,32 @@ namespace GunshotWound2.InventoryFeature {
             if (item.startAction.Invoke(sharedData, owner, target, out message)) {
                 ref ConvertedPed convertedOwner = ref owner.GetComponent<ConvertedPed>();
                 ref ConvertedPed convertedTarget = ref target.GetComponent<ConvertedPed>();
+                int durationInMs = item.duration.ConvertToMilliSec();
 
                 CrClipAsset crClipAsset;
                 var flags = AnimationFlags.Secondary;
+                Ped ownerPed = convertedOwner.thisPed;
                 if (owner == target) {
                     crClipAsset = new CrClipAsset(item.selfAnimation.dict, item.selfAnimation.name);
                     flags |= AnimationFlags.UpperBodyOnly;
-                } else if (convertedTarget.isRagdoll) {
-                    crClipAsset = new CrClipAsset(item.otherRagdollAnimation.dict, item.otherRagdollAnimation.name);
-                    RotatePedToOther(convertedOwner.thisPed, convertedTarget.thisPed);
                 } else {
-                    crClipAsset = new CrClipAsset(item.otherAnimation.dict, item.otherAnimation.name);
-                    flags |= AnimationFlags.UpperBodyOnly;
-                    RotatePedToOther(convertedOwner.thisPed, convertedTarget.thisPed);
+                    if (convertedTarget.isRagdoll) {
+                        crClipAsset = new CrClipAsset(item.otherRagdollAnimation.dict, item.otherRagdollAnimation.name);
+                    } else {
+                        crClipAsset = new CrClipAsset(item.otherAnimation.dict, item.otherAnimation.name);
+                        flags |= AnimationFlags.UpperBodyOnly;
+                    }
+
+                    ownerPed.Task.TurnTo(convertedTarget.thisPed, durationInMs);
+                    RotatePedToOther(ownerPed, convertedTarget.thisPed);
                 }
 
-                convertedOwner.thisPed.Task.PlayAnimation(crClipAsset,
-                                                          AnimationBlendDelta.NormalBlendIn,
-                                                          AnimationBlendDelta.NormalBlendOut,
-                                                          item.duration.ConvertToMilliSec(),
-                                                          flags,
-                                                          startPhase: 0f);
+                ownerPed.Task.PlayAnimation(crClipAsset,
+                                            AnimationBlendDelta.NormalBlendIn,
+                                            AnimationBlendDelta.NormalBlendOut,
+                                            durationInMs,
+                                            flags,
+                                            startPhase: 0f);
 
                 owner.SetComponent(new CurrentlyUsingItem {
                     itemTemplate = item,
@@ -150,7 +155,7 @@ namespace GunshotWound2.InventoryFeature {
 
         private static void RotatePedToOther(Ped ped, Ped other) {
             Vector3 up = ped.UpVector;
-            Vector3 direction = other.Position - ped.Position;
+            Vector3 direction = other.BelowPosition - ped.BelowPosition;
             ped.Quaternion = Quaternion.LookRotation(direction, up);
         }
 
