@@ -42,7 +42,8 @@ namespace GunshotWound2.StatusFeature {
         public void OnUpdate(float deltaTime) {
             foreach (EcsEntity entity in peds) {
                 ref ConvertedPed convertedPed = ref pedStash.Get(entity);
-                if (!convertedPed.thisPed.IsValid()) {
+                ref Health health = ref healthStash.Get(entity);
+                if (!convertedPed.thisPed.IsValid() || health.isDead) {
                     continue;
                 }
 
@@ -51,7 +52,8 @@ namespace GunshotWound2.StatusFeature {
                     convertedPed.status = null;
                 }
 
-                int newStatusIndex = GetNewStatusIndex(entity, convertedPed);
+                ref Pain pain = ref painStash.Get(entity);
+                int newStatusIndex = GetNewStatusIndex(convertedPed, ref health, ref pain);
                 ChangeStatus(entity, ref convertedPed, newStatusIndex);
             }
         }
@@ -62,9 +64,7 @@ namespace GunshotWound2.StatusFeature {
             }
         }
 
-        private int GetNewStatusIndex(EcsEntity entity, in ConvertedPed convertedPed) {
-            ref Pain pain = ref painStash.Get(entity);
-            ref Health health = ref healthStash.Get(entity);
+        private int GetNewStatusIndex(in ConvertedPed convertedPed, ref Health health, ref Pain pain) {
             if (!pain.HasPain() && !health.IsDamaged(convertedPed)) {
                 return -1;
             }
