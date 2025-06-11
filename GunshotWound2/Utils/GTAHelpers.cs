@@ -47,7 +47,17 @@ namespace GunshotWound2.Utils {
         }
 
         public static bool StandsStill(this Ped ped) {
-            return ped.IsStopped;
+            bool isMoving = ped.IsRagdoll
+                            || ped.IsWalking
+                            || ped.IsRunning
+                            || ped.IsSprinting
+                            || ped.IsShooting
+                            || ped.IsJumping
+                            || ped.IsAiming
+                            || ped.IsReloading
+                            || ped.IsSwimming;
+
+            return !isMoving;
         }
     }
 }
