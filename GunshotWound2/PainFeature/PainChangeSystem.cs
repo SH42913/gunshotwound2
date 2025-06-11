@@ -121,12 +121,7 @@
             pain.diff = 0f;
 
             float percent = pain.Percent();
-            if (percent >= sharedData.mainConfig.woundConfig.DeadlyPainShockPercent) {
-#if DEBUG
-                sharedData.logger.WriteInfo($"{convertedPed.name} is dead due to pain shock");
-#endif
-                entity.GetComponent<Health>().InstantKill(sharedData.localeConfig.PainShockDeath);
-            } else if (!wasTooMuch && percent >= 1f) {
+            if (!wasTooMuch && percent >= 1f) {
                 const float ensurePainOverflow = 0.15f;
                 if (percent - 1f < ensurePainOverflow) {
                     pain.diff += ensurePainOverflow * pain.max;

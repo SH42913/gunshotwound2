@@ -70,7 +70,6 @@ namespace GunshotWound2.Configs {
         public string BandageSuccess;
 
         public string ArmorDestroyed;
-        public string PainShockDeath;
         public string DeathReason;
         public string BleedingReason;
         public string RunningWithScissors;
