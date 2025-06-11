@@ -62,11 +62,19 @@
             }
 
             if (convertedPed.resetMoveSet) {
+#if DEBUG
+                sharedData.logger.WriteInfo($"Reset move set for {convertedPed.name}");
+#endif
+
                 PedEffects.ResetMoveSet(convertedPed.thisPed);
                 convertedPed.moveSetRequest = null;
                 convertedPed.resetMoveSet = false;
                 convertedPed.hasCustomMoveSet = false;
             } else if (PedEffects.TryRequestMoveSet(convertedPed.moveSetRequest)) {
+#if DEBUG
+                sharedData.logger.WriteInfo($"Changed move set for {convertedPed.name}, new set - {convertedPed.moveSetRequest}");
+#endif
+
                 PedEffects.ChangeMoveSet(convertedPed.thisPed, convertedPed.moveSetRequest);
                 convertedPed.moveSetRequest = null;
                 convertedPed.hasCustomMoveSet = true;

@@ -143,12 +143,18 @@ namespace GunshotWound2.Services {
 #endif
 
             if (useScreenEffects && !string.IsNullOrEmpty(prev)) {
+#if DEBUG
+                logger.WriteInfo($"Stopped {prev}");
+#endif
                 Function.Call(Hash.ANIMPOSTFX_STOP, prev);
             }
 
             if (useScreenEffects && !string.IsNullOrEmpty(next)) {
                 const int durationInMs = 5000;
                 Function.Call(Hash.ANIMPOSTFX_PLAY, next, durationInMs, loop);
+#if DEBUG
+                logger.WriteInfo($"Started {next}");
+#endif
             }
         }
 
