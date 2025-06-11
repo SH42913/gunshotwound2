@@ -57,9 +57,11 @@
     <!-- Same as for player -->
 
     <!-- MoveSets for various ped status. GSW supports many MoveSets(separated by ;), random will take one of them. -->
-    <MaleStatusMoveSets Warning="move_m@plodding;move_m@buzzed;move_m@gangster@generic;"
-                        Distressed="move_m@depressed@a;move_m@injured;move_m@drunk@slightlydrunk;"
-                        Critical="move_m@drunk@a;move_m@drunk@moderatedrunk;move_m@drunk@verydrunk;"/>
+    <MaleStatusMoveSets Warning="move_m@drunk@slightlydrunk;move_m@favor_right_foot;move_m@drunk@a;"
+                        Distressed="move_m@injured;move_m@drunk@moderatedrunk;move_injured_generic;"
+                        Critical="move_m@plodding;move_m@buzzed;move_m@depressed@a;move_m@drunk@verydrunk;move_m@tired;"/>
 
-    <FemaleStatusMoveSets Warning="" Distressed="" Critical=""/>
+    <FemaleStatusMoveSets Warning="move_f@chichi;move_m@drunk@slightlydrunk;move_m@favor_right_foot;" 
+                          Distressed="move_f@drunk@a;move_f@sad@b;move_injured_generic;" 
+                          Critical="move_m@plodding;move_m@buzzed;move_m@depressed@a;move_m@tired;"/>
 </PedsConfig>
