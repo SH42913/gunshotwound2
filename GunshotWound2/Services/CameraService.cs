@@ -62,7 +62,7 @@ namespace GunshotWound2.Services {
 #if DEBUG
             logger.WriteInfo($"{nameof(SetHeadInjuryEffect)} with {value.ToString()}");
 #endif
-            SetPostFx(HEAD_INJURY_PRIORITY, "DeathFailMPIn", value, false);
+            SetPostFx(HEAD_INJURY_PRIORITY, "DeathFailMPIn", value, true);
         }
 
         public void SetUnconsciousEffect(bool value) {
