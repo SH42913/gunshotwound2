@@ -91,6 +91,11 @@ namespace GunshotWound2.Configs {
         public string ClosestPedHelpMessage;
         public string DeathKeyHelpMessage;
 
+        public string YourStatus;
+        public string HisStatus;
+        public string HerStatus;
+        public string Dead;
+
         public string TranslationAuthor;
 
         public (bool success, string reason) TryToLoad(string scriptPath, string language) {

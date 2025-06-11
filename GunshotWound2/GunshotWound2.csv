@@ -38,9 +38,9 @@ BleedingInHead,Intracranial bleeding,Кровотечение в мозг,Kopfbl
 TraumaticBrainInjury,Traumatic brain injury,Тяжелая травма головного мозга,Schädeltrauma,Lésion cérébrale traumatique,Traumatyczne uszkodzenie mózgu,외상성 뇌 손상,Traumatismo crâniano,Traumatismo cerebral,Traumatic brain injury,外傷性脳損傷,創傷性腦損傷,创伤性脑损伤,Traumatic brain injury,Vakava aivovamma
 BrokenNeck,Damage to cervical vertebrae,Повреждение шейных позвонков,Gebrochenes Genick,Nuque brisée,Złamany lub skręcony kark; uszkodzenie rdzeniu kręgowego,목이 부러짐,Pescoço quebrado,Cuello roto o dañado; vertebra cervical dañada,Broken or sprained neck; damage to cervical vertebrae,頚椎骨折,頸椎骨折,颈椎骨折,Damage to cervical vertebrae,Kaulanikama vahingoittunut
 ,,,,,,,,,,,,,,
-YourHealth,Your Blood Volume,Ваш объём крови,,Votre santé,,,,,,あなたの健康状態,你的健康狀況,你的健康状况,,Sinun terveys
-HisHealth,His Blood Volume,Его объём крови,,Sa santé,,,,,,彼の健康状態,他的健康狀況,他的健康状况,,Hänen terveys
-HerHealth,Her Blood Volume,Её объём крови,,Sa santé,,,,,,彼女の健康状態,她的健康狀況,她的健康状况,,Hänen terveys
+YourHealth,Your blood volume,Ваш объём крови,,Votre santé,,,,,,あなたの健康状態,你的健康狀況,你的健康状况,,Sinun terveys
+HisHealth,His blood volume,Его объём крови,,Sa santé,,,,,,彼の健康状態,他的健康狀況,他的健康状况,,Hänen terveys
+HerHealth,Her blood volume,Её объём крови,,Sa santé,,,,,,彼女の健康状態,她的健康狀況,她的健康状况,,Hänen terveys
 Dead,Dead,Мёртв,,Mort,,,,,,死亡,死亡,死亡,,Kuollut
 Pain,Pain level,Уровень боли,,,,,,,,,,,,
 PainIncreasedMessage,You feel terrible...,Вы чувствуете себя хуже...,,,,,,,,痛みが増す（通知）,疼痛加劇（提示）,疼痛加剧（提示）,,Sinulla on huono olo...
@@ -118,7 +118,6 @@ PainShockDeath,You have died of pain shock,Вы погибли от болево
 DeathReason,Death reason,Причина смерти,,,,,,,,死亡原因,死亡原因,死亡原因,,Kuolinsyy
 BleedingReason,Bleeding,Кровотечение,,,,,,,,出血原因,出血原因,出血原因,,Verenvuoto
 RunningWithScissors,Running with major injury is not a good idea,Бегать с серьёзным ранением не очень хорошая идея,,,,,,,,はさみを持ったまま走っている（警告）,拿著剪刀亂跑（警告）,拿着剪刀乱跑（警告）,,{0} Terveydellä juokseminen ei ole hyvä idea
-CBV,Circulating blood volume,Объем циркулирующей крови,,,,,,,,,,,,
 ,,,,,,,,,,,,,,
 FoundItems,You've got:,Вы получили:,,,,,,,,,,,,
 YourInventory,In inventory:,В инвентаре:,,,,,,,,,,,,
@@ -139,12 +138,16 @@ ClosestPedHelpMessage,You can use {0} to interact with peds around you,Вы мо
 MedkitsHelpMessage,You may find bandages and painkillers in medkits and emergency cars,Вы можете найти бинты и обезболивающие в аптечках и спец-машинах,,,,,,,,医療キットのヘルプ情報,醫藥包幫助資訊,医药包帮助信息,,Voit löytää sideharsoja ja särkylääkkeitä ensiapulaukuista tai ambulanssi -ja poliisiautoista
 DeathKeyHelpMessage,"If you don't want to wait for slow death, use {0}","Если вы не хотите медленно умирать, используйте {0}",,,,,,,,,,,,
 ,,,,,,,,,,,,,,
-Status,Status,Статус,,,,,,,,,,,,
+YourStatus,Your status,Ваш статус,,,,,,,,,,,,
+HisStatus,His status,Его статус,,,,,,,,,,,,
+HerStatus,Her status,Её статус,,,,,,,,,,,,
 Status.Stable,Stable,Стабилен,,,,,,,,,,,,
 Status.Warning,Warning,Нестабилен,,,,,,,,,,,,
 Status.Distressed,Distressed,Дезориентация,,,,,,,,,,,,
 Status.Critical,Critical,Угроза жизни,,,,,,,,,,,,
 Status.Unconscious,Unconscious,Без сознания,,,,,,,,,,,,
+Status.Immobilized,Immobilized,Обездвижен,,,,,,,,,,,,
+Status.Dead,Dead,Мёртв,,,,,,,,,,,,
 ,,,,,,,,,,,,,,
 BodyParts.Head,Head,Голова,,,,,,,,,,,,
 BodyParts.Neck,Neck,Шея,,,,,,,,,,,,

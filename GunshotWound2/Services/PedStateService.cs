@@ -7,6 +7,7 @@
     using PainFeature;
     using PedsFeature;
     using Scellecs.Morpeh;
+    using TraumaFeature;
     using Utils;
 
     public sealed class PedStateService {
@@ -68,8 +69,18 @@
 
             stringBuilder.Clear();
             stringBuilder.Append("<C></C>");
+            ShowStatus(pedEntity, ref convertedPed, ref health);
+
+#if DEBUG
             ShowHealth(ref convertedPed, ref health);
             ShowPain(pedEntity, health);
+#else
+            if (convertedPed.isPlayer) {
+                ShowHealth(ref convertedPed, ref health);
+                ShowPain(pedEntity, health);
+            }
+#endif
+
             ShowArmor(ref convertedPed);
             ShowBleedingWounds(pedEntity, ref convertedPed, ref health, ref currentlyUsing);
             ShowInventory(ref inventory, ref currentlyUsing, health);
@@ -83,6 +94,7 @@
                             ? localeConfig.HisHealth
                             : localeConfig.HerHealth;
 
+            stringBuilder.AppendEndOfLine();
             stringBuilder.SetDefaultColor();
             if (health.isDead) {
                 stringBuilder.Append(localeConfig.DeathReason);
@@ -114,6 +126,42 @@
             }
 
             stringBuilder.SetDefaultColor();
+        }
+
+        private void ShowStatus(Entity entity, ref ConvertedPed convertedPed, ref Health health) {
+            string statusType = convertedPed.isPlayer
+                    ? localeConfig.YourStatus
+                    : convertedPed.isMale
+                            ? localeConfig.HisStatus
+                            : localeConfig.HerStatus;
+
+            stringBuilder.Append(statusType);
+            stringBuilder.Append(": ");
+
+            ref Traumas traumas = ref entity.GetComponent<Traumas>();
+
+            string statusKey;
+            Notifier.Color statusColor;
+            if (health.isDead) {
+                statusKey = "Status.Dead";
+                statusColor = Notifier.Color.RED;
+            } else if (traumas.HasActive(Traumas.Effects.Head)) {
+                statusKey = "Status.Unconscious";
+                statusColor = Notifier.Color.RED;
+            } else if (traumas.HasActive(Traumas.Effects.Spine)) {
+                statusKey = "Status.Immobilized";
+                statusColor = Notifier.Color.ORANGE;
+            } else if (convertedPed.status != null) {
+                statusKey = convertedPed.status.LocKey;
+                statusColor = convertedPed.status.Color;
+            } else {
+                statusKey = "Status.Stable";
+                statusColor = Notifier.Color.GREEN;
+            }
+
+            string status = localeConfig.GetTranslation(statusKey);
+            statusColor.AppendTo(stringBuilder);
+            stringBuilder.Append(status);
         }
 
         private void ShowArmor(ref ConvertedPed convertedPed) {
