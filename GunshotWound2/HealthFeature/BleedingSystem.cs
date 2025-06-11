@@ -1,7 +1,6 @@
 ﻿namespace GunshotWound2.HealthFeature {
     using System;
     using System.Collections.Generic;
-    using Configs;
     using PedsFeature;
     using Scellecs.Morpeh;
 
@@ -108,7 +107,6 @@
             float maxBleeding = 0f;
             Entity woundToBandage = null;
             Entity mostDangerWound = null;
-            WoundConfig woundConfig = sharedData.mainConfig.woundConfig;
             foreach (Entity entity in health.bleedingWounds) {
                 ref Bleeding bleeding = ref bleedingStash.Get(entity);
                 if (bleeding.severity <= maxBleeding) {
@@ -118,7 +116,7 @@
                 mostDangerWound = entity;
                 maxBleeding = bleeding.severity;
 
-                bool ableToBandage = !bleeding.isTrauma && woundConfig.IsBleedingCanBeBandaged(bleeding.severity);
+                bool ableToBandage = !bleeding.isTrauma;
                 if (ableToBandage) {
                     woundToBandage = entity;
                 }

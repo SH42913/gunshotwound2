@@ -2,7 +2,6 @@
 
 namespace GunshotWound2.Configs {
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
     using System.Xml.Linq;
     using Utils;
@@ -55,7 +54,6 @@ namespace GunshotWound2.Configs {
             }
         }
 
-        public const float MAX_SEVERITY_FOR_BANDAGE = 1f;
         private const int HEALTH_CORRECTION = 100;
 
         public DBPContainer GlobalMultipliers;
@@ -93,10 +91,6 @@ namespace GunshotWound2.Configs {
         }
 
         public void Validate(MainConfig mainConfig, ILogger logger) { }
-
-        public bool IsBleedingCanBeBandaged(float severity) {
-            return severity <= GlobalMultipliers.bleed * MAX_SEVERITY_FOR_BANDAGE;
-        }
 
         public static int ConvertHealthFromNative(int health) {
             return health - HEALTH_CORRECTION;
