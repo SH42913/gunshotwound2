@@ -3,6 +3,9 @@
     using GTA;
     using PedsFeature;
     using Scellecs.Morpeh;
+    using Utils;
+    using EcsEntity = Scellecs.Morpeh.Entity;
+    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class HitDetectSystem : ISystem {
         private readonly SharedData sharedData;
@@ -11,7 +14,7 @@
         private Filter justConvertedPeds;
         private Stash<ConvertedPed> convertedStash;
 
-        public Scellecs.Morpeh.World World { get; set; }
+        public EcsWorld World { get; set; }
 
         public HitDetectSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -35,14 +38,14 @@
                 return;
             }
 
-            foreach (Scellecs.Morpeh.Entity entity in justConvertedPeds) {
+            foreach (EcsEntity entity in justConvertedPeds) {
                 ref ConvertedPed convertedPed = ref convertedStash.Get(entity);
                 if (convertedPed.isPlayer) {
                     continue;
                 }
 
                 Ped ped = convertedPed.thisPed;
-                if (!ped.Exists() || !ped.IsAlive || ped.IsInvincible) {
+                if (!ped.IsValid() || !ped.IsAlive || ped.IsInvincible) {
                     continue;
                 }
 
@@ -55,10 +58,10 @@
         }
 
         private void ProcessCommonPeds() {
-            foreach (Scellecs.Morpeh.Entity entity in convertedPeds) {
+            foreach (EcsEntity entity in convertedPeds) {
                 ref ConvertedPed convertedPed = ref convertedStash.Get(entity);
                 Ped ped = convertedPed.thisPed;
-                if (!ped.Exists() || ped.IsInvincible || PedEffects.IsPedInWrithe(ped)) {
+                if (!ped.IsValid() || ped.IsInvincible || PedEffects.IsPedInWrithe(ped)) {
                     continue;
                 }
 

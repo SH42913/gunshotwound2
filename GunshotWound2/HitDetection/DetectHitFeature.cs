@@ -6,7 +6,6 @@
             systemsGroup.AddSystem(new HitDetectSystem(sharedData));
             systemsGroup.AddSystem(new WeaponHitSystem(sharedData));
             systemsGroup.AddSystem(new MultiBulletHitSystem(sharedData));
-            systemsGroup.AddSystem(new AggressorDetectSystem(sharedData));
             systemsGroup.AddSystem(new BodyHitSystem(sharedData));
             systemsGroup.AddSystem(new HitCleanSystem());
         }
