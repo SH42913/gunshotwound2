@@ -78,6 +78,7 @@
             if (convertedPed.isPlayer) {
                 ShowHealth(ref convertedPed, ref health);
                 ShowPain(pedEntity, health);
+                ShowPainkillersEffect(pedEntity);
             }
 #endif
 
@@ -206,14 +207,19 @@
                 stringBuilder.AppendFormat(" (+{0})", pain.DelayedPercent().ToString("P1"));
             }
 
+            stringBuilder.SetDefaultColor();
+        }
+
+        private void ShowPainkillersEffect(Entity pedEntity) {
             ref PainkillersEffect painkillersEffect = ref pedEntity.GetComponent<PainkillersEffect>(out bool painkillersActive);
-            if (painkillersActive) {
-                float remainingTime = painkillersEffect.remainingTime;
-                stringBuilder.AppendEndOfLine();
-                Notifier.Color.GREEN.AppendTo(stringBuilder);
-                stringBuilder.AppendFormat("{0}: {1} sec", localeConfig.PainkillersRemainingTime, remainingTime.ToString("F1"));
+            if (!painkillersActive) {
+                return;
             }
 
+            stringBuilder.AppendEndOfLine();
+            Notifier.Color.GREEN.AppendTo(stringBuilder);
+            float remainingTime = painkillersEffect.remainingTime;
+            stringBuilder.AppendFormat("{0}: {1} sec", localeConfig.PainkillersRemainingTime, remainingTime.ToString("F1"));
             stringBuilder.SetDefaultColor();
         }
 
@@ -269,7 +275,7 @@
         }
 
         private void ShowInventory(ref Inventory inventory, ref CurrentlyUsingItem currentlyUsing, in Health health) {
-            if (inventory.items == null || inventory.items.Count < 1 || health.isDead) {
+            if (health.isDead || inventory.items == null || inventory.items.Count < 1) {
                 return;
             }
 
