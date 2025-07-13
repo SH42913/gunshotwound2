@@ -28,7 +28,9 @@
         public void Check() {
             foreach (Cheat cheat in cheats) {
                 if (Game.WasCheatStringJustEntered(cheat.key)) {
+#if DEBUG
                     logger.WriteInfo($"Just activated cheat {cheat.key}");
+#endif
                     cheat.action?.Invoke();
                 }
             }
