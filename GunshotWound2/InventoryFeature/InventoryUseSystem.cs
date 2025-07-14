@@ -123,8 +123,10 @@ namespace GunshotWound2.InventoryFeature {
                         flags |= AnimationFlags.UpperBodyOnly;
                     }
 
-                    ownerPed.Task.TurnTo(convertedTarget.thisPed, durationInMs);
-                    RotatePedToOther(ownerPed, convertedTarget.thisPed);
+                    if (convertedOwner.thisPed.CurrentVehicle == null) {
+                        ownerPed.Task.TurnTo(convertedTarget.thisPed, durationInMs);
+                        RotatePedToOther(ownerPed, convertedTarget.thisPed);
+                    }
                 }
 
                 ownerPed.Task.PlayAnimation(crClipAsset,
