@@ -2,6 +2,7 @@
     using System;
     using Configs;
     using HealthFeature;
+    using HitDetection;
     using PedsFeature;
     using Scellecs.Morpeh;
 
@@ -113,7 +114,7 @@
 
         // ReSharper disable once UnusedMethodReturnValue.Local due used under DEBUG_EVERY_FRAME
         private float ApplyPain(Entity entity, ref ConvertedPed convertedPed, ref Pain pain) {
-            PlayPainEffects(ref convertedPed, ref pain);
+            PlayPainEffects(entity, ref convertedPed, ref pain);
 
             bool wasTooMuch = pain.TooMuchPain();
             float diff = pain.diff;
@@ -158,7 +159,7 @@
             pain.amount = Math.Max(pain.amount, 0f);
         }
 
-        private void PlayPainEffects(ref ConvertedPed convertedPed, ref Pain pain) {
+        private void PlayPainEffects(Entity entity, ref ConvertedPed convertedPed, ref Pain pain) {
             if (convertedPed.hasSpineDamage) {
                 return;
             }
@@ -178,10 +179,13 @@
                     convertedPed.RequestRagdoll(timeInMs: 1500);
                 }
 
+                ref PedHitData hitData = ref entity.GetComponent<PedHitData>(out bool hasHitData);
                 if (convertedPed.isPlayer) {
                     sharedData.cameraService.PlayPainfulWoundEffect();
                 } else if (convertedPed.thisPed.IsOnBike) {
                     convertedPed.thisPed.Task.LeaveVehicle(GTA.LeaveVehicleFlags.BailOut);
+                } else if (hasHitData && hitData.bodyPart.Key.EndsWith("Arm")) {
+                    convertedPed.thisPed.Weapons.Drop();
                 }
             }
         }
