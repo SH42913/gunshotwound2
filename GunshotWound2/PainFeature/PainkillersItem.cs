@@ -32,7 +32,7 @@ namespace GunshotWound2.PainFeature {
             sharedData.logger.WriteInfo($"Start use painkillers to {convertedTarget.name} by {convertedOwner.name}");
 #endif
 
-            if (!ItemTemplate.IsAbleToInteract(convertedOwner.thisPed, convertedTarget.thisPed)) {
+            if (!ItemTemplate.IsAbleToInteract(convertedOwner, convertedTarget)) {
 #if DEBUG
                 sharedData.logger.WriteInfo("Wrong conditions for painkillers");
 #endif
@@ -56,7 +56,7 @@ namespace GunshotWound2.PainFeature {
         private static bool ProgressAction(SharedData sharedData, EcsEntity owner, EcsEntity target, out string message) {
             ref ConvertedPed convertedOwner = ref owner.GetComponent<ConvertedPed>();
             ref ConvertedPed convertedTarget = ref target.GetComponent<ConvertedPed>();
-            if (ItemTemplate.IsAbleToInteract(convertedOwner.thisPed, convertedTarget.thisPed)) {
+            if (ItemTemplate.IsAbleToInteract(convertedOwner, convertedTarget)) {
                 message = null;
                 return true;
             } else {

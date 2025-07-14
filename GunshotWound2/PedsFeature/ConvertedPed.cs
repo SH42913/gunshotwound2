@@ -4,6 +4,7 @@
     using GTA.NaturalMotion;
     using Scellecs.Morpeh;
     using StatusFeature;
+    using Utils;
 
     public struct ConvertedPed : IComponent {
         public delegate void AfterRagdollAction(ref ConvertedPed convertedPed);
@@ -97,6 +98,12 @@
         public static bool HasForcedAnimation(this in ConvertedPed convertedPed) {
             (string, string) animInfo = convertedPed.forcedAnimation;
             return !string.IsNullOrEmpty(animInfo.Item1) && !string.IsNullOrEmpty(animInfo.Item2);
+        }
+
+        public static bool IsAbleToDoSomething(this ConvertedPed convertedPed) {
+            return convertedPed.thisPed.CurrentVehicle != null
+                    ? !convertedPed.isRestrictToDrive
+                    : convertedPed.thisPed.StandsStill();
         }
     }
 }

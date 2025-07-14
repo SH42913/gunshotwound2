@@ -96,7 +96,7 @@ namespace GunshotWound2.HealthFeature {
                                                      in Health health) {
             return !health.isDead
                    && !health.bleedingToBandage.IsNullOrDisposed()
-                   && ItemTemplate.IsAbleToInteract(convertedMedic.thisPed, convertedTarget.thisPed);
+                   && ItemTemplate.IsAbleToInteract(convertedMedic, convertedTarget);
         }
 
         public static bool IsBandage(this ItemTemplate item) {

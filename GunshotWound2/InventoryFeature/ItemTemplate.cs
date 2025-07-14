@@ -2,7 +2,7 @@ namespace GunshotWound2.InventoryFeature {
     using System;
     using Configs;
     using GTA;
-    using Utils;
+    using PedsFeature;
 
     public readonly struct ItemTemplate : IEquatable<ItemTemplate> {
         private const float MAX_USE_RANGE = 3f;
@@ -54,19 +54,21 @@ namespace GunshotWound2.InventoryFeature {
             return (key != null ? key.GetHashCode() : 0);
         }
 
-        public static bool IsAbleToInteract(Ped owner, Ped target) {
-            if (target == owner) {
-                return target.StandsStill();
+        public static bool IsAbleToInteract(in ConvertedPed owner, in ConvertedPed target) {
+            Ped ownerPed = owner.thisPed;
+            Ped targetPed = target.thisPed;
+            if (ownerPed.Handle == targetPed.Handle) {
+                return target.IsAbleToDoSomething();
             }
 
-            Vehicle vehicle = owner.CurrentVehicle;
+            Vehicle vehicle = ownerPed.CurrentVehicle;
             if (vehicle != null) {
-                return vehicle == target.CurrentVehicle && owner.StandsStill() && target.StandsStill();
+                return vehicle == targetPed.CurrentVehicle && owner.IsAbleToDoSomething() && target.IsAbleToDoSomething();
             }
 
-            return (target.IsRagdoll || target.StandsStill())
-                   && owner.StandsStill()
-                   && owner.IsInRange(target.Position, MAX_USE_RANGE);
+            return (targetPed.IsRagdoll || target.IsAbleToDoSomething())
+                   && owner.IsAbleToDoSomething()
+                   && ownerPed.IsInRange(targetPed.Position, MAX_USE_RANGE);
         }
     }
 
