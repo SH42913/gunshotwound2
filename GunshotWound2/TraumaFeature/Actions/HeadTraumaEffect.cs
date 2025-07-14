@@ -2,7 +2,7 @@ namespace GunshotWound2.TraumaFeature {
     using PedsFeature;
     using Scellecs.Morpeh;
 
-    public sealed class HeadTraumaEffect : BaseTraumaEffect {
+    public sealed class HeadTraumaEffect : SpineTraumaEffect {
         public override string PlayerMessage => null;
         public override string ManMessage => null;
         public override string WomanMessage => null;
@@ -10,27 +10,15 @@ namespace GunshotWound2.TraumaFeature {
         public HeadTraumaEffect(SharedData sharedData) : base(sharedData) { }
 
         public override void Apply(Entity entity, ref ConvertedPed convertedPed) {
-            convertedPed.RequestPermanentRagdoll();
-            convertedPed.hasSpineDamage = true;
-
-            if (!convertedPed.isPlayer || sharedData.mainConfig.playerConfig.CanDropWeapon) {
-                convertedPed.thisPed.Weapons.Drop();
-            }
+            base.Apply(entity, ref convertedPed);
 
             if (convertedPed.isPlayer) {
                 sharedData.cameraService.SetHeadInjuryEffect(true);
             }
         }
 
-        public override void EveryFrame(Entity entity, ref ConvertedPed convertedPed) {
-            if (!convertedPed.isRagdoll) {
-                convertedPed.RequestPermanentRagdoll();
-            }
-        }
-
         public override void Cancel(Entity entity, ref ConvertedPed convertedPed) {
-            convertedPed.hasSpineDamage = false;
-            convertedPed.ResetRagdoll();
+            base.Cancel(entity, ref convertedPed);
 
             if (convertedPed.isPlayer) {
                 sharedData.cameraService.SetHeadInjuryEffect(false);

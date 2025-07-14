@@ -1,8 +1,9 @@
 ﻿namespace GunshotWound2.TraumaFeature {
+    using GTA.NaturalMotion;
     using PedsFeature;
     using Scellecs.Morpeh;
 
-    public sealed class SpineTraumaEffect : BaseTraumaEffect {
+    public class SpineTraumaEffect : BaseTraumaEffect {
         public override string PlayerMessage => sharedData.localeConfig.PlayerNervesCritMessage;
         public override string ManMessage => sharedData.localeConfig.ManNervesCritMessage;
         public override string WomanMessage => sharedData.localeConfig.WomanNervesCritMessage;
@@ -10,6 +11,7 @@
         public SpineTraumaEffect(SharedData sharedData) : base(sharedData) { }
 
         public override void Apply(Entity entity, ref ConvertedPed convertedPed) {
+            convertedPed.requestedNmHelper = new BodyRelaxHelper(convertedPed.thisPed);
             convertedPed.RequestPermanentRagdoll();
             convertedPed.hasSpineDamage = true;
 

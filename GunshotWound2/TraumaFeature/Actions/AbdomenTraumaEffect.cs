@@ -10,7 +10,7 @@
         private const float NEW_BLEEDING_CHANCE = 0.25f / 100f;
         private const float BLEEDING_SEVERITY = 0.5f;
 
-        private static readonly int[] NM_MESSAGES = { 1119, };
+        private static readonly int[] NM_MESSAGES = { 1119, }; // shotInGuts
 
         public override string PlayerMessage => sharedData.localeConfig.PlayerStomachCritMessage;
         public override string ManMessage => sharedData.localeConfig.ManStomachCritMessage;
@@ -22,7 +22,7 @@
             convertedPed.thisPed.PlayAmbientSpeech("PAIN_RAPIDS", SpeechModifier.InterruptShouted);
 
             convertedPed.RequestRagdoll(4000);
-            convertedPed.nmMessages = NM_MESSAGES;
+            // convertedPed.nmMessages = NM_MESSAGES; TODO restore as nmHelper
         }
 
         public override void EveryFrame(EcsEntity entity, ref ConvertedPed convertedPed) {

@@ -4,8 +4,6 @@
     using Utils;
 
     public sealed class UnconsciousStatus : IPedStatus {
-        private static readonly int[] NM_MESSAGES = { 787, };
-
         private static readonly string[] NON_PLAYER_DEATH_AMBIENT = {
             "DYING_HELP", "DYING_MOAN", "DYING_PLEAD",
         };

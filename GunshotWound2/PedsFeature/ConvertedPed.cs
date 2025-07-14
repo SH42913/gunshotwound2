@@ -22,8 +22,8 @@
 
         public (int time, RagdollType type) ragdollRequest;
         public bool permanentRagdoll;
-        public int[] nmMessages;
-        public CustomHelper nmHelper;
+        public CustomHelper requestedNmHelper;
+        public CustomHelper activeNmHelper;
         public bool ragdollReset;
         public bool isRagdoll;
         public AfterRagdollAction afterRagdollAction;

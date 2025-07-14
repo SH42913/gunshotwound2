@@ -27,7 +27,8 @@
 
         public void OnUpdate(float deltaTime) {
             foreach (Entity entity in peds) {
-                if (totallyHealedStash.Remove(entity)) {
+                bool wasHealedLastFrame = totallyHealedStash.Remove(entity);
+                if (wasHealedLastFrame) {
                     continue;
                 }
 

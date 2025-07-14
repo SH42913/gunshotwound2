@@ -3,7 +3,7 @@
     using Scellecs.Morpeh;
 
     public sealed class HeartTraumaEffect : BaseTraumaEffect {
-        private static readonly int[] NM_MESSAGES = { 1083, };
+        private static readonly int[] NM_MESSAGES = { 1083, }; // shotFallToKnees
 
         public override string PlayerMessage => sharedData.localeConfig.PlayerHeartCritMessage;
         public override string ManMessage => sharedData.localeConfig.ManHeartCritMessage;
@@ -14,7 +14,7 @@
         public override void Apply(Entity entity, ref ConvertedPed convertedPed) {
             convertedPed.thisPed.PlayAmbientSpeech("COUGH", GTA.SpeechModifier.InterruptShouted);
             convertedPed.RequestRagdoll(6000);
-            convertedPed.nmMessages = NM_MESSAGES;
+            // convertedPed.nmMessages = NM_MESSAGES; TODO restore later as nmHelper
 
             if (convertedPed.isPlayer) {
                 sharedData.cameraService.SetHeartInjuryEffect(true);

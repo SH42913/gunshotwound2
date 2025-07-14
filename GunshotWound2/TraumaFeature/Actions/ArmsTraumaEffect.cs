@@ -4,7 +4,7 @@
 
     public sealed class ArmsTraumaEffect : BaseTraumaEffect {
         private const float SHAKE_AMPLITUDE = 1f;
-        private static readonly int[] NM_MESSAGES = { 155, };
+        private static readonly int[] NM_MESSAGES = { 155, }; // configureShotInjuredArm
 
         public override string PlayerMessage => sharedData.localeConfig.PlayerArmsCritMessage;
         public override string ManMessage => sharedData.localeConfig.ManArmsCritMessage;

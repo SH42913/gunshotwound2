@@ -47,6 +47,13 @@ namespace GunshotWound2.StatusFeature {
                 return;
             }
 
+            if (convertedPed.requestedNmHelper != null) {
+#if DEBUG
+                sharedData.logger.WriteInfo("No visual behaviour due NM helper requested");
+#endif
+                return;
+            }
+
             if (!sharedData.mainConfig.woundConfig.UseCustomUnconsciousBehaviour) {
                 return;
             }
@@ -112,8 +119,8 @@ namespace GunshotWound2.StatusFeature {
             sharedData.logger.WriteInfo("InjuredOnGroundHelper as visual behaviour");
 #endif
             PedEffects.DetermineBoneSide(convertedPed.lastDamagedBone, out bool leftSide, out bool rightSide);
+            convertedPed.requestedNmHelper = GetInjuredOnGroundHelper(convertedPed, leftSide, rightSide);
             convertedPed.RequestPermanentRagdoll();
-            convertedPed.nmHelper = GetInjuredOnGroundHelper(convertedPed, leftSide, rightSide);
         }
 
         private void StartWrithe(ref ConvertedPed convertedPed) {
@@ -171,14 +178,14 @@ namespace GunshotWound2.StatusFeature {
             convertedPed.forcedAnimation = (CRAWL_ANIM_DICT, animName);
             convertedPed.RequestPermanentRagdoll();
 
-            convertedPed.nmHelper = sharedData.random.IsTrueWithProbability(0.5f)
+            convertedPed.requestedNmHelper = sharedData.random.IsTrueWithProbability(0.5f)
                     ? GetInjuredOnGroundHelper(convertedPed, dontReachWithLeft: left, dontReachWithRight: right)
                     : null;
         }
 
-        private InjuredOnGroundHelper GetInjuredOnGroundHelper(in ConvertedPed convertedPed,
-                                                               bool dontReachWithLeft,
-                                                               bool dontReachWithRight) {
+        private CustomHelper GetInjuredOnGroundHelper(in ConvertedPed convertedPed,
+                                                      bool dontReachWithLeft,
+                                                      bool dontReachWithRight) {
             var helper = new InjuredOnGroundHelper(convertedPed.thisPed) {
                 Injury1Component = (int)convertedPed.lastDamagedBone,
                 NumInjuries = sharedData.random.Next(1, 3),

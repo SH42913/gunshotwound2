@@ -1,5 +1,6 @@
-﻿namespace GunshotWound2.PedsFeature {
-    using GTA.Native;
+﻿// #define DEBUG_EVERY_FRAME
+
+namespace GunshotWound2.PedsFeature {
     using Scellecs.Morpeh;
     using RagdollType = GTA.RagdollType;
 
@@ -47,6 +48,7 @@
             }
 
             if (ragdollRequest.time == 0) {
+                TryPlayNaturalMotion(ref convertedPed);
                 return;
             }
 
@@ -87,22 +89,40 @@
 #endif
 
             // ReSharper disable once InconsistentNaming
-            bool canPlayNM = !convertedPed.hasSpineDamage;
-            if (canPlayNM && convertedPed.nmHelper != null) {
-#if DEBUG && DEBUG_EVERY_FRAME
-                sharedData.logger.WriteInfo($"Playing NM helper: {convertedPed.nmHelper.GetType().FullName}");
-#endif
-                convertedPed.nmHelper.Start();
-            } else if (canPlayNM && convertedPed.nmMessages != null) {
-#if DEBUG && DEBUG_EVERY_FRAME
-                sharedData.logger.WriteInfo($"Playing NM messages: {string.Join(" ,", convertedPed.nmMessages)}");
-#endif
-                Function.Call(Hash.SET_PED_TO_RAGDOLL, convertedPed.thisPed.Handle, 10000, ragdollRequest.time, 1, 1, 1, 0);
-                ApplyNaturalMotion(ref convertedPed);
-                convertedPed.nmMessages = null;
-            } else {
+            bool startedNM = !convertedPed.hasSpineDamage && TryPlayNaturalMotion(ref convertedPed);
+            if (!startedNM) {
                 convertedPed.thisPed.Ragdoll(ragdollRequest.time, ragdollRequest.type);
             }
+        }
+
+        private bool TryPlayNaturalMotion(ref ConvertedPed convertedPed) {
+            if (convertedPed.requestedNmHelper == null) {
+                return false;
+            }
+
+            if (convertedPed.activeNmHelper != null) {
+#if DEBUG && DEBUG_EVERY_FRAME
+                sharedData.logger.WriteInfo($"Stopping NM helper: {convertedPed.activeNmHelper.GetType().FullName}");
+#endif
+                convertedPed.activeNmHelper.Stop();
+                convertedPed.thisPed.CancelRagdoll();
+            }
+
+#if DEBUG && DEBUG_EVERY_FRAME
+            sharedData.logger.WriteInfo($"Starting NM helper: {convertedPed.requestedNmHelper.GetType().FullName}");
+#endif
+
+            convertedPed.activeNmHelper = convertedPed.requestedNmHelper;
+            convertedPed.requestedNmHelper = null;
+
+            int ragdollTime = convertedPed.ragdollRequest.time;
+            if (ragdollTime <= 0) {
+                convertedPed.activeNmHelper.Start();
+            } else {
+                convertedPed.activeNmHelper.Start(ragdollTime);
+            }
+
+            return true;
         }
 
         private void CallAfterRagdollAction(ref ConvertedPed convertedPed, bool inRagdoll) {
@@ -128,6 +148,7 @@
             convertedPed.ragdollReset = false;
             convertedPed.permanentRagdoll = false;
             convertedPed.ragdollRequest = default;
+            convertedPed.activeNmHelper = null;
         }
 
         private void SkipTime(ref (int time, RagdollType type) ragdollRequest) {
@@ -145,13 +166,6 @@
                 if (convertedPed.thisPed.IsRagdoll) {
                     convertedPed.thisPed.CancelRagdoll();
                 }
-            }
-        }
-
-        private static void ApplyNaturalMotion(ref ConvertedPed convertedPed) {
-            PedEffects.StopNaturalMotion(convertedPed.thisPed);
-            foreach (int message in convertedPed.nmMessages) {
-                PedEffects.SetNaturalMotionMessage(convertedPed.thisPed, message);
             }
         }
     }
