@@ -14,19 +14,20 @@
         private readonly struct BleedDesc {
             public readonly string name;
             public readonly string reason;
-            public readonly float severity;
+            public readonly Notifier.Color color;
             public readonly string bodyPartLocKey;
             public readonly bool toBeBandaged;
 
             private readonly int time;
             private readonly bool isTrauma;
 
-            public BleedDesc(in Bleeding bleeding, bool toBeBandaged) {
+            public BleedDesc(in Bleeding bleeding, bool toBeBandaged, Notifier.Color color) {
                 name = bleeding.name;
                 reason = bleeding.reason;
-                severity = bleeding.severity;
                 bodyPartLocKey = bleeding.bodyPart.LocKey;
+
                 this.toBeBandaged = toBeBandaged;
+                this.color = color;
 
                 time = bleeding.processedTime;
                 isTrauma = bleeding.isTrauma;
@@ -74,6 +75,7 @@
 #if DEBUG
             ShowHealth(ref convertedPed, ref health);
             ShowPain(pedEntity, health);
+            ShowPainkillersEffect(pedEntity);
 #else
             if (convertedPed.isPlayer) {
                 ShowHealth(ref convertedPed, ref health);
@@ -241,7 +243,11 @@
                 ref Bleeding bleeding = ref bleedingEntity.GetComponent<Bleeding>();
                 if (bleeding.isProcessed) {
                     bool isBleedingToBandage = health.bleedingToBandage == bleedingEntity;
-                    bleedBuffer.Add(new BleedDesc(bleeding, isBleedingToBandage));
+                    Notifier.Color color = bleeding.isTrauma
+                            ? Notifier.Color.RED
+                            : health.GetBleedingColor(convertedPed, bleeding.severity);
+
+                    bleedBuffer.Add(new BleedDesc(bleeding, isBleedingToBandage, color));
                 }
             }
 
@@ -252,8 +258,7 @@
                     stringBuilder.Append("~g~-> ");
                 }
 
-                Notifier.Color color = health.GetBleedingColor(convertedPed, bleeding.severity);
-                color.AppendTo(stringBuilder);
+                bleeding.color.AppendTo(stringBuilder);
 
                 string bodyPart = !string.IsNullOrEmpty(bleeding.bodyPartLocKey)
                         ? localeConfig.GetTranslation(bleeding.bodyPartLocKey)
