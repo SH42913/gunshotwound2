@@ -187,8 +187,8 @@ namespace GunshotWound2.StatusFeature {
                                                       bool dontReachWithLeft,
                                                       bool dontReachWithRight) {
             var helper = new InjuredOnGroundHelper(convertedPed.thisPed) {
-                Injury1Component = (int)convertedPed.lastDamagedBone,
-                NumInjuries = sharedData.random.Next(1, 3),
+                Injury1Component = convertedPed.thisPed.Bones[convertedPed.lastDamagedBone].Index,
+                NumInjuries = 1,
                 DontReachWithLeft = dontReachWithLeft,
                 DontReachWithRight = dontReachWithRight,
                 StrongRollForce = sharedData.random.IsTrueWithProbability(0.5f),
