@@ -7,5 +7,6 @@ namespace GunshotWound2.PainFeature {
         public Entity target;
         public float moveRate;
         public float runRate;
+        public float aimRate;
     }
 }

@@ -1,4 +1,5 @@
 ﻿namespace GunshotWound2.TraumaFeature {
+    using System;
     using Configs;
     using HealthFeature;
     using PainFeature;
@@ -69,15 +70,15 @@
             entity.GetComponent<Pain>().diff += dbp.pain;
             entity.GetComponent<Health>().DealDamage(dbp.damage, traumaName);
 
-            if (dbp.bleed > 0f) {
-                Entity bleedingEntity = entity.CreateBleeding(traumas.requestBodyPart, dbp.bleed, traumaName, reason, isTrauma: true);
-                if (trauma.PainRateWhenMoving > 0f || trauma.PainRateWhenRunning > 0f) {
-                    bleedingEntity.SetComponent(new PainGenerator {
-                        target = entity,
-                        moveRate = trauma.PainRateWhenMoving,
-                        runRate = trauma.PainRateWhenRunning,
-                    });
-                }
+            float severity = Math.Max(0.01f, dbp.bleed);
+            Entity bleedingEntity = entity.CreateBleeding(traumas.requestBodyPart, severity, traumaName, reason, isTrauma: true);
+            if (trauma.CanGeneratePain) {
+                bleedingEntity.SetComponent(new PainGenerator {
+                    target = entity,
+                    moveRate = trauma.PainRateWhenMoving,
+                    runRate = trauma.PainRateWhenRunning,
+                    aimRate = trauma.PainRateWhenAiming,
+                });
             }
 
             if (trauma.Effect != Traumas.Effects.Spine) {

@@ -17,6 +17,9 @@ namespace GunshotWound2.Configs {
             public readonly bool EffectMessage;
             public readonly float PainRateWhenMoving;
             public readonly float PainRateWhenRunning;
+            public readonly float PainRateWhenAiming;
+
+            public bool CanGeneratePain => PainRateWhenMoving > 0f || PainRateWhenRunning > 0f || PainRateWhenAiming > 0f;
 
             public Trauma(XElement node) {
                 Key = node.GetString(nameof(Key));
@@ -26,6 +29,7 @@ namespace GunshotWound2.Configs {
                 EffectMessage = node.GetBool(nameof(EffectMessage), defaultValue: true);
                 PainRateWhenMoving = node.GetFloat(nameof(PainRateWhenMoving));
                 PainRateWhenRunning = node.GetFloat(nameof(PainRateWhenRunning));
+                PainRateWhenAiming = node.GetFloat(nameof(PainRateWhenAiming));
             }
         }
 

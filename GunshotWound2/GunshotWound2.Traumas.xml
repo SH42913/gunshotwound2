@@ -91,9 +91,11 @@
     <!-- Arms -->
     <Trauma Key="ClosedFractureArm" LocKey="Traumas.ClosedFracture"
             Damage="3" Pain="30" Bleed="0.02"
+            PainRateWhenAiming="1"
             Effect="Arms"/>
     <Trauma Key="DislocatedShoulder" LocKey="Traumas.Blunt.DislocShoulder"
             Damage="1" Pain="35"
+            PainRateWhenAiming="0.5"
             Effect="Arms"/>
 
     <!-- Legs -->

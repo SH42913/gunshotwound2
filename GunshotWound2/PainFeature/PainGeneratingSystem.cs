@@ -68,6 +68,10 @@ namespace GunshotWound2.PainFeature {
                     totalNewPain += generator.runRate * multipliers.pain * deltaTime;
                 }
 
+                if (generator.aimRate > 0f && ped.IsAiming) {
+                    totalNewPain += generator.aimRate * multipliers.pain * deltaTime;
+                }
+
                 if (totalNewPain > 0f) {
                     targetPain.diff += totalNewPain;
                 }
