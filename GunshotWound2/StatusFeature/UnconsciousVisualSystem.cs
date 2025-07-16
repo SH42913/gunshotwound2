@@ -131,7 +131,7 @@ namespace GunshotWound2.StatusFeature {
             ped.CanWrithe = true;
             ped.BlockPermanentEvents = true;
 
-            int loops = sharedData.random.Next(1, 5);
+            int loops = sharedData.random.Next(1, 3);
             PedEffects.StartWritheTask(ped, loops, convertedPed.lastAggressor);
         }
 
