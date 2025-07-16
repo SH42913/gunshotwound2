@@ -3,6 +3,8 @@
     using Utils;
 
     public sealed class CriticalStatus : IPedStatus {
+        public const float HEALTH_THRESHOLD = 0.3f;
+
         private readonly SharedData sharedData;
 
         private static readonly string[] MOODS = {
@@ -15,7 +17,7 @@
 
         public string LocKey => "Status.Critical";
         public float PainThreshold => 0.7f;
-        public float HealthThreshold => 0.3f;
+        public float HealthThreshold => HEALTH_THRESHOLD;
         public Notifier.Color Color => Notifier.Color.RED;
         public float MoveRate => 0.85f;
         public string[] MaleMoveSets => sharedData.mainConfig.pedsConfig.MaleStatusMoveSets.Critical;

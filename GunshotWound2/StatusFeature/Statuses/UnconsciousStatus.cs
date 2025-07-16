@@ -4,6 +4,8 @@
     using Utils;
 
     public sealed class UnconsciousStatus : IPedStatus {
+        public const float HEALTH_THRESHOLD = 0.05f;
+
         private static readonly string[] NON_PLAYER_DEATH_AMBIENT = {
             "DYING_HELP", "DYING_MOAN", "DYING_PLEAD",
         };
@@ -24,7 +26,7 @@
 
         public string LocKey => "Status.Unconscious";
         public float PainThreshold => 1f;
-        public float HealthThreshold => 0.05f;
+        public float HealthThreshold => HEALTH_THRESHOLD;
         public Notifier.Color Color => Notifier.Color.RED;
         public float MoveRate => 0.8f;
         public string[] MaleMoveSets => null;

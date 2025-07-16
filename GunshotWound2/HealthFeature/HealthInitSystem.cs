@@ -32,6 +32,9 @@
                 ped.DiesOnLowHealth = false;
                 ped.CanWrithe = false;
 
+                ped.InjuryHealthThreshold = StatusFeature.Statuses.CriticalStatus.HEALTH_THRESHOLD;
+                ped.FatalInjuryHealthThreshold = StatusFeature.Statuses.UnconsciousStatus.HEALTH_THRESHOLD;
+
                 ref Health health = ref entity.AddOrGetComponent<Health>();
                 health.max = convertedPed.defaultMaxHealth;
                 ped.MaxHealth = health.max + 1;
