@@ -2,6 +2,7 @@
     using System;
     using Configs;
     using GTA;
+    using GTA.Math;
     using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
@@ -33,20 +34,25 @@
                 }
 
                 ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
-                if (hitData.useRandomBodyPart) {
+                PedBone damagedBone = convertedPed.thisPed.Bones.LastDamaged;
+                if (hitData.useRandomBodyPart || !damagedBone.IsValid) {
                     hitData.bodyPart = sharedData.random.Next(BodyPartConfig.BodyParts);
+
+                    Bone randomBoneTag = (Bone)sharedData.random.NextFromCollection(hitData.bodyPart.Bones);
+                    hitData.damagedBone = convertedPed.thisPed.Bones[randomBoneTag];
 #if DEBUG
-                    sharedData.logger.WriteInfo($"Damaged random part is {hitData.bodyPart.Key} of {convertedPed.name}");
+                    sharedData.logger.WriteInfo($"Damaged random part is {hitData.bodyPart.Key}, bone {randomBoneTag} of {convertedPed.name}");
 #endif
                 } else {
-                    Bone damagedBone = convertedPed.thisPed.Bones.LastDamaged.Tag;
-                    convertedPed.lastDamagedBone = damagedBone;
-
-                    hitData.bodyPart = BodyPartConfig.GetBodyPartByBone(damagedBone);
+                    hitData.damagedBone = damagedBone;
+                    hitData.bodyPart = BodyPartConfig.GetBodyPartByBone(damagedBone.Tag);
 #if DEBUG
-                    sharedData.logger.WriteInfo($"Damaged part is {hitData.bodyPart.Key}, bone {damagedBone} at {convertedPed.name}");
+                    sharedData.logger.WriteInfo($"Damaged part is {hitData.bodyPart.Key}, bone {damagedBone.Tag} at {convertedPed.name}");
 #endif
                 }
+
+                CalculateLocalHitPos(convertedPed, ref hitData);
+                convertedPed.lastDamagedBone = hitData.damagedBone.Tag;
             }
         }
 
@@ -66,6 +72,40 @@
             }
 
             return false;
+        }
+
+        private void CalculateLocalHitPos(in ConvertedPed convertedPed, ref PedHitData hitData) {
+            if (!hitData.aggressor.IsValid()) {
+                return;
+            }
+
+            Vector3 lastHit = hitData.aggressor.LastWeaponImpactPosition;
+            if (lastHit == Vector3.Zero) {
+                return;
+            }
+
+            hitData.hitPos = lastHit;
+
+            bool assignedNormal = false;
+            Prop currentWeaponObject = hitData.aggressor.Weapons.CurrentWeaponObject;
+            EntityBone muzzleBone = currentWeaponObject?.Bones["Gun_Muzzle"];
+            if (muzzleBone != null && muzzleBone.IsValid) {
+                hitData.shotDir = (lastHit - muzzleBone.Position).Normalized;
+
+                RaycastResult result = GTA.World.Raycast(muzzleBone.Position, lastHit + hitData.shotDir, IntersectFlags.Peds);
+                if (result.Result == 2 && result.HitEntity == convertedPed.thisPed) {
+                    hitData.hitNorm = result.SurfaceNormal;
+                    assignedNormal = true;
+                } else {
+                    sharedData.logger.WriteInfo("No hit");
+                }
+            } else {
+                sharedData.logger.WriteInfo("No muzzle");
+            }
+
+            if (!assignedNormal) {
+                hitData.hitNorm = (lastHit - hitData.damagedBone.Position).Normalized;
+            }
         }
     }
 }

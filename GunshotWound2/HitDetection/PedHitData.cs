@@ -1,8 +1,15 @@
 ﻿namespace GunshotWound2.HitDetection {
     using Configs;
+    using GTA;
+    using GTA.Math;
     using Scellecs.Morpeh;
 
     public struct PedHitData : IComponent {
+        public PedBone damagedBone;
+        public Ped aggressor;
+        public Vector3 shotDir;
+        public Vector3 hitPos;
+        public Vector3 hitNorm;
         public BodyPartConfig.BodyPart bodyPart;
         public uint weaponHash;
         public WeaponConfig.Weapon weaponType;

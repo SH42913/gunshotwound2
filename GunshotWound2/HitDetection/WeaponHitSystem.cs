@@ -77,7 +77,7 @@
 
                 weaponType = DetectWeaponType(ped, ref weaponHash);
             } else if (isValidLastDamage) {
-                RefreshAggressor(ref convertedPed, attackerHandle);
+                RefreshAggressor(ref convertedPed, ref hitData, attackerHandle);
                 weaponType = DetectWeaponType(ped, ref weaponHash);
             }
 
@@ -114,15 +114,17 @@
             }
         }
 
-        private void RefreshAggressor(ref ConvertedPed convertedPed, int attackerHandle) {
+        private void RefreshAggressor(ref ConvertedPed convertedPed, ref PedHitData hitData, int attackerHandle) {
             if (PedEffects.TryGetPedByHandle(attackerHandle, out Ped aggressor)) {
 #if DEBUG
                 sharedData.logger.WriteInfo($"Confirmed aggressor for {convertedPed.name} is {aggressor.Handle}");
 #endif
-                convertedPed.lastAggressor = aggressor;
+                hitData.aggressor = aggressor;
             } else {
-                convertedPed.lastAggressor = null;
+                hitData.aggressor = null;
             }
+
+            convertedPed.lastAggressor = aggressor;
         }
 
         private bool CheckIgnoreSet(Ped ped, ref uint weaponHash) {
