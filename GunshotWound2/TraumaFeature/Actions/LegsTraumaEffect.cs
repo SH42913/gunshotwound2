@@ -4,8 +4,8 @@
     using Utils;
 
     public sealed class LegsTraumaEffect : BaseTraumaEffect {
-        private const int RAGDOLL_TIME_IN_MS = 2000;
-        private const float RUN_RAGDOLL_CHANCE = 0.1f / 100f;
+        private const int RAGDOLL_TIME_IN_MS = 1000;
+        private const float RUN_RAGDOLL_CHANCE = 0.2f / 100f;
 
         public override string PlayerMessage => sharedData.localeConfig.PlayerLegsCritMessage;
         public override string ManMessage => sharedData.localeConfig.ManLegsCritMessage;
@@ -27,21 +27,18 @@
         public override void Repeat(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) { }
 
         public override void EveryFrame(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) {
-            if (convertedPed.thisPed.IsSprinting) {
-                convertedPed.RequestRagdoll(RAGDOLL_TIME_IN_MS, RagdollType.Balance);
-                ShowRunningWarningMessage(convertedPed);
+            Ped ped = convertedPed.thisPed;
+            bool shouldRagdoll = ped.IsSprinting;
+            if (!shouldRagdoll) {
+                shouldRagdoll = ped.IsRunning && sharedData.random.IsTrueWithProbability(RUN_RAGDOLL_CHANCE);
+            }
+
+            if (!shouldRagdoll) {
                 return;
             }
 
-            if (!convertedPed.thisPed.IsRunning) {
-                return;
-            }
-
-            bool painRagdoll = sharedData.random.IsTrueWithProbability(RUN_RAGDOLL_CHANCE);
-            if (painRagdoll) {
-                convertedPed.RequestRagdoll(RAGDOLL_TIME_IN_MS, RagdollType.Balance);
-                ShowRunningWarningMessage(convertedPed);
-            }
+            convertedPed.RequestRagdoll(RAGDOLL_TIME_IN_MS, RagdollType.Balance);
+            ShowRunningWarningMessage(convertedPed);
         }
 
         public override void Cancel(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) {
