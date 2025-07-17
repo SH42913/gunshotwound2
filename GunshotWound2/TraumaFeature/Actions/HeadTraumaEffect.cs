@@ -1,4 +1,5 @@
 namespace GunshotWound2.TraumaFeature {
+    using HealthFeature;
     using PedsFeature;
     using Scellecs.Morpeh;
 
@@ -15,6 +16,13 @@ namespace GunshotWound2.TraumaFeature {
             if (convertedPed.isPlayer) {
                 sharedData.cameraService.SetHeadInjuryEffect(true);
             }
+        }
+
+        public override void Repeat(Entity entity, ref ConvertedPed convertedPed) {
+            base.Repeat(entity, ref convertedPed);
+
+            string reason = sharedData.localeConfig.GetTranslation("Traumas.BleedingInHead");
+            entity.GetComponent<Health>().InstantKill(reason);
         }
 
         public override void Cancel(Entity entity, ref ConvertedPed convertedPed) {

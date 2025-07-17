@@ -25,6 +25,8 @@
             // convertedPed.nmMessages = NM_MESSAGES; TODO restore as nmHelper
         }
 
+        public override void Repeat(EcsEntity entity, ref ConvertedPed convertedPed) { }
+
         public override void EveryFrame(EcsEntity entity, ref ConvertedPed convertedPed) {
             if (!convertedPed.thisPed.IsRunning && !convertedPed.thisPed.IsSprinting) {
                 return;

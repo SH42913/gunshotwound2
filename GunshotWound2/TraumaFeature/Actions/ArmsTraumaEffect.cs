@@ -32,6 +32,8 @@
             }
         }
 
+        public override void Repeat(Entity entity, ref ConvertedPed convertedPed) { }
+
         public override void EveryFrame(Entity entity, ref ConvertedPed convertedPed) { }
 
         public override void Cancel(Entity entity, ref ConvertedPed convertedPed) {

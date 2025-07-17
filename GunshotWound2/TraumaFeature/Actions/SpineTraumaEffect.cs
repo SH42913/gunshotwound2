@@ -20,6 +20,8 @@
             }
         }
 
+        public override void Repeat(Entity entity, ref ConvertedPed convertedPed) { }
+
         public override void EveryFrame(Entity entity, ref ConvertedPed convertedPed) {
             if (!convertedPed.isRagdoll) {
                 convertedPed.RequestPermanentRagdoll();

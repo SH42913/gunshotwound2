@@ -24,6 +24,8 @@
             convertedPed.thisPed.PlayAmbientSpeech("DEATH_HIGH_MEDIUM", SpeechModifier.InterruptShouted);
         }
 
+        public override void Repeat(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) { }
+
         public override void EveryFrame(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) {
             if (convertedPed.thisPed.IsSprinting) {
                 convertedPed.RequestRagdoll(RAGDOLL_TIME_IN_MS, RagdollType.Balance);

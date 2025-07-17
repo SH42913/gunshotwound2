@@ -111,8 +111,13 @@
                                        Traumas.Effects newEffect,
                                        bool showEffectMessage) {
             foreach ((Traumas.Effects type, BaseTraumaEffect effect) in effects) {
-                if (newEffect != type || traumas.HasActive(type)) {
+                if (newEffect != type) {
                     continue;
+                }
+
+                if (traumas.HasActive(type)) {
+                    effect.Repeat(entity, ref convertedPed);
+                    break;
                 }
 
 #if DEBUG
@@ -131,6 +136,7 @@
                 effect.Apply(entity, ref convertedPed);
                 traumas.activeEffects |= type;
                 traumas.requestBodyPart = default;
+                break;
             }
         }
 

@@ -17,6 +17,7 @@
         }
 
         public abstract void Apply(Entity entity, ref ConvertedPed convertedPed);
+        public abstract void Repeat(Entity entity, ref ConvertedPed convertedPed);
         public abstract void EveryFrame(Entity entity, ref ConvertedPed convertedPed);
         public abstract void Cancel(Entity entity, ref ConvertedPed convertedPed);
 

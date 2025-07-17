@@ -18,6 +18,8 @@
             }
         }
 
+        public override void Repeat(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) { }
+
         public override void EveryFrame(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) { }
 
         public override void Cancel(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) {
