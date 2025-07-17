@@ -31,7 +31,7 @@
     It is based on Relationship between ped and player.
     By default, COMPANION and RESPECT is FALSE to ignore friendly peds by GSW. -->
 
-    <PainShockThreshold Min="60.0" Max="100.0"/>
+    <PainShockThreshold Min="70.0" Max="100.0"/>
     <!-- Same as for player, but GSWPeds will have random MaximalPain between Min and Max. -->
 
     <CustomHealth Min="-1" Max="-1"/>
@@ -52,7 +52,7 @@
     <SelfHealingRate Value="0.02"/>
     <!-- Same as for player -->
 
-    <PainRecoverySpeed Value="0.8"/>
+    <PainRecoverySpeed Value="1.0"/>
     <BleedHealSpeed Value="1.0"/>
     <!-- Same as for player -->
 
