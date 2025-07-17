@@ -54,7 +54,7 @@
     <Trauma Key="Hemothorax" LocKey="Traumas.Blunt.Hemothorax"
             Damage="6" Pain="35" Bleed="0.3"/>
     <Trauma Key="HeartInjury" LocKey="Traumas.CardiacInjury"
-            Damage="15" Pain="60" Bleed="0.55"
+            Damage="20" Pain="80" Bleed="0.6"
             Effect="Heart"/>
     <Trauma Key="LungsInjury" LocKey="Traumas.PulmonaryInjury"
             Damage="10" Pain="40" Bleed="0.25"

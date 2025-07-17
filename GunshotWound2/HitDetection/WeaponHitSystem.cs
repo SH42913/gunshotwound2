@@ -77,8 +77,11 @@
 
                 weaponType = DetectWeaponType(ped, ref weaponHash);
             } else if (isValidLastDamage) {
-                RefreshAggressor(ref convertedPed, ref hitData, attackerHandle);
                 weaponType = DetectWeaponType(ped, ref weaponHash);
+            }
+
+            if (isValidLastDamage) {
+                RefreshAggressor(ref convertedPed, ref hitData, attackerHandle);
             }
 
             var defaultDamage = false;

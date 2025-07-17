@@ -40,7 +40,7 @@
             foreach (Entity entity in bleedingWounds) {
                 ref Bleeding bleeding = ref bleedingStash.Get(entity);
                 if (bleeding.target.IsNullOrDisposed()) {
-                    World.RemoveEntity(entity);
+                    bleedingStash.Remove(entity);
                     continue;
                 }
 
@@ -48,13 +48,13 @@
                 ref Health health = ref healthStash.Get(bleeding.target, out bool hasHealth);
                 if (!hasHealth) {
                     sharedData.logger.WriteWarning($"Can't update bleeding {bleeding.name} at {convertedPed.name}");
-                    World.RemoveEntity(entity);
+                    bleedingStash.Remove(entity);
                     continue;
                 }
 
                 if (health.isDead) {
                     health.bleedingWounds?.Remove(entity);
-                    World.RemoveEntity(entity);
+                    bleedingStash.Remove(entity);
                     continue;
                 }
 
@@ -70,7 +70,7 @@
                     sharedData.logger.WriteInfo($"Bleeding {bleeding.name} at {convertedPed.name} was healed");
 #endif
                     health.bleedingWounds.Remove(entity);
-                    World.RemoveEntity(entity);
+                    bleedingStash.Remove(entity);
                     continue;
                 }
 

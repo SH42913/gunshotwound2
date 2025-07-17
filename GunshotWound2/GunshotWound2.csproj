@@ -45,6 +45,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -66,6 +67,8 @@
     <Compile Include="Configs\PlayerConfig.cs"/>
     <Compile Include="Configs\WeaponConfig.cs" />
     <Compile Include="Configs\WoundConfig.cs"/>
+    <Compile Include="HealthFeature\BleedingFx.cs" />
+    <Compile Include="HealthFeature\BleedingFxSystem.cs" />
     <Compile Include="HitDetection\MultiBulletHitSystem.cs" />
     <Compile Include="PainFeature\PainGenerator.cs" />
     <Compile Include="PainFeature\PainGeneratingSystem.cs" />
