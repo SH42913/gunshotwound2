@@ -63,14 +63,14 @@ namespace GunshotWound2.HealthFeature {
                     continue;
                 }
 
-                Vector3 localHitPos;
-                Vector3 hitNormal;
-                if (hitData.aggressor != null) {
+                Vector3 localHitPos = Vector3.Zero;
+                Vector3 hitNormal = damagedBone.ForwardVector;
+
+                const float maxRange = 2f;
+                Vector3 offset = damagedBone.GetPositionOffset(hitData.hitPos);
+                if (hitData.aggressor != null && offset.LengthSquared() <= maxRange * maxRange) {
                     localHitPos = damagedBone.GetPositionOffset(hitData.hitPos);
                     hitNormal = hitData.hitNorm;
-                } else {
-                    localHitPos = Vector3.Zero;
-                    hitNormal = damagedBone.ForwardVector;
                 }
 
                 Quaternion fromToQuaternion = damagedBone.Quaternion * Quaternion.LookRotation(hitNormal);
