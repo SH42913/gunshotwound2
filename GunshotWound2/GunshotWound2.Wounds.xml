@@ -6,7 +6,7 @@
     <GlobalDeviations Damage="0.2" Bleed="0.2" Pain="0.2"/>
     <!-- 0.2 for Damage means +-20% to damage value of every new wound -->
 
-    <Takedown RagdollDurationMs="4000" DamageMult="1.0" BleedMult="1.0" PainMult="1.0"/>
+    <Takedown RagdollDurationMs="2000" DamageMult="1.0" BleedMult="1.0" PainMult="1.0"/>
     <!-- Heavy melee attack(eg, using R key) named "takedown".
     It will cause special wound with custom duration ragdoll. -->
 

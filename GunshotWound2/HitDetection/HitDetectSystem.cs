@@ -75,6 +75,7 @@
                         ped.Resurrect();
                         ped.Health = convertedPed.lastFrameHealth - 1;
                         ped.SetConfigFlag(PedConfigFlagToggles.KilledByTakedown, false);
+                        ped.Ragdoll(sharedData.mainConfig.woundConfig.TakedownRagdollDurationMs, RagdollType.Balance);
                     } else {
                         continue;
                     }

@@ -90,12 +90,10 @@
                 wound = armorWound;
             } else if (hitData.afterTakedown && !string.IsNullOrEmpty(hitData.weaponType.TakedownWound)) {
                 string takedownWound = hitData.weaponType.TakedownWound;
-                int ragdollDuration = sharedData.mainConfig.woundConfig.TakedownRagdollDurationMs;
 #if DEBUG
-                sharedData.logger.WriteInfo($"Applying takedown wound {takedownWound} with ragdoll {ragdollDuration}");
+                sharedData.logger.WriteInfo($"Applying takedown wound {takedownWound}");
 #endif
                 wound = sharedData.mainConfig.woundConfig.Wounds[takedownWound];
-                convertedPed.RequestRagdoll(ragdollDuration, RagdollType.Balance);
             } else {
                 string woundKey = sharedData.weightRandom.GetValueWithWeights(hitData.weaponType.Wounds);
 #if DEBUG
