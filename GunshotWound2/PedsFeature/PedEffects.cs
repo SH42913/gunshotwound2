@@ -94,17 +94,22 @@
         }
 
         public static bool TryGetLastDamageRecord(Ped ped, out uint weaponHash, out int attackerHandle, out int gameTime) {
+            weaponHash = 0;
+            attackerHandle = 0;
+            gameTime = 0;
             if (!ped.IsValid()) {
-                weaponHash = 0;
-                attackerHandle = 0;
-                gameTime = 0;
                 return false;
             }
 
-            var record = NativeMemory.GetEntityDamageRecordEntryAtIndex(ped.MemoryAddress, 0);
-            weaponHash = unchecked((uint)record.weaponHash);
-            attackerHandle = record.attackerEntityHandle;
-            gameTime = record.gameTime;
+            for (uint i = 0; i < 3; i++) {
+                var record = NativeMemory.GetEntityDamageRecordEntryAtIndex(ped.MemoryAddress, i);
+                if (record.gameTime > gameTime) {
+                    weaponHash = unchecked((uint)record.weaponHash);
+                    attackerHandle = record.attackerEntityHandle;
+                    gameTime = record.gameTime;
+                }
+            }
+
             return gameTime != 0;
         }
 

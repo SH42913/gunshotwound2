@@ -56,12 +56,14 @@
                                                                    out int attackerHandle,
                                                                    out int time);
 
+            string name = convertedPed.name;
             int damageTimeDiff = Game.GameTime - time;
             bool isValidLastDamage = hasLastDamage && damageTimeDiff <= 20;
 #if DEBUG
             if (hasLastDamage) {
-                string name = convertedPed.name;
                 sharedData.logger.WriteInfo($"Record {name} A:{attackerHandle} W:{weaponHash}, time={time}({damageTimeDiff})");
+            } else {
+                sharedData.logger.WriteError($"Ped {name} have damage, but doesn't have damage record");
             }
 #endif
 
@@ -78,6 +80,8 @@
                 weaponType = DetectWeaponType(ped, ref weaponHash);
             } else if (isValidLastDamage) {
                 weaponType = DetectWeaponType(ped, ref weaponHash);
+            } else {
+                sharedData.logger.WriteError("No player and not valid damage record");
             }
 
             if (isValidLastDamage) {
@@ -106,7 +110,6 @@
 #if DEBUG
                 string weaponName = BuildWeaponName(weaponHash);
                 string specialString = isSpecialCase ? "(special)" : "";
-                string name = convertedPed.name;
                 sharedData.logger.WriteInfo($"Weapon type is {weaponType.Key}, {weaponName}{specialString} damaged {name}");
 #endif
             } else {
