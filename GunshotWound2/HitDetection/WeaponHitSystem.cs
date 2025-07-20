@@ -56,10 +56,10 @@
                                                                    out int attackerHandle,
                                                                    out int time);
 
-            string name = convertedPed.name;
             int damageTimeDiff = Game.GameTime - time;
             bool isValidLastDamage = hasLastDamage && damageTimeDiff <= 20;
 #if DEBUG
+            string name = convertedPed.name;
             if (hasLastDamage) {
                 sharedData.logger.WriteInfo($"Record {name} A:{attackerHandle} W:{weaponHash}, time={time}({damageTimeDiff})");
             } else {

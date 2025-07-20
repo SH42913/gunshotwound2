@@ -29,6 +29,7 @@
             foreach (Entity entity in filter) {
                 ref ShowPlayerDeathReportRequest request = ref entity.GetComponent<ShowPlayerDeathReportRequest>();
                 if (!string.IsNullOrEmpty(request.report)) {
+                    sharedData.notifier.HideAllLast();
                     sharedData.notifier.ShowOne(request.report, blinking: true);
                 }
 
