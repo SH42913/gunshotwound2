@@ -55,23 +55,25 @@
         }
 
         private void ProcessRequest(Entity entity, ref Traumas traumas, ref ConvertedPed convertedPed) {
+            BodyPartConfig.BodyPart bodyPart = traumas.requestBodyPart;
             var possibleTraumas = traumas.forBluntDamage
-                    ? traumas.requestBodyPart.BluntTraumas
-                    : traumas.requestBodyPart.PenetratingTraumas;
+                    ? bodyPart.BluntTraumas
+                    : bodyPart.PenetratingTraumas;
 
             string traumaKey = sharedData.weightRandom.GetValueWithWeights(possibleTraumas);
 #if DEBUG
-            sharedData.logger.WriteInfo($"Selected crit {traumaKey} for {traumas.requestBodyPart.Key} at {convertedPed.name}");
+            sharedData.logger.WriteInfo($"Selected crit {traumaKey} for {bodyPart.Key} at {convertedPed.name}");
 #endif
             TraumaConfig.Trauma trauma = sharedData.mainConfig.traumaConfig.Traumas[traumaKey];
             string traumaName = sharedData.localeConfig.GetTranslation(trauma.LocKey);
             string reason = sharedData.localeConfig.TraumaType;
-            DBPContainer dbp = trauma.DBP * sharedData.mainConfig.woundConfig.GlobalMultipliers * traumas.requestBodyPart.DBPMults;
+            DBPContainer dbp = trauma.DBP * sharedData.mainConfig.woundConfig.GlobalMultipliers * bodyPart.DBPMults;
             entity.GetComponent<Pain>().diff += dbp.pain;
             entity.GetComponent<Health>().DealDamage(dbp.damage, traumaName);
 
             float severity = Math.Max(0.01f, dbp.bleed);
-            Entity bleedingEntity = entity.CreateBleeding(traumas.requestBodyPart, severity, traumaName, reason, isTrauma: true);
+            bool causedByPenetration = !traumas.forBluntDamage;
+            Entity bleedingEntity = entity.CreateBleeding(bodyPart, severity, traumaName, reason, isTrauma: true, causedByPenetration);
             if (trauma.CanGeneratePain) {
                 bleedingEntity.SetComponent(new PainGenerator {
                     target = entity,

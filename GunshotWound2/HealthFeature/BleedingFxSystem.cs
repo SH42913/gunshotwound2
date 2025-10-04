@@ -75,7 +75,7 @@ namespace GunshotWound2.HealthFeature {
 
                 Quaternion fromToQuaternion = damagedBone.Quaternion * Quaternion.LookRotation(hitNormal);
                 Vector3 localRotation = fromToQuaternion.ToEuler();
-                bleedingFx.particles = SpawnParticles(bleeding.severity, damagedBone, localHitPos, localRotation);
+                bleedingFx.particles = SpawnParticles(bleeding, damagedBone, localHitPos, localRotation);
             }
         }
 
@@ -85,20 +85,16 @@ namespace GunshotWound2.HealthFeature {
             }
         }
 
-        private ParticleEffect SpawnParticles(float severity, PedBone damagedBone, Vector3 localHitPos, Vector3 localRot) {
+        private ParticleEffect SpawnParticles(in Bleeding bleeding, PedBone damagedBone, Vector3 localHitPos, Vector3 localRot) {
             ParticleEffectAsset asset;
             string effectName;
-
-            if (severity > 0.45f) {
-                asset = cutMichael2Asset;
-                effectName = "cs_mich2_blood_head_leak";
-            } else if (severity > 0.2f) {
-                asset = coreAsset;
-                effectName = "ped_blood_drips";
-            } else if (severity > 0.05f) {
-                asset = cutSecAsset;
-                effectName = "cut_sec_golfclub_blood_drips";
+            if (bleeding.causedByPenetration) {
+                GetEffectForPenetrationBleeding(bleeding.severity, out asset, out effectName);
             } else {
+                GetEffectForBluntBleeding(bleeding.severity, out asset, out effectName);
+            }
+
+            if (string.IsNullOrEmpty(effectName)) {
                 return null;
             }
 
@@ -108,6 +104,35 @@ namespace GunshotWound2.HealthFeature {
 #endif
 
             return GTA.World.CreateParticleEffect(asset, effectName, damagedBone, localHitPos, localRot);
+        }
+
+        private void GetEffectForPenetrationBleeding(float severity, out ParticleEffectAsset asset, out string effectName) {
+            if (severity > 0.4f) {
+                asset = cutMichael2Asset;
+                effectName = "cs_mich2_blood_head_leak";
+            } else if (severity > 0.2f) {
+                asset = coreAsset;
+                effectName = "ped_blood_drips";
+            } else if (severity > 0.05f) {
+                asset = cutSecAsset;
+                effectName = "cut_sec_golfclub_blood_drips";
+            } else {
+                asset = default;
+                effectName = null;
+            }
+        }
+
+        private void GetEffectForBluntBleeding(float severity, out ParticleEffectAsset asset, out string effectName) {
+            if (severity > 0.1f) {
+                asset = coreAsset;
+                effectName = "ped_blood_drips";
+            } else if (severity > 0.01f) {
+                asset = cutSecAsset;
+                effectName = "cut_sec_golfclub_blood_drips";
+            } else {
+                asset = default;
+                effectName = null;
+            }
         }
 
         private void CleanEntity(EcsEntity entity) {

@@ -9,6 +9,7 @@
         public string reason;
         public float severity;
         public bool isTrauma;
+        public bool causedByPenetration;
 
         public bool isProcessed;
         public int processedTime;
@@ -20,7 +21,8 @@
                                             float severity,
                                             string name,
                                             string reason,
-                                            bool isTrauma) {
+                                            bool isTrauma,
+                                            bool causedByPenetration) {
             Entity newEntity = target.world.CreateEntity();
             ref Bleeding bleeding = ref newEntity.AddComponent<Bleeding>();
             bleeding.target = target;
@@ -29,6 +31,7 @@
             bleeding.reason = reason;
             bleeding.severity = severity;
             bleeding.isTrauma = isTrauma;
+            bleeding.causedByPenetration = causedByPenetration;
             return newEntity;
         }
     }

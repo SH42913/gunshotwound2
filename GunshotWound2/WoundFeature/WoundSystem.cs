@@ -162,7 +162,8 @@
             }
 
             if (dbp.bleed > 0f) {
-                entity.CreateBleeding(hitData.bodyPart, dbp.bleed, woundName, reason, isTrauma: false);
+                bool causedByPenetration = !wound.IsBlunt;
+                entity.CreateBleeding(hitData.bodyPart, dbp.bleed, woundName, reason, isTrauma: false, causedByPenetration);
             }
 
             if (dbp.pain > 0f) {
