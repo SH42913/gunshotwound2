@@ -13,6 +13,10 @@
     <HeadshotIsInstantDeath Value="FALSE"/>
     <!-- Headshots in GSW2 are always deadly, but by default death takes some time(like IRL).
     Set this Value to TRUE if you want peds will dead instantly when getting headshot. -->
+    
+    <ShowFullHealthInfo Value="FALSE"/>
+    <!-- If you want see full health info for closest ped(like one you see for player), set this value to TRUE.
+    If value is FALSE, you will see only visible info(like health status, armor or bleeding wounds) -->
 
     <DontActivateRagdollFromBulletImpact Value="FALSE"/>
     <!-- More realistic impact behaviour, but override euphoria mods reactions(must be FALSE if you use any) -->

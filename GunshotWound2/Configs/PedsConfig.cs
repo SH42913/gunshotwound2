@@ -29,6 +29,7 @@ namespace GunshotWound2.Configs {
         public GswTargets Targets;
         public bool ScanOnlyDamaged;
         public bool InstantDeathHeadshot;
+        public bool ShowFullHealthInfo;
         public bool DontActivateRagdollFromBulletImpact;
         public bool RealisticSpineDamage;
         public float ClosestPedRange;
@@ -63,6 +64,7 @@ namespace GunshotWound2.Configs {
             ShowEnemyCriticalMessages = root.Element("CriticalMessages").GetBool();
             ScanOnlyDamaged = root.Element(nameof(ScanOnlyDamaged)).GetBool();
             InstantDeathHeadshot = root.Element("HeadshotIsInstantDeath").GetBool();
+            ShowFullHealthInfo = root.Element(nameof(ShowFullHealthInfo)).GetBool();
             DontActivateRagdollFromBulletImpact = root.Element(nameof(DontActivateRagdollFromBulletImpact)).GetBool();
             RealisticSpineDamage = root.Element(nameof(RealisticSpineDamage)).GetBool();
             ClosestPedRange = root.Element(nameof(ClosestPedRange)).GetFloat();

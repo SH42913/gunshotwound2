@@ -73,16 +73,16 @@
             ShowStatus(pedEntity, ref convertedPed, ref health);
 
 #if DEBUG
-            ShowHealth(ref convertedPed, ref health);
-            ShowPain(pedEntity, health);
-            ShowPainkillersEffect(pedEntity);
+            const bool showFullHealthInfo = true;
 #else
-            if (convertedPed.isPlayer) {
+            bool showFullHealthInfo = convertedPed.isPlayer || mainConfig.pedsConfig.ShowFullHealthInfo;
+#endif
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            if (showFullHealthInfo) {
                 ShowHealth(ref convertedPed, ref health);
                 ShowPain(pedEntity, health);
-                ShowPainkillersEffect(pedEntity);
+                ShowPainkillersEffect(pedEntity, health);
             }
-#endif
 
             ShowArmor(ref convertedPed);
             ShowBleedingWounds(pedEntity, ref convertedPed, ref health, ref currentlyUsing);
@@ -212,7 +212,11 @@
             stringBuilder.SetDefaultColor();
         }
 
-        private void ShowPainkillersEffect(Entity pedEntity) {
+        private void ShowPainkillersEffect(Entity pedEntity, in Health health) {
+            if (health.isDead) {
+                return;
+            }
+            
             ref PainkillersEffect painkillersEffect = ref pedEntity.GetComponent<PainkillersEffect>(out bool painkillersActive);
             if (!painkillersActive) {
                 return;
