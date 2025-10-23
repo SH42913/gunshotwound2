@@ -57,6 +57,7 @@ namespace GunshotWound2.Configs {
         public uint WEAPON_RUN_OVER_BY_CAR;
 
         public bool UseSpecialStunDamage;
+        public float StunPainPercent;
         public HashSet<uint> IgnoreSet;
         public Weapon[] Weapons;
 
@@ -79,7 +80,9 @@ namespace GunshotWound2.Configs {
 
         public void FillFrom(XDocument doc) {
             XElement root = doc.Element(nameof(WeaponConfig))!;
-            UseSpecialStunDamage = root.Element(nameof(UseSpecialStunDamage)).GetBool();
+            XElement specialStunDamage = root.Element("SpecialStunDamage");
+            UseSpecialStunDamage = specialStunDamage.GetBool("Enabled");
+            StunPainPercent = specialStunDamage.GetFloat(nameof(StunPainPercent));
             IgnoreSet = ExtractWeaponHashes(root.Element(nameof(IgnoreSet)));
 
             XElement weaponsNode = root.Element(nameof(Weapons))!;

@@ -42,7 +42,8 @@
                 ref ConvertedPed convertedPed = ref pedStash.Get(entity);
                 ref PainkillersEffect painkillersEffect = ref painkillersStash.Get(entity, out bool painkillersActive);
                 if (pain.diff > 0f) {
-                    if (!painkillersActive) {
+                    bool skipDelay = pain.dontDelayDiff || painkillersActive;
+                    if (!skipDelay) {
                         DelayPain(ref pain);
                     }
 
@@ -123,7 +124,7 @@
 
             float percent = pain.Percent();
             if (!wasTooMuch && percent >= 1f) {
-                const float ensurePainOverflow = 0.15f;
+                const float ensurePainOverflow = 0.1f;
                 if (percent - 1f < ensurePainOverflow) {
                     pain.diff += ensurePainOverflow * pain.max;
                 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WeaponConfig>
-    <UseSpecialStunDamage Value="TRUE"/>
-    <!-- Any stun damage(eg StunGun/911657153) will drop target to unconscious.
-    If you're using LSPDFR, set value to FALSE and use default stun logic -->
+    <SpecialStunDamage Enabled="TRUE" StunPainPercent="1.15"/>
+    <!-- Any stun damage(eg StunGun/911657153) will drop target to unconscious state.
+    If you're using LSPDFR, set Enabled to FALSE and use default stun logic -->
 
     <!-- GSW2 will ignore these weapons, so they will deal vanilla damage -->
     <IgnoreSet>

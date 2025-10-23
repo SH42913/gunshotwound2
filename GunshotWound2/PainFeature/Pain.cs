@@ -7,6 +7,7 @@
     public struct Pain : IComponent {
         public float amount;
         public float diff;
+        public bool dontDelayDiff;
         public float delayedDiff;
         public float recoveryRate;
         public float max;

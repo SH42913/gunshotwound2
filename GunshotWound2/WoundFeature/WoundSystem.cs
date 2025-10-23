@@ -118,15 +118,10 @@
                 return;
             }
 
-            const float stunPainMult = 1.2f;
-            float maxPain = convertedPed.isPlayer
-                    ? sharedData.mainConfig.playerConfig.PainShockThreshold
-                    : sharedData.mainConfig.pedsConfig.MaxPainShockThreshold;
-
             ref Pain pain = ref pedEntity.GetComponent<Pain>();
-            pain.diff += stunPainMult * maxPain - pain.amount;
-
-            convertedPed.thisPed.PlayAmbientSpeech("PAIN_TAZER", SpeechModifier.InterruptShouted);
+            pain.diff += sharedData.mainConfig.weaponConfig.StunPainPercent * pain.max - pain.amount;
+            pain.dontDelayDiff = true;
+            convertedPed.thisPed.PlayAmbientSpeech("PAIN_TAZER", SpeechModifier.ForceShouted);
         }
 
         private void ProcessWound(EcsEntity entity, in PedHitData hitData, in WoundConfig.Wound wound, in ConvertedPed convertedPed) {
