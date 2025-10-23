@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PlayerConfig>
+    <UseVanillaHealthSystem Value="FALSE"/>
+    <!-- If you want to use default health system for player, set this value to TRUE -->
+    
     <PoliceCanForget Value="TRUE"/>
     <!-- If TRUE - cops can forget you when you fall unconscious.
     If you use Realism Dispatch Enhanced, better to set it FALSE-->

@@ -6,6 +6,7 @@ namespace GunshotWound2.Configs {
     using Utils;
 
     public sealed class PlayerConfig : MainConfig.IConfig {
+        public bool UseVanillaHealthSystem;
         public bool PoliceCanForgetYou;
         public bool PedsWillIgnoreUnconsciousPlayer;
         public bool CanDropWeapon;
@@ -26,6 +27,7 @@ namespace GunshotWound2.Configs {
         public void FillFrom(XDocument doc) {
             XElement root = doc.Element(nameof(PlayerConfig))!;
 
+            UseVanillaHealthSystem = root.Element(nameof(UseVanillaHealthSystem)).GetBool();
             PainShockThreshold = root.Element(nameof(PainShockThreshold)).GetFloat();
             PainRecoverySpeed = root.Element(nameof(PainRecoverySpeed)).GetFloat();
             BleedHealingSpeed = root.Element("BleedHealSpeed").GetFloat() / 1000f;

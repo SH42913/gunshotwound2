@@ -24,6 +24,10 @@
         void IDisposable.Dispose() { }
 
         public void OnUpdate(float deltaTime) {
+            if (sharedData.mainConfig.playerConfig.UseVanillaHealthSystem) {
+                return;
+            }
+
             MarkNewPedsAsPlayer();
             RemoveMarkerIfDifferentPed();
             FindNewPedIfNeed();
