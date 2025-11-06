@@ -38,11 +38,11 @@
             foreach (EcsEntity entity in damagedPeds) {
                 ref PedHitData hitData = ref hitsStash.Get(entity);
                 ref ConvertedPed convertedPed = ref pedsStash.Get(entity);
-                ProcessHit(ref hitData, ref convertedPed);
+                ProcessHit(entity, ref hitData, ref convertedPed);
             }
         }
 
-        private void ProcessHit(ref PedHitData hitData, ref ConvertedPed convertedPed) {
+        private void ProcessHit(EcsEntity entity, ref PedHitData hitData, ref ConvertedPed convertedPed) {
             if (hitData.weaponType.IsValid) {
 #if DEBUG
                 sharedData.logger.WriteInfo("Skip weapon detection, cause it's already detected");
@@ -80,7 +80,7 @@
             var isSpecialCase = false;
             var skipAsDefaultDamage = false;
             if (!weaponType.IsValid) {
-                weaponType = CheckSpecialCases(ref convertedPed, out specialHitCount);
+                weaponType = CheckSpecialCases(entity, ref convertedPed, out specialHitCount);
                 isSpecialCase = weaponType.IsValid;
                 skipAsDefaultDamage = specialHitCount < 1;
             }
@@ -187,7 +187,7 @@
             return default;
         }
 
-        private WeaponConfig.Weapon CheckSpecialCases(ref ConvertedPed convertedPed, out int hitCount) {
+        private WeaponConfig.Weapon CheckSpecialCases(EcsEntity entity, ref ConvertedPed convertedPed, out int hitCount) {
             Ped ped = convertedPed.thisPed;
             if (ped.IsBeingStunned) {
 #if DEBUG
@@ -215,7 +215,7 @@
             }
 
             if (IsDamagedByWeapon(ped, WeaponConfig.WEAPON_RAMMED_BY_CAR)) {
-                return HandleCarImpact(convertedPed, out hitCount);
+                return HandleCarImpact(entity, convertedPed, out hitCount);
             }
 
             if (IsDamagedByWeapon(ped, WeaponConfig.WEAPON_RUN_OVER_BY_CAR)) {
@@ -284,17 +284,23 @@
             }
         }
 
-        private WeaponConfig.Weapon HandleCarImpact(in ConvertedPed convertedPed, out int hitCount) {
-            Vehicle vehicle = convertedPed.thisPed.CurrentVehicle;
-            if (vehicle != null) {
+        private WeaponConfig.Weapon HandleCarImpact(EcsEntity entity, in ConvertedPed convertedPed, out int hitCount) {
+            if (convertedPed.isPlayer) {
+                float maxSpeed = entity.GetComponent<PlayerSpeedHistory>().max;
+                float hardMult = maxSpeed / sharedData.mainConfig.weaponConfig.CarCrashReferenceSpeed;
 #if DEBUG
-                sharedData.logger.WriteInfo($"It is car crash damage at speed {vehicle.Speed}");
+                sharedData.logger.WriteInfo($"It is car crash damage at speed {maxSpeed}, hardMult:{hardMult}");
 #endif
-                hitCount = 1; //TODO
+
+                hitCount = (int)Math.Round(hardMult);
+                if (hitCount < 1) {
+                    hitCount = 1;
+                }
+
                 return WeaponConfig.CarCrash;
             } else {
 #if DEBUG
-                sharedData.logger.WriteWarning("It is car crash damage, but ped is not in vehicle");
+                sharedData.logger.WriteWarning("It is car crash damage, but ped is not player");
 #endif
                 hitCount = 1;
                 return WeaponConfig.CarCrash;
