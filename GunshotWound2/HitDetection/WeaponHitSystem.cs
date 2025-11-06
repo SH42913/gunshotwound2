@@ -72,40 +72,41 @@
             }
 
             WeaponConfig.Weapon weaponType = default;
-            if (convertedPed.isPlayer) {
-                if (!isValidLastDamage) {
-                    weaponHash = 0;
-                }
+            if (isValidLastDamage) {
+                weaponType = DetectWeaponTypeDirectly(weaponHash);
+            }
 
-                weaponType = DetectWeaponType(ped, ref weaponHash);
-            } else if (isValidLastDamage) {
-                weaponType = DetectWeaponType(ped, ref weaponHash);
-            } else {
-                sharedData.logger.WriteError("No player and not valid damage record");
+            var specialHitCount = 0;
+            var isSpecialCase = false;
+            var skipAsDefaultDamage = false;
+            if (!weaponType.IsValid) {
+                weaponType = CheckSpecialCases(ref convertedPed, out specialHitCount);
+                isSpecialCase = weaponType.IsValid;
+                skipAsDefaultDamage = specialHitCount < 1;
+            }
+
+            if (skipAsDefaultDamage) {
+#if DEBUG
+                sharedData.logger.WriteInfo("It is default damage, so skip it");
+#endif
+                return;
+            }
+
+            if (!weaponType.IsValid) {
+#if DEBUG
+                sharedData.logger.WriteInfo("Need to try find weapon with brute");
+#endif
+                weaponType = DetectWeaponTypeBrute(ped, out weaponHash);
             }
 
             if (isValidLastDamage) {
                 RefreshAggressor(ref convertedPed, ref hitData, attackerHandle);
             }
 
-            var defaultDamage = false;
-            var isSpecialCase = false;
-            if (!weaponType.IsValid) {
-                weaponType = CheckSpecialCases(ref convertedPed, out defaultDamage);
-                isSpecialCase = weaponType.IsValid;
-            }
-
-            if (defaultDamage) {
-#if DEBUG
-                sharedData.logger.WriteInfo($"It is default damage, so skip it");
-#endif
-                return;
-            }
-
             if (weaponType.IsValid) {
                 hitData.weaponHash = weaponHash;
                 hitData.weaponType = weaponType;
-                hitData.hits = 1;
+                hitData.hits = isSpecialCase ? specialHitCount : 1;
                 hitData.useRandomBodyPart = isSpecialCase;
 #if DEBUG
                 string weaponName = BuildWeaponName(weaponHash);
@@ -154,27 +155,15 @@
             }
         }
 
-        private WeaponConfig.Weapon DetectWeaponType(Ped ped, ref uint weaponHash) {
+        private WeaponConfig.Weapon DetectWeaponTypeDirectly(uint weaponHash) {
             foreach (WeaponConfig.Weapon weapon in WeaponConfig.Weapons) {
                 if (weapon.Hashes == null || weapon.Hashes.Count < 1) {
                     continue;
                 }
 
-                bool directCheck = weaponHash != 0 && weapon.Hashes.Contains(weaponHash);
-                if (directCheck) {
+                if (weapon.Hashes.Contains(weaponHash)) {
 #if DEBUG
                     sharedData.logger.WriteInfo($"Hash {weaponHash} was directly found in {weapon.Key}");
-#endif
-                    return weapon;
-                }
-            }
-
-            foreach (WeaponConfig.Weapon weapon in WeaponConfig.Weapons) {
-                bool bruteCheck = PedWasDamagedBy(weapon.Hashes, ped, out uint hitWeapon);
-                if (bruteCheck) {
-                    weaponHash = hitWeapon;
-#if DEBUG
-                    sharedData.logger.WriteInfo($"Hash {weaponHash} was found with brute in {weapon.Key}");
 #endif
                     return weapon;
                 }
@@ -183,13 +172,28 @@
             return default;
         }
 
-        private WeaponConfig.Weapon CheckSpecialCases(ref ConvertedPed convertedPed, out bool skipDamage) {
+        private WeaponConfig.Weapon DetectWeaponTypeBrute(Ped ped, out uint weaponHash) {
+            foreach (WeaponConfig.Weapon weapon in WeaponConfig.Weapons) {
+                if (PedWasDamagedBy(weapon.Hashes, ped, out uint hitWeapon)) {
+                    weaponHash = hitWeapon;
+#if DEBUG
+                    sharedData.logger.WriteInfo($"Hash {hitWeapon} was found with brute in {weapon.Key}");
+#endif
+                    return weapon;
+                }
+            }
+
+            weaponHash = 0;
+            return default;
+        }
+
+        private WeaponConfig.Weapon CheckSpecialCases(ref ConvertedPed convertedPed, out int hitCount) {
             Ped ped = convertedPed.thisPed;
             if (ped.IsBeingStunned) {
 #if DEBUG
                 sharedData.logger.WriteInfo("It is STUN damage");
 #endif
-                skipDamage = false;
+                hitCount = 1;
                 return WeaponConfig.Stun;
             }
 
@@ -197,7 +201,7 @@
 #if DEBUG
                 sharedData.logger.WriteInfo("It is FIRE damage, it will be skipped");
 #endif
-                skipDamage = true;
+                hitCount = 0;
                 return default;
             }
 
@@ -206,76 +210,93 @@
 #if DEBUG
                 sharedData.logger.WriteInfo("It is EXHAUSTION damage, it will be skipped");
 #endif
-                skipDamage = true;
+                hitCount = 0;
                 return default;
-            }
-
-            if (IsDamagedByWeapon(ped, WeaponConfig.WEAPON_RUN_OVER_BY_CAR)) {
-                return HandleRunOverCar(ped, out skipDamage);
-            }
-
-            if (IsDamagedByWeapon(ped, WeaponConfig.WEAPON_FALL) || ped.IsFalling || ped.IsRagdoll) {
-                return HandleFalling(ped, out skipDamage);
             }
 
             if (IsDamagedByWeapon(ped, WeaponConfig.WEAPON_RAMMED_BY_CAR)) {
-                skipDamage = false;
-                return HandleCarImpact(ped);
+                return HandleCarImpact(convertedPed, out hitCount);
             }
 
-            skipDamage = false;
+            if (IsDamagedByWeapon(ped, WeaponConfig.WEAPON_RUN_OVER_BY_CAR)) {
+                return HandleRunOverCar(ped, out hitCount);
+            }
+
+            if (IsDamagedByWeapon(ped, WeaponConfig.WEAPON_FALL) || ped.IsFalling || ped.IsRagdoll) {
+                return HandleFalling(ped.Velocity.Length(), out hitCount);
+            }
+
+            hitCount = 1;
             return default;
         }
 
-        private WeaponConfig.Weapon HandleRunOverCar(Ped ped, out bool skipDamage) {
-            Vehicle possibleVehicle = GTA.World.GetClosestVehicle(ped.Position, 5f);
-            Vector3 vehicleVelocity = possibleVehicle != null ? possibleVehicle.Velocity : Vector3.Zero;
-            float relativeSpeed = (vehicleVelocity - ped.Velocity).Length();
-
+        private WeaponConfig.Weapon HandleRunOverCar(Ped ped, out int hitCount) {
+            Vehicle possibleVehicle = GTA.World.GetClosestVehicle(ped.Position, 4f);
+            if (possibleVehicle == null) {
 #if DEBUG
-            string vehicleName = possibleVehicle?.DisplayName ?? "UNKNOWN";
-            sharedData.logger.WriteInfo($"It is run over car damage by {vehicleName}, relativeSpeed:{relativeSpeed}");
+                sharedData.logger.WriteInfo("Run over car damage, but no vehicle, treat like falling");
 #endif
-            if (relativeSpeed > WeaponConfig.HardRunOverThreshold) {
-                skipDamage = false;
+                return HandleFalling(ped.Velocity.Length(), out hitCount);
+            }
+
+            float relativeSpeed = (possibleVehicle.Velocity - ped.Velocity).Length();
+#if DEBUG
+            string vehicleName = possibleVehicle.DisplayName;
+            float mass = possibleVehicle.HandlingData.Mass;
+            sharedData.logger.WriteInfo($"It is run over car damage by {vehicleName}, relativeSpeed:{relativeSpeed}, mass:{mass}");
+#endif
+
+            float hardHitMult = relativeSpeed / WeaponConfig.HardRunOverThreshold;
+            if (hardHitMult > 1f) {
+                float massMult = possibleVehicle.HandlingData.Mass / WeaponConfig.HardRunOverVehMassReference;
+#if DEBUG
+                sharedData.logger.WriteInfo($"HardHitMult:{hardHitMult}, MassMult:{massMult}");
+#endif
+                hitCount = (int)Math.Round(hardHitMult * massMult);
+                if (hitCount < 1) {
+                    hitCount = 1;
+                }
+
                 return WeaponConfig.HardRunOverCar;
             } else if (relativeSpeed < WeaponConfig.LightRunOverThreshold) {
-                skipDamage = true;
+                hitCount = 0;
                 return default;
             } else {
-                skipDamage = false;
+                hitCount = 1;
                 return WeaponConfig.LightRunOverCar;
             }
         }
 
-        private WeaponConfig.Weapon HandleFalling(Ped ped, out bool skipDamage) {
-            float pedSpeed = ped.Velocity.Length();
+        private WeaponConfig.Weapon HandleFalling(float pedSpeed, out int hitCount) {
+            float hardFallMult = pedSpeed / WeaponConfig.HardFallThreshold;
 #if DEBUG
-            sharedData.logger.WriteInfo($"It is fall damage with speed {pedSpeed.ToString("F2")}");
+            sharedData.logger.WriteInfo($"It is fall damage with speed {pedSpeed}, hardMult:{hardFallMult}");
 #endif
-            if (pedSpeed > WeaponConfig.HardFallThreshold) {
-                skipDamage = false;
+            if (hardFallMult > 1f) {
+                hitCount = (int)Math.Round(hardFallMult);
                 return WeaponConfig.HardFall;
             } else if (pedSpeed < WeaponConfig.LightFallThreshold) {
-                skipDamage = true;
+                hitCount = 0;
                 return default;
             } else {
-                skipDamage = false;
+                hitCount = 1;
                 return WeaponConfig.LightFall;
             }
         }
 
-        private WeaponConfig.Weapon HandleCarImpact(Ped ped) {
-            Vehicle vehicle = ped.CurrentVehicle;
+        private WeaponConfig.Weapon HandleCarImpact(in ConvertedPed convertedPed, out int hitCount) {
+            Vehicle vehicle = convertedPed.thisPed.CurrentVehicle;
             if (vehicle != null) {
 #if DEBUG
                 sharedData.logger.WriteInfo($"It is car crash damage at speed {vehicle.Speed}");
 #endif
+                hitCount = 1; //TODO
                 return WeaponConfig.CarCrash;
             } else {
 #if DEBUG
-                sharedData.logger.WriteInfo("It is car crash damage, but ped is not in vehicle");
+                sharedData.logger.WriteWarning("It is car crash damage, but ped is not in vehicle");
 #endif
+                hitCount = 1;
                 return WeaponConfig.CarCrash;
             }
         }

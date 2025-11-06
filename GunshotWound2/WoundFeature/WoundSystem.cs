@@ -63,9 +63,13 @@
                 sharedData.logger.WriteWarning($"Hit has no bodyPart, {hitData.bodyPart.Key} will be used");
             }
 
+#if DEBUG
+            sharedData.logger.WriteInfo($"Processing {hitData.hits} hits");
+#endif
+            bool isMultPelletWeapon = hitData.weaponType.Pellets > 1;
             if (hitData.hits == 1) {
                 ProcessOneHit(entity, hitData, ref convertedPed);
-            } else if (hitData.hits > hitData.weaponType.Pellets / 2) {
+            } else if (isMultPelletWeapon && hitData.hits > 0.5f * hitData.weaponType.Pellets) {
                 ProcessOneHit(entity, hitData, ref convertedPed);
             } else {
                 ProcessMultiHit(entity, hitData, ref convertedPed);

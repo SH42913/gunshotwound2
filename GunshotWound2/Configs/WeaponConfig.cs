@@ -66,6 +66,7 @@ namespace GunshotWound2.Configs {
 
         public float LightRunOverThreshold;
         public float HardRunOverThreshold;
+        public float HardRunOverVehMassReference;
 
         public Weapon Stun => Weapons.First(x => x.Key == nameof(Stun));
         public Weapon LightFall => Weapons.First(x => x.Key == nameof(LightFall));
@@ -93,6 +94,7 @@ namespace GunshotWound2.Configs {
             HardFallThreshold = weaponsNode.Element(nameof(HardFall)).GetFloat(minSpeedName);
             LightRunOverThreshold = weaponsNode.Element(nameof(LightRunOverCar)).GetFloat(minSpeedName);
             HardRunOverThreshold = weaponsNode.Element(nameof(HardRunOverCar)).GetFloat(minSpeedName);
+            HardRunOverVehMassReference = weaponsNode.Element(nameof(HardRunOverCar)).GetFloat("VehMassReference");
 
             const string prefix = "";
             WEAPON_FALL = GetWeaponHash(nameof(WEAPON_FALL), prefix);

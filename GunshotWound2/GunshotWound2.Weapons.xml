@@ -418,7 +418,7 @@
             </Wounds>
         </HeliCrash>
 
-        <LightFall MinSpeed="2.5" HelmetSafeChance="1">
+        <LightFall MinSpeed="2" HelmetSafeChance="1">
             <Wounds>
                 <Wound Key="LightBruise" Weight="40"/>
                 <Wound Key="MediumBruise" Weight="25"/>
@@ -427,7 +427,7 @@
             </Wounds>
         </LightFall>
 
-        <HardFall MinSpeed="15" ChanceToCauseTrauma="0.6" HelmetSafeChance="0.8">
+        <HardFall MinSpeed="6" ChanceToCauseTrauma="0.6" HelmetSafeChance="0.8">
             <Wounds>
                 <Wound Key="BluntHematoma" Weight="30"/>
                 <Wound Key="HeavyBruise" Weight="25"/>
@@ -437,7 +437,7 @@
             </Wounds>
         </HardFall>
 
-        <LightRunOverCar MinSpeed="2.5" HelmetSafeChance="1">
+        <LightRunOverCar MinSpeed="3" HelmetSafeChance="1">
             <Wounds>
                 <Wound Key="MediumBruise" Weight="35"/>
                 <Wound Key="LightBruise" Weight="30"/>
@@ -446,7 +446,7 @@
             </Wounds>
         </LightRunOverCar>
 
-        <HardRunOverCar MinSpeed="15" ChanceToCauseTrauma="0.75" HelmetSafeChance="0.8">
+        <HardRunOverCar MinSpeed="12" ChanceToCauseTrauma="0.75" HelmetSafeChance="0.8" VehMassReference="2000">
             <Wounds>
                 <Wound Key="HeavyBruise" Weight="30"/>
                 <Wound Key="BluntHematoma" Weight="25"/>
