@@ -4,6 +4,11 @@
     <!-- Any stun damage(eg StunGun/911657153) will drop target to unconscious state.
     If you're using LSPDFR, set Enabled to FALSE and use default stun logic -->
 
+    <CleanLastDamageFromPed Value="TRUE"/>
+    <!-- This is mod-compatibility option.
+    Set this value to FALSE only if you're using other mod with damage-detection feature
+    (like MoreGore or Damage Tracker Framework) -->
+
     <!-- GSW2 will ignore these weapons, so they will deal vanilla damage -->
     <IgnoreSet>
         <Explosives Hashes="EXPLOSION;GRENADE;STICKYBOMB;PROXMINE;PIPEBOMB;"/>

@@ -57,6 +57,7 @@ namespace GunshotWound2.Configs {
         public uint WEAPON_RUN_OVER_BY_CAR;
 
         public bool UseSpecialStunDamage;
+        public bool CleanLastDamageFromPed;
         public float StunPainPercent;
         public HashSet<uint> IgnoreSet;
         public Weapon[] Weapons;
@@ -84,6 +85,7 @@ namespace GunshotWound2.Configs {
             XElement specialStunDamage = root.Element("SpecialStunDamage");
             UseSpecialStunDamage = specialStunDamage.GetBool("Enabled");
             StunPainPercent = specialStunDamage.GetFloat(nameof(StunPainPercent));
+            CleanLastDamageFromPed = root.Element("CleanLastDamageFromPed").GetBool();
             IgnoreSet = ExtractWeaponHashes(root.Element(nameof(IgnoreSet)));
 
             XElement weaponsNode = root.Element(nameof(Weapons))!;
