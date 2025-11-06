@@ -77,6 +77,8 @@
     <Compile Include="PlayerFeature\MissionTrackerSystem.cs" />
     <Compile Include="PlayerFeature\PlayerHelpSystem.cs" />
     <Compile Include="PlayerFeature\PlayerPainRecoverySystem.cs" />
+    <Compile Include="PlayerFeature\PlayerSpeedHistory.cs" />
+    <Compile Include="PlayerFeature\PlayerSpeedSystem.cs" />
     <Compile Include="StatusFeature\UnconsciousVisualRequest.cs" />
     <Compile Include="StatusFeature\UnconsciousVisualSystem.cs" />
     <Compile Include="StatusFeature\IPedStatus.cs" />
