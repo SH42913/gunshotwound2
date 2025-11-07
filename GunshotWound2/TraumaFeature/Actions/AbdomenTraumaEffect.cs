@@ -28,7 +28,12 @@
         public override void Repeat(EcsEntity entity, ref ConvertedPed convertedPed) { }
 
         public override void EveryFrame(EcsEntity entity, ref ConvertedPed convertedPed) {
-            if (!convertedPed.thisPed.IsRunning && !convertedPed.thisPed.IsSprinting) {
+            Ped ped = convertedPed.thisPed;
+            if (ped.IsRagdoll) {
+                return;
+            }
+
+            if (!ped.IsRunning && !ped.IsSprinting) {
                 return;
             }
 
@@ -38,7 +43,7 @@
                 string name = sharedData.localeConfig.InternalBleeding;
                 string reason = sharedData.localeConfig.TraumaType;
                 entity.CreateBleeding(bodyPart, 0.5f * BLEEDING_SEVERITY, name, reason, isTrauma: true, causedByPenetration: false);
-                convertedPed.thisPed.PlayAmbientSpeech("PAIN_RAPIDS", SpeechModifier.InterruptShouted);
+                ped.PlayAmbientSpeech("PAIN_RAPIDS", SpeechModifier.InterruptShouted);
                 ShowRunningWarningMessage(convertedPed);
             }
         }

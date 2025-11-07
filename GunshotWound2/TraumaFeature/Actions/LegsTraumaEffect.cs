@@ -28,6 +28,10 @@
 
         public override void EveryFrame(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) {
             Ped ped = convertedPed.thisPed;
+            if (ped.IsRagdoll) {
+                return;
+            }
+
             bool shouldRagdoll = ped.IsSprinting;
             if (!shouldRagdoll) {
                 shouldRagdoll = ped.IsRunning && sharedData.random.IsTrueWithProbability(RUN_RAGDOLL_CHANCE);
