@@ -44,5 +44,9 @@
                 }
             }
         }
+
+        public static bool InRampageScenario() {
+            return Function.Call<bool>(Hash.IS_SCENARIO_GROUP_ENABLED, "Rampage1");
+        }
     }
 }

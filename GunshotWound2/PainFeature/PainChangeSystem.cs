@@ -4,6 +4,7 @@
     using HealthFeature;
     using HitDetection;
     using PedsFeature;
+    using PlayerFeature;
     using Scellecs.Morpeh;
 
     public sealed class PainChangeSystem : ILateSystem {
@@ -115,6 +116,10 @@
 
         // ReSharper disable once UnusedMethodReturnValue.Local due used under DEBUG_EVERY_FRAME
         private float ApplyPain(Entity entity, ref ConvertedPed convertedPed, ref Pain pain) {
+            if (convertedPed.isPlayer && PlayerEffects.InRampageScenario()) {
+                ReducePainDiffForRampage(ref pain);
+            }
+
             PlayPainEffects(entity, ref convertedPed, ref pain);
 
             bool wasTooMuch = pain.TooMuchPain();
@@ -122,15 +127,23 @@
             pain.amount += diff;
             pain.diff = 0f;
 
-            float percent = pain.Percent();
-            if (!wasTooMuch && percent >= 1f) {
-                const float ensurePainOverflow = 0.1f;
-                if (percent - 1f < ensurePainOverflow) {
-                    pain.diff += ensurePainOverflow * pain.max;
-                }
+            if (!wasTooMuch && pain.TooMuchPain()) {
+                EnsurePainOverflow(ref pain);
             }
 
             return diff;
+        }
+
+        private void ReducePainDiffForRampage(ref Pain pain) {
+            pain.diff = sharedData.mainConfig.playerConfig.RampagePainMult * pain.diff;
+        }
+
+        private static void EnsurePainOverflow(ref Pain pain) {
+            const float ensurePainOverflow = 0.1f;
+            float percent = pain.Percent();
+            if (percent - 1f < ensurePainOverflow) {
+                pain.diff += ensurePainOverflow * pain.max;
+            }
         }
 
         private void UpdatePainkillersEffect(Entity entity,

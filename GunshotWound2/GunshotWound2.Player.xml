@@ -47,4 +47,7 @@
 
     <HelmetCost Value="40"/>
     <!-- 40 means you need $40 to buy a helmet. If you're using a skin changer, you need to set it to 0. -->
+
+    <RampagePainMult Value="0.5"/>
+    <!-- 0.5 means you will receive only 50% of pain while you're in Rampage. -->
 </PlayerConfig>
