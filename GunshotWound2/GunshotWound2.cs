@@ -1,4 +1,6 @@
-﻿namespace GunshotWound2 {
+﻿// #define GSW_PROFILING
+
+namespace GunshotWound2 {
     using System;
     using System.IO;
     using System.Reflection;
@@ -28,6 +30,18 @@
 
         private readonly EcsWorld ecsWorld;
         private readonly SystemsGroup commonSystems;
+
+#if GSW_PROFILING
+        private const double AVG_ALPHA = 0.1;
+        private const double MAX_DECAY = 0.999;
+        private readonly System.Diagnostics.Stopwatch stopwatch = System.Diagnostics.Stopwatch.StartNew();
+        private double avgFrameTime;
+        private double maxFrameTime;
+        private double minFrameTime;
+        private double badFrameRatio;
+        private bool firstFrameLog;
+        private bool profilerIsReady;
+#endif
 
         private bool isStarted;
         private bool isPaused;
@@ -67,6 +81,33 @@
             }
         }
 
+#if GSW_PROFILING
+        private void RefreshProfilingTime() {
+            long ticks = stopwatch.ElapsedTicks;
+            double frameTime = ticks * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+            if (!firstFrameLog) {
+                sharedData.logger.WriteInfo($"GSW profiling enabled. First frame:{frameTime:F}ms");
+                firstFrameLog = true;
+            } else if (!profilerIsReady) {
+                minFrameTime = frameTime;
+                avgFrameTime = frameTime;
+                maxFrameTime = frameTime;
+                profilerIsReady = true;
+            } else {
+                minFrameTime = Math.Min(frameTime, minFrameTime);
+                avgFrameTime = avgFrameTime * (1 - AVG_ALPHA) + frameTime * AVG_ALPHA;
+                if (frameTime >= maxFrameTime) {
+                    maxFrameTime = frameTime;
+                } else {
+                    maxFrameTime += (frameTime - maxFrameTime) * (1 - MAX_DECAY);
+                }
+
+                double isBadFrame = frameTime > avgFrameTime * 2.0 ? 1.0 : 0.0;
+                badFrameRatio = badFrameRatio * (1 - AVG_ALPHA) + isBadFrame * AVG_ALPHA;
+            }
+        }
+#endif
+
         private void OnKeyUp(object sender, KeyEventArgs eventArgs) {
             if (Game.IsPaused) {
                 return;
@@ -97,6 +138,11 @@
             }
 
             try {
+#if GSW_PROFILING
+                sharedData.logger.WriteInfo("GSW profiling results:");
+                sharedData.logger.WriteInfo($"MIN:{minFrameTime:F}ms AVG:{avgFrameTime:F}ms MAX:{maxFrameTime:F}ms");
+                sharedData.logger.WriteInfo($"BAD:{badFrameRatio:P}");
+#endif
                 commonSystems.Dispose();
                 ecsWorld.Dispose();
                 sharedData.cameraService.ClearAllEffects();
@@ -192,10 +238,17 @@
         #region TICK
         private void GunshotWoundTick() {
             if (!isPaused) {
+#if GSW_PROFILING
+                stopwatch.Restart();
+#endif
                 sharedData.cheatListener.Check();
                 commonSystems.Update(sharedData.deltaTime);
                 commonSystems.LateUpdate(sharedData.deltaTime);
                 commonSystems.CleanupUpdate(sharedData.deltaTime);
+#if GSW_PROFILING
+                stopwatch.Stop();
+                RefreshProfilingTime();
+#endif
             }
 
             sharedData.notifier.Show();
