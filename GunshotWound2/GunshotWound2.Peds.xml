@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PedsConfig>
+    <UseVanillaHealthSystem Value="FALSE"/>
+    <!-- If you experience performance issues or want to use default health system for peds, set this value to TRUE -->
+
     <HeadshotIsInstantDeath Value="FALSE"/>
     <!-- Headshots in GSW2 are always deadly, but by default death takes some time(like IRL).
     Set this Value to TRUE if you want peds will dead instantly when getting headshot. -->

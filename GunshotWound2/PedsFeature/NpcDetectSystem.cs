@@ -32,6 +32,10 @@
         void IDisposable.Dispose() { }
 
         public void OnUpdate(float deltaTime) {
+            if (sharedData.mainConfig.pedsConfig.UseVanillaHealthSystem) {
+                return;
+            }
+
             stopwatch.Restart();
             Ped playerPed = Game.Player.Character;
             WorldService worldService = sharedData.worldService;

@@ -21,6 +21,7 @@ namespace GunshotWound2.Configs {
 
     public sealed class PedsConfig : MainConfig.IConfig {
         public GswTargets Targets;
+        public bool UseVanillaHealthSystem;
         public bool InstantDeathHeadshot;
         public bool ShowFullHealthInfo;
         public bool DontActivateRagdollFromBulletImpact;
@@ -51,6 +52,7 @@ namespace GunshotWound2.Configs {
         public void FillFrom(XDocument doc) {
             XElement root = doc.Element(nameof(PedsConfig))!;
 
+            UseVanillaHealthSystem = root.Element(nameof(UseVanillaHealthSystem)).GetBool();
             ShowEnemyCriticalMessages = root.Element("CriticalMessages").GetBool();
             InstantDeathHeadshot = root.Element("HeadshotIsInstantDeath").GetBool();
             ShowFullHealthInfo = root.Element(nameof(ShowFullHealthInfo)).GetBool();
