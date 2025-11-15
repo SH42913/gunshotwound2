@@ -123,6 +123,7 @@
     <Compile Include="Utils\CsvReader.cs" />
     <Compile Include="Utils\GTAHelpers.cs" />
     <Compile Include="Utils\Localization.cs" />
+    <Compile Include="Utils\ProfilerSample.cs" />
     <Compile Include="WoundFeature\ArmorChecker.cs" />
     <Compile Include="WoundFeature\WoundFeature.cs" />
     <Compile Include="WoundFeature\WoundSystem.cs" />
