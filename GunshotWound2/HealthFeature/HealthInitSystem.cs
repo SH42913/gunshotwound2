@@ -40,8 +40,6 @@
                 ped.MaxHealth = health.max + 1;
                 if (ped.Health > health.max) {
                     ped.Health = health.max;
-                } else if (!convertedPed.isPlayer && sharedData.mainConfig.pedsConfig.ScanOnlyDamaged) {
-                    ped.Health = health.max;
                 }
 
                 if (convertedPed.isPlayer) {

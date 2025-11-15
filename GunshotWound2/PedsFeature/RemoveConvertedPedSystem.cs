@@ -1,7 +1,8 @@
 ﻿namespace GunshotWound2.PedsFeature {
     using GTA;
-    using GTA.Math;
     using Scellecs.Morpeh;
+    using EcsEntity = Scellecs.Morpeh.Entity;
+    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class RemoveConvertedPedSystem : ICleanupSystem {
         private readonly SharedData sharedData;
@@ -9,7 +10,7 @@
         private Filter converted;
         private Stash<ConvertedPed> convertedStash;
 
-        public Scellecs.Morpeh.World World { get; set; }
+        public EcsWorld World { get; set; }
 
         public RemoveConvertedPedSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -21,14 +22,10 @@
         }
 
         public void OnUpdate(float deltaTime) {
-            Vector3 playerPosition = Game.Player.Character.Position;
-            float removeRange = sharedData.mainConfig.pedsConfig.RemovePedRange;
-            foreach (Scellecs.Morpeh.Entity entity in converted) {
+            foreach (EcsEntity entity in converted) {
                 ref ConvertedPed convertedPed = ref convertedStash.Get(entity);
                 Ped ped = convertedPed.thisPed;
                 if (convertedPed.forceRemove || !ped.Exists() || ped.IsDead) {
-                    Remove(entity, ref convertedPed);
-                } else if (removeRange > 0 && GTA.World.GetDistance(playerPosition, ped.Position) > removeRange) {
                     Remove(entity, ref convertedPed);
                 } else {
                     convertedPed.lastFrameHealth = ped.Health;
@@ -37,7 +34,7 @@
             }
         }
 
-        private void Remove(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) {
+        private void Remove(EcsEntity entity, ref ConvertedPed convertedPed) {
             convertedPed.thisPed.MaxHealth = convertedPed.defaultMaxHealth;
 
             if (convertedPed.isPlayer) {
@@ -52,7 +49,7 @@
         }
 
         public void Dispose() {
-            foreach (Scellecs.Morpeh.Entity entity in converted) {
+            foreach (EcsEntity entity in converted) {
                 Remove(entity, ref convertedStash.Get(entity));
             }
         }

@@ -11,7 +11,6 @@
         private readonly SharedData sharedData;
 
         private Filter convertedPeds;
-        private Filter justConvertedPeds;
         private Stash<ConvertedPed> convertedStash;
 
         public EcsWorld World { get; set; }
@@ -22,42 +21,12 @@
 
         public void OnAwake() {
             convertedPeds = World.Filter.With<ConvertedPed>().Without<JustConvertedEvent>();
-            justConvertedPeds = World.Filter.With<JustConvertedEvent>();
             convertedStash = World.GetStash<ConvertedPed>();
         }
 
         void IDisposable.Dispose() { }
 
         public void OnUpdate(float deltaTime) {
-            ProcessJustDamagedPeds();
-            ProcessCommonPeds();
-        }
-
-        private void ProcessJustDamagedPeds() {
-            if (!sharedData.mainConfig.pedsConfig.ScanOnlyDamaged) {
-                return;
-            }
-
-            foreach (EcsEntity entity in justConvertedPeds) {
-                ref ConvertedPed convertedPed = ref convertedStash.Get(entity);
-                if (convertedPed.isPlayer) {
-                    continue;
-                }
-
-                Ped ped = convertedPed.thisPed;
-                if (!ped.IsValid() || !ped.IsAlive || ped.IsInvincible) {
-                    continue;
-                }
-
-                entity.SetComponent(new PedHitData());
-
-#if DEBUG
-                sharedData.logger.WriteInfo($"Detect damage at {convertedPed.name} (just converted case)");
-#endif
-            }
-        }
-
-        private void ProcessCommonPeds() {
             foreach (EcsEntity entity in convertedPeds) {
                 ref ConvertedPed convertedPed = ref convertedStash.Get(entity);
                 Ped ped = convertedPed.thisPed;

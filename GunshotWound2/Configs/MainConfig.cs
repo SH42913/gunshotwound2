@@ -34,8 +34,6 @@ namespace GunshotWound2.Configs {
         public InputListener.Scheme DeathKey;
         public InputListener.Scheme HealKey;
         public InputListener.Scheme HelmetKey;
-        public InputListener.Scheme IncreaseRangeKey;
-        public InputListener.Scheme DecreaseRangeKey;
         public InputListener.Scheme PauseKey;
 
         public string Language = "EN";
@@ -128,8 +126,6 @@ namespace GunshotWound2.Configs {
             DeathKey = root.Element(nameof(DeathKey)).GetKeyScheme();
             HealKey = root.Element(nameof(HealKey)).GetKeyScheme();
             HelmetKey = root.Element("GetHelmetKey").GetKeyScheme();
-            IncreaseRangeKey = root.Element(nameof(IncreaseRangeKey)).GetKeyScheme();
-            DecreaseRangeKey = root.Element(nameof(DecreaseRangeKey)).GetKeyScheme();
             PauseKey = root.Element(nameof(PauseKey)).GetKeyScheme();
         }
 

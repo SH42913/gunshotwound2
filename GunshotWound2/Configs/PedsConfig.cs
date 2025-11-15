@@ -20,14 +20,7 @@ namespace GunshotWound2.Configs {
     }
 
     public sealed class PedsConfig : MainConfig.IConfig {
-        public const float MINIMAL_RANGE_FOR_WOUNDED_PEDS = 0;
-        public const float ADDING_TO_REMOVING_MULTIPLIER = 2;
-
-        public float AddingPedRange;
-        public float RemovePedRange;
-
         public GswTargets Targets;
-        public bool ScanOnlyDamaged;
         public bool InstantDeathHeadshot;
         public bool ShowFullHealthInfo;
         public bool DontActivateRagdollFromBulletImpact;
@@ -58,11 +51,7 @@ namespace GunshotWound2.Configs {
         public void FillFrom(XDocument doc) {
             XElement root = doc.Element(nameof(PedsConfig))!;
 
-            AddingPedRange = root.Element("GSWScanRange").GetFloat();
-            RemovePedRange = AddingPedRange * ADDING_TO_REMOVING_MULTIPLIER;
-
             ShowEnemyCriticalMessages = root.Element("CriticalMessages").GetBool();
-            ScanOnlyDamaged = root.Element(nameof(ScanOnlyDamaged)).GetBool();
             InstantDeathHeadshot = root.Element("HeadshotIsInstantDeath").GetBool();
             ShowFullHealthInfo = root.Element(nameof(ShowFullHealthInfo)).GetBool();
             DontActivateRagdollFromBulletImpact = root.Element(nameof(DontActivateRagdollFromBulletImpact)).GetBool();
@@ -129,9 +118,6 @@ namespace GunshotWound2.Configs {
 
         public override string ToString() {
             return $"{nameof(PedsConfig)}:\n"
-                   + $"{nameof(ScanOnlyDamaged)}: {ScanOnlyDamaged.ToString()}\n"
-                   + $"{nameof(AddingPedRange)}: {AddingPedRange.ToString(CultureInfo.InvariantCulture)}\n"
-                   + $"{nameof(RemovePedRange)}: {RemovePedRange.ToString(CultureInfo.InvariantCulture)}\n"
                    + $"{nameof(ShowEnemyCriticalMessages)}: {ShowEnemyCriticalMessages.ToString()}\n"
                    + $"BleedStop: {MaximalBleedStopSpeed.ToString(CultureInfo.InvariantCulture)}\n"
                    + $"StartHealth: {MinStartHealth.ToString()} - {MaxStartHealth.ToString()}\n"

@@ -4,12 +4,15 @@
     using GTA;
     using Scellecs.Morpeh;
     using Services;
+    using Utils;
+    using EcsEntity = Scellecs.Morpeh.Entity;
+    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class ConvertPedSystem : ISystem {
         private readonly SharedData sharedData;
         private Filter justConverted;
 
-        public Scellecs.Morpeh.World World { get; set; }
+        public EcsWorld World { get; set; }
 
         public ConvertPedSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -22,13 +25,17 @@
         void IDisposable.Dispose() { }
 
         public void OnUpdate(float deltaTime) {
-            foreach (Scellecs.Morpeh.Entity entity in justConverted) {
+            foreach (EcsEntity entity in justConverted) {
                 entity.RemoveComponent<JustConvertedEvent>();
             }
 
             WorldService worldService = sharedData.worldService;
             while (worldService.TryGetToConvert(out Ped pedToConvert)) {
-                Scellecs.Morpeh.Entity entity = World.CreateEntity();
+                if (!pedToConvert.IsValid()) {
+                    continue;
+                }
+
+                EcsEntity entity = World.CreateEntity();
 
                 ref ConvertedPed convertedPed = ref entity.AddComponent<ConvertedPed>();
                 convertedPed.name = $"P{pedToConvert.Handle.ToString()}";

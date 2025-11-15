@@ -32,21 +32,13 @@
     Default: Delete on keyboard. -->
 
     <!-- <HealKey KeyCode="" Modifiers="" /> -->
-    <!-- Besides, you can set a key for instant heal -->
+    <!-- Besides, you can set a key for instant heal or just use GSW_HEAL cheat-code -->
 
     <GetHelmetKey KeyCode="L" Modifiers="Alt"/>
     <!-- Give to player motorbike helmet if the player has $40(can be changed in HelmetCost section).
     Helmet can save your head from impact and weapons.
     If the player already has a helmet, this hotkey will remove it.
     Default: Alt + L on keyboard. -->
-
-    <IncreaseRangeKey KeyCode="PageUp" Modifiers=""/>
-    <!-- Increase GSW2 scan range.
-    Default: PageUp on keyboard. -->
-
-    <DecreaseRangeKey KeyCode="PageDown" Modifiers=""/>
-    <!-- Decrease GSW2 scan range.
-    Default: PageDown on keyboard. -->
 
     <PauseKey KeyCode="End" Modifiers=""/>
     <!-- Pause of the script.

@@ -1,5 +1,4 @@
 ﻿namespace GunshotWound2 {
-    using System.Diagnostics;
     using Configs;
     using HealthFeature;
     using Scellecs.Morpeh;
@@ -9,7 +8,6 @@
     public sealed class SharedData {
         public readonly string scriptPath;
         public readonly ILogger logger;
-        public readonly Stopwatch stopwatch;
         public readonly System.Random random;
         public readonly Weighted_Randomizer.IWeightedRandomizer<int> weightRandom;
         public readonly Notifier notifier;
@@ -32,7 +30,6 @@
             this.scriptPath = scriptPath;
             this.logger = logger;
 
-            stopwatch = new Stopwatch();
             random = new System.Random();
             weightRandom = new Weighted_Randomizer.StaticWeightedRandomizer<int>();
             notifier = new Notifier();

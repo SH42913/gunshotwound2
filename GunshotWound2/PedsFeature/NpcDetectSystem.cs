@@ -1,36 +1,38 @@
 ﻿namespace GunshotWound2.PedsFeature {
     using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
     using Configs;
     using GTA;
-    using GTA.Native;
+    using GTA.Math;
     using Scellecs.Morpeh;
     using Services;
+    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class NpcDetectSystem : ISystem {
         private const int MAX_TIME_TO_FIND_IN_MS = 1;
 
         private readonly SharedData sharedData;
+        private readonly DistanceToPlayerComparer pedComparer;
+        private readonly Stopwatch stopwatch;
 
         private Ped[] npcToProcess;
         private int lastCheckedPedIndex;
 
-        public Scellecs.Morpeh.World World { get; set; }
+        public EcsWorld World { get; set; }
 
         public NpcDetectSystem(SharedData sharedData) {
             this.sharedData = sharedData;
+
+            pedComparer = new DistanceToPlayerComparer();
+            stopwatch = Stopwatch.StartNew();
         }
 
         void IInitializer.OnAwake() { }
         void IDisposable.Dispose() { }
 
         public void OnUpdate(float deltaTime) {
-            PedsConfig pedsConfig = sharedData.mainConfig.pedsConfig;
-            float addRange = pedsConfig.AddingPedRange;
-            if (addRange <= PedsConfig.MINIMAL_RANGE_FOR_WOUNDED_PEDS) {
-                return;
-            }
-
-            sharedData.stopwatch.Restart();
+            stopwatch.Restart();
             Ped playerPed = Game.Player.Character;
             WorldService worldService = sharedData.worldService;
             bool refreshPeds = worldService.forceRefreshRequest
@@ -38,40 +40,39 @@
                                || lastCheckedPedIndex + 1 >= npcToProcess.Length - 1;
 
             if (refreshPeds) {
-                npcToProcess = GTA.World.GetNearbyPeds(playerPed, addRange);
+                npcToProcess = GTA.World.GetAllPeds();
+                pedComparer.playerPosition = playerPed.Position;
+                Array.Sort(npcToProcess, pedComparer);
+
                 lastCheckedPedIndex = 0;
                 worldService.forceRefreshRequest = false;
             }
 
             for (int index = lastCheckedPedIndex; index < npcToProcess.Length; index++) {
-                if (sharedData.stopwatch.ElapsedMilliseconds > MAX_TIME_TO_FIND_IN_MS) {
+                if (stopwatch.ElapsedMilliseconds > MAX_TIME_TO_FIND_IN_MS) {
                     break;
                 }
 
                 lastCheckedPedIndex = index;
                 Ped pedToCheck = npcToProcess[index];
+                if (pedToCheck == playerPed) {
+                    continue;
+                }
+
                 if (IsReadyToConvert(pedToCheck) && IsInTargetList(pedToCheck, playerPed)) {
                     worldService.EnqueueToConvert(pedToCheck);
                 }
             }
 
-            sharedData.stopwatch.Stop();
+            stopwatch.Stop();
         }
 
         private bool IsReadyToConvert(Ped ped) {
-            if (sharedData.worldService.IsConverted(ped)) {
-                return false;
-            }
-
-            if (ped.IsPlayer || !ped.IsHuman || ped.IsDead || PedEffects.IsPedInWrithe(ped)) {
-                return false;
-            }
-
-            if (!sharedData.mainConfig.pedsConfig.ScanOnlyDamaged) {
-                return true;
-            }
-
-            return Function.Call<bool>(Hash.HAS_ENTITY_BEEN_DAMAGED_BY_ANY_PED, ped);
+            return !sharedData.worldService.IsConverted(ped)
+                   && !ped.IsPlayer
+                   && ped.IsHuman
+                   && !ped.IsDead
+                   && !PedEffects.IsPedInWrithe(ped);
         }
 
         private bool IsInTargetList(Ped pedToCheck, Ped playerPed) {
@@ -98,6 +99,16 @@
             var targetInt = (int)value;
             var flagInt = (int)flag;
             return (targetInt & flagInt) == flagInt;
+        }
+
+        private sealed class DistanceToPlayerComparer : IComparer<Ped> {
+            public Vector3 playerPosition;
+
+            public int Compare(Ped x, Ped y) {
+                float xDist = GTA.World.GetDistance(x!.Position, playerPosition);
+                float yDist = GTA.World.GetDistance(y!.Position, playerPosition);
+                return xDist.CompareTo(yDist);
+            }
         }
     }
 }
