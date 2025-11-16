@@ -10,7 +10,7 @@
     using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class NpcDetectSystem : ISystem {
-        private const int MAX_TIME_TO_FIND_IN_MS = 1;
+        private const double MAX_TIME_TO_FIND_IN_MS = 1d;
 
         private readonly SharedData sharedData;
         private readonly DistanceToPlayerComparer pedComparer;
@@ -53,7 +53,7 @@
             }
 
             for (int index = lastCheckedPedIndex; index < npcToProcess.Length; index++) {
-                if (stopwatch.ElapsedMilliseconds > MAX_TIME_TO_FIND_IN_MS) {
+                if (stopwatch.Elapsed.TotalMilliseconds > MAX_TIME_TO_FIND_IN_MS) {
                     break;
                 }
 

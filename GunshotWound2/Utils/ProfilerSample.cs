@@ -28,26 +28,26 @@ namespace GunshotWound2.Utils {
 
         public void Stop() {
             stopwatch.Stop();
-            long ticks = stopwatch.ElapsedTicks;
-            double frameTime = ticks * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+
+            double frameTimeInMs = stopwatch.Elapsed.TotalMilliseconds;
             if (!firstFrameAccounted) {
-                firstFrameTime = frameTime;
+                firstFrameTime = frameTimeInMs;
                 firstFrameAccounted = true;
             } else if (!profilerIsReady) {
-                minFrameTime = frameTime;
-                avgFrameTime = frameTime;
-                maxFrameTime = frameTime;
+                minFrameTime = frameTimeInMs;
+                avgFrameTime = frameTimeInMs;
+                maxFrameTime = frameTimeInMs;
                 profilerIsReady = true;
             } else {
-                minFrameTime = Math.Min(frameTime, minFrameTime);
-                avgFrameTime = avgFrameTime * (1 - AVG_ALPHA) + frameTime * AVG_ALPHA;
-                if (frameTime >= maxFrameTime) {
-                    maxFrameTime = frameTime;
+                minFrameTime = Math.Min(frameTimeInMs, minFrameTime);
+                avgFrameTime = avgFrameTime * (1 - AVG_ALPHA) + frameTimeInMs * AVG_ALPHA;
+                if (frameTimeInMs >= maxFrameTime) {
+                    maxFrameTime = frameTimeInMs;
                 } else {
-                    maxFrameTime += (frameTime - maxFrameTime) * (1 - MAX_DECAY);
+                    maxFrameTime += (frameTimeInMs - maxFrameTime) * (1 - MAX_DECAY);
                 }
 
-                double isBadFrame = frameTime > avgFrameTime * 2.0 ? 1.0 : 0.0;
+                double isBadFrame = frameTimeInMs > avgFrameTime * 2.0 ? 1.0 : 0.0;
                 badFrameRatio = badFrameRatio * (1 - AVG_ALPHA) + isBadFrame * AVG_ALPHA;
             }
         }
