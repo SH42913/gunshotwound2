@@ -2,7 +2,9 @@ namespace GunshotWound2.HealthFeature {
     using GTA;
     using GTA.Math;
     using HitDetection;
+    using PedsFeature;
     using Scellecs.Morpeh;
+    using Utils;
     using EcsEntity = Scellecs.Morpeh.Entity;
     using EcsWorld = Scellecs.Morpeh.World;
 
@@ -52,31 +54,56 @@ namespace GunshotWound2.HealthFeature {
         private void InitFx() {
             foreach (EcsEntity entity in bleedToInit) {
                 ref Bleeding bleeding = ref bleedStash.Get(entity);
-                ref BleedingFx bleedingFx = ref bleedFxStash.Add(entity);
-                ref PedHitData hitData = ref bleeding.target.GetComponent<PedHitData>(out bool hasHitData);
-                if (!hasHitData) {
-                    continue;
-                }
-
-                PedBone damagedBone = hitData.damagedBone;
-                if (!damagedBone.IsValid) {
-                    continue;
-                }
-
-                Vector3 localHitPos = Vector3.Zero;
-                Vector3 hitNormal = damagedBone.ForwardVector;
-
-                const float maxRange = 2f;
-                Vector3 offset = damagedBone.GetPositionOffset(hitData.hitPos);
-                if (hitData.aggressor != null && offset.LengthSquared() <= maxRange * maxRange) {
-                    localHitPos = damagedBone.GetPositionOffset(hitData.hitPos);
-                    hitNormal = hitData.hitNorm;
+                ref ConvertedPed convertedPed = ref bleeding.target.GetComponent<ConvertedPed>();
+                if (!TryGetFromHitData(bleeding.target, out PedBone damagedBone, out Vector3 localHitPos, out Vector3 hitNormal)) {
+                    int randomBoneId = sharedData.random.NextFromCollection(bleeding.bodyPart.Bones);
+                    int boneIndex = PedEffects.GetBoneIndex(convertedPed.thisPed, randomBoneId);
+                    damagedBone = convertedPed.thisPed.Bones[boneIndex];
+                    localHitPos = damagedBone.Pose;
+                    hitNormal = Vector3.RandomXYZ();
+#if DEBUG
+                    sharedData.logger.WriteInfo($"Used random FX data for {bleeding.name}, boneId:{randomBoneId}");
+#endif
                 }
 
                 Quaternion fromToQuaternion = damagedBone.Quaternion * Quaternion.LookRotation(hitNormal);
                 Vector3 localRotation = fromToQuaternion.ToEuler();
+
+                ref BleedingFx bleedingFx = ref bleedFxStash.Add(entity);
                 bleedingFx.particles = SpawnParticles(bleeding, damagedBone, localHitPos, localRotation);
             }
+        }
+
+        private bool TryGetFromHitData(EcsEntity entity,
+                                       out PedBone damagedBone,
+                                       out Vector3 localHitPos,
+                                       out Vector3 hitNormal) {
+            damagedBone = null;
+            localHitPos = default;
+            hitNormal = default;
+
+            ref PedHitData hitData = ref entity.GetComponent<PedHitData>(out bool hasHitData);
+            if (!hasHitData) {
+                sharedData.logger.WriteInfo($"No hit data at {entity.ID}");
+                return false;
+            }
+
+            damagedBone = hitData.damagedBone;
+            if (!damagedBone.IsValid) {
+                sharedData.logger.WriteInfo("No valid bone");
+                return false;
+            }
+
+            const float maxRange = 1f;
+            Vector3 offset = damagedBone.GetPositionOffset(hitData.hitPos);
+            if (offset.LengthSquared() > maxRange * maxRange) {
+                sharedData.logger.WriteInfo("Exceed max range");
+                return false;
+            }
+
+            localHitPos = offset;
+            hitNormal = hitData.hitNorm;
+            return true;
         }
 
         private void CleanFx() {
@@ -85,7 +112,7 @@ namespace GunshotWound2.HealthFeature {
             }
         }
 
-        private ParticleEffect SpawnParticles(in Bleeding bleeding, PedBone damagedBone, Vector3 localHitPos, Vector3 localRot) {
+        private ParticleEffect SpawnParticles(in Bleeding bleeding, PedBone targetBone, Vector3 localHitPos, Vector3 localRot) {
             ParticleEffectAsset asset;
             string effectName;
             if (bleeding.causedByPenetration) {
@@ -99,15 +126,16 @@ namespace GunshotWound2.HealthFeature {
             }
 
 #if DEBUG && DEBUG_EVERY_FRAME
-            var message = $"Spawn particle {asset.AssetName}:{effectName} at {damagedBone.Owner.Handle}({damagedBone.Tag})";
+            var message = $"Spawn particle {asset.AssetName}:{effectName} at {targetBone.Owner.Handle}({targetBone.Name})";
             sharedData.logger.WriteInfo(message);
+            sharedData.logger.WriteInfo($"LocalPos:{localHitPos} LocalRot:{localRot}");
 #endif
 
-            return GTA.World.CreateParticleEffect(asset, effectName, damagedBone, localHitPos, localRot);
+            return GTA.World.CreateParticleEffect(asset, effectName, targetBone, localHitPos, localRot);
         }
 
         private void GetEffectForPenetrationBleeding(float severity, out ParticleEffectAsset asset, out string effectName) {
-            if (severity > 0.4f) {
+            if (severity > 0.5f) {
                 asset = cutMichael2Asset;
                 effectName = "cs_mich2_blood_head_leak";
             } else if (severity > 0.2f) {

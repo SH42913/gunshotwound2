@@ -143,5 +143,9 @@
                 ped.StopAnimation(new CrClipAsset(animInfo.Item1, animInfo.Item2), AnimationBlendDelta.NormalBlendOut);
             }
         }
+
+        public static int GetBoneIndex(Ped ped, int boneId) {
+            return Function.Call<int>(Hash.GET_PED_BONE_INDEX, ped, boneId);
+        }
     }
 }
