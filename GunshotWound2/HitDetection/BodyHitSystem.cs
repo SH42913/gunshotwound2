@@ -47,7 +47,7 @@
                     hitData.damagedBone = damagedBone;
                     hitData.bodyPart = BodyPartConfig.GetBodyPartByBone(damagedBone.Tag);
 #if DEBUG
-                    sharedData.logger.WriteInfo($"Damaged part is {hitData.bodyPart.Key}, bone {damagedBone.Tag} at {convertedPed.name}");
+                    sharedData.logger.WriteInfo($"Damaged part is {hitData.bodyPart.Key}, bone {damagedBone.Name} at {convertedPed.name}");
 #endif
                 }
 
@@ -96,12 +96,18 @@
                 if (result.Result == 2 && result.HitEntity == convertedPed.thisPed) {
                     hitData.hitNorm = result.SurfaceNormal;
                     assignedNormal = true;
-                } else {
-                    sharedData.logger.WriteInfo("No hit");
                 }
-            } else {
-                sharedData.logger.WriteInfo("No muzzle");
+#if DEBUG
+                else {
+                    sharedData.logger.WriteInfo("No raycast hit for local hit calculation");
+                }
+#endif
             }
+#if DEBUG
+            else {
+                sharedData.logger.WriteInfo("No muzzle for local hit calculation");
+            }
+#endif
 
             if (!assignedNormal) {
                 hitData.hitNorm = (lastHit - hitData.damagedBone.Position).Normalized;
