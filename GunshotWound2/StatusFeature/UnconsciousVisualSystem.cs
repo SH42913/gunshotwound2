@@ -175,7 +175,7 @@ namespace GunshotWound2.StatusFeature {
 #if DEBUG
             sharedData.logger.WriteInfo($"Selected animation = {animName} for {duration} ms");
 #endif
-            convertedPed.forcedAnimation = (CRAWL_ANIM_DICT, animName);
+            // convertedPed.forcedAnimation = (CRAWL_ANIM_DICT, animName);
             convertedPed.RequestPermanentRagdoll();
 
             convertedPed.requestedNmHelper = sharedData.random.IsTrueWithProbability(0.5f)

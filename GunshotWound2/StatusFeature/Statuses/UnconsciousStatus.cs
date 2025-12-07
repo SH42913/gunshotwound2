@@ -53,8 +53,8 @@
             convertedPed.ResetRagdoll();
             convertedPed.isRestrictToDrive = false;
 
-            PedEffects.StopAnimation(convertedPed.thisPed, convertedPed.forcedAnimation);
-            convertedPed.forcedAnimation = default;
+            // PedEffects.StopAnimation(convertedPed.thisPed, convertedPed.forcedAnimation);
+            // convertedPed.forcedAnimation = default;
 
             if (convertedPed.isPlayer) {
                 SetPlayerIsIgnoredByPeds(Game.Player, false);

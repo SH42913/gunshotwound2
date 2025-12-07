@@ -57,30 +57,30 @@ namespace GunshotWound2.PedsFeature {
                 return;
             }
 
-            if (RagdollIsBlocked(ref convertedPed)) {
-                return;
-            }
+            // if (RagdollIsBlocked(ref convertedPed)) {
+            //     return;
+            // }
 
             ApplyRagdoll(ref convertedPed, ref ragdollRequest);
             convertedPed.ragdollRequest = default;
             convertedPed.isRagdoll = true;
         }
 
-        private bool RagdollIsBlocked(ref ConvertedPed convertedPed) {
-            if (!convertedPed.HasForcedAnimation()) {
-                return convertedPed.thisPed.IsInVehicle();
-            }
-
-            if (PedEffects.IsPlayingAnimation(convertedPed.thisPed, convertedPed.forcedAnimation)) {
-                return true;
-            } else {
-#if DEBUG
-                sharedData.logger.WriteInfo("Forced animation is finished");
-#endif
-                convertedPed.forcedAnimation = default;
-                return false;
-            }
-        }
+//         private bool RagdollIsBlocked(ref ConvertedPed convertedPed) {
+//             if (!convertedPed.HasForcedAnimation()) {
+//                 return convertedPed.thisPed.IsInVehicle();
+//             }
+//
+//             if (PedEffects.IsPlayingAnimation(convertedPed.thisPed, convertedPed.forcedAnimation)) {
+//                 return true;
+//             } else {
+// #if DEBUG
+//                 sharedData.logger.WriteInfo("Forced animation is finished");
+// #endif
+//                 convertedPed.forcedAnimation = default;
+//                 return false;
+//             }
+//         }
 
         private void ApplyRagdoll(ref ConvertedPed convertedPed, ref (int time, RagdollType type) ragdollRequest) {
 #if DEBUG && DEBUG_EVERY_FRAME

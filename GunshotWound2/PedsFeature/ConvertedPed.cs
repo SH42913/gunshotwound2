@@ -36,7 +36,7 @@
         public bool isRestrictToDrive;
         public bool forceRemove;
 
-        public (string, string) forcedAnimation;
+        // public (string, string) forcedAnimation;
         public float moveRate;
         public string moveSetRequest;
         public bool resetMoveSet;
@@ -95,10 +95,10 @@
             convertedPed.moveRate = 1f;
         }
 
-        public static bool HasForcedAnimation(this in ConvertedPed convertedPed) {
-            (string, string) animInfo = convertedPed.forcedAnimation;
-            return !string.IsNullOrEmpty(animInfo.Item1) && !string.IsNullOrEmpty(animInfo.Item2);
-        }
+        // public static bool HasForcedAnimation(this in ConvertedPed convertedPed) {
+        //     (string, string) animInfo = convertedPed.forcedAnimation;
+        //     return !string.IsNullOrEmpty(animInfo.Item1) && !string.IsNullOrEmpty(animInfo.Item2);
+        // }
 
         public static bool IsAbleToDoSomething(this ConvertedPed convertedPed) {
             return convertedPed.thisPed.CurrentVehicle != null
