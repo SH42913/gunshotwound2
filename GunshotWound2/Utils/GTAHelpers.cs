@@ -42,8 +42,8 @@ namespace GunshotWound2.Utils {
             return Function.Call<int>(Hash.GET_NUMBER_OF_PED_PROP_TEXTURE_VARIATIONS, ped, (int)anchorPoint, propIndex);
         }
 
-        public static bool IsValid(this Ped ped) {
-            return ped != null && ped.Exists();
+        public static bool IsValid(this Entity entity) {
+            return entity != null && entity.Exists();
         }
 
         public static bool StandsStill(this Ped ped) {
