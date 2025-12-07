@@ -2,6 +2,7 @@ namespace GunshotWound2.PainFeature {
     using System;
     using Configs;
     using GTA;
+    using HealthFeature;
     using PedsFeature;
     using Scellecs.Morpeh;
     using EcsEntity = Scellecs.Morpeh.Entity;
@@ -15,6 +16,7 @@ namespace GunshotWound2.PainFeature {
         private Stash<ConvertedPed> pedStash;
         private Stash<Pain> painStash;
         private Stash<PainkillersEffect> painkillersStash;
+        private Stash<TotallyHealedEvent> totallyHealedStash;
 
         public EcsWorld World { get; set; }
 
@@ -29,6 +31,7 @@ namespace GunshotWound2.PainFeature {
             pedStash = World.GetStash<ConvertedPed>();
             painStash = World.GetStash<Pain>();
             painkillersStash = World.GetStash<PainkillersEffect>();
+            totallyHealedStash = World.GetStash<TotallyHealedEvent>();
         }
 
         public void OnUpdate(float deltaTime) {
@@ -36,6 +39,11 @@ namespace GunshotWound2.PainFeature {
             foreach (EcsEntity entity in generators) {
                 ref PainGenerator generator = ref generatorStash.Get(entity);
                 EcsEntity target = generator.target;
+                if (totallyHealedStash.Has(target)) {
+                    World.RemoveEntity(entity);
+                    continue;
+                }
+
                 if (painkillersStash.Has(target)) {
                     continue;
                 }
