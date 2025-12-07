@@ -65,13 +65,17 @@
             sharedData.logger.WriteInfo($"Selected crit {traumaKey} for {bodyPart.Key} at {convertedPed.name}");
 #endif
             TraumaConfig.Trauma trauma = sharedData.mainConfig.traumaConfig.Traumas[traumaKey];
-            string traumaName = sharedData.localeConfig.GetTranslation(trauma.LocKey);
-            string reason = sharedData.localeConfig.TraumaType;
             DBPContainer dbp = trauma.DBP * sharedData.mainConfig.woundConfig.GlobalMultipliers * bodyPart.DBPMults;
-            entity.GetComponent<Pain>().diff += dbp.pain;
+#if DEBUG
+            sharedData.logger.WriteInfo($"Final trauma DBP:{dbp.ToString()}");
+#endif
+
+            string traumaName = sharedData.localeConfig.GetTranslation(trauma.LocKey);
             entity.GetComponent<Health>().DealDamage(dbp.damage, traumaName);
+            entity.GetComponent<Pain>().diff += dbp.pain;
 
             float severity = Math.Max(0.01f, dbp.bleed);
+            string reason = sharedData.localeConfig.TraumaType;
             bool causedByPenetration = !traumas.forBluntDamage;
             Entity bleedingEntity = entity.CreateBleeding(bodyPart, severity, traumaName, reason, isTrauma: true, causedByPenetration);
             if (trauma.CanGeneratePain) {
