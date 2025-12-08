@@ -1,4 +1,5 @@
-﻿namespace GunshotWound2.PainFeature {
+﻿// #define DEBUG_EVERY_FRAME
+namespace GunshotWound2.PainFeature {
     using System;
     using Configs;
     using HealthFeature;
@@ -48,12 +49,7 @@
                         DelayPain(ref pain);
                     }
 
-#if DEBUG && DEBUG_EVERY_FRAME
-                    float applied = ApplyPain(ref convertedPed, ref pain);
-                    sharedData.logger.WriteInfo($"Increased pain for {applied} to {pain.amount} at {convertedPed.name}");
-#else
                     ApplyPain(entity, ref convertedPed, ref pain);
-#endif
                 } else if (pain.delayedDiff > 0) {
                     UpdateDelayedPain(ref pain, deltaTime);
                     ApplyPain(entity, ref convertedPed, ref pain);
@@ -74,11 +70,12 @@
                 return;
             }
 
-            if (pain.diff <= 0f && pain.diff < pain.delayedDiff) {
+            float diff = pain.diff;
+            if (diff <= 0f && diff < pain.delayedDiff) {
                 return;
             }
 
-            float toDelay = pain.diff * sharedData.mainConfig.woundConfig.DelayedPainPercent;
+            float toDelay = diff * sharedData.mainConfig.woundConfig.DelayedPainPercent;
             if (toDelay < 1f) {
                 return;
             }
@@ -86,8 +83,8 @@
             pain.diff -= toDelay;
             pain.delayedDiff += toDelay;
 
-#if DEBUG
-            sharedData.logger.WriteInfo($"{toDelay.ToString("F2")} of pain delayed");
+#if DEBUG && DEBUG_EVERY_FRAME
+            sharedData.logger.WriteInfo($"{toDelay} of pain({diff}) delayed, total:{pain.delayedDiff}");
 #endif
         }
 
@@ -114,10 +111,16 @@
             pain.delayedDiff = 0f;
         }
 
-        // ReSharper disable once UnusedMethodReturnValue.Local due used under DEBUG_EVERY_FRAME
-        private float ApplyPain(Entity entity, ref ConvertedPed convertedPed, ref Pain pain) {
-            if (convertedPed.isPlayer && PlayerEffects.InRampageScenario()) {
+        private void ApplyPain(Entity entity, ref ConvertedPed convertedPed, ref Pain pain) {
+#if DEBUG && DEBUG_EVERY_FRAME
+            sharedData.logger.WriteInfo($"Applying pain, current:{pain.amount} diff:{pain.diff}");
+#endif
+
+            if (convertedPed.isPlayer && PlayerEffects.InRampageScenarioUsedBy(convertedPed.thisPed)) {
                 ReducePainDiffForRampage(ref pain);
+#if DEBUG && DEBUG_EVERY_FRAME
+                sharedData.logger.WriteInfo("Reduced pain due to Rampage");
+#endif
             }
 
             PlayPainEffects(entity, ref convertedPed, ref pain);
@@ -131,7 +134,9 @@
                 EnsurePainOverflow(ref pain);
             }
 
-            return diff;
+#if DEBUG && DEBUG_EVERY_FRAME
+            sharedData.logger.WriteInfo($"Increased pain of {convertedPed.name} to {pain.amount}");
+#endif
         }
 
         private void ReducePainDiffForRampage(ref Pain pain) {

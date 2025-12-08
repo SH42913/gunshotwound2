@@ -45,8 +45,10 @@
             }
         }
 
-        public static bool InRampageScenario() {
-            return Function.Call<bool>(Hash.IS_SCENARIO_GROUP_ENABLED, "Rampage1");
+        public static bool InRampageScenarioUsedBy(Ped ped) {
+            const string rampageScenario = "Rampage1";
+            return Function.Call<bool>(Hash.IS_SCENARIO_GROUP_ENABLED, rampageScenario)
+                   && Function.Call<bool>(Hash.IS_PED_USING_SCENARIO, ped, rampageScenario);
         }
     }
 }
