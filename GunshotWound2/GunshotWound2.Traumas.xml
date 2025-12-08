@@ -14,11 +14,13 @@
     <!-- Head -->
     <!-- Non-lethal -->
     <Trauma Key="NasalFracture" LocKey="Traumas.Blunt.NasalFracture"
-            Damage="2" Pain="15" Bleed="0.02"/>
-    <Trauma Key="Blackout" LocKey="Traumas.Blunt.BlackoutChance"
-            Pain="70"/>
+            Damage="2" Pain="15" Bleed="0.05"/>
     <Trauma Key="Concussion" LocKey="Traumas.Blunt.Concussion"
-            Damage="3" Pain="35" Bleed="0.01"/>
+            Damage="3" Pain="35"
+            PainRateWhenMoving="1.0" PainRateWhenRunning="3.0"/>
+    <Trauma Key="Blackout" LocKey="Traumas.Blunt.BlackoutChance"
+            Damage="3" Pain="70"
+            PainRateWhenMoving="2.0" PainRateWhenRunning="8.0"/>
     <Trauma Key="BrainHematoma" LocKey="Traumas.Blunt.BrainHematoma"
             Damage="6" Pain="50" Bleed="0.1"/>
 
