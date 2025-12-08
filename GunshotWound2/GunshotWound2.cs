@@ -216,6 +216,9 @@ namespace GunshotWound2 {
 #if GSW_PROFILING
                 profilerSample.Stop();
 #endif
+#if DEBUG
+                //
+#endif
             }
 
             sharedData.notifier.Show();

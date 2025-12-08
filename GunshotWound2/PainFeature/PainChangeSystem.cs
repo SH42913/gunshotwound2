@@ -98,9 +98,10 @@ namespace GunshotWound2.PainFeature {
                 return;
             }
 
-            if (deltaTime < pain.delayedDiff) {
-                pain.diff += deltaTime;
-                pain.delayedDiff -= deltaTime;
+            float painToApply = sharedData.mainConfig.woundConfig.DelayedPainSpeed * deltaTime;
+            if (painToApply < pain.delayedDiff) {
+                pain.diff += painToApply;
+                pain.delayedDiff -= painToApply;
             } else {
                 ApplyAllDelayedPain(ref pain);
             }

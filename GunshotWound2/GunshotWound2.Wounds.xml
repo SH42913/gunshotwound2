@@ -16,6 +16,9 @@
     <DelayedPainPercent Value="0.3"/>
     <!-- 0.3 means 30% of wound pain will be applied with delay(because of adrenaline) -->
 
+    <DelayedPainSpeed Value="2"/>
+    <!-- 2 means 2 point of delayed pain will be applied back per one second -->
+
     <PainfulWoundPercent Value="0.5"/>
     <!-- Any wound with value more than PainfulWoundPercent * MaxPain will add painful-wound effects -->
 

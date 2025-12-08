@@ -63,6 +63,7 @@ namespace GunshotWound2.Configs {
         public float PainfulWoundPercent;
         public bool UseCustomUnconsciousBehaviour;
         public float DelayedPainPercent;
+        public float DelayedPainSpeed;
 
         public int TakedownRagdollDurationMs;
         public DBPContainer TakedownMults;
@@ -81,6 +82,7 @@ namespace GunshotWound2.Configs {
             PainfulWoundPercent = root.Element(nameof(PainfulWoundPercent)).GetFloat();
             UseCustomUnconsciousBehaviour = root.Element(nameof(UseCustomUnconsciousBehaviour)).GetBool();
             DelayedPainPercent = root.Element(nameof(DelayedPainPercent)).GetFloat();
+            DelayedPainSpeed = root.Element(nameof(DelayedPainSpeed)).GetFloat();
 
             XElement itemsNode = root.Element(nameof(Wounds))!;
             Wounds = itemsNode.Elements(nameof(Wound)).Select(x => new Wound(x)).ToDictionary(x => x.Key);
