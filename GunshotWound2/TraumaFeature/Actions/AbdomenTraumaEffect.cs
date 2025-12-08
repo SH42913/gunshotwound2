@@ -42,7 +42,7 @@
                 BodyPartConfig.BodyPart bodyPart = sharedData.mainConfig.bodyPartConfig.GetBodyPartByBone(Bone.SkelSpine1);
                 string name = sharedData.localeConfig.InternalBleeding;
                 string reason = sharedData.localeConfig.TraumaType;
-                entity.CreateBleeding(bodyPart, 0.5f * BLEEDING_SEVERITY, name, reason, isTrauma: true, causedByPenetration: false);
+                entity.CreateNewBleeding(bodyPart, 0.5f * BLEEDING_SEVERITY, name, reason, isTrauma: true, causedByPenetration: false);
                 ped.PlayAmbientSpeech("PAIN_RAPIDS", SpeechModifier.InterruptShouted);
                 ShowRunningWarningMessage(convertedPed);
             }

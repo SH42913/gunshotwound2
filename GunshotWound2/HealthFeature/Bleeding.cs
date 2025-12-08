@@ -16,13 +16,13 @@
     }
 
     public static class BleedingExtensions {
-        public static Entity CreateBleeding(this Entity target,
-                                            in BodyPartConfig.BodyPart bodyPart,
-                                            float severity,
-                                            string name,
-                                            string reason,
-                                            bool isTrauma,
-                                            bool causedByPenetration) {
+        public static void CreateNewBleeding(this Entity target,
+                                             in BodyPartConfig.BodyPart bodyPart,
+                                             float severity,
+                                             string name,
+                                             string reason,
+                                             bool isTrauma,
+                                             bool causedByPenetration) {
             Entity newEntity = target.world.CreateEntity();
             ref Bleeding bleeding = ref newEntity.AddComponent<Bleeding>();
             bleeding.target = target;
@@ -32,7 +32,6 @@
             bleeding.severity = severity;
             bleeding.isTrauma = isTrauma;
             bleeding.causedByPenetration = causedByPenetration;
-            return newEntity;
         }
     }
 }

@@ -128,13 +128,16 @@
             convertedPed.thisPed.PlayAmbientSpeech("PAIN_TAZER", SpeechModifier.ForceShouted);
         }
 
-        private void ProcessWound(EcsEntity entity, in PedHitData hitData, in WoundConfig.Wound wound, in ConvertedPed convertedPed) {
+        private void ProcessWound(EcsEntity targetEntity,
+                                  in PedHitData hitData,
+                                  in WoundConfig.Wound wound,
+                                  in ConvertedPed convertedPed) {
             if (!wound.IsValid) {
                 return;
             }
 
             string woundName = sharedData.localeConfig.GetTranslation(wound.LocKey);
-            ref Health health = ref entity.GetComponent<Health>();
+            ref Health health = ref targetEntity.GetComponent<Health>();
             if (IsDeadlyWound(hitData, convertedPed.isPlayer)) {
 #if DEBUG
                 sharedData.logger.WriteInfo("It's deadly wound");
@@ -162,18 +165,20 @@
 
             if (dbp.bleed > 0f) {
                 bool causedByPenetration = !wound.IsBlunt;
-                entity.CreateBleeding(hitData.bodyPart, dbp.bleed, woundName, reason, isTrauma: false, causedByPenetration);
+                targetEntity.CreateNewBleeding(hitData.bodyPart, dbp.bleed, woundName, reason, isTrauma: false, causedByPenetration: causedByPenetration);
             }
 
             if (dbp.pain > 0f) {
-                entity.GetComponent<Pain>().diff += dbp.pain;
+                targetEntity.GetComponent<Pain>().diff += dbp.pain;
             }
 
             bool shouldCreateTrauma = ShouldCreateTrauma(wound, hitData);
             if (shouldCreateTrauma) {
-                ref Traumas traumas = ref entity.AddOrGetComponent<Traumas>();
-                traumas.requestBodyPart = hitData.bodyPart;
-                traumas.forBluntDamage = wound.IsBlunt;
+                World.CreateEntity().SetComponent(new TraumaRequest {
+                    target = targetEntity,
+                    targetBodyPart = hitData.bodyPart,
+                    forBluntDamage = wound.IsBlunt,
+                });
             }
 
 #if DEBUG

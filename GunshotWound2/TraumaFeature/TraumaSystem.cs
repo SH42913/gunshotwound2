@@ -1,5 +1,6 @@
 ﻿namespace GunshotWound2.TraumaFeature {
     using System;
+    using System.Collections.Generic;
     using Configs;
     using HealthFeature;
     using PainFeature;
@@ -11,6 +12,7 @@
         private readonly SharedData sharedData;
         private readonly (Traumas.Effects, BaseTraumaEffect)[] effects;
 
+        private Filter traumaRequests;
         private Filter pedsWithTraumas;
         private Stash<Traumas> traumasStash;
         private Stash<ConvertedPed> pedStash;
@@ -33,32 +35,58 @@
         }
 
         public void OnAwake() {
+            traumaRequests = World.Filter.With<TraumaRequest>();
             pedsWithTraumas = World.Filter.With<ConvertedPed>().With<Traumas>();
+
             traumasStash = World.GetStash<Traumas>();
             pedStash = World.GetStash<ConvertedPed>();
             totallyHealedStash = World.GetStash<TotallyHealedEvent>();
         }
 
         public void OnUpdate(float deltaTime) {
+            ProcessRequests();
+            UpdateActiveTraumas();
+        }
+
+        private void ProcessRequests() {
+            foreach (Entity entity in traumaRequests) {
+                ref TraumaRequest request = ref entity.GetComponent<TraumaRequest>();
+                if (request.target.IsNullOrDisposed()) {
+                    sharedData.logger.WriteWarning("Can't find target for trauma");
+                    World.RemoveEntity(entity);
+                    continue;
+                }
+
+                ref ConvertedPed convertedPed = ref pedStash.Get(request.target, out bool isConverted);
+                if (!isConverted) {
+                    sharedData.logger.WriteWarning("Not valid target for trauma");
+                    World.RemoveEntity(entity);
+                    continue;
+                }
+
+                ProcessRequest(entity, ref request, ref convertedPed);
+                entity.RemoveComponent<TraumaRequest>();
+            }
+        }
+
+        private void UpdateActiveTraumas() {
             foreach (Entity entity in pedsWithTraumas) {
                 ref Traumas traumas = ref traumasStash.Get(entity);
                 ref ConvertedPed convertedPed = ref pedStash.Get(entity);
                 if (totallyHealedStash.Has(entity)) {
                     CancelAllTraumaEffects(entity, ref traumas, ref convertedPed);
-                } else if (traumas.requestBodyPart.IsValid) {
-                    ProcessRequest(entity, ref traumas, ref convertedPed);
-                    traumas.requestBodyPart = default;
                 } else {
                     IterateTraumaEffects(entity, ref traumas, ref convertedPed);
                 }
             }
         }
 
-        private void ProcessRequest(Entity entity, ref Traumas traumas, ref ConvertedPed convertedPed) {
-            BodyPartConfig.BodyPart bodyPart = traumas.requestBodyPart;
-            var possibleTraumas = traumas.forBluntDamage
-                    ? bodyPart.BluntTraumas
-                    : bodyPart.PenetratingTraumas;
+        private void ProcessRequest(Entity traumaEntity, ref TraumaRequest request, ref ConvertedPed convertedPed) {
+            bool causedByPenetration = !request.forBluntDamage;
+            BodyPartConfig.BodyPart bodyPart = request.targetBodyPart;
+            (string key, int weight)[] possibleTraumas = causedByPenetration
+                    ? bodyPart.PenetratingTraumas
+                    : bodyPart.BluntTraumas;
 
             string traumaKey = sharedData.weightRandom.GetValueWithWeights(possibleTraumas);
 #if DEBUG
@@ -70,35 +98,46 @@
             sharedData.logger.WriteInfo($"Final trauma DBP:{dbp.ToString()}");
 #endif
 
+            Entity targetEntity = request.target;
             string traumaName = sharedData.localeConfig.GetTranslation(trauma.LocKey);
-            entity.GetComponent<Health>().DealDamage(dbp.damage, traumaName);
-            entity.GetComponent<Pain>().diff += dbp.pain;
+            targetEntity.GetComponent<Health>().DealDamage(dbp.damage, traumaName);
+            targetEntity.GetComponent<Pain>().diff += dbp.pain;
 
-            float severity = Math.Max(0.01f, dbp.bleed);
-            string reason = sharedData.localeConfig.TraumaType;
-            bool causedByPenetration = !traumas.forBluntDamage;
-            Entity bleedingEntity = entity.CreateBleeding(bodyPart, severity, traumaName, reason, isTrauma: true, causedByPenetration);
+            traumaEntity.SetComponent(new Bleeding {
+                target = targetEntity,
+                bodyPart = bodyPart,
+                name = traumaName,
+                reason = sharedData.localeConfig.TraumaType,
+                severity = Math.Max(0.01f, dbp.bleed),
+                isTrauma = true,
+                causedByPenetration = causedByPenetration,
+            });
+
             if (trauma.CanGeneratePain) {
-                bleedingEntity.SetComponent(new PainGenerator {
-                    target = entity,
+                traumaEntity.SetComponent(new PainGenerator {
+                    target = targetEntity,
                     moveRate = trauma.PainRateWhenMoving,
                     runRate = trauma.PainRateWhenRunning,
                     aimRate = trauma.PainRateWhenAiming,
                 });
             }
 
+            ref Traumas activeTraumas = ref traumasStash.AddOrGet(targetEntity);
+            activeTraumas.traumas ??= new HashSet<Entity>(4);
+            activeTraumas.traumas.Add(traumaEntity);
+
             if (trauma.Effect != Traumas.Effects.Spine) {
-                ApplyTraumaEffect(entity, ref traumas, ref convertedPed, trauma.Effect, trauma.EffectMessage);
+                ApplyTraumaEffect(targetEntity, ref activeTraumas, ref convertedPed, trauma.Effect, trauma.EffectMessage);
             } else {
                 bool realSpineTrauma = convertedPed.isPlayer
                         ? sharedData.mainConfig.playerConfig.RealisticSpineDamage
                         : sharedData.mainConfig.pedsConfig.RealisticSpineDamage;
 
                 if (realSpineTrauma) {
-                    ApplyTraumaEffect(entity, ref traumas, ref convertedPed, Traumas.Effects.Spine, trauma.EffectMessage);
+                    ApplyTraumaEffect(targetEntity, ref activeTraumas, ref convertedPed, Traumas.Effects.Spine, trauma.EffectMessage);
                 } else {
-                    ApplyTraumaEffect(entity, ref traumas, ref convertedPed, Traumas.Effects.Arms, trauma.EffectMessage);
-                    ApplyTraumaEffect(entity, ref traumas, ref convertedPed, Traumas.Effects.Legs, trauma.EffectMessage);
+                    ApplyTraumaEffect(targetEntity, ref activeTraumas, ref convertedPed, Traumas.Effects.Arms, trauma.EffectMessage);
+                    ApplyTraumaEffect(targetEntity, ref activeTraumas, ref convertedPed, Traumas.Effects.Legs, trauma.EffectMessage);
                 }
             }
         }
@@ -141,7 +180,6 @@
 
                 effect.Apply(entity, ref convertedPed);
                 traumas.activeEffects |= type;
-                traumas.requestBodyPart = default;
                 break;
             }
         }

@@ -1,6 +1,6 @@
 ﻿namespace GunshotWound2.TraumaFeature {
     using System;
-    using Configs;
+    using System.Collections.Generic;
     using Scellecs.Morpeh;
 
     [Serializable]
@@ -17,9 +17,8 @@
             Head = 1 << 6,
         }
 
-        public BodyPartConfig.BodyPart requestBodyPart;
-        public bool forBluntDamage;
         public Effects activeEffects;
+        public HashSet<Entity> traumas;
     }
 
     public static class TraumasExtensions {

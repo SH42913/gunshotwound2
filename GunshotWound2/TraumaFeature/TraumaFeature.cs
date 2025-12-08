@@ -11,7 +11,10 @@
             sharedData.cheatListener.Register("GSW_RANDOM_CRIT", () => {
                 if (sharedData.TryGetPlayer(out Entity player)) {
                     BodyPartConfig.BodyPart[] bodyParts = sharedData.mainConfig.bodyPartConfig.BodyParts;
-                    player.AddOrGetComponent<Traumas>().requestBodyPart = sharedData.random.Next(bodyParts);
+                    player.world.CreateEntity().SetComponent(new TraumaRequest {
+                        target = player,
+                        targetBodyPart = sharedData.random.Next(bodyParts),
+                    });
                 }
             });
 #endif
