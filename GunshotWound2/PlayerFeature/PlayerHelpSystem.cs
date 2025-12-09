@@ -13,8 +13,6 @@ namespace GunshotWound2.PlayerFeature {
     using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class PlayerHelpSystem : ILateSystem {
-        public const int HELP_DURATION = 5000;
-
         private readonly SharedData sharedData;
         private bool bandageHelpShown;
         private bool painkillerHelpShown;
@@ -32,7 +30,7 @@ namespace GunshotWound2.PlayerFeature {
         }
 
         public void OnUpdate(float deltaTime) {
-            if (Screen.IsHelpTextDisplayed) {
+            if (!sharedData.mainConfig.HelpTipsEnabled || Screen.IsHelpTextDisplayed) {
                 return;
             }
 
@@ -146,11 +144,12 @@ namespace GunshotWound2.PlayerFeature {
         }
 
         private void RefreshTimeToNextHelp() {
-            timeToNextHelp = sharedData.random.NextFloat(60f, 60f * 3f);
+            MainConfig config = sharedData.mainConfig;
+            timeToNextHelp = sharedData.random.NextFloat(config.HelpTipMinInterval, config.HelpTipMaxInterval);
         }
 
-        private static void ShowHelpTip(string message) {
-            Screen.ShowHelpText(message, HELP_DURATION);
+        private void ShowHelpTip(string message) {
+            Screen.ShowHelpText(message, sharedData.mainConfig.HelpTipDurationInMs);
         }
 
         public static string WrapKey(in InputListener.Scheme key) {

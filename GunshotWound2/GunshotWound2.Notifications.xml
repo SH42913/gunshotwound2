@@ -6,17 +6,20 @@
     Not every available language is fully translated, you still may see english translation.
     You also may help to translate GSW2 to other languages here:
     https://docs.google.com/spreadsheets/d/1TY0nSEJMDmypkYrcVUBlMG3HIAEW075dCOtxXgW5UJ0/edit 
-    And more languages will be available in next build! -->
+    And more languages will be available in next release! -->
+
+    <HelpTips Enabled="TRUE" TipDurationInSec="5" MinIntervalInSec="60" MaxIntervalInSec="180"/>
+    <!-- Help messages you will see in left upper corner. They will appear in interval between Min and Max. -->
 
     <Info Value="TRUE"/>
-    <!-- Info notifications: Totally healed, Pain decreased, Pause in mission  -->
+    <!-- Info notifications: Totally healed, Picked up items, etc -->
 
     <OtherPeds Value="TRUE"/>
     <!-- Notifications about other peds like "He coughs up blood" -->
 
     <Wounds Value="TRUE"/>
-    <!-- Notifications about your wounds -->
+    <!-- Notifications about player's wounds -->
 
     <Critical Value="TRUE"/>
-    <!-- Important notifications about traumas, heavy wounds, armor hits, etc -->
+    <!-- Important notifications about traumas, heavy wounds, armor penetration, etc -->
 </Notifications>

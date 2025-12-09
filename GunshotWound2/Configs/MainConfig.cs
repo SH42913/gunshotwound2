@@ -42,6 +42,13 @@ namespace GunshotWound2.Configs {
         public bool WoundsMessages = true;
         public bool CriticalMessages = true;
 
+        public bool HelpTipsEnabled;
+        public float HelpTipDuration;
+        public float HelpTipMinInterval;
+        public float HelpTipMaxInterval;
+
+        public int HelpTipDurationInMs => (int)(HelpTipDuration * 1000);
+
         private readonly IConfig[] configs;
 
         public MainConfig() {
@@ -140,6 +147,12 @@ namespace GunshotWound2.Configs {
             PedsMessages = node.Element("OtherPeds").GetBool();
             WoundsMessages = node.Element("Wounds").GetBool();
             CriticalMessages = node.Element("Critical").GetBool();
+
+            XElement helpNode = node.Element("HelpTips");
+            HelpTipsEnabled = helpNode.GetBool("Enabled");
+            HelpTipDuration = helpNode.GetFloat("TipDurationInSec");
+            HelpTipMinInterval = helpNode.GetFloat("MinIntervalInSec");
+            HelpTipMaxInterval = helpNode.GetFloat("MaxIntervalInSec");
         }
     }
 }

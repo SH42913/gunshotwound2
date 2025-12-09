@@ -17,7 +17,7 @@
         void IInitializer.OnAwake() { }
 
         public void OnUpdate(float deltaTime) {
-            if (Screen.IsHelpTextDisplayed) {
+            if (!sharedData.mainConfig.HelpTipsEnabled || Screen.IsHelpTextDisplayed) {
                 return;
             }
 
@@ -30,7 +30,7 @@
                 if (currentMissionActive) {
                     string key = PlayerHelpSystem.WrapKey(sharedData.mainConfig.PauseKey);
                     string message = string.Format(sharedData.localeConfig.GswPauseTip, key);
-                    Screen.ShowHelpText(message, PlayerHelpSystem.HELP_DURATION);
+                    Screen.ShowHelpText(message, sharedData.mainConfig.HelpTipDurationInMs);
                 }
 
                 lastMissionActive = currentMissionActive;
