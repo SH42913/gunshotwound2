@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ArmorConfig>
-    <MinimalChanceForArmorSave Value="0.3"/>
+    <MinimalChanceForArmorSave Value="0.1"/>
     <!-- 0.3 means 30% chance to save, when there's at least 1 armor point.
     100 armor points will always 100% chance to save. -->
 
@@ -12,18 +12,22 @@
     <Levels>
         <Level Key="ClassI" LocKey="ArmorClassI"
                Parts="Chest;Abdomen;"
-               MaxValue="20" ColorPrefix="~r~" TraumaPadEfficiency="0"/>
+               MaxValue="20" ColorPrefix="~r~" TraumaPadEfficiency="0.1"/>
+
         <Level Key="ClassII" LocKey="ArmorClassII"
                Parts="Chest;Abdomen;"
-               MaxValue="40" ColorPrefix="~o~" TraumaPadEfficiency="0.2"/>
+               MaxValue="40" ColorPrefix="~o~" TraumaPadEfficiency="0.3"/>
+
         <Level Key="ClassIII" LocKey="ArmorClassIII"
-               Parts="Neck;Chest;Abdomen;"
-               MaxValue="60" ColorPrefix="~y~" TraumaPadEfficiency="0.4"/>
+               Parts="Chest;Abdomen;LeftShoulder;RightShoulder;"
+               MaxValue="60" ColorPrefix="~y~" TraumaPadEfficiency="0.7"/>
+
         <Level Key="ClassIV" LocKey="ArmorClassIV"
                Parts="Neck;Chest;Abdomen;LeftShoulder;RightShoulder;"
-               MaxValue="80" ColorPrefix="~g~" TraumaPadEfficiency="0.6"/>
+               MaxValue="80" ColorPrefix="~g~" TraumaPadEfficiency="0.85"/>
+
         <Level Key="ClassV" LocKey="ArmorClassV"
-               Parts="Neck;Chest;Abdomen;LeftShoulder;RightShoulder;Pelvis;"
-               MaxValue="200" ColorPrefix="~g~" TraumaPadEfficiency="0.8"/>
+               Parts="Neck;Chest;Abdomen;Pelvis;LeftShoulder;RightShoulder;"
+               MaxValue="200" ColorPrefix="~g~" TraumaPadEfficiency="0.95"/>
     </Levels>
 </ArmorConfig>
