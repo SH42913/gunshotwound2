@@ -69,8 +69,6 @@
         <!-- Gunshot wounds -->
 <!--        <Wound Key="GrazingGsw" LocKey="Wounds.Gsw.Grazing"-->
 <!--               Damage="1" Pain="8" Bleed="0.03"/>-->
-<!--        <Wound Key="FleshGsw" LocKey="Wounds.Gsw.Flesh"-->
-<!--               Damage="4" Pain="15" Bleed="0.1"/>-->
         <Wound Key="PenetratingGsw" LocKey="Wounds.Gsw.Penetrating"
                CanCauseTrauma="TRUE"
                Damage="7" Pain="25" Bleed="0.15"/>
