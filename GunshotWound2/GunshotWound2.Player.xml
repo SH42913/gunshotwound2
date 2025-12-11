@@ -39,7 +39,7 @@
     <PainRecoverySpeed Value="1.5"/>
     <!-- 1.5 means 1.5 pain points will be restored per 1 sec -->
 
-    <BleedHealSpeed Value="2.0"/>
+    <BleedHealSpeed Value="1.0"/>
     <!-- How quickly bleeding will heal by itself -->
 
     <SelfHealingRate Value="0.04"/>

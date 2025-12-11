@@ -50,7 +50,7 @@
     <!-- Same as for player -->
 
     <PainRecoverySpeed Value="1.0"/>
-    <BleedHealSpeed Value="1.0"/>
+    <BleedHealSpeed Value="0.5"/>
     <!-- Same as for player -->
 
     <!-- MoveSets for various ped status. GSW supports many MoveSets(separated by ;), random will take one of them. -->
