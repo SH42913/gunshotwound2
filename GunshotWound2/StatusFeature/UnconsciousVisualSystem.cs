@@ -64,23 +64,23 @@ namespace GunshotWound2.StatusFeature {
             randomizer.Add(1, weight: 2);
 
             if (!convertedPed.thisPed.IsInVehicle()) {
-                ref Traumas traumas = ref entity.GetComponent<Traumas>(out bool hasTraumas);
-                bool majorInjury = hasTraumas
-                                   && (traumas.HasActive(Traumas.Effects.Heart)
-                                       || traumas.HasActive(Traumas.Effects.Lungs)
-                                       || traumas.HasActive(Traumas.Effects.Abdomen));
-
                 // TODO: Restore later
+                // ref Traumas traumas = ref entity.GetComponent<Traumas>(out bool hasTraumas);
+                // bool majorInjury = hasTraumas
+                //                    && (traumas.HasActive(Traumas.Effects.Heart)
+                //                        || traumas.HasActive(Traumas.Effects.Lungs)
+                //                        || traumas.HasActive(Traumas.Effects.Abdomen));
+
                 // bool legsDamaged = traumas.HasActive(Traumas.Effects.Legs);
                 // if (majorInjury || legsDamaged) {
                 //     randomizer.Add(2);
                 // }
 
-                float totalSeverity = HealthFeature.HealthFeature.CalculateSeverityOfAllBleedingWounds(entity);
-                float timeToDeath = convertedPed.CalculateTimeToDeath(totalSeverity);
-                if (majorInjury && timeToDeath <= 30f && !convertedPed.isPlayer) {
-                    randomizer.Add(3);
-                }
+                // float totalSeverity = HealthFeature.HealthFeature.CalculateSeverityOfAllBleedingWounds(entity);
+                // float timeToDeath = convertedPed.CalculateTimeToDeath(totalSeverity);
+                // if (majorInjury && timeToDeath <= 30f && !convertedPed.isPlayer) {
+                //     randomizer.Add(3);
+                // }
             }
 
             switch (randomizer.NextWithReplacement()) {

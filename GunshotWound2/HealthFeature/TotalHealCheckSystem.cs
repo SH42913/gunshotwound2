@@ -35,7 +35,7 @@
                 ref ConvertedPed convertedPed = ref pedStash.Get(entity);
                 ref Health health = ref healthStash.Get(entity);
                 if (health.IsAlive() && convertedPed.thisPed.Health > health.max) {
-#if DEBUG
+#if DEBUG && DEBUG_EVERY_FRAME
                     sharedData.logger.WriteInfo($"Ped {convertedPed.name} was totally healed");
 #endif
                     if (convertedPed.isPlayer) {
