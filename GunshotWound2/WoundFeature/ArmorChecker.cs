@@ -104,11 +104,15 @@ namespace GunshotWound2.WoundFeature {
                 return false;
             }
 
-            ArmorConfig.Level weaponSafeLevel = sharedData.mainConfig.armorConfig.GetArmorLevelByKey(weapon.SafeArmorLevel);
+            ArmorConfig.Level weaponSafeLevel = armorConfig.GetArmorLevelByKey(weapon.SafeArmorLevel);
             float armorPercent = (float)ped.Armor / weaponSafeLevel.MaxValue;
             if (armorPercent >= 1f) {
 #if DEBUG
-                sharedData.logger.WriteInfo($"{weapon.Key} can't penetrate safe armor level {weapon.SafeArmorLevel}({ped.Armor})");
+                sharedData.logger.WriteInfo($"{weapon.Key} can't penetrate safe armor level {weapon.SafeArmorLevel}");
+
+                int armor = ped.Armor;
+                string armorKey = armorConfig.TryGetArmorLevel(armor, out ArmorConfig.Level level) ? level.Key : "NO ARMOR";
+                sharedData.logger.WriteInfo($"Target has {armorKey}({armor}) armor");
 #endif
                 return false;
             }
