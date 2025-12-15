@@ -91,39 +91,43 @@
         }
 
         private void RefreshBleedingToBandage() {
-            foreach (Entity entity in peds) {
-                ref Health health = ref healthStash.Get(entity);
-                if (health.HasBleedingWounds() && health.bleedingToBandage.IsNullOrDisposed()) {
-                    DetectBleedingToBandage(ref health);
+            foreach (Entity pedEntity in peds) {
+                ref Health health = ref healthStash.Get(pedEntity);
+                if (health.bleedingToBandage.IsNullOrDisposed()) {
+                    DetectBleedingToBandage(pedEntity, ref health);
                 }
             }
         }
 
-        private void DetectBleedingToBandage(ref Health health) {
-            if (health.bleedingWounds == null) {
+        private void DetectBleedingToBandage(Entity pedEntity, ref Health health) {
+            if (!health.HasBleedingWounds()) {
                 return;
             }
 
-            float maxBleeding = 0f;
-            Entity woundToBandage = null;
-            Entity mostDangerWound = null;
+            (Entity ent, float severity) mostDangerWound = default;
+            (Entity ent, float severity) woundToBandage = default;
             foreach (Entity entity in health.bleedingWounds) {
                 ref Bleeding bleeding = ref bleedingStash.Get(entity);
-                if (bleeding.severity <= maxBleeding) {
-                    continue;
+
+                if (mostDangerWound.ent.IsNullOrDisposed() || bleeding.severity > mostDangerWound.severity) {
+                    mostDangerWound.ent = entity;
+                    mostDangerWound.severity = bleeding.severity;
                 }
 
-                mostDangerWound = entity;
-                maxBleeding = bleeding.severity;
-
                 bool ableToBandage = !bleeding.isTrauma;
-                if (ableToBandage) {
-                    woundToBandage = entity;
+                if (ableToBandage && (woundToBandage.ent.IsNullOrDisposed() || bleeding.severity > woundToBandage.severity)) {
+                    woundToBandage.ent = entity;
+                    woundToBandage.severity = bleeding.severity;
                 }
             }
 
-            health.mostDangerousBleeding = mostDangerWound;
-            health.bleedingToBandage = woundToBandage;
+            health.mostDangerousBleeding = mostDangerWound.ent;
+            health.bleedingToBandage = woundToBandage.ent;
+#if DEBUG
+            string pedName = pedEntity.GetComponent<ConvertedPed>().name;
+            string woundName = pedEntity.GetComponent<Bleeding>().name;
+            sharedData.logger.WriteInfo($"Updated bleedingToBandage for {pedName} to {woundName}");
+#endif
         }
     }
 }
