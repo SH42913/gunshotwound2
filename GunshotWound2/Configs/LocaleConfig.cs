@@ -88,6 +88,8 @@ namespace GunshotWound2.Configs {
         public string PainkillerHelpMessage;
         public string MedkitsHelpMessage;
         public string ClosestPedHelpMessage;
+        public string MedkitsOnMapHelpMessage;
+        public string TraumaHelpMessage;
         public string DeathKeyHelpMessage;
 
         public string YourStatus;

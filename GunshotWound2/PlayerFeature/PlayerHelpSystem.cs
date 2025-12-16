@@ -1,3 +1,5 @@
+// #define DEBUG_EVERY_FRAME
+
 namespace GunshotWound2.PlayerFeature {
     using System;
     using Configs;
@@ -16,10 +18,15 @@ namespace GunshotWound2.PlayerFeature {
         private readonly SharedData sharedData;
         private bool bandageHelpShown;
         private bool painkillerHelpShown;
+        private bool emptyInventoryHelpShown;
+        private bool traumaHelpShown;
         private bool deathKeyHelpShown;
         private float timeToNextHelp;
 
         public EcsWorld World { get; set; }
+
+        private MainConfig MainConfig => sharedData.mainConfig;
+        private LocaleConfig LocaleData => sharedData.localeConfig;
 
         public PlayerHelpSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -30,7 +37,7 @@ namespace GunshotWound2.PlayerFeature {
         }
 
         public void OnUpdate(float deltaTime) {
-            if (!sharedData.mainConfig.HelpTipsEnabled || Screen.IsHelpTextDisplayed) {
+            if (!MainConfig.HelpTipsEnabled || Screen.IsHelpTextDisplayed) {
                 return;
             }
 
@@ -38,28 +45,47 @@ namespace GunshotWound2.PlayerFeature {
                 return;
             }
 
+            ref Health health = ref playerEntity.GetComponent<Health>();
             ref Inventory inventory = ref playerEntity.GetComponent<Inventory>();
             bool hasBandages = inventory.Has(BandageItem.template);
-            if (hasBandages && !bandageHelpShown && TryShowBandageHelp(playerEntity)) {
+            if (hasBandages && !bandageHelpShown && TryShowBandageHelp(health)) {
                 bandageHelpShown = true;
                 RefreshTimeToNextHelp();
                 return;
             }
 
+            ref Pain pain = ref playerEntity.GetComponent<Pain>();
             bool hasPainkillers = inventory.Has(PainkillersItem.template);
-            if (hasPainkillers && !painkillerHelpShown && TryShowPainkillersHelp(playerEntity)) {
+            if (hasPainkillers && !painkillerHelpShown && TryShowPainkillersHelp(ref pain)) {
                 painkillerHelpShown = true;
                 RefreshTimeToNextHelp();
                 return;
             }
 
-            if (!deathKeyHelpShown && TryShowDeathKeyHelp(playerEntity, hasPainkillers)) {
+            bool hasSpineDamage = playerEntity.GetComponent<ConvertedPed>().hasSpineDamage;
+            if (!deathKeyHelpShown && TryShowDeathKeyHelp(ref pain, hasPainkillers, hasSpineDamage)) {
                 deathKeyHelpShown = true;
                 RefreshTimeToNextHelp();
                 return;
             }
 
+            if (!hasSpineDamage && !traumaHelpShown && TryShowTraumaHelp(health)) {
+                traumaHelpShown = true;
+                RefreshTimeToNextHelp();
+                return;
+            }
+
+            if ((!hasBandages || !hasPainkillers) && !emptyInventoryHelpShown) {
+                emptyInventoryHelpShown = true;
+                ShowHelpTip(LocaleData.MedkitsHelpMessage);
+                RefreshTimeToNextHelp();
+                return;
+            }
+
             timeToNextHelp -= deltaTime;
+#if DEBUG && DEBUG_EVERY_FRAME
+            sharedData.logger.WriteInfo($"Time to help tip:{timeToNextHelp}");
+#endif
             if (timeToNextHelp > 0f) {
                 return;
             }
@@ -72,30 +98,48 @@ namespace GunshotWound2.PlayerFeature {
             weightRandom.Add(1);
             weightRandom.Add(2);
 
+            if (sharedData.mainConfig.inventoryConfig.BlipsToMedkits) {
+                weightRandom.Add(3);
+            }
+
             switch (weightRandom.NextWithRemoval()) {
                 case 0: ShowCheckHelp(); break;
-                case 1: ShowHelpTip(sharedData.localeConfig.MedkitsHelpMessage); break;
+                case 1: ShowHelpTip(LocaleData.MedkitsHelpMessage); break;
                 case 2: ShowClosestPedsHelp(); break;
+                case 3: ShowHelpTip(LocaleData.MedkitsOnMapHelpMessage); break;
             }
         }
 
-        private bool TryShowBandageHelp(EcsEntity playerEntity) {
-            ref Health health = ref playerEntity.GetComponent<Health>();
+        private bool TryShowTraumaHelp(in Health health) {
+            if (!health.HasBleedingWounds()) {
+                return false;
+            }
+
+            foreach (EcsEntity entity in health.bleedingWounds) {
+                if (entity.GetComponent<Bleeding>().isTrauma) {
+                    ShowHelpTip(LocaleData.TraumaHelpMessage);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool TryShowBandageHelp(in Health health) {
             if (health.bleedingToBandage.IsNullOrDisposed()) {
                 return false;
             } else {
-                string key = WrapKey(sharedData.mainConfig.BandagesSelfKey);
-                string message = string.Format(sharedData.localeConfig.BandageHelpMessage, key);
+                string key = WrapKey(MainConfig.BandagesSelfKey);
+                string message = string.Format(LocaleData.BandageHelpMessage, key);
                 ShowHelpTip(message);
                 return true;
             }
         }
 
-        private bool TryShowPainkillersHelp(EcsEntity playerEntity) {
-            ref Pain pain = ref playerEntity.GetComponent<Pain>();
+        private bool TryShowPainkillersHelp(ref Pain pain) {
             if (pain.Percent() > 0.8f) {
-                string key = WrapKey(sharedData.mainConfig.PainkillersSelfKey);
-                string message = string.Format(sharedData.localeConfig.PainkillerHelpMessage, key);
+                string key = WrapKey(MainConfig.PainkillersSelfKey);
+                string message = string.Format(LocaleData.PainkillerHelpMessage, key);
                 ShowHelpTip(message);
                 return true;
             } else {
@@ -103,12 +147,11 @@ namespace GunshotWound2.PlayerFeature {
             }
         }
 
-        private bool TryShowDeathKeyHelp(EcsEntity playerEntity, bool hasPainkillers) {
-            ref Pain pain = ref playerEntity.GetComponent<Pain>();
+        private bool TryShowDeathKeyHelp(ref Pain pain, bool hasPainkillers, bool hasSpineDamage) {
             if (pain.TooMuchPain() && !hasPainkillers) {
                 Show();
                 return true;
-            } else if (playerEntity.GetComponent<ConvertedPed>().hasSpineDamage) {
+            } else if (hasSpineDamage) {
                 Show();
                 return true;
             } else {
@@ -116,45 +159,42 @@ namespace GunshotWound2.PlayerFeature {
             }
 
             void Show() {
-                string key = WrapKey(sharedData.mainConfig.DeathKey);
-                string message = string.Format(sharedData.localeConfig.DeathKeyHelpMessage, key);
+                string key = WrapKey(MainConfig.DeathKey);
+                string message = string.Format(LocaleData.DeathKeyHelpMessage, key);
                 ShowHelpTip(message);
             }
         }
 
         private void ShowCheckHelp() {
-            string key = WrapKey(sharedData.mainConfig.CheckSelfKey);
-            string message = string.Format(sharedData.localeConfig.CheckHelpMessage, key);
+            string key = WrapKey(MainConfig.CheckSelfKey);
+            string message = string.Format(LocaleData.CheckHelpMessage, key);
             ShowHelpTip(message);
         }
 
         private void ShowClosestPedsHelp() {
-            MainConfig mainConfig = sharedData.mainConfig;
-
             // ReSharper disable once RedundantExplicitParamsArrayCreation
             string keys = string.Join(", ",
                                       new[] {
-                                          WrapKey(mainConfig.CheckClosestKey),
-                                          WrapKey(mainConfig.BandagesClosestKey),
-                                          WrapKey(mainConfig.PainkillersClosestKey),
+                                          WrapKey(MainConfig.CheckClosestKey),
+                                          WrapKey(MainConfig.BandagesClosestKey),
+                                          WrapKey(MainConfig.PainkillersClosestKey),
                                       });
 
-            string message = string.Format(sharedData.localeConfig.ClosestPedHelpMessage, keys);
+            string message = string.Format(LocaleData.ClosestPedHelpMessage, keys);
             ShowHelpTip(message);
         }
 
         private void RefreshTimeToNextHelp() {
-            MainConfig config = sharedData.mainConfig;
-            timeToNextHelp = sharedData.random.NextFloat(config.HelpTipMinInterval, config.HelpTipMaxInterval);
+            timeToNextHelp = sharedData.random.NextFloat(MainConfig.HelpTipMinInterval, MainConfig.HelpTipMaxInterval);
         }
 
         private void ShowHelpTip(string message) {
-            Screen.ShowHelpText(message, sharedData.mainConfig.HelpTipDurationInMs);
+            Screen.ShowHelpText(message, MainConfig.HelpTipDurationInMs);
         }
 
         public static string WrapKey(in InputListener.Scheme key) {
             string description = key.description;
-            return $"~h~{description}~h~";
+            return $"~h~[{description}]~h~";
         }
 
         void IDisposable.Dispose() { }
