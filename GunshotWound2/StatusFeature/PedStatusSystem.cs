@@ -66,6 +66,7 @@ namespace GunshotWound2.StatusFeature {
 
         private int GetNewStatusIndex(in ConvertedPed convertedPed, ref Health health, ref Pain pain) {
             if (!pain.HasPain() && !health.IsDamaged(convertedPed)) {
+                health.statusColor = Notifier.Color.COMMON;
                 return -1;
             }
 

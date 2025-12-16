@@ -89,7 +89,7 @@ namespace GunshotWound2.HealthFeature {
             }
 
             damagedBone = hitData.damagedBone;
-            if (!damagedBone.IsValid) {
+            if (damagedBone == null || !damagedBone.IsValid) {
                 sharedData.logger.WriteInfo("No valid bone");
                 return false;
             }
