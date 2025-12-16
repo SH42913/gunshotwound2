@@ -65,8 +65,8 @@
         public string BuildString(Entity pedEntity) {
             ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
             ref Health health = ref pedEntity.GetComponent<Health>();
-            ref Inventory inventory = ref pedEntity.GetComponent<Inventory>();
-            ref CurrentlyUsingItem currentlyUsing = ref pedEntity.GetComponent<CurrentlyUsingItem>();
+            ref Inventory inventory = ref pedEntity.GetComponent<Inventory>(out bool hasInventory);
+            ref CurrentlyUsingItem currentlyUsing = ref pedEntity.GetComponent<CurrentlyUsingItem>(out _);
 
             stringBuilder.Clear();
             stringBuilder.Append("<C></C>");
@@ -77,6 +77,7 @@
 #else
             bool showFullHealthInfo = convertedPed.isPlayer || mainConfig.pedsConfig.ShowFullHealthInfo;
 #endif
+
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             if (showFullHealthInfo) {
                 ShowHealth(ref convertedPed, ref health);
@@ -86,7 +87,10 @@
 
             ShowArmor(ref convertedPed);
             ShowBleedingWounds(pedEntity, ref convertedPed, ref health, ref currentlyUsing);
-            ShowInventory(ref inventory, ref currentlyUsing, health);
+            if (hasInventory) {
+                ShowInventory(ref inventory, ref currentlyUsing, health);
+            }
+
             return stringBuilder.ToString();
         }
 
@@ -141,17 +145,17 @@
             stringBuilder.Append(statusType);
             stringBuilder.Append(": ");
 
-            ref Traumas traumas = ref entity.GetComponent<Traumas>();
+            ref Traumas traumas = ref entity.GetComponent<Traumas>(out bool hasTraumas);
 
             string statusKey;
             Notifier.Color statusColor;
             if (health.isDead) {
                 statusKey = "Status.Dead";
                 statusColor = Notifier.Color.RED;
-            } else if (traumas.HasActive(Traumas.Effects.Head)) {
+            } else if (hasTraumas && traumas.HasActive(Traumas.Effects.Head)) {
                 statusKey = "Status.Unconscious";
                 statusColor = Notifier.Color.RED;
-            } else if (traumas.HasActive(Traumas.Effects.Spine)) {
+            } else if (hasTraumas && traumas.HasActive(Traumas.Effects.Spine)) {
                 statusKey = "Status.Immobilized";
                 statusColor = Notifier.Color.ORANGE;
             } else if (convertedPed.status != null) {
@@ -216,7 +220,7 @@
             if (health.isDead) {
                 return;
             }
-            
+
             ref PainkillersEffect painkillersEffect = ref pedEntity.GetComponent<PainkillersEffect>(out bool painkillersActive);
             if (!painkillersActive) {
                 return;
