@@ -1,4 +1,6 @@
-﻿namespace GunshotWound2.HealthFeature {
+﻿// #define DEBUG_EVERY_FRAME
+
+namespace GunshotWound2.HealthFeature {
     using System;
     using System.Collections.Generic;
     using PedsFeature;

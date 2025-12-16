@@ -145,7 +145,7 @@ namespace GunshotWound2.PainFeature {
         }
 
         private static void EnsurePainOverflow(ref Pain pain) {
-            const float ensurePainOverflow = 0.1f;
+            const float ensurePainOverflow = 0.05f;
             float percent = pain.Percent();
             if (percent - 1f < ensurePainOverflow) {
                 pain.diff += ensurePainOverflow * pain.max;
