@@ -7,7 +7,7 @@
 
     <!-- GSW will give these items to every new character with inventory -->
     <DefaultLoadout>
-        <Item Key="Bandages" Count="4"/>
+        <Item Key="Bandages" Count="6"/>
         <Item Key="Painkillers" Count="2"/>
     </DefaultLoadout>
 
@@ -19,7 +19,7 @@
 
     <!-- These items you'll receive when entering emergency vehicle first time -->
     <EmergencyVehicleLoadout>
-        <Item Key="Bandages" Count="2"/>
-        <Item Key="Painkillers" Count="1"/>
+        <Item Key="Bandages" Count="4"/>
+        <Item Key="Painkillers" Count="2"/>
     </EmergencyVehicleLoadout>
 </InventoryConfig>
