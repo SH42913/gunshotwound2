@@ -18,10 +18,10 @@
             Damage="1" Pain="5" Bleed="0.05"/>
     <Trauma Key="Concussion" LocKey="Traumas.Blunt.Concussion"
             Damage="1" Pain="20"
-            PainRateWhenMoving="2.0" PainRateWhenRunning="4.0"/>
+            PainRateWhenMoving="0.5" PainRateWhenRunning="1.5"/>
     <Trauma Key="Blackout" LocKey="Traumas.Blunt.BlackoutChance"
             Damage="2" Pain="80"
-            PainRateWhenMoving="3.0" PainRateWhenRunning="10.0"/>
+            PainRateWhenMoving="1.0" PainRateWhenRunning="3.0"/>
     <Trauma Key="BrainHematoma" LocKey="Traumas.Blunt.BrainHematoma"
             Damage="5" Pain="30" Bleed="0.1"/>
 
@@ -47,13 +47,13 @@
             Effect="Spine"/>
     <Trauma Key="TrachealInjury" LocKey="Traumas.TrachealInjury"
             Damage="2" Pain="30" Bleed="0.1"
-            PainRateWhenMoving="2.0" PainRateWhenRunning="5.0"
+            PainRateWhenMoving="0.5" PainRateWhenRunning="2.0"
             Effect="Lungs"/>
 
     <!-- Chest -->
     <Trauma Key="RibFractures" LocKey="Traumas.RibFractures"
             Damage="1" Pain="10" Bleed="0.005"
-            PainRateWhenMoving="1.0" PainRateWhenRunning="3.0"/>
+            PainRateWhenMoving="0.2" PainRateWhenRunning="1.0"/>
     <Trauma Key="Hemothorax" LocKey="Traumas.Blunt.Hemothorax"
             Damage="2" Pain="20" Bleed="0.1"/>
     <Trauma Key="HeartInjury" LocKey="Traumas.CardiacInjury"
@@ -61,21 +61,21 @@
             Effect="Heart"/>
     <Trauma Key="LungsInjury" LocKey="Traumas.PulmonaryInjury"
             Damage="2" Pain="30" Bleed="0.08"
-            PainRateWhenMoving="1.0" PainRateWhenRunning="2.5"
+            PainRateWhenMoving="0.3" PainRateWhenRunning="1.0"
             Effect="Lungs"/>
     <Trauma Key="Pneumothorax" LocKey="Traumas.Penet.Pneumothorax"
             Damage="2" Pain="20" Bleed="0.05"
-            PainRateWhenMoving="1.2" PainRateWhenRunning="3.0"
+            PainRateWhenMoving="0.4" PainRateWhenRunning="1.5"
             Effect="Lungs"/>
 
     <!-- Abdomen -->
     <Trauma Key="StomachInjury" LocKey="Traumas.StomachInjury"
             Damage="2" Pain="30" Bleed="0.03"
-            PainRateWhenRunning="2.0"
+            PainRateWhenRunning="0.5"
             Effect="Abdomen"/>
     <Trauma Key="LiverInjury" LocKey="Traumas.LiverInjury"
             Damage="5" Pain="40" Bleed="0.12"
-            PainRateWhenRunning="2.0"
+            PainRateWhenRunning="0.5"
             Effect="Abdomen"/>
     <Trauma Key="Hemoperitoneum" LocKey="Traumas.Blunt.Hemoperitoneum"
             Damage="5" Pain="30" Bleed="0.1"
@@ -84,26 +84,26 @@
     <!-- Pelvis -->
     <Trauma Key="BowelInjury" LocKey="Traumas.BowelInjury"
             Damage="2" Pain="25" Bleed="0.02"
-            PainRateWhenRunning="2.0"
+            PainRateWhenRunning="0.5"
             Effect="Abdomen"/>
     <Trauma Key="ClosedFracturePelvis" LocKey="Traumas.ClosedFracture"
             Damage="5" Pain="60" Bleed="0.1"
-            PainRateWhenMoving="5.0" PainRateWhenRunning="10.0"
+            PainRateWhenMoving="1.5" PainRateWhenRunning="4.0"
             Effect="Legs"/>
 
     <!-- Arms -->
     <Trauma Key="ClosedFractureArm" LocKey="Traumas.ClosedFracture"
             Damage="2" Pain="40" Bleed="0.01"
-            PainRateWhenAiming="3.0"
+            PainRateWhenAiming="1.0"
             Effect="Arms"/>
     <Trauma Key="DislocatedShoulder" LocKey="Traumas.Blunt.DislocShoulder"
             Damage="1" Pain="45"
-            PainRateWhenAiming="4.0"
+            PainRateWhenAiming="1.5"
             Effect="Arms"/>
 
     <!-- Legs -->
     <Trauma Key="ClosedFractureLeg" LocKey="Traumas.ClosedFracture"
             Damage="5" Pain="50" Bleed="0.05"
-            PainRateWhenMoving="4.0" PainRateWhenRunning="8.0"
+            PainRateWhenMoving="1.0" PainRateWhenRunning="3.0"
             Effect="Legs"/>
 </Traumas>
