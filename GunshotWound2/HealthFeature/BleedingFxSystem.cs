@@ -115,10 +115,11 @@ namespace GunshotWound2.HealthFeature {
         private ParticleEffect SpawnParticles(in Bleeding bleeding, PedBone targetBone, Vector3 localHitPos, Vector3 localRot) {
             ParticleEffectAsset asset;
             string effectName;
+            float severity = bleeding.severity / sharedData.mainConfig.woundConfig.GlobalMultipliers.bleed;
             if (bleeding.causedByPenetration) {
-                GetEffectForPenetrationBleeding(bleeding.severity, out asset, out effectName);
+                GetEffectForPenetrationBleeding(severity, out asset, out effectName);
             } else {
-                GetEffectForBluntBleeding(bleeding.severity, out asset, out effectName);
+                GetEffectForBluntBleeding(severity, out asset, out effectName);
             }
 
             if (string.IsNullOrEmpty(effectName)) {
@@ -141,7 +142,7 @@ namespace GunshotWound2.HealthFeature {
             } else if (severity > 0.2f) {
                 asset = coreAsset;
                 effectName = "ped_blood_drips";
-            } else if (severity > 0.05f) {
+            } else if (severity > 0.01f) {
                 asset = cutSecAsset;
                 effectName = "cut_sec_golfclub_blood_drips";
             } else {
@@ -151,7 +152,7 @@ namespace GunshotWound2.HealthFeature {
         }
 
         private void GetEffectForBluntBleeding(float severity, out ParticleEffectAsset asset, out string effectName) {
-            if (severity > 0.1f) {
+            if (severity > 0.04f) {
                 asset = coreAsset;
                 effectName = "ped_blood_drips";
             } else if (severity > 0.01f) {

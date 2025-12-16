@@ -49,8 +49,8 @@
     <SelfHealingRate Value="0.02"/>
     <!-- Same as for player -->
 
-    <PainRecoverySpeed Value="1.0"/>
-    <BleedHealSpeed Value="0.5"/>
+    <PainRecoverySpeed Value="0.5"/>
+    <BleedHealSpeed Value="0.025"/>
     <!-- Same as for player -->
 
     <!-- MoveSets for various ped status. GSW supports many MoveSets(separated by ;), random will take one of them. -->
