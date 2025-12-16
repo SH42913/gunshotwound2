@@ -124,9 +124,11 @@
             health.mostDangerousBleeding = mostDangerWound.ent;
             health.bleedingToBandage = woundToBandage.ent;
 #if DEBUG
-            string pedName = pedEntity.GetComponent<ConvertedPed>().name;
-            string woundName = pedEntity.GetComponent<Bleeding>().name;
-            sharedData.logger.WriteInfo($"Updated bleedingToBandage for {pedName} to {woundName}");
+            if (!woundToBandage.ent.IsNullOrDisposed()) {
+                string pedName = pedEntity.GetComponent<ConvertedPed>().name;
+                string woundName = woundToBandage.ent.GetComponent<Bleeding>().name;
+                sharedData.logger.WriteInfo($"Updated bleedingToBandage for {pedName} to {woundName}");
+            }
 #endif
         }
     }
