@@ -1,9 +1,11 @@
+#define DEBUG_EVERY_FRAME
 namespace GunshotWound2.HealthFeature {
     using GTA;
     using GTA.Math;
     using HitDetection;
     using PedsFeature;
     using Scellecs.Morpeh;
+    using TraumaFeature;
     using Utils;
     using EcsEntity = Scellecs.Morpeh.Entity;
     using EcsWorld = Scellecs.Morpeh.World;
@@ -54,6 +56,10 @@ namespace GunshotWound2.HealthFeature {
         private void InitFx() {
             foreach (EcsEntity entity in bleedToInit) {
                 ref Bleeding bleeding = ref bleedStash.Get(entity);
+                if (bleeding.isTrauma) {
+                    continue;
+                }
+
                 ref ConvertedPed convertedPed = ref bleeding.target.GetComponent<ConvertedPed>();
                 if (!TryGetFromHitData(bleeding.target, out PedBone damagedBone, out Vector3 localHitPos, out Vector3 hitNormal)) {
                     int randomBoneId = sharedData.random.NextFromCollection(bleeding.bodyPart.Bones);
@@ -70,7 +76,7 @@ namespace GunshotWound2.HealthFeature {
                 Vector3 localRotation = fromToQuaternion.ToEuler();
 
                 ref BleedingFx bleedingFx = ref bleedFxStash.Add(entity);
-                bleedingFx.particles = SpawnParticles(bleeding, damagedBone, localHitPos, localRotation);
+                bleedingFx.particles = SpawnParticles(entity, bleeding, damagedBone, localHitPos, localRotation);
             }
         }
 
@@ -112,14 +118,25 @@ namespace GunshotWound2.HealthFeature {
             }
         }
 
-        private ParticleEffect SpawnParticles(in Bleeding bleeding, PedBone targetBone, Vector3 localHitPos, Vector3 localRot) {
+        private ParticleEffect SpawnParticles(EcsEntity bleedingEntity,
+                                              in Bleeding bleeding,
+                                              PedBone targetBone,
+                                              Vector3 localHitPos,
+                                              Vector3 localRot) {
+            float severity = bleeding.severity;
+            ref TraumaCauseBleeding relatedTrauma = ref bleedingEntity.GetComponent<TraumaCauseBleeding>(out bool hasTrauma);
+            if (hasTrauma) {
+                severity += relatedTrauma.traumaEntity.GetComponent<Bleeding>().severity;
+            }
+
+            severity /= sharedData.mainConfig.woundConfig.GlobalMultipliers.bleed;
+
             ParticleEffectAsset asset;
             string effectName;
-            float severity = bleeding.severity / sharedData.mainConfig.woundConfig.GlobalMultipliers.bleed;
-            if (bleeding.causedByPenetration) {
-                GetEffectForPenetrationBleeding(severity, out asset, out effectName);
-            } else {
+            if (bleeding.bluntDamageReason) {
                 GetEffectForBluntBleeding(severity, out asset, out effectName);
+            } else {
+                GetEffectForPenetrationBleeding(severity, out asset, out effectName);
             }
 
             if (string.IsNullOrEmpty(effectName)) {
@@ -129,7 +146,7 @@ namespace GunshotWound2.HealthFeature {
 #if DEBUG && DEBUG_EVERY_FRAME
             var message = $"Spawn particle {asset.AssetName}:{effectName} at {targetBone.Owner.Handle}({targetBone.Name})";
             sharedData.logger.WriteInfo(message);
-            sharedData.logger.WriteInfo($"LocalPos:{localHitPos} LocalRot:{localRot}");
+            sharedData.logger.WriteInfo($"{bleeding.name} Trauma:{hasTrauma} LocalPos:{localHitPos} LocalRot:{localRot}");
 #endif
 
             return GTA.World.CreateParticleEffect(asset, effectName, targetBone, localHitPos, localRot);

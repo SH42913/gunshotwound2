@@ -9,29 +9,47 @@
         public string reason;
         public float severity;
         public bool isTrauma;
-        public bool causedByPenetration;
+        public bool bluntDamageReason;
 
         public bool isProcessed;
         public int processedTime;
     }
 
     public static class BleedingExtensions {
-        public static void CreateNewBleeding(this Entity target,
-                                             in BodyPartConfig.BodyPart bodyPart,
-                                             float severity,
-                                             string name,
-                                             string reason,
-                                             bool isTrauma,
-                                             bool causedByPenetration) {
+        public static Entity CreateCommonBleeding(this Entity target,
+                                                  in BodyPartConfig.BodyPart bodyPart,
+                                                  float severity,
+                                                  string name,
+                                                  string reason,
+                                                  bool bluntDamageReason) {
             Entity newEntity = target.world.CreateEntity();
-            ref Bleeding bleeding = ref newEntity.AddComponent<Bleeding>();
-            bleeding.target = target;
-            bleeding.bodyPart = bodyPart;
-            bleeding.name = name;
-            bleeding.reason = reason;
-            bleeding.severity = severity;
-            bleeding.isTrauma = isTrauma;
-            bleeding.causedByPenetration = causedByPenetration;
+            newEntity.SetComponent(new Bleeding {
+                target = target,
+                bodyPart = bodyPart,
+                name = name,
+                reason = reason,
+                severity = severity,
+                bluntDamageReason = bluntDamageReason,
+            });
+
+            return newEntity;
+        }
+
+        public static void CreateTraumaBleeding(this Entity target,
+                                                in BodyPartConfig.BodyPart bodyPart,
+                                                float severity,
+                                                string name,
+                                                string reason,
+                                                Entity traumaEntity = null) {
+            traumaEntity ??= target.world.CreateEntity();
+            traumaEntity.SetComponent(new Bleeding {
+                target = target,
+                bodyPart = bodyPart,
+                name = name,
+                reason = reason,
+                severity = severity,
+                isTrauma = true,
+            });
         }
     }
 }

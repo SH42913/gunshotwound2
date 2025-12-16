@@ -163,9 +163,9 @@
                 health.DealDamage(dbp.damage, woundName);
             }
 
+            EcsEntity woundBleeding = null;
             if (dbp.bleed > 0f) {
-                bool causedByPenetration = !wound.IsBlunt;
-                targetEntity.CreateNewBleeding(hitData.bodyPart, dbp.bleed, woundName, reason, isTrauma: false, causedByPenetration: causedByPenetration);
+                woundBleeding = targetEntity.CreateCommonBleeding(hitData.bodyPart, dbp.bleed, woundName, reason, wound.IsBlunt);
             }
 
             if (dbp.pain > 0f) {
@@ -177,7 +177,7 @@
                 World.CreateEntity().SetComponent(new TraumaRequest {
                     target = targetEntity,
                     targetBodyPart = hitData.bodyPart,
-                    forBluntDamage = wound.IsBlunt,
+                    parentBleeding = woundBleeding,
                 });
             }
 

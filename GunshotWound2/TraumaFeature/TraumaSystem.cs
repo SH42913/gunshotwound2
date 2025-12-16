@@ -82,11 +82,25 @@
         }
 
         private void ProcessRequest(Entity traumaEntity, ref TraumaRequest request, ref ConvertedPed convertedPed) {
-            bool causedByPenetration = !request.forBluntDamage;
             BodyPartConfig.BodyPart bodyPart = request.targetBodyPart;
-            (string key, int weight)[] possibleTraumas = causedByPenetration
-                    ? bodyPart.PenetratingTraumas
-                    : bodyPart.BluntTraumas;
+
+            bool bluntDamage;
+            Entity parentBleeding = request.parentBleeding;
+            if (!parentBleeding.IsNullOrDisposed() && parentBleeding.Has<Bleeding>()) {
+                bluntDamage = parentBleeding.GetComponent<Bleeding>().bluntDamageReason;
+                parentBleeding.SetComponent(new TraumaCauseBleeding {
+                    traumaEntity = traumaEntity,
+                });
+            } else {
+                bluntDamage = false;
+#if DEBUG
+                sharedData.logger.WriteWarning("Trauma request doesn't have proper parent bleeding, so we treat it as blunt trauma");
+#endif
+            }
+
+            (string key, int weight)[] possibleTraumas = bluntDamage
+                    ? bodyPart.BluntTraumas
+                    : bodyPart.PenetratingTraumas;
 
             string traumaKey = sharedData.weightRandom.GetValueWithWeights(possibleTraumas);
 #if DEBUG
@@ -103,15 +117,9 @@
             targetEntity.GetComponent<Health>().DealDamage(dbp.damage, traumaName);
             targetEntity.GetComponent<Pain>().diff += dbp.pain;
 
-            traumaEntity.SetComponent(new Bleeding {
-                target = targetEntity,
-                bodyPart = bodyPart,
-                name = traumaName,
-                reason = sharedData.localeConfig.TraumaType,
-                severity = Math.Max(0.01f, dbp.bleed),
-                isTrauma = true,
-                causedByPenetration = causedByPenetration,
-            });
+            string reason = sharedData.localeConfig.TraumaType;
+            float severity = Math.Max(0.01f, dbp.bleed);
+            targetEntity.CreateTraumaBleeding(bodyPart, severity, traumaName, reason, traumaEntity);
 
             if (trauma.CanGeneratePain) {
                 traumaEntity.SetComponent(new PainGenerator {

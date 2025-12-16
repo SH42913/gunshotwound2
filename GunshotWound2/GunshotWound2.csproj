@@ -96,6 +96,7 @@
     <Compile Include="TraumaFeature\Actions\LungsTraumaEffect.cs" />
     <Compile Include="TraumaFeature\Actions\SpineTraumaEffect.cs" />
     <Compile Include="TraumaFeature\Actions\AbdomenTraumaEffect.cs" />
+    <Compile Include="TraumaFeature\TraumaCauseBleeding.cs" />
     <Compile Include="TraumaFeature\TraumaRequest.cs" />
     <Compile Include="TraumaFeature\Traumas.cs" />
     <Compile Include="TraumaFeature\TraumaFeature.cs" />
