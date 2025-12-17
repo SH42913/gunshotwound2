@@ -90,20 +90,26 @@ namespace GunshotWound2.HealthFeature {
 
             ref PedHitData hitData = ref entity.GetComponent<PedHitData>(out bool hasHitData);
             if (!hasHitData) {
-                sharedData.logger.WriteInfo($"No hit data at {entity.ID}");
+#if DEBUG
+                sharedData.logger.WriteWarning($"No hit data at {entity.ID}");
+#endif
                 return false;
             }
 
             damagedBone = hitData.damagedBone;
             if (damagedBone == null || !damagedBone.IsValid) {
-                sharedData.logger.WriteInfo("No valid bone");
+#if DEBUG
+                sharedData.logger.WriteWarning("No valid bone");
+#endif
                 return false;
             }
 
             const float maxRange = 1f;
             Vector3 offset = damagedBone.GetPositionOffset(hitData.hitPos);
             if (offset.LengthSquared() > maxRange * maxRange) {
-                sharedData.logger.WriteInfo("Exceed max range");
+#if DEBUG
+                sharedData.logger.WriteWarning("Exceed max range");
+#endif
                 return false;
             }
 

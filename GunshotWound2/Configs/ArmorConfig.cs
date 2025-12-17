@@ -87,7 +87,8 @@ namespace GunshotWound2.Configs {
                 }
             }
 
-            throw new Exception($"There's no level for armor {armor}");
+            level = Levels[0];
+            return true;
         }
 
         private static HashSet<int> ExtractHelmets(XElement node) {

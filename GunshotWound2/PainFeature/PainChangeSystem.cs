@@ -1,12 +1,17 @@
 ﻿// #define DEBUG_EVERY_FRAME
+
 namespace GunshotWound2.PainFeature {
     using System;
     using Configs;
+    using GTA;
     using HealthFeature;
     using HitDetection;
     using PedsFeature;
     using PlayerFeature;
     using Scellecs.Morpeh;
+    using Utils;
+    using EcsEntity = Scellecs.Morpeh.Entity;
+    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class PainChangeSystem : ILateSystem {
         private readonly SharedData sharedData;
@@ -17,7 +22,7 @@ namespace GunshotWound2.PainFeature {
         private Stash<TotallyHealedEvent> totallyHealedStash;
         private Stash<PainkillersEffect> painkillersStash;
 
-        public World World { get; set; }
+        public EcsWorld World { get; set; }
 
         public PainChangeSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -32,7 +37,7 @@ namespace GunshotWound2.PainFeature {
         }
 
         public void OnUpdate(float deltaTime) {
-            foreach (Entity entity in pedsWithPain) {
+            foreach (EcsEntity entity in pedsWithPain) {
                 ref Pain pain = ref painStash.Get(entity);
                 if (totallyHealedStash.Has(entity)) {
                     pain.amount = 0f;
@@ -112,7 +117,7 @@ namespace GunshotWound2.PainFeature {
             pain.delayedDiff = 0f;
         }
 
-        private void ApplyPain(Entity entity, ref ConvertedPed convertedPed, ref Pain pain) {
+        private void ApplyPain(EcsEntity entity, ref ConvertedPed convertedPed, ref Pain pain) {
 #if DEBUG && DEBUG_EVERY_FRAME
             sharedData.logger.WriteInfo($"Applying pain, current:{pain.amount} diff:{pain.diff}");
 #endif
@@ -152,7 +157,7 @@ namespace GunshotWound2.PainFeature {
             }
         }
 
-        private void UpdatePainkillersEffect(Entity entity,
+        private void UpdatePainkillersEffect(EcsEntity entity,
                                              in ConvertedPed convertedPed,
                                              ref Pain pain,
                                              ref PainkillersEffect painkillersEffect,
@@ -173,19 +178,24 @@ namespace GunshotWound2.PainFeature {
             }
         }
 
-        private void RecoverPain(ref Pain pain, ref PainkillersEffect painkillersEffect, float deltaTime) {
+        private static void RecoverPain(ref Pain pain, ref PainkillersEffect painkillersEffect, float deltaTime) {
             pain.amount -= painkillersEffect.rate * deltaTime;
             pain.amount -= pain.recoveryRate * deltaTime;
             pain.amount = Math.Max(pain.amount, 0f);
         }
 
-        private void PlayPainEffects(Entity entity, ref ConvertedPed convertedPed, ref Pain pain) {
+        private void PlayPainEffects(EcsEntity entity, ref ConvertedPed convertedPed, ref Pain pain) {
             if (convertedPed.hasSpineDamage) {
                 return;
             }
 
+            Ped ped = convertedPed.thisPed;
+            if (!ped.IsValid()) {
+                return;
+            }
+
             int painAnimIndex = sharedData.random.Next(1, 7);
-            PedEffects.PlayFacialAnim(convertedPed.thisPed, $"pain_{painAnimIndex.ToString()}", convertedPed.isMale);
+            PedEffects.PlayFacialAnim(ped, $"pain_{painAnimIndex.ToString()}", convertedPed.isMale);
 
             WoundConfig woundConfig = sharedData.mainConfig.woundConfig;
             float painfulThreshold = woundConfig.PainfulWoundPercent * pain.max;
@@ -194,7 +204,7 @@ namespace GunshotWound2.PainFeature {
                 sharedData.logger.WriteInfo($"Painful wound {pain.diff.ToString("F")} at {convertedPed.name}");
 #endif
 
-                convertedPed.thisPed.PlayAmbientSpeech("PAIN_RAPIDS");
+                ped.PlayAmbientSpeech("PAIN_RAPIDS");
                 if (woundConfig.RagdollOnPainfulWound) {
                     convertedPed.RequestRagdoll(timeInMs: 1500);
                 }
@@ -202,10 +212,10 @@ namespace GunshotWound2.PainFeature {
                 ref PedHitData hitData = ref entity.GetComponent<PedHitData>(out bool hasHitData);
                 if (convertedPed.isPlayer) {
                     sharedData.cameraService.PlayPainfulWoundEffect();
-                } else if (convertedPed.thisPed.IsOnBike) {
-                    convertedPed.thisPed.Task.LeaveVehicle(GTA.LeaveVehicleFlags.BailOut);
+                } else if (ped.IsOnBike) {
+                    ped.Task.LeaveVehicle(LeaveVehicleFlags.BailOut);
                 } else if (hasHitData && hitData.bodyPart.Key.EndsWith("Arm")) {
-                    convertedPed.thisPed.Weapons.Drop();
+                    ped.Weapons.Drop();
                 }
             }
         }
