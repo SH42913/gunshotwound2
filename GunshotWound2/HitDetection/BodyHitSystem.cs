@@ -1,4 +1,6 @@
-﻿namespace GunshotWound2.HitDetection {
+﻿// #define DEBUG_EVERY_FRAME
+
+namespace GunshotWound2.HitDetection {
     using System;
     using Configs;
     using GTA;
@@ -51,7 +53,7 @@
 #endif
                 }
 
-                CalculateLocalHitPos(convertedPed, ref hitData);
+                CalculateLocalHitData(convertedPed, ref hitData);
                 convertedPed.lastDamagedBone = hitData.damagedBone.Tag;
             }
         }
@@ -74,42 +76,42 @@
             return false;
         }
 
-        private void CalculateLocalHitPos(in ConvertedPed convertedPed, ref PedHitData hitData) {
-            if (!hitData.aggressor.IsValid()) {
+        private void CalculateLocalHitData(in ConvertedPed convertedPed, ref PedHitData hitData) {
+            Ped aggressor = hitData.aggressor;
+            if (!aggressor.IsValid()) {
                 return;
             }
 
-            Vector3 lastHit = hitData.aggressor.LastWeaponImpactPosition;
+            DamageType damageType = GTAHelpers.GetWeaponDamageType(hitData.weaponHash);
+            if (damageType != DamageType.Bullet && damageType != DamageType.Melee) {
+                return;
+            }
+
+            Vector3 lastHit = aggressor.LastWeaponImpactPosition;
             if (lastHit == Vector3.Zero) {
                 return;
             }
 
             hitData.hitPos = lastHit;
 
-            bool assignedNormal = false;
-            Prop currentWeaponObject = hitData.aggressor.Weapons.CurrentWeaponObject;
-            EntityBone muzzleBone = currentWeaponObject?.Bones["Gun_Muzzle"];
-            if (muzzleBone != null && muzzleBone.IsValid) {
-                hitData.shotDir = (lastHit - muzzleBone.Position).Normalized;
-
-                RaycastResult result = GTA.World.Raycast(muzzleBone.Position, lastHit + hitData.shotDir, IntersectFlags.Peds);
-                if (result.Result == 2 && result.HitEntity == convertedPed.thisPed) {
-                    hitData.hitNorm = result.SurfaceNormal;
-                    assignedNormal = true;
-                }
-#if DEBUG
-                else {
-                    sharedData.logger.WriteInfo("No raycast hit for local hit calculation");
-                }
+            Vector3 raycastOrigin = GTAHelpers.GetPedBoneCoords(aggressor, Bone.IKRightHand);
+            if (raycastOrigin == Vector3.Zero) {
+#if DEBUG && DEBUG_EVERY_FRAME
+                sharedData.logger.WriteInfo("Invalid raycast origin");
 #endif
+                return;
             }
-#if DEBUG
-            else {
-                sharedData.logger.WriteInfo("No muzzle for local hit calculation");
-            }
-#endif
 
-            if (!assignedNormal) {
+            Ped thisPed = convertedPed.thisPed;
+            hitData.shotDir = (lastHit - raycastOrigin).Normalized;
+            Vector3 raycastTarget = lastHit + 5f * hitData.shotDir;
+            RaycastResult result = GTA.World.Raycast(raycastOrigin, raycastTarget, IntersectFlags.Peds, aggressor);
+            if (result.Result == 2 && result.HitEntity == thisPed) {
+                hitData.hitNorm = result.SurfaceNormal;
+            } else {
+#if DEBUG && DEBUG_EVERY_FRAME
+                sharedData.logger.WriteInfo("No raycast hit for local hit calculation");
+#endif
                 hitData.hitNorm = (lastHit - hitData.damagedBone.Position).Normalized;
             }
         }

@@ -91,7 +91,7 @@ namespace GunshotWound2.HealthFeature {
             ref PedHitData hitData = ref entity.GetComponent<PedHitData>(out bool hasHitData);
             if (!hasHitData) {
 #if DEBUG
-                sharedData.logger.WriteWarning($"No hit data at {entity.ID}");
+                sharedData.logger.WriteInfo($"No hit data at {entity.ID}");
 #endif
                 return false;
             }
@@ -99,16 +99,17 @@ namespace GunshotWound2.HealthFeature {
             damagedBone = hitData.damagedBone;
             if (damagedBone == null || !damagedBone.IsValid) {
 #if DEBUG
-                sharedData.logger.WriteWarning("No valid bone");
+                sharedData.logger.WriteInfo("No valid bone in hit data");
 #endif
                 return false;
             }
 
-            const float maxRange = 1f;
-            Vector3 offset = damagedBone.GetPositionOffset(hitData.hitPos);
+            const float maxRange = 3f;
+            Vector3 hitPos = hitData.hitPos + 0.0075f * hitData.shotDir;
+            Vector3 offset = damagedBone.GetPositionOffset(hitPos);
             if (offset.LengthSquared() > maxRange * maxRange) {
 #if DEBUG
-                sharedData.logger.WriteWarning("Exceed max range");
+                sharedData.logger.WriteInfo("Local hit pos exceeds max range");
 #endif
                 return false;
             }
@@ -159,31 +160,40 @@ namespace GunshotWound2.HealthFeature {
         }
 
         private void GetEffectForPenetrationBleeding(float severity, out ParticleEffectAsset asset, out string effectName) {
-            if (severity > 0.5f) {
-                asset = cutMichael2Asset;
-                effectName = "cs_mich2_blood_head_leak";
-            } else if (severity > 0.2f) {
-                asset = coreAsset;
-                effectName = "ped_blood_drips";
-            } else if (severity > 0.01f) {
-                asset = cutSecAsset;
-                effectName = "cut_sec_golfclub_blood_drips";
-            } else {
-                asset = default;
-                effectName = null;
+            switch (severity) {
+                case > 0.5f:
+                    asset = cutMichael2Asset;
+                    effectName = "cs_mich2_blood_head_leak";
+                    break;
+                case > 0.2f:
+                    asset = coreAsset;
+                    effectName = "ped_blood_drips";
+                    break;
+                case > 0.01f:
+                    asset = cutSecAsset;
+                    effectName = "cut_sec_golfclub_blood_drips";
+                    break;
+                default:
+                    asset = default;
+                    effectName = null;
+                    break;
             }
         }
 
         private void GetEffectForBluntBleeding(float severity, out ParticleEffectAsset asset, out string effectName) {
-            if (severity > 0.04f) {
-                asset = coreAsset;
-                effectName = "ped_blood_drips";
-            } else if (severity > 0.01f) {
-                asset = cutSecAsset;
-                effectName = "cut_sec_golfclub_blood_drips";
-            } else {
-                asset = default;
-                effectName = null;
+            switch (severity) {
+                case > 0.04f:
+                    asset = coreAsset;
+                    effectName = "ped_blood_drips";
+                    break;
+                case > 0.01f:
+                    asset = cutSecAsset;
+                    effectName = "cut_sec_golfclub_blood_drips";
+                    break;
+                default:
+                    asset = default;
+                    effectName = null;
+                    break;
             }
         }
 

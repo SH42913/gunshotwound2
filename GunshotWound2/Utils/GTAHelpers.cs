@@ -59,5 +59,13 @@ namespace GunshotWound2.Utils {
 
             return !isMoving;
         }
+
+        public static DamageType GetWeaponDamageType(uint weaponHash) {
+            return (DamageType)Function.Call<int>(Hash.GET_WEAPON_DAMAGE_TYPE, weaponHash);
+        }
+
+        public static Vector3 GetPedBoneCoords(Ped ped, Bone bone, Vector3 offset = default) {
+            return Function.Call<Vector3>(Hash.GET_PED_BONE_COORDS, ped, (int)bone, offset.X, offset.Y, offset.Z);
+        }
     }
 }
