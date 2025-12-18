@@ -193,16 +193,19 @@
                 return false;
             }
 
-            if (!sharedData.random.IsTrueWithProbability(hitData.bodyPart.TraumaChance)) {
-                return false;
+            Random random = sharedData.random;
+            float bodyPartTraumaChance = hitData.bodyPart.TraumaChance;
+            if (!wound.IsBlunt && hitData.bodyPart.IgnoreWeaponTraumaChanceForPenetratingWounds) {
+                return random.IsTrueWithProbability(bodyPartTraumaChance);
             }
 
-            if (hitData.bodyPart.IgnoreWeaponTraumaChance) {
-                return true;
+            float oneHitChance = bodyPartTraumaChance * hitData.weaponType.ChanceToCauseTrauma;
+            if (hitData.hits == 1) {
+                return random.IsTrueWithProbability(oneHitChance);
             }
 
-            float weaponTraumaChance = hitData.weaponType.ChanceToCauseTrauma * hitData.hits;
-            return sharedData.random.IsTrueWithProbability(weaponTraumaChance);
+            double totalChance = 1f - Math.Pow(1f - oneHitChance, hitData.hits);
+            return random.IsTrueWithProbability(totalChance);
         }
 
         private bool IsDeadlyWound(in PedHitData hitData, bool isPlayer) {

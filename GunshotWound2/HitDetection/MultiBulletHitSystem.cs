@@ -27,7 +27,7 @@ namespace GunshotWound2.HitDetection {
         public void OnUpdate(float deltaTime) {
             foreach (EcsEntity entity in damagedPeds) {
                 ref PedHitData hitData = ref entity.GetComponent<PedHitData>();
-                if (hitData.weaponType.Pellets < 2) {
+                if (hitData.weaponType.Pellets < 2 || hitData.afterTakedown) {
                     continue;
                 }
 

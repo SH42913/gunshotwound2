@@ -27,10 +27,10 @@
 
     <!-- Lethal -->
     <Trauma Key="SkullFracture" LocKey="Traumas.SkullFracture"
-            Damage="5" Pain="50" Bleed="0.2"
+            Damage="5" Pain="50" Bleed="0.4"
             Effect="Head" EffectMessage="FALSE"/>
     <Trauma Key="BleedingInHead" LocKey="Traumas.BleedingInHead"
-            Damage="5" Pain="60" Bleed="0.5"
+            Damage="5" Pain="60" Bleed="0.6"
             Effect="Head" EffectMessage="FALSE"/>
     <Trauma Key="PenetratingSkullFracture" LocKey="Traumas.Penet.CranialInjury"
             Damage="10" Pain="100" Bleed="0.8"

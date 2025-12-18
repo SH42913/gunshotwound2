@@ -3,7 +3,7 @@
     <BodyPart Key="Head" LocKey="BodyParts.Head"
               Bones="SkelHead;"
               DamageMult="1.0" BleedMult="0.9" PainMult="1.0"
-              TraumaChance="1.0" IgnoreWeaponTraumaChance="TRUE">
+              TraumaChance="1.0" IgnoreWeaponTraumaChanceForPenetratingWounds="TRUE">
         <BluntTraumas>
             <Trauma Key="Concussion" Weight="35"/>
             <Trauma Key="Blackout" Weight="25"/>
@@ -14,15 +14,14 @@
         </BluntTraumas>
         <PenetratingTraumas>
             <Trauma Key="PenetratingSkullFracture" Weight="60"/>
-            <Trauma Key="BleedingInHead" Weight="30"/>
-            <Trauma Key="SkullFracture" Weight="10"/>
+            <Trauma Key="BleedingInHead" Weight="40"/>
         </PenetratingTraumas>
     </BodyPart>
 
     <BodyPart Key="Neck" LocKey="BodyParts.Neck"
               Bones="SkelNeck1;SkelNeck2;"
               DamageMult="0.9" BleedMult="1.0" PainMult="1.0"
-              TraumaChance="0.9" IgnoreWeaponTraumaChance="TRUE">
+              TraumaChance="0.9" IgnoreWeaponTraumaChanceForPenetratingWounds="TRUE">
         <BluntTraumas>
             <Trauma Key="TrachealInjury" Weight="40"/>
             <Trauma Key="NeckSpineFracture" Weight="30"/>
