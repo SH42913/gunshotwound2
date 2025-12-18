@@ -8,7 +8,7 @@
 
     <!-- Common -->
     <Trauma Key="LightArterialBleed" LocKey="Traumas.Penet.ArterialBleed"
-            Damage="1" Pain="5" Bleed="0.15"/>
+            Damage="1" Pain="5" Bleed="0.3"/>
     <Trauma Key="HeavyArterialBleed" LocKey="Traumas.Penet.ArterialBleed"
             Damage="2" Pain="10" Bleed="0.6"/>
 

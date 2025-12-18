@@ -104,7 +104,7 @@ namespace GunshotWound2.HealthFeature {
                 return false;
             }
 
-            const float maxRange = 3f;
+            const float maxRange = 2f;
             Vector3 hitPos = hitData.hitPos + 0.0075f * hitData.shotDir;
             Vector3 offset = damagedBone.GetPositionOffset(hitPos);
             if (offset.LengthSquared() > maxRange * maxRange) {

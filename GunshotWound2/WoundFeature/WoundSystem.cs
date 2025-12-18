@@ -2,6 +2,7 @@
     using System;
     using Configs;
     using GTA;
+    using GTA.Math;
     using HealthFeature;
     using HitDetection;
     using PainFeature;
@@ -98,6 +99,12 @@
                 sharedData.logger.WriteInfo($"Applying takedown wound {takedownWound}");
 #endif
                 wound = sharedData.mainConfig.woundConfig.Wounds[takedownWound];
+            } else if (!string.IsNullOrEmpty(hitData.weaponType.TangentialWound) && CheckIsTangentialHit(hitData)) {
+                string tangentialWound = hitData.weaponType.TangentialWound;
+#if DEBUG
+                sharedData.logger.WriteInfo($"Applying tangential wound {tangentialWound}");
+#endif
+                wound = sharedData.mainConfig.woundConfig.Wounds[tangentialWound];
             } else {
                 string woundKey = sharedData.weightRandom.GetValueWithWeights(hitData.weaponType.Wounds);
 #if DEBUG
@@ -213,6 +220,16 @@
                    && (isPlayer
                            ? sharedData.mainConfig.playerConfig.InstantDeathHeadshot
                            : sharedData.mainConfig.pedsConfig.InstantDeathHeadshot);
+        }
+
+        private bool CheckIsTangentialHit(in PedHitData hitData) {
+            if (!hitData.fullShotData) {
+                return false;
+            }
+
+            float impactDot = Vector3.Dot(hitData.shotDir, hitData.hitNorm);
+            float threshold = sharedData.mainConfig.weaponConfig.TangentialWoundThreshold;
+            return Math.Abs(impactDot) < threshold;
         }
 
         private void SendWoundInfo(in ConvertedPed convertedPed,

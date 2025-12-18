@@ -107,13 +107,15 @@ namespace GunshotWound2.HitDetection {
             Vector3 raycastTarget = lastHit + 5f * hitData.shotDir;
             RaycastResult result = GTA.World.Raycast(raycastOrigin, raycastTarget, IntersectFlags.Peds, aggressor);
             if (result.Result == 2 && result.HitEntity == thisPed) {
-                hitData.hitNorm = result.SurfaceNormal;
+                hitData.hitNorm = result.SurfaceNormal.Normalized;
             } else {
 #if DEBUG && DEBUG_EVERY_FRAME
                 sharedData.logger.WriteInfo("No raycast hit for local hit calculation");
 #endif
                 hitData.hitNorm = (lastHit - hitData.damagedBone.Position).Normalized;
             }
+
+            hitData.fullShotData = true;
         }
     }
 }

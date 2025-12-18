@@ -9,6 +9,10 @@
     Set this value to FALSE only if you're using other mod with damage-detection feature
     (like MoreGore or Damage Tracker Framework) -->
 
+    <TangentialWoundThreshold Value="0.35"/>
+    <!-- Specific value for tangential wound detection. Value must be between 0 and 1.
+    It is dot product between shot direction and hit normal, so less value mean tangential wound will be harder to get. -->
+
     <!-- GSW2 will ignore these weapons, so they will deal vanilla damage -->
     <IgnoreSet>
         <Explosives Hashes="EXPLOSION;GRENADE;STICKYBOMB;PROXMINE;PIPEBOMB;"/>
@@ -32,6 +36,7 @@
             <Pistols Hashes="PISTOL;SNSPISTOL;CERAMICPISTOL;"/>
             <SMGs Hashes="MACHINEPISTOL;TECPISTOL;"/>
             <TakedownWound Key="MediumBruise"/>
+            <TangentialWound Key="TangentialGsw"/>
             <Wounds>
                 <Wound Key="LaceratingGsw" Weight="50"/>
                 <Wound Key="PenetratingGsw" Weight="40"/>
@@ -44,6 +49,7 @@
             <Pistols Hashes="PISTOLXM3;"/>
             <SMGs Hashes="MICROSMG;SMG;"/>
             <TakedownWound Key="MediumBruise"/>
+            <TangentialWound Key="TangentialGsw"/>
             <Wounds>
                 <Wound Key="PerforatingGsw" Weight="50"/>
                 <Wound Key="PenetratingGsw" Weight="40"/>
@@ -56,6 +62,7 @@
             <Pistols Hashes="APPISTOL;PISTOL_MK2;SMG_MK2;"/>
             <SMGs Hashes="COMBATPDW;"/>
             <TakedownWound Key="MediumBruise"/>
+            <TangentialWound Key="TangentialGsw"/>
             <Wounds>
                 <Wound Key="PerforatingGsw" Weight="70"/>
                 <Wound Key="PenetratingGsw" Weight="20"/>
@@ -64,7 +71,7 @@
         </Firearm9x19_AP>
 
         <Firearm12GA_00Buck ShortDesc="12GA #00 Buck" Pellets="8"
-                            DamageMult="0.7" BleedMult="1.0" PainMult="0.7" ChanceToCauseTrauma="0.2"
+                            DamageMult="0.7" BleedMult="1.0" PainMult="0.5" ChanceToCauseTrauma="0.2"
                             SafeArmorLevel="ClassII" ArmorDamage="2" HelmetSafeChance="0.95">
             <Shotguns Hashes="PUMPSHOTGUN;PUMPSHOTGUN_MK2;SAWNOFFSHOTGUN;BULLPUPSHOTGUN;DBSHOTGUN;"/>
             <TakedownWound Key="HeavyBruise"/>
@@ -75,7 +82,7 @@
             </Wounds>
         </Firearm12GA_00Buck>
         <Firearm12GA_000Buck ShortDesc="12GA #000 Heavy" Pellets="6"
-                             DamageMult="0.9" BleedMult="1.2" PainMult="0.8" ChanceToCauseTrauma="0.3"
+                             DamageMult="0.9" BleedMult="1.2" PainMult="0.7" ChanceToCauseTrauma="0.3"
                              SafeArmorLevel="ClassII" ArmorDamage="4" HelmetSafeChance="0.85">
             <Shotguns Hashes="COMBATSHOTGUN;"/>
             <AutoShotguns Hashes="AUTOSHOTGUN;ASSAULTSHOTGUN;"/>
@@ -98,7 +105,7 @@
             </Wounds>
         </Firearm12GA_Slug>
         <Firearm12GA_Flechette ShortDesc="12GA Flechette" Pellets="8"
-                               DamageMult="0.9" BleedMult="1.5" PainMult="0.5" ChanceToCauseTrauma="0.4"
+                               DamageMult="0.9" BleedMult="1.5" PainMult="0.3" ChanceToCauseTrauma="0.4"
                                SafeArmorLevel="ClassIII" ArmorDamage="8" HelmetSafeChance="0.6">
             <Shotguns Hashes=""/>
             <TakedownWound Key="HeavyBruise"/>
@@ -148,6 +155,7 @@
                           SafeArmorLevel="ClassII" ArmorDamage="5" HelmetSafeChance="0.5">
             <Carbines Hashes="CARBINERIFLE;"/>
             <TakedownWound Key="HeavyBruise"/>
+            <TangentialWound Key="TangentialGsw"/>
             <Wounds>
                 <Wound Key="LaceratingGsw" Weight="50"/>
                 <Wound Key="AvulsiveGsw" Weight="25"/>
@@ -162,6 +170,7 @@
             <Rifles Hashes="ADVANCEDRIFLE;BULLPUPRIFLE;MILITARYRIFLE;TACTICALRIFLE;STRICKLER;"/>
             <MGs Hashes="COMBATMG;"/>
             <TakedownWound Key="HeavyBruise"/>
+            <TangentialWound Key="TangentialGsw"/>
             <Wounds>
                 <Wound Key="PerforatingGsw" Weight="40"/>
                 <Wound Key="LaceratingGsw" Weight="40"/>
@@ -175,6 +184,7 @@
             <Carbines Hashes="SPECIALCARBINE_MK2;"/>
             <Rifles Hashes="BULLPUPRIFLE_MK2;CARBINERIFLE_MK2;"/>
             <TakedownWound Key="HeavyBruise"/>
+            <TangentialWound Key="TangentialGsw"/>
             <Wounds>
                 <Wound Key="PerforatingGsw" Weight="70"/>
                 <Wound Key="PenetratingGsw" Weight="15"/>
@@ -187,6 +197,7 @@
                            SafeArmorLevel="ClassII" ArmorDamage="6" HelmetSafeChance="0.4">
             <Rifles Hashes=""/>
             <TakedownWound Key="HeavyBruise"/>
+            <TangentialWound Key="TangentialGsw"/>
             <Wounds>
                 <Wound Key="LaceratingGsw" Weight="50"/>
                 <Wound Key="PenetratingGsw" Weight="40"/>
@@ -199,6 +210,7 @@
                            SafeArmorLevel="ClassIII" ArmorDamage="10" HelmetSafeChance="0.2">
             <Rifles Hashes="COMPACTRIFLE;"/>
             <TakedownWound Key="HeavyBruise"/>
+            <TangentialWound Key="TangentialGsw"/>
             <Wounds>
                 <Wound Key="LaceratingGsw" Weight="45"/>
                 <Wound Key="PerforatingGsw" Weight="40"/>
@@ -211,6 +223,7 @@
                           SafeArmorLevel="ClassIV" ArmorDamage="18" HelmetSafeChance="0.1">
             <Rifles Hashes=""/>
             <TakedownWound Key="HeavyBruise"/>
+            <TangentialWound Key="TangentialGsw"/>
             <Wounds>
                 <Wound Key="PerforatingGsw" Weight="70"/>
                 <Wound Key="PenetratingGsw" Weight="20"/>
@@ -224,6 +237,7 @@
             <Rifles Hashes="ASSAULTRIFLE;ASSAULTRIFLE_MK2;MARKSMANRIFLE;"/>
             <MGs Hashes="MG;"/>
             <TakedownWound Key="HeavyBruise"/>
+            <TangentialWound Key="TangentialGsw"/>
             <Wounds>
                 <Wound Key="PerforatingGsw" Weight="50"/>
                 <Wound Key="PenetratingGsw" Weight="35"/>
@@ -236,6 +250,7 @@
                           SafeArmorLevel="ClassV" ArmorDamage="25" HelmetSafeChance="0.0">
             <Rifles Hashes=""/>
             <TakedownWound Key="HeavyBruise"/>
+            <TangentialWound Key="TangentialGsw"/>
             <Wounds>
                 <Wound Key="PerforatingGsw" Weight="60"/>
                 <Wound Key="PenetratingGsw" Weight="30"/>
@@ -249,6 +264,7 @@
             <Rifles Hashes="BATTLERIFLE;MARKSMANRIFLE_MK2;SNIPERRIFLE;PRECISIONRIFLE;HEAVYRIFLE;"/>
             <MGs Hashes="COMBATMG_MK2;MINIGUN;ARENA_MACHINE_GUN;AIR_DEFENCE_GUN;"/>
             <TakedownWound Key="HeavyBruise"/>
+            <TangentialWound Key="TangentialGsw"/>
             <Wounds>
                 <Wound Key="PerforatingGsw" Weight="45"/>
                 <Wound Key="LaceratingGsw" Weight="25"/>
@@ -262,6 +278,7 @@
                          SafeArmorLevel="ClassII" ArmorDamage="5" HelmetSafeChance="0.8">
             <Pistols Hashes="COMBATPISTOL;SNSPISTOL_MK2;"/>
             <TakedownWound Key="MediumBruise"/>
+            <TangentialWound Key="TangentialGsw"/>
             <Wounds>
                 <Wound Key="PenetratingGsw" Weight="35"/>
                 <Wound Key="PerforatingGsw" Weight="30"/>
@@ -274,6 +291,7 @@
                         SafeArmorLevel="ClassII" ArmorDamage="2" HelmetSafeChance="0.85">
             <Pistols Hashes=""/>
             <TakedownWound Key="MediumBruise"/>
+            <TangentialWound Key="TangentialGsw"/>
             <Wounds>
                 <Wound Key="LaceratingGsw" Weight="55"/>
                 <Wound Key="PenetratingGsw" Weight="35"/>
@@ -288,6 +306,7 @@
             <Pistols Hashes="PISTOL50;"/>
             <Revolvers Hashes="REVOLVER;"/>
             <TakedownWound Key="HeavyBruise"/>
+            <TangentialWound Key="TangentialGsw"/>
             <Wounds>
                 <Wound Key="PerforatingGsw" Weight="40"/>
                 <Wound Key="PenetratingGsw" Weight="20"/>
@@ -302,6 +321,7 @@
             <Pistols Hashes="MARKSMANPISTOL;GADGETPISTOL;"/>
             <Revolvers Hashes="REVOLVER_MK2;"/>
             <TakedownWound Key="BluntLaceration"/>
+            <TangentialWound Key="TangentialGsw"/>
             <Wounds>
                 <Wound Key="AvulsiveGsw" Weight="30"/>
                 <Wound Key="LaceratingGsw" Weight="30"/>
@@ -316,6 +336,7 @@
             <Pistols Hashes="HEAVYPISTOL;"/>
             <SMGs Hashes="GUSENBERG;"/>
             <TakedownWound Key="HeavyBruise"/>
+            <TangentialWound Key="TangentialGsw"/>
             <Wounds>
                 <Wound Key="PenetratingGsw" Weight="50"/>
                 <Wound Key="LaceratingGsw" Weight="30"/>
@@ -330,6 +351,7 @@
             <Pistols Hashes="VINTAGEPISTOL;"/>
             <SMGs Hashes="MINISMG;"/>
             <TakedownWound Key="MediumBruise"/>
+            <TangentialWound Key="TangentialGsw"/>
             <Wounds>
                 <Wound Key="PenetratingGsw" Weight="70"/>
                 <Wound Key="PerforatingGsw" Weight="20"/>
@@ -343,6 +365,7 @@
             <SMGs Hashes="ASSAULTSMG;"/>
             <Pistols Hashes=""/>
             <TakedownWound Key="MediumBruise"/>
+            <TangentialWound Key="TangentialGsw"/>
             <Wounds>
                 <Wound Key="PerforatingGsw" Weight="70"/>
                 <Wound Key="PenetratingGsw" Weight="20"/>
@@ -355,6 +378,7 @@
             <SMGs Hashes=""/>
             <Pistols Hashes=""/>
             <TakedownWound Key="MediumBruise"/>
+            <TangentialWound Key="TangentialGsw"/>
             <Wounds>
                 <Wound Key="LaceratingGsw" Weight="50"/>
                 <Wound Key="PenetratingGsw" Weight="30"/>
@@ -367,6 +391,7 @@
                                SafeArmorLevel="ClassII" ArmorDamage="4" HelmetSafeChance="0.6">
             <Revolvers Hashes="DOUBLEACTION;NAVYREVOLVER;"/>
             <TakedownWound Key="HeavyBruise"/>
+            <TangentialWound Key="TangentialGsw"/>
             <Wounds>
                 <Wound Key="PenetratingGsw" Weight="50"/>
                 <Wound Key="LaceratingGsw" Weight="30"/>

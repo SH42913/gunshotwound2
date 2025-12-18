@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WoundConfig>
-    <GlobalMultipliers DamageMult="1.0" BleedMult="2.0" PainMult="1.1"/>
-    <!-- 0.5 for Damage means every wound will deal 50% of its damage to ped -->
+    <GlobalMultipliers DamageMult="1.0" BleedMult="2.0" PainMult="1.2"/>
+    <!-- 0.5 for DamageMult means every wound will deal 50% of its damage to ped -->
 
     <GlobalDeviations Damage="0.2" Bleed="0.2" Pain="0.2"/>
     <!-- 0.2 for Damage means +-20% to damage value of every new wound -->
@@ -48,8 +48,9 @@
         <Wound Key="ChopCut" LocKey="Wounds.Cut.Chop" CanCauseTrauma="TRUE" Damage="10" Pain="60" Bleed="0.3"/>
 
         <!-- Gunshot wounds -->
-<!--        <Wound Key="GrazingGsw" LocKey="Wounds.Gsw.Grazing"-->
-<!--               Damage="1" Pain="8" Bleed="0.03"/>-->
+        <Wound Key="TangentialGsw" LocKey="Wounds.Gsw.Grazing"
+               CanCauseTrauma="FALSE"
+               Damage="1" Pain="15" Bleed="0.005"/>
         <Wound Key="PenetratingGsw" LocKey="Wounds.Gsw.Penetrating"
                CanCauseTrauma="TRUE"
                Damage="2" Pain="30" Bleed="0.02"/>

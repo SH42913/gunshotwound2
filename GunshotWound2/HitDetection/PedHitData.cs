@@ -16,8 +16,9 @@
         public int hits;
 
         public Ped aggressor;
-        public Vector3 shotDir;
         public Vector3 hitPos;
+        public Vector3 shotDir;
         public Vector3 hitNorm;
+        public bool fullShotData;
     }
 }

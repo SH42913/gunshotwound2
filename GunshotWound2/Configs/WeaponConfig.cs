@@ -22,6 +22,7 @@ namespace GunshotWound2.Configs {
             public readonly int ArmorDamage;
             public readonly int Pellets;
             public readonly string TakedownWound;
+            public readonly string TangentialWound;
 
             public bool IsValid => !string.IsNullOrEmpty(Key);
 
@@ -35,7 +36,8 @@ namespace GunshotWound2.Configs {
                           string safeArmorLevel,
                           int armorDamage,
                           int pellets,
-                          string takedownWound) {
+                          string takedownWound,
+                          string tangentialWound) {
                 Key = key;
                 ShortDesc = shortDesc;
                 DBPMults = dbpMults;
@@ -47,6 +49,7 @@ namespace GunshotWound2.Configs {
                 ArmorDamage = armorDamage;
                 Pellets = pellets;
                 TakedownWound = takedownWound;
+                TangentialWound = tangentialWound;
             }
         }
 
@@ -59,6 +62,7 @@ namespace GunshotWound2.Configs {
         public bool UseSpecialStunDamage;
         public bool CleanLastDamageFromPed;
         public float StunPainPercent;
+        public float TangentialWoundThreshold;
         public HashSet<uint> IgnoreSet;
         public Weapon[] Weapons;
 
@@ -86,6 +90,7 @@ namespace GunshotWound2.Configs {
             XElement specialStunDamage = root.Element("SpecialStunDamage");
             UseSpecialStunDamage = specialStunDamage.GetBool("Enabled");
             StunPainPercent = specialStunDamage.GetFloat(nameof(StunPainPercent));
+            TangentialWoundThreshold = root.Element(nameof(TangentialWoundThreshold)).GetFloat(defaultValue: 0.3f);
             CleanLastDamageFromPed = root.Element("CleanLastDamageFromPed").GetBool();
             IgnoreSet = ExtractWeaponHashes(root.Element(nameof(IgnoreSet)));
 
@@ -169,6 +174,7 @@ namespace GunshotWound2.Configs {
             int armorDamage = weaponNode.GetInt(nameof(Weapon.ArmorDamage), defaultValue: 0);
             int pellets = weaponNode.GetInt(nameof(Weapon.Pellets), defaultValue: 1);
             string takedownWound = weaponNode.Element(nameof(Weapon.TakedownWound)).GetString(nameof(WoundConfig.Wound.Key));
+            string tangentialWound = weaponNode.Element(nameof(Weapon.TangentialWound)).GetString(nameof(WoundConfig.Wound.Key));
             return new Weapon(key,
                               shortDesc,
                               dbp,
@@ -179,7 +185,8 @@ namespace GunshotWound2.Configs {
                               safeArmorLevel,
                               armorDamage,
                               pellets,
-                              takedownWound);
+                              takedownWound,
+                              tangentialWound);
         }
 
         private static (string, int)[] ExtractWounds(XElement weaponNode) {
