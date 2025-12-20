@@ -221,7 +221,7 @@
         }
 
         private bool IsDeadlyWound(in PedHitData hitData, bool isPlayer) {
-            return hitData.bodyPart.Bones.Contains((int)Bone.SkelHead)
+            return hitData.bodyPart.IsHead()
                    && (isPlayer
                            ? sharedData.mainConfig.playerConfig.InstantDeathHeadshot
                            : sharedData.mainConfig.pedsConfig.InstantDeathHeadshot);

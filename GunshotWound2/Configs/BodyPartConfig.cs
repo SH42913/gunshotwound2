@@ -10,6 +10,22 @@ namespace GunshotWound2.Configs {
 
     public sealed class BodyPartConfig : MainConfig.IConfig {
         public readonly struct BodyPart {
+            private static readonly int[] HEAD_BONES = [(int)Bone.SkelHead,];
+
+            private static readonly int[] LEFT_ARM_BONES = [
+                (int)Bone.SkelLeftClavicle,
+                (int)Bone.SkelLeftUpperArm,
+                (int)Bone.SkelLeftForearm,
+                (int)Bone.SkelLeftHand,
+            ];
+
+            private static readonly int[] RIGHT_ARM_BONES = [
+                (int)Bone.SkelRightClavicle,
+                (int)Bone.SkelRightUpperArm,
+                (int)Bone.SkelRightForearm,
+                (int)Bone.SkelRightHand,
+            ];
+
             public readonly string Key;
             public readonly string LocKey;
             public readonly DBPContainer DBPMults;
@@ -25,7 +41,7 @@ namespace GunshotWound2.Configs {
                 Key = node.GetString(nameof(Key));
                 LocKey = node.GetString(nameof(LocKey));
                 DBPMults = new DBPContainer(node, isMult: true);
-                
+
                 Bones = node.GetString(nameof(Bones))
                             .Split(MainConfig.Separator, StringSplitOptions.RemoveEmptyEntries)
                             .Select(GetIntOfBone)
@@ -49,6 +65,18 @@ namespace GunshotWound2.Configs {
                 return node.Elements(nameof(TraumaConfig.Trauma))
                            .Select(x => (x.GetString(nameof(TraumaConfig.Trauma.Key)), x.GetInt(MainConfig.WEIGHT_ATTRIBUTE_NAME)))
                            .ToArray();
+            }
+
+            public bool IsHead() {
+                return Bones.Overlaps(HEAD_BONES);
+            }
+
+            public bool IsLeftArm() {
+                return Bones.Overlaps(LEFT_ARM_BONES);
+            }
+
+            public bool IsRightArm() {
+                return Bones.Overlaps(RIGHT_ARM_BONES);
             }
         }
 

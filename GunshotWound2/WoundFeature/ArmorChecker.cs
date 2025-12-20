@@ -22,7 +22,7 @@ namespace GunshotWound2.WoundFeature {
                 return false;
             }
 
-            if (hit.bodyPart.Bones.Contains((int)Bone.SkelHead)) {
+            if (hit.bodyPart.IsHead()) {
                 armorWound = default;
                 return CheckHelmetPenetration(convertedPed, hit.weaponType);
             }
