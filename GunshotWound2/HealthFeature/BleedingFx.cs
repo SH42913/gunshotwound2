@@ -4,7 +4,11 @@ namespace GunshotWound2.HealthFeature {
     using Scellecs.Morpeh;
 
     [Serializable]
-    public struct BleedingFx : IComponent {
+    public struct BleedingFx : IComponent, IDisposable {
         public ParticleEffect particles;
+
+        public void Dispose() {
+            particles.Delete();
+        }
     }
 }

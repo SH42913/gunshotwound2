@@ -96,7 +96,6 @@
     <Compile Include="TraumaFeature\Actions\LungsTraumaEffect.cs" />
     <Compile Include="TraumaFeature\Actions\SpineTraumaEffect.cs" />
     <Compile Include="TraumaFeature\Actions\AbdomenTraumaEffect.cs" />
-    <Compile Include="TraumaFeature\TraumaCauseBleeding.cs" />
     <Compile Include="TraumaFeature\TraumaRequest.cs" />
     <Compile Include="TraumaFeature\Traumas.cs" />
     <Compile Include="TraumaFeature\TraumaFeature.cs" />
@@ -127,7 +126,9 @@
     <Compile Include="Utils\Localization.cs" />
     <Compile Include="Utils\ProfilerSample.cs" />
     <Compile Include="WoundFeature\ArmorChecker.cs" />
+    <Compile Include="WoundFeature\WoundData.cs" />
     <Compile Include="WoundFeature\WoundFeature.cs" />
+    <Compile Include="WoundFeature\WoundHitDataSystem.cs" />
     <Compile Include="WoundFeature\WoundSystem.cs" />
     <Compile Include="HealthFeature\Bleeding.cs" />
     <Compile Include="HealthFeature\BleedingSystem.cs" />

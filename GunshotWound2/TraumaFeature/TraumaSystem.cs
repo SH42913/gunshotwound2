@@ -7,6 +7,7 @@
     using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
+    using WoundFeature;
 
     public sealed class TraumaSystem : ILateSystem {
         private readonly SharedData sharedData;
@@ -84,18 +85,14 @@
         private void ProcessRequest(Entity traumaEntity, ref TraumaRequest request, ref ConvertedPed convertedPed) {
             BodyPartConfig.BodyPart bodyPart = request.targetBodyPart;
 
-            bool bluntDamage;
-            Entity parentBleeding = request.parentBleeding;
-            if (!parentBleeding.IsNullOrDisposed() && parentBleeding.Has<Bleeding>()) {
-                bluntDamage = parentBleeding.GetComponent<Bleeding>().bluntDamageReason;
-                parentBleeding.SetComponent(new TraumaCauseBleeding {
-                    traumaEntity = traumaEntity,
-                });
-            } else {
-                bluntDamage = false;
-#if DEBUG
-                sharedData.logger.WriteWarning("Trauma request doesn't have proper parent bleeding, so we treat it as blunt trauma");
-#endif
+            var bluntDamage = true;
+            Entity parentEntity = request.parentBleeding;
+            bool parentEntityExists = !parentEntity.IsNullOrDisposed();
+            if (parentEntityExists) {
+                ref Bleeding bleeding = ref parentEntity.GetComponent<Bleeding>(out bool hasBleeding);
+                if (hasBleeding) {
+                    bluntDamage = bleeding.bluntDamageReason;
+                }
             }
 
             (string key, int weight)[] possibleTraumas = bluntDamage
@@ -120,6 +117,14 @@
             string reason = sharedData.localeConfig.TraumaType;
             float severity = Math.Max(0.01f, dbp.bleed);
             targetEntity.CreateTraumaBleeding(bodyPart, severity, traumaName, reason, traumaEntity);
+
+            if (parentEntityExists) {
+                ref WoundData woundData = ref parentEntity.GetComponent<WoundData>(out bool hasWoundData);
+                if (hasWoundData) {
+                    woundData.totalBleed += severity;
+                    woundData.totalPain += dbp.pain;
+                }
+            }
 
             if (trauma.CanGeneratePain) {
                 traumaEntity.SetComponent(new PainGenerator {
