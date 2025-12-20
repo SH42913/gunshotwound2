@@ -52,6 +52,9 @@ namespace GunshotWound2 {
             Aborted += Cleanup;
 
             sharedData.logger.WriteInfo($"{SCRIPT_NAME} is initializing...");
+#if DEBUG
+            MLogger.SetInstance(new GSWMorpehLogger(sharedData.logger));
+#endif
         }
 
         private void OnTick(object sender, EventArgs eventArgs) {

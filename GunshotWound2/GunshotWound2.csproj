@@ -122,6 +122,7 @@
     <Compile Include="Services\WorldService.cs" />
     <Compile Include="Utils\CheatListener.cs" />
     <Compile Include="Utils\CsvReader.cs" />
+    <Compile Include="Utils\GSWMorpehLogger.cs" />
     <Compile Include="Utils\GTAHelpers.cs" />
     <Compile Include="Utils\Localization.cs" />
     <Compile Include="Utils\ProfilerSample.cs" />
