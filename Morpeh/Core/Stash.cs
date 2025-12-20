@@ -162,7 +162,7 @@ namespace Scellecs.Morpeh {
                 return ref this.components.data[slotIndex];
             }
 #if MORPEH_DEBUG
-            MLogger.LogError($"You're trying to add on entity {entity.entityId.id} a component that already exists! Use Get or Set instead!");
+            MLogger.LogError($"You're trying to add on entity {entity.entityId.id} a component({typeof(T).FullName}) that already exists! Use Get or Set instead!");
 #endif
             return ref this.components.data[0];
         }
@@ -180,9 +180,7 @@ namespace Scellecs.Morpeh {
                 entity.AddTransfer(this.typeId);
                 return ref this.components.data[slotIndex];
             }
-#if MORPEH_DEBUG
-            MLogger.LogError($"You're trying to add on entity {entity.entityId.id} a component that already exists! Use Get or Set instead!");
-#endif
+
             return ref this.components.GetValueRefByKey(entity.entityId.id);
         }
 
@@ -220,7 +218,7 @@ namespace Scellecs.Morpeh {
             }
 
 #if MORPEH_DEBUG
-            MLogger.LogError($"You're trying to add on entity {entity.entityId.id} a component that already exists! Use Get or Set instead!");
+            MLogger.LogError($"You're trying to add on entity {entity.entityId.id} a component({typeof(T).FullName}) that already exists! Use Get or Set instead!");
 #endif
             return false;
         }
