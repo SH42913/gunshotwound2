@@ -115,7 +115,7 @@ namespace GunshotWound2.HitDetection {
                 hitData.hitNorm = (lastHit - hitData.damagedBone.Position).Normalized;
             }
 
-            hitData.fullShotData = true;
+            hitData.fullHitData = true;
         }
     }
 }

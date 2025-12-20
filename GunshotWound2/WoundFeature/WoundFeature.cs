@@ -7,6 +7,7 @@
     public static class WoundFeature {
         public static void Create(SystemsGroup systemsGroup, SharedData sharedData) {
             systemsGroup.AddSystem(new WoundSystem(sharedData));
+            systemsGroup.AddSystem(new WoundHitDataSystem(sharedData));
 
 #if DEBUG
             sharedData.cheatListener.Register("GSW_RANDOM_HIT", () => {

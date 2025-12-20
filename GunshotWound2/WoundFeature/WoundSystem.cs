@@ -173,6 +173,11 @@
             EcsEntity woundBleeding = null;
             if (dbp.bleed > 0f) {
                 woundBleeding = targetEntity.CreateCommonBleeding(hitData.bodyPart, dbp.bleed, woundName, reason, wound.IsBlunt);
+                woundBleeding.SetComponent(hitData);
+                woundBleeding.SetComponent(new WoundData {
+                    totalBleed = dbp.bleed,
+                    totalPain = dbp.pain,
+                });
             }
 
             if (dbp.pain > 0f) {
@@ -223,7 +228,7 @@
         }
 
         private bool CheckIsTangentialHit(in PedHitData hitData) {
-            if (!hitData.fullShotData) {
+            if (!hitData.fullHitData) {
                 return false;
             }
 
