@@ -1,4 +1,6 @@
-﻿namespace GunshotWound2.PedsFeature {
+﻿// #define DEBUG_EVERY_FRAME
+
+namespace GunshotWound2.PedsFeature {
     using GTA;
     using Scellecs.Morpeh;
     using EcsEntity = Scellecs.Morpeh.Entity;
@@ -35,6 +37,9 @@
         }
 
         private void Remove(EcsEntity entity, ref ConvertedPed convertedPed) {
+#if DEBUG && DEBUG_EVERY_FRAME
+            sharedData.logger.WriteInfo($"Removing {convertedPed.name} from GSW world");
+#endif
             convertedPed.thisPed.MaxHealth = convertedPed.defaultMaxHealth;
 
             if (convertedPed.isPlayer) {

@@ -42,9 +42,11 @@
                         sharedData.logger.WriteInfo("Resurrecting ped after takedown");
 #endif
                         ped.Resurrect();
+                        ped.Task.ClearAllImmediately();
                         ped.Health = convertedPed.lastFrameHealth - 1;
                         ped.SetConfigFlag(PedConfigFlagToggles.KilledByTakedown, false);
-                        ped.Ragdoll(sharedData.mainConfig.woundConfig.TakedownRagdollDurationMs, RagdollType.Balance);
+                        ped.SetConfigFlag(PedConfigFlagToggles.NeverEverTargetThisPed, false);
+                        convertedPed.RequestRagdoll(sharedData.mainConfig.woundConfig.TakedownRagdollDurationMs, RagdollType.Balance);
                     } else {
                         continue;
                     }
