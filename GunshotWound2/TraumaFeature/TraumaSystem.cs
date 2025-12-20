@@ -212,6 +212,12 @@
                 }
             }
 
+            foreach (Entity traumaEntity in traumas.traumas) {
+                if (!traumaEntity.IsNullOrDisposed()) {
+                    World.RemoveEntity(traumaEntity);
+                }
+            }
+
             entity.RemoveComponent<Traumas>();
         }
     }
