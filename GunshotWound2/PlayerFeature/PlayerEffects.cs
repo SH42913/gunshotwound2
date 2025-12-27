@@ -12,7 +12,7 @@
         public static void SetSpecialAbilityLock(bool lockAbility) {
             Player player = Player;
             if (lockAbility && Function.Call<bool>(Hash.IS_SPECIAL_ABILITY_ACTIVE, player)) {
-                Function.Call(Hash.SPECIAL_ABILITY_DEACTIVATE, player);
+                Function.Call(Hash.SPECIAL_ABILITY_DEACTIVATE_FAST, player);
             }
 
             Hash function = lockAbility
