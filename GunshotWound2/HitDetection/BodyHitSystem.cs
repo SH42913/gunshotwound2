@@ -54,7 +54,6 @@ namespace GunshotWound2.HitDetection {
                 }
 
                 CalculateLocalHitData(convertedPed, ref hitData);
-                convertedPed.lastDamagedBone = hitData.damagedBone.Tag;
             }
         }
 

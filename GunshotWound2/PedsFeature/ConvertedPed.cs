@@ -17,7 +17,6 @@
         public int defaultMaxHealth;
         public int lastFrameHealth;
         public int lastFrameArmor;
-        public Bone lastDamagedBone;
         public Ped lastAggressor;
         public IPedStatus status;
 
@@ -100,7 +99,7 @@
         //     return !string.IsNullOrEmpty(animInfo.Item1) && !string.IsNullOrEmpty(animInfo.Item2);
         // }
 
-        public static bool IsAbleToDoSomething(this ConvertedPed convertedPed) {
+        public static bool IsAbleToDoSomething(this in ConvertedPed convertedPed) {
             return convertedPed.thisPed.CurrentVehicle != null
                     ? !convertedPed.isRestrictToDrive
                     : convertedPed.thisPed.StandsStill();
