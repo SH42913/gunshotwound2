@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WoundConfig>
-    <GlobalMultipliers DamageMult="1.0" BleedMult="2.0" PainMult="1.2"/>
-    <!-- 0.5 for DamageMult means every wound will deal 50% of its damage to ped -->
+    <GlobalMultipliers DamageMult="1.0" BleedMult="2.0" PainMult="1.0"/>
+    <!-- 0.5 for DamageMult means every wound will deal 50% of its damage to ped, same for other fields -->
 
     <GlobalDeviations Damage="0.2" Bleed="0.2" Pain="0.2"/>
     <!-- 0.2 for Damage means +-20% to damage value of every new wound -->
@@ -36,7 +36,7 @@
         <Wound Key="MediumBruise" LocKey="Wounds.Blunt.MediumBruise" IsBlunt="TRUE" Damage="2" Pain="15" Bleed="0.0"/>
         <Wound Key="HeavyBruise" LocKey="Wounds.Blunt.HeavyBruise" IsBlunt="TRUE" CanCauseTrauma="TRUE" Damage="3" Pain="35" Bleed="0.001"/>
         <Wound Key="BluntHematoma" LocKey="Wounds.Blunt.Hematoma" IsBlunt="TRUE" Damage="3" Pain="25" Bleed="0.01"/>
-        <Wound Key="BluntAbrasion" LocKey="Wounds.Blunt.Abrasion" IsBlunt="TRUE" Damage="1" Pain="10" Bleed="0.0"/>
+        <Wound Key="BluntAbrasion" LocKey="Wounds.Blunt.Abrasion" IsBlunt="TRUE" Damage="1" Pain="10" Bleed="0.005"/>
         <Wound Key="BluntLaceration" LocKey="Wounds.Blunt.Laceration" IsBlunt="TRUE" CanCauseTrauma="TRUE" Damage="3" Pain="30" Bleed="0.02"/>
 
         <!-- Cutting wounds -->
