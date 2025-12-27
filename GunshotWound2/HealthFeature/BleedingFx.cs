@@ -8,7 +8,7 @@ namespace GunshotWound2.HealthFeature {
         public ParticleEffect particles;
 
         public void Dispose() {
-            particles.Delete();
+            particles?.Delete();
         }
     }
 }
