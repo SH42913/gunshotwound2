@@ -17,6 +17,7 @@ namespace GunshotWound2.Configs {
         public bool BlipsToMedkits;
         public float TimeToRefreshMedkits;
         public string MedkitModel;
+        public bool DontSpendMedicalItemsInEmergencyVehicles;
 
         public float PainkillersRate;
         public float PainkillersDuration;
@@ -32,6 +33,7 @@ namespace GunshotWound2.Configs {
             DefaultLoadout = GetLoadout(root, nameof(DefaultLoadout));
             MedkitLoadout = GetLoadout(root, nameof(MedkitLoadout));
             EmergencyVehicleLoadout = GetLoadout(root, nameof(EmergencyVehicleLoadout));
+            DontSpendMedicalItemsInEmergencyVehicles = root.Element(nameof(DontSpendMedicalItemsInEmergencyVehicles)).GetBool();
 
             XElement medkitNode = root.Element(nameof(BlipsToMedkits));
             BlipsToMedkits = medkitNode.GetBool();

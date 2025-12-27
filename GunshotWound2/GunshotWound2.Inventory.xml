@@ -3,7 +3,12 @@
     <BlipsToMedkits Value="TRUE" RefreshTime="2" ModelName="prop_ld_health_pack"/>
     <!-- Add map blips to medkits around player, refresh time in seconds -->
 
-    <Painkillers Rate="1" Duration="30"/>
+    <DontSpendMedicalItemsInEmergencyVehicles Value="FALSE"/>
+    <!-- If you're playing LSPDFR, set this Value to TRUE to let yourself bandage without consuming item -->
+
+    <Painkillers Rate="1.0" Duration="30"/>
+    <!-- Rate 1.0 means 1 point of pain will be removed per second.
+    Duration 30 means painkiller effect will work for 30 seconds. -->
 
     <!-- GSW will give these items to every new character with inventory -->
     <DefaultLoadout>
@@ -11,13 +16,13 @@
         <Item Key="Painkillers" Count="2"/>
     </DefaultLoadout>
 
-    <!-- These items you'll receive when pickup Medkit -->
+    <!-- These items you'll receive when picking up a Medkit -->
     <MedkitLoadout>
         <Item Key="Bandages" Count="3"/>
         <Item Key="Painkillers" Count="1"/>
     </MedkitLoadout>
 
-    <!-- These items you'll receive when entering emergency vehicle first time -->
+    <!-- These items you'll receive when entering the emergency vehicle first time -->
     <EmergencyVehicleLoadout>
         <Item Key="Bandages" Count="2"/>
         <Item Key="Painkillers" Count="1"/>

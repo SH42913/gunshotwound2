@@ -104,5 +104,15 @@
                     ? !convertedPed.isRestrictToDrive
                     : convertedPed.thisPed.StandsStill();
         }
+
+        public static bool IsInEmergencyVehicle(this in ConvertedPed convertedPed, out Vehicle vehicle) {
+            if (!convertedPed.thisPed.IsInVehicle()) {
+                vehicle = null;
+                return false;
+            }
+            
+            vehicle = convertedPed.thisPed.CurrentVehicle;
+            return vehicle != null && vehicle.ClassType == VehicleClass.Emergency;
+        }
     }
 }

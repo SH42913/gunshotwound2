@@ -1,5 +1,6 @@
 namespace GunshotWound2.InventoryFeature {
     using System;
+    using Configs;
     using GTA;
     using GTA.Math;
     using PedsFeature;
@@ -48,7 +49,7 @@ namespace GunshotWound2.InventoryFeature {
                 } else if (currentUsing.remainingTime > 0f) {
                     UpdateUsing(owner, inventory, currentUsing, out removeProgress);
                 } else {
-                    HandleFinish(owner, ref inventory, currentUsing);
+                    HandleFinish(owner, ref inventory, currentUsing, convertedPed);
                     removeProgress = true;
                 }
 
@@ -179,9 +180,15 @@ namespace GunshotWound2.InventoryFeature {
             removeProgress = true;
         }
 
-        private void HandleFinish(EcsEntity owner, ref Inventory inventory, in CurrentlyUsingItem currentlyUsing) {
+        private void HandleFinish(EcsEntity owner,
+                                  ref Inventory inventory,
+                                  in CurrentlyUsingItem currentlyUsing,
+                                  in ConvertedPed convertedPed) {
             ItemTemplate item = currentlyUsing.itemTemplate;
-            if (item.finishAction.Invoke(sharedData, owner, currentlyUsing.target, out string message) && inventory.Consume(item)) {
+            EcsEntity target = currentlyUsing.target;
+            InventoryConfig inventoryConfig = sharedData.mainConfig.inventoryConfig;
+            bool dontConsume = inventoryConfig.DontSpendMedicalItemsInEmergencyVehicles && convertedPed.IsInEmergencyVehicle(out _);
+            if (item.finishAction.Invoke(sharedData, owner, target, out string message) && (dontConsume || inventory.Consume(item))) {
 #if DEBUG
                 int amount = inventory.AmountOf(item);
                 sharedData.logger.WriteInfo($"Item {item.key} of {inventory.modelHash} successfully used, amount={amount}");

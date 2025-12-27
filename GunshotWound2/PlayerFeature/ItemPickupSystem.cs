@@ -65,12 +65,7 @@ namespace GunshotWound2.PlayerFeature {
                     continue;
                 }
 
-                Vehicle vehicle = convertedPed.thisPed.CurrentVehicle;
-                if (vehicle == null || vehicle.ClassType != VehicleClass.Emergency) {
-                    continue;
-                }
-
-                if (convertedPed.thisPed.IsInVehicle() && vehiclesWithoutLoadout.Add(vehicle.Handle)) {
+                if (convertedPed.IsInEmergencyVehicle(out Vehicle vehicle) && vehiclesWithoutLoadout.Add(vehicle.Handle)) {
 #if DEBUG
                     sharedData.logger.WriteInfo($"Ped {convertedPed.name} just entered vehicle {vehicle.DisplayName}");
 #endif
