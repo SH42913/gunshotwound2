@@ -5,6 +5,8 @@ namespace GunshotWound2.HealthFeature {
     using System.Collections.Generic;
     using PedsFeature;
     using Scellecs.Morpeh;
+    using EcsEntity = Scellecs.Morpeh.Entity;
+    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class BleedingSystem : ILateSystem {
         private readonly SharedData sharedData;
@@ -15,12 +17,13 @@ namespace GunshotWound2.HealthFeature {
 
         private Filter bleedingWounds;
         private Filter peds;
+        private Filter totallyHealedPeds;
 
         public BleedingSystem(SharedData sharedData) {
             this.sharedData = sharedData;
         }
 
-        public World World { get; set; }
+        public EcsWorld World { get; set; }
 
         public void OnAwake() {
             bleedingStash = World.GetStash<Bleeding>();
@@ -29,14 +32,42 @@ namespace GunshotWound2.HealthFeature {
 
             bleedingWounds = World.Filter.With<Bleeding>();
             peds = World.Filter.With<ConvertedPed>().With<Health>();
+            totallyHealedPeds = peds.With<TotallyHealedEvent>();
         }
 
         public void OnUpdate(float deltaTime) {
+            CleanWoundsIfTotallyHealed();
             UpdateBleedingWounds(deltaTime);
             RefreshBleedingToBandage();
         }
 
         void IDisposable.Dispose() { }
+
+        private void CleanWoundsIfTotallyHealed() {
+            var needCommitWorld = false;
+            foreach (EcsEntity entity in totallyHealedPeds) {
+                ref Health health = ref healthStash.Get(entity);
+                if (!health.HasBleedingWounds()) {
+                    continue;
+                }
+
+                foreach (EcsEntity woundEntity in health.bleedingWounds) {
+                    if (!woundEntity.IsNullOrDisposed()) {
+                        World.RemoveEntity(woundEntity);
+                    }
+                }
+
+                health.bleedingWounds.Clear();
+                needCommitWorld = true;
+#if DEBUG
+                sharedData.logger.WriteInfo($"Cleaned up bleeding wounds for {pedsStash.Get(entity).name}");
+#endif
+            }
+
+            if (needCommitWorld) {
+                World.Commit();
+            }
+        }
 
         private void UpdateBleedingWounds(float deltaTime) {
             foreach (Entity entity in bleedingWounds) {
@@ -67,7 +98,7 @@ namespace GunshotWound2.HealthFeature {
 #endif
                 }
 
-                if (bleeding.severity <= 0f || bleeding.target.Has<TotallyHealedEvent>()) {
+                if (bleeding.severity <= 0f) {
 #if DEBUG
                     sharedData.logger.WriteInfo($"Bleeding {bleeding.name} at {convertedPed.name} was healed");
 #endif
