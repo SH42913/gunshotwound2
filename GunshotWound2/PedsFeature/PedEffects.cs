@@ -147,5 +147,13 @@
         public static int GetBoneIndex(Ped ped, int boneId) {
             return Function.Call<int>(Hash.GET_PED_BONE_INDEX, ped, boneId);
         }
+
+        public static bool IsRunningRagdollTask(Ped ped) {
+            return Function.Call<bool>(Hash.IS_PED_RUNNING_RAGDOLL_TASK, ped);
+        }
+
+        public static bool IsPedGettingUp(Ped ped) {
+            return Function.Call<bool>(Hash.IS_PED_GETTING_UP, ped);
+        }
     }
 }

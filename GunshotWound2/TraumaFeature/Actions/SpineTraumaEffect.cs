@@ -11,9 +11,8 @@
         public SpineTraumaEffect(SharedData sharedData) : base(sharedData) { }
 
         public override void Apply(Entity entity, ref ConvertedPed convertedPed) {
-            convertedPed.requestedNmHelper = new BodyRelaxHelper(convertedPed.thisPed);
-            convertedPed.RequestPermanentRagdoll();
             convertedPed.hasSpineDamage = true;
+            convertedPed.RequestPermanentRagdoll();
 
             if (!convertedPed.isPlayer || sharedData.mainConfig.playerConfig.CanDropWeapon) {
                 convertedPed.thisPed.Weapons.Drop();
