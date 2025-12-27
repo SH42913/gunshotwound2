@@ -38,10 +38,10 @@
                 EcsEntity entity = World.CreateEntity();
 
                 ref ConvertedPed convertedPed = ref entity.AddComponent<ConvertedPed>();
-                convertedPed.name = $"P{pedToConvert.Handle.ToString()}";
                 convertedPed.thisPed = pedToConvert;
                 convertedPed.isMale = pedToConvert.Gender == Gender.Male;
                 convertedPed.defaultMaxHealth = pedToConvert.MaxHealth;
+                convertedPed.name = $"Ped_{pedToConvert.Handle.ToString()}";
 
                 PedsConfig pedsConfig = sharedData.mainConfig.pedsConfig;
                 if (pedsConfig.MinAccuracy > 0 && pedsConfig.MaxAccuracy > 0 && pedToConvert.Accuracy > pedsConfig.MinAccuracy) {

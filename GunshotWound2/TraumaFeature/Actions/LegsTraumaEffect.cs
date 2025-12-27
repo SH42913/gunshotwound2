@@ -17,6 +17,7 @@
             RagdollType ragdollType = convertedPed.thisPed.IsRunning ? RagdollType.Balance : RagdollType.Relax;
             convertedPed.RequestRagdoll(RAGDOLL_TIME_IN_MS, ragdollType);
             convertedPed.hasBrokenLegs = true;
+            convertedPed.thisPed.SetConfigFlag(PedConfigFlagToggles.IsInjured, true);
 
             convertedPed.moveRate = 0.8f;
             convertedPed.BlockSprint();
@@ -47,6 +48,7 @@
 
         public override void Cancel(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) {
             convertedPed.hasBrokenLegs = false;
+            convertedPed.thisPed.SetConfigFlag(PedConfigFlagToggles.IsInjured, false);
             convertedPed.ResetMoveRate();
             convertedPed.UnBlockSprint();
         }

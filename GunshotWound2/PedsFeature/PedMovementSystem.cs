@@ -80,13 +80,8 @@
                 convertedPed.hasCustomMoveSet = true;
             }
 
-            if (convertedPed.sprintBlockers > 0) {
-                convertedPed.thisPed.SetConfigFlag(PedConfigFlagToggles.IsInjured, true);
-                if (convertedPed.isPlayer) {
-                    PlayerEffects.SetSprint(false);
-                }
-            } else if (convertedPed.isPlayer) {
-                PlayerEffects.SetSprint(true);
+            if (convertedPed.isPlayer) {
+                PlayerEffects.SetSprint(convertedPed.sprintBlockers <= 0);
             }
         }
 
@@ -99,11 +94,8 @@
                     PedEffects.ResetMoveSet(ped);
                 }
 
-                if (convertedPed.sprintBlockers > 0) {
-                    ped.SetConfigFlag(PedConfigFlagToggles.IsInjured, false);
-                    if (convertedPed.isPlayer) {
-                        PlayerEffects.SetSprint(true);
-                    }
+                if (convertedPed.isPlayer) {
+                    PlayerEffects.SetSprint(true);
                 }
             }
         }
