@@ -12,6 +12,7 @@ namespace GunshotWound2.Services {
         private const int LUNGS_INJURY_PRIORITY = 4;
         private const int BLEED_EFFECT_PRIORITY = 5;
         private const int PAIN_EFFECT_PRIORITY = 6;
+        private const float SHAKE_AMPLITUDE_STEP = 0.5f;
 
         private readonly ILogger logger;
 
@@ -26,11 +27,11 @@ namespace GunshotWound2.Services {
         }
 
         public void IncreaseShakeAmplitude() {
-            aimingShakeAmplitude += 1f;
+            aimingShakeAmplitude += SHAKE_AMPLITUDE_STEP;
         }
 
         public void DecreaseShakeAmplitude() {
-            aimingShakeAmplitude -= 1f;
+            aimingShakeAmplitude -= SHAKE_AMPLITUDE_STEP;
         }
 
         public void SetAimingShake(bool needShaking) {
