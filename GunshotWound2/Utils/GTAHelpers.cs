@@ -67,5 +67,23 @@ namespace GunshotWound2.Utils {
         public static Vector3 GetPedBoneCoords(Ped ped, Bone bone, Vector3 offset = default) {
             return Function.Call<Vector3>(Hash.GET_PED_BONE_COORDS, ped, (int)bone, offset.X, offset.Y, offset.Z);
         }
+
+        public static int CreateParticleEffectAtCoord(string effectName,
+                                                      Vector3 position,
+                                                      Vector3 rotation = default,
+                                                      float scale = 1f) {
+            return Function.Call<int>(Hash.START_PARTICLE_FX_LOOPED_AT_COORD, effectName,
+                                      position.X, position.Y, position.Z,
+                                      rotation.X, rotation.Y, rotation.Z,
+                                      scale, false, false, false, false);
+        }
+
+        public static void SetParticleEffectAlpha(int handle, float alpha) {
+            Function.Call(Hash.SET_PARTICLE_FX_LOOPED_ALPHA, handle, alpha);
+        }
+
+        public static void RemoveParticleEffect(int handle) {
+            Function.Call(Hash.REMOVE_PARTICLE_FX, handle);
+        }
     }
 }

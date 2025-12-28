@@ -10,6 +10,7 @@
             systemsGroup.AddSystem(new HealthChangeSystem(sharedData));
             systemsGroup.AddSystem(new BleedingSystem(sharedData));
             systemsGroup.AddSystem(new BleedingFxSystem(sharedData));
+            systemsGroup.AddSystem(new BloodPoolFxSystem(sharedData));
 
             sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.HealKey, () => {
                 GTA.Ped ped = GTA.Game.Player.Character;

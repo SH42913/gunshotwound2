@@ -10,6 +10,8 @@ namespace GunshotWound2.HealthFeature {
     using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class BleedingFxSystem : ILateSystem {
+        public const float BLOOD_FOUNTAIN_THRESHOLD = 0.55f;
+
         // ReSharper disable once NotAccessedField.Local
         private readonly SharedData sharedData;
 
@@ -154,7 +156,7 @@ namespace GunshotWound2.HealthFeature {
 
         private void GetEffectForPenetrationBleeding(float severity, out ParticleEffectAsset asset, out string effectName) {
             switch (severity) {
-                case > 0.5f:
+                case > BLOOD_FOUNTAIN_THRESHOLD:
                     asset = cutMichael2Asset;
                     effectName = "cs_mich2_blood_head_leak";
                     break;

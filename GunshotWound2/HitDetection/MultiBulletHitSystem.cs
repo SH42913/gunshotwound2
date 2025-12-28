@@ -4,6 +4,7 @@ namespace GunshotWound2.HitDetection {
     using GTA.Native;
     using PedsFeature;
     using Scellecs.Morpeh;
+    using Utils;
     using EcsEntity = Scellecs.Morpeh.Entity;
     using EcsWorld = Scellecs.Morpeh.World;
 
@@ -37,7 +38,7 @@ namespace GunshotWound2.HitDetection {
 #if DEBUG
                 sharedData.logger.WriteInfo($"Possible hit count {possibleHits}, dealt={dealtDamage} perPellet={damagePerPellet}");
 #endif
-                hitData.hits = Clamp(possibleHits, 1, hitData.weaponType.Pellets);
+                hitData.hits = MathHelpers.Clamp(possibleHits, 1, hitData.weaponType.Pellets);
                 Function.Call(Hash.SET_WEAPON_DAMAGE_MODIFIER, hitData.weaponHash, DAMAGE_MODIFIER);
             }
         }
@@ -53,16 +54,6 @@ namespace GunshotWound2.HitDetection {
                 foreach (uint hash in weapon.Hashes) {
                     Function.Call(Hash.SET_WEAPON_DAMAGE_MODIFIER, hash, DAMAGE_MODIFIER);
                 }
-            }
-        }
-
-        private static int Clamp(int value, int min, int max) {
-            if (value >= max) {
-                return max;
-            } else if (value <= min) {
-                return min;
-            } else {
-                return value;
             }
         }
     }
