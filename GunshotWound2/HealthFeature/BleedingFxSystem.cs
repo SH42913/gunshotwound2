@@ -107,14 +107,6 @@ namespace GunshotWound2.HealthFeature {
                 return false;
             }
 
-            const float maxRange = 2f;
-            if (woundData.localHitPos.LengthSquared() > maxRange * maxRange) {
-#if DEBUG
-                sharedData.logger.WriteInfo("Local hit pos exceeds max range");
-#endif
-                return false;
-            }
-
             localHitPos = woundData.localHitPos;
             localHitNormal = woundData.localHitNormal;
             return true;

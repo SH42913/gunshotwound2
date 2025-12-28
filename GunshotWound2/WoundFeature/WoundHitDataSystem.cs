@@ -33,11 +33,20 @@ namespace GunshotWound2.WoundFeature {
                 ref PedHitData hitData = ref hitStash.Get(entity);
                 woundData.damagedBone = hitData.damagedBone;
                 if (hitData.fullHitData && woundData.damagedBone != null && woundData.damagedBone.IsValid) {
+                    Vector3 hitPos = hitData.hitPos + 0.0075f * hitData.shotDir;
+                    Vector3 localHitPos = woundData.damagedBone.GetPositionOffset(hitPos);
+
+                    const float maxRange = 2f;
+                    if (woundData.localHitPos.LengthSquared() > maxRange * maxRange) {
+#if DEBUG
+                        sharedData.logger.WriteInfo("Local hit pos exceeds max range");
+#endif
+                        continue;
+                    }
+
                     Quaternion invertedBoneQuat = Quaternion.Invert(woundData.damagedBone.Quaternion);
                     woundData.localHitNormal = (invertedBoneQuat * hitData.hitNorm).Normalized;
-
-                    Vector3 hitPos = hitData.hitPos + 0.0075f * hitData.shotDir;
-                    woundData.localHitPos = woundData.damagedBone.GetPositionOffset(hitPos);
+                    woundData.localHitPos = localHitPos;
                     woundData.hasHitData = true;
                 }
 
