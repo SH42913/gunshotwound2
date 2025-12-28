@@ -148,9 +148,9 @@ namespace GunshotWound2.StatusFeature {
         private void RefreshMood(ref ConvertedPed convertedPed, IPedStatus status) {
             string[] idleAnims = status?.FacialIdleAnims;
             if (idleAnims != null && idleAnims.Length > 0) {
-                PedEffects.SetFacialIdleAnim(convertedPed.thisPed, sharedData.random.Next(idleAnims), convertedPed.isMale);
+                convertedPed.RequestFacialIdleAnim(sharedData.random.Next(idleAnims));
             } else {
-                PedEffects.CleanFacialIdleAnim(convertedPed.thisPed);
+                convertedPed.ResetFacialIdleAnim();
             }
         }
 

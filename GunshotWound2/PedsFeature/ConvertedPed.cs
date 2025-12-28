@@ -42,6 +42,9 @@
         public bool hasCustomMoveSet;
         public int sprintBlockers;
 
+        public string facialIdleAnim;
+        public bool facialIdleAnimApplied;
+
 #if DEBUG
         public Blip customBlip;
 #endif
@@ -94,6 +97,16 @@
             convertedPed.moveRate = 1f;
         }
 
+        public static void RequestFacialIdleAnim(this ref ConvertedPed convertedPed, string facialAnimName) {
+            convertedPed.facialIdleAnim = facialAnimName;
+            convertedPed.facialIdleAnimApplied = false;
+        }
+
+        public static void ResetFacialIdleAnim(this ref ConvertedPed convertedPed) {
+            convertedPed.facialIdleAnim = null;
+            convertedPed.facialIdleAnimApplied = false;
+        }
+
         // public static bool HasForcedAnimation(this in ConvertedPed convertedPed) {
         //     (string, string) animInfo = convertedPed.forcedAnimation;
         //     return !string.IsNullOrEmpty(animInfo.Item1) && !string.IsNullOrEmpty(animInfo.Item2);
@@ -110,7 +123,7 @@
                 vehicle = null;
                 return false;
             }
-            
+
             vehicle = convertedPed.thisPed.CurrentVehicle;
             return vehicle != null && vehicle.ClassType == VehicleClass.Emergency;
         }
