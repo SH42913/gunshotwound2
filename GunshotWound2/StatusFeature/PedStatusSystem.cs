@@ -49,6 +49,7 @@ namespace GunshotWound2.StatusFeature {
 
                 if (convertedPed.isPlayer && entity.Has<JustConvertedEvent>()) {
                     sharedData.cameraService.ClearAllEffects();
+                    convertedPed.resetMoveSet = true;
                     convertedPed.status = null;
                 }
 
