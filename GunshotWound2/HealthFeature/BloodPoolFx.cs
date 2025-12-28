@@ -5,12 +5,10 @@ namespace GunshotWound2.HealthFeature {
 
     [Serializable]
     public struct BloodPoolFx : IComponent, IDisposable {
-        public float startDelay;
         public int bloodPoolIndex;
 
         public float timeToNextUpdate;
         public float timeToStopGrow;
-        public Entity mostBleedingWound;
         public int effectHandle;
 
         public void Dispose() {

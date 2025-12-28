@@ -1,7 +1,6 @@
 namespace GunshotWound2.HealthFeature {
     using GTA;
     using GTA.Math;
-    using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
     using WoundFeature;
@@ -24,9 +23,9 @@ namespace GunshotWound2.HealthFeature {
         private const float GROW_TIME_SCALE = 1f;
         private readonly SharedData sharedData;
 
-        private Filter peds;
-        private Stash<Health> healthStash;
-        private Stash<ConvertedPed> pedStash;
+        private Filter bleedToInit;
+        private Filter activePools;
+
         private Stash<BloodPoolFx> bloodPoolStash;
         private Stash<WoundData> woundDataStash;
 
@@ -39,14 +38,14 @@ namespace GunshotWound2.HealthFeature {
         }
 
         public void OnAwake() {
-            peds = World.Filter.With<ConvertedPed>().With<Health>();
-            healthStash = World.GetStash<Health>();
-            pedStash = World.GetStash<ConvertedPed>();
+            bleedToInit = World.Filter.With<WoundData>().Without<BloodPoolFx>();
+            activePools = World.Filter.With<BloodPoolFx>();
+
             bloodPoolStash = World.GetStash<BloodPoolFx>().AsDisposable();
             woundDataStash = World.GetStash<WoundData>();
 
             bloodPoolEffects = [
-                new Entry("cut_trevor1", "cs_trev1_blood_pool", GROW_TIME_SCALE * 0.65f),
+                new Entry("cut_trevor1", "cs_trev1_blood_pool", GROW_TIME_SCALE * 0.6f),
                 new Entry("cut_hs4", "cut_hs4_cctv_blood_pool", GROW_TIME_SCALE * 0.175f),
                 new Entry("cut_sec", "cut_sec_blood_pool", GROW_TIME_SCALE * 0.175f),
             ];
@@ -57,84 +56,49 @@ namespace GunshotWound2.HealthFeature {
         }
 
         public void OnUpdate(float deltaTime) {
-            foreach (EcsEntity entity in peds) {
-                ref Health health = ref healthStash.Get(entity);
-                if (health.isDead) {
+            InitEffects();
+            UpdateActivePools(deltaTime);
+        }
+
+        private void InitEffects() {
+            foreach (EcsEntity entity in bleedToInit) {
+                ref WoundData woundData = ref woundDataStash.Get(entity);
+                if (woundData.totalBleed <= 0f || woundData.totalBleed >= BleedingFxSystem.BLOOD_FOUNTAIN_THRESHOLD) {
                     continue;
                 }
 
-                ref ConvertedPed convertedPed = ref pedStash.Get(entity);
-                bool canCreateBloodPool = convertedPed.isRagdoll && health.HasBleedingWounds();
-                if (bloodPoolStash.Has(entity)) {
-                    if (!canCreateBloodPool) {
-                        bloodPoolStash.Remove(entity);
-                    }
-                } else {
-                    if (canCreateBloodPool) {
-                        bloodPoolStash.Set(entity, new BloodPoolFx {
-                            startDelay = 2f,
-                            bloodPoolIndex = sharedData.random.Next(0, bloodPoolEffects.Length)
-                        });
-                    }
-                }
+                ref BloodPoolFx bloodPoolFx = ref bloodPoolStash.Add(entity);
+                bloodPoolFx.bloodPoolIndex = sharedData.random.Next(0, bloodPoolEffects.Length);
+                UpdateTimeToNextUpdate(entity, ref bloodPoolFx);
+            }
+        }
 
-                if (!canCreateBloodPool) {
-                    continue;
-                }
-
+        private void UpdateActivePools(float deltaTime) {
+            foreach (EcsEntity entity in activePools) {
                 ref BloodPoolFx bloodPoolFx = ref bloodPoolStash.Get(entity);
-                if (bloodPoolFx.startDelay > 0f) {
-                    bloodPoolFx.startDelay -= deltaTime;
-                    continue;
-                }
-
                 if (bloodPoolFx.effectHandle == 0) {
                     bloodPoolFx.timeToNextUpdate -= deltaTime;
                     if (bloodPoolFx.timeToNextUpdate <= 0f) {
-                        RefreshMostBleedingWound(ref bloodPoolFx, health);
-                        CreateBloodPool(ref bloodPoolFx);
+                        CreateBloodPool(entity, ref bloodPoolFx);
                     }
                 } else {
                     bloodPoolFx.timeToStopGrow -= deltaTime;
                     if (bloodPoolFx.timeToStopGrow <= 0f) {
                         GTAHelpers.RemoveParticleEffect(bloodPoolFx.effectHandle);
                         bloodPoolFx.effectHandle = 0;
-                        UpdateTimeToNextUpdate(ref bloodPoolFx);
+                        UpdateTimeToNextUpdate(entity, ref bloodPoolFx);
                     }
                 }
             }
         }
 
-        private void RefreshMostBleedingWound(ref BloodPoolFx bloodPoolFx, in Health health) {
-            WoundData mostBleedingWoundData = default;
-            EcsEntity mostBleedingWoundEntity = null;
-            foreach (EcsEntity entity in health.bleedingWounds) {
-                ref WoundData woundData = ref woundDataStash.Get(entity, out bool hasData);
-                if (!hasData) {
-                    continue;
-                }
-
-                bool skipWound = woundData.totalBleed > BleedingFxSystem.BLOOD_FOUNTAIN_THRESHOLD;
-                if (woundData.totalBleed > mostBleedingWoundData.totalBleed && !skipWound) {
-                    mostBleedingWoundData = woundData;
-                    mostBleedingWoundEntity = entity;
-                }
-            }
-
-            bloodPoolFx.mostBleedingWound = mostBleedingWoundEntity.IsNullOrDisposed() ? null : mostBleedingWoundEntity;
-        }
-
-        private void CreateBloodPool(ref BloodPoolFx bloodPoolFx) {
-            if (bloodPoolFx.mostBleedingWound.IsNullOrDisposed()) {
-                return;
-            }
-
+        private void CreateBloodPool(EcsEntity woundEntity, ref BloodPoolFx bloodPoolFx) {
             ref Entry bloodPool = ref bloodPoolEffects[bloodPoolFx.bloodPoolIndex];
             if (!SHVDNHelpers.UseParticleFxAsset(bloodPool.asset)) {
                 return;
             }
 
-            WoundData data = woundDataStash.Get(bloodPoolFx.mostBleedingWound);
+            WoundData data = woundDataStash.Get(woundEntity);
             Vector3 localPos = data.hasHitData ? data.localHitPos : Vector3.Zero;
             Vector3 worldPos = data.damagedBone.GetOffsetPosition(localPos);
             if (GTA.World.GetGroundHeight(worldPos, out float height)) {
@@ -153,23 +117,14 @@ namespace GunshotWound2.HealthFeature {
             bloodPoolFx.timeToStopGrow = bloodPool.minGrowTime;
         }
 
-        private void UpdateTimeToNextUpdate(ref BloodPoolFx bloodPoolFx) {
-            if (bloodPoolFx.mostBleedingWound.IsNullOrDisposed()) {
-                bloodPoolFx.timeToNextUpdate = 1f;
-                return;
-            }
+        private void UpdateTimeToNextUpdate(EcsEntity woundEntity, ref BloodPoolFx bloodPoolFx) {
+            ref WoundData woundData = ref woundDataStash.Get(woundEntity);
 
-            ref WoundData woundData = ref woundDataStash.Get(bloodPoolFx.mostBleedingWound, out bool hasData);
-            if (!hasData) {
-                bloodPoolFx.timeToNextUpdate = 1f;
-                return;
-            }
-
-            const float k = 0.5f;
+            const float k = 1.1f;
             const float epsilon = 0.01f;
+            const float minInterval = 1.0f;
             const float maxInterval = 8.0f;
             float calculatedTime = k / (woundData.totalBleed + epsilon);
-            float minInterval = bloodPoolEffects[bloodPoolFx.bloodPoolIndex].minGrowTime;
             bloodPoolFx.timeToNextUpdate = MathHelpers.Clamp(calculatedTime, minInterval, maxInterval);
         }
 

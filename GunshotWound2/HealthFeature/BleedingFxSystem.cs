@@ -20,7 +20,7 @@ namespace GunshotWound2.HealthFeature {
 
         private Filter bleedToInit;
         private Filter activeParticles;
-        private Filter bleedToClean;
+        private Filter particlesToClean;
 
         private ParticleEffectAsset coreAsset;
         private ParticleEffectAsset cutMichael2Asset;
@@ -38,7 +38,7 @@ namespace GunshotWound2.HealthFeature {
 
             bleedToInit = World.Filter.With<Bleeding>().Without<BleedingFx>();
             activeParticles = World.Filter.With<BleedingFx>();
-            bleedToClean = World.Filter.With<BleedingFx>().Without<Bleeding>();
+            particlesToClean = activeParticles.Without<Bleeding>();
 
             coreAsset = new ParticleEffectAsset("core");
             cutMichael2Asset = new ParticleEffectAsset("cut_michael2");
@@ -121,7 +121,7 @@ namespace GunshotWound2.HealthFeature {
         }
 
         private void CleanFx() {
-            foreach (EcsEntity entity in bleedToClean) {
+            foreach (EcsEntity entity in particlesToClean) {
                 CleanEntity(entity);
             }
         }
