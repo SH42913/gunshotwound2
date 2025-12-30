@@ -26,6 +26,10 @@ namespace GunshotWound2.TraumaFeature {
             }
 
             convertedPed.thisPed.PlayAmbientSpeech(speech);
+
+            string facialAnimName = sharedData.random.Next(StatusFeature.Statuses.UnconsciousStatus.DEATH_MOODS);
+            convertedPed.RequestFacialIdleAnim(facialAnimName);
+            convertedPed.facialIdleAnimLock = true;
         }
 
         public override void Repeat(Entity entity, ref ConvertedPed convertedPed) {
@@ -38,6 +42,8 @@ namespace GunshotWound2.TraumaFeature {
         public override void Cancel(Entity entity, ref ConvertedPed convertedPed) {
             base.Cancel(entity, ref convertedPed);
             convertedPed.thisPed.IsPainAudioEnabled = true;
+            convertedPed.facialIdleAnimLock = false;
+            convertedPed.ResetFacialIdleAnim();
 
             if (convertedPed.isPlayer) {
                 sharedData.cameraService.SetHeadInjuryEffect(false);

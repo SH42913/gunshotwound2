@@ -43,6 +43,7 @@
         public int sprintBlockers;
 
         public string facialIdleAnim;
+        public bool facialIdleAnimLock;
         public bool facialIdleAnimApplied;
 
 #if DEBUG
@@ -98,13 +99,17 @@
         }
 
         public static void RequestFacialIdleAnim(this ref ConvertedPed convertedPed, string facialAnimName) {
-            convertedPed.facialIdleAnim = facialAnimName;
-            convertedPed.facialIdleAnimApplied = false;
+            if (!convertedPed.facialIdleAnimLock) {
+                convertedPed.facialIdleAnim = facialAnimName;
+                convertedPed.facialIdleAnimApplied = false;
+            }
         }
 
         public static void ResetFacialIdleAnim(this ref ConvertedPed convertedPed) {
-            convertedPed.facialIdleAnim = null;
-            convertedPed.facialIdleAnimApplied = false;
+            if (!convertedPed.facialIdleAnimLock) {
+                convertedPed.facialIdleAnim = null;
+                convertedPed.facialIdleAnimApplied = false;
+            }
         }
 
         // public static bool HasForcedAnimation(this in ConvertedPed convertedPed) {

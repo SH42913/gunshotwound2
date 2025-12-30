@@ -60,10 +60,16 @@ namespace GunshotWound2.PedsFeature {
                     CrClipDictionary dict = convertedPed.isMale ? maleDict : femaleDict;
                     if (dict.IsLoaded) {
                         PedEffects.SetFacialIdleAnim(convertedPed.thisPed, dict.Name, convertedPed.facialIdleAnim);
+#if DEBUG
+                        sharedData.logger.WriteInfo($"Applied {convertedPed.facialIdleAnim} facialAnim to {convertedPed.name}");
+#endif
                         convertedPed.facialIdleAnimApplied = true;
                     }
                 } else {
                     PedEffects.CleanFacialIdleAnim(convertedPed.thisPed);
+#if DEBUG
+                    sharedData.logger.WriteInfo($"Reset facialAnim of {convertedPed.name}");
+#endif
                     convertedPed.facialIdleAnimApplied = true;
                 }
             }

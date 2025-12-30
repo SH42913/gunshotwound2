@@ -18,7 +18,7 @@
             "DEATH_HIGH_LONG", "DEATH_HIGH_MEDIUM", "DEATH_UNDERWATER",
         };
 
-        private static readonly string[] MOODS = {
+        public static readonly string[] DEATH_MOODS = {
             "dead_1",
             "dead_2",
             "mood_sleeping_1",
@@ -35,7 +35,7 @@
         public float MoveRate => 0.8f;
         public string[] MaleMoveSets => null;
         public string[] FemaleMoveSets => null;
-        public string[] FacialIdleAnims => MOODS;
+        public string[] FacialIdleAnims => DEATH_MOODS;
         public string[] PlayerSpeechSet => PLAYER_DEATH_AMBIENT;
         public string[] PedSpeechSet => NON_PLAYER_DEATH_AMBIENT;
 

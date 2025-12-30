@@ -41,6 +41,7 @@ namespace GunshotWound2.PedsFeature {
             sharedData.logger.WriteInfo($"Removing {convertedPed.name} from GSW world");
 #endif
             convertedPed.thisPed.MaxHealth = convertedPed.defaultMaxHealth;
+            PedEffects.CleanFacialIdleAnim(convertedPed.thisPed);
 
             if (convertedPed.isPlayer) {
                 sharedData.cameraService.ClearAllEffects();
