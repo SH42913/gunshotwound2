@@ -30,6 +30,7 @@ namespace GunshotWound2.Configs {
             public readonly string LocKey;
             public readonly DBPContainer DBPMults;
             public readonly HashSet<int> Bones;
+            public readonly float TangentialWoundThreshold;
             public readonly (string key, int weight)[] BluntTraumas;
             public readonly (string key, int weight)[] PenetratingTraumas;
             public readonly float TraumaChance;
@@ -47,6 +48,7 @@ namespace GunshotWound2.Configs {
                             .Select(GetIntOfBone)
                             .ToHashSet();
 
+                TangentialWoundThreshold = node.GetFloat(nameof(TangentialWoundThreshold), defaultValue: 0.3f);
                 BluntTraumas = ExtractTraumas(node.Element(nameof(BluntTraumas)));
                 PenetratingTraumas = ExtractTraumas(node.Element(nameof(PenetratingTraumas)));
                 TraumaChance = node.GetFloat(nameof(TraumaChance));

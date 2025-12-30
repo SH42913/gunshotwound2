@@ -233,7 +233,10 @@
             }
 
             float impactDot = Vector3.Dot(hitData.shotDir, hitData.hitNorm);
-            float threshold = sharedData.mainConfig.weaponConfig.TangentialWoundThreshold;
+            float threshold = hitData.bodyPart.TangentialWoundThreshold;
+#if DEBUG && DEBUG_EVERY_FRAME
+            sharedData.logger.WriteInfo($"Checking tangential, impactDot:{impactDot} threshold:{threshold}");
+#endif
             return Math.Abs(impactDot) < threshold;
         }
 

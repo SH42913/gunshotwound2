@@ -62,7 +62,6 @@ namespace GunshotWound2.Configs {
         public bool UseSpecialStunDamage;
         public bool CleanLastDamageFromPed;
         public float StunPainPercent;
-        public float TangentialWoundThreshold;
         public HashSet<uint> IgnoreSet;
         public Weapon[] Weapons;
 
@@ -90,7 +89,6 @@ namespace GunshotWound2.Configs {
             XElement specialStunDamage = root.Element("SpecialStunDamage");
             UseSpecialStunDamage = specialStunDamage.GetBool("Enabled");
             StunPainPercent = specialStunDamage.GetFloat(nameof(StunPainPercent));
-            TangentialWoundThreshold = root.Element(nameof(TangentialWoundThreshold)).GetFloat(defaultValue: 0.3f);
             CleanLastDamageFromPed = root.Element("CleanLastDamageFromPed").GetBool();
             IgnoreSet = ExtractWeaponHashes(root.Element(nameof(IgnoreSet)));
 

@@ -2,6 +2,7 @@
 <BodyParts>
     <BodyPart Key="Head" LocKey="BodyParts.Head"
               Bones="SkelHead;"
+              TangentialWoundThreshold="0.2"
               DamageMult="1.0" BleedMult="0.9" PainMult="1.0"
               TraumaChance="1.0" IgnoreWeaponTraumaChanceForPenetratingWounds="TRUE">
         <BluntTraumas>
@@ -20,6 +21,7 @@
 
     <BodyPart Key="Neck" LocKey="BodyParts.Neck"
               Bones="SkelNeck1;SkelNeck2;"
+              TangentialWoundThreshold="0.25"
               DamageMult="0.9" BleedMult="1.0" PainMult="1.0"
               TraumaChance="0.9" IgnoreWeaponTraumaChanceForPenetratingWounds="TRUE">
         <BluntTraumas>
@@ -37,6 +39,7 @@
 
     <BodyPart Key="Chest" LocKey="BodyParts.Chest"
               Bones="SkelSpine2;SkelSpine3;"
+              TangentialWoundThreshold="0.3"
               DamageMult="1.0" BleedMult="1.0" PainMult="1.1"
               TraumaChance="0.8">
         <BluntTraumas>
@@ -57,6 +60,7 @@
 
     <BodyPart Key="Abdomen" LocKey="BodyParts.Abdomen"
               Bones="SkelSpineRoot;SkelSpine0;SkelSpine1;"
+              TangentialWoundThreshold="0.3"
               DamageMult="0.9" BleedMult="1.0" PainMult="1.2"
               TraumaChance="0.8">
         <BluntTraumas>
@@ -75,8 +79,9 @@
     </BodyPart>
 
     <BodyPart Key="Pelvis" LocKey="BodyParts.Pelvis"
-              DamageMult="0.8" BleedMult="1.0" PainMult="1.1"
               Bones="SkelRoot;SkelPelvisRoot;SkelPelvis;SkelPelvis1;"
+              TangentialWoundThreshold="0.3"
+              DamageMult="0.8" BleedMult="1.0" PainMult="1.1"
               TraumaChance="0.8">
         <BluntTraumas>
             <Trauma Key="ClosedFracturePelvis" Weight="70"/>
@@ -92,6 +97,7 @@
 
     <BodyPart Key="LeftShoulder" LocKey="BodyParts.LeftShoulder"
               Bones="SkelLeftClavicle;"
+              TangentialWoundThreshold="0.3"
               DamageMult="0.6" BleedMult="0.7" PainMult="0.8"
               TraumaChance="0.6">
         <BluntTraumas>
@@ -108,6 +114,7 @@
     </BodyPart>
     <BodyPart Key="RightShoulder" LocKey="BodyParts.RightShoulder"
               Bones="SkelRightClavicle;"
+              TangentialWoundThreshold="0.3"
               DamageMult="0.6" BleedMult="0.7" PainMult="0.8"
               TraumaChance="0.6">
         <BluntTraumas>
@@ -125,6 +132,7 @@
 
     <BodyPart Key="LeftArm" LocKey="BodyParts.LeftArm"
               Bones="SkelLeftUpperArm;SkelLeftForearm;SkelLeftHand;"
+              TangentialWoundThreshold="0.55"
               DamageMult="0.5" BleedMult="0.6" PainMult="0.7"
               TraumaChance="0.6">
         <BluntTraumas>
@@ -139,6 +147,7 @@
     </BodyPart>
     <BodyPart Key="RightArm" LocKey="BodyParts.RightArm"
               Bones="SkelRightUpperArm;SkelRightForearm;SkelRightHand;"
+              TangentialWoundThreshold="0.55"
               DamageMult="0.5" BleedMult="0.6" PainMult="0.7"
               TraumaChance="0.6">
         <BluntTraumas>
@@ -154,6 +163,7 @@
 
     <BodyPart Key="LeftLeg" LocKey="BodyParts.LeftLeg"
               Bones="SkelLeftThigh;SkelLeftToe0;SkelLeftToe1;SkelLeftFoot;SkelLeftCalf;"
+              TangentialWoundThreshold="0.35"
               DamageMult="0.6" BleedMult="0.8" PainMult="0.8"
               TraumaChance="0.65">
         <BluntTraumas>
@@ -168,6 +178,7 @@
     </BodyPart>
     <BodyPart Key="RightLeg" LocKey="BodyParts.RightLeg"
               Bones="SkelRightThigh;SkelRightToe0;SkelRightToe1;SkelRightFoot;SkelRightCalf;"
+              TangentialWoundThreshold="0.35"
               DamageMult="0.6" BleedMult="0.8" PainMult="0.8"
               TraumaChance="0.65">
         <BluntTraumas>
