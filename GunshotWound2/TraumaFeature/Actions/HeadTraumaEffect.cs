@@ -12,6 +12,9 @@ namespace GunshotWound2.TraumaFeature {
 
         public override void Apply(Entity entity, ref ConvertedPed convertedPed) {
             base.Apply(entity, ref convertedPed);
+            convertedPed.thisPed.IsPainAudioEnabled = false;
+            convertedPed.thisPed.StopCurrentPlayingAmbientSpeech();
+            convertedPed.thisPed.StopCurrentPlayingSpeech();
 
             if (convertedPed.isPlayer) {
                 sharedData.cameraService.SetHeadInjuryEffect(true);
@@ -27,6 +30,7 @@ namespace GunshotWound2.TraumaFeature {
 
         public override void Cancel(Entity entity, ref ConvertedPed convertedPed) {
             base.Cancel(entity, ref convertedPed);
+            convertedPed.thisPed.IsPainAudioEnabled = true;
 
             if (convertedPed.isPlayer) {
                 sharedData.cameraService.SetHeadInjuryEffect(false);

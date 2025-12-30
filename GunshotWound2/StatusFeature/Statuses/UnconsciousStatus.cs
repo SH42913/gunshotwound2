@@ -71,6 +71,8 @@
             } else {
                 convertedPed.thisPed.BlockPermanentEvents = false;
             }
+
+            convertedPed.thisPed.IsPainAudioEnabled = true;
         }
 
         private static void PlayDeathAnimationInVehicle(Ped ped) {

@@ -109,6 +109,10 @@ namespace GunshotWound2.StatusFeature {
 #if DEBUG
             sharedData.logger.WriteInfo("Simple ragdoll as visual behaviour");
 #endif
+            convertedPed.thisPed.StopCurrentPlayingSpeech();
+            convertedPed.thisPed.StopCurrentPlayingAmbientSpeech();
+            convertedPed.thisPed.IsPainAudioEnabled = false;
+
             convertedPed.requestedNmHelper = new BodyRelaxHelper(convertedPed.thisPed);
             convertedPed.RequestPermanentRagdoll();
         }
