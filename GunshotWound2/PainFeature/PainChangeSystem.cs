@@ -204,7 +204,7 @@ namespace GunshotWound2.PainFeature {
                 sharedData.logger.WriteInfo($"Painful wound {pain.diff.ToString("F")} at {convertedPed.name}");
 #endif
 
-                ped.PlayAmbientSpeech("PAIN_RAPIDS");
+                ped.PlayAmbientSpeech("PAIN_RAPIDS", SpeechModifier.ForceShouted);
                 if (woundConfig.RagdollOnPainfulWound) {
                     convertedPed.RequestRagdoll(timeInMs: 1500);
                 }

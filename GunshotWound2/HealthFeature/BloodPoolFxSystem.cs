@@ -70,6 +70,7 @@ namespace GunshotWound2.HealthFeature {
                 ref BloodPoolFx bloodPoolFx = ref bloodPoolStash.Add(entity);
                 bloodPoolFx.bloodPoolIndex = sharedData.random.Next(0, bloodPoolEffects.Length);
                 UpdateTimeToNextUpdate(entity, ref bloodPoolFx);
+                bloodPoolFx.timeToNextUpdate *= sharedData.random.NextFloat(1f, 2f);
             }
         }
 
@@ -87,6 +88,7 @@ namespace GunshotWound2.HealthFeature {
                         GTAHelpers.RemoveParticleEffect(bloodPoolFx.effectHandle);
                         bloodPoolFx.effectHandle = 0;
                         UpdateTimeToNextUpdate(entity, ref bloodPoolFx);
+                        bloodPoolFx.timeToNextUpdate *= sharedData.random.NextFloat(0.75f, 1.25f);
                     }
                 }
             }
