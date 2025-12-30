@@ -10,11 +10,11 @@
         private static readonly CrClipAsset DRIVER_DEATH_CLIP = new("veh@std@ds@base", DEATH_ANIM_NAME);
         private static readonly CrClipAsset PASSENGER_DEATH_CLIP = new("veh@std@ps@base", DEATH_ANIM_NAME);
 
-        private static readonly string[] NON_PLAYER_DEATH_AMBIENT = {
+        public static readonly string[] NON_PLAYER_DEATH_AMBIENT = {
             "DYING_HELP", "DYING_MOAN", "DYING_PLEAD",
         };
 
-        private static readonly string[] PLAYER_DEATH_AMBIENT = {
+        public static readonly string[] PLAYER_DEATH_AMBIENT = {
             "DEATH_HIGH_LONG", "DEATH_HIGH_MEDIUM", "DEATH_UNDERWATER",
         };
 
