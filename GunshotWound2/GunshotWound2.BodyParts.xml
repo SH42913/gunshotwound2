@@ -59,7 +59,7 @@
     </BodyPart>
 
     <BodyPart Key="Abdomen" LocKey="BodyParts.Abdomen"
-              Bones="SkelSpineRoot;SkelSpine0;SkelSpine1;"
+              Bones="SkelSpine0;SkelSpine1;"
               TangentialWoundThreshold="0.3"
               DamageMult="0.9" BleedMult="1.0" PainMult="1.2"
               TraumaChance="0.8">
@@ -79,7 +79,7 @@
     </BodyPart>
 
     <BodyPart Key="Pelvis" LocKey="BodyParts.Pelvis"
-              Bones="SkelRoot;SkelPelvisRoot;SkelPelvis;SkelPelvis1;"
+              Bones="SkelRoot;SkelSpineRoot;SkelPelvisRoot;SkelPelvis;SkelPelvis1;"
               TangentialWoundThreshold="0.3"
               DamageMult="0.8" BleedMult="1.0" PainMult="1.1"
               TraumaChance="0.8">

@@ -34,6 +34,7 @@
             sharedData.cheatListener.Register("GSW_TEST_PED", () => {
                 GTA.Ped ped = GTA.World.CreateRandomPed(GTA.Game.Player.Character.BelowPosition);
                 ped.DecisionMaker = new GTA.DecisionMaker(GTA.DecisionMakerTypeHash.Empty);
+                ped.SetConfigFlag(GTA.PedConfigFlagToggles.DontActivateRagdollFromBulletImpact, true);
             });
         }
 

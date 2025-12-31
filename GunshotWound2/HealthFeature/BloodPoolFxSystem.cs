@@ -63,7 +63,8 @@ namespace GunshotWound2.HealthFeature {
         private void InitEffects() {
             foreach (EcsEntity entity in bleedToInit) {
                 ref WoundData woundData = ref woundDataStash.Get(entity);
-                if (woundData.totalBleed <= 0f || woundData.totalBleed >= BleedingFxSystem.BLOOD_FOUNTAIN_THRESHOLD) {
+                float normalizedBleed = woundData.totalBleed / sharedData.mainConfig.woundConfig.GlobalMultipliers.bleed;
+                if (normalizedBleed <= 0f || normalizedBleed >= BleedingFxSystem.BLOOD_FOUNTAIN_THRESHOLD) {
                     continue;
                 }
 

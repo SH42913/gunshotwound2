@@ -130,6 +130,7 @@
     <Compile Include="Utils\Localization.cs" />
     <Compile Include="Utils\MathHelpers.cs" />
     <Compile Include="Utils\ProfilerSample.cs" />
+    <Compile Include="Utils\RaycastDebugDrawer.cs" />
     <Compile Include="Utils\SHVDNHelpers.cs" />
     <Compile Include="WoundFeature\ArmorChecker.cs" />
     <Compile Include="WoundFeature\WoundData.cs" />

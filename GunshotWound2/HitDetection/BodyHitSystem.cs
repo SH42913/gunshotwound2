@@ -43,13 +43,15 @@ namespace GunshotWound2.HitDetection {
                     Bone randomBoneTag = (Bone)sharedData.random.NextFromCollection(hitData.bodyPart.Bones);
                     hitData.damagedBone = convertedPed.thisPed.Bones[randomBoneTag];
 #if DEBUG
-                    sharedData.logger.WriteInfo($"Damaged random part is {hitData.bodyPart.Key}, bone {randomBoneTag} of {convertedPed.name}");
+                    var message = $"Damaged random part is {hitData.bodyPart.Key}, bone {randomBoneTag} of {convertedPed.name}";
+                    sharedData.logger.WriteInfo(message);
 #endif
                 } else {
                     hitData.damagedBone = damagedBone;
                     hitData.bodyPart = BodyPartConfig.GetBodyPartByBone(damagedBone.Tag);
 #if DEBUG
-                    sharedData.logger.WriteInfo($"Damaged part is {hitData.bodyPart.Key}, bone {damagedBone.Name} at {convertedPed.name}");
+                    var message = $"Damaged part is {hitData.bodyPart.Key}, bone {damagedBone.Name} at {convertedPed.name}";
+                    sharedData.logger.WriteInfo(message);
 #endif
                 }
 
@@ -75,46 +77,44 @@ namespace GunshotWound2.HitDetection {
             return false;
         }
 
-        private void CalculateLocalHitData(in ConvertedPed convertedPed, ref PedHitData hitData) {
+        private static void CalculateLocalHitData(in ConvertedPed convertedPed, ref PedHitData hitData) {
+            if (hitData.weaponHash == (uint)WeaponHash.Unarmed) {
+                return;
+            }
+
             Ped aggressor = hitData.aggressor;
             if (!aggressor.IsValid()) {
                 return;
             }
 
+            Vector3 lastWorldHit = aggressor.LastWeaponImpactPosition;
+            if (lastWorldHit == Vector3.Zero) {
+                return;
+            }
+
             DamageType damageType = GTAHelpers.GetWeaponDamageType(hitData.weaponHash);
-            if (damageType != DamageType.Bullet && damageType != DamageType.Melee) {
-                return;
-            }
+            if (damageType == DamageType.Melee) {
+                hitData.hitPos = lastWorldHit;
+                hitData.hitNorm = (lastWorldHit - hitData.damagedBone.Position).Normalized;
+                hitData.fullHitData = true;
+            } else if (damageType == DamageType.Bullet) {
+                Vector3 raycastOrigin = aggressor.IsPlayer
+                        ? GameplayCamera.Position
+                        : GTAHelpers.GetPedBoneCoords(aggressor, Bone.IKRightHand);
 
-            Vector3 lastHit = aggressor.LastWeaponImpactPosition;
-            if (lastHit == Vector3.Zero) {
-                return;
-            }
+                hitData.shotDir = (lastWorldHit - raycastOrigin).Normalized;
+                Vector3 raycastTarget = lastWorldHit + 50f * hitData.shotDir;
+                RaycastResult result = GTA.World.Raycast(raycastOrigin, raycastTarget, IntersectFlags.Ragdolls, aggressor);
+                if (result.DidHit && result.HitEntity == convertedPed.thisPed) {
+                    hitData.hitPos = result.HitPosition + 0.0075f * hitData.shotDir;
+                    hitData.hitNorm = result.SurfaceNormal.Normalized;
+                    hitData.fullHitData = true;
+                }
 
-            hitData.hitPos = lastHit;
-
-            Vector3 raycastOrigin = GTAHelpers.GetPedBoneCoords(aggressor, Bone.IKRightHand);
-            if (raycastOrigin == Vector3.Zero) {
 #if DEBUG && DEBUG_EVERY_FRAME
-                sharedData.logger.WriteInfo("Invalid raycast origin");
+                RaycastDebugDrawer.RegisterRay(raycastOrigin, raycastTarget, [result.HitPosition]);
 #endif
-                return;
             }
-
-            Ped thisPed = convertedPed.thisPed;
-            hitData.shotDir = (lastHit - raycastOrigin).Normalized;
-            Vector3 raycastTarget = lastHit + 5f * hitData.shotDir;
-            RaycastResult result = GTA.World.Raycast(raycastOrigin, raycastTarget, IntersectFlags.Peds, aggressor);
-            if (result.Result == 2 && result.HitEntity == thisPed) {
-                hitData.hitNorm = result.SurfaceNormal.Normalized;
-            } else {
-#if DEBUG && DEBUG_EVERY_FRAME
-                sharedData.logger.WriteInfo("No raycast hit for local hit calculation");
-#endif
-                hitData.hitNorm = (lastHit - hitData.damagedBone.Position).Normalized;
-            }
-
-            hitData.fullHitData = true;
         }
     }
 }

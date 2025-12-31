@@ -220,7 +220,7 @@ namespace GunshotWound2 {
                 profilerSample.Stop();
 #endif
 #if DEBUG
-                //
+                RaycastDebugDrawer.Draw();
 #endif
             }
 
