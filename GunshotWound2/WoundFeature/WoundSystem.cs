@@ -197,6 +197,8 @@ namespace GunshotWound2.WoundFeature {
                 });
             }
 
+            CheckRightHandHitAndDropWeapon(hitData, convertedPed);
+
 #if DEBUG
             sharedData.logger.WriteInfo($"Final wound DBP:{dbp.ToString()} trauma:{shouldCreateTrauma} by {reason}");
 #endif
@@ -206,6 +208,22 @@ namespace GunshotWound2.WoundFeature {
             } else {
                 TrySendHitInfo(targetEntity, hitData, reason, woundName, shouldCreateTrauma);
             }
+        }
+
+        private void CheckRightHandHitAndDropWeapon(in PedHitData hitData, in ConvertedPed convertedPed) {
+            Bone tag = hitData.damagedBone.Tag;
+            if (tag != Bone.SkelRightHand) {
+                return;
+            }
+
+            if (convertedPed.isPlayer && !sharedData.mainConfig.playerConfig.CanDropWeapon) {
+                return;
+            }
+
+#if DEBUG
+            sharedData.logger.WriteInfo($"Right hand was hit, so drop weapon");
+#endif
+            convertedPed.thisPed.Weapons.Drop();
         }
 
         private bool ShouldCreateTrauma(in WoundConfig.Wound wound, in PedHitData hitData) {
