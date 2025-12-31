@@ -66,8 +66,8 @@
             </Wounds>
         </Firearm9x19_AP>
 
-        <Firearm12GA_00Buck ShortDesc="12GA #00 Buck" Pellets="8"
-                            DamageMult="0.7" BleedMult="1.0" PainMult="0.4" ChanceToCauseTrauma="0.2"
+        <Firearm12GA_00Buck ShortDesc="12GA #00" Pellets="8"
+                            DamageMult="0.7" BleedMult="0.8" PainMult="0.5" ChanceToCauseTrauma="0.2"
                             SafeArmorLevel="ClassII" ArmorDamage="2" HelmetSafeChance="0.95">
             <Shotguns Hashes="PUMPSHOTGUN;PUMPSHOTGUN_MK2;SAWNOFFSHOTGUN;BULLPUPSHOTGUN;DBSHOTGUN;"/>
             <TakedownWound Key="HeavyBruise"/>
@@ -77,8 +77,8 @@
                 <Wound Key="PerforatingGsw" Weight="5"/>
             </Wounds>
         </Firearm12GA_00Buck>
-        <Firearm12GA_000Buck ShortDesc="12GA #000 Heavy" Pellets="6"
-                             DamageMult="0.9" BleedMult="1.2" PainMult="0.6" ChanceToCauseTrauma="0.3"
+        <Firearm12GA_000Buck ShortDesc="12GA #000" Pellets="6"
+                             DamageMult="0.9" BleedMult="1.0" PainMult="0.7" ChanceToCauseTrauma="0.3"
                              SafeArmorLevel="ClassII" ArmorDamage="4" HelmetSafeChance="0.85">
             <Shotguns Hashes="COMBATSHOTGUN;"/>
             <AutoShotguns Hashes="AUTOSHOTGUN;ASSAULTSHOTGUN;"/>
@@ -123,7 +123,7 @@
                 <Wound Key="BluntHematoma" Weight="10"/>
             </Wounds>
         </Firearm12GA_RubberBuckshot>
-        <Firearm12GA_BeanBag ShortDesc="12GA Bean Bag"
+        <Firearm12GA_BeanBag ShortDesc="12GA BeanBag"
                              DamageMult="0.2" BleedMult="0.0" PainMult="1.5" ChanceToCauseTrauma="0.4"
                              SafeArmorLevel="ClassI" ArmorDamage="0" HelmetSafeChance="1.0">
             <Shotguns Hashes=""/>
