@@ -1,5 +1,8 @@
-﻿namespace GunshotWound2.WoundFeature {
+﻿// #define DEBUG_EVERY_FRAME
+
+namespace GunshotWound2.WoundFeature {
     using System;
+    using System.Collections.Generic;
     using Configs;
     using GTA;
     using GTA.Math;
@@ -7,6 +10,7 @@
     using HitDetection;
     using PainFeature;
     using PedsFeature;
+    using PlayerFeature;
     using Scellecs.Morpeh;
     using TraumaFeature;
     using Utils;
@@ -99,7 +103,7 @@
                 sharedData.logger.WriteInfo($"Applying takedown wound {takedownWound}");
 #endif
                 wound = sharedData.mainConfig.woundConfig.Wounds[takedownWound];
-            } else if (!string.IsNullOrEmpty(hitData.weaponType.TangentialWound) && CheckIsTangentialHit(hitData)) {
+            } else if (CheckIsTangentialHit(hitData)) {
                 string tangentialWound = hitData.weaponType.TangentialWound;
 #if DEBUG
                 sharedData.logger.WriteInfo($"Applying tangential wound {tangentialWound}");
@@ -197,7 +201,11 @@
             sharedData.logger.WriteInfo($"Final wound DBP:{dbp.ToString()} trauma:{shouldCreateTrauma} by {reason}");
 #endif
 
-            SendWoundInfo(convertedPed, health, hitData, woundName, dbp.bleed, dbp.pain, shouldCreateTrauma);
+            if (convertedPed.isPlayer) {
+                SendWoundInfo(convertedPed, health, hitData, woundName, dbp.bleed, dbp.pain, shouldCreateTrauma);
+            } else {
+                TrySendHitInfo(targetEntity, hitData, reason, woundName, shouldCreateTrauma);
+            }
         }
 
         private bool ShouldCreateTrauma(in WoundConfig.Wound wound, in PedHitData hitData) {
@@ -228,6 +236,10 @@
         }
 
         private bool CheckIsTangentialHit(in PedHitData hitData) {
+            if (string.IsNullOrEmpty(hitData.weaponType.TangentialWound)) {
+                return false;
+            }
+
             if (!hitData.fullHitData) {
                 return false;
             }
@@ -247,10 +259,6 @@
                                    float finalBleed,
                                    float finalPain,
                                    bool causeTrauma) {
-            if (!convertedPed.isPlayer) {
-                return;
-            }
-
             const float criticalPain = 50f;
             Notifier.Entry notifier;
             if (causeTrauma
@@ -267,6 +275,22 @@
 
             Notifier.Color bleedingColor = health.GetBleedingColor(convertedPed, finalBleed);
             notifier.QueueMessage(woundName, bleedingColor);
+        }
+
+        private void TrySendHitInfo(EcsEntity entity, in PedHitData hitData, string reason, string woundName, bool withTrauma) {
+            bool isPlayer = hitData.aggressor?.IsPlayer ?? false;
+            if (!isPlayer) {
+                return;
+            }
+
+            ref PlayerHitNotification notification = ref entity.AddOrGetComponent<PlayerHitNotification>();
+            notification.entries ??= new Queue<PlayerHitNotification.Entry>();
+
+            string bodyPart = sharedData.localeConfig.GetTranslation(hitData.bodyPart.LocKey);
+#if DEBUG
+            bodyPart += $"({hitData.damagedBone.Name})";
+#endif
+            notification.entries.Enqueue(new PlayerHitNotification.Entry(reason, bodyPart, woundName, withTrauma));
         }
     }
 }

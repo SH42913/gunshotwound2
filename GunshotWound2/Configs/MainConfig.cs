@@ -47,6 +47,8 @@ namespace GunshotWound2.Configs {
         public float HelpTipMinInterval;
         public float HelpTipMaxInterval;
 
+        public bool HitNotificationEnabled;
+
         public int HelpTipDurationInMs => (int)(HelpTipDuration * 1000);
 
         private readonly IConfig[] configs;
@@ -153,6 +155,9 @@ namespace GunshotWound2.Configs {
             HelpTipDuration = helpNode.GetFloat("TipDurationInSec");
             HelpTipMinInterval = helpNode.GetFloat("MinIntervalInSec");
             HelpTipMaxInterval = helpNode.GetFloat("MaxIntervalInSec");
+
+            XElement hitNotificationNode = node.Element("HitNotification");
+            HitNotificationEnabled = hitNotificationNode.GetBool("Enabled");
         }
     }
 }

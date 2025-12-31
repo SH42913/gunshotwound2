@@ -185,7 +185,7 @@
                 if (showEffectMessage && !convertedPed.hasSpineDamage) {
                     if (convertedPed.isPlayer) {
                         sharedData.notifier.critical.QueueMessage(effect.PlayerMessage, Notifier.Color.YELLOW);
-                    } else {
+                    } else if(convertedPed.lastAggressor?.IsPlayer ?? false) {
                         string message = convertedPed.isMale ? effect.ManMessage : effect.WomanMessage;
                         sharedData.notifier.peds.QueueMessage(message);
                     }

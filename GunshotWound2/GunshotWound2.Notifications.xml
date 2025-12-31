@@ -10,6 +10,9 @@
     <HelpTips Enabled="TRUE" TipDurationInSec="5" MinIntervalInSec="60" MaxIntervalInSec="180"/>
     <!-- Help messages you will see in left upper corner. They will appear in interval between Min and Max. -->
 
+    <HitNotification Enabled="TRUE"/>
+    <!-- Notification that appears when you hit somebody, show which body part you hit and wound -->
+
     <Info Value="TRUE"/>
     <!-- Info notifications: Totally healed, Picked up items, etc -->
 

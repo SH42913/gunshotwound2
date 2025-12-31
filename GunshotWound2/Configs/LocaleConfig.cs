@@ -73,6 +73,9 @@ namespace GunshotWound2.Configs {
         public string DeathReason;
         public string BleedingReason;
         public string RunningWithScissors;
+        public string HitNotificationWithWeapon;
+        public string HitNotificationDefault;
+        public string HitNotificationTrauma;
 
         public string FoundItems;
         public string YourInventory;

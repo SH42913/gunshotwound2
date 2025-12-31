@@ -18,6 +18,7 @@
             systemsGroup.AddSystem(new PlayerPainRecoverySystem(sharedData));
             systemsGroup.AddSystem(new PlayerHelpSystem(sharedData));
             systemsGroup.AddSystem(new PlayerSpeedSystem(sharedData));
+            systemsGroup.AddSystem(new PlayerHitNotificationSystem(sharedData));
 
             sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.CheckSelfKey, () => CheckPlayer(sharedData));
             sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.HelmetKey, () => ToggleHelmet(sharedData));

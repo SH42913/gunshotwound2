@@ -2,8 +2,8 @@ KEY,EN,RU,DE,FR,PL,KR,PT-BR,SPA,SWE,JP,ZH-HK,ZN-CN,FA,FI
 Green for new strings,,,,,,,,,,,,,,
 Black for removed strings,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,
-HelmetProtectedYou,Your helmet saved your head,Шлем спас вашу голову,Dein Helm rettete dein Leben,Votre casque a protégé votre tête,Hełm uratował ci głowe,헬멧이 당신의 머리를 구했다,Seu capacete salvou sua cabeça,El casco te protegió la cabeza,Din hjälm skyddade ditt huvud,ヘルメットが命を救った,頭盔保護了你的頭部,头盔保护了你的头部,کلاه ایمنی سر شما را نجات داد,Kypäräsi pelasti pääsi
-ArmorProtectedYou,Body armor saved you,Бронежилет спас вас,,,,,Sua armadura te salvou,,Kroppsskydd räddade dig,,護甲救了你,护甲救了你,,Panssari suojasi
+HelmetProtectedYou,Your helmet saved your head,Шлем спас вашу голову,Dein Helm rettete dein Leben,Votre casque a protégé votre tête,Hełm uratował ci głowe,헬멧이 당신의 머리를 구했다,Seu capacete protegeu sua cabeça,El casco te protegió la cabeza,Din hjälm skyddade ditt huvud,ヘルメットが命を救った,頭盔保護了你的頭部,头盔保护了你的头部,کلاه ایمنی سر شما را نجات داد,Kypäräsi pelasti pääsi
+ArmorProtectedYou,Body armor saved you,Бронежилет спас вас,,,,,Sua armadura te protegeu,,Kroppsskydd räddade dig,,護甲救了你,护甲救了你,,Panssari suojasi
 ArmorPenetrated,Your armor was penetrated,Бронежилет был пробит,Deine Rüstung wurde durchdrungen,Votre armure a été pénétrée,Przebicie kamizelki,당신의 갑옷이 뚫렸다,Sua armadura foi penetrada,Tu chaleco antibalas fue penetrado,Din rustning penetrerades,アーマーが貫通された,護甲被穿透,护甲被穿透,زره شما مورد نفوذ قرار گرفته,Panssarisi lävistettiin
 ArmorBluntTrauma,Behind-armor blunt trauma,Заброневая травма,,,,,Contusão sob armadura,,Trubbigt trauma bakom pansar,アーマーが損傷した,護甲後鈍性創傷,护甲后钝性创伤,,Tylppä vamma panssarin alla
 ,,,,,,,,,,,,,,
@@ -51,8 +51,8 @@ WomanLegsCritMessage,Her leg looks badly damaged,Её нога выглядит 
 ,,,,,,,,,,,,,,
 UnbearablePainMessage,Blacking out from pain,Вы теряете сознание от болевого шока,Du bist im Schock und verlierst das Bewusstsein!,"Vous avez un choc de douleur, vous perdez conscience !",Boli cię zbyt mocno! Tracisz przytomność,당신은 통증 쇼크를 얻었다! 당신은 의식을 읽었다!,Você desmaia devido a dor,Pierdes la consciencia debido a un alto dolor,Svimning av smärta,耐え難い痛み,因疼痛而失去意識,因疼痛而失去意识,You lose consciousness from the overwhelming pain,Menetät tajuntasi sietämättömästä kivun määrästä
 ,,,,,,,,,,,,,,
-AddingRange,Radius to Scan,Радиус поиска,,,,,,,Radie att skanna,範囲拡大,增加掃描半徑,增加扫描半径,,Skannauksen kantama
-RemovingRange,Radius to Remove,Радиус удаления,,,,,,,Radie att ta bort,範囲縮小,減少掃描半徑,减少扫描半径,,Poistamisen kantama
+AddingRange,Radius to Scan,Радиус поиска,,,,,Raio para escanear,,Radie att skanna,範囲拡大,增加掃描半徑,增加扫描半径,,Skannauksen kantama
+RemovingRange,Radius to Remove,Радиус удаления,,,,,Raio para remover,,Radie att ta bort,範囲縮小,減少掃描半徑,减少扫描半径,,Poistamisen kantama
 ,,,,,,,,,,,,,,
 ThanksForUsing,Thanks for using,Спасибо за использование,Danke für die Verwendung von,Merci pour votre utilisation,Dziękuje za użycie moda!,사용해 주어서 고맙다,Obrigado por usar,Gracias por usar,Tack för att du använder,ご利用ありがとうございます,感謝使用本模組,感谢使用本模组,Thanks for using,Kiitos kun käytät
 GswStopped,Something went wrong with GSW2 :(,"К сожалению, GSW2 поломался, извини уж :(","GSW2 funktioniert nicht mehr, tut mir leid :(","GSW2 s'est arrêté, désolé :(","GSW2 przestało działać, Przepraszamy :(","GSW2는 멈추었다, 미안하다 :(","GSW2 parou, desculpe :(",Las operaciones de GSW2 han acabado :(,Något gick fel med GSW2 :(,銃傷が止まった,本模組出了一些問題,本模组出了一些问题,"GSW2 operations have ended :( Please, send logs to SH42913",GSW2 lakkasi toimimasta :(
@@ -68,6 +68,9 @@ ArmorDestroyed,Your armor falls apart,Ваш бронежилет развали
 DeathReason,Death reason,Причина смерти,,,,,Causa da morte,,Dödsanledning,死亡原因,死亡原因,死亡原因,,Kuolinsyy
 BleedingReason,Bleeding,Кровотечение,,,,,Sangramento,,Blödning,出血原因,出血原因,出血原因,,Verenvuoto
 RunningWithScissors,Running with a major injury isn't a good idea,Бегать с серьёзным ранением не очень хорошая идея,,,,,Correr com um ferimento grave não é uma boa ideia,,Att springa med en allvarlig skada är ingen bra idé,はさみを持ったまま走っている（警告）,帶著重傷亂跑不是個好主意,重伤时乱跑不是个好主意,,{0} Haavoittuneena juokseminen ei ole hyvä idea
+HitNotificationDefault,You hit {0},Вы попадаете в {0},,,,,,,,,,,,
+HitNotificationWithWeapon,{0} hits {1},{0} попадает в {1},,,,,,,,,,,,
+HitNotificationTrauma,+ trauma,+ травма,,,,,,,,,,,,
 ,,,,,,,,,,,,,,
 FoundItems,You've got:,Вы получили:,,,,,Você achou:,,Du har:,,你得到了：,你得到了：,,Sinulla on
 YourInventory,In inventory:,В инвентаре:,,,,,Seu inventário:,,I Inventär:,,库存：,库存：,,Repussa:
