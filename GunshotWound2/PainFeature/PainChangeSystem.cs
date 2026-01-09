@@ -214,7 +214,7 @@ namespace GunshotWound2.PainFeature {
                     sharedData.cameraService.PlayPainfulWoundEffect();
                 } else if (ped.IsOnBike) {
                     ped.Task.LeaveVehicle(LeaveVehicleFlags.BailOut);
-                } else if (hasHitData && hitData.bodyPart.Key.EndsWith("Arm")) {
+                } else if (hasHitData && hitData.bodyPart.IsRightArm()) {
                     ped.Weapons.Drop();
                 }
             }
