@@ -6,10 +6,6 @@
     public sealed class UnconsciousStatus : IPedStatus {
         public const float HEALTH_THRESHOLD = 0.05f;
 
-        private const string DEATH_ANIM_NAME = "die";
-        private static readonly CrClipAsset DRIVER_DEATH_CLIP = new("veh@std@ds@base", DEATH_ANIM_NAME);
-        private static readonly CrClipAsset PASSENGER_DEATH_CLIP = new("veh@std@ps@base", DEATH_ANIM_NAME);
-
         public static readonly string[] NON_PLAYER_DEATH_AMBIENT = {
             "DYING_HELP", "DYING_MOAN", "DYING_PLEAD",
         };
@@ -53,7 +49,7 @@
             }
 
             if (convertedPed.thisPed.CurrentVehicle.IsValid()) {
-                PlayDeathAnimationInVehicle(convertedPed.thisPed);
+                GTAHelpers.PlayDeathAnimationInVehicle(convertedPed.thisPed);
             }
         }
 
@@ -73,25 +69,6 @@
             }
 
             convertedPed.thisPed.IsPainAudioEnabled = true;
-        }
-
-        private static void PlayDeathAnimationInVehicle(Ped ped) {
-            CrClipAsset? vehDeathClip;
-            switch (ped.SeatIndex) {
-                case VehicleSeat.Driver:    vehDeathClip = DRIVER_DEATH_CLIP; break;
-                case VehicleSeat.Passenger: vehDeathClip = PASSENGER_DEATH_CLIP; break;
-                default:                    vehDeathClip = null; break;
-            }
-
-            if (!vehDeathClip.HasValue) {
-                return;
-            }
-
-            const AnimationFlags flags = AnimationFlags.StayInEndFrame;
-            AnimationBlendDelta blendIn = AnimationBlendDelta.NormalBlendIn;
-            AnimationBlendDelta blendOut = AnimationBlendDelta.NormalBlendOut;
-            CrClipAsset clip = vehDeathClip.Value;
-            ped.Task.PlayAnimation(clip, blendIn, blendOut, duration: -1, flags, startPhase: 0f);
         }
 
         private void PlayerOnlyCase(ref ConvertedPed convertedPed) {

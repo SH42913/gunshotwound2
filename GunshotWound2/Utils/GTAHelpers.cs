@@ -3,8 +3,11 @@ namespace GunshotWound2.Utils {
     using GTA.Math;
     using GTA.Native;
 
-    // ReSharper disable once InconsistentNaming
     public static class GTAHelpers {
+        private const string DEATH_ANIM_NAME = "die";
+        private static readonly CrClipAsset DRIVER_DEATH_CLIP = new("veh@std@ds@base", DEATH_ANIM_NAME);
+        private static readonly CrClipAsset PASSENGER_DEATH_CLIP = new("veh@std@ps@base", DEATH_ANIM_NAME);
+
         public static bool TryGetClosestPed(out Ped closestPed, float radius) {
             Ped playerPed = Game.Player.Character;
             Ped[] closestPeds = World.GetNearbyPeds(playerPed, radius);
@@ -84,6 +87,25 @@ namespace GunshotWound2.Utils {
 
         public static void RemoveParticleEffect(int handle) {
             Function.Call(Hash.REMOVE_PARTICLE_FX, handle);
+        }
+
+        public static void PlayDeathAnimationInVehicle(Ped ped) {
+            CrClipAsset? vehDeathClip;
+            switch (ped.SeatIndex) {
+                case VehicleSeat.Driver:    vehDeathClip = DRIVER_DEATH_CLIP; break;
+                case VehicleSeat.Passenger: vehDeathClip = PASSENGER_DEATH_CLIP; break;
+                default:                    vehDeathClip = null; break;
+            }
+
+            if (!vehDeathClip.HasValue) {
+                return;
+            }
+
+            const AnimationFlags flags = AnimationFlags.StayInEndFrame;
+            AnimationBlendDelta blendIn = AnimationBlendDelta.NormalBlendIn;
+            AnimationBlendDelta blendOut = AnimationBlendDelta.NormalBlendOut;
+            CrClipAsset clip = vehDeathClip.Value;
+            ped.Task.PlayAnimation(clip, blendIn, blendOut, duration: -1, flags, startPhase: 0f);
         }
     }
 }

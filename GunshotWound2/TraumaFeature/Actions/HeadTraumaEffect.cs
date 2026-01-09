@@ -30,6 +30,10 @@ namespace GunshotWound2.TraumaFeature {
             string facialAnimName = sharedData.random.Next(StatusFeature.Statuses.UnconsciousStatus.DEATH_MOODS);
             convertedPed.RequestFacialIdleAnim(facialAnimName);
             convertedPed.facialIdleAnimLock = true;
+
+            if (convertedPed.thisPed.CurrentVehicle.IsValid()) {
+                GTAHelpers.PlayDeathAnimationInVehicle(convertedPed.thisPed);
+            }
         }
 
         public override void Repeat(Entity entity, ref ConvertedPed convertedPed) {
@@ -47,6 +51,10 @@ namespace GunshotWound2.TraumaFeature {
 
             if (convertedPed.isPlayer) {
                 sharedData.cameraService.SetHeadInjuryEffect(false);
+            }
+
+            if (convertedPed.thisPed.CurrentVehicle.IsValid()) {
+                convertedPed.thisPed.Task.ClearAll();
             }
         }
     }
