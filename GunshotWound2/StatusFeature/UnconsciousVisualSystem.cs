@@ -214,17 +214,19 @@ namespace GunshotWound2.StatusFeature {
             (WoundData? wound1, WoundData? wound2) = SelectTopWounds(entity);
             if (wound1.HasValue) {
                 WoundData data = wound1.Value;
-                helper.Injury1Component = data.damagedBone.Index;
-                helper.Injury1LocalPosition = data.localHitPos;
-                helper.Injury1LocalNormal = data.localHitNormal;
+                var nmData = NMHelper.GetNaturalMotionData(data.damagedBone, data.localHitPos, data.localHitNormal);
+                helper.Injury1Component = nmData.nmIndex;
+                helper.Injury1LocalPosition = nmData.localNmPos;
+                helper.Injury1LocalNormal = nmData.localNmNormal;
                 numInjuries++;
             }
 
             if (wound2.HasValue) {
                 WoundData data = wound2.Value;
-                helper.Injury2Component = data.damagedBone.Index;
-                helper.Injury2LocalPosition = data.localHitPos;
-                helper.Injury2LocalNormal = data.localHitNormal;
+                var nmData = NMHelper.GetNaturalMotionData(data.damagedBone, data.localHitPos, data.localHitNormal);
+                helper.Injury2Component = nmData.nmIndex;
+                helper.Injury2LocalPosition = nmData.localNmPos;
+                helper.Injury2LocalNormal = nmData.localNmNormal;
                 numInjuries++;
             }
 

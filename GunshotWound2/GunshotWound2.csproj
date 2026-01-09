@@ -131,6 +131,7 @@
     <Compile Include="Utils\GTAHelpers.cs" />
     <Compile Include="Utils\Localization.cs" />
     <Compile Include="Utils\MathHelpers.cs" />
+    <Compile Include="Utils\NMHelper.cs" />
     <Compile Include="Utils\ProfilerSample.cs" />
     <Compile Include="Utils\RaycastDebugDrawer.cs" />
     <Compile Include="Utils\SHVDNHelpers.cs" />
