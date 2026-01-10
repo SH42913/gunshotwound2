@@ -10,6 +10,7 @@ namespace GunshotWound2.HitDetection {
 
     public sealed class MultiBulletHitSystem : ISystem {
         private const float DAMAGE_MODIFIER = 0.1f;
+        private const float DAMAGE_CORRECTION = 1.45f;
         private readonly SharedData sharedData;
 
         private Filter damagedPeds;
@@ -32,7 +33,9 @@ namespace GunshotWound2.HitDetection {
                     continue;
                 }
 
-                int dealtDamage = hitData.armorDiff + hitData.healthDiff;
+                float dealtDamage = hitData.armorDiff + hitData.healthDiff;
+                dealtDamage *= DAMAGE_CORRECTION;
+
                 float damagePerPellet = Function.Call<float>(Hash.GET_WEAPON_DAMAGE, hitData.weaponHash);
                 int possibleHits = (int)(dealtDamage / damagePerPellet);
 #if DEBUG
