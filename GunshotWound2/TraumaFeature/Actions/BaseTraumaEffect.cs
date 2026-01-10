@@ -16,7 +16,7 @@
             this.sharedData = sharedData;
         }
 
-        public abstract void Apply(Entity entity, ref ConvertedPed convertedPed);
+        public abstract void Apply(Entity entity, in BodyPartConfig.BodyPart bodyPart, ref ConvertedPed convertedPed);
         public abstract void Repeat(Entity entity, ref ConvertedPed convertedPed);
         public abstract void EveryFrame(Entity entity, ref ConvertedPed convertedPed);
         public abstract void Cancel(Entity entity, ref ConvertedPed convertedPed);

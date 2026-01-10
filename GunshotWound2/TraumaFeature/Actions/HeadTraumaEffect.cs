@@ -1,4 +1,5 @@
 namespace GunshotWound2.TraumaFeature {
+    using Configs;
     using HealthFeature;
     using PedsFeature;
     using Scellecs.Morpeh;
@@ -11,8 +12,8 @@ namespace GunshotWound2.TraumaFeature {
 
         public HeadTraumaEffect(SharedData sharedData) : base(sharedData) { }
 
-        public override void Apply(Entity entity, ref ConvertedPed convertedPed) {
-            base.Apply(entity, ref convertedPed);
+        public override void Apply(Entity entity, in BodyPartConfig.BodyPart bodyPart, ref ConvertedPed convertedPed) {
+            base.Apply(entity, bodyPart, ref convertedPed);
             convertedPed.thisPed.IsPainAudioEnabled = false;
             convertedPed.thisPed.StopCurrentPlayingAmbientSpeech();
             convertedPed.thisPed.StopCurrentPlayingSpeech();

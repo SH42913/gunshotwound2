@@ -18,7 +18,7 @@
 
         public AbdomenTraumaEffect(SharedData sharedData) : base(sharedData) { }
 
-        public override void Apply(EcsEntity entity, ref ConvertedPed convertedPed) {
+        public override void Apply(EcsEntity entity, in BodyPartConfig.BodyPart bodyPart, ref ConvertedPed convertedPed) {
             convertedPed.thisPed.PlayAmbientSpeech("PAIN_RAPIDS", SpeechModifier.InterruptShouted);
 
             convertedPed.RequestRagdoll(4000);

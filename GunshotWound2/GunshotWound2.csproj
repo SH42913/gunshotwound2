@@ -77,6 +77,7 @@
     <Compile Include="PainFeature\PainkillersEffect.cs" />
     <Compile Include="PainFeature\PainkillersItem.cs" />
     <Compile Include="PedsFeature\FacialIdleAnimSystem.cs" />
+    <Compile Include="PedsFeature\InjuredOnGroundUpdateSystem.cs" />
     <Compile Include="PlayerFeature\MissionTrackerSystem.cs" />
     <Compile Include="PlayerFeature\PlayerHelpSystem.cs" />
     <Compile Include="PlayerFeature\PlayerHitNotification.cs" />

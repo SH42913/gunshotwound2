@@ -140,18 +140,19 @@
             activeTraumas.traumas.Add(traumaEntity);
 
             if (trauma.Effect != Traumas.Effects.Spine) {
-                ApplyTraumaEffect(targetEntity, ref activeTraumas, ref convertedPed, trauma.Effect, trauma.EffectMessage);
-            } else {
-                bool realSpineTrauma = convertedPed.isPlayer
-                        ? sharedData.mainConfig.playerConfig.RealisticSpineDamage
-                        : sharedData.mainConfig.pedsConfig.RealisticSpineDamage;
+                ApplyEffect(targetEntity, bodyPart, ref activeTraumas, ref convertedPed, trauma.Effect, trauma.EffectMessage);
+                return;
+            }
 
-                if (realSpineTrauma) {
-                    ApplyTraumaEffect(targetEntity, ref activeTraumas, ref convertedPed, Traumas.Effects.Spine, trauma.EffectMessage);
-                } else {
-                    ApplyTraumaEffect(targetEntity, ref activeTraumas, ref convertedPed, Traumas.Effects.Arms, trauma.EffectMessage);
-                    ApplyTraumaEffect(targetEntity, ref activeTraumas, ref convertedPed, Traumas.Effects.Legs, trauma.EffectMessage);
-                }
+            bool realSpineTrauma = convertedPed.isPlayer
+                    ? sharedData.mainConfig.playerConfig.RealisticSpineDamage
+                    : sharedData.mainConfig.pedsConfig.RealisticSpineDamage;
+
+            if (realSpineTrauma) {
+                ApplyEffect(targetEntity, bodyPart, ref activeTraumas, ref convertedPed, Traumas.Effects.Spine, trauma.EffectMessage);
+            } else {
+                ApplyEffect(targetEntity, bodyPart, ref activeTraumas, ref convertedPed, Traumas.Effects.Arms, trauma.EffectMessage);
+                ApplyEffect(targetEntity, bodyPart, ref activeTraumas, ref convertedPed, Traumas.Effects.Legs, trauma.EffectMessage);
             }
         }
 
@@ -163,11 +164,12 @@
             }
         }
 
-        private void ApplyTraumaEffect(Entity entity,
-                                       ref Traumas traumas,
-                                       ref ConvertedPed convertedPed,
-                                       Traumas.Effects newEffect,
-                                       bool showEffectMessage) {
+        private void ApplyEffect(Entity entity,
+                                 in BodyPartConfig.BodyPart bodyPart,
+                                 ref Traumas traumas,
+                                 ref ConvertedPed convertedPed,
+                                 Traumas.Effects newEffect,
+                                 bool showEffectMessage) {
             foreach ((Traumas.Effects type, BaseTraumaEffect effect) in effects) {
                 if (newEffect != type) {
                     continue;
@@ -185,13 +187,13 @@
                 if (showEffectMessage && !convertedPed.hasSpineDamage) {
                     if (convertedPed.isPlayer) {
                         sharedData.notifier.critical.QueueMessage(effect.PlayerMessage, Notifier.Color.YELLOW);
-                    } else if(convertedPed.lastAggressor?.IsPlayer ?? false) {
+                    } else if (convertedPed.lastAggressor?.IsPlayer ?? false) {
                         string message = convertedPed.isMale ? effect.ManMessage : effect.WomanMessage;
                         sharedData.notifier.peds.QueueMessage(message);
                     }
                 }
 
-                effect.Apply(entity, ref convertedPed);
+                effect.Apply(entity, bodyPart, ref convertedPed);
                 traumas.activeEffects |= type;
                 break;
             }

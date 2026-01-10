@@ -1,4 +1,5 @@
 ﻿namespace GunshotWound2.TraumaFeature {
+    using Configs;
     using PedsFeature;
     using Scellecs.Morpeh;
 
@@ -11,7 +12,7 @@
 
         public HeartTraumaEffect(SharedData sharedData) : base(sharedData) { }
 
-        public override void Apply(Entity entity, ref ConvertedPed convertedPed) {
+        public override void Apply(Entity entity, in BodyPartConfig.BodyPart bodyPart, ref ConvertedPed convertedPed) {
             convertedPed.thisPed.PlayAmbientSpeech("COUGH", GTA.SpeechModifier.InterruptShouted);
             convertedPed.RequestRagdoll(6000);
             // convertedPed.nmMessages = NM_MESSAGES; TODO restore later as nmHelper

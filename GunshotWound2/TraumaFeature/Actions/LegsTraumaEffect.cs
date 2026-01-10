@@ -1,4 +1,5 @@
 ﻿namespace GunshotWound2.TraumaFeature {
+    using Configs;
     using GTA;
     using PedsFeature;
     using Utils;
@@ -13,7 +14,7 @@
 
         public LegsTraumaEffect(SharedData sharedData) : base(sharedData) { }
 
-        public override void Apply(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) {
+        public override void Apply(Scellecs.Morpeh.Entity entity, in BodyPartConfig.BodyPart bodyPart, ref ConvertedPed convertedPed) {
             RagdollType ragdollType = convertedPed.thisPed.IsRunning ? RagdollType.Balance : RagdollType.Relax;
             convertedPed.RequestRagdoll(RAGDOLL_TIME_IN_MS, ragdollType);
             convertedPed.hasBrokenLegs = true;

@@ -1,4 +1,5 @@
 ﻿namespace GunshotWound2.TraumaFeature {
+    using Configs;
     using GTA.NaturalMotion;
     using PedsFeature;
     using Scellecs.Morpeh;
@@ -10,7 +11,7 @@
 
         public SpineTraumaEffect(SharedData sharedData) : base(sharedData) { }
 
-        public override void Apply(Entity entity, ref ConvertedPed convertedPed) {
+        public override void Apply(Entity entity, in BodyPartConfig.BodyPart bodyPart, ref ConvertedPed convertedPed) {
             convertedPed.hasSpineDamage = true;
             convertedPed.RequestPermanentRagdoll();
 
