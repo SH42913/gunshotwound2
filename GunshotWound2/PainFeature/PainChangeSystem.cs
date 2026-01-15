@@ -185,6 +185,8 @@ namespace GunshotWound2.PainFeature {
         }
 
         private void PlayPainEffects(EcsEntity entity, ref ConvertedPed convertedPed, ref Pain pain) {
+            DebugNre(entity, ref convertedPed);
+            
             if (convertedPed.hasSpineDamage) {
                 return;
             }
@@ -217,6 +219,54 @@ namespace GunshotWound2.PainFeature {
                 } else if (hasHitData && hitData.bodyPart.IsRightArm()) {
                     ped.Weapons.Drop();
                 }
+            }
+        }
+
+        private void DebugNre(EcsEntity entity, ref ConvertedPed convertedPed) {
+            if (sharedData?.logger == null) {
+                return;
+            }
+
+            ILogger log = sharedData.logger;
+            if (sharedData.random == null) {
+                log.WriteError("DEBUG: sharedData.random is NULL");
+            }
+
+            if (sharedData.mainConfig == null) {
+                log.WriteError("DEBUG: sharedData.mainConfig is NULL");
+            } else if (sharedData.mainConfig.woundConfig == null) {
+                log.WriteError("DEBUG: sharedData.mainConfig.woundConfig is NULL");
+            }
+
+            if (sharedData.cameraService == null) {
+                log.WriteError("DEBUG: sharedData.cameraService is NULL");
+            }
+
+            Ped ped = convertedPed.thisPed;
+            if (ped == null) {
+                log.WriteError("DEBUG: convertedPed.thisPed is NULL");
+            } else {
+                try {
+                    if (ped.Task == null) {
+                        log.WriteError("DEBUG: ped.Task returned NULL");
+                    }
+
+                    if (ped.Weapons == null) {
+                        log.WriteError("DEBUG: ped.Weapons returned NULL");
+                    }
+                } catch (Exception e) {
+                    log.WriteError($"DEBUG: Exception while accessing Ped properties: {e.Message}");
+                }
+            }
+
+            if (convertedPed.name == null) {
+                log.WriteError("DEBUG: convertedPed.name is NULL");
+            }
+
+            try {
+                entity.GetComponent<PedHitData>(out _);
+            } catch (Exception e) {
+                log.WriteError($"DEBUG: entity.GetComponent failed: {e.Message}");
             }
         }
     }
