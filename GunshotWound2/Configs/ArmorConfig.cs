@@ -9,6 +9,8 @@ namespace GunshotWound2.Configs {
     using Utils;
 
     public sealed class ArmorConfig : MainConfig.IConfig {
+        private const int MIN_ARMOR_VALUE = 1;
+
         public readonly struct Level {
             public readonly string Key;
             public readonly string LocKey;
@@ -49,10 +51,19 @@ namespace GunshotWound2.Configs {
         }
 
         public void Validate(MainConfig mainConfig, ILogger logger) {
+            if (Levels.Length < 1) {
+                logger.WriteError("There's no any armor levels, GSW will not use armor feature");
+                return;
+            }
+
             foreach (Level level in Levels) {
+                if (level.MaxValue < MIN_ARMOR_VALUE) {
+                    logger.WriteWarning($"MaxValue for {level.Key} must be positive");
+                }
+
                 foreach (string key in level.Parts) {
-                    var isValid = Array.Exists(mainConfig.bodyPartConfig.BodyParts, x => x.Key == key);
-                    if (!isValid) {
+                    bool isValidBodyPart = Array.Exists(mainConfig.bodyPartConfig.BodyParts, x => x.Key == key);
+                    if (!isValidBodyPart) {
                         logger.WriteWarning($"{level.Key} has invalid body part {key}");
                     }
                 }
@@ -75,7 +86,7 @@ namespace GunshotWound2.Configs {
         }
 
         public bool TryGetArmorLevel(int armor, out Level level) {
-            if (armor < 1) {
+            if (armor < MIN_ARMOR_VALUE) {
                 level = default;
                 return false;
             }
@@ -87,7 +98,7 @@ namespace GunshotWound2.Configs {
                 }
             }
 
-            level = Levels[0];
+            level = Levels[Levels.Length - 1];
             return true;
         }
 
