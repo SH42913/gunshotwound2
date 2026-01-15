@@ -55,9 +55,6 @@ namespace GunshotWound2.Configs {
 
         public string UnbearablePainMessage;
 
-        public string AddingRange;
-        public string RemovingRange;
-
         public string ThanksForUsing;
         public string GswStopped;
         public string GswIsPaused;
@@ -98,7 +95,6 @@ namespace GunshotWound2.Configs {
         public string YourStatus;
         public string HisStatus;
         public string HerStatus;
-        public string Dead;
 
         public string TranslationAuthor;
 

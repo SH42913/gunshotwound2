@@ -51,9 +51,6 @@ WomanLegsCritMessage,Her leg looks badly damaged,Её нога выглядит 
 ,,,,,,,,,,,,,,
 UnbearablePainMessage,Blacking out from pain,Вы теряете сознание от болевого шока,Du bist im Schock und verlierst das Bewusstsein!,"Vous avez un choc de douleur, vous perdez conscience !",Boli cię zbyt mocno! Tracisz przytomność,당신은 통증 쇼크를 얻었다! 당신은 의식을 읽었다!,Você desmaia devido a dor,Pierdes la consciencia debido a un alto dolor,Svimning av smärta,耐え難い痛み,因疼痛而失去意識,因疼痛而失去意识,You lose consciousness from the overwhelming pain,Menetät tajuntasi kivun takia
 ,,,,,,,,,,,,,,
-AddingRange,Radius to Scan,Радиус поиска,,,,,Raio para escanear,,Radie att skanna,範囲拡大,增加掃描半徑,增加扫描半径,,Skannauksen kantama
-RemovingRange,Radius to Remove,Радиус удаления,,,,,Raio para remover,,Radie att ta bort,範囲縮小,減少掃描半徑,减少扫描半径,,Poistamisen kantama
-,,,,,,,,,,,,,,
 ThanksForUsing,Thanks for using,Спасибо за использование,Danke für die Verwendung von,Merci pour votre utilisation,Dziękuje za użycie moda!,사용해 주어서 고맙다,Obrigado por usar,Gracias por usar,Tack för att du använder,ご利用ありがとうございます,感謝遊玩本模組,感谢游玩本模组,Thanks for using,Kiitos kun käytät
 GswStopped,Something went wrong with GSW2 :(,"К сожалению, GSW2 поломался, извини уж :(","GSW2 funktioniert nicht mehr, tut mir leid :(","GSW2 s'est arrêté, désolé :(","GSW2 przestało działać, Przepraszamy :(","GSW2는 멈추었다, 미안하다 :(","GSW2 parou, desculpe :(",Las operaciones de GSW2 han acabado :(,Något gick fel med GSW2 :(,銃傷が止まった,本模組出了一些問題,本模组出了一些问题,"GSW2 operations have ended :( Please, send logs to SH42913",GSW2 lakkasi toimimasta :(
 GswIsPaused,GSW2 is paused,Работа GSW2 приостановлена,GSW2 ist pausiert,GSW2 est en pause,GSW2 zostało zatrzymane,GSW2가 중지되었다,GSW2 está pausado,GSW2 esta en pausa,GSW2 är pausad,銃傷が一時停止された,已禁用本模組,已禁用本模组,GSW2 is paused,GSW2 on pysäytetty
