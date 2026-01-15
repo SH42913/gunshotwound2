@@ -8,6 +8,7 @@
     using PedsFeature;
     using PlayerFeature;
     using Scellecs.Morpeh;
+    using Utils;
     using EcsEntity = Scellecs.Morpeh.Entity;
     using EcsWorld = Scellecs.Morpeh.World;
 
@@ -118,6 +119,7 @@
                 PedEffects.TryGetLastDamageRecord(ped, out uint uintHash, out _, out int gameTime);
                 int timeDiff = Game.GameTime - gameTime;
                 sharedData.logger.WriteWarning($"Last record - {BuildWeaponName(uintHash)}, {timeDiff} frames ago");
+                sharedData.notifier.ShowOne(sharedData.localeConfig.GswCantDetectWeapon, blinking: true, Notifier.Color.RED);
             }
         }
 

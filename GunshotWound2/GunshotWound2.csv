@@ -56,6 +56,7 @@ GswStopped,Something went wrong with GSW2 :(,"К сожалению, GSW2 пол
 GswIsPaused,GSW2 is paused,Работа GSW2 приостановлена,GSW2 ist pausiert,GSW2 est en pause,GSW2 zostało zatrzymane,GSW2가 중지되었다,GSW2 está pausado,GSW2 esta en pausa,GSW2 är pausad,銃傷が一時停止された,已禁用本模組,已禁用本模组,GSW2 is paused,GSW2 on pysäytetty
 GswIsWorking,GSW2 is working,Работа GSW2 продолжается,GSW2 ist bereit,GSW2 fonctionne,GSW2 działa,GSW2가 작둥중이다,GSW2 está funcionando,GSW2 esta funcionando,GSW2 fungerar,銃傷処理中,已啟用本模組,已启用本模组,GSW2 is working,GSW2 on päällä
 GswPauseTip,You can pause GSW2 while in mission using {0} button,Вы можете приостановить GSW2 во время миссии используя клавишу {0},,,,,Você pode pausar GSW2 durante uma missão usando o botão {0},,Du kan pausa GSW2 under uppdraget med hjälp av knappen {0},銃傷の一時停止通知,在任務中時，按{0}禁用本模組,在任务中时，按{0}禁用本模组,,On mahdollista pysäyttää GSW2 tehtävän aikana painamalla {0}
+GswCantDetectWeapon,"GSW2 can't detect weapon, please, check ScriptHookVDotNet.log","GSW2 не может определить оружие, пожалуйста, проверьте ScriptHookVDotNet.log",,,,,,,,,,,,
 ,,,,,,,,,,,,,,
 YouTryToBandage,Trying to bandage {0}...,Вы пытаетесь наложить бинты на {0},,,,,Tentando enfaixar ferimentos {0}...,,Försöker att bandagera {0}...,包帯を巻こうとしている,按{0}嘗試包紮,按{0}尝试包扎,,Yrität sitoa {0}
 YouTryToUsePainkillers,Trying to use painkillers...,Вы пытаетесь использовать обезболивающие,,,,,Tentando usar analgésicos...,,Försöker använda smärtstillande medel...,包帯を巻こうとしている,嘗試服用止痛藥,尝试服用止痛药,,Yrität käyttää särkylääkkeitä

@@ -60,6 +60,7 @@ namespace GunshotWound2.Configs {
         public string GswIsPaused;
         public string GswIsWorking;
         public string GswPauseTip;
+        public string GswCantDetectWeapon;
 
         public string YouTryToBandage;
         public string YouTryToUsePainkillers;
