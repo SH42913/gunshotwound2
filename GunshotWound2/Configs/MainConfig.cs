@@ -14,7 +14,11 @@ namespace GunshotWound2.Configs {
         }
 
         public const string WEIGHT_ATTRIBUTE_NAME = "Weight";
-        public static readonly char[] Separator = { ';' };
+        public static readonly char[] Separator = [';',];
+
+        private const string NOTIFICATIONS_ROOT_NAME = "Notifications";
+        private const string LANGUAGE_NODE_NAME = "Language";
+        private const string EN_LOCALE_NAME = "EN";
 
         public readonly WoundConfig woundConfig;
         public readonly PedsConfig pedsConfig;
@@ -36,7 +40,7 @@ namespace GunshotWound2.Configs {
         public InputListener.Scheme HelmetKey;
         public InputListener.Scheme PauseKey;
 
-        public string Language = "EN";
+        public string Language = EN_LOCALE_NAME;
         public bool InfoMessages = true;
         public bool PedsMessages = true;
         public bool WoundsMessages = true;
@@ -100,13 +104,46 @@ namespace GunshotWound2.Configs {
                 FillHotkeysFrom(doc);
 
                 section = nameof(FillNotifications);
-                doc = LoadDocument(scriptPath, "Notifications.xml");
+                const string sectionName = "Notifications.xml";
+                doc = LoadDocument(scriptPath, sectionName);
                 FillNotifications(doc);
+                UpdateLanguageFromGame(scriptPath, doc, sectionName);
             } catch (Exception e) {
                 return (false, $"Failed loading of {section}:\n{e.Message}", e.StackTrace);
             }
 
             return (true, null, null);
+        }
+
+        private void UpdateLanguageFromGame(string scriptPath, XDocument doc, string sectionName) {
+            if (Language != EN_LOCALE_NAME || GTA.Game.Language == GTA.Language.American) {
+                return;
+            }
+
+            XElement languageNode = doc.Element(NOTIFICATIONS_ROOT_NAME)?.Element(LANGUAGE_NODE_NAME);
+            if (languageNode == null) {
+                return;
+            }
+
+            switch (GTA.Game.Language) {
+                case GTA.Language.French:            Language = "FR"; break;
+                case GTA.Language.German:            Language = "DE"; break;
+                case GTA.Language.Spanish:           Language = "SPA"; break;
+                case GTA.Language.Portuguese:        Language = "PT-BR"; break;
+                case GTA.Language.Polish:            Language = "PL"; break;
+                case GTA.Language.Russian:           Language = "RU"; break;
+                case GTA.Language.Korean:            Language = "KR"; break;
+                case GTA.Language.Japanese:          Language = "JP"; break;
+                case GTA.Language.Chinese:           Language = "ZH-HK"; break;
+                case GTA.Language.ChineseSimplified: Language = "ZH-CN"; break;
+            }
+
+            string nodeValue = languageNode.GetString();
+            if (Language != nodeValue) {
+                languageNode.SetAttributeValue("Value", Language);
+                string path = GetPathForSection(scriptPath, sectionName);
+                doc.Save(path);
+            }
         }
 
         public void ValidateConfigs(ILogger logger) {
@@ -116,7 +153,7 @@ namespace GunshotWound2.Configs {
         }
 
         private static XDocument LoadDocument(string scriptPath, string sectionName) {
-            string path = Path.ChangeExtension(scriptPath, sectionName);
+            string path = GetPathForSection(scriptPath, sectionName);
             if (!File.Exists(path)) {
                 throw new Exception($"GSW Config was not found at {path}");
             }
@@ -139,12 +176,12 @@ namespace GunshotWound2.Configs {
         }
 
         private void FillNotifications(XDocument doc) {
-            XElement node = doc.Element("Notifications");
+            XElement node = doc.Element(NOTIFICATIONS_ROOT_NAME);
             if (node == null) {
                 return;
             }
 
-            Language = node.Element("Language").GetString();
+            Language = node.Element(LANGUAGE_NODE_NAME).GetString();
             InfoMessages = node.Element("Info").GetBool();
             PedsMessages = node.Element("OtherPeds").GetBool();
             WoundsMessages = node.Element("Wounds").GetBool();
@@ -158,6 +195,10 @@ namespace GunshotWound2.Configs {
 
             XElement hitNotificationNode = node.Element("HitNotification");
             HitNotificationEnabled = hitNotificationNode.GetBool("Enabled");
+        }
+
+        private static string GetPathForSection(string scriptPath, string sectionName) {
+            return Path.ChangeExtension(scriptPath, sectionName);
         }
     }
 }
