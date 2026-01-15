@@ -27,6 +27,10 @@
         void IDisposable.Dispose() { }
 
         public void OnUpdate(float deltaTime) {
+            if (Game.IsCutsceneActive) {
+                return;
+            }
+
             foreach (EcsEntity entity in convertedPeds) {
                 ref ConvertedPed convertedPed = ref convertedStash.Get(entity);
                 Ped ped = convertedPed.thisPed;
