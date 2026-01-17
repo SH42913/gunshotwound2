@@ -64,14 +64,19 @@ namespace GunshotWound2.HealthFeature {
             foreach (EcsEntity entity in bleedToInit) {
                 ref WoundData woundData = ref woundDataStash.Get(entity);
                 float normalizedBleed = woundData.totalBleed / sharedData.mainConfig.woundConfig.GlobalMultipliers.bleed;
-                if (normalizedBleed <= 0f || normalizedBleed >= BleedingFxSystem.BLOOD_FOUNTAIN_THRESHOLD) {
+                if (normalizedBleed <= 0f) {
                     continue;
                 }
 
                 ref BloodPoolFx bloodPoolFx = ref bloodPoolStash.Add(entity);
                 bloodPoolFx.bloodPoolIndex = sharedData.random.Next(0, bloodPoolEffects.Length);
-                UpdateTimeToNextUpdate(entity, ref bloodPoolFx);
-                bloodPoolFx.timeToNextUpdate *= sharedData.random.NextFloat(1f, 2f);
+
+                if (normalizedBleed >= BleedingFxSystem.BLOOD_FOUNTAIN_THRESHOLD) {
+                    bloodPoolFx.timeToNextUpdate = sharedData.random.NextFloat(4.5f, 5.5f);
+                } else {
+                    UpdateTimeToNextUpdate(entity, ref bloodPoolFx);
+                    bloodPoolFx.timeToNextUpdate *= sharedData.random.NextFloat(1f, 2f);
+                }
             }
         }
 
@@ -101,7 +106,7 @@ namespace GunshotWound2.HealthFeature {
                 return;
             }
 
-            WoundData data = woundDataStash.Get(woundEntity);
+            ref WoundData data = ref woundDataStash.Get(woundEntity);
             Vector3 localPos = data.hasHitData ? data.localHitPos : Vector3.Zero;
             Vector3 worldPos = data.damagedBone.GetOffsetPosition(localPos);
             if (GTA.World.GetGroundHeight(worldPos, out float height)) {
@@ -129,6 +134,13 @@ namespace GunshotWound2.HealthFeature {
             const float maxInterval = 8.0f;
             float calculatedTime = k / (woundData.totalBleed + epsilon);
             bloodPoolFx.timeToNextUpdate = MathHelpers.Clamp(calculatedTime, minInterval, maxInterval);
+
+            Ped ped = woundData.damagedBone.Owner;
+            if (ped.IsRunning) {
+                bloodPoolFx.timeToNextUpdate *= sharedData.random.NextFloat(0.3f, 0.5f);
+            } else if (ped.IsSprinting) {
+                bloodPoolFx.timeToNextUpdate *= sharedData.random.NextFloat(0.1f, 0.2f);
+            }
         }
 
         public void Dispose() {
