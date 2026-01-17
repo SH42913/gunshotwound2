@@ -453,7 +453,7 @@
                 <Wound Key="SlashCut" Weight="20"/>
             </Wounds>
         </CombatCut>
-        <HeavyCut DamageMult="1.2" BleedMult="3.0" PainMult="1.2" ChanceToCauseTrauma="0.65"
+        <HeavyCut DamageMult="1.2" BleedMult="3.0" PainMult="1.0" ChanceToCauseTrauma="0.65"
                   ArmorDamage="5.0" HelmetSafeChance="0.7">
             <Hashes Hashes="MACHETE;"/>
             <TakedownWound Key="ChopCut"/>
@@ -463,7 +463,7 @@
                 <Wound Key="LacerationCut" Weight="20"/>
             </Wounds>
         </HeavyCut>
-        <Chopping DamageMult="1.6" BleedMult="2.5" PainMult="1.5" ChanceToCauseTrauma="0.85"
+        <Chopping DamageMult="1.6" BleedMult="2.5" PainMult="1.25" ChanceToCauseTrauma="0.85"
                   ArmorDamage="15.0" HelmetSafeChance="0.5">
             <Hashes Hashes="BATTLEAXE;HATCHET;STONE_HATCHET;"/>
             <TakedownWound Key="ChopCut"/>

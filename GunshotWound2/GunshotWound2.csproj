@@ -82,6 +82,7 @@
     <Compile Include="PlayerFeature\PlayerHelpSystem.cs" />
     <Compile Include="PlayerFeature\PlayerHitNotification.cs" />
     <Compile Include="PlayerFeature\PlayerHitNotificationSystem.cs" />
+    <Compile Include="PlayerFeature\PlayerInitializer.cs" />
     <Compile Include="PlayerFeature\PlayerPainRecoverySystem.cs" />
     <Compile Include="PlayerFeature\PlayerSpeedHistory.cs" />
     <Compile Include="PlayerFeature\PlayerSpeedSystem.cs" />

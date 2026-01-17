@@ -50,5 +50,9 @@
             return Function.Call<bool>(Hash.IS_SCENARIO_GROUP_ENABLED, rampageScenario)
                    && Function.Call<bool>(Hash.IS_PED_USING_SCENARIO, ped, rampageScenario);
         }
+
+        public static void SetMeleeDamageModifier(Player player, float modifier) {
+            Function.Call(Hash.SET_PLAYER_MELEE_WEAPON_DAMAGE_MODIFIER, player, modifier, 1);
+        }
     }
 }
