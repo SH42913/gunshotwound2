@@ -215,23 +215,27 @@ namespace GunshotWound2.StatusFeature {
             if (wound1.HasValue) {
                 WoundData data = wound1.Value;
                 var nmData = NMHelper.GetNaturalMotionData(data.damagedBone, data.localHitPos, data.localHitNormal);
-                helper.Injury1Component = nmData.nmIndex;
-                helper.Injury1LocalPosition = nmData.localNmPos;
-                helper.Injury1LocalNormal = nmData.localNmNormal;
-                numInjuries++;
+                if (nmData.nmIndex != 0) {
+                    helper.Injury1Component = nmData.nmIndex;
+                    helper.Injury1LocalPosition = nmData.localNmPos;
+                    helper.Injury1LocalNormal = nmData.localNmNormal;
+                    numInjuries++;
+                }
             }
 
             if (wound2.HasValue) {
                 WoundData data = wound2.Value;
                 var nmData = NMHelper.GetNaturalMotionData(data.damagedBone, data.localHitPos, data.localHitNormal);
-                helper.Injury2Component = nmData.nmIndex;
-                helper.Injury2LocalPosition = nmData.localNmPos;
-                helper.Injury2LocalNormal = nmData.localNmNormal;
-                numInjuries++;
+                if (nmData.nmIndex != 0) {
+                    helper.Injury2Component = nmData.nmIndex;
+                    helper.Injury2LocalPosition = nmData.localNmPos;
+                    helper.Injury2LocalNormal = nmData.localNmNormal;
+                    numInjuries++;
+                }
             }
 
             ref Pain pain = ref entity.GetComponent<Pain>();
-            helper.StrongRollForce = pain.Percent() < 2.0f;
+            helper.StrongRollForce = pain.Percent() < 3.0f;
             helper.NumInjuries = numInjuries;
             helper.AttackerPos = convertedPed.lastAggressor.IsValid()
                     ? convertedPed.lastAggressor.Position
