@@ -4,6 +4,8 @@
     using RagdollType = GTA.RagdollType;
 
     public sealed class RagdollSystem : ILateSystem {
+        public const int PERMANENT_RAGDOLL_TIME = -1;
+
         private readonly SharedData sharedData;
 
         private Filter peds;
@@ -41,20 +43,16 @@
                 return;
             }
 
-            bool isRealRagdoll = GetRealPedRagdoll(convertedPed);
-            EnsurePermanentRagdoll(ref convertedPed, isRealRagdoll);
+            EnsurePermanentRagdoll(ref convertedPed);
             ReplaceRequestWithBodyRelaxIfSpineDamage(ref convertedPed);
 
             bool newHelperRequest = convertedPed.requestedNmHelper != null;
-            bool hasActiveRequest = convertedPed.ragdollRequest.time != 0 || newHelperRequest;
-            if (!hasActiveRequest) {
-                return;
-            }
-
-            if (!convertedPed.isRagdoll || newHelperRequest) {
-                ExecuteNewRagdoll(ref convertedPed);
-            } else {
-                HandleActiveRagdoll(ref convertedPed);
+            if (convertedPed.ragdollRequest.time != 0 || newHelperRequest) {
+                if (!convertedPed.isRagdoll || newHelperRequest) {
+                    ExecuteNewRagdoll(ref convertedPed);
+                } else {
+                    HandleActiveRagdoll(ref convertedPed);
+                }
             }
         }
 
@@ -78,21 +76,21 @@
             }
         }
 
-        private bool GetRealPedRagdoll(in ConvertedPed convertedPed) {
-            bool inRagdollOrTask = convertedPed.isRagdoll || PedEffects.IsRunningRagdollTask(convertedPed.thisPed);
-            return inRagdollOrTask && !PedEffects.IsPedGettingUp(convertedPed.thisPed);
-        }
-
-        private void EnsurePermanentRagdoll(ref ConvertedPed convertedPed, bool isRealRagdoll) {
-            if (!convertedPed.permanentRagdoll || isRealRagdoll) {
+        private void EnsurePermanentRagdoll(ref ConvertedPed convertedPed) {
+            if (!convertedPed.permanentRagdoll || convertedPed.ragdollRequest.time == PERMANENT_RAGDOLL_TIME) {
                 return;
             }
 
-            if (convertedPed.ragdollRequest.time >= 0) {
-#if DEBUG
+            PedEffects.ResetRagdollTime(convertedPed.thisPed);
+            if (convertedPed.isRagdoll) {
+                return;
+            }
+
+            if (!PedEffects.IsRunningRagdollTask(convertedPed.thisPed) || PedEffects.IsPedGettingUp(convertedPed.thisPed)) {
+#if DEBUG && DEBUG_EVERY_FRAME
                 sharedData.logger.WriteInfo($"Force permanent ragdoll to {convertedPed.name}");
 #endif
-                convertedPed.ragdollRequest = (-1, RagdollType.Relax);
+                convertedPed.ragdollRequest = (PERMANENT_RAGDOLL_TIME, RagdollType.Relax);
             }
         }
 
@@ -107,7 +105,7 @@
         private void ExecuteNewRagdoll(ref ConvertedPed convertedPed) {
             ref (int time, RagdollType type) request = ref convertedPed.ragdollRequest;
 
-#if DEBUG
+#if DEBUG && DEBUG_EVERY_FRAME
             sharedData.logger.WriteInfo($"Apply Ragdoll for {convertedPed.name} time={request.time}");
 #endif
 
@@ -116,9 +114,7 @@
                 convertedPed.thisPed.Ragdoll(request.time, request.type);
             }
 
-            if (!convertedPed.permanentRagdoll) {
-                convertedPed.ragdollRequest = default;
-            }
+            request = default;
         }
 
         private bool TryPlayNaturalMotion(ref ConvertedPed convertedPed) {

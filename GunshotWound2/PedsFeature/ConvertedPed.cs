@@ -61,13 +61,14 @@
         }
 
         public static void RequestRagdoll(this ref ConvertedPed convertedPed, int timeInMs, RagdollType type = RagdollType.Relax) {
-            if (convertedPed.ragdollRequest.time >= 0 && !convertedPed.permanentRagdoll) {
+            if (convertedPed.ragdollRequest.time > 0 && !convertedPed.permanentRagdoll) {
                 convertedPed.ragdollRequest = (timeInMs, type);
             }
         }
 
         public static void RequestPermanentRagdoll(this ref ConvertedPed convertedPed) {
             convertedPed.permanentRagdoll = true;
+            convertedPed.ragdollRequest = (RagdollSystem.PERMANENT_RAGDOLL_TIME, RagdollType.Relax);
         }
 
         public static void RemoveRagdollRequest(this ref ConvertedPed convertedPed) {

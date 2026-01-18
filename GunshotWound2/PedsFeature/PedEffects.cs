@@ -145,6 +145,10 @@
             return Function.Call<int>(Hash.GET_PED_BONE_INDEX, ped, boneId);
         }
 
+        public static void ResetRagdollTime(Ped ped) {
+            Function.Call(Hash.RESET_PED_RAGDOLL_TIMER, ped);
+        }
+
         public static bool IsRunningRagdollTask(Ped ped) {
             return Function.Call<bool>(Hash.IS_PED_RUNNING_RAGDOLL_TASK, ped);
         }
