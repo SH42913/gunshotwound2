@@ -28,6 +28,9 @@
 
         private void Process(ref ConvertedPed convertedPed) {
             GTA.Ped ped = convertedPed.thisPed;
+            if (ped.IsInVehicle()) {
+                return;
+            }
 
             bool inRagdollCurrentFrame = ped.IsRagdoll;
             HandleAfterRagdollAction(ref convertedPed, inRagdollCurrentFrame);
