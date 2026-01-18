@@ -142,14 +142,8 @@
 
             int duration = convertedPed.ragdollRequest.time;
             convertedPed.thisPed.Ragdoll(duration, RagdollType.ScriptControl);
-            if (duration <= 0) {
-                convertedPed.activeNmHelper.Start();
-            } else {
-                convertedPed.activeNmHelper.Start(duration);
-            }
-
+            convertedPed.activeNmHelper.Start(duration);
             return true;
-
         }
 
         private void HandleAfterRagdollAction(ref ConvertedPed convertedPed, bool currentFrameRagdoll) {
@@ -198,10 +192,7 @@
 
         public void Dispose() {
             foreach (Entity entity in peds) {
-                ref ConvertedPed convertedPed = ref pedStash.Get(entity);
-                if (convertedPed.thisPed.IsRagdoll) {
-                    convertedPed.thisPed.CancelRagdoll();
-                }
+                ResetRagdoll(ref pedStash.Get(entity));
             }
         }
     }
