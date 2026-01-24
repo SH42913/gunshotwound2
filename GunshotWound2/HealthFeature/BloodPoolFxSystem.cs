@@ -118,9 +118,12 @@ namespace GunshotWound2.HealthFeature {
             if (bloodPoolFx.effectHandle != 0) {
                 float alpha = sharedData.random.NextFloat(0.9f, 1f);
                 GTAHelpers.SetParticleEffectAlpha(bloodPoolFx.effectHandle, alpha);
-            } else {
+            }
+#if DEBUG
+            else {
                 sharedData.logger.WriteWarning($"Effect {effectName} was not created");
             }
+#endif
 
             bloodPoolFx.timeToStopGrow = bloodPool.minGrowTime;
         }
