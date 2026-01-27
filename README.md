@@ -33,8 +33,8 @@ If you want **grounded, punishing gunplay** that rewards good tactics and medica
    - Place the **entire `GSW2` folder** into your GTA V `scripts` folder.  
      If you don’t have a `scripts` folder yet, create one in your GTAV root directory.
 5. **Configure the mod**
-   - Open the `GunshotWound2.*.xml` files (for example `GunshotWound2.Player.xml`) with a text editor.
-   - Adjust difficulty, hotkeys, UI behavior and other options to your liking.
+   - Open the `GunshotWound2.*.xml` files (for example `GunshotWound2.KeyBinds.xml`) with a text editor.
+   - For a detailed explanation of every config file and how they interact, see `CONTENT_README.md` in the same folder.
 6. **Launch the game**
    - Start GTAV single‑player.
    - If installed correctly, GSW2 will initialize automatically in the background.
