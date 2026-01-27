@@ -117,6 +117,15 @@ Always read each mod’s documentation and configure them to avoid overlapping h
 
 ---
 
+## Debug build / DEBUG version
+
+- **Who should use it**: The DEBUG build is intended for developers and users who are debugging issues or working on GSW2 itself. Regular players should stick to the normal release build.
+- **What it does**: DEBUG builds enable extra logging, on‑screen diagnostic messages and some additional validation checks. This helps track down configuration problems or unexpected behavior, but may slightly reduce performance and clutter the screen / logs.
+- **Where to get it**: If a DEBUG package is provided in a release, it will be clearly marked in the download name (for example `GSW2_DEBUG.zip`) or in the release notes. Otherwise, you can compile it yourself from source using the `DEBUG` configuration in the Visual Studio solution.
+- **How to use it**: Install the DEBUG build in the same way as the normal release.
+
+---
+
 ## Support and community
 
 - **Bug reports** – Use the [issues section at GitHub](https://github.com/SH42913/gunshotwound2/issues).
