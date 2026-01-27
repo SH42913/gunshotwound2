@@ -14,6 +14,7 @@ namespace GunshotWound2.Configs {
         }
 
         public const string WEIGHT_ATTRIBUTE_NAME = "Weight";
+        public const float DAMAGE_MODIFIER = 0.1f;
         public static readonly char[] Separator = [';',];
 
         private const string NOTIFICATIONS_ROOT_NAME = "Notifications";

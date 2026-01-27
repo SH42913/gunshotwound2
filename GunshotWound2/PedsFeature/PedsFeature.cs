@@ -5,6 +5,7 @@
 
     public static class PedsFeature {
         public static void Create(SystemsGroup systemsGroup, SharedData sharedData) {
+            systemsGroup.AddSystem(new PedDamageModifierSystem(sharedData));
             systemsGroup.AddSystem(new NpcDetectSystem(sharedData));
             systemsGroup.AddSystem(new ConvertPedSystem(sharedData));
             systemsGroup.AddSystem(new RagdollSystem(sharedData));

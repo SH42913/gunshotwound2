@@ -156,5 +156,21 @@
         public static bool IsPedGettingUp(Ped ped) {
             return Function.Call<bool>(Hash.IS_PED_GETTING_UP, ped);
         }
+
+        public static void SetMeleeDamageModifier(float modifier) {
+            Function.Call(Hash.SET_AI_MELEE_WEAPON_DAMAGE_MODIFIER, modifier);
+        }
+
+        public static void ResetMeleeDamageModifier() {
+            Function.Call(Hash.RESET_AI_MELEE_WEAPON_DAMAGE_MODIFIER);
+        }
+
+        public static void SetWeaponDamageModifier(float modifier) {
+            Function.Call(Hash.SET_AI_WEAPON_DAMAGE_MODIFIER, modifier);
+        }
+
+        public static void ResetWeaponDamageModifier() {
+            Function.Call(Hash.RESET_AI_WEAPON_DAMAGE_MODIFIER);
+        }
     }
 }

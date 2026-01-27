@@ -9,8 +9,6 @@ namespace GunshotWound2.HitDetection {
     using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class MultiBulletHitSystem : ISystem {
-        private const float DAMAGE_MODIFIER = 0.1f;
-        private const float DAMAGE_CORRECTION = 1.45f;
         private readonly SharedData sharedData;
 
         private Filter damagedPeds;
@@ -23,7 +21,6 @@ namespace GunshotWound2.HitDetection {
 
         public void OnAwake() {
             damagedPeds = World.Filter.With<ConvertedPed>().With<PedHitData>();
-            SetDamageModifierForAllShotguns();
         }
 
         public void OnUpdate(float deltaTime) {
@@ -34,30 +31,15 @@ namespace GunshotWound2.HitDetection {
                 }
 
                 float dealtDamage = hitData.armorDiff + hitData.healthDiff;
-                dealtDamage *= DAMAGE_CORRECTION;
-
-                float damagePerPellet = Function.Call<float>(Hash.GET_WEAPON_DAMAGE, hitData.weaponHash);
-                int possibleHits = (int)(dealtDamage / damagePerPellet);
+                float damagePerPellet = MainConfig.DAMAGE_MODIFIER * Function.Call<float>(Hash.GET_WEAPON_DAMAGE, hitData.weaponHash);
+                float possibleHits = dealtDamage / damagePerPellet;
 #if DEBUG
-                sharedData.logger.WriteInfo($"Possible hit count {possibleHits}, dealt={dealtDamage} perPellet={damagePerPellet}");
+                sharedData.logger.WriteInfo($"Possible hit count {possibleHits}, totalDmg={dealtDamage} perPellet={damagePerPellet}");
 #endif
-                hitData.hits = MathHelpers.Clamp(possibleHits, 1, hitData.weaponType.Pellets);
-                Function.Call(Hash.SET_WEAPON_DAMAGE_MODIFIER, hitData.weaponHash, DAMAGE_MODIFIER);
+                hitData.hits = MathHelpers.Clamp((int)possibleHits, 1, hitData.weaponType.Pellets);
             }
         }
 
         void IDisposable.Dispose() { }
-
-        private void SetDamageModifierForAllShotguns() {
-            foreach (WeaponConfig.Weapon weapon in sharedData.mainConfig.weaponConfig.Weapons) {
-                if (weapon.Pellets < 2) {
-                    continue;
-                }
-
-                foreach (uint hash in weapon.Hashes) {
-                    Function.Call(Hash.SET_WEAPON_DAMAGE_MODIFIER, hash, DAMAGE_MODIFIER);
-                }
-            }
-        }
     }
 }

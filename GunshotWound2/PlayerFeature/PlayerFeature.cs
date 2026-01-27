@@ -8,7 +8,7 @@
 
     public static class PlayerFeature {
         public static void Create(SystemsGroup systemsGroup, SharedData sharedData) {
-            systemsGroup.AddInitializer(new PlayerInitializer(sharedData));
+            systemsGroup.AddSystem(new PlayerDamageModifierSystem(sharedData));
             systemsGroup.AddSystem(new PlayerDetectSystem(sharedData));
             systemsGroup.AddSystem(new AdrenalineSystem(sharedData));
             systemsGroup.AddSystem(new MedkitGpsSystem(sharedData));

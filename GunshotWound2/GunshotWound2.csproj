@@ -79,11 +79,12 @@
     <Compile Include="PainFeature\PainkillersItem.cs" />
     <Compile Include="PedsFeature\FacialIdleAnimSystem.cs" />
     <Compile Include="PedsFeature\InjuredOnGroundUpdateSystem.cs" />
+    <Compile Include="PedsFeature\PedDamageModifierSystem.cs" />
     <Compile Include="PlayerFeature\MissionTrackerSystem.cs" />
     <Compile Include="PlayerFeature\PlayerHelpSystem.cs" />
     <Compile Include="PlayerFeature\PlayerHitNotification.cs" />
     <Compile Include="PlayerFeature\PlayerHitNotificationSystem.cs" />
-    <Compile Include="PlayerFeature\PlayerInitializer.cs" />
+    <Compile Include="PlayerFeature\PlayerDamageModifierSystem.cs" />
     <Compile Include="PlayerFeature\PlayerPainRecoverySystem.cs" />
     <Compile Include="PlayerFeature\PlayerSpeedHistory.cs" />
     <Compile Include="PlayerFeature\PlayerSpeedSystem.cs" />

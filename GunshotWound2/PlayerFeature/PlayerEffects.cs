@@ -54,5 +54,9 @@
         public static void SetMeleeDamageModifier(Player player, float modifier) {
             Function.Call(Hash.SET_PLAYER_MELEE_WEAPON_DAMAGE_MODIFIER, player, modifier, 1);
         }
+
+        public static void SetWeaponDamageModifier(Player player, float modifier) {
+            Function.Call(Hash.SET_PLAYER_WEAPON_DAMAGE_MODIFIER, player, modifier);
+        }
     }
 }
