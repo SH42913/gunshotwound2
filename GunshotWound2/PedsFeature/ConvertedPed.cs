@@ -46,7 +46,7 @@
         public bool facialIdleAnimLock;
         public bool facialIdleAnimApplied;
 
-#if DEBUG
+#if PED_BLIPS
         public Blip customBlip;
 #endif
     }

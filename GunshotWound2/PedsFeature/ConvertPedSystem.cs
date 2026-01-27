@@ -60,7 +60,7 @@
                 worldService.AddConverted(pedToConvert, entity);
                 entity.AddComponent<JustConvertedEvent>();
 
-#if DEBUG
+#if PED_BLIPS
                 convertedPed.customBlip = pedToConvert.AddBlip();
                 convertedPed.customBlip.Scale = 0.3f;
 #endif

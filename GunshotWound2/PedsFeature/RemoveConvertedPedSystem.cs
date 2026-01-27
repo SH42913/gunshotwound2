@@ -47,7 +47,7 @@ namespace GunshotWound2.PedsFeature {
                 sharedData.cameraService.ClearAllEffects();
             }
 
-#if DEBUG
+#if PED_BLIPS
             DeleteBlip(convertedPed);
 #endif
             sharedData.worldService.RemoveConverted(convertedPed.thisPed);
@@ -60,7 +60,7 @@ namespace GunshotWound2.PedsFeature {
             }
         }
 
-#if DEBUG
+#if PED_BLIPS
         private static void DeleteBlip(in ConvertedPed convertedPed) {
             if (convertedPed.customBlip != null) {
                 convertedPed.customBlip.Delete();
