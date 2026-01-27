@@ -68,6 +68,10 @@ namespace GunshotWound2.StatusFeature {
             }
 
             if (!sharedData.mainConfig.woundConfig.UseCustomUnconsciousBehaviour) {
+#if DEBUG
+                sharedData.logger.WriteInfo("Visual behaviour is simple ragdoll");
+#endif
+                convertedPed.RequestPermanentRagdoll();
                 return;
             }
 
@@ -97,7 +101,7 @@ namespace GunshotWound2.StatusFeature {
             }
 
             switch (randomizer.NextWithReplacement()) {
-                case 0:  SimpleRagdollVisualBehaviour(ref convertedPed); break;
+                case 0:  BodyRelaxRagdollVisualBehaviour(ref convertedPed); break;
                 case 1:  InjuredVisualBehaviour(entity, ref convertedPed); break;
                 case 2:  CrawlVisualBehaviour(entity, ref convertedPed); break;
                 case 3:  WritheVisualBehaviour(ref convertedPed); break;
@@ -105,9 +109,9 @@ namespace GunshotWound2.StatusFeature {
             }
         }
 
-        private void SimpleRagdollVisualBehaviour(ref ConvertedPed convertedPed) {
+        private void BodyRelaxRagdollVisualBehaviour(ref ConvertedPed convertedPed) {
 #if DEBUG
-            sharedData.logger.WriteInfo("Simple ragdoll as visual behaviour");
+            sharedData.logger.WriteInfo("Body relax as visual behaviour");
 #endif
             convertedPed.thisPed.StopCurrentPlayingSpeech();
             convertedPed.thisPed.StopCurrentPlayingAmbientSpeech();
