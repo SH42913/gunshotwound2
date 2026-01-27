@@ -1,108 +1,170 @@
-I'm happy to present you the **Gunshot Wound 2**.
+**Gunshot Wound 2 (GSW2)** is a realism‑focused damage system for single‑player GTA V.
 
-## What is GSW?
-The GunShot Wound 2 - mod targets for realism, that brings to GTAV the most realistic damage system you ever have seen in GTA.\
-It simulates pain, bleeding, organ failures, working armor, etc. Do you want to experience real firearms damage?\
-Try the **GSW2**, young Luke!
+It simulates **pain, bleeding, trauma, armor penetration and medical treatment** for both the player and NPCs, turning every firefight into a tactical survival scenario instead of a simple health bar race.
 
-**Most mods that change health or armor may be incompatible with GSW.**
-~~GSW2 can work wrong if you have installed mods that changes .meta files of the game, especially if common.rpf/data/pedhealth.meta was changed, GSW2 only works well with vanilla pedhealth.meta file!
-Eg, GSW2 will be compatible with Ripplers Realism if you'll not apply pedhealth.meta from RR.~~
+---
 
-## How it works
-For the first, the GSW will find every ped around the player(you can disable it in XML-config).\
-When ped(or player) has got damage, the script finds damaged body part and weapon.\
-If the upper/lower body is damaged, and the ped has armor, GSW2 checks chances to penetrate armor.\
-If ped doesn't have armor or armor was penetrated, the script selects type of wound with the help of the random using body part and weapon.\
-Every new wound applies pain to the ped. If the total pain is more than maximal pain ped can handle, ped falls to ragdoll and stay until pain decreases(pain overwhelming simulation). 
-Pain will make ped slower, change movement animation and reduce its accuracy. For the player, pain will disable and lock Special abilities and sprint. Pain decreases over time.\
-Most of the wounds create bleeding. Every bleeding step by step decreases ped's health, but wounds heal by themselves over time. Player can bandage self to reduce time to heal bleeding.\
-Any wound also may create trauma, like broken arm bone, punctured lungs, severed artery, etc. It will create additional pain, bleeding, and other effects.\
-When ped got full health in any way - all pain, every bleeding and trauma will heal instantly. So, if you can heal all your wounds - find a med-pack or use a trainer to heal yourself. \
-_Currently, GSW2 doesn't support vehicle weapons._
+## What is GSW2?
 
-## Additional features
-- **Support for switching peds!** You can freely switch between peds! You can feel all their wounds. It also means you
-  can switch skins!
-- **Bandages and SelfHealing!** You can apply a bandage to the wound, but some bleeding(eg, internal bleeding) can't be
-  bandaged. If you have no bleeding, your health will slowly increase with time.
-- **Helmets!** Helmets can save your head from hits and bullets with some chance. You can get a motorbike helmet using
-  GetHelmet-hotkey.
-- **Translations!** The GSW2 supports translations to other languages. Just add your translation
-  to [GSW2Localization-table](https://docs.google.com/spreadsheets/d/1TY0nSEJMDmypkYrcVUBlMG3HIAEW075dCOtxXgW5UJ0/edit),
-  and your translation will appear in next release!
-- **Death from pain shock!** If your pain is more than 300%, you will die. Be carefully!
+GSW2 replaces the vanilla GTA V health model with a **wound‑based simulation**:
 
-## How to install?
-1) Install Microsoft .NET Framework 4.8 or later
-2) Install the latest version of Script Hook V
-3) Install [nightly version of Script Hook V .NET](https://github.com/scripthookvdotnet/scripthookvdotnet-nightly/releases)
-4) Download GSW2 and unpack archive
-5) Put **ENTIRE GSW2 folder**(with GSW2Config.xml) to your **scripts** folder
-6) Set **GSW2Config.xml** as what you want
-7) Launch GTAV and try not to die quickly :)
+- **Per‑body‑part damage** – shots to the head, chest, arms, legs and organs are handled differently.
+- **Pain system** – pain slows you down, affects accuracy, movement and can knock you into ragdoll.
+- **Bleeding and bandaging** – wounds bleed over time; you can bandage or bleed out.
+- **Trauma effects** – broken bones, punctured lungs, severed arteries, etc. with unique gameplay consequences.
+- **Working armor & helmets** – armor and helmets can stop or reduce damage based on configurable chances.
+- **Status & shock** – high pain and severe trauma can leave you barely functional until you treat your wounds or take painkillers.
 
-## Default Hotkeys
+If you want **grounded, punishing gunplay** that rewards good tactics and medical management, this mod is for you.
 
-- _L_ - Check yourself (+ Shift to check the closest ped)
-- _K_ - Bandage yourself (+ Shift to bandage the closest ped)
-- _J_ - Get/Remove Helmet
-- _Delete_ - Kill yourself if you're stuck in a deadly situation
-- _PageUp/PageDown_ - Increase/Decrease scan range
-- _End_ - Pause/Unpause GSW
-  You can change hotkeys in _GSW2Config.xml_!
+---
 
-## Cheat-codes
+## Installation
 
-- _GSW_HEAL_ - Will instantly heal player
-- _GSW_KILL_PLAYER_ - Will instantly kill player
-- _GSW_TEST_PED_ - Will create ped for tests
+1. **Install prerequisites**
+   - Install **Script Hook V**.
+   - Install the **nightly Script Hook V .NET** build.
+   - Confirm GTAV launches and ScriptHookVDotNet scripts run.
+2. **Download GSW2**
+   - Grab the latest GSW2 release archive.
+3. **Extract the mod**
+   - Unpack the archive.
+4. **Copy the mod folder**
+   - Place the **entire `GSW2` folder** into your GTA V `scripts` folder.  
+     If you don’t have a `scripts` folder yet, create one in your GTAV root directory.
+5. **Configure the mod**
+   - Open the `GunshotWound2.*.xml` files (for example `GunshotWound2.Player.xml`) with a text editor.
+   - Adjust difficulty, hotkeys, UI behavior and other options to your liking.
+6. **Launch the game**
+   - Start GTAV single‑player.
+   - If installed correctly, GSW2 will initialize automatically in the background.
+   - You'll see greeting notification when GSW2 will ready to play.
 
-## Recommended Mods
+If the mod doesn’t seem to start, double‑check ScriptHookVDotNet is installed (nightly), and verify there are no startup errors in your ScriptHookVDotNet logs.
 
-- [Forced First Person Aim](https://www.gta5-mods.com/scripts/forced-first-person-aim)
-  if you like classical GTA third-person view, but also you like aiming from first-person view. It's a great experience!
-- [Gun Recoil](https://www.gta5-mods.com/scripts/gun-recoil)
-  and [Realistic Reload](https://www.gta5-mods.com/scripts/manual-reload) to make firearm gameplay realistic and challenging
-- [Better Weapon Ragdoll](https://www.gta5-mods.com/scripts/better-weapon-ragdoll) to loosing your weapons from car-accident
-- [Bass Dragon's ERO](https://www.gta5-mods.com/misc/bass-dragon-s-euphoria-overhaul-w-i-p-v1-0)
-  or [RAGEuphoria](https://www.gta5-mods.com/misc/rageuphoria) for more realistic ped's reaction.
-- [Baka's Weapons Sounds](https://www.gta5-mods.com/weapons/perui) to get best gun sound mod!
-- [Realistic Blood and Decals](https://www.gta5-mods.com/misc/realistic-blood-and-decals) to get realistic wound decals
-- [Pickups](https://www.gta5-mods.com/scripts/pickups) with Auto Weapon Pickup = 0 in Pickups.ini. 
-  Using Pickups, you may enable CanDropWeapon option in GSW2Config.xml.
-- [LSPDFR](https://www.lcpdfr.com/) if you want to change side and play as police officer
+---
+
+## Gameplay overview
+
+At a high level, here is what GSW2 does in game:
+
+- Tracks **all nearby peds**.
+- Intercepts **damage events** for the player and NPCs.
+- Determines **hit location + weapon**, then rolls for **armor / helmet interaction**.
+- Creates **wounds** that apply:
+  - Pain (movement penalties, aim penalties, ragdoll, special ability lockout).
+  - Bleeding (gradual health loss until healed or stabilized).
+  - Trauma (internal damage, organ failures, critical states).
+- Wounds **heal over time**, especially if bandaged, but severe traumas may still be lethal.
+- When a ped is fully healed (by med‑packs, trainers, etc.), all active pain, bleedings and traumas are cleared.
+
+Currently, GSW2 focuses on **ped and player weapon damage** and **does not handle vehicle weapons**.
+
+---
+
+## Default controls
+
+These are the **default** hotkeys (they are defined in `GunshotWound2.KeyBinds.xml` and can be changed there):
+
+- **L** – Check yourself  
+  - **Shift + L** – Check the closest ped.
+- **K** – Bandage yourself  
+  - **Shift + K** – Bandage the closest ped.
+- **J** – Use painkillers on yourself  
+  - **Shift + J** – Use painkillers on the closest ped.
+- **Alt + L** – Get / remove helmet.
+- **Delete** – Kill yourself (for when you are stuck in an unrecoverable state).
+- **End** – Pause / unpause GSW2.
+
+If a hotkey conflicts with another mod, change it directly in `GunshotWound2.KeyBinds.xml`.
+
+---
 
 ## Compatibility
-### GSW2 will never be compatible with:
-- **Injuries** by Zuthara, 'cause GSW2 is doing same things
-- **Crawl Injury** by jedijosh920, 'cause GSW2 is doing same things
 
-### GSW2 is compatible with some adjustments:
-- **More Gore** by IAmJFry.\
-  Required to set `PedHealthToPlayInjuredRagdoll`, `HealthLossRate` and `PlayerHealthLossRate` values to 0 in _More Gore Settings.xml_.
+- **Not compatible (by design):**
+  - `Injuries` by Zuthara.
+  - `Crawl Injury` by jedijosh920.
 
-### GSW2 will be compatible in future updates(if it's possible) with:
-- **Watch Your Death** by IAmJFry
-- **GTA Online Respawn** by MrFoxsteil
-- **Los Santos Red** by Greskrendtregk
-- **Rebalance Dispatch Enhanced** by RDE Team
-You may request for compatibility with other mods in [#compatibility-issues](https://discordapp.com/channels/1263842381321732147/1338065003185442857) channel in discord.
+- **Compatible with adjustments:**
+  - `More Gore` by IAmJFry  
+    - Set `PedHealthToPlayInjuredRagdoll`, `HealthLossRate` and `PlayerHealthLossRate` to `0` in `More Gore Settings.xml`.
+
+For other mods:
+
+- If they add **new weapons**, you must register new weapons in `GunshotWound2.Weapons.xml`
+- If they **only change** weapons, animations or visuals, they are usually fine.
+- If they modify **ped health, armor, or damage behavior**, they may conflict with GSW2.
+
+Because GSW2 replaces large parts of GTA’s health and injury behavior, **any mod that deeply changes health, armor or injury logic may conflict**.
+You can request compatibility help or report issues in the GSW2 Discord (see links on the mod page).
+
+---
+
+## Recommended mods
+
+These are optional but pair well with GSW2’s gameplay:
+
+- **Forced First Person Aim** – Keep classic third‑person movement while aiming in first‑person.
+- **Gun Recoil** and **Realistic Reload** – More grounded weapon handling and reload behavior.
+- **Better Weapon Ragdoll** – Better reactions to crashes and impacts.
+- **Euphoria overhauls** (e.g. Bass Dragon’s ERO, RAGEuphoria) – More realistic reactions to being shot.
+- **Realistic Blood and Decals** – More believable wound visuals.
+- **Pickups** (with `Auto Weapon Pickup = 0`) – Works well with GSW2’s `CanDropWeapon` option in player's config.
+- **LSPDFR** – If you want to experience GSW2 from the perspective of law enforcement.
+
+Always read each mod’s documentation and configure them to avoid overlapping health / injury systems.
+
+---
+
+## Support and community
+
+- **Bug reports** – Use the [issues section at GitHub](https://github.com/SH42913/gunshotwound2/issues).
+- **Feedback** - Use the [official GSW2 Discord](https://discord.gg/NSsw7cYhUR).
+- **Translations** – Contribute to the [localization table](https://docs.google.com/spreadsheets/d/1TY0nSEJMDmypkYrcVUBlMG3HIAEW075dCOtxXgW5UJ0/edit) and your language may be added in a future release.
+
+---
 
 ## Donations
 
-You can use a subscription at [Patreon](https://patreon.com/SH42913) or [Boosty](https://boosty.to/sh42913)
-Also you can make [one-time donate at Boosty](https://boosty.to/sh42913/donate).
+If you enjoy GSW2 and want to support further development:
+
+- Monthly support: [Patreon](https://patreon.com/SH42913) or [Boosty](https://boosty.to/sh42913)
+- One‑time support: [Boosty one‑time donation](https://boosty.to/sh42913/donate) or [BuyMeACoffee](https://buymeacoffee.com/sh42913)
+
+<details>
+  <summary>All GSW supporters</summary>
+
+- KamilStoch
+- Jerry Schell
+- Curtis Lobley
+- FlyingIceWizard
+- kuact
+- wu huang
+- volc
+- Levi
+- 明 黎
+- Crese1924
+- Byron Xu
+- Brock
+- WhyisMako
+- realsubo2
+</details>
+
+Thank you for helping keep the project alive.
+
+---
 
 ## Credits
 
-- [Morpeh](https://github.com/scellecs/morpeh)
-- [Weighted Randomizer](https://github.com/BlueRaja/Weighted-Item-Randomizer-for-C-Sharp)
-- Some libraries by [Leopotam](https://leopotam.com/)
+- **ECS / architecture**
+  - [Morpeh](https://github.com/scellecs/morpeh) – embedded ECS framework.
+  - Libraries and utilities by [Leopotam](https://leopotam.com/).
+- **Utilities**
+  - [Weighted Randomizer](https://github.com/BlueRaja/Weighted-Item-Randomizer-for-C-Sharp)
+- **Inspiration**
+  - [Extreme Difficulty Health Realism](https://www.gta5-mods.com/scripts/sob-s-extreme-difficulty-health-realism) by sob (ancestor of GSW).
+  - [Injuries](https://www.gta5-mods.com/scripts/injuries) by Zuthara.
+  - `More Gore` by IAmJFry.
 
-## Sources of inspiration
-
-- [Extreme Difficulty Health Realism](https://www.gta5-mods.com/scripts/sob-s-extreme-difficulty-health-realism) by sob, the ancestor of GSW
-- [Crawl Injury](https://www.gta5-mods.com/scripts/crawl-injury) by jedijosh920
-- [Injuries](https://www.gta5-mods.com/scripts/injuries) by Zuthara
-- More Gore by IAmJFry
+And thanks to everyone in the community who tests, reports bugs, suggests features and contributes translations.
