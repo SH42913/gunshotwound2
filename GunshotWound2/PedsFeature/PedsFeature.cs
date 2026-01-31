@@ -8,6 +8,7 @@
             systemsGroup.AddSystem(new PedDamageModifierSystem(sharedData));
             systemsGroup.AddSystem(new NpcDetectSystem(sharedData));
             systemsGroup.AddSystem(new ConvertPedSystem(sharedData));
+            systemsGroup.AddSystem(new PedCombatPerfSystem(sharedData));
             systemsGroup.AddSystem(new RagdollSystem(sharedData));
             systemsGroup.AddSystem(new InjuredOnGroundUpdateSystem(sharedData));
             systemsGroup.AddSystem(new PedMovementSystem(sharedData));

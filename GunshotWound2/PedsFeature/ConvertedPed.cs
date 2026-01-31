@@ -28,7 +28,9 @@
         public bool isRagdoll;
         public AfterRagdollAction afterRagdollAction;
 
-        public int defaultAccuracy;
+        public float combatPerformanceMult;
+        public int accuracyBase;
+        public int shootRateBase;
         public bool hasHandsTremor;
         public bool hasBrokenLegs;
         public bool hasSpineDamage;

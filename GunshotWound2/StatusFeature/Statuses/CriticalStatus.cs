@@ -38,7 +38,7 @@
             if (convertedPed.isPlayer) {
                 sharedData.cameraService.IncreaseShakeAmplitude();
             } else {
-                convertedPed.thisPed.Accuracy = convertedPed.defaultAccuracy / 2;
+                convertedPed.combatPerformanceMult = 0.5f;
             }
         }
 
@@ -50,7 +50,7 @@
             if (convertedPed.isPlayer) {
                 sharedData.cameraService.DecreaseShakeAmplitude();
             } else {
-                convertedPed.thisPed.Accuracy = convertedPed.defaultAccuracy;
+                convertedPed.combatPerformanceMult = 1f;
             }
         }
     }

@@ -48,6 +48,8 @@ namespace GunshotWound2.Configs {
         public StatusMoveSets FemaleStatusMoveSets;
 
         public string sectionName => "Peds.xml";
+        public bool CustomAccuracyEnabled => MinAccuracy > 0 && MaxAccuracy > 0;
+        public bool CustomShootRateEnabled => MinShootRate > 0 && MaxShootRate > 0;
 
         public void FillFrom(XDocument doc) {
             XElement root = doc.Element(nameof(PedsConfig))!;

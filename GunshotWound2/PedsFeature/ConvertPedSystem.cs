@@ -44,14 +44,9 @@
                 convertedPed.name = $"Ped_{pedToConvert.Handle.ToString()}";
 
                 PedsConfig pedsConfig = sharedData.mainConfig.pedsConfig;
-                if (pedsConfig.MinAccuracy > 0 && pedsConfig.MaxAccuracy > 0 && pedToConvert.Accuracy > pedsConfig.MinAccuracy) {
-                    pedToConvert.Accuracy = sharedData.random.Next(pedsConfig.MinAccuracy, pedsConfig.MaxAccuracy + 1);
-                }
-
-                convertedPed.defaultAccuracy = pedToConvert.Accuracy;
-                if (pedsConfig.MinShootRate > 0 && pedsConfig.MaxShootRate > 0) {
-                    pedToConvert.ShootRate = sharedData.random.Next(pedsConfig.MinShootRate, pedsConfig.MaxShootRate);
-                }
+                convertedPed.combatPerformanceMult = 1f;
+                convertedPed.accuracyBase = -1;
+                convertedPed.shootRateBase = -1;
 
                 if (pedsConfig.DontActivateRagdollFromBulletImpact) {
                     convertedPed.thisPed.SetConfigFlag(PedConfigFlagToggles.DontActivateRagdollFromBulletImpact, true);

@@ -19,7 +19,7 @@
             convertedPed.thisPed.PlayAmbientSpeech("DEATH_HIGH_MEDIUM", GTA.SpeechModifier.InterruptShouted);
 
             if (!convertedPed.isPlayer) {
-                convertedPed.thisPed.Accuracy = (int)(0.1f * convertedPed.defaultAccuracy);
+                convertedPed.combatPerformanceMult = 0.1f;
             } else {
                 sharedData.cameraService.aimingShakeCritType = true;
                 sharedData.cameraService.aimingShakeAmplitude += SHAKE_AMPLITUDE;
@@ -49,6 +49,8 @@
             if (convertedPed.isPlayer) {
                 sharedData.cameraService.aimingShakeCritType = false;
                 sharedData.cameraService.aimingShakeAmplitude -= SHAKE_AMPLITUDE;
+            } else {
+                convertedPed.combatPerformanceMult = 1f;
             }
         }
     }
