@@ -49,7 +49,7 @@ namespace GunshotWound2.PainFeature {
                 ref ConvertedPed convertedPed = ref pedStash.Get(entity);
                 ref PainkillersEffect painkillersEffect = ref painkillersStash.Get(entity, out bool painkillersActive);
                 if (pain.diff > 0f) {
-                    bool skipDelay = pain.dontDelayDiff || painkillersActive;
+                    bool skipDelay = pain.dontDelayDiff;
                     if (!skipDelay) {
                         DelayPain(ref pain);
                     }
@@ -60,7 +60,7 @@ namespace GunshotWound2.PainFeature {
                     }
 
                     ApplyPain(entity, ref convertedPed, ref pain);
-                } else if (pain.delayedDiff > 0) {
+                } else if (pain.delayedDiff > 0 && !painkillersActive) {
                     UpdateDelayedPain(ref pain, deltaTime);
                     ApplyPain(entity, ref convertedPed, ref pain);
                 } else if (pain.HasPain()) {
@@ -167,7 +167,6 @@ namespace GunshotWound2.PainFeature {
                                              ref Pain pain,
                                              ref PainkillersEffect painkillersEffect,
                                              float deltaTime) {
-            pain.delayedDiff = 0f;
             pain.amount = Math.Min(pain.amount, pain.max);
 
             painkillersEffect.remainingTime -= deltaTime;
