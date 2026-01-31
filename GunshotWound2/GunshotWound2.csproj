@@ -190,6 +190,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\CONTENT_README.md">
+      <Link>CONTENT_README.md</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\DEV_README.md">
+      <Link>DEV_README.md</Link>
+    </Content>
     <Content Include="..\README.md">
       <Link>README.md</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -243,6 +250,8 @@
     </Target>
     -->
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetDir)" "C:\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\scripts\GSW2\"</PostBuildEvent>
+    <PostBuildEvent>xcopy /Y /S /I "$(TargetDir)*" "C:\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\scripts\GSW2\"
+
+if "$(ConfigurationName)" == "Release" xcopy /Y /S "$(TargetDir)*" "$(ProjectDir)\..\Installer\Release\content\"</PostBuildEvent>
   </PropertyGroup>
 </Project>

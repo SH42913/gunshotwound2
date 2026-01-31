@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--======================================================-->
+<!--       Generated with  :   OpenIV Package Manager -->
+<!--       * Author  :   SH42913 -->
+<!--       * Version  :   1.0 -->
+<!--       * Release date  :   30.01.2026 -->
+<!--======================================================-->
+<package version="2.1" id="{ae64a1f4-714c-44ec-b645-b257b7ba99a6}" target="Five">
+  <metadata>
+    <name>Gunshot Wound 2</name>
+    <version>
+      <major>1</major>
+      <minor>0</minor>
+      <tag>STABLE</tag>
+    </version>
+    <author>
+      <displayName>SH42913</displayName>
+      <actionLink>www.linkedin.com/in/eugene-turkotenko</actionLink>
+      <web>https://github.com/SH42913/gunshotwound2</web>
+      <youtube linkKind="channel">https://www.youtube.com/@sh42913</youtube>
+    </author>
+    <description><![CDATA[Gunshot Wound 2 (GSW2) is a complete overhaul of the GTA V damage and health system, designed for hardcore players who seek ultimate realism. No longer is death just a depleted health bar.
+]]></description>
+    <largeDescription><![CDATA[Gunshot Wound 2 (GSW2) turns GTA V’s health model into a wound-based realism system for single-player.
+
+• Per-body-part damage — Head, chest, arms, legs, and organs each matter.
+• Pain — Slows you down, hurts aim, can knock you into ragdoll or unconsciousness.
+• Bleeding & bandaging — Wounds bleed over time; bandage or bleed out.
+• Trauma — Broken bones, punctured lungs, arterial bleeds with real gameplay impact.
+• Working armor & helmets — Configurable protection that can stop or reduce shots.
+
+Player and NPCs both use the system. Every firefight becomes a tactical survival scenario — manage pain, stop bleeding, and treat trauma or you’re done.
+
+Fully configurable via XML. Works with LSPDFR, Euphoria overhauls, and many other mods.
+]]></largeDescription>
+    <licence><![CDATA[MIT License
+
+Copyright (c) 2026 Evgenii Turkotenko
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+]]></licence>
+  </metadata>
+  <colors>
+    <headerBackground useBlackTextColor="false">$00FFFFFF</headerBackground>
+    <iconBackground>$00FFFFFF</iconBackground>
+  </colors>
+  <content>
+    <add source="CONTENT_README.md">scripts\GSW2\CONTENT_README.md</add>
+    <add source="GunshotWound2.Armor.xml">scripts\GSW2\GunshotWound2.Armor.xml</add>
+    <add source="GunshotWound2.BodyParts.xml">scripts\GSW2\GunshotWound2.BodyParts.xml</add>
+    <add source="GunshotWound2.csv">scripts\GSW2\GunshotWound2.csv</add>
+    <add source="GunshotWound2.dll">scripts\GSW2\GunshotWound2.dll</add>
+    <add source="GunshotWound2.Inventory.xml">scripts\GSW2\GunshotWound2.Inventory.xml</add>
+    <add source="GunshotWound2.KeyBinds.xml">scripts\GSW2\GunshotWound2.KeyBinds.xml</add>
+    <add source="GunshotWound2.Notifications.xml">scripts\GSW2\GunshotWound2.Notifications.xml</add>
+    <add source="GunshotWound2.pdb">scripts\GSW2\GunshotWound2.pdb</add>
+    <add source="GunshotWound2.Peds.xml">scripts\GSW2\GunshotWound2.Peds.xml</add>
+    <add source="GunshotWound2.Player.xml">scripts\GSW2\GunshotWound2.Player.xml</add>
+    <add source="GunshotWound2.Traumas.xml">scripts\GSW2\GunshotWound2.Traumas.xml</add>
+    <add source="GunshotWound2.Weapons.xml">scripts\GSW2\GunshotWound2.Weapons.xml</add>
+    <add source="GunshotWound2.Wounds.xml">scripts\GSW2\GunshotWound2.Wounds.xml</add>
+    <add source="Morpeh.dll">scripts\GSW2\Morpeh.dll</add>
+    <add source="README.md">scripts\GSW2\README.md</add>
+    <add source="WeightedRandomizer.dll">scripts\GSW2\WeightedRandomizer.dll</add>
+    <add source="ScriptHookVDotNet.asi">ScriptHookVDotNet.asi</add>
+    <add source="ScriptHookVDotNet3.dll">ScriptHookVDotNet3.dll</add>
+  </content>
+</package>

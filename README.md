@@ -176,4 +176,7 @@ Thank you for helping keep the project alive.
   - [Injuries](https://www.gta5-mods.com/scripts/injuries) by Zuthara.
   - `More Gore` by IAmJFry.
 
+## Special thanks
+- Pleb Masters team for their awesome [Game Data site](https://forge.plebmasters.de/)
+
 And thanks to everyone in the community who tests, reports bugs, suggests features and contributes translations.

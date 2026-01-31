@@ -3,3 +3,4 @@
 .idea/
 packages/
 *.DotSettings.user
+/Installer/Release/content/*
