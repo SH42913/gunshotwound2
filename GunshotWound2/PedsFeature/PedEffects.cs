@@ -100,10 +100,10 @@
 
             for (uint i = 0; i < 3; i++) {
                 var record = NativeMemory.GetEntityDamageRecordEntryAtIndex(ped.MemoryAddress, i);
-                if (record.gameTime > gameTime) {
-                    weaponHash = unchecked((uint)record.weaponHash);
-                    attackerHandle = record.attackerEntityHandle;
-                    gameTime = record.gameTime;
+                if (record.GameTime > gameTime) {
+                    weaponHash = unchecked((uint)record.WeaponHash);
+                    attackerHandle = record.AttackerEntityHandle;
+                    gameTime = record.GameTime;
                 }
             }
 
