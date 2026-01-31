@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WoundConfig>
-    <GlobalMultipliers DamageMult="1.0" BleedMult="2.0" PainMult="1.0"/>
+    <GlobalMultipliers DamageMult="1.2" BleedMult="2.0" PainMult="1.0"/>
     <!-- 0.5 for DamageMult means every wound will deal 50% of its damage to ped, same for other fields -->
 
     <GlobalDeviations Damage="0.2" Bleed="0.2" Pain="0.2"/>
