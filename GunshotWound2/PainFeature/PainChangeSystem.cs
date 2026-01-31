@@ -54,6 +54,11 @@ namespace GunshotWound2.PainFeature {
                         DelayPain(ref pain);
                     }
 
+                    if (painkillersActive) {
+                        float painToMax = 0.99f * (pain.max - pain.amount);
+                        pain.diff = Math.Min(pain.diff, painToMax);
+                    }
+
                     ApplyPain(entity, ref convertedPed, ref pain);
                 } else if (pain.delayedDiff > 0) {
                     UpdateDelayedPain(ref pain, deltaTime);
