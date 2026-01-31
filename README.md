@@ -58,6 +58,10 @@ At a high level, here is what GSW2 does in game:
 - Wounds **heal over time**, especially if bandaged, but severe traumas may still be lethal.
 - When a ped is fully healed (by med‑packs, trainers, etc.), all active pain, bleedings and traumas are cleared.
 
+Medical Treatment:
+- **Bandages:** Essential for stabilization. Applying a bandage reduces the bleeding intensity by 50% and halves the remaining time required for the wound to heal completely.
+- **Painkillers:** High-tier combat utility. They increase the speed of pain recovery, dampen the impact of incoming pain, and provide a critical window where you can **temporarily ignore unconsciousness caused by pain**, keeping you in the fight longer.
+
 Currently, GSW2 focuses on **ped and player weapon damage** and **does not handle vehicle weapons**.
 
 ---
@@ -77,27 +81,6 @@ These are the **default** hotkeys (they are defined in `GunshotWound2.KeyBinds.x
 - **End** – Pause / unpause GSW2.
 
 If a hotkey conflicts with another mod, change it directly in `GunshotWound2.KeyBinds.xml`.
-
----
-
-## Compatibility
-
-- **Not compatible (by design):**
-  - `Injuries` by Zuthara.
-  - `Crawl Injury` by jedijosh920.
-
-- **Compatible with adjustments:**
-  - `More Gore` by IAmJFry  
-    - Set `PedHealthToPlayInjuredRagdoll`, `HealthLossRate` and `PlayerHealthLossRate` to `0` in `More Gore Settings.xml`.
-
-For other mods:
-
-- If they add **new weapons**, you must register new weapons in `GunshotWound2.Weapons.xml`
-- If they **only change** weapons, animations or visuals, they are usually fine.
-- If they modify **ped health, armor, or damage behavior**, they may conflict with GSW2.
-
-Because GSW2 replaces large parts of GTA’s health and injury behavior, **any mod that deeply changes health, armor or injury logic may conflict**.
-You can request compatibility help or report issues in the GSW2 Discord (see links on the mod page).
 
 ---
 
