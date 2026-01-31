@@ -1,5 +1,4 @@
 namespace GunshotWound2.InventoryFeature {
-    using System;
     using Configs;
     using GTA;
     using GTA.Math;
@@ -34,9 +33,16 @@ namespace GunshotWound2.InventoryFeature {
             ProcessRequests();
         }
 
-        void IDisposable.Dispose() { }
+        public void Dispose() {
+            StopProgressIndicator();
+        }
 
         private void ProcessUsages(float deltaTime) {
+            if (usages.IsEmpty()) {
+                StopProgressIndicator();
+                return;
+            }
+
             foreach (EcsEntity owner in usages) {
                 ref Inventory inventory = ref owner.GetComponent<Inventory>();
                 ref ConvertedPed convertedPed = ref owner.GetComponent<ConvertedPed>();
@@ -55,7 +61,6 @@ namespace GunshotWound2.InventoryFeature {
 
                 if (removeProgress) {
                     convertedPed.thisPed.Task.ClearSecondary();
-                    sharedData.uiService.HideProgressIndicator();
                     owner.RemoveComponent<CurrentlyUsingItem>();
                 }
             }
@@ -199,6 +204,12 @@ namespace GunshotWound2.InventoryFeature {
                 sharedData.logger.WriteInfo($"Item {item.key} of {inventory.modelHash} usage was failed during finish");
 #endif
                 ShowError(message);
+            }
+        }
+
+        private void StopProgressIndicator() {
+            if (sharedData.uiService.IsShowingProgress) {
+                sharedData.uiService.HideProgressIndicator();
             }
         }
 

@@ -6,6 +6,8 @@ namespace GunshotWound2.Services {
     public sealed class UIService {
         private readonly ILogger logger;
 
+        public bool IsShowingProgress { get; private set; }
+
         public UIService(ILogger logger) {
             this.logger = logger;
         }
@@ -16,6 +18,7 @@ namespace GunshotWound2.Services {
 #endif
             LoadingSpinnerType type = clockwise ? LoadingSpinnerType.RegularClockwise : LoadingSpinnerType.Clockwise1;
             LoadingPrompt.Show(text, type);
+            IsShowingProgress = true;
         }
 
         public void HideProgressIndicator() {
@@ -23,6 +26,7 @@ namespace GunshotWound2.Services {
             logger.WriteInfo(nameof(HideProgressIndicator));
 #endif
             LoadingPrompt.Hide();
+            IsShowingProgress = false;
         }
 
         public void ClearAll() {
