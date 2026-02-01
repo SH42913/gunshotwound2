@@ -73,9 +73,9 @@ namespace GunshotWound2.WoundFeature {
 #endif
             bool isMultPelletWeapon = hitData.weaponType.Pellets > 1;
             if (hitData.hits == 1) {
-                ProcessOneHit(entity, hitData, ref convertedPed);
+                ProcessOneHit(entity, hitData, ref convertedPed, saveHitData: true);
             } else if (isMultPelletWeapon && hitData.hits > 0.5f * hitData.weaponType.Pellets) {
-                ProcessOneHit(entity, hitData, ref convertedPed);
+                ProcessOneHit(entity, hitData, ref convertedPed, saveHitData: true);
             } else {
                 ProcessMultiHit(entity, hitData, ref convertedPed);
             }
@@ -88,12 +88,12 @@ namespace GunshotWound2.WoundFeature {
             Random random = sharedData.random;
             BodyPartConfig.BodyPart[] bodyParts = sharedData.mainConfig.bodyPartConfig.BodyParts;
             for (int i = 0; i < savedHits; i++) {
-                ProcessOneHit(entity, hitData, ref convertedPed);
+                ProcessOneHit(entity, hitData, ref convertedPed, saveHitData: false);
                 hitData.bodyPart = random.Next(bodyParts);
             }
         }
 
-        private void ProcessOneHit(EcsEntity entity, in PedHitData hitData, ref ConvertedPed convertedPed) {
+        private void ProcessOneHit(EcsEntity entity, in PedHitData hitData, ref ConvertedPed convertedPed, bool saveHitData) {
             WoundConfig.Wound wound;
             if (armorChecker.TrySave(ref convertedPed, hitData, out WoundConfig.Wound armorWound)) {
                 wound = armorWound;
@@ -125,7 +125,7 @@ namespace GunshotWound2.WoundFeature {
             }
 #endif
 
-            ProcessWound(entity, hitData, wound, convertedPed);
+            ProcessWound(entity, hitData, wound, convertedPed, saveHitData);
         }
 
         private void CreateStunPain(EcsEntity pedEntity, ref ConvertedPed convertedPed) {
@@ -142,7 +142,8 @@ namespace GunshotWound2.WoundFeature {
         private void ProcessWound(EcsEntity targetEntity,
                                   in PedHitData hitData,
                                   in WoundConfig.Wound wound,
-                                  in ConvertedPed convertedPed) {
+                                  in ConvertedPed convertedPed,
+                                  bool saveHitData) {
             if (!wound.IsValid) {
                 return;
             }
@@ -177,7 +178,10 @@ namespace GunshotWound2.WoundFeature {
             EcsEntity woundBleeding = null;
             if (dbp.bleed > 0f) {
                 woundBleeding = targetEntity.CreateCommonBleeding(hitData.bodyPart, dbp.bleed, woundName, reason, wound.IsBlunt);
-                woundBleeding.SetComponent(hitData);
+                if (saveHitData) {
+                    woundBleeding.SetComponent(hitData);
+                }
+
                 woundBleeding.SetComponent(new WoundData {
                     totalBleed = dbp.bleed,
                     totalPain = dbp.pain,
