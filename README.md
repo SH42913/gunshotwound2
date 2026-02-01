@@ -84,6 +84,49 @@ If a hotkey conflicts with another mod, change it directly in `GunshotWound2.Key
 
 ---
 
+Отличная идея. Хороший FAQ — это 50% успеха мода, потому что он избавляет тебя от ответов на одни и те же вопросы в комментариях.
+
+Я оформил это в виде структурированного гайда, который можно вставить в описание на **GitHub**, **GTA5-Mods** или в **Readme**.
+
+---
+
+## 📂 Frequently Asked Questions (FAQ)
+
+### 🛠 Technical Issues & Installation
+
+**Q: I get the error "Could not load type 'EntityDamageRecordForReturnValue' from assembly 'ScriptHookVDotNet'..."**
+**A:** You are using an outdated version of ScriptHookVDotNet. GSW2 requires the latest features of the **SHVDN Nightly Builds**. Please update your SHVDN to the latest dev version.
+
+**Q: My keys conflict with other mods. How can I change them?**
+**A:** All controls are fully rebindable. Check the `GunshotWound2.KeyBinds.xml` file to set your preferred keys.
+
+**Q: I think I found a bug with damage calculation. What should I do?**
+**A:** Install the **DEBUG version** of the mod, reproduce the issue, and send your `ScriptHookVDotNet.log` to the developer. The log contains vital data on bone hits and trauma rolls.
+
+### 🩺 Realism & Gameplay Logic
+
+**Q: Why don't headshots kill instantly?**
+**A:** In reality, brain trauma is complex, and "instant death" is not always a guarantee depending on the caliber and angle. However, if you prefer classic arcade mechanics, enable **`HeadshotIsInstantDeath`** in `GunshotWound2.Peds.xml`.
+
+**Q: Peds can sometimes survive 10 shots! Is this a bug?**
+**A:** Adrenaline is a powerful thing. Real-life reports show people continuing to fight even with multiple non-vital wounds. If you want more lethal combat, increase the **`DamageMult`** or **`PainMult`** value in `GunshotWound2.Wounds.xml`.
+
+**Q: I broke my spine and now I'm paralyzed. What am I supposed to do?**
+**A:** Paralysis is a permanent state in GSW2. You can perform a "mercy kill" on yourself by pressing the **Delete** key. If you find this mechanic too punishing, disable **`RealisticSpineDamage`** in `GunshotWound2.Player.xml`.
+
+**Q: The mod is too difficult. How can I make my life easier?**
+**A:** GSW2 is highly customizable. Open `GunshotWound2.Player.xml` to adjust your resistance to pain, bleeding speed, and overall health recovery rates.
+
+### 🌍 Localization & Contribution
+
+**Q: How can I change the language of the mod?**
+**A:** All in-game text and notifications are stored in `GunshotWound2.Notifications.xml`. You can translate them there.
+
+**Q: How can I help with the mod’s development?**
+**A:** We are always looking for help! You can contribute to **localizations** via our Google Sheets or join our **Discord community** to suggest new features and balance changes.
+
+---
+
 ## Recommended mods
 
 These are optional but pair well with GSW2’s gameplay:
