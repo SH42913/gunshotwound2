@@ -580,7 +580,7 @@
             </Wounds>
         </HardRunOverCar>
 
-        <CarCrash ReferenceSpeed="10.0" DamageMult="0.5" BleedMult="0.5" PainMult="0.8"
+        <CarCrash ReferenceSpeed="8.0" DamageMult="0.5" BleedMult="0.5" PainMult="0.8"
                   ChanceToCauseTrauma="0.7" HelmetSafeChance="1.0">
             <Wounds>
                 <Wound Key="HeavyBruise" Weight="25"/>
