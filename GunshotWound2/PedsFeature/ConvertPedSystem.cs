@@ -48,8 +48,11 @@
                 convertedPed.accuracyBase = -1;
                 convertedPed.shootRateBase = -1;
 
+                pedToConvert.SetCombatAttribute(CombatAttributes.AlwaysFight, false);
+                pedToConvert.SetCombatAttribute(CombatAttributes.WillDragInjuredPedsToSafety, true);
+
                 if (pedsConfig.DontActivateRagdollFromBulletImpact) {
-                    convertedPed.thisPed.SetConfigFlag(PedConfigFlagToggles.DontActivateRagdollFromBulletImpact, true);
+                    pedToConvert.SetConfigFlag(PedConfigFlagToggles.DontActivateRagdollFromBulletImpact, true);
                 }
 
                 worldService.AddConverted(pedToConvert, entity);
