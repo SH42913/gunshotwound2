@@ -22,8 +22,8 @@ If you want **grounded, punishing gunplay** that rewards good tactics and medica
 ## Installation
 
 1. **Install prerequisites**
-   - Install **Script Hook V**.
-   - Install the **nightly Script Hook V .NET** build.
+   - Install **[Script Hook V](http://www.dev-c.com/gtav/scripthookv/)**.
+   - Install the **[nightly Script Hook V .NET](https://github.com/scripthookvdotnet/scripthookvdotnet-nightly/releases)** build.
    - Confirm GTAV launches and ScriptHookVDotNet scripts run.
 2. **Download GSW2**
    - Grab the latest GSW2 release archive.
@@ -66,30 +66,6 @@ Currently, GSW2 focuses on **ped and player weapon damage** and **does not handl
 
 ---
 
-## Default controls
-
-These are the **default** hotkeys (they are defined in `GunshotWound2.KeyBinds.xml` and can be changed there):
-
-- **L** – Check yourself  
-  - **Shift + L** – Check the closest ped.
-- **K** – Bandage yourself  
-  - **Shift + K** – Bandage the closest ped.
-- **J** – Use painkillers on yourself  
-  - **Shift + J** – Use painkillers on the closest ped.
-- **Alt + L** – Get / remove helmet.
-- **Delete** – Kill yourself (for when you are stuck in an unrecoverable state).
-- **End** – Pause / unpause GSW2.
-
-If a hotkey conflicts with another mod, change it directly in `GunshotWound2.KeyBinds.xml`.
-
----
-
-Отличная идея. Хороший FAQ — это 50% успеха мода, потому что он избавляет тебя от ответов на одни и те же вопросы в комментариях.
-
-Я оформил это в виде структурированного гайда, который можно вставить в описание на **GitHub**, **GTA5-Mods** или в **Readme**.
-
----
-
 ## 📂 Frequently Asked Questions (FAQ)
 
 ### 🛠 Technical Issues & Installation
@@ -123,7 +99,23 @@ If a hotkey conflicts with another mod, change it directly in `GunshotWound2.Key
 **A:** All in-game text and notifications are stored in `GunshotWound2.Notifications.xml`. You can translate them there.
 
 **Q: How can I help with the mod’s development?**
-**A:** We are always looking for help! You can contribute to **localizations** via our Google Sheets or join our **Discord community** to suggest new features and balance changes.
+**A:** We are always looking for help! You can contribute to localizations via [our Google Sheets](https://docs.google.com/spreadsheets/d/1TY0nSEJMDmypkYrcVUBlMG3HIAEW075dCOtxXgW5UJ0/edit) or join [our Discord community](https://discord.gg/NSsw7cYhUR) to suggest new features and balance changes.
+
+---
+
+## Default controls
+
+These are the **default** hotkeys (they are defined in `GunshotWound2.KeyBinds.xml` and can be changed there):
+
+- **L** – Check yourself
+    - **Shift + L** – Check the closest ped.
+- **K** – Bandage yourself
+    - **Shift + K** – Bandage the closest ped.
+- **J** – Use painkillers on yourself
+    - **Shift + J** – Use painkillers on the closest ped.
+- **Alt + L** – Get / remove helmet.
+- **Delete** – Kill yourself (for when you are stuck in an unrecoverable state).
+- **End** – Pause / unpause GSW2.
 
 ---
 
@@ -157,7 +149,7 @@ Always read each mod’s documentation and configure them to avoid overlapping h
 
 - **Bug reports** – Use the [issues section at GitHub](https://github.com/SH42913/gunshotwound2/issues).
 - **Feedback** - Use the [official GSW2 Discord](https://discord.gg/NSsw7cYhUR).
-- **Translations** – Contribute to the [localization table](https://docs.google.com/spreadsheets/d/1TY0nSEJMDmypkYrcVUBlMG3HIAEW075dCOtxXgW5UJ0/edit) and your language may be added in a future release.
+- **Translations** – Contribute to the [localization table](https://docs.google.com/spreadsheets/d/1TY0nSEJMDmypkYrcVUBlMG3HIAEW075dCOtxXgW5UJ0/edit) and your language will be added in a future release.
 
 ---
 
@@ -185,6 +177,7 @@ If you enjoy GSW2 and want to support further development:
 - Brock
 - WhyisMako
 - realsubo2
+- Alexis Michaud
 </details>
 
 Thank you for helping keep the project alive.
@@ -205,5 +198,7 @@ Thank you for helping keep the project alive.
 
 ## Special thanks
 - Pleb Masters team for their awesome [Game Data site](https://forge.plebmasters.de/)
+- Taran(aka DottieDot) for his [NativeDB](https://nativedb.dotindustries.dev/)
+- shoebyron for his bug-reports during GSW2 1.0 Early Access
 
 And thanks to everyone in the community who tests, reports bugs, suggests features and contributes translations.
