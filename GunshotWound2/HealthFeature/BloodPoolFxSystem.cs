@@ -38,6 +38,10 @@ namespace GunshotWound2.HealthFeature {
         }
 
         public void OnUpdate(float deltaTime) {
+            if (BloodPoolParticles.Length < 1) {
+                return;
+            }
+
             InitEffects();
             UpdateActivePools(deltaTime);
         }
