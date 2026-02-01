@@ -63,6 +63,7 @@
                 }
 
                 entity.SetComponent(new PedHitData {
+                    ped = ped,
                     healthDiff = healthDiff,
                     armorDiff = armorDiff,
                     afterTakedown = wasKilledByTakedown,

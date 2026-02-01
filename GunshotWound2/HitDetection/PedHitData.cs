@@ -5,6 +5,7 @@
     using Scellecs.Morpeh;
 
     public struct PedHitData : IComponent {
+        public Ped ped;
         public PedBone damagedBone;
         public BodyPartConfig.BodyPart bodyPart;
         public uint weaponHash;
