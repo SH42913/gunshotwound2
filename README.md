@@ -92,9 +92,10 @@ These are optional but pair well with GSW2’s gameplay:
 - **Gun Recoil** and **Realistic Reload** – More grounded weapon handling and reload behavior.
 - **Better Weapon Ragdoll** – Better reactions to crashes and impacts.
 - **Euphoria overhauls** (e.g. Bass Dragon’s ERO, RAGEuphoria) – More realistic reactions to being shot.
-- **Realistic Blood and Decals** – More believable wound visuals.
+- **Improvements in Gore** – More believable wound visuals.
 - **Pickups** (with `Auto Weapon Pickup = 0`) – Works well with GSW2’s `CanDropWeapon` option in player's config.
 - **LSPDFR** – If you want to experience GSW2 from the perspective of law enforcement.
+- **Dynamic NPC Accuracy** – Configurable accuracy for NPCs.
 
 Always read each mod’s documentation and configure them to avoid overlapping health / injury systems.
 

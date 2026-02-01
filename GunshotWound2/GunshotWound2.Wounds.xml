@@ -25,6 +25,14 @@
     <RagdollOnPainfulWound Value="TRUE"/>
     <!-- If TRUE - peds(including player) will set to short ragdoll on painful wounds -->
 
+    <BloodPools GrowTimeScale="1.0">
+        <!-- GrowTime of Particle is time for particle to grow per one use -->
+        <!-- GrowTimeScale is an overall modifier for GrowTime, you should adjust that when using modded blood pool particles -->
+        <Particle Asset="cut_trevor1" Effect="cs_trev1_blood_pool" GrowTime="0.6"/>
+        <Particle Asset="cut_hs4" Effect="cut_hs4_cctv_blood_pool" GrowTime="0.175"/>
+        <Particle Asset="cut_sec" Effect="cut_sec_blood_pool" GrowTime="0.175"/>
+    </BloodPools>
+
     <Wounds>
         <!--
         Example:

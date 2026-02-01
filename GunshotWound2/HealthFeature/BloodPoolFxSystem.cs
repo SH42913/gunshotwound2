@@ -1,4 +1,5 @@
 namespace GunshotWound2.HealthFeature {
+    using Configs;
     using GTA;
     using GTA.Math;
     using Scellecs.Morpeh;
@@ -8,19 +9,6 @@ namespace GunshotWound2.HealthFeature {
     using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class BloodPoolFxSystem : ILateSystem {
-        private readonly struct Entry {
-            public readonly ParticleEffectAsset asset;
-            public readonly string effectName;
-            public readonly float minGrowTime;
-
-            public Entry(string assetName, string effectName, float minGrowTime) {
-                asset = new ParticleEffectAsset(assetName);
-                this.effectName = effectName;
-                this.minGrowTime = minGrowTime;
-            }
-        }
-
-        private const float GROW_TIME_SCALE = 1f;
         private readonly SharedData sharedData;
 
         private Filter bleedToInit;
@@ -29,9 +17,9 @@ namespace GunshotWound2.HealthFeature {
         private Stash<BloodPoolFx> bloodPoolStash;
         private Stash<WoundData> woundDataStash;
 
-        private Entry[] bloodPoolEffects;
-
         public EcsWorld World { get; set; }
+
+        private WoundConfig.BloodPoolData[] BloodPoolParticles => sharedData.mainConfig.woundConfig.BloodPoolParticles;
 
         public BloodPoolFxSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -44,13 +32,7 @@ namespace GunshotWound2.HealthFeature {
             bloodPoolStash = World.GetStash<BloodPoolFx>().AsDisposable();
             woundDataStash = World.GetStash<WoundData>();
 
-            bloodPoolEffects = [
-                new Entry("cut_trevor1", "cs_trev1_blood_pool", GROW_TIME_SCALE * 0.6f),
-                new Entry("cut_hs4", "cut_hs4_cctv_blood_pool", GROW_TIME_SCALE * 0.175f),
-                new Entry("cut_sec", "cut_sec_blood_pool", GROW_TIME_SCALE * 0.175f),
-            ];
-
-            foreach (Entry effect in bloodPoolEffects) {
+            foreach (WoundConfig.BloodPoolData effect in BloodPoolParticles) {
                 effect.asset.Request();
             }
         }
@@ -69,10 +51,10 @@ namespace GunshotWound2.HealthFeature {
                 }
 
                 ref BloodPoolFx bloodPoolFx = ref bloodPoolStash.Add(entity);
-                bloodPoolFx.bloodPoolIndex = sharedData.random.Next(0, bloodPoolEffects.Length);
+                bloodPoolFx.bloodPoolIndex = sharedData.random.Next(0, BloodPoolParticles.Length);
 
                 if (normalizedBleed >= BleedingFxSystem.BLOOD_FOUNTAIN_THRESHOLD) {
-                    bloodPoolFx.timeToNextUpdate = sharedData.random.NextFloat(4.5f, 5.5f);
+                    bloodPoolFx.timeToNextUpdate = 4f;
                 } else {
                     UpdateTimeToNextUpdate(entity, ref bloodPoolFx);
                     bloodPoolFx.timeToNextUpdate *= sharedData.random.NextFloat(1f, 2f);
@@ -101,7 +83,7 @@ namespace GunshotWound2.HealthFeature {
         }
 
         private void CreateBloodPool(EcsEntity woundEntity, ref BloodPoolFx bloodPoolFx) {
-            ref Entry bloodPool = ref bloodPoolEffects[bloodPoolFx.bloodPoolIndex];
+            ref WoundConfig.BloodPoolData bloodPool = ref BloodPoolParticles[bloodPoolFx.bloodPoolIndex];
             if (!SHVDNHelpers.UseParticleFxAsset(bloodPool.asset)) {
                 return;
             }
@@ -116,7 +98,7 @@ namespace GunshotWound2.HealthFeature {
             string effectName = bloodPool.effectName;
             bloodPoolFx.effectHandle = GTAHelpers.CreateParticleEffectAtCoord(effectName, worldPos);
             if (bloodPoolFx.effectHandle != 0) {
-                float alpha = sharedData.random.NextFloat(0.9f, 1f);
+                float alpha = sharedData.random.NextFloat(0.95f, 1f);
                 GTAHelpers.SetParticleEffectAlpha(bloodPoolFx.effectHandle, alpha);
             }
 #if DEBUG
@@ -125,7 +107,7 @@ namespace GunshotWound2.HealthFeature {
             }
 #endif
 
-            bloodPoolFx.timeToStopGrow = bloodPool.minGrowTime;
+            bloodPoolFx.timeToStopGrow = sharedData.mainConfig.woundConfig.BloodPoolGrowTimeScale * bloodPool.growTime;
         }
 
         private void UpdateTimeToNextUpdate(EcsEntity woundEntity, ref BloodPoolFx bloodPoolFx) {
@@ -140,14 +122,16 @@ namespace GunshotWound2.HealthFeature {
 
             Ped ped = woundData.damagedBone.Owner;
             if (ped.IsRunning) {
-                bloodPoolFx.timeToNextUpdate *= sharedData.random.NextFloat(0.3f, 0.5f);
+                bloodPoolFx.timeToStopGrow *= 8f;
+                bloodPoolFx.timeToNextUpdate *= sharedData.random.NextFloat(0.6f, 0.9f);
             } else if (ped.IsSprinting) {
-                bloodPoolFx.timeToNextUpdate *= sharedData.random.NextFloat(0.1f, 0.2f);
+                bloodPoolFx.timeToStopGrow *= 8f;
+                bloodPoolFx.timeToNextUpdate *= sharedData.random.NextFloat(0.3f, 0.6f);
             }
         }
 
         public void Dispose() {
-            foreach (Entry effect in bloodPoolEffects) {
+            foreach (WoundConfig.BloodPoolData effect in BloodPoolParticles) {
                 effect.asset.MarkAsNoLongerNeeded();
             }
         }

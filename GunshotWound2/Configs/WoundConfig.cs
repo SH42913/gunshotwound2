@@ -4,6 +4,7 @@ namespace GunshotWound2.Configs {
     using System.Collections.Generic;
     using System.Linq;
     using System.Xml.Linq;
+    using GTA;
     using Utils;
 
     public sealed class WoundConfig : MainConfig.IConfig {
@@ -54,6 +55,18 @@ namespace GunshotWound2.Configs {
             }
         }
 
+        public readonly struct BloodPoolData {
+            public readonly ParticleEffectAsset asset;
+            public readonly string effectName;
+            public readonly float growTime;
+
+            public BloodPoolData(XElement element) {
+                asset = new ParticleEffectAsset(element.GetString("Asset"));
+                effectName = element.GetString("Effect");
+                growTime = element.GetFloat("GrowTime");
+            }
+        }
+
         private const int HEALTH_CORRECTION = 100;
 
         public DBPContainer GlobalMultipliers;
@@ -69,6 +82,9 @@ namespace GunshotWound2.Configs {
         public DBPContainer TakedownMults;
 
         public Dictionary<string, Wound> Wounds;
+
+        public BloodPoolData[] BloodPoolParticles;
+        public float BloodPoolGrowTimeScale;
 
         public string sectionName => "Wounds.xml";
 
@@ -90,6 +106,10 @@ namespace GunshotWound2.Configs {
             XElement takedownNode = root.Element("Takedown");
             TakedownRagdollDurationMs = takedownNode.GetInt("RagdollDurationMs");
             TakedownMults = new DBPContainer(takedownNode, isMult: true);
+
+            XElement bloodPoolsNode = root.Element("BloodPools")!;
+            BloodPoolGrowTimeScale = bloodPoolsNode.GetFloat("GrowTimeScale", 1f);
+            BloodPoolParticles = bloodPoolsNode.Elements("Particle").Select(x => new BloodPoolData(x)).ToArray();
         }
 
         public void Validate(MainConfig mainConfig, ILogger logger) { }
