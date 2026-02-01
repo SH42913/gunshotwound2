@@ -68,22 +68,12 @@ namespace GunshotWound2.HealthFeature {
                 }
 #endif
 
-                PedBone damagedBone = woundData.damagedBone;
-                if (damagedBone == null || !damagedBone.IsValid) {
-                    ref ConvertedPed convertedPed = ref bleeding.target.GetComponent<ConvertedPed>();
-                    int randomBoneId = sharedData.random.NextFromCollection(bleeding.bodyPart.Bones);
-                    int boneIndex = PedEffects.GetBoneIndex(convertedPed.thisPed, randomBoneId);
-                    damagedBone = convertedPed.thisPed.Bones[boneIndex];
-#if DEBUG
-                    sharedData.logger.WriteInfo($"Used random FX data for {bleeding.name}, boneId:{randomBoneId}");
-#endif
-                }
-
                 if (!hasWoundData || !TryGetFromWoundData(woundData, out Vector3 localHitPos, out Vector3 localHitNormal)) {
                     localHitPos = Vector3.Zero;
                     localHitNormal = Vector3.RandomXY();
                 }
 
+                PedBone damagedBone = woundData.damagedBone;
                 Quaternion boneQuaternion = damagedBone.Quaternion;
                 Quaternion boneQuaternionInv = Quaternion.Invert(boneQuaternion);
                 Quaternion fromToQuaternion = boneQuaternion * Quaternion.LookRotation(boneQuaternionInv * localHitNormal);

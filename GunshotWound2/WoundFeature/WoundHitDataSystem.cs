@@ -2,7 +2,9 @@ namespace GunshotWound2.WoundFeature {
     using System;
     using GTA.Math;
     using HitDetection;
+    using PedsFeature;
     using Scellecs.Morpeh;
+    using Utils;
     using EcsEntity = Scellecs.Morpeh.Entity;
     using EcsWorld = Scellecs.Morpeh.World;
 
@@ -32,7 +34,16 @@ namespace GunshotWound2.WoundFeature {
                 ref WoundData woundData = ref woundDataStash.Get(entity);
                 ref PedHitData hitData = ref hitStash.Get(entity);
                 woundData.damagedBone = hitData.damagedBone;
-                if (hitData.fullHitData && woundData.damagedBone != null && woundData.damagedBone.IsValid) {
+                if (woundData.damagedBone == null || !woundData.damagedBone.IsValid) {
+                    int randomBoneId = sharedData.random.NextFromCollection(hitData.bodyPart.Bones);
+                    int boneIndex = PedEffects.GetBoneIndex(hitData.ped, randomBoneId);
+                    woundData.damagedBone = hitData.ped.Bones[boneIndex];
+#if DEBUG
+                    sharedData.logger.WriteInfo($"There's no bone in hit, so will be used random - {randomBoneId}");
+#endif
+                }
+
+                if (hitData.fullHitData) {
                     Vector3 localHitPos = woundData.damagedBone.GetPositionOffset(hitData.hitPos);
 
                     const float maxRange = 1f;
