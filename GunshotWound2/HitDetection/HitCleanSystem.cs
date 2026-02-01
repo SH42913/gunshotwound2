@@ -1,40 +1,48 @@
-﻿using GTA.Native;
-using GunshotWound2.Damage;
-using Leopotam.Ecs;
+﻿namespace GunshotWound2.HitDetection {
+    using System;
+    using PedsFeature;
+    using Scellecs.Morpeh;
+    using Utils;
 
-namespace GunshotWound2.HitDetection
-{
-    [EcsInject]
-    public sealed class HitCleanSystem : IEcsRunSystem
-    {
-        private readonly EcsWorld _ecsWorld = null;
-        private readonly EcsFilter<WoundedPedComponent, HaveDamageMarkComponent> _peds = null;
-        private readonly EcsFilter<CheckBodyHitEvent> _requestsToClean = null;
+    public sealed class HitCleanSystem : ICleanupSystem {
+        private readonly SharedData sharedData;
 
-        public void Run()
-        {
+        private Filter hits;
+        private Stash<PedHitData> hitsStash;
+        private Stash<ConvertedPed> pedStash;
+
+        public HitCleanSystem(SharedData sharedData) {
+            this.sharedData = sharedData;
+        }
+
+        public World World { get; set; }
+
+        private bool CleanLastDamageFromPed => sharedData.mainConfig.weaponConfig.CleanLastDamageFromPed;
+
+        public void OnAwake() {
+            hits = World.Filter.With<PedHitData>();
+            hitsStash = World.GetStash<PedHitData>();
+            pedStash = World.GetStash<ConvertedPed>();
 #if DEBUG
-            GunshotWound2.LastSystem = nameof(HitCleanSystem);
+            sharedData.logger.WriteInfo($"{nameof(CleanLastDamageFromPed)}:{CleanLastDamageFromPed}");
 #endif
+        }
 
-            for (var i = 0; i < _requestsToClean.EntitiesCount; i++)
-            {
-                var pedEntity = _requestsToClean.Components1[i].Entity;
-                var ped = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity).ThisPed;
-
-                if (ped != null)
-                {
-                    ped.ClearLastWeaponDamage();
-                    Function.Call(Hash.CLEAR_PED_LAST_DAMAGE_BONE, ped);
+        public void OnUpdate(float deltaTime) {
+            foreach (Entity entity in hits) {
+                ref ConvertedPed convertedPed = ref pedStash.Get(entity, out bool hasPed);
+                if (CleanLastDamageFromPed && hasPed) {
+                    GTA.Ped ped = convertedPed.thisPed;
+                    if (ped.IsValid()) {
+                        ped.ClearLastWeaponDamage();
+                        ped.Bones.ClearLastDamaged();
+                    }
                 }
 
-                _ecsWorld.RemoveEntity(_requestsToClean.Entities[i]);
-            }
-
-            for (var i = 0; i < _peds.EntitiesCount; i++)
-            {
-                _ecsWorld.RemoveComponent<HaveDamageMarkComponent>(_peds.Entities[i]);
+                hitsStash.Remove(entity);
             }
         }
+
+        void IDisposable.Dispose() { }
     }
 }

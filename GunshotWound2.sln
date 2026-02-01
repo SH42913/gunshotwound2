@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GunshotWound2", "GunshotWound2\GunshotWound2.csproj", "{B6AB6B48-B388-427D-8CE9-2A06E3F63736}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Leopotam.Ecs", "leoEcs\Leopotam.Ecs.csproj", "{45FC0562-7188-4470-B350-6A73699FE6E2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Morpeh", "Morpeh\Morpeh.csproj", "{7959FA4D-7285-4B90-AE26-BDEAB27BF5CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,9 +14,9 @@ Global
 		{B6AB6B48-B388-427D-8CE9-2A06E3F63736}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6AB6B48-B388-427D-8CE9-2A06E3F63736}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6AB6B48-B388-427D-8CE9-2A06E3F63736}.Release|Any CPU.Build.0 = Release|Any CPU
-		{45FC0562-7188-4470-B350-6A73699FE6E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{45FC0562-7188-4470-B350-6A73699FE6E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{45FC0562-7188-4470-B350-6A73699FE6E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{45FC0562-7188-4470-B350-6A73699FE6E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7959FA4D-7285-4B90-AE26-BDEAB27BF5CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7959FA4D-7285-4B90-AE26-BDEAB27BF5CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7959FA4D-7285-4B90-AE26-BDEAB27BF5CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7959FA4D-7285-4B90-AE26-BDEAB27BF5CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

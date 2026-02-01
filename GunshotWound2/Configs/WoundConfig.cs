@@ -1,69 +1,132 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
+﻿// ReSharper disable InconsistentNaming
 
-namespace GunshotWound2.Configs
-{
-    public sealed class WoundConfig
-    {
-        public float DamageMultiplier;
-        public float PainMultiplier;
-        public float BleedingMultiplier;
+namespace GunshotWound2.Configs {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Xml.Linq;
+    using GTA;
+    using Utils;
 
-        public float DamageDeviation;
-        public float PainDeviation;
-        public float BleedingDeviation;
+    public sealed class WoundConfig : MainConfig.IConfig {
+        public readonly struct Wound {
+            public readonly string Key;
+            public readonly string LocKey;
+            public readonly bool IsBlunt;
+            public readonly DBPContainer DBP;
+            public readonly bool CanCauseTrauma;
 
-        public bool RealisticNervesDamage;
+            public bool IsValid => !string.IsNullOrEmpty(Key);
 
-        public float EmergencyBleedingLevel;
+            public Wound(string key,
+                         string locKey,
+                         bool isBlunt,
+                         float damage = 0f,
+                         float bleed = 0f,
+                         float pain = 0f,
+                         bool canCauseTrauma = false) {
+                Key = key;
+                LocKey = locKey;
+                IsBlunt = isBlunt;
+                DBP = new DBPContainer(damage, bleed, pain);
+                CanCauseTrauma = canCauseTrauma;
+            }
 
-        public float MoveRateOnFullPain;
-        public float MoveRateOnNervesDamage;
+            public Wound(XElement node) {
+                Key = node.GetString(nameof(Key));
+                LocKey = node.GetString(nameof(LocKey));
+                IsBlunt = node.GetBool(nameof(IsBlunt));
+                DBP = new DBPContainer(node, isMult: false);
+                CanCauseTrauma = node.GetBool(nameof(CanCauseTrauma));
+            }
+
+            public Wound Clone(float? damage = null, float? bleed = null, float? pain = null, bool? canCauseTrauma = null) {
+                return new Wound(Key,
+                                 LocKey,
+                                 IsBlunt,
+                                 damage ?? DBP.damage,
+                                 bleed ?? DBP.bleed,
+                                 pain ?? DBP.pain,
+                                 canCauseTrauma ?? CanCauseTrauma);
+            }
+
+            public override string ToString() {
+                string blunt = IsBlunt ? "(blunt)" : "";
+                return $"{Key}{blunt} {DBP.ToString()} T:{CanCauseTrauma.ToString()}";
+            }
+        }
+
+        public readonly struct BloodPoolData {
+            public readonly ParticleEffectAsset asset;
+            public readonly string effectName;
+            public readonly float growTime;
+
+            public BloodPoolData(XElement element) {
+                asset = new ParticleEffectAsset(element.GetString("Asset"));
+                effectName = element.GetString("Effect");
+                growTime = element.GetFloat("GrowTime");
+            }
+        }
+
+        private const int HEALTH_CORRECTION = 100;
+
+        public DBPContainer GlobalMultipliers;
+        public DBPContainer GlobalDeviations;
 
         public bool RagdollOnPainfulWound;
         public float PainfulWoundPercent;
+        public bool UseCustomUnconsciousBehaviour;
+        public float DelayedPainPercent;
+        public float DelayedPainSpeed;
 
-        public float MinimalChanceForArmorSave;
+        public int TakedownRagdollDurationMs;
+        public DBPContainer TakedownMults;
 
-        public int BandageCost;
-        public float ApplyBandageTime;
-        public float SelfHealingRate;
+        public Dictionary<string, Wound> Wounds;
 
-        public Dictionary<string, float?[]> DamageSystemConfigs;
+        public BloodPoolData[] BloodPoolParticles;
+        public float BloodPoolGrowTimeScale;
 
-        public static WoundConfig CreateDefault()
-        {
-            return new WoundConfig
-            {
-                MoveRateOnNervesDamage = 0.7f,
-                MoveRateOnFullPain = 0.8f,
-                EmergencyBleedingLevel = 1.5f,
-                RealisticNervesDamage = true,
-                DamageMultiplier = 1,
-                BleedingMultiplier = 1,
-                PainMultiplier = 1,
-                DamageDeviation = 0.2f,
-                BleedingDeviation = 0.2f,
-                PainDeviation = 0.2f,
-                RagdollOnPainfulWound = true,
-                PainfulWoundPercent = 0.5f,
-                MinimalChanceForArmorSave = 0.6f,
-                BandageCost = 15,
-                ApplyBandageTime = 5,
-                SelfHealingRate = 0.01f
-            };
+        public string sectionName => "Wounds.xml";
+
+        public void FillFrom(XDocument doc) {
+            XElement root = doc.Element(nameof(WoundConfig))!;
+
+            GlobalMultipliers = new DBPContainer(root.Element(nameof(GlobalMultipliers)), isMult: true);
+            GlobalDeviations = new DBPContainer(root.Element(nameof(GlobalDeviations)), isMult: false);
+
+            RagdollOnPainfulWound = root.Element(nameof(RagdollOnPainfulWound)).GetBool();
+            PainfulWoundPercent = root.Element(nameof(PainfulWoundPercent)).GetFloat();
+            UseCustomUnconsciousBehaviour = root.Element(nameof(UseCustomUnconsciousBehaviour)).GetBool();
+            DelayedPainPercent = root.Element(nameof(DelayedPainPercent)).GetFloat();
+            DelayedPainSpeed = root.Element(nameof(DelayedPainSpeed)).GetFloat();
+
+            XElement itemsNode = root.Element(nameof(Wounds))!;
+            Wounds = itemsNode.Elements(nameof(Wound)).Select(x => new Wound(x)).ToDictionary(x => x.Key);
+
+            XElement takedownNode = root.Element("Takedown");
+            TakedownRagdollDurationMs = takedownNode.GetInt("RagdollDurationMs");
+            TakedownMults = new DBPContainer(takedownNode, isMult: true);
+
+            XElement bloodPoolsNode = root.Element("BloodPools")!;
+            BloodPoolGrowTimeScale = bloodPoolsNode.GetFloat("GrowTimeScale", 1f);
+            BloodPoolParticles = bloodPoolsNode.Elements("Particle").Select(x => new BloodPoolData(x)).ToArray();
         }
 
-        public override string ToString()
-        {
-            return $"{nameof(WoundConfig)}:\n" +
-                   $"{nameof(RealisticNervesDamage)}: {RealisticNervesDamage.ToString()}\n" +
-                   $"D/P/B Mults: {DamageMultiplier.ToString("F2")}/{PainMultiplier.ToString("F2")}/{BleedingMultiplier.ToString("F2")}\n" +
-                   $"D/P/B Deviations: {DamageDeviation.ToString("F2")}/{PainDeviation.ToString("F2")}/{BleedingDeviation.ToString("F2")}\n" +
-                   $"{nameof(MoveRateOnFullPain)}: {MoveRateOnFullPain.ToString(CultureInfo.InvariantCulture)}\n" +
-                   $"{nameof(MoveRateOnNervesDamage)}: {MoveRateOnNervesDamage.ToString(CultureInfo.InvariantCulture)}\n" +
-                   $"{nameof(RagdollOnPainfulWound)}: {RagdollOnPainfulWound.ToString()}\n" +
-                   $"{nameof(MinimalChanceForArmorSave)}: {MinimalChanceForArmorSave.ToString(CultureInfo.InvariantCulture)}";
+        public void Validate(MainConfig mainConfig, ILogger logger) { }
+
+        public static int ConvertHealthFromNative(int health) {
+            return health - HEALTH_CORRECTION;
+        }
+
+        public static int ConvertHealthToNative(int health) {
+            return health + HEALTH_CORRECTION;
+        }
+
+        public override string ToString() {
+            return $"{nameof(WoundConfig)}:\n"
+                   + $"Mults: {GlobalMultipliers.ToString()}\n"
+                   + $"Deviations: {GlobalDeviations.ToString()}\n"
+                   + $"{nameof(RagdollOnPainfulWound)}: {RagdollOnPainfulWound.ToString()}";
         }
     }
 }

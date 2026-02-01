@@ -1,343 +1,246 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Threading;
-using System.Windows.Forms;
-using GTA;
-using GTA.Native;
-using GTA.UI;
-using GunshotWound2.Configs;
-using GunshotWound2.Crits;
-using GunshotWound2.Damage;
-using GunshotWound2.Effects;
-using GunshotWound2.GUI;
-using GunshotWound2.Healing;
-using GunshotWound2.HitDetection;
-using GunshotWound2.HitDetection.WeaponHitSystems;
-using GunshotWound2.Pain;
-using GunshotWound2.Player;
-using GunshotWound2.Utils;
-using GunshotWound2.World;
-using Leopotam.Ecs;
+﻿// #define GSW_PROFILING
 
-namespace GunshotWound2
-{
-    public sealed class GunshotWound2 : Script
-    {
-        public static string LastSystem = "Nothing";
+namespace GunshotWound2 {
+    using System;
+    using System.IO;
+    using System.Reflection;
+    using System.Text;
+    using System.Windows.Forms;
+    using Configs;
+    using GTA;
+    using Scellecs.Morpeh;
+    using Utils;
+    using EcsWorld = Scellecs.Morpeh.World;
 
-        public const float MinimalRangeForWoundedPeds = 0;
-        public const float AddingToRemovingMultiplier = 2;
-        private static readonly string ExceptionLogPath = Application.StartupPath + "/GSW2Exception.log";
+    // ReSharper disable once UnusedType.Global
+    public sealed class GunshotWound2 : Script {
+        private static readonly AssemblyName ASSEMBLY_NAME = Assembly.GetCallingAssembly().GetName();
+        private static readonly string SCRIPT_NAME = $"{ASSEMBLY_NAME.Name}({ASSEMBLY_NAME.Version})";
+        private static readonly string EXCEPTION_LOG_PATH = Path.Combine(Application.StartupPath, "GSW2Exception.log");
+        private static int PAUSE_POST;
 
-        public static readonly Random Random = new Random();
-        private readonly InputArgument[] _inputArguments = new InputArgument[2];
+#if DEBUG
 
-        private bool _isPaused;
+        // ReSharper disable once InconsistentNaming
+        // ReSharper disable once MemberCanBePrivate.Global
+        public static SharedData sharedData;
+#else
+        private readonly SharedData sharedData;
+#endif
 
-        private EcsWorld _ecsWorld;
-        private EcsSystems _everyFrameSystems;
-        private MultiTickEcsSystems _commonSystems;
+        private readonly EcsWorld ecsWorld;
+        private readonly SystemsGroup commonSystems;
 
-        private MainConfig _mainConfig;
-        private LocaleConfig _localeConfig;
-        private GswWorld _gswWorld;
+#if GSW_PROFILING
+        private readonly ProfilerSample profilerSample = new("GSW_TICK");
+#endif
 
-        private bool _isInit;
-        private bool _configLoaded;
-        private string _configReason;
-        private bool _localizationLoaded;
-        private string _localizationReason;
-        private bool _exceptionInRuntime;
-        private int _ticks;
+        private bool isStarted;
+        private bool isPaused;
+        private bool cleanedUp;
 
-        public GunshotWound2()
-        {
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
-            GunshotWoundInit();
-        }
+        public GunshotWound2() {
+            sharedData = new SharedData(Filename, new ScriptHookLogger());
 
-        private void GunshotWoundInit()
-        {
-            Function.Call(Hash._SET_CAM_EFFECT, 0);
-            _ecsWorld = new EcsWorld();
+            ecsWorld = EcsWorld.Create();
+            commonSystems = ecsWorld.CreateSystemsGroup();
 
-            _mainConfig = EcsFilterSingle<MainConfig>.Create(_ecsWorld);
-            _localeConfig = EcsFilterSingle<LocaleConfig>.Create(_ecsWorld);
-            _gswWorld = EcsFilterSingle<GswWorld>.Create(_ecsWorld);
-            _gswWorld.GswPeds = new Dictionary<Ped, int>();
-
-            (_configLoaded, _configReason) = MainConfig.TryToLoadFromXml(_mainConfig);
-            (_localizationLoaded, _localizationReason) = LocaleConfig.TryToLoadLocalization(_localeConfig, _mainConfig.Language);
-
-            _everyFrameSystems = new EcsSystems(_ecsWorld);
-            _commonSystems = new MultiTickEcsSystems(_ecsWorld, MultiTickEcsSystems.RestrictionModes.MILLISECONDS, 10);
-
-            if (_mainConfig.NpcConfig.AddingPedRange > MinimalRangeForWoundedPeds)
-            {
-                _commonSystems
-                    .Add(new NpcFindSystem())
-                    .Add(new ConvertPedToNpcGswPedSystem())
-                    .Add(new RemoveWoundedPedSystem());
-            }
-
-            if (_mainConfig.PlayerConfig.WoundedPlayerEnabled)
-            {
-                _everyFrameSystems
-                    .Add(new PlayerSystem())
-                    .Add(new SpecialAbilityLockSystem());
-
-                if (_mainConfig.PlayerConfig.MaximalSlowMo < 1f)
-                {
-                    _everyFrameSystems.Add(new AdrenalineSystem());
-                }
-            }
-
-            _everyFrameSystems
-                .Add(new InstantHealSystem())
-                .Add(new HelmetRequestSystem())
-                .Add(new RagdollSystem())
-                .Add(new MoveSetSwitchSystem())
-                .Add(new DebugInfoSystem())
-                .Add(new CameraShakeSystem())
-                .Add(new FlashSystem())
-                .Add(new PainRecoverySystem())
-                .Add(new BleedingSystem())
-                .Add(new BandageSystem())
-                .Add(new SelfHealingSystem());
-
-            _commonSystems
-                .Add(new ArmorSystem())
-                .AddHitDetectSystems()
-                .AddDamageProcessingSystems()
-                .AddWoundSystems()
-                .AddPainStateSystems()
-                .Add(new CheckSystem())
-                .Add(new NotificationSystem());
-
-            _everyFrameSystems.Initialize();
-            _commonSystems.Initialize();
+            KeyUp += OnKeyUp;
+            isPaused = false;
 
             Tick += OnTick;
-            KeyUp += OnKeyUp;
+            Aborted += Cleanup;
 
-            _isPaused = false;
+            sharedData.logger.WriteInfo($"{SCRIPT_NAME} is initializing...");
+#if DEBUG
+            MLogger.SetInstance(new GSWMorpehLogger(sharedData.logger));
+#endif
         }
 
-        private void OnKeyUp(object sender, KeyEventArgs eventArgs)
-        {
-            if (eventArgs.KeyCode == _mainConfig.HelmetKey)
-            {
-                _ecsWorld.CreateEntityWith<AddHelmetToPlayerEvent>();
+        private void OnTick(object sender, EventArgs eventArgs) {
+            if (Game.IsPaused) {
                 return;
             }
 
-            if (eventArgs.KeyCode == _mainConfig.CheckKey)
-            {
-                CheckPlayer();
+            sharedData.deltaTime = Game.LastFrameTime;
+            sharedData.deltaTimeInMs = (int)(sharedData.deltaTime * 1000f);
+            if (!IsStarted()) {
                 return;
             }
 
-            if (eventArgs.KeyCode == _mainConfig.HealKey)
-            {
-                HealPlayer();
-                return;
-            }
-
-            if (eventArgs.KeyCode == _mainConfig.BandageKey)
-            {
-                ApplyBandageToPlayer();
-                return;
-            }
-
-            if (eventArgs.KeyCode == _mainConfig.IncreaseRangeKey)
-            {
-                ChangeRange(5);
-                return;
-            }
-
-            if (eventArgs.KeyCode == _mainConfig.ReduceRangeKey)
-            {
-                ChangeRange(-5);
-                return;
-            }
-
-            if (eventArgs.KeyCode == _mainConfig.PauseKey)
-            {
-                _isPaused = !_isPaused;
-                Notification.Show(_isPaused
-                    ? $"~r~{_localeConfig.GswIsPaused}"
-                    : $"~g~{_localeConfig.GswIsWorking}");
-                return;
-            }
-        }
-
-        private void OnTick(object sender, EventArgs eventArgs)
-        {
-            IsInitCheck();
-
-            if (_exceptionInRuntime) return;
-
-            try
-            {
+            try {
                 GunshotWoundTick();
+            } catch (Exception exception) {
+                HandleRuntimeException(exception);
+                Abort();
             }
-            catch (Exception exception)
-            {
-                Notification.Show($"~o~{_localeConfig.GswStopped}");
-                System.IO.File.WriteAllText(ExceptionLogPath, exception.ToString());
-                Notification.Show($"~r~There is a runtime error in GSW2! Check {ExceptionLogPath}"
+        }
+
+        private void OnKeyUp(object sender, KeyEventArgs eventArgs) {
+            if (Game.IsPaused) {
+                return;
+            }
+
+            if (sharedData.mainConfig.PauseKey.IsPressed(eventArgs)) {
+                TogglePause();
+                return;
+            }
+
+            if (isStarted && !isPaused && Game.Player.CanControlCharacter) {
+                sharedData.inputListener.ConsumeKeyUp(eventArgs);
+            }
+        }
+
+        private void TogglePause() {
+            isPaused = !isPaused;
+
+            LocaleConfig localeConfig = sharedData.localeConfig;
+            PAUSE_POST = isPaused
+                    ? sharedData.notifier.ReplaceOne(localeConfig.GswIsPaused, blinking: true, PAUSE_POST, Notifier.Color.YELLOW)
+                    : sharedData.notifier.ReplaceOne(localeConfig.GswIsWorking, blinking: true, PAUSE_POST, Notifier.Color.GREEN);
+        }
+
+        private void Cleanup(object sender, EventArgs e) {
+            if (cleanedUp) {
+                return;
+            }
+
+            try {
+#if GSW_PROFILING
+                profilerSample.OutputCurrentProfilingResults(sharedData.logger);
+#endif
+                commonSystems.Dispose();
+                ecsWorld.Dispose();
+                sharedData.cameraService.ClearAllEffects();
+                sharedData.uiService.ClearAll();
+                cleanedUp = true;
+            } catch (Exception exception) {
+                HandleRuntimeException(exception);
+            }
+        }
+
+        #region PREPARE
+        private bool IsStarted() {
+            if (isStarted) {
+                return true;
+            }
+
+            if (!sharedData.PlayerCanSeeNotification()) {
+                return false;
+            }
+
+            sharedData.logger.WriteInfo("GSW2 is loading configs...");
+            (bool success, string reason, string trace) = sharedData.mainConfig.TryToLoad(sharedData.scriptPath);
+            if (!success) {
+                var message = $"GSW2 couldn't load config!\nReason:\n~r~{reason}";
+                sharedData.notifier.ShowOne(message, blinking: true);
+                sharedData.logger.WriteError(message);
+                sharedData.logger.WriteInfo(trace);
+                Abort();
+                return false;
+            }
+
+            sharedData.logger.WriteInfo("GSW2 is validating configs...");
+            sharedData.mainConfig.ValidateConfigs(sharedData.logger);
+
+            sharedData.logger.WriteInfo("GSW2 is loading localization...");
+            (success, reason) = sharedData.localeConfig.TryToLoad(sharedData.scriptPath, sharedData.mainConfig.Language);
+            if (!success) {
+                var message = $"GSW2 couldn't load localization!\nReason:\n~r~{reason}";
+                sharedData.notifier.ShowOne(message, blinking: true);
+                sharedData.logger.WriteError(message);
+                Abort();
+                return false;
+            }
+
+            try {
+                sharedData.logger.WriteInfo("GSW2 is starting...");
+                ClearExceptionLog();
+                WhenConfigLoadedActions();
+                RegisterSystems();
+            } catch (Exception e) {
+                HandleRuntimeException(e);
+                Abort();
+                return false;
+            }
+
+            var builder = new StringBuilder();
+            builder.Append(sharedData.localeConfig.ThanksForUsing);
+            builder.AppendEndOfLine();
+            builder.AppendLine("~g~GunShot Wound ~r~2~s~\nby <C>SH42913</C>");
+            builder.Append($"Translated by {sharedData.localeConfig.TranslationAuthor ?? "GSW2-community"}");
+            sharedData.notifier.ShowOne(builder.ToString(), blinking: true);
+
+#if GSW_PROFILING
+            sharedData.cheatListener.Register("GSW_PROFILING_RESULTS", () => {
+                profilerSample.OutputCurrentProfilingResults(sharedData.logger);
+            });
+#endif
 #if DEBUG
-                                  + $"\nLast system is {LastSystem}"
+            sharedData.cheatListener.Register("TEST", () => {
+                //
+            });
 #endif
-                );
-                throw;
-            }
+
+            sharedData.logger.WriteInfo("GSW2 has started");
+            isStarted = true;
+            return true;
         }
 
-        private void IsInitCheck()
-        {
-            if (_isInit || _ticks++ != 400) return;
-
-            var translationAuthor = _localeConfig.LocalizationAuthor ?? "GSW2-community";
-
-            Notification.Show($"{_localeConfig.ThanksForUsing}\n" +
-                              $"~g~GunShot Wound ~r~2~s~\nby SH42913\nTranslated by {translationAuthor}");
-
-            if (!_configLoaded)
-            {
-                Notification.Show("GSW2 couldn't load config, default config was loaded.\n" +
-                                  $"You need to check ~r~{_configReason}");
-            }
-            else if (!_localizationLoaded)
-            {
-                Notification.Show("GSW2 couldn't load localization, default localization was loaded.\n" +
-                                  "You need to check or change localization\n" +
-                                  "Possible reason: ~r~" + _localizationReason);
-            }
-
-            _isInit = true;
+        private void WhenConfigLoadedActions() {
+            sharedData.cameraService.useScreenEffects = sharedData.mainConfig.playerConfig.UseScreenEffects;
+            sharedData.modelChecker.Init(sharedData.mainConfig);
+            sharedData.mainConfig.ApplyTo(sharedData.notifier);
         }
 
-        private void GunshotWoundTick()
-        {
-            if (_isPaused) return;
+        private void RegisterSystems() {
+            PedsFeature.PedsFeature.Create(commonSystems, sharedData);
+            PlayerFeature.PlayerFeature.Create(commonSystems, sharedData);
+            HitDetection.DetectHitFeature.Create(commonSystems, sharedData);
+            WoundFeature.WoundFeature.Create(commonSystems, sharedData);
+            TraumaFeature.TraumaFeature.Create(commonSystems, sharedData);
+            HealthFeature.HealthFeature.Create(ecsWorld, commonSystems, sharedData);
+            PainFeature.PainFeature.Create(commonSystems, sharedData);
+            StatusFeature.StatusFeature.Create(commonSystems, sharedData);
+            InventoryFeature.InventoryFeature.Create(commonSystems, sharedData);
+        }
+        #endregion
 
-            if (_mainConfig.PlayerConfig.WoundedPlayerEnabled)
-            {
-                _inputArguments[0] = Game.Player;
-                _inputArguments[1] = 0f;
-                Function.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, _inputArguments);
-
-                _inputArguments[0] = 0.01f;
-                Function.Call(Hash.SET_AI_WEAPON_DAMAGE_MODIFIER, _inputArguments);
-                Function.Call(Hash.SET_AI_MELEE_WEAPON_DAMAGE_MODIFIER, _inputArguments);
-            }
-
-            _inputArguments[0] = null;
-            _everyFrameSystems.Run();
-            _commonSystems.Run();
-
+        #region TICK
+        private void GunshotWoundTick() {
+            if (!isPaused) {
+#if GSW_PROFILING
+                profilerSample.Start();
+#endif
+                sharedData.cheatListener.Check();
+                commonSystems.Update(sharedData.deltaTime);
+                commonSystems.LateUpdate(sharedData.deltaTime);
+                commonSystems.CleanupUpdate(sharedData.deltaTime);
+#if GSW_PROFILING
+                profilerSample.Stop();
+#endif
 #if DEBUG
-            GTA.UI.Screen.Screen.ShowSubtitle($"ActiveEntities: {_ecsWorld.GetStats().ActiveEntities.ToString()}\n" +
-                                $"Peds in GSW: {_gswWorld.GswPeds.Count.ToString()}");
+                RaycastDebugDrawer.Draw();
 #endif
+            }
+
+            sharedData.notifier.Show();
         }
 
-        private void ChangeRange(float value)
-        {
-            if (_mainConfig.NpcConfig.AddingPedRange + value < MinimalRangeForWoundedPeds) return;
-
-            _mainConfig.NpcConfig.AddingPedRange += value;
-            _mainConfig.NpcConfig.RemovePedRange = _mainConfig.NpcConfig.AddingPedRange * AddingToRemovingMultiplier;
-
-            SendMessage($"{_localeConfig.AddingRange}: {_mainConfig.NpcConfig.AddingPedRange.ToString("F0")}\n" +
-                        $"{_localeConfig.RemovingRange}: {_mainConfig.NpcConfig.RemovePedRange.ToString("F0")}");
+        private static void ClearExceptionLog() {
+            if (File.Exists(EXCEPTION_LOG_PATH)) {
+                File.Delete(EXCEPTION_LOG_PATH);
+            }
         }
 
-        private void CheckPlayer()
-        {
-            var playerEntity = _mainConfig.PlayerConfig.PlayerEntity;
-            if (playerEntity < 0) return;
-
-            _ecsWorld.CreateEntityWith<ShowHealthStateEvent>().Entity = playerEntity;
+        private void HandleRuntimeException(Exception exception) {
+            var log = $"Exception in {SCRIPT_NAME}:\n{exception}";
+            File.WriteAllText(EXCEPTION_LOG_PATH, log);
+            sharedData.logger.WriteError(log);
+            sharedData.notifier.ShowOne(sharedData.localeConfig.GswStopped, blinking: true, Notifier.Color.ORANGE);
+            sharedData.notifier.ShowOne("There is a runtime error in GSW2, please report it to Github-issues or GSW discord!\n"
+                                        + $"Log-File - {EXCEPTION_LOG_PATH} to Github-issues\n", blinking: true, Notifier.Color.RED);
         }
-
-        private void HealPlayer()
-        {
-            var playerEntity = _mainConfig.PlayerConfig.PlayerEntity;
-            if (playerEntity < 0) return;
-
-            _ecsWorld.CreateEntityWith<InstantHealEvent>().Entity = playerEntity;
-        }
-
-        private void ApplyBandageToPlayer()
-        {
-            var playerEntity = _mainConfig.PlayerConfig.PlayerEntity;
-            if (playerEntity < 0) return;
-
-            _ecsWorld.CreateEntityWith<ApplyBandageEvent>().Entity = playerEntity;
-        }
-
-        private void SendMessage(string message, NotifyLevels level = NotifyLevels.COMMON)
-        {
-#if !DEBUG
-            if (level == NotifyLevels.DEBUG) return;
-#endif
-
-            var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
-            notification.Level = level;
-            notification.StringToShow = message;
-        }
-    }
-
-    internal static class Extensions
-    {
-        public static MultiTickEcsSystems AddHitDetectSystems(this MultiTickEcsSystems systems)
-        {
-            return systems
-                .Add(new HitDetectSystem())
-                .Add(new BaseWeaponHitSystem())
-                .Add(new BodyHitSystem())
-                .Add(new HitCleanSystem());
-        }
-
-        public static MultiTickEcsSystems AddDamageProcessingSystems(this MultiTickEcsSystems systems)
-        {
-            return systems
-                .Add(new SmallCaliberDamageSystem())
-                .Add(new ShotgunDamageSystem())
-                .Add(new LightImpactDamageSystem())
-                .Add(new HeavyImpactDamageSystem())
-                .Add(new MediumCaliberDamageSystem())
-                .Add(new HighCaliberDamageSystem())
-                .Add(new CuttingDamageSystem())
-                .Add(new ExplosionDamageSystem());
-        }
-
-        public static MultiTickEcsSystems AddWoundSystems(this MultiTickEcsSystems systems)
-        {
-            return systems
-                .Add(new WoundSystem())
-                .Add(new HeartCriticalSystem())
-                .Add(new LungsCriticalSystem())
-                .Add(new NervesCriticalSystem())
-                .Add(new ArmsCriticalSystem())
-                .Add(new LegsCriticalSystem())
-                .Add(new GutsCriticalSystem())
-                .Add(new StomachCriticalSystem());
-        }
-
-        public static MultiTickEcsSystems AddPainStateSystems(this MultiTickEcsSystems systems)
-        {
-            return systems
-                .Add(new IncreasePainSystem())
-                .Add(new NoPainStateSystem())
-                .Add(new MildPainStateSystem())
-                .Add(new AveragePainStateSystem())
-                .Add(new IntensePainStateSystem())
-                .Add(new UnbearablePainStateSystem())
-                .Add(new DeadlyPainStateSystem());
-        }
+        #endregion
     }
 }

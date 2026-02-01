@@ -9,12 +9,13 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GunshotWound2</RootNamespace>
     <AssemblyName>GunshotWound2</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <LangVersion>8</LangVersion>
+    <LangVersion>default</LangVersion>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -25,154 +26,221 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>none</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>0</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ScriptHookVDotNet3, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\ScriptHookVDotNet3.3.1.0\lib\net48\ScriptHookVDotNet3.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="ScriptHookVDotNet">
+      <HintPath>..\HookDLLs\ScriptHookVDotNet.asi</HintPath>
+    </Reference>
+    <Reference Include="ScriptHookVDotNet3">
+      <HintPath>..\HookDLLs\ScriptHookVDotNet3.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Weighted Randomizer, Version=1.0.3.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\WeightedRandomizer.1.0.3\lib\net35\Weighted Randomizer.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="WeightedRandomizer, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WeightedRandomizer.2.0.1\lib\net35\WeightedRandomizer.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configs\LocaleConfig.cs" />
-    <Compile Include="Configs\MainConfig.cs" />
-    <Compile Include="Configs\NpcConfig.cs" />
-    <Compile Include="Configs\PlayerConfig.cs" />
-    <Compile Include="Configs\WoundConfig.cs" />
-    <Compile Include="Crits\ArmsCriticalSystem.cs" />
-    <Compile Include="Crits\BaseCriticalSystem.cs" />
-    <Compile Include="Crits\GutsCriticalSystem.cs" />
-    <Compile Include="Crits\HeartCriticalSystem.cs" />
-    <Compile Include="Crits\LegsCriticalSystem.cs" />
-    <Compile Include="Crits\LungsCriticalSystem.cs" />
-    <Compile Include="Crits\NervesCriticalSystem.cs" />
-    <Compile Include="Crits\StomachCriticalSystem.cs" />
-    <Compile Include="Damage\BaseDamageSystem.cs" />
-    <Compile Include="Damage\BaseGunDamageSystem.cs" />
-    <Compile Include="Damage\BaseImpactDamageSystem.cs" />
-    <Compile Include="Damage\BleedingComponent.cs" />
-    <Compile Include="Damage\BleedingSystem.cs" />
-    <Compile Include="Damage\CuttingDamageSystem.cs" />
-    <Compile Include="Damage\ExplosionDamageSystem.cs" />
-    <Compile Include="Damage\HaveDamageMarkComponent.cs" />
-    <Compile Include="Damage\HeavyImpactDamageSystem.cs" />
-    <Compile Include="Damage\HighCaliberDamageSystem.cs" />
-    <Compile Include="Damage\LightImpactDamageSystem.cs" />
-    <Compile Include="Damage\MediumCaliberDamageSystem.cs" />
-    <Compile Include="Damage\ProcessWoundEvent.cs" />
-    <Compile Include="Damage\ShotgunDamageSystem.cs" />
-    <Compile Include="Damage\SmallCaliberDamageSystem.cs" />
-    <Compile Include="Damage\WoundSystem.cs" />
-    <Compile Include="Effects\ArmorSystem.cs" />
-    <Compile Include="Effects\SwitchMoveSetRequest.cs" />
-    <Compile Include="Effects\InstantHealEvent.cs" />
-    <Compile Include="Effects\InstantHealSystem.cs" />
-    <Compile Include="Effects\RagdollSystem.cs" />
-    <Compile Include="Effects\SetPedToRagdollEvent.cs" />
-    <Compile Include="Effects\MoveSetSwitchSystem.cs" />
-    <Compile Include="GUI\CheckSystem.cs" />
-    <Compile Include="GUI\DebugInfoSystem.cs" />
-    <Compile Include="GUI\NotificationSystem.cs" />
-    <Compile Include="GUI\ShowDebugInfoEvent.cs" />
-    <Compile Include="GUI\ShowHealthStateEvent.cs" />
-    <Compile Include="GUI\ShowNotificationEvent.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Configs\ArmorConfig.cs" />
+    <Compile Include="Configs\BodyPartConfig.cs" />
+    <Compile Include="Configs\DBPContainer.cs" />
+    <Compile Include="Configs\TraumaConfig.cs" />
+    <Compile Include="Configs\InventoryConfig.cs" />
+    <Compile Include="Configs\LocaleConfig.cs"/>
+    <Compile Include="Configs\MainConfig.cs"/>
+    <Compile Include="Configs\PedsConfig.cs" />
+    <Compile Include="Configs\StatusMoveSets.cs" />
+    <Compile Include="Configs\PlayerConfig.cs"/>
+    <Compile Include="Configs\WeaponConfig.cs" />
+    <Compile Include="Configs\WoundConfig.cs"/>
+    <Compile Include="HealthFeature\BleedingFx.cs" />
+    <Compile Include="HealthFeature\BleedingFxSystem.cs" />
+    <Compile Include="HealthFeature\BloodPoolFx.cs" />
+    <Compile Include="HealthFeature\BloodPoolFxSystem.cs" />
+    <Compile Include="HitDetection\MultiBulletHitSystem.cs" />
+    <Compile Include="PainFeature\PainGenerator.cs" />
+    <Compile Include="PainFeature\PainGeneratingSystem.cs" />
+    <Compile Include="PainFeature\PainkillersEffect.cs" />
+    <Compile Include="PainFeature\PainkillersItem.cs" />
+    <Compile Include="PedsFeature\FacialIdleAnimSystem.cs" />
+    <Compile Include="PedsFeature\InjuredOnGroundUpdateSystem.cs" />
+    <Compile Include="PedsFeature\PedCombatPerfSystem.cs" />
+    <Compile Include="PedsFeature\PedDamageModifierSystem.cs" />
+    <Compile Include="PlayerFeature\MissionTrackerSystem.cs" />
+    <Compile Include="PlayerFeature\PlayerHelpSystem.cs" />
+    <Compile Include="PlayerFeature\PlayerHitNotification.cs" />
+    <Compile Include="PlayerFeature\PlayerHitNotificationSystem.cs" />
+    <Compile Include="PlayerFeature\PlayerDamageModifierSystem.cs" />
+    <Compile Include="PlayerFeature\PlayerPainRecoverySystem.cs" />
+    <Compile Include="PlayerFeature\PlayerSpeedHistory.cs" />
+    <Compile Include="PlayerFeature\PlayerSpeedSystem.cs" />
+    <Compile Include="StatusFeature\UnconsciousVisualRequest.cs" />
+    <Compile Include="StatusFeature\UnconsciousVisualSystem.cs" />
+    <Compile Include="StatusFeature\IPedStatus.cs" />
+    <Compile Include="StatusFeature\PedStatusSystem.cs" />
+    <Compile Include="StatusFeature\Statuses\DistressedStatus.cs" />
+    <Compile Include="StatusFeature\Statuses\CriticalStatus.cs" />
+    <Compile Include="StatusFeature\Statuses\WarningStatus.cs" />
+    <Compile Include="StatusFeature\Statuses\UnconsciousStatus.cs" />
+    <Compile Include="StatusFeature\StatusFeature.cs" />
+    <Compile Include="TraumaFeature\Actions\ArmsTraumaEffect.cs" />
+    <Compile Include="TraumaFeature\Actions\HeadTraumaEffect.cs" />
+    <Compile Include="TraumaFeature\Actions\HeartTraumaEffect.cs" />
+    <Compile Include="TraumaFeature\Actions\BaseTraumaEffect.cs" />
+    <Compile Include="TraumaFeature\Actions\LegsTraumaEffect.cs" />
+    <Compile Include="TraumaFeature\Actions\LungsTraumaEffect.cs" />
+    <Compile Include="TraumaFeature\Actions\SpineTraumaEffect.cs" />
+    <Compile Include="TraumaFeature\Actions\AbdomenTraumaEffect.cs" />
+    <Compile Include="TraumaFeature\TraumaRequest.cs" />
+    <Compile Include="TraumaFeature\Traumas.cs" />
+    <Compile Include="TraumaFeature\TraumaFeature.cs" />
+    <Compile Include="TraumaFeature\TraumaSystem.cs" />
+    <Compile Include="HealthFeature\BandageItem.cs" />
+    <Compile Include="InventoryFeature\AddItemRequest.cs" />
+    <Compile Include="InventoryFeature\CurrentlyUsingItem.cs" />
+    <Compile Include="InventoryFeature\Inventory.cs" />
+    <Compile Include="InventoryFeature\InventoryFeature.cs" />
+    <Compile Include="InventoryFeature\InventoryInitSystem.cs" />
+    <Compile Include="InventoryFeature\AddItemSystem.cs" />
+    <Compile Include="InventoryFeature\InventoryUseSystem.cs" />
+    <Compile Include="InventoryFeature\ItemTemplate.cs" />
+    <Compile Include="InventoryFeature\UseItemRequest.cs" />
+    <Compile Include="PedsFeature\PedMovementSystem.cs" />
+    <Compile Include="PlayerFeature\ItemPickupSystem.cs" />
+    <Compile Include="PlayerFeature\MedkitGpsSystem.cs" />
+    <Compile Include="PlayerFeature\PlayerCameraSystem.cs" />
+    <Compile Include="PlayerFeature\PlayerDeathReportSystem.cs" />
+    <Compile Include="Services\CameraService.cs" />
+    <Compile Include="Services\ModelCheckerService.cs" />
+    <Compile Include="Services\PedStateService.cs" />
+    <Compile Include="Services\UIService.cs" />
+    <Compile Include="Services\WorldService.cs" />
+    <Compile Include="Utils\CheatListener.cs" />
+    <Compile Include="Utils\CsvReader.cs" />
+    <Compile Include="Utils\GSWMorpehLogger.cs" />
+    <Compile Include="Utils\GTAHelpers.cs" />
+    <Compile Include="Utils\Localization.cs" />
+    <Compile Include="Utils\MathHelpers.cs" />
+    <Compile Include="Utils\NMHelper.cs" />
+    <Compile Include="Utils\ProfilerSample.cs" />
+    <Compile Include="Utils\RaycastDebugDrawer.cs" />
+    <Compile Include="Utils\SHVDNHelpers.cs" />
+    <Compile Include="WoundFeature\ArmorChecker.cs" />
+    <Compile Include="WoundFeature\WoundData.cs" />
+    <Compile Include="WoundFeature\WoundFeature.cs" />
+    <Compile Include="WoundFeature\WoundHitDataSystem.cs" />
+    <Compile Include="WoundFeature\WoundSystem.cs" />
+    <Compile Include="HealthFeature\Bleeding.cs" />
+    <Compile Include="HealthFeature\BleedingSystem.cs" />
+    <Compile Include="HealthFeature\HealthChangeSystem.cs" />
+    <Compile Include="HealthFeature\HealthFeature.cs" />
+    <Compile Include="HealthFeature\Health.cs" />
+    <Compile Include="HealthFeature\HealthInitSystem.cs" />
+    <Compile Include="HealthFeature\SelfHealingSystem.cs" />
+    <Compile Include="HealthFeature\TotalHealCheckSystem.cs" />
+    <Compile Include="HealthFeature\TotallyHealedEvent.cs" />
+    <Compile Include="PainFeature\PainInitSystem.cs" />
+    <Compile Include="HitDetection\DetectHitFeature.cs" />
+    <Compile Include="HitDetection\PedHitData.cs" />
+    <Compile Include="HitDetection\WeaponHitSystem.cs" />
+    <Compile Include="PainFeature\Pain.cs" />
+    <Compile Include="PainFeature\PainFeature.cs" />
+    <Compile Include="PedsFeature\JustConvertedEvent.cs" />
+    <Compile Include="PedsFeature\PedEffects.cs" />
+    <Compile Include="PedsFeature\RagdollSystem.cs" />
+    <Compile Include="PlayerFeature\AdrenalineSystem.cs" />
+    <Compile Include="PlayerFeature\PlayerEffects.cs" />
+    <Compile Include="PlayerFeature\PlayerFeature.cs" />
+    <Compile Include="Utils\InputListener.cs" />
+    <Compile Include="Utils\Notifier.cs" />
+    <Compile Include="Utils\StringBuilderExtensions.cs" />
     <Compile Include="GunshotWound2.cs" />
-    <Compile Include="Healing\ApplyBandageEvent.cs" />
-    <Compile Include="Healing\BandageInProgressComponent.cs" />
-    <Compile Include="Healing\BandageSystem.cs" />
-    <Compile Include="Healing\SelfHealingSystem.cs" />
-    <Compile Include="Healing\SuccessfulBandageEvent.cs" />
     <Compile Include="HitDetection\BodyHitSystem.cs" />
-    <Compile Include="HitDetection\BodyPartWasHitEvent.cs" />
-    <Compile Include="HitDetection\CheckBodyHitEvent.cs" />
     <Compile Include="HitDetection\HitCleanSystem.cs" />
     <Compile Include="HitDetection\HitDetectSystem.cs" />
-    <Compile Include="HitDetection\WeaponHitSystems\BaseWeaponHitEvent.cs" />
-    <Compile Include="HitDetection\WeaponHitSystems\BaseWeaponHitSystem.cs" />
-    <Compile Include="HitDetection\WeaponHitSystems\CuttingHitEvent.cs" />
-    <Compile Include="HitDetection\WeaponHitSystems\ExplosionHitEvent.cs" />
-    <Compile Include="HitDetection\WeaponHitSystems\HeavyImpactHitEvent.cs" />
-    <Compile Include="HitDetection\WeaponHitSystems\HighCaliberHitEvent.cs" />
-    <Compile Include="HitDetection\WeaponHitSystems\LightImpactHitEvent.cs" />
-    <Compile Include="HitDetection\WeaponHitSystems\MediumCaliberHitEvent.cs" />
-    <Compile Include="HitDetection\WeaponHitSystems\ShotgunHitEvent.cs" />
-    <Compile Include="HitDetection\WeaponHitSystems\SmallCaliberHitEvent.cs" />
-    <Compile Include="HitDetection\WoundedPedComponent.cs" />
-    <Compile Include="Pain\AveragePainChangeStateEvent.cs" />
-    <Compile Include="Pain\AveragePainStateSystem.cs" />
-    <Compile Include="Pain\BaseChangePainStateEvent.cs" />
-    <Compile Include="Pain\BasePainStateSystem.cs" />
-    <Compile Include="Pain\DeadlyPainChangeStateEvent.cs" />
-    <Compile Include="Pain\DeadlyPainStateSystem.cs" />
-    <Compile Include="Pain\IncreasePainEvent.cs" />
-    <Compile Include="Pain\IncreasePainSystem.cs" />
-    <Compile Include="Pain\IntensePainChangeStateEvent.cs" />
-    <Compile Include="Pain\IntensePainStateSystem.cs" />
-    <Compile Include="Pain\MildPainChangeStateEvent.cs" />
-    <Compile Include="Pain\MildPainStateSystem.cs" />
-    <Compile Include="Pain\NoPainChangeStateEvent.cs" />
-    <Compile Include="Pain\NoPainStateSystem.cs" />
-    <Compile Include="Pain\PainComponent.cs" />
-    <Compile Include="Pain\PainRecoverySystem.cs" />
-    <Compile Include="Pain\UnbearablePainChangeStateEvent.cs" />
-    <Compile Include="Pain\UnbearablePainStateSystem.cs" />
-    <Compile Include="Utils\VariousExtensions.cs" />
-    <Compile Include="World\ConvertPedToNpcGswPedEvent.cs" />
-    <Compile Include="World\ConvertPedToNpcGswPedSystem.cs" />
-    <Compile Include="World\ForceWorldPedUpdateEvent.cs" />
-    <Compile Include="World\GswWorld.cs" />
-    <Compile Include="World\NpcFindSystem.cs" />
-    <Compile Include="World\NpcMarkComponent.cs" />
-    <Compile Include="World\RemoveWoundedPedSystem.cs" />
-    <Compile Include="Player\AddCameraShakeEvent.cs" />
-    <Compile Include="Player\AddFlashEvent.cs" />
-    <Compile Include="Player\AddHelmetToPlayerEvent.cs" />
-    <Compile Include="Player\AdrenalineSystem.cs" />
-    <Compile Include="Player\CameraShakeSystem.cs" />
-    <Compile Include="Player\ChangeSpecialAbilityEvent.cs" />
-    <Compile Include="Player\FlashSystem.cs" />
-    <Compile Include="Player\HelmetRequestSystem.cs" />
-    <Compile Include="Player\PlayerMarkComponent.cs" />
-    <Compile Include="Player\PlayerSystem.cs" />
-    <Compile Include="Player\SpecialAbilityLockSystem.cs" />
-    <Compile Include="Utils\ComponentWithEntity.cs" />
+    <Compile Include="PainFeature\PainChangeSystem.cs" />
+    <Compile Include="SharedData.cs" />
+    <Compile Include="Utils\EcsExtensions.cs" />
+    <Compile Include="Utils\Loggers.cs" />
+    <Compile Include="Utils\XElementExtensions.cs" />
+    <Compile Include="PedsFeature\ConvertPedSystem.cs" />
+    <Compile Include="PedsFeature\NpcDetectSystem.cs" />
+    <Compile Include="PedsFeature\ConvertedPed.cs" />
+    <Compile Include="PedsFeature\RemoveConvertedPedSystem.cs" />
+    <Compile Include="PlayerFeature\PlayerDetectSystem.cs" />
     <Compile Include="Utils\LocalizationManager.cs" />
-    <Compile Include="Utils\MultiTickEcsSystems.cs" />
     <Compile Include="Utils\RandomExtensions.cs" />
+    <Compile Include="PedsFeature\PedsFeature.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\leoEcs\Leopotam.Ecs.csproj">
-      <Project>{45fc0562-7188-4470-b350-6a73699fe6e2}</Project>
-      <Name>Leopotam.Ecs</Name>
-    </ProjectReference>
+    <Content Include="..\CONTENT_README.md">
+      <Link>CONTENT_README.md</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\DEV_README.md">
+      <Link>DEV_README.md</Link>
+    </Content>
+    <Content Include="..\README.md">
+      <Link>README.md</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GunshotWound2.Armor.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GunshotWound2.BodyParts.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GunshotWound2.Traumas.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GunshotWound2.Inventory.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GunshotWound2.KeyBinds.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GunshotWound2.Notifications.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GunshotWound2.Peds.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GunshotWound2.Player.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GunshotWound2.Weapons.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GunshotWound2.Wounds.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GunshotWound2.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="GSW2Config.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="GSW2Localization.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <ProjectReference Include="..\Morpeh\Morpeh.csproj">
+      <Project>{7959fa4d-7285-4b90-ae26-bdeab27bf5cf}</Project>
+      <Name>Morpeh</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -182,4 +250,9 @@
     <Target Name="AfterBuild">
     </Target>
     -->
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Y /S /I "$(TargetDir)*" "C:\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\scripts\GSW2\"
+
+if "$(ConfigurationName)" == "Release" xcopy /Y /S "$(TargetDir)*" "$(ProjectDir)\..\Installer\Release\content\"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WoundConfig>
+    <GlobalMultipliers DamageMult="1.2" BleedMult="2.0" PainMult="1.0"/>
+    <!-- 0.5 for DamageMult means every wound will deal 50% of its damage to ped, same for other fields -->
+
+    <GlobalDeviations Damage="0.2" Bleed="0.2" Pain="0.2"/>
+    <!-- 0.2 for Damage means +-20% to damage value of every new wound -->
+
+    <Takedown RagdollDurationMs="2000" DamageMult="1.0" BleedMult="1.0" PainMult="1.5"/>
+    <!-- Heavy melee attack(eg, using R key) named "takedown".
+    It will cause special wound with custom duration ragdoll. -->
+
+    <UseCustomUnconsciousBehaviour Value="TRUE"/>
+    <!-- If TRUE - you will see various ped behaviour when they're unconscious, otherwise will be used common ragdoll -->
+
+    <DelayedPainPercent Value="0.5"/>
+    <!-- 0.5 means 50% of wound pain will be applied with delay(because of adrenaline) -->
+
+    <DelayedPainSpeed Value="4"/>
+    <!-- 4 means 4 point of delayed pain will be applied back per one second -->
+
+    <PainfulWoundPercent Value="0.4"/>
+    <!-- Any wound with value more than PainfulWoundPercent * MaxPain will add painful-wound effects -->
+
+    <RagdollOnPainfulWound Value="TRUE"/>
+    <!-- If TRUE - peds(including player) will set to short ragdoll on painful wounds -->
+
+    <BloodPools GrowTimeScale="1.0">
+        <!-- GrowTime of Particle is time for particle to grow per one use -->
+        <!-- GrowTimeScale is an overall modifier for GrowTime, you should adjust that when using modded blood pool particles -->
+        <Particle Asset="cut_trevor1" Effect="cs_trev1_blood_pool" GrowTime="0.6"/>
+        <Particle Asset="cut_hs4" Effect="cut_hs4_cctv_blood_pool" GrowTime="0.175"/>
+        <Particle Asset="cut_sec" Effect="cut_sec_blood_pool" GrowTime="0.175"/>
+    </BloodPools>
+
+    <Wounds>
+        <!--
+        Example:
+        <Wound Key="" LocKey="" IsBlunt="" CanCauseTrauma="" Damage="" Pain="" Bleed=""/>
+        -->
+
+        <!-- Blunt wounds -->
+        <Wound Key="LightBruise" LocKey="Wounds.Blunt.LightBruise" IsBlunt="TRUE" Damage="1" Pain="5" Bleed="0.0"/>
+        <Wound Key="MediumBruise" LocKey="Wounds.Blunt.MediumBruise" IsBlunt="TRUE" Damage="2" Pain="15" Bleed="0.0"/>
+        <Wound Key="HeavyBruise" LocKey="Wounds.Blunt.HeavyBruise" IsBlunt="TRUE" CanCauseTrauma="TRUE" Damage="3" Pain="35" Bleed="0.001"/>
+        <Wound Key="BluntHematoma" LocKey="Wounds.Blunt.Hematoma" IsBlunt="TRUE" Damage="3" Pain="25" Bleed="0.01"/>
+        <Wound Key="BluntAbrasion" LocKey="Wounds.Blunt.Abrasion" IsBlunt="TRUE" Damage="1" Pain="10" Bleed="0.005"/>
+        <Wound Key="BluntLaceration" LocKey="Wounds.Blunt.Laceration" IsBlunt="TRUE" CanCauseTrauma="TRUE" Damage="3" Pain="30" Bleed="0.02"/>
+
+        <!-- Cutting wounds -->
+        <Wound Key="IncisedCut" LocKey="Wounds.Cut.Incised" Damage="1" Pain="10" Bleed="0.05"/>
+        <Wound Key="DeepIncisedCut" LocKey="Wounds.Cut.DeepIncised" CanCauseTrauma="TRUE" Damage="3" Pain="20" Bleed="0.1"/>
+        <Wound Key="SlashCut" LocKey="Wounds.Cut.Slash" CanCauseTrauma="TRUE" Damage="2" Pain="15" Bleed="0.08"/>
+        <Wound Key="LacerationCut" LocKey="Wounds.Cut.Laceration" CanCauseTrauma="TRUE" Damage="4" Pain="30" Bleed="0.1"/>
+        <Wound Key="StabCut" LocKey="Wounds.Cut.Stab" CanCauseTrauma="TRUE" Damage="5" Pain="40" Bleed="0.15"/>
+        <Wound Key="ChopCut" LocKey="Wounds.Cut.Chop" CanCauseTrauma="TRUE" Damage="10" Pain="60" Bleed="0.3"/>
+
+        <!-- Gunshot wounds -->
+        <Wound Key="TangentialGsw" LocKey="Wounds.Gsw.Grazing"
+               CanCauseTrauma="FALSE"
+               Damage="1" Pain="15" Bleed="0.005"/>
+        <Wound Key="PenetratingGsw" LocKey="Wounds.Gsw.Penetrating"
+               CanCauseTrauma="TRUE"
+               Damage="2" Pain="30" Bleed="0.02"/>
+        <Wound Key="PerforatingGsw" LocKey="Wounds.Gsw.Perforating"
+               CanCauseTrauma="TRUE"
+               Damage="2" Pain="20" Bleed="0.01"/>
+        <Wound Key="LaceratingGsw" LocKey="Wounds.Gsw.Lacerating"
+               CanCauseTrauma="TRUE"
+               Damage="4" Pain="50" Bleed="0.05"/>
+        <Wound Key="AvulsiveGsw" LocKey="Wounds.Gsw.Avulsive"
+               CanCauseTrauma="TRUE"
+               Damage="8" Pain="90" Bleed="0.2"/>
+    </Wounds>
+</WoundConfig>

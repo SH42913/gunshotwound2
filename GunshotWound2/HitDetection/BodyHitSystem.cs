@@ -1,110 +1,120 @@
-﻿using System;
-using GTA;
-using GTA.Native;
-using GunshotWound2.GUI;
-using Leopotam.Ecs;
+﻿// #define DEBUG_EVERY_FRAME
 
-namespace GunshotWound2.HitDetection
-{
-    [EcsInject]
-    public sealed class BodyHitSystem : IEcsRunSystem
-    {
-        private readonly EcsWorld _ecsWorld = null;
-        private readonly EcsFilter<CheckBodyHitEvent> _events = null;
+namespace GunshotWound2.HitDetection {
+    using System;
+    using Configs;
+    using GTA;
+    using GTA.Math;
+    using PedsFeature;
+    using Scellecs.Morpeh;
+    using Utils;
 
-        public void Run()
-        {
+    public sealed class BodyHitSystem : ISystem {
+        private readonly SharedData sharedData;
+
+        private Filter damagedPeds;
+
+        public Scellecs.Morpeh.World World { get; set; }
+
+        private BodyPartConfig BodyPartConfig => sharedData.mainConfig.bodyPartConfig;
+
+        public BodyHitSystem(SharedData sharedData) {
+            this.sharedData = sharedData;
+        }
+
+        public void OnAwake() {
+            damagedPeds = World.Filter.With<ConvertedPed>().With<PedHitData>();
+        }
+
+        void IDisposable.Dispose() { }
+
+        public void OnUpdate(float deltaTime) {
+            foreach (Scellecs.Morpeh.Entity pedEntity in damagedPeds) {
+                ref PedHitData hitData = ref pedEntity.GetComponent<PedHitData>();
+                if (ShouldSkipDetection(ref hitData)) {
+                    continue;
+                }
+
+                ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
+                PedBone damagedBone = convertedPed.thisPed.Bones.LastDamaged;
+                if (hitData.useRandomBodyPart || !damagedBone.IsValid) {
+                    hitData.bodyPart = sharedData.random.Next(BodyPartConfig.BodyParts);
+
+                    Bone randomBoneTag = (Bone)sharedData.random.NextFromCollection(hitData.bodyPart.Bones);
+                    hitData.damagedBone = convertedPed.thisPed.Bones[randomBoneTag];
 #if DEBUG
-            GunshotWound2.LastSystem = nameof(BodyHitSystem);
+                    var message = $"Damaged random part is {hitData.bodyPart.Key}, bone {randomBoneTag} of {convertedPed.name}";
+                    sharedData.logger.WriteInfo(message);
 #endif
+                } else {
+                    hitData.damagedBone = damagedBone;
+                    hitData.bodyPart = BodyPartConfig.GetBodyPartByBone(damagedBone.Tag);
+#if DEBUG
+                    var message = $"Damaged part is {hitData.bodyPart.Key}, bone {damagedBone.Name} at {convertedPed.name}";
+                    sharedData.logger.WriteInfo(message);
+#endif
+                }
 
-            for (var i = 0; i < _events.EntitiesCount; i++)
-            {
-                var pedEntity = _events.Components1[i].Entity;
-                if (!_ecsWorld.IsEntityExists(pedEntity)) continue;
-
-                var woundedPed = _ecsWorld.GetComponent<WoundedPedComponent>(pedEntity);
-                if (woundedPed == null) continue;
-
-                var bodyPart = GetDamagedBodyPart(woundedPed.ThisPed);
-
-                var bodyDamage = _ecsWorld.CreateEntityWith<BodyPartWasHitEvent>();
-                bodyDamage.Entity = pedEntity;
-                bodyDamage.DamagedPart = bodyPart;
+                CalculateLocalHitData(convertedPed, ref hitData);
             }
         }
 
-        private unsafe BodyParts GetDamagedBodyPart(Ped target)
-        {
-            if (target == null)
-            {
-                SendMessage("Target is null", NotifyLevels.DEBUG);
-                return BodyParts.NOTHING;
+        private bool ShouldSkipDetection(ref PedHitData hitData) {
+            if (!hitData.weaponType.IsValid) {
+#if DEBUG
+                sharedData.logger.WriteInfo("Skip body part detection, 'cause there's no weapon");
+#endif
+                return true;
             }
 
-            var damagedBoneNum = 0;
-            var x = &damagedBoneNum;
-            Function.Call(Hash.GET_PED_LAST_DAMAGE_BONE, target, x);
-
-            Enum.TryParse(damagedBoneNum.ToString(), out Bone damagedBone);
-            SendMessage("Damaged bone is " + damagedBone, NotifyLevels.DEBUG);
-
-            switch (damagedBone)
-            {
-                case Bone.SkelHead:
-                    return BodyParts.HEAD;
-                case Bone.SkelNeck1:
-                case Bone.SkelNeck2:
-                    return BodyParts.NECK;
-                case Bone.SkelSpine2:
-                case Bone.SkelSpine3:
-                    return BodyParts.UPPER_BODY;
-                case Bone.SkelRoot:
-                case Bone.SkelSpineRoot:
-                case Bone.SkelSpine0:
-                case Bone.SkelSpine1:
-                case Bone.SkelPelvis:
-                case Bone.SkelPelvis1:
-                case Bone.SkelPelvisRoot:
-                    return BodyParts.LOWER_BODY;
-                case Bone.SkelLeftThigh:
-                case Bone.SkelRightThigh:
-                case Bone.SkelLeftToe0:
-                case Bone.SkelLeftToe1:
-                case Bone.SkelRightToe0:
-                case Bone.SkelRightToe1:
-                case Bone.SkelLeftFoot:
-                case Bone.SkelRightFoot:
-                case Bone.SkelLeftCalf:
-                case Bone.SkelRightCalf:
-                    return BodyParts.LEG;
-                case Bone.SkelLeftUpperArm:
-                case Bone.SkelRightUpperArm:
-                case Bone.SkelLeftClavicle:
-                case Bone.SkelRightClavicle:
-                case Bone.SkelLeftForearm:
-                case Bone.SkelRightForearm:
-                case Bone.SkelLeftHand:
-                case Bone.SkelRightHand:
-                    return BodyParts.ARM;
-                default:
-                    return (BodyParts) GunshotWound2.Random.Next(0, (int) BodyParts.LEG);
+            if (hitData.bodyPart.IsValid) {
+#if DEBUG
+                sharedData.logger.WriteInfo("Skip body part detection, 'cause it's already detected");
+#endif
+                return true;
             }
 
-            SendMessage("WARNING! Nothing bone is " + damagedBone, NotifyLevels.DEBUG);
-
-            return BodyParts.NOTHING;
+            return false;
         }
 
-        private void SendMessage(string message, NotifyLevels level = NotifyLevels.COMMON)
-        {
-#if !DEBUG
-            if (level == NotifyLevels.DEBUG) return;
-#endif
+        private static void CalculateLocalHitData(in ConvertedPed convertedPed, ref PedHitData hitData) {
+            if (hitData.weaponHash == (uint)WeaponHash.Unarmed) {
+                return;
+            }
 
-            var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
-            notification.Level = level;
-            notification.StringToShow = message;
+            Ped aggressor = hitData.aggressor;
+            if (!aggressor.IsValid()) {
+                return;
+            }
+
+            Vector3 lastWorldHit = aggressor.LastWeaponImpactPosition;
+            if (lastWorldHit == Vector3.Zero) {
+                return;
+            }
+
+            DamageType damageType = GTAHelpers.GetWeaponDamageType(hitData.weaponHash);
+            if (damageType == DamageType.Melee) {
+                hitData.hitPos = lastWorldHit;
+                hitData.hitNorm = (lastWorldHit - hitData.damagedBone.Position).Normalized;
+                hitData.fullHitData = true;
+            } else if (damageType == DamageType.Bullet) {
+                Vector3 raycastOrigin = aggressor.IsPlayer
+                        ? GameplayCamera.Position
+                        : GTAHelpers.GetPedBoneCoords(aggressor, Bone.IKRightHand);
+
+                hitData.shotDir = (lastWorldHit - raycastOrigin).Normalized;
+                Vector3 raycastTarget = lastWorldHit + 50f * hitData.shotDir;
+                RaycastResult result = GTA.World.Raycast(raycastOrigin, raycastTarget, IntersectFlags.Ragdolls, aggressor);
+                if (result.DidHit && result.HitEntity == convertedPed.thisPed) {
+                    hitData.hitPos = result.HitPosition + 0.0075f * hitData.shotDir;
+                    hitData.hitNorm = result.SurfaceNormal.Normalized;
+                    hitData.fullHitData = true;
+                }
+
+#if DEBUG && DEBUG_EVERY_FRAME
+                RaycastDebugDrawer.RegisterRay(raycastOrigin, raycastTarget, [result.HitPosition]);
+#endif
+            }
         }
     }
 }

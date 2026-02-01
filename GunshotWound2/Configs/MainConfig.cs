@@ -1,340 +1,205 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Windows.Forms;
-using System.Xml.Linq;
-using GunshotWound2.Utils;
+﻿// ReSharper disable InconsistentNaming
 
-namespace GunshotWound2.Configs
-{
-    public sealed class MainConfig
-    {
-        private const string ScriptConfigPath = "scripts/GSW2Config.xml";
-        private const string GswConfigPath = "scripts/GSW2/GSW2Config.xml";
-        private static readonly char[] Separator = {';'};
+namespace GunshotWound2.Configs {
+    using System;
+    using System.IO;
+    using System.Xml.Linq;
+    using Utils;
 
-        public WoundConfig WoundConfig;
-        public NpcConfig NpcConfig;
-        public PlayerConfig PlayerConfig;
-
-        public string Language = "EN";
-
-        public Keys? HelmetKey;
-        public Keys? CheckKey;
-        public Keys? HealKey;
-        public Keys? IncreaseRangeKey;
-        public Keys? ReduceRangeKey;
-        public Keys? PauseKey;
-        public Keys? BandageKey;
-
-        public bool CommonMessages = true;
-        public bool WarningMessages = true;
-        public bool AlertMessages = true;
-        public bool EmergencyMessages = true;
-
-        public uint[] SmallCaliberHashes;
-        public uint[] MediumCaliberHashes;
-        public uint[] HighCaliberHashes;
-        public uint[] LightImpactHashes;
-        public uint[] HeavyImpactHashes;
-        public uint[] ShotgunHashes;
-        public uint[] CuttingHashes;
-        public uint[] ExplosiveHashes;
-
-        public override string ToString()
-        {
-            return $"{WoundConfig}\n" +
-                   $"{NpcConfig}\n" +
-                   $"{PlayerConfig}";
+    public sealed class MainConfig {
+        public interface IConfig {
+            public string sectionName { get; }
+            public void FillFrom(XDocument doc);
+            public void Validate(MainConfig mainConfig, ILogger logger);
         }
 
-        private static void LoadDefaultValues(MainConfig config)
-        {
-            config.Language = "EN";
+        public const string WEIGHT_ATTRIBUTE_NAME = "Weight";
+        public const float DAMAGE_MODIFIER = 0.1f;
+        public static readonly char[] Separator = [';',];
 
-            config.HelmetKey = Keys.J;
-            config.BandageKey = Keys.K;
-            config.CheckKey = Keys.L;
-            config.IncreaseRangeKey = Keys.PageUp;
-            config.ReduceRangeKey = Keys.PageDown;
-            config.PauseKey = Keys.End;
-            config.HealKey = null;
+        private const string NOTIFICATIONS_ROOT_NAME = "Notifications";
+        private const string LANGUAGE_NODE_NAME = "Language";
+        private const string EN_LOCALE_NAME = "EN";
 
-            config.PlayerConfig = PlayerConfig.CreateDefault();
-            config.WoundConfig = WoundConfig.CreateDefault();
-            config.NpcConfig = NpcConfig.CreateDefault();
+        public readonly WoundConfig woundConfig;
+        public readonly PedsConfig pedsConfig;
+        public readonly PlayerConfig playerConfig;
+        public readonly WeaponConfig weaponConfig;
+        public readonly ArmorConfig armorConfig;
+        public readonly InventoryConfig inventoryConfig;
+        public readonly BodyPartConfig bodyPartConfig;
+        public readonly TraumaConfig traumaConfig;
+
+        public InputListener.Scheme CheckSelfKey;
+        public InputListener.Scheme CheckClosestKey;
+        public InputListener.Scheme BandagesSelfKey;
+        public InputListener.Scheme BandagesClosestKey;
+        public InputListener.Scheme PainkillersSelfKey;
+        public InputListener.Scheme PainkillersClosestKey;
+        public InputListener.Scheme DeathKey;
+        public InputListener.Scheme HealKey;
+        public InputListener.Scheme HelmetKey;
+        public InputListener.Scheme PauseKey;
+
+        public string Language = EN_LOCALE_NAME;
+        public bool InfoMessages = true;
+        public bool PedsMessages = true;
+        public bool WoundsMessages = true;
+        public bool CriticalMessages = true;
+
+        public bool HelpTipsEnabled;
+        public float HelpTipDuration;
+        public float HelpTipMinInterval;
+        public float HelpTipMaxInterval;
+
+        public bool HitNotificationEnabled;
+
+        public int HelpTipDurationInMs => (int)(HelpTipDuration * 1000);
+
+        private readonly IConfig[] configs;
+
+        public MainConfig() {
+            playerConfig = new PlayerConfig();
+            woundConfig = new WoundConfig();
+            pedsConfig = new PedsConfig();
+            weaponConfig = new WeaponConfig();
+            armorConfig = new ArmorConfig();
+            inventoryConfig = new InventoryConfig();
+            bodyPartConfig = new BodyPartConfig();
+            traumaConfig = new TraumaConfig();
+
+            // order is loading order
+            configs = new IConfig[] {
+                playerConfig,
+                pedsConfig,
+                inventoryConfig,
+                woundConfig,
+                traumaConfig,
+                bodyPartConfig,
+                armorConfig,
+                weaponConfig,
+            };
         }
 
-        public static (bool success, string reason) TryToLoadFromXml(MainConfig config)
-        {
-            LoadDefaultValues(config);
+        public void ApplyTo(Notifier notifier) {
+            notifier.info.show = InfoMessages;
+            notifier.peds.show = PedsMessages;
+            notifier.wounds.show = WoundsMessages;
+            notifier.critical.show = CriticalMessages;
+        }
 
-            string path = null;
+        public override string ToString() {
+            return $"{woundConfig}\n" + $"{pedsConfig}\n" + $"{playerConfig}";
+        }
 
-            if (File.Exists(GswConfigPath))
-            {
-                path = GswConfigPath;
-            }
-            else if (File.Exists(ScriptConfigPath))
-            {
-                path = ScriptConfigPath;
-            }
-
-            if (string.IsNullOrEmpty(path))
-            {
-                return (false, "GSW Config was not found");
-            }
-
-            var doc = XDocument.Load(path).Root;
-            if (doc == null)
-            {
-                return (false, $"Incorrect XML file at {path}");
-            }
-
+        public (bool success, string reason, string trace) TryToLoad(string scriptPath) {
             string section = null;
-            try
-            {
-                section = nameof(HotkeysSection);
-                HotkeysSection(config, doc);
+            try {
+                foreach (IConfig config in configs) {
+                    section = config.sectionName;
+                    config.FillFrom(LoadDocument(scriptPath, section));
+                }
 
-                section = nameof(PlayerSection);
-                PlayerSection(config, doc);
+                section = nameof(FillHotkeysFrom);
+                XDocument doc = LoadDocument(scriptPath, "KeyBinds.xml");
+                FillHotkeysFrom(doc);
 
-                section = nameof(PedsSection);
-                PedsSection(config, doc);
-
-                section = nameof(NotificationsSection);
-                NotificationsSection(config, doc);
-
-                section = nameof(WoundsSection);
-                WoundsSection(config, doc);
-
-                section = nameof(WeaponsSection);
-                WeaponsSection(config, doc);
-            }
-            catch (Exception e)
-            {
-                return (false, $"Failed loading of {section}:{e.Message}");
+                section = nameof(FillNotifications);
+                const string sectionName = "Notifications.xml";
+                doc = LoadDocument(scriptPath, sectionName);
+                FillNotifications(doc);
+                UpdateLanguageFromGame(scriptPath, doc, sectionName);
+            } catch (Exception e) {
+                return (false, $"Failed loading of {section}:\n{e.Message}", e.StackTrace);
             }
 
-            return (true, null);
+            return (true, null, null);
         }
 
-        private static void HotkeysSection(MainConfig config, XElement doc)
-        {
-            var node = doc.Element("Hotkeys");
-            if (node == null) return;
-
-            config.HelmetKey = node.GetKey("GetHelmetKey");
-            config.CheckKey = node.GetKey("CheckKey");
-            config.HealKey = node.GetKey("HealKey");
-            config.IncreaseRangeKey = node.GetKey("IncreaseRangeKey");
-            config.ReduceRangeKey = node.GetKey("ReduceRangeKey");
-            config.BandageKey = node.GetKey("BandageKey");
-            config.PauseKey = node.GetKey("PauseKey");
-        }
-
-        private static void PlayerSection(MainConfig config, XElement doc)
-        {
-            var node = doc.Element("Player");
-            if (node == null) return;
-
-            config.PlayerConfig.WoundedPlayerEnabled = node.Element("GSWPlayerEnabled").GetBool();
-
-            config.PlayerConfig.MinimalHealth = node.Element("MinimalHealth").GetInt();
-            config.PlayerConfig.MaximalPain = node.Element("MaximalPain").GetFloat();
-            config.PlayerConfig.PainRecoverSpeed = node.Element("PainRecoverySpeed").GetFloat();
-            config.PlayerConfig.BleedHealingSpeed = node.Element("BleedHealSpeed").GetFloat() / 1000f;
-            config.PlayerConfig.PoliceCanForgetYou = node.Element("PoliceCanForget").GetBool();
-            config.PlayerConfig.CanDropWeapon = node.Element("CanDropWeapon").GetBool();
-            config.PlayerConfig.MaximalSlowMo = node.Element("MaximalSlowMo").GetFloat();
-
-            var animationNode = node.Element("MoveSets");
-            if (animationNode == null) return;
-
-            config.PlayerConfig.MildPainSets = animationNode.Attribute("MildPain")?.Value.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
-            config.PlayerConfig.AvgPainSets = animationNode.Attribute("AvgPain")?.Value.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
-            config.PlayerConfig.IntensePainSets = animationNode.Attribute("IntensePain")?.Value.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
-        }
-
-        private static void PedsSection(MainConfig config, XElement doc)
-        {
-            var node = doc.Element("Peds");
-            if (node == null) return;
-
-            config.NpcConfig.AddingPedRange = node.Element("GSWScanRange").GetFloat();
-            config.NpcConfig.RemovePedRange = config.NpcConfig.AddingPedRange * GunshotWound2.AddingToRemovingMultiplier;
-
-            config.NpcConfig.ShowEnemyCriticalMessages = node.Element("CriticalMessages").GetBool();
-            config.NpcConfig.ScanOnlyDamaged = node.Element("ScanOnlyDamaged").GetBool();
-
-            var healthNode = node.Element("PedHealth");
-            config.NpcConfig.MinStartHealth = healthNode.GetInt("Min");
-            config.NpcConfig.MaxStartHealth = healthNode.GetInt("Max");
-
-            var painNode = node.Element("MaximalPain");
-            config.NpcConfig.LowerMaximalPain = painNode.GetFloat("Min");
-            config.NpcConfig.UpperMaximalPain = painNode.GetFloat("Max");
-
-            var accuracyNode = node.Element("Accuracy");
-            config.NpcConfig.MinAccuracy = accuracyNode.GetInt("Min");
-            config.NpcConfig.MaxAccuracy = accuracyNode.GetInt("Max");
-
-            var rateNode = node.Element("ShootRate");
-            config.NpcConfig.MinShootRate = rateNode.GetInt("Min");
-            config.NpcConfig.MaxShootRate = rateNode.GetInt("Max");
-
-            config.NpcConfig.MaximalPainRecoverSpeed = node.Element("PainRecoverySpeed").GetFloat();
-            config.NpcConfig.MaximalBleedStopSpeed = node.Element("BleedHealSpeed").GetFloat() / 1000f;
-
-            var targetsNode = node.Element("Targets");
-            var all = targetsNode.GetBool("ALL");
-            GswTargets targets = 0;
-            if (all)
-            {
-                config.NpcConfig.Targets = GswTargets.ALL;
+        private void UpdateLanguageFromGame(string scriptPath, XDocument doc, string sectionName) {
+            if (Language != EN_LOCALE_NAME || GTA.Game.Language == GTA.Language.American) {
                 return;
             }
 
-            if (targetsNode.GetBool("COMPANION"))
-            {
-                targets |= GswTargets.COMPANION;
+            XElement languageNode = doc.Element(NOTIFICATIONS_ROOT_NAME)?.Element(LANGUAGE_NODE_NAME);
+            if (languageNode == null) {
+                return;
             }
 
-            if (targetsNode.GetBool("DISLIKE"))
-            {
-                targets |= GswTargets.DISLIKE;
+            switch (GTA.Game.Language) {
+                case GTA.Language.French:            Language = "FR"; break;
+                case GTA.Language.German:            Language = "DE"; break;
+                case GTA.Language.Spanish:           Language = "SPA"; break;
+                case GTA.Language.Portuguese:        Language = "PT-BR"; break;
+                case GTA.Language.Polish:            Language = "PL"; break;
+                case GTA.Language.Russian:           Language = "RU"; break;
+                case GTA.Language.Korean:            Language = "KR"; break;
+                case GTA.Language.Japanese:          Language = "JP"; break;
+                case GTA.Language.Chinese:           Language = "ZH-HK"; break;
+                case GTA.Language.ChineseSimplified: Language = "ZH-CN"; break;
             }
 
-            if (targetsNode.GetBool("HATE"))
-            {
-                targets |= GswTargets.HATE;
-            }
-
-            if (targetsNode.GetBool("LIKE"))
-            {
-                targets |= GswTargets.LIKE;
-            }
-
-            if (targetsNode.GetBool("NEUTRAL"))
-            {
-                targets |= GswTargets.NEUTRAL;
-            }
-
-            if (targetsNode.GetBool("PEDESTRIAN"))
-            {
-                targets |= GswTargets.PEDESTRIAN;
-            }
-
-            if (targetsNode.GetBool("RESPECT"))
-            {
-                targets |= GswTargets.RESPECT;
-            }
-
-            config.NpcConfig.Targets = targets;
-
-            var animationNode = node.Element("MoveSets");
-            if (animationNode == null) return;
-
-            config.NpcConfig.MildPainSets = animationNode.Attribute("MildPain")?.Value.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
-            config.NpcConfig.AvgPainSets = animationNode.Attribute("AvgPain")?.Value.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
-            config.NpcConfig.IntensePainSets = animationNode.Attribute("IntensePain")?.Value.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
-        }
-
-        private static void NotificationsSection(MainConfig config, XElement doc)
-        {
-            var node = doc.Element("Notifications");
-            if (node == null) return;
-
-            config.Language = node.Element("Language").Attribute("Value").Value;
-            config.CommonMessages = node.Element("Common").GetBool();
-            config.WarningMessages = node.Element("Warning").GetBool();
-            config.AlertMessages = node.Element("Alert").GetBool();
-            config.EmergencyMessages = node.Element("Emergency").GetBool();
-        }
-
-        private static void WeaponsSection(MainConfig config, XElement doc)
-        {
-            var node = doc.Element("Weapons");
-            if (node == null) return;
-
-            var dictionary = new Dictionary<string, float?[]>();
-            foreach (var element in node.Elements())
-            {
-                var multipliers = new float?[5];
-
-                var damageString = element.Attribute("DamageMult");
-                multipliers[0] = damageString != null
-                    ? (float?) float.Parse(damageString.Value, CultureInfo.InvariantCulture)
-                    : null;
-
-                var bleedingString = element.Attribute("BleedingMult");
-                multipliers[1] = bleedingString != null
-                    ? (float?) float.Parse(bleedingString.Value, CultureInfo.InvariantCulture)
-                    : null;
-
-                var painString = element.Attribute("PainMult");
-                multipliers[2] = painString != null
-                    ? (float?) float.Parse(painString.Value, CultureInfo.InvariantCulture)
-                    : null;
-
-                var critString = element.Attribute("CritChance");
-                multipliers[3] = critString != null
-                    ? (float?) float.Parse(critString.Value, CultureInfo.InvariantCulture)
-                    : null;
-
-                var armorString = element.Attribute("ArmorDamage");
-                multipliers[4] = armorString != null
-                    ? (float?) float.Parse(armorString.Value, CultureInfo.InvariantCulture)
-                    : null;
-
-                dictionary.Add(element.Name.LocalName, multipliers);
-            }
-
-            config.SmallCaliberHashes = GetWeaponHashes("SmallCaliber");
-            config.MediumCaliberHashes = GetWeaponHashes("MediumCaliber");
-            config.HighCaliberHashes = GetWeaponHashes("HighCaliber");
-            config.LightImpactHashes = GetWeaponHashes("LightImpact");
-            config.HeavyImpactHashes = GetWeaponHashes("HeavyImpact");
-            config.ShotgunHashes = GetWeaponHashes("Shotgun");
-            config.CuttingHashes = GetWeaponHashes("Cutting");
-            config.ExplosiveHashes = GetWeaponHashes("Explosive");
-            config.WoundConfig.DamageSystemConfigs = dictionary;
-
-            uint[] GetWeaponHashes(string weaponName)
-            {
-                var weaponNode = node.Element(weaponName);
-                if (weaponNode == null) throw new Exception($"{weaponName} node not found!");
-
-                const string name = "Hashes";
-                var hashes = weaponNode.Element(name)?.Attribute(name)?.Value;
-                if (string.IsNullOrEmpty(hashes)) throw new Exception($"{weaponName}'s hashes is empty");
-
-                return hashes.Split(Separator, StringSplitOptions.RemoveEmptyEntries).Select(uint.Parse).ToArray();
+            string nodeValue = languageNode.GetString();
+            if (Language != nodeValue) {
+                languageNode.SetAttributeValue("Value", Language);
+                string path = GetPathForSection(scriptPath, sectionName);
+                doc.Save(path);
             }
         }
 
-        private static void WoundsSection(MainConfig config, XElement doc)
-        {
-            var node = doc.Element("Wounds");
-            if (node == null) return;
+        public void ValidateConfigs(ILogger logger) {
+            foreach (IConfig config in configs) {
+                config.Validate(this, logger);
+            }
+        }
 
-            config.WoundConfig.MoveRateOnFullPain = node.Element("MoveRateOnFullPain").GetFloat();
-            config.WoundConfig.RealisticNervesDamage = node.Element("RealisticNervesDamage").GetBool();
-            config.WoundConfig.DamageMultiplier = node.Element("OverallDamageMult").GetFloat();
-            config.WoundConfig.DamageDeviation = node.Element("DamageDeviation").GetFloat();
-            config.WoundConfig.PainMultiplier = node.Element("OverallPainMult").GetFloat();
-            config.WoundConfig.PainDeviation = node.Element("PainDeviation").GetFloat();
-            config.WoundConfig.BleedingMultiplier = node.Element("OverallBleedingMult").GetFloat();
-            config.WoundConfig.BleedingDeviation = node.Element("BleedingDeviation").GetFloat();
-            config.WoundConfig.RagdollOnPainfulWound = node.Element("RagdollOnPainfulWound").GetBool();
-            config.WoundConfig.PainfulWoundPercent = node.Element("PainfulWoundPercent").GetFloat();
-            config.WoundConfig.MinimalChanceForArmorSave = node.Element("MinimalChanceForArmorSave").GetFloat();
-            config.WoundConfig.ApplyBandageTime = node.Element("ApplyBandageTime").GetFloat();
-            config.WoundConfig.BandageCost = node.Element("BandageCost").GetInt();
-            config.WoundConfig.SelfHealingRate = node.Element("SelfHealingRate").GetFloat();
+        private static XDocument LoadDocument(string scriptPath, string sectionName) {
+            string path = GetPathForSection(scriptPath, sectionName);
+            if (!File.Exists(path)) {
+                throw new Exception($"GSW Config was not found at {path}");
+            }
+
+            return XDocument.Load(path);
+        }
+
+        private void FillHotkeysFrom(XDocument doc) {
+            XElement root = doc.Element("KeyBinds")!;
+            CheckSelfKey = root.Element(nameof(CheckSelfKey)).GetKeyScheme();
+            CheckClosestKey = root.Element(nameof(CheckClosestKey)).GetKeyScheme();
+            BandagesSelfKey = root.Element(nameof(BandagesSelfKey)).GetKeyScheme();
+            BandagesClosestKey = root.Element(nameof(BandagesClosestKey)).GetKeyScheme();
+            PainkillersSelfKey = root.Element(nameof(PainkillersSelfKey)).GetKeyScheme();
+            PainkillersClosestKey = root.Element(nameof(PainkillersClosestKey)).GetKeyScheme();
+            DeathKey = root.Element(nameof(DeathKey)).GetKeyScheme();
+            HealKey = root.Element(nameof(HealKey)).GetKeyScheme();
+            HelmetKey = root.Element("GetHelmetKey").GetKeyScheme();
+            PauseKey = root.Element(nameof(PauseKey)).GetKeyScheme();
+        }
+
+        private void FillNotifications(XDocument doc) {
+            XElement node = doc.Element(NOTIFICATIONS_ROOT_NAME);
+            if (node == null) {
+                return;
+            }
+
+            Language = node.Element(LANGUAGE_NODE_NAME).GetString();
+            InfoMessages = node.Element("Info").GetBool();
+            PedsMessages = node.Element("OtherPeds").GetBool();
+            WoundsMessages = node.Element("Wounds").GetBool();
+            CriticalMessages = node.Element("Critical").GetBool();
+
+            XElement helpNode = node.Element("HelpTips");
+            HelpTipsEnabled = helpNode.GetBool("Enabled");
+            HelpTipDuration = helpNode.GetFloat("TipDurationInSec");
+            HelpTipMinInterval = helpNode.GetFloat("MinIntervalInSec");
+            HelpTipMaxInterval = helpNode.GetFloat("MaxIntervalInSec");
+
+            XElement hitNotificationNode = node.Element("HitNotification");
+            HitNotificationEnabled = hitNotificationNode.GetBool("Enabled");
+        }
+
+        private static string GetPathForSection(string scriptPath, string sectionName) {
+            return Path.ChangeExtension(scriptPath, sectionName);
         }
     }
 }

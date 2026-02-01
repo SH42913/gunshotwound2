@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{7959FA4D-7285-4B90-AE26-BDEAB27BF5CF}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>Morpeh</RootNamespace>
+        <AssemblyName>Morpeh</AssemblyName>
+        <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE;MORPEH_DEBUG</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Xml" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="Core\Archetype.cs" />
+        <Compile Include="Core\ArchetypeExtensions.cs" />
+        <Compile Include="Core\Collections\ArrayHelpers.cs" />
+        <Compile Include="Core\Collections\BitMap.cs" />
+        <Compile Include="Core\Collections\BitMapExtensions.cs" />
+        <Compile Include="Core\Collections\FastList.cs" />
+        <Compile Include="Core\Collections\FastListExtensions.cs" />
+        <Compile Include="Core\Collections\HashHelpers.cs" />
+        <Compile Include="Core\Collections\IntFastList.cs" />
+        <Compile Include="Core\Collections\IntFastListExtensions.cs" />
+        <Compile Include="Core\Collections\IntHashMap.cs" />
+        <Compile Include="Core\Collections\IntHashMapExtensions.cs" />
+        <Compile Include="Core\Collections\IntHashSet.cs" />
+        <Compile Include="Core\Collections\IntHashSetExtensions.cs" />
+        <Compile Include="Core\Collections\IntStack.cs" />
+        <Compile Include="Core\Collections\IntStackExtensions.cs" />
+        <Compile Include="Core\Collections\UnmanagedUtils.cs" />
+        <Compile Include="Core\Collections\UnsafeIntHashMap.cs" />
+        <Compile Include="Core\Collections\UnsafeIntHashMapExtensions.cs" />
+        <Compile Include="Core\Constants.cs" />
+        <Compile Include="Core\Entity.cs" />
+        <Compile Include="Core\EntityExtensions.cs" />
+        <Compile Include="Core\EntityId.cs" />
+        <Compile Include="Core\Filter.cs" />
+        <Compile Include="Core\FilterExtensions.cs" />
+        <Compile Include="Core\Logging\IMorpehLogger.cs" />
+        <Compile Include="Core\Logging\MorpehSystemLogger.cs" />
+        <Compile Include="Core\Logging\MorpehUnityLogger.cs" />
+        <Compile Include="Core\MLogger.cs" />
+        <Compile Include="Core\Morpeh.cs" />
+        <Compile Include="Core\Native\NativeArchetype.cs" />
+        <Compile Include="Core\Native\NativeArchetypeExtensions.cs" />
+        <Compile Include="Core\Native\NativeFastList.cs" />
+        <Compile Include="Core\Native\NativeFastListExtensions.cs" />
+        <Compile Include="Core\Native\NativeFilter.cs" />
+        <Compile Include="Core\Native\NativeFilterExtensions.cs" />
+        <Compile Include="Core\Native\NativeIntHashMap.cs" />
+        <Compile Include="Core\Native\NativeIntHashMapExtensions.cs" />
+        <Compile Include="Core\Native\NativeStash.cs" />
+        <Compile Include="Core\Native\NativeStashExtensions.cs" />
+        <Compile Include="Core\Native\NativeWorld.cs" />
+        <Compile Include="Core\Native\NativeWorldExtensions.cs" />
+        <Compile Include="Core\Stash.cs" />
+        <Compile Include="Core\StashExtensions.cs" />
+        <Compile Include="Core\SystemsGroup.cs" />
+        <Compile Include="Core\SystemsGroupExtensions.cs" />
+        <Compile Include="Core\TypeIdentifier.cs" />
+        <Compile Include="Core\World.cs" />
+        <Compile Include="Core\WorldExtensions.cs" />
+        <Compile Include="Properties\AssemblyInfo.cs" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="Core\Archetype.cs.meta" />
+      <Content Include="Core\ArchetypeExtensions.cs.meta" />
+      <Content Include="Core\Collections.meta" />
+      <Content Include="Core\Collections\ArrayHelpers.cs.meta" />
+      <Content Include="Core\Collections\BitMap.cs.meta" />
+      <Content Include="Core\Collections\BitMapExtensions.cs.meta" />
+      <Content Include="Core\Collections\FastList.cs.meta" />
+      <Content Include="Core\Collections\FastListExtensions.cs.meta" />
+      <Content Include="Core\Collections\HashHelpers.cs.meta" />
+      <Content Include="Core\Collections\IntFastList.cs.meta" />
+      <Content Include="Core\Collections\IntFastListExtensions.cs.meta" />
+      <Content Include="Core\Collections\IntHashMap.cs.meta" />
+      <Content Include="Core\Collections\IntHashMapExtensions.cs.meta" />
+      <Content Include="Core\Collections\IntHashSet.cs.meta" />
+      <Content Include="Core\Collections\IntHashSetExtensions.cs.meta" />
+      <Content Include="Core\Collections\IntStack.cs.meta" />
+      <Content Include="Core\Collections\IntStackExtensions.cs.meta" />
+      <Content Include="Core\Collections\UnmanagedUtils.cs.meta" />
+      <Content Include="Core\Collections\UnsafeIntHashMap.cs.meta" />
+      <Content Include="Core\Collections\UnsafeIntHashMapExtensions.cs.meta" />
+      <Content Include="Core\Constants.cs.meta" />
+      <Content Include="Core\Entity.cs.meta" />
+      <Content Include="Core\EntityExtensions.cs.meta" />
+      <Content Include="Core\EntityId.cs.meta" />
+      <Content Include="Core\Filter.cs.meta" />
+      <Content Include="Core\FilterExtensions.cs.meta" />
+      <Content Include="Core\Logging.meta" />
+      <Content Include="Core\Logging\IMorpehLogger.cs.meta" />
+      <Content Include="Core\Logging\MorpehSystemLogger.cs.meta" />
+      <Content Include="Core\Logging\MorpehUnityLogger.cs.meta" />
+      <Content Include="Core\MLogger.cs.meta" />
+      <Content Include="Core\Morpeh.cs.meta" />
+      <Content Include="Core\Native.meta" />
+      <Content Include="Core\Native\NativeArchetype.cs.meta" />
+      <Content Include="Core\Native\NativeArchetypeExtensions.cs.meta" />
+      <Content Include="Core\Native\NativeFastList.cs.meta" />
+      <Content Include="Core\Native\NativeFastListExtensions.cs.meta" />
+      <Content Include="Core\Native\NativeFilter.cs.meta" />
+      <Content Include="Core\Native\NativeFilterExtensions.cs.meta" />
+      <Content Include="Core\Native\NativeIntHashMap.cs.meta" />
+      <Content Include="Core\Native\NativeIntHashMapExtensions.cs.meta" />
+      <Content Include="Core\Native\NativeStash.cs.meta" />
+      <Content Include="Core\Native\NativeStashExtensions.cs.meta" />
+      <Content Include="Core\Native\NativeWorld.cs.meta" />
+      <Content Include="Core\Native\NativeWorldExtensions.cs.meta" />
+      <Content Include="Core\Stash.cs.meta" />
+      <Content Include="Core\StashExtensions.cs.meta" />
+      <Content Include="Core\SystemsGroup.cs.meta" />
+      <Content Include="Core\SystemsGroupExtensions.cs.meta" />
+      <Content Include="Core\TypeIdentifier.cs.meta" />
+      <Content Include="Core\World.cs.meta" />
+      <Content Include="Core\WorldExtensions.cs.meta" />
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+         Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
+
+</Project>

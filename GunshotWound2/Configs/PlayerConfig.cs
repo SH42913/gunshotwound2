@@ -1,61 +1,58 @@
-﻿using System.Globalization;
+﻿// ReSharper disable InconsistentNaming
 
-namespace GunshotWound2.Configs
-{
-    public sealed class PlayerConfig
-    {
-        public int PlayerEntity = -1;
+namespace GunshotWound2.Configs {
+    using System.Globalization;
+    using System.Xml.Linq;
+    using Utils;
 
-        public bool WoundedPlayerEnabled;
+    public sealed class PlayerConfig : MainConfig.IConfig {
+        public bool UseVanillaHealthSystem;
         public bool PoliceCanForgetYou;
+        public bool PedsWillIgnoreUnconsciousPlayer;
         public bool CanDropWeapon;
+        public bool InstantDeathHeadshot;
+        public bool RealisticSpineDamage;
 
         public int MoneyForHelmet;
-        public int MinimalHealth;
 
-        public float MaximalPain;
-        public float PainRecoverSpeed;
+        public float PainShockThreshold;
+        public float PainRecoverySpeed;
         public float BleedHealingSpeed;
-        public float MaximalSlowMo;
+        public float PainSlowMo;
+        public bool UseScreenEffects;
+        public float SelfHealingRate;
+        public float RampagePainMult;
 
-        public string[] MildPainSets;
-        public string[] AvgPainSets;
-        public string[] IntensePainSets;
+        public string sectionName => "Player.xml";
 
-        public bool CameraIsShaking;
+        public void FillFrom(XDocument doc) {
+            XElement root = doc.Element(nameof(PlayerConfig))!;
 
-        public int MaximalHealth => MinimalHealth + 99;
-
-        public static PlayerConfig CreateDefault()
-        {
-            return new PlayerConfig
-            {
-                WoundedPlayerEnabled = true,
-                CanDropWeapon = true,
-                MoneyForHelmet = 40,
-                MinimalHealth = 0,
-                MaximalPain = 100,
-                PainRecoverSpeed = 1.5f,
-                BleedHealingSpeed = 0.001f,
-                PlayerEntity = -1,
-                MaximalSlowMo = 0.5f,
-                PoliceCanForgetYou = true,
-                MildPainSets = new[] {"move_m@injured;move_m@plodding;move_m@buzzed;"},
-                AvgPainSets = new[] {"move_m@drunk@a;move_m@drunk@moderatedrunk;move_m@depressed@a;"},
-                IntensePainSets = new[] {"move_m@drunk@verydrunk;move_m@strung_out@;"},
-            };
+            UseVanillaHealthSystem = root.Element(nameof(UseVanillaHealthSystem)).GetBool();
+            PainShockThreshold = root.Element(nameof(PainShockThreshold)).GetFloat();
+            PainRecoverySpeed = root.Element(nameof(PainRecoverySpeed)).GetFloat();
+            BleedHealingSpeed = root.Element("BleedHealSpeed").GetFloat() / 1000f;
+            PoliceCanForgetYou = root.Element("PoliceCanForget").GetBool();
+            PedsWillIgnoreUnconsciousPlayer = root.Element(nameof(PedsWillIgnoreUnconsciousPlayer)).GetBool();
+            CanDropWeapon = root.Element(nameof(CanDropWeapon)).GetBool();
+            InstantDeathHeadshot = root.Element("HeadshotIsInstantDeath").GetBool();
+            RealisticSpineDamage = root.Element(nameof(RealisticSpineDamage)).GetBool();
+            PainSlowMo = root.Element(nameof(PainSlowMo)).GetFloat();
+            UseScreenEffects = root.Element(nameof(UseScreenEffects)).GetBool();
+            MoneyForHelmet = root.Element("HelmetCost").GetInt();
+            SelfHealingRate = root.Element(nameof(SelfHealingRate)).GetFloat();
+            RampagePainMult = root.Element(nameof(RampagePainMult)).GetFloat();
         }
 
-        public override string ToString()
-        {
-            return $"{nameof(PlayerConfig)}:\n" +
-                   $"{nameof(WoundedPlayerEnabled)}: {WoundedPlayerEnabled.ToString()}\n" +
-                   $"{nameof(MoneyForHelmet)}: {MoneyForHelmet.ToString()}\n" +
-                   $"Min/MaxHealth: {MinimalHealth.ToString()}/{MaximalHealth.ToString()}\n" +
-                   $"{nameof(MaximalPain)}: {MaximalPain.ToString(CultureInfo.InvariantCulture)}\n" +
-                   $"{nameof(PainRecoverSpeed)}: {PainRecoverSpeed.ToString(CultureInfo.InvariantCulture)}\n" +
-                   $"{nameof(BleedHealingSpeed)}: {BleedHealingSpeed.ToString(CultureInfo.InvariantCulture)}\n" +
-                   $"{nameof(MaximalSlowMo)}: {MaximalSlowMo.ToString(CultureInfo.InvariantCulture)}";
+        public void Validate(MainConfig mainConfig, ILogger logger) { }
+
+        public override string ToString() {
+            return $"{nameof(PlayerConfig)}:\n"
+                   + $"{nameof(MoneyForHelmet)}: {MoneyForHelmet.ToString()}\n"
+                   + $"{nameof(PainShockThreshold)}: {PainShockThreshold.ToString(CultureInfo.InvariantCulture)}\n"
+                   + $"{nameof(PainRecoverySpeed)}: {PainRecoverySpeed.ToString(CultureInfo.InvariantCulture)}\n"
+                   + $"{nameof(BleedHealingSpeed)}: {BleedHealingSpeed.ToString(CultureInfo.InvariantCulture)}\n"
+                   + $"{nameof(PainSlowMo)}: {PainSlowMo.ToString(CultureInfo.InvariantCulture)}";
         }
     }
 }

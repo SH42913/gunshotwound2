@@ -1,0 +1,81 @@
+﻿namespace GunshotWound2 {
+    using Configs;
+    using HealthFeature;
+    using Scellecs.Morpeh;
+    using Services;
+    using Utils;
+
+    public sealed class SharedData {
+        public readonly string scriptPath;
+        public readonly ILogger logger;
+        public readonly System.Random random;
+        public readonly Weighted_Randomizer.IWeightedRandomizer<int> weightRandom;
+        public readonly Notifier notifier;
+        public readonly InputListener inputListener;
+        public readonly CheatListener cheatListener;
+        public readonly CameraService cameraService;
+        public readonly UIService uiService;
+        public readonly PedStateService pedStateService;
+        public readonly ModelCheckerService modelChecker;
+
+        public readonly WorldService worldService;
+        public readonly MainConfig mainConfig;
+        public readonly LocaleConfig localeConfig;
+
+        public Entity playerEntity;
+        public float deltaTime;
+        public int deltaTimeInMs;
+
+        public SharedData(string scriptPath, ILogger logger) {
+            this.scriptPath = scriptPath;
+            this.logger = logger;
+
+            random = new System.Random();
+            weightRandom = new Weighted_Randomizer.StaticWeightedRandomizer<int>();
+            notifier = new Notifier();
+            inputListener = new InputListener();
+            cheatListener = new CheatListener(this.logger);
+            cameraService = new CameraService(this.logger);
+            uiService = new UIService(this.logger);
+
+            worldService = new WorldService(startCapacity: 64);
+            mainConfig = new MainConfig();
+            localeConfig = new LocaleConfig();
+            pedStateService = new PedStateService(notifier, mainConfig, localeConfig);
+            modelChecker = new ModelCheckerService();
+
+            playerEntity = null;
+        }
+
+        public bool TryGetPlayer(out Entity player) {
+            player = playerEntity;
+            return !player.IsNullOrDisposed();
+        }
+
+        public bool PlayerIsInitialized() {
+            if (TryGetPlayer(out Entity entity) && entity.GetComponent<Health>().IsAlive()) {
+                return PlayerCanSeeNotification();
+            } else {
+                return false;
+            }
+        }
+
+        public bool PlayerCanSeeNotification() {
+            if (GTA.Game.IsCutsceneActive || !GTA.GameplayCamera.IsRendering) {
+                return false;
+            }
+        
+            GTA.Player player = GTA.Game.Player;
+            return player.IsPlaying && player.CanControlCharacter;
+        }
+
+        public bool TryGetClosestPedEntity(out GTA.Ped closestPed, out Entity closestPedEntity) {
+            if (GTAHelpers.TryGetClosestPed(out closestPed, mainConfig.pedsConfig.ClosestPedRange)) {
+                return worldService.TryGetConverted(closestPed, out closestPedEntity);
+            }
+
+            closestPedEntity = null;
+            return false;
+        }
+    }
+}

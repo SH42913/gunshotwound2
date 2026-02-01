@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<KeyBinds>
+    <!-- If you don't want to use key, just remove KeyCode value or key itself.
+    You also can set Modifiers like Shift, Alt and Control. -->
+
+    <CheckSelfKey KeyCode="L" Modifiers=""/>
+    <!-- Check Yourself. Show one time status-notifications about your wounds and health.
+    Default: L on keyboard. -->
+
+    <CheckClosestKey KeyCode="L" Modifiers="Shift"/>
+    <!-- Works like CheckSelfKey, but checks the closest ped.
+    Default: Shift + L on keyboard. -->
+
+    <BandagesSelfKey KeyCode="K" Modifiers=""/>
+    <!-- Applied bandages to you. When Shift is pressed - will bandage the closest ped.
+    Default: K on keyboard. -->
+
+    <BandagesClosestKey KeyCode="K" Modifiers="Shift"/>
+    <!-- Works like BandagesSelfKey, but bandages the closest ped.
+    Default: Shift + K on keyboard. -->
+
+    <PainkillersSelfKey KeyCode="J" Modifiers=""/>
+    <!-- Use painkillers. When Shift is pressed - will use for the closest ped.
+    Default: J on keyboard. -->
+
+    <PainkillersClosestKey KeyCode="J" Modifiers="Shift"/>
+    <!-- Works like PainkillerSelfKey, but painkillers will be used for the closest ped.
+    Default: Shift + J on keyboard. -->
+
+    <DeathKey KeyCode="Delete" Modifiers=""/>
+    <!-- Instant death. Useful if you're stuck in a deadly situation and don't want to wait for slow death.
+    Default: Delete on keyboard. -->
+
+    <!-- <HealKey KeyCode="" Modifiers="" /> -->
+    <!-- Besides, you can set a key for instant heal or just use GSW_HEAL cheat-code -->
+
+    <GetHelmetKey KeyCode="L" Modifiers="Alt"/>
+    <!-- Give to player motorbike helmet if the player has $40(can be changed in HelmetCost section).
+    Helmet can save your head from impact and weapons.
+    If the player already has a helmet, this hotkey will remove it.
+    Default: Alt + L on keyboard. -->
+
+    <PauseKey KeyCode="End" Modifiers=""/>
+    <!-- Pause of the script.
+    It can be useful in some missions.
+    Default: End on keyboard. -->
+</KeyBinds>

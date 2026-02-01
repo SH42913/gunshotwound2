@@ -1,40 +1,78 @@
-﻿using GTA.Native;
-using GunshotWound2.Damage;
-using GunshotWound2.GUI;
-using Leopotam.Ecs;
+﻿namespace GunshotWound2.HitDetection {
+    using System;
+    using GTA;
+    using PedsFeature;
+    using Scellecs.Morpeh;
+    using Utils;
+    using EcsEntity = Scellecs.Morpeh.Entity;
+    using EcsWorld = Scellecs.Morpeh.World;
 
-namespace GunshotWound2.HitDetection
-{
-    [EcsInject]
-    public sealed class HitDetectSystem : IEcsRunSystem
-    {
-        private readonly EcsWorld _ecsWorld = null;
-        private readonly EcsFilter<WoundedPedComponent> _peds = null;
-        private readonly InputArgument[] _inputArguments = new InputArgument[1];
+    public sealed class HitDetectSystem : ISystem {
+        private readonly SharedData sharedData;
 
-        public void Run()
-        {
-            for (var i = 0; i < _peds.EntitiesCount; i++)
-            {
-                _inputArguments[0] = _peds.Components1[i].ThisPed;
-                if (!Function.Call<bool>(Hash.HAS_ENTITY_BEEN_DAMAGED_BY_ANY_PED, _inputArguments) &&
-                    !Function.Call<bool>(Hash.HAS_ENTITY_BEEN_DAMAGED_BY_ANY_OBJECT, _inputArguments))
-                    continue;
+        private Filter convertedPeds;
+        private Stash<ConvertedPed> convertedStash;
 
-                _ecsWorld.AddComponent<HaveDamageMarkComponent>(_peds.Entities[i]);
-                SendMessage($"Ped {_peds.Entities[i].ToString()} got damage", NotifyLevels.DEBUG);
-            }
+        public EcsWorld World { get; set; }
+
+        public HitDetectSystem(SharedData sharedData) {
+            this.sharedData = sharedData;
         }
 
-        private void SendMessage(string message, NotifyLevels level = NotifyLevels.COMMON)
-        {
-#if !DEBUG
-            if (level == NotifyLevels.DEBUG) return;
-#endif
+        public void OnAwake() {
+            convertedPeds = World.Filter.With<ConvertedPed>().Without<JustConvertedEvent>();
+            convertedStash = World.GetStash<ConvertedPed>();
+        }
 
-            var notification = _ecsWorld.CreateEntityWith<ShowNotificationEvent>();
-            notification.Level = level;
-            notification.StringToShow = message;
+        void IDisposable.Dispose() { }
+
+        public void OnUpdate(float deltaTime) {
+            if (Game.IsCutsceneActive) {
+                return;
+            }
+
+            foreach (EcsEntity entity in convertedPeds) {
+                ref ConvertedPed convertedPed = ref convertedStash.Get(entity);
+                Ped ped = convertedPed.thisPed;
+                if (!ped.IsValid() || ped.IsInvincible || PedEffects.IsPedInWrithe(ped)) {
+                    continue;
+                }
+
+                var wasKilledByTakedown = false;
+                if (ped.IsDead) {
+                    wasKilledByTakedown = ped.WasKilledByTakedown;
+                    if (wasKilledByTakedown) {
+#if DEBUG
+                        sharedData.logger.WriteInfo("Resurrecting ped after takedown");
+#endif
+                        ped.Resurrect();
+                        ped.Task.ClearAllImmediately();
+                        ped.Health = convertedPed.lastFrameHealth - 1;
+                        ped.SetConfigFlag(PedConfigFlagToggles.KilledByTakedown, false);
+                        ped.SetConfigFlag(PedConfigFlagToggles.NeverEverTargetThisPed, false);
+                        convertedPed.RequestRagdoll(sharedData.mainConfig.woundConfig.TakedownRagdollDurationMs, RagdollType.Balance);
+                    } else {
+                        continue;
+                    }
+                }
+
+                int healthDiff = convertedPed.lastFrameHealth - ped.Health;
+                int armorDiff = convertedPed.lastFrameArmor - ped.Armor;
+                if (healthDiff <= 0 && armorDiff <= 0) {
+                    continue;
+                }
+
+                entity.SetComponent(new PedHitData {
+                    healthDiff = healthDiff,
+                    armorDiff = armorDiff,
+                    afterTakedown = wasKilledByTakedown,
+                });
+
+#if DEBUG
+                sharedData.logger.WriteInfo($"Detect damage at {convertedPed.name}");
+                sharedData.logger.WriteInfo($"healthDiff = {healthDiff.ToString()}, armorDiff = {armorDiff.ToString()}");
+#endif
+            }
         }
     }
 }
