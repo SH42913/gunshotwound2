@@ -156,6 +156,7 @@ namespace Scellecs.Morpeh {
             }
             catch (Exception exception) {
                 systemsGroup.SystemThrowException(system, exception);
+                throw;
             }
         }
 
@@ -174,6 +175,7 @@ namespace Scellecs.Morpeh {
             catch (Exception exception) {
                 MLogger.LogError($"Can not initialize {initializer.GetType()}");
                 MLogger.LogException(exception);
+                throw;
             }
         }
 
