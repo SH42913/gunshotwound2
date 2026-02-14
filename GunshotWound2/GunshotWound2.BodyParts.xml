@@ -2,7 +2,7 @@
 <BodyParts>
     <BodyPart Key="Head" LocKey="BodyParts.Head"
               Bones="SkelHead;"
-              TangentialWoundThreshold="0.2"
+              TangentialWoundThreshold="0.1"
               DamageMult="1.0" BleedMult="0.9" PainMult="1.0"
               TraumaChance="1.0" IgnoreWeaponTraumaChanceForPenetratingWounds="TRUE">
         <BluntTraumas>
