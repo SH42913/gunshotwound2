@@ -544,7 +544,7 @@
             </Wounds>
         </HeliCrash>
 
-        <LightFall MinSpeed="4.0" DamageMult="1.0" BleedMult="0.5" PainMult="0.5"
+        <LightFall MinSpeed="3.5" DamageMult="1.0" BleedMult="0.5" PainMult="0.5"
                    ChanceToCauseTrauma="0.05" HelmetSafeChance="1.0">
             <Wounds>
                 <Wound Key="LightBruise" Weight="40"/>
@@ -554,7 +554,7 @@
             </Wounds>
         </LightFall>
 
-        <HardFall MinSpeed="8.0" DamageMult="2.0" BleedMult="1.0" PainMult="1.0"
+        <HardFall MinSpeed="7.0" DamageMult="2.0" BleedMult="1.0" PainMult="1.0"
                   ChanceToCauseTrauma="0.6" HelmetSafeChance="0.7">
             <Wounds>
                 <Wound Key="HeavyBruise" Weight="30"/>

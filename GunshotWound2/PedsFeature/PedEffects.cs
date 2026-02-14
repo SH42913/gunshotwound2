@@ -172,5 +172,9 @@
         public static void ResetWeaponDamageModifier() {
             Function.Call(Hash.RESET_AI_WEAPON_DAMAGE_MODIFIER);
         }
+
+        public static void SetDisableHighFallDeath(Ped ped, bool value) {
+            Function.Call(Hash.SET_DISABLE_HIGH_FALL_DEATH, ped, value);
+        }
     }
 }

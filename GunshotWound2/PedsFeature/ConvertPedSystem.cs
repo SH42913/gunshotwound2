@@ -51,6 +51,8 @@
                 pedToConvert.SetCombatAttribute(CombatAttributes.AlwaysFight, false);
                 pedToConvert.SetCombatAttribute(CombatAttributes.WillDragInjuredPedsToSafety, true);
 
+                PedEffects.SetDisableHighFallDeath(pedToConvert, true);
+
                 if (pedsConfig.DontActivateRagdollFromBulletImpact) {
                     pedToConvert.SetConfigFlag(PedConfigFlagToggles.DontActivateRagdollFromBulletImpact, true);
                 }
