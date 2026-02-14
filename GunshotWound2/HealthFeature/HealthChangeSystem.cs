@@ -1,4 +1,6 @@
-﻿namespace GunshotWound2.HealthFeature {
+﻿// #define DEBUG_EVERY_FRAME
+
+namespace GunshotWound2.HealthFeature {
     using System;
     using PedsFeature;
     using PlayerFeature;
@@ -48,10 +50,17 @@
 
                 int oldHealth = convertedPed.thisPed.Health;
                 int newHealth = oldHealth + currentDiff;
-                convertedPed.thisPed.Health = newHealth;
+
+                uint weaponHash = health.lastDamageWeapon;
+                if (weaponHash == 0) {
+                    weaponHash = sharedData.mainConfig.weaponConfig.WEAPON_BLEEDING;
+                }
+
+                PedEffects.SetHealth(convertedPed.thisPed, newHealth, convertedPed.lastAggressor, weaponHash);
+                health.lastDamageWeapon = 0;
 
 #if DEBUG && DEBUG_EVERY_FRAME
-                var healthString = $"{oldHealth.ToString()} -> {newHealth.ToString()} / Max:{health.max.ToString()}";
+                var healthString = $"{oldHealth} --({weaponHash})> {newHealth}/{health}";
                 sharedData.logger.WriteInfo($"Changed health: {currentDiff.ToString()} to {convertedPed.name}. {healthString}");
 #endif
 

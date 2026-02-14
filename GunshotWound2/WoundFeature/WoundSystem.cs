@@ -172,7 +172,7 @@ namespace GunshotWound2.WoundFeature {
             }
 
             if (dbp.damage > 0f) {
-                health.DealDamage(dbp.damage, woundName);
+                health.DealDamage(dbp.damage, woundName, hitData.weaponHash);
             }
 
             EcsEntity woundBleeding = null;

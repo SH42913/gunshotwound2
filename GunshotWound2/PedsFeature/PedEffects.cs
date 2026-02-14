@@ -176,5 +176,9 @@
         public static void SetDisableHighFallDeath(Ped ped, bool value) {
             Function.Call(Hash.SET_DISABLE_HIGH_FALL_DEATH, ped, value);
         }
+
+        public static void SetHealth(Ped ped, int newHealth, Ped aggressor = null, uint weaponHash = 0) {
+            Function.Call(Hash.SET_ENTITY_HEALTH, ped, newHealth, aggressor, weaponHash);
+        }
     }
 }

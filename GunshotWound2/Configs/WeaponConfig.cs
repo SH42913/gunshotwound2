@@ -54,6 +54,7 @@ namespace GunshotWound2.Configs {
         }
 
         public uint WEAPON_FALL;
+        public uint WEAPON_BLEEDING;
         public uint WEAPON_EXHAUSTION;
         public uint WEAPON_FIRE;
         public uint WEAPON_RAMMED_BY_CAR;
@@ -108,6 +109,7 @@ namespace GunshotWound2.Configs {
 
             const string prefix = "";
             WEAPON_FALL = GetWeaponHash(nameof(WEAPON_FALL), prefix);
+            WEAPON_BLEEDING = GetWeaponHash(nameof(WEAPON_BLEEDING), prefix);
             WEAPON_EXHAUSTION = GetWeaponHash(nameof(WEAPON_EXHAUSTION), prefix);
             WEAPON_FIRE = GetWeaponHash(nameof(WEAPON_FIRE), prefix);
             WEAPON_RAMMED_BY_CAR = GetWeaponHash(nameof(WEAPON_RAMMED_BY_CAR), prefix);
