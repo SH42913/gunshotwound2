@@ -63,7 +63,11 @@ namespace GunshotWound2.InventoryFeature {
 
             Vehicle vehicle = ownerPed.CurrentVehicle;
             if (vehicle != null) {
-                return vehicle == targetPed.CurrentVehicle && owner.IsAbleToDoSomething() && target.IsAbleToDoSomething();
+                if (vehicle != targetPed.CurrentVehicle) {
+                    return false;
+                }
+
+                return owner.IsAbleToDoSomething() && target.IsAbleToDoSomething();
             }
 
             return (targetPed.IsRagdoll || target.IsAbleToDoSomething())

@@ -57,6 +57,10 @@ namespace GunshotWound2.PainFeature {
             ref ConvertedPed convertedOwner = ref owner.GetComponent<ConvertedPed>();
             ref ConvertedPed convertedTarget = ref target.GetComponent<ConvertedPed>();
             if (ItemTemplate.IsAbleToInteract(convertedOwner, convertedTarget)) {
+                if (convertedOwner.isPlayer && convertedOwner.thisPed.CurrentVehicle.IsValid()) {
+                    PlayerFeature.PlayerEffects.DisableVehicleControlThisFrame();
+                }
+
                 message = null;
                 return true;
             } else {
