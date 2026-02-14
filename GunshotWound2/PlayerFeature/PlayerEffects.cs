@@ -34,13 +34,8 @@
 
         public static void DisableVehicleControlThisFrame() {
             for (var i = 0; i < CONTROL_VALUES.Length; i++) {
-                Control value = CONTROL_VALUES[i];
-                if (value == Control.VehicleExit) {
-                    continue;
-                }
-
                 if (CONTROL_NAMES[i].StartsWith("Vehicle")) {
-                    Game.DisableControlThisFrame(value);
+                    Game.DisableControlThisFrame(CONTROL_VALUES[i]);
                 }
             }
         }
