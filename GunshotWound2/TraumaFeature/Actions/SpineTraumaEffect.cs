@@ -13,6 +13,12 @@
 
         public override void Apply(Entity entity, in BodyPartConfig.BodyPart bodyPart, ref ConvertedPed convertedPed) {
             convertedPed.hasSpineDamage = true;
+            convertedPed.SetNaturalMotionBuilder(static (_, _, ped) => new BodyRelaxHelper(ped) {
+                Relaxation = 0f,
+                DisableJointDriving = true,
+                Damping = 0f,
+            }, forbidOverride: true);
+
             convertedPed.RequestPermanentRagdoll();
 
             if (!convertedPed.isPlayer || sharedData.mainConfig.playerConfig.CanDropWeapon) {
@@ -22,11 +28,7 @@
 
         public override void Repeat(Entity entity, ref ConvertedPed convertedPed) { }
 
-        public override void EveryFrame(Entity entity, ref ConvertedPed convertedPed) {
-            if (!convertedPed.isRagdoll) {
-                convertedPed.RequestPermanentRagdoll();
-            }
-        }
+        public override void EveryFrame(Entity entity, ref ConvertedPed convertedPed) { }
 
         public override void Cancel(Entity entity, ref ConvertedPed convertedPed) {
             convertedPed.hasSpineDamage = false;

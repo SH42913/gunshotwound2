@@ -53,16 +53,16 @@ namespace GunshotWound2.StatusFeature {
 #if DEBUG
             sharedData.logger.WriteInfo("Selecting unconscious visual behaviour");
 #endif
-            if (convertedPed.hasSpineDamage) {
+            if (convertedPed.naturalMotionBuilder != null) {
 #if DEBUG
-                sharedData.logger.WriteInfo("No visual behaviour due Spine Damage");
+                sharedData.logger.WriteInfo("No visual behaviour due NM helper requested");
 #endif
                 return;
             }
 
-            if (convertedPed.requestedNmHelper != null) {
+            if (convertedPed.hasSpineDamage) {
 #if DEBUG
-                sharedData.logger.WriteInfo("No visual behaviour due NM helper requested");
+                sharedData.logger.WriteInfo("No visual behaviour due Spine Damage");
 #endif
                 return;
             }
@@ -102,7 +102,7 @@ namespace GunshotWound2.StatusFeature {
 
             switch (randomizer.NextWithReplacement()) {
                 case 0:  BodyRelaxRagdollVisualBehaviour(ref convertedPed); break;
-                case 1:  InjuredVisualBehaviour(entity, ref convertedPed); break;
+                case 1:  InjuredVisualBehaviour(ref convertedPed); break;
                 case 2:  CrawlVisualBehaviour(entity, ref convertedPed); break;
                 case 3:  WritheVisualBehaviour(ref convertedPed); break;
                 default: throw new Exception("Incorrect visual behaviour index");
@@ -117,7 +117,7 @@ namespace GunshotWound2.StatusFeature {
             convertedPed.thisPed.StopCurrentPlayingAmbientSpeech();
             convertedPed.thisPed.IsPainAudioEnabled = false;
 
-            convertedPed.requestedNmHelper = new BodyRelaxHelper(convertedPed.thisPed);
+            convertedPed.naturalMotionBuilder = static (_, _, ped) => new BodyRelaxHelper(ped);
             convertedPed.RequestPermanentRagdoll();
         }
 
@@ -136,12 +136,11 @@ namespace GunshotWound2.StatusFeature {
             StartCrawl(entity, ref convertedPed);
         }
 
-        private void InjuredVisualBehaviour(EcsEntity entity, ref ConvertedPed convertedPed) {
+        private void InjuredVisualBehaviour(ref ConvertedPed convertedPed) {
 #if DEBUG
             sharedData.logger.WriteInfo("InjuredOnGroundHelper as visual behaviour");
 #endif
-            CheckArmTraumas(entity, out bool leftArmBroken, out bool rightArmBroken);
-            convertedPed.requestedNmHelper = GetInjuredOnGroundHelper(entity, convertedPed, leftArmBroken, rightArmBroken);
+            convertedPed.SetNaturalMotionBuilder(BuildInjuredOnGroundNM());
             convertedPed.RequestPermanentRagdoll();
         }
 
@@ -200,16 +199,19 @@ namespace GunshotWound2.StatusFeature {
 
             // convertedPed.forcedAnimation = (CRAWL_ANIM_DICT, animName);
             convertedPed.RequestPermanentRagdoll();
-            convertedPed.requestedNmHelper = sharedData.random.IsTrueWithProbability(0.5f)
-                    ? GetInjuredOnGroundHelper(entity, convertedPed, leftArmBroken, rightArmBroken)
-                    : null;
+            if (sharedData.random.IsTrueWithProbability(0.5f)) {
+                convertedPed.SetNaturalMotionBuilder(BuildInjuredOnGroundNM());
+            }
         }
 
-        private CustomHelper GetInjuredOnGroundHelper(EcsEntity entity,
-                                                      in ConvertedPed convertedPed,
-                                                      bool dontReachWithLeft,
-                                                      bool dontReachWithRight) {
-            var helper = new InjuredOnGroundHelper(convertedPed.thisPed) {
+        private ConvertedPed.NaturalMotionBuilder BuildInjuredOnGroundNM() {
+            return (_, ent, ped) => GetInjuredOnGroundHelper(ent, ped);
+        }
+
+        private CustomHelper GetInjuredOnGroundHelper(EcsEntity entity, Ped ped) {
+            CheckArmTraumas(entity, out bool dontReachWithLeft, out bool dontReachWithRight);
+
+            var helper = new InjuredOnGroundHelper(ped) {
                 DontReachWithLeft = dontReachWithLeft,
                 DontReachWithRight = dontReachWithRight,
             };
@@ -239,6 +241,7 @@ namespace GunshotWound2.StatusFeature {
             }
 
             ref Pain pain = ref entity.GetComponent<Pain>();
+            ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
             helper.StrongRollForce = pain.Percent() < 3.0f;
             helper.NumInjuries = numInjuries;
             helper.AttackerPos = convertedPed.lastAggressor.IsValid()
