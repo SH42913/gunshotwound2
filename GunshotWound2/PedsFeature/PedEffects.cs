@@ -112,7 +112,7 @@
 
         public static bool TryGetPedByHandle(int handle, out Ped ped) {
             Entity entity = Entity.FromHandle(handle);
-            if (entity.EntityType == EntityType.Ped) {
+            if (entity.IsValid() && entity.EntityType == EntityType.Ped) {
                 ped = (Ped)entity;
                 return true;
             } else {
