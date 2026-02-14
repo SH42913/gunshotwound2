@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using Configs;
     using GTA;
-    using GTA.Math;
     using GTA.Native;
     using PedsFeature;
     using PlayerFeature;
@@ -58,7 +57,7 @@
                                                                    out int time);
 
             int damageTimeDiff = Game.GameTime - time;
-            bool isValidLastDamage = hasLastDamage && damageTimeDiff <= 20;
+            bool isValidLastDamage = hasLastDamage && damageTimeDiff <= sharedData.mainConfig.weaponConfig.MaxDamageDelay;
             string name = convertedPed.name;
             if (!hasLastDamage) {
                 sharedData.logger.WriteWarning($"Ped {name} has damage, but doesn't have damage record");
@@ -119,9 +118,7 @@
 #endif
             } else {
                 sharedData.logger.WriteWarning("Can't detect weapon!");
-                PedEffects.TryGetLastDamageRecord(ped, out uint uintHash, out _, out int gameTime);
-                int timeDiff = Game.GameTime - gameTime;
-                sharedData.logger.WriteWarning($"Last record - {BuildWeaponName(uintHash)}, {timeDiff} frames ago");
+                sharedData.logger.WriteWarning($"Last record - {BuildWeaponName(weaponHash)}, {damageTimeDiff} frames ago");
                 sharedData.notifier.ShowOne(sharedData.localeConfig.GswCantDetectWeapon, blinking: true, Notifier.Color.RED);
             }
         }

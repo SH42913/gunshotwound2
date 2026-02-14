@@ -59,6 +59,7 @@ namespace GunshotWound2.Configs {
         public uint WEAPON_RAMMED_BY_CAR;
         public uint WEAPON_RUN_OVER_BY_CAR;
 
+        public int MaxDamageDelay;
         public bool UseSpecialStunDamage;
         public bool CleanLastDamageFromPed;
         public float StunPainPercent;
@@ -86,6 +87,8 @@ namespace GunshotWound2.Configs {
 
         public void FillFrom(XDocument doc) {
             XElement root = doc.Element(nameof(WeaponConfig))!;
+            MaxDamageDelay = root.Element(nameof(MaxDamageDelay)).GetInt();
+
             XElement specialStunDamage = root.Element("SpecialStunDamage");
             UseSpecialStunDamage = specialStunDamage.GetBool("Enabled");
             StunPainPercent = specialStunDamage.GetFloat(nameof(StunPainPercent));

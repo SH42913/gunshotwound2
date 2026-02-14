@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WeaponConfig>
+    <MaxDamageDelay Value="250"/>
+    <!-- It is allowed delay in ms between DamageRecord game time and hit detection time.
+    Large values may cause incorrect weapon detection, while small values may cause falling damage instead of weapon. -->
+
     <SpecialStunDamage Enabled="TRUE" StunPainPercent="1.15"/>
     <!-- Any stun damage(eg StunGun/911657153) will drop target to unconscious state.
     If you're using LSPDFR, you may want to set Enabled to FALSE and use default stun logic -->
