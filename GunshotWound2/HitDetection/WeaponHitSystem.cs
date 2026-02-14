@@ -59,12 +59,15 @@
 
             int damageTimeDiff = Game.GameTime - time;
             bool isValidLastDamage = hasLastDamage && damageTimeDiff <= 20;
-#if DEBUG
             string name = convertedPed.name;
-            if (hasLastDamage) {
-                sharedData.logger.WriteInfo($"Record {name} A:{attackerHandle} W:{weaponHash}, time={time}({damageTimeDiff})");
+            if (!hasLastDamage) {
+                sharedData.logger.WriteWarning($"Ped {name} has damage, but doesn't have damage record");
+            }
+#if DEBUG
+            else if (!isValidLastDamage) {
+                sharedData.logger.WriteInfo($"Ped {name} has damage, but damage record is outdated({damageTimeDiff.ToString()})");
             } else {
-                sharedData.logger.WriteError($"Ped {name} have damage, but doesn't have damage record");
+                sharedData.logger.WriteInfo($"Record {name} A:{attackerHandle} W:{weaponHash}, time={time}({damageTimeDiff})");
             }
 #endif
 
