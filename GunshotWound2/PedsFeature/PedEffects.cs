@@ -180,5 +180,17 @@
         public static void SetHealth(Ped ped, int newHealth, Ped aggressor = null, uint weaponHash = 0) {
             Function.Call(Hash.SET_ENTITY_HEALTH, ped, newHealth, aggressor, weaponHash);
         }
+
+        public static bool OnAnyBike(Ped ped) {
+            return Function.Call<bool>(Hash.IS_PED_ON_ANY_BIKE, ped);
+        }
+
+        public static bool InAnyVehicle(Ped ped, bool atGetIn) {
+            return Function.Call<bool>(Hash.IS_PED_IN_ANY_VEHICLE, ped, atGetIn);
+        }
+
+        public static bool KnockOffVehicle(Ped ped) {
+            return Function.Call<bool>(Hash.KNOCK_PED_OFF_VEHICLE, ped);
+        }
     }
 }

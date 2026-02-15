@@ -216,8 +216,6 @@ namespace GunshotWound2.PainFeature {
                 ref PedHitData hitData = ref entity.GetComponent<PedHitData>(out bool hasHitData);
                 if (convertedPed.isPlayer) {
                     sharedData.cameraService.PlayPainfulWoundEffect();
-                } else if (ped.IsOnBike) {
-                    ped.Task.LeaveVehicle(LeaveVehicleFlags.BailOut);
                 } else if (hasHitData && hitData.bodyPart.IsValid && hitData.bodyPart.IsRightArm()) {
                     ped.Weapons.Drop();
                 }
