@@ -80,6 +80,7 @@ namespace GunshotWound2.StatusFeature {
             randomizer.Add(0);
             randomizer.Add(1, weight: 3);
             randomizer.Add(4);
+            randomizer.Add(5);
 
             if (!convertedPed.thisPed.IsInVehicle()) {
                 // TODO: Restore later
@@ -107,6 +108,7 @@ namespace GunshotWound2.StatusFeature {
                 case 2:  CrawlVisualBehaviour(entity, ref convertedPed); break;
                 case 3:  WritheVisualBehaviour(ref convertedPed); break;
                 case 4:  BodyWritheVisualBehaviour(ref convertedPed); break;
+                case 5:  ElectrocuteVisualBehaviour(ref convertedPed); break;
                 default: throw new Exception("Incorrect visual behaviour index");
             }
         }
@@ -165,6 +167,34 @@ namespace GunshotWound2.StatusFeature {
 #endif
             convertedPed.RequestRagdoll(3000);
             convertedPed.afterRagdollAction = writheAction;
+        }
+
+        private void ElectrocuteVisualBehaviour(ref ConvertedPed convertedPed) {
+#if DEBUG
+            sharedData.logger.WriteInfo("ElectrocuteHelper as visual behaviour");
+#endif
+
+            // ReSharper disable once ParameterHidesMember
+            convertedPed.SetNaturalMotionBuilder((sharedData, entity, ped) => {
+                CheckArmTraumas(entity, out bool leftArmBroken, out bool rightArmBroken);
+                CheckLegTraumas(entity, out bool leftLegBroken, out bool rightLegBroken);
+                return new ElectrocuteHelper(ped) {
+                    ApplyStiffness = false,
+                    UseTorques = true,
+                    StunMag = sharedData.random.NextFloat(0.05f, 0.15f),
+                    StunInterval = sharedData.random.NextFloat(0.15f, 0.25f),
+                    DirectionRandomness = sharedData.random.NextFloat(0.3f, 1f),
+                    LargeMult = sharedData.random.NextFloat(1.5f, 2.5f),
+                    LargeMinTime = sharedData.random.NextFloat(2f, 4f),
+                    LargeMaxTime = sharedData.random.NextFloat(6f, 8f),
+                    LeftArm = !leftArmBroken,
+                    RightArm = !rightArmBroken,
+                    LeftLeg = !leftLegBroken,
+                    RightLeg = !rightLegBroken,
+                };
+            });
+
+            convertedPed.RequestPermanentRagdoll();
         }
 
         private void CrawlVisualBehaviour(EcsEntity entity, ref ConvertedPed convertedPed) {
@@ -337,6 +367,23 @@ namespace GunshotWound2.StatusFeature {
                 ref Bleeding bleeding = ref bleedingStash.Get(traumaEntity);
                 leftArmBroken |= bleeding.bodyPart.IsLeftArm();
                 rightArmBroken |= bleeding.bodyPart.IsRightArm();
+            }
+        }
+
+        private void CheckLegTraumas(EcsEntity entity, out bool leftLegBroken, out bool rightLegBroken) {
+            ref Traumas traumas = ref entity.GetComponent<Traumas>(out bool hasTraumas);
+            if (!hasTraumas || !traumas.HasActive(Traumas.Effects.Legs)) {
+                leftLegBroken = false;
+                rightLegBroken = false;
+                return;
+            }
+
+            leftLegBroken = false;
+            rightLegBroken = false;
+            foreach (EcsEntity traumaEntity in traumas.traumas) {
+                ref Bleeding bleeding = ref bleedingStash.Get(traumaEntity);
+                leftLegBroken |= bleeding.bodyPart.IsLeftLeg();
+                rightLegBroken |= bleeding.bodyPart.IsRightLeg();
             }
         }
     }
