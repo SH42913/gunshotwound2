@@ -79,6 +79,7 @@ namespace GunshotWound2.StatusFeature {
             randomizer.Clear();
             randomizer.Add(0);
             randomizer.Add(1, weight: 3);
+            randomizer.Add(4);
 
             if (!convertedPed.thisPed.IsInVehicle()) {
                 // TODO: Restore later
@@ -105,6 +106,7 @@ namespace GunshotWound2.StatusFeature {
                 case 1:  InjuredVisualBehaviour(ref convertedPed); break;
                 case 2:  CrawlVisualBehaviour(entity, ref convertedPed); break;
                 case 3:  WritheVisualBehaviour(ref convertedPed); break;
+                case 4:  BodyWritheVisualBehaviour(ref convertedPed); break;
                 default: throw new Exception("Incorrect visual behaviour index");
             }
         }
@@ -118,6 +120,42 @@ namespace GunshotWound2.StatusFeature {
             convertedPed.thisPed.IsPainAudioEnabled = false;
 
             convertedPed.naturalMotionBuilder = static (_, _, ped) => new BodyRelaxHelper(ped);
+            convertedPed.RequestPermanentRagdoll();
+        }
+
+        private void BodyWritheVisualBehaviour(ref ConvertedPed convertedPed) {
+#if DEBUG
+            sharedData.logger.WriteInfo("BodyWritheHelper as visual behaviour");
+#endif
+
+            // ReSharper disable once ParameterHidesMember
+            convertedPed.SetNaturalMotionBuilder((sharedData, entity, ped) => {
+                CheckArmTraumas(entity, out bool leftArmBroken, out bool rightArmBroken);
+                CheckLegTraumas(entity, out bool leftLegBroken, out bool rightLegBroken);
+                return new BodyWritheHelper(ped) {
+                    ApplyStiffness = true,
+
+                    ArmStiffness = sharedData.random.NextFloat(5f, 8f),
+                    BackStiffness = sharedData.random.NextFloat(5f, 8f),
+                    LegStiffness = sharedData.random.NextFloat(5f, 8f),
+
+                    ArmPeriod = sharedData.random.NextFloat(2.5f, 3.5f),
+                    BackPeriod = sharedData.random.NextFloat(3.0f, 4.0f),
+                    LegPeriod = sharedData.random.NextFloat(2.5f, 3.5f),
+
+                    ArmAmplitude = 0.5f,
+                    BackAmplitude = 0.3f,
+                    LegAmplitude = 0.4f,
+
+                    ArmDamping = sharedData.random.NextFloat(1f, 1.5f),
+                    BackDamping = sharedData.random.NextFloat(1f, 1.5f),
+                    LegDamping = sharedData.random.NextFloat(1f, 1.5f),
+
+                    BlendArms = leftArmBroken || rightArmBroken ? 0.2f : 0.4f,
+                    BlendLegs = leftLegBroken || rightLegBroken ? 0.2f : 0.8f,
+                };
+            });
+
             convertedPed.RequestPermanentRagdoll();
         }
 
