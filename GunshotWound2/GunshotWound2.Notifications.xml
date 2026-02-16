@@ -13,6 +13,9 @@
     <HitNotification Enabled="TRUE"/>
     <!-- Notification that appears when you hit somebody, show which body part you hit and wound -->
 
+    <CantDetectWeaponNotification Enabled="TRUE"/>
+    <!-- Error notification when GSW2 can't detect weapon by damage -->
+
     <Info Value="TRUE"/>
     <!-- Info notifications: Totally healed, Picked up items, etc -->
 

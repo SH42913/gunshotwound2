@@ -119,7 +119,10 @@
             } else {
                 sharedData.logger.WriteWarning("Can't detect weapon!");
                 sharedData.logger.WriteWarning($"Last record - {BuildWeaponName(weaponHash)}, {damageTimeDiff} frames ago");
-                sharedData.notifier.ShowOne(sharedData.localeConfig.GswCantDetectWeapon, blinking: true, Notifier.Color.RED);
+
+                if (sharedData.mainConfig.CantDetectWeaponNotificationEnabled) {
+                    sharedData.notifier.ShowOne(sharedData.localeConfig.GswCantDetectWeapon, blinking: true, Notifier.Color.RED);
+                }
             }
         }
 

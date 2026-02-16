@@ -53,6 +53,7 @@ namespace GunshotWound2.Configs {
         public float HelpTipMaxInterval;
 
         public bool HitNotificationEnabled;
+        public bool CantDetectWeaponNotificationEnabled;
 
         public int HelpTipDurationInMs => (int)(HelpTipDuration * 1000);
 
@@ -194,8 +195,8 @@ namespace GunshotWound2.Configs {
             HelpTipMinInterval = helpNode.GetFloat("MinIntervalInSec");
             HelpTipMaxInterval = helpNode.GetFloat("MaxIntervalInSec");
 
-            XElement hitNotificationNode = node.Element("HitNotification");
-            HitNotificationEnabled = hitNotificationNode.GetBool("Enabled");
+            HitNotificationEnabled = node.Element("HitNotification").GetBool("Enabled");
+            CantDetectWeaponNotificationEnabled = node.Element("CantDetectWeaponNotification").GetBool("Enabled");
         }
 
         private static string GetPathForSection(string scriptPath, string sectionName) {
