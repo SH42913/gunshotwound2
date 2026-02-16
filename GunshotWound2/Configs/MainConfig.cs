@@ -200,7 +200,10 @@ namespace GunshotWound2.Configs {
         }
 
         private static string GetPathForSection(string scriptPath, string sectionName) {
-            return Path.ChangeExtension(scriptPath, sectionName);
+            string scriptFolder = Path.GetDirectoryName(scriptPath);
+
+            // ReSharper disable once AssignNullToNotNullAttribute
+            return Path.Combine(scriptFolder, "Configs", sectionName);
         }
     }
 }

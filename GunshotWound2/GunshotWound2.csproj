@@ -202,34 +202,34 @@
       <Link>README.md</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GunshotWound2.Armor.xml">
+    <Content Include="Configs\Armor.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GunshotWound2.BodyParts.xml">
+    <Content Include="Configs\BodyParts.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GunshotWound2.Traumas.xml">
+    <Content Include="Configs\Inventory.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GunshotWound2.Inventory.xml">
+    <Content Include="Configs\KeyBinds.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GunshotWound2.KeyBinds.xml">
+    <Content Include="Configs\Notifications.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GunshotWound2.Notifications.xml">
+    <Content Include="Configs\Peds.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GunshotWound2.Peds.xml">
+    <Content Include="Configs\Player.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GunshotWound2.Player.xml">
+    <Content Include="Configs\Traumas.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GunshotWound2.Weapons.xml">
+    <Content Include="Configs\Weapons.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GunshotWound2.Wounds.xml">
+    <Content Include="Configs\Wounds.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="GunshotWound2.csv">
