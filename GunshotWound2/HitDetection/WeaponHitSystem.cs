@@ -107,6 +107,21 @@
                 RefreshAggressor(ref convertedPed, ref hitData, attackerHandle);
             }
 
+            if (!weaponType.IsValid && CheckIndirectFallDamage(ped)) {
+#if DEBUG
+                sharedData.logger.WriteInfo("Indirect falling damage");
+#endif
+                float speed = ped.Velocity.Length();
+                weaponType = HandleFalling(speed, out specialHitCount);
+                isSpecialCase = true;
+                if (specialHitCount < 1) {
+#if DEBUG
+                    sharedData.logger.WriteInfo("And skip that");
+#endif
+                    return;
+                }
+            }
+
             if (weaponType.IsValid) {
                 hitData.weaponHash = weaponHash;
                 hitData.weaponType = weaponType;
@@ -228,7 +243,7 @@
                 return HandleRunOverCar(ped, out hitCount);
             }
 
-            if (IsDamagedByWeapon(ped, WeaponConfig.WEAPON_FALL) || ped.IsFalling || ped.IsRagdoll) {
+            if (IsDamagedByWeapon(ped, WeaponConfig.WEAPON_FALL)) {
                 return HandleFalling(ped.Velocity.Length(), out hitCount);
             }
 
@@ -306,11 +321,15 @@
                 return WeaponConfig.CarCrash;
             } else {
 #if DEBUG
-                sharedData.logger.WriteWarning("It is car crash damage, but ped is not player");
+                sharedData.logger.WriteInfo("It is car crash damage, but ped is not player");
 #endif
                 hitCount = 1;
                 return WeaponConfig.CarCrash;
             }
+        }
+
+        private static bool CheckIndirectFallDamage(Ped ped) {
+            return ped.IsFalling || ped.IsRagdoll;
         }
 
         private static bool PedWasDamagedBy(HashSet<uint> hashes, Ped target, out uint weapon) {
