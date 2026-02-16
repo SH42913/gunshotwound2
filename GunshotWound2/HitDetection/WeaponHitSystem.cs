@@ -56,6 +56,7 @@
                                                                    out int attackerHandle,
                                                                    out int time);
 
+            uint damageRecordWeapon = weaponHash;
             int damageTimeDiff = Game.GameTime - time;
             bool isValidLastDamage = hasLastDamage && damageTimeDiff <= sharedData.mainConfig.weaponConfig.MaxDamageDelay;
             string name = convertedPed.name;
@@ -118,7 +119,7 @@
 #endif
             } else {
                 sharedData.logger.WriteWarning("Can't detect weapon!");
-                sharedData.logger.WriteWarning($"Last record - {BuildWeaponName(weaponHash)}, {damageTimeDiff} frames ago");
+                sharedData.logger.WriteWarning($"Last record - {BuildWeaponName(damageRecordWeapon)}, {damageTimeDiff} frames ago");
 
                 if (sharedData.mainConfig.CantDetectWeaponNotificationEnabled) {
                     sharedData.notifier.ShowOne(sharedData.localeConfig.GswCantDetectWeapon, blinking: true, Notifier.Color.RED);
