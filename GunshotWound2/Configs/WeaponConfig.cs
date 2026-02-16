@@ -67,6 +67,7 @@ namespace GunshotWound2.Configs {
         public int MaxDamageDelay;
         public bool UseSpecialStunDamage;
         public bool CleanLastDamageFromPed;
+        public bool FallbackToFallDamage;
         public float StunPainPercent;
         public HashSet<uint> IgnoreSet;
         public Weapon[] Weapons;
@@ -97,7 +98,8 @@ namespace GunshotWound2.Configs {
             XElement specialStunDamage = root.Element("SpecialStunDamage");
             UseSpecialStunDamage = specialStunDamage.GetBool("Enabled");
             StunPainPercent = specialStunDamage.GetFloat(nameof(StunPainPercent));
-            CleanLastDamageFromPed = root.Element("CleanLastDamageFromPed").GetBool();
+            CleanLastDamageFromPed = root.Element(nameof(CleanLastDamageFromPed)).GetBool();
+            FallbackToFallDamage = root.Element(nameof(FallbackToFallDamage)).GetBool();
             IgnoreSet = ExtractWeaponHashes(root.Element(nameof(IgnoreSet)));
 
             XElement weaponsNode = root.Element(nameof(Weapons))!;

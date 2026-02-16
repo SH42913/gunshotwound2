@@ -13,6 +13,10 @@
     Set this value to FALSE only if you're using other mod with damage-detection feature
     (like MoreGore or Damage Tracker Framework) -->
 
+    <FallbackToFallDamage Value="TRUE"/>
+    <!-- Primarily, that's a debug option.
+    Set this value to FALSE if you want to detect weapon with hits in-game, but GSW treats that like falling damage. -->
+
     <!-- GSW2 will ignore these weapons, so they will deal vanilla damage -->
     <IgnoreSet>
         <Explosives Hashes="EXPLOSION;GRENADE;STICKYBOMB;PROXMINE;PIPEBOMB;"/>

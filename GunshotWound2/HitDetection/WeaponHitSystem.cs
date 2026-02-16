@@ -328,8 +328,8 @@
             }
         }
 
-        private static bool CheckIndirectFallDamage(Ped ped) {
-            return ped.IsFalling || ped.IsRagdoll;
+        private bool CheckIndirectFallDamage(Ped ped) {
+            return sharedData.mainConfig.weaponConfig.FallbackToFallDamage && (ped.IsFalling || ped.IsRagdoll);
         }
 
         private static bool PedWasDamagedBy(HashSet<uint> hashes, Ped target, out uint weapon) {
