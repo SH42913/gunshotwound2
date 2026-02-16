@@ -18,14 +18,14 @@
         <Explosives Hashes="EXPLOSION;GRENADE;STICKYBOMB;PROXMINE;PIPEBOMB;"/>
         <Projectiles Hashes="PASSENGER_ROCKET;AIRSTRIKE_ROCKET;VEHICLE_ROCKET;ARENA_HOMING_MISSILE;"/>
         <Launchers Hashes="GRENADELAUNCHER;RPG;STINGER;HOMINGLAUNCHER;COMPACTLAUNCHER;FIREWORK;EMPLAUNCHER;"/>
-        <Fire Hashes="MOLOTOV;FLARE;FLAREGUN;"/>
+        <Fire Hashes="FIRE;MOLOTOV;FLARE;FLAREGUN;"/>
         <Gas Hashes="BZGAS;SMOKEGRENADE;GRENADELAUNCHER_SMOKE;FIREEXTINGUISHER;"/>
-        <Gadgets Hashes="HACKINGDEVICE;2803906140;4222310262;"/>
+        <Gadgets Hashes="HACKINGDEVICE;GADGET_NIGHTVISION;GADGET_PARACHUTE;"/>
         <Props Hashes="PETROLCAN;DIGISCANNER;BRIEFCASE;BRIEFCASE_02;BRIEFCASE_03;ACIDPACKAGE;HAZARDCAN;METALDETECTOR;FERTILIZERCAN;GARBAGEBAG;HANDCUFFS;NEWSPAPER"/>
         <Sharks Hashes="TIGER_SHARK;HAMMERHEAD_SHARK;KILLER_WHALE;"/>
         <Animals Hashes="ANIMAL;SMALL_DOG;ANIMAL_RETRIEVER;COUGAR;COYOTE;CAT;HEN;RABBIT;PIG;BOAR;COW;DEER;"/>
         <RayGuns Hashes="RAYPISTOL;RAYCARBINE;RAYMINIGUN;"/>
-        <Misc Hashes="BLEEDING;DROWNING;DROWNING_IN_VEHICLE;REMOTESNIPER;966099553;BIRD_CRAP;"/>
+        <Misc Hashes="EXHAUSTION;BLEEDING;DROWNING;DROWNING_IN_VEHICLE;966099553;BIRD_CRAP;"/>
     </IgnoreSet>
 
     <!-- Here you can determine weapons with its name or hash for every weapon types -->
@@ -205,7 +205,7 @@
             </Wounds>
         </Firearm300Blk_Sub>
 
-        <Firearm545x39_FMJ ShortDesc="5.45x39 7N6"
+        <Firearm545x39_FMJ ShortDesc="5.45x39 FMJ"
                            DamageMult="1.2" BleedMult="1.8" PainMult="1.1" ChanceToCauseTrauma="0.75"
                            SafeArmorLevel="ClassIII" ArmorDamage="10" HelmetSafeChance="0.2">
             <Rifles Hashes="COMPACTRIFLE;"/>
@@ -403,7 +403,7 @@
         <Firearm50BMG_Ball ShortDesc=".50 BMG"
                            DamageMult="2.5" BleedMult="3.0" PainMult="2.2" ChanceToCauseTrauma="1.0"
                            SafeArmorLevel="ClassV" ArmorDamage="40" HelmetSafeChance="0.0">
-            <Rifles Hashes="HEAVYSNIPER;HEAVYSNIPER_MK2;"/>
+            <Rifles Hashes="HEAVYSNIPER;HEAVYSNIPER_MK2;REMOTESNIPER;"/>
             <TakedownWound Key="HeavyBruise"/>
             <Wounds>
                 <Wound Key="AvulsiveGsw" Weight="50"/>

@@ -10,6 +10,10 @@ namespace GunshotWound2.Configs {
     using Utils;
 
     public sealed class WeaponConfig : MainConfig.IConfig {
+        private const string WEAPON_PREFIX = "WEAPON_";
+        private const string GADGET_PREFIX = "GADGET_";
+        private const string VEHICLE_WEAPON_PREFIX = "VEHICLE_WEAPON_";
+
         public readonly struct Weapon {
             public readonly string Key;
             public readonly string ShortDesc;
@@ -211,7 +215,7 @@ namespace GunshotWound2.Configs {
                 string[] splitStrings = attributeValue.Split(MainConfig.Separator, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string weaponString in splitStrings) {
                     uint hash = GetWeaponHash(weaponString);
-                    if (NativeMemory.IsHashValidAsWeaponHash(hash)) {
+                    if (GTAHelpers.IsValidWeapon(hash)) {
                         set.Add(hash);
                     } else {
                         invalidWeapons.Add(weaponString);
@@ -222,12 +226,19 @@ namespace GunshotWound2.Configs {
             return set;
         }
 
-        private static uint GetWeaponHash(string weaponString, string prefix = "WEAPON_") {
-            if (!uint.TryParse(weaponString, out uint hash)) {
-                hash = StringHash.AtStringHashUtf8(prefix + weaponString.ToUpper());
+        private static uint GetWeaponHash(string weaponString, string fallbackPrefix = WEAPON_PREFIX) {
+            if (uint.TryParse(weaponString, out uint hash)) {
+                return hash;
             }
 
-            return hash;
+            weaponString = weaponString.ToUpper();
+            string name = weaponString.StartsWith(WEAPON_PREFIX)
+                          || weaponString.StartsWith(GADGET_PREFIX)
+                          || weaponString.StartsWith(VEHICLE_WEAPON_PREFIX)
+                    ? weaponString
+                    : fallbackPrefix + weaponString;
+
+            return StringHash.AtStringHashUtf8(name);
         }
 
         public static string BuildWeaponName(uint hash) {

@@ -49,6 +49,10 @@ namespace GunshotWound2.Utils {
             return entity != null && entity.Exists();
         }
 
+        public static bool IsValidWeapon(uint hash) {
+            return Function.Call<bool>(Hash.IS_WEAPON_VALID, hash);
+        }
+
         public static bool StandsStill(this Ped ped) {
             bool isMoving = ped.IsRagdoll
                             || ped.IsWalking
