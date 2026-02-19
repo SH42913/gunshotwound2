@@ -1,5 +1,6 @@
 #define DEBUG_EVERY_FRAME
 namespace GunshotWound2.HealthFeature {
+    using Configs;
     using GTA;
     using GTA.Math;
     using PedsFeature;
@@ -10,8 +11,6 @@ namespace GunshotWound2.HealthFeature {
     using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class BleedingFxSystem : ILateSystem {
-        public const float BLOOD_FOUNTAIN_THRESHOLD = 0.55f;
-
         // ReSharper disable once NotAccessedField.Local
         private readonly SharedData sharedData;
 
@@ -22,11 +21,10 @@ namespace GunshotWound2.HealthFeature {
         private Filter activeParticles;
         private Filter particlesToClean;
 
-        private ParticleEffectAsset coreAsset;
-        private ParticleEffectAsset cutMichael2Asset;
-        private ParticleEffectAsset cutSecAsset;
-
         public EcsWorld World { get; set; }
+
+        private WoundConfig.BleedingFxData[] PenetratingEffects => sharedData.mainConfig.woundConfig.PenetratingBleedingEffects;
+        private WoundConfig.BleedingFxData[] BluntEffects => sharedData.mainConfig.woundConfig.BluntBleedingEffects;
 
         public BleedingFxSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -40,13 +38,8 @@ namespace GunshotWound2.HealthFeature {
             activeParticles = World.Filter.With<BleedingFx>();
             particlesToClean = activeParticles.Without<Bleeding>();
 
-            coreAsset = new ParticleEffectAsset("core");
-            cutMichael2Asset = new ParticleEffectAsset("cut_michael2");
-            cutSecAsset = new ParticleEffectAsset("cut_sec");
-
-            coreAsset.Request();
-            cutMichael2Asset.Request();
-            cutSecAsset.Request();
+            RequestAssets(PenetratingEffects);
+            RequestAssets(BluntEffects);
         }
 
         public void OnUpdate(float deltaTime) {
@@ -118,9 +111,9 @@ namespace GunshotWound2.HealthFeature {
             ParticleEffectAsset asset;
             string effectName;
             if (bleeding.bluntDamageReason) {
-                GetEffectForBluntBleeding(severity, out asset, out effectName);
+                GetEffectBySeverity(BluntEffects, severity, out asset, out effectName);
             } else {
-                GetEffectForPenetrationBleeding(severity, out asset, out effectName);
+                GetEffectBySeverity(PenetratingEffects, severity, out asset, out effectName);
             }
 
             if (string.IsNullOrEmpty(effectName)) {
@@ -136,42 +129,21 @@ namespace GunshotWound2.HealthFeature {
             return GTA.World.CreateParticleEffect(asset, effectName, targetBone, localHitPos, localRot);
         }
 
-        private void GetEffectForPenetrationBleeding(float severity, out ParticleEffectAsset asset, out string effectName) {
-            switch (severity) {
-                case > BLOOD_FOUNTAIN_THRESHOLD:
-                    asset = cutMichael2Asset;
-                    effectName = "cs_mich2_blood_head_leak";
-                    break;
-                case > 0.2f:
-                    asset = coreAsset;
-                    effectName = "ped_blood_drips";
-                    break;
-                case > 0.01f:
-                    asset = cutSecAsset;
-                    effectName = "cut_sec_golfclub_blood_drips";
-                    break;
-                default:
-                    asset = default;
-                    effectName = null;
-                    break;
+        private static void GetEffectBySeverity(WoundConfig.BleedingFxData[] effects,
+                                                float severity,
+                                                out ParticleEffectAsset asset,
+                                                out string effectName) {
+            for (int i = 0; i < effects.Length; i++) {
+                ref WoundConfig.BleedingFxData fx = ref effects[i];
+                if (severity > fx.severity) {
+                    asset = fx.asset;
+                    effectName = fx.effectName;
+                    return;
+                }
             }
-        }
 
-        private void GetEffectForBluntBleeding(float severity, out ParticleEffectAsset asset, out string effectName) {
-            switch (severity) {
-                case > 0.04f:
-                    asset = coreAsset;
-                    effectName = "ped_blood_drips";
-                    break;
-                case > 0.01f:
-                    asset = cutSecAsset;
-                    effectName = "cut_sec_golfclub_blood_drips";
-                    break;
-                default:
-                    asset = default;
-                    effectName = null;
-                    break;
-            }
+            asset = default;
+            effectName = null;
         }
 
         private void CleanEntity(EcsEntity entity) {
@@ -188,9 +160,20 @@ namespace GunshotWound2.HealthFeature {
                 CleanEntity(entity);
             }
 
-            coreAsset.MarkAsNoLongerNeeded();
-            cutMichael2Asset.MarkAsNoLongerNeeded();
-            cutSecAsset.MarkAsNoLongerNeeded();
+            DisposeAssets(PenetratingEffects);
+            DisposeAssets(BluntEffects);
+        }
+
+        private static void RequestAssets(WoundConfig.BleedingFxData[] effects) {
+            foreach (WoundConfig.BleedingFxData effect in effects) {
+                effect.asset.Request();
+            }
+        }
+
+        private static void DisposeAssets(WoundConfig.BleedingFxData[] effects) {
+            foreach (WoundConfig.BleedingFxData effect in effects) {
+                effect.asset.MarkAsNoLongerNeeded();
+            }
         }
     }
 }

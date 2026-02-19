@@ -67,6 +67,18 @@ namespace GunshotWound2.Configs {
             }
         }
 
+        public readonly struct BleedingFxData {
+            public readonly ParticleEffectAsset asset;
+            public readonly string effectName;
+            public readonly float severity;
+
+            public BleedingFxData(XElement element) {
+                asset = new ParticleEffectAsset(element.GetString("Asset"));
+                effectName = element.GetString("Effect");
+                severity = element.GetFloat("Severity");
+            }
+        }
+
         private const int HEALTH_CORRECTION = 100;
 
         public DBPContainer GlobalMultipliers;
@@ -83,6 +95,8 @@ namespace GunshotWound2.Configs {
 
         public Dictionary<string, Wound> Wounds;
 
+        public BleedingFxData[] PenetratingBleedingEffects;
+        public BleedingFxData[] BluntBleedingEffects;
         public BloodPoolData[] BloodPoolParticles;
         public float BloodPoolGrowTimeScale;
 
@@ -107,9 +121,21 @@ namespace GunshotWound2.Configs {
             TakedownRagdollDurationMs = takedownNode.GetInt("RagdollDurationMs");
             TakedownMults = new DBPContainer(takedownNode, isMult: true);
 
+            const string particle = "Particle";
+            XElement bleedFxNode = root.Element("BleedingEffects")!;
+            PenetratingBleedingEffects = bleedFxNode.Element("Penetrating")!.Elements(particle)
+                                                    .Select(x => new BleedingFxData(x))
+                                                    .OrderByDescending(x => x.severity)
+                                                    .ToArray();
+
+            BluntBleedingEffects = bleedFxNode.Element("Blunt")!.Elements(particle)
+                                              .Select(x => new BleedingFxData(x))
+                                              .OrderByDescending(x => x.severity)
+                                              .ToArray();
+
             XElement bloodPoolsNode = root.Element("BloodPools")!;
             BloodPoolGrowTimeScale = bloodPoolsNode.GetFloat("GrowTimeScale", 1f);
-            BloodPoolParticles = bloodPoolsNode.Elements("Particle").Select(x => new BloodPoolData(x)).ToArray();
+            BloodPoolParticles = bloodPoolsNode.Elements(particle).Select(x => new BloodPoolData(x)).ToArray();
         }
 
         public void Validate(MainConfig mainConfig, ILogger logger) { }

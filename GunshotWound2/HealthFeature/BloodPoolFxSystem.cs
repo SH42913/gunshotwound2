@@ -57,7 +57,7 @@ namespace GunshotWound2.HealthFeature {
                 ref BloodPoolFx bloodPoolFx = ref bloodPoolStash.Add(entity);
                 bloodPoolFx.bloodPoolIndex = sharedData.random.Next(0, BloodPoolParticles.Length);
 
-                if (normalizedBleed >= BleedingFxSystem.BLOOD_FOUNTAIN_THRESHOLD) {
+                if (normalizedBleed >= 0.55f) {
                     bloodPoolFx.timeToNextUpdate = 4f;
                 } else {
                     UpdateTimeToNextUpdate(entity, ref bloodPoolFx);
