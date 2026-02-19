@@ -113,13 +113,12 @@ namespace GunshotWound2.Configs {
             HardRunOverVehMassReference = weaponsNode.Element(nameof(HardRunOverCar)).GetFloat("VehMassReference");
             CarCrashReferenceSpeed = weaponsNode.Element(nameof(CarCrash)).GetFloat("ReferenceSpeed");
 
-            const string prefix = "";
-            WEAPON_FALL = GetWeaponHash(nameof(WEAPON_FALL), prefix);
-            WEAPON_BLEEDING = GetWeaponHash(nameof(WEAPON_BLEEDING), prefix);
-            WEAPON_EXHAUSTION = GetWeaponHash(nameof(WEAPON_EXHAUSTION), prefix);
-            WEAPON_FIRE = GetWeaponHash(nameof(WEAPON_FIRE), prefix);
-            WEAPON_RAMMED_BY_CAR = GetWeaponHash(nameof(WEAPON_RAMMED_BY_CAR), prefix);
-            WEAPON_RUN_OVER_BY_CAR = GetWeaponHash(nameof(WEAPON_RUN_OVER_BY_CAR), prefix);
+            WEAPON_FALL = GetWeaponHash(nameof(WEAPON_FALL));
+            WEAPON_BLEEDING = GetWeaponHash(nameof(WEAPON_BLEEDING));
+            WEAPON_EXHAUSTION = GetWeaponHash(nameof(WEAPON_EXHAUSTION));
+            WEAPON_FIRE = GetWeaponHash(nameof(WEAPON_FIRE));
+            WEAPON_RAMMED_BY_CAR = GetWeaponHash(nameof(WEAPON_RAMMED_BY_CAR));
+            WEAPON_RUN_OVER_BY_CAR = GetWeaponHash(nameof(WEAPON_RUN_OVER_BY_CAR));
         }
 
         public void Validate(MainConfig mainConfig, ILogger logger) {

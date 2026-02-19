@@ -73,6 +73,7 @@
     <Compile Include="HealthFeature\BloodPoolFx.cs" />
     <Compile Include="HealthFeature\BloodPoolFxSystem.cs" />
     <Compile Include="HitDetection\MultiBulletHitSystem.cs" />
+    <Compile Include="HitDetection\DamageModifierSystem.cs" />
     <Compile Include="PainFeature\PainGenerator.cs" />
     <Compile Include="PainFeature\PainGeneratingSystem.cs" />
     <Compile Include="PainFeature\PainkillersEffect.cs" />
@@ -80,12 +81,10 @@
     <Compile Include="PedsFeature\FacialIdleAnimSystem.cs" />
     <Compile Include="PedsFeature\InjuredOnGroundUpdateSystem.cs" />
     <Compile Include="PedsFeature\PedCombatPerfSystem.cs" />
-    <Compile Include="PedsFeature\PedDamageModifierSystem.cs" />
     <Compile Include="PlayerFeature\MissionTrackerSystem.cs" />
     <Compile Include="PlayerFeature\PlayerHelpSystem.cs" />
     <Compile Include="PlayerFeature\PlayerHitNotification.cs" />
     <Compile Include="PlayerFeature\PlayerHitNotificationSystem.cs" />
-    <Compile Include="PlayerFeature\PlayerDamageModifierSystem.cs" />
     <Compile Include="PlayerFeature\PlayerPainRecoverySystem.cs" />
     <Compile Include="PlayerFeature\PlayerSpeedHistory.cs" />
     <Compile Include="PlayerFeature\PlayerSpeedSystem.cs" />
