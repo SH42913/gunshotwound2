@@ -264,7 +264,8 @@
 #if DEBUG
             string vehicleName = possibleVehicle.DisplayName;
             float mass = possibleVehicle.HandlingData.Mass;
-            sharedData.logger.WriteInfo($"It is run over car damage by {vehicleName}, relativeSpeed:{relativeSpeed}, mass:{mass}");
+            float kph = relativeSpeed * 3.6f;
+            sharedData.logger.WriteInfo($"It is run over car damage by {vehicleName}, relativeSpeed:{relativeSpeed}({kph}kph), mass:{mass}");
 #endif
 
             float hardHitMult = relativeSpeed / WeaponConfig.HardRunOverThreshold;
@@ -273,7 +274,7 @@
 #if DEBUG
                 sharedData.logger.WriteInfo($"HardHitMult:{hardHitMult}, MassMult:{massMult}");
 #endif
-                hitCount = (int)Math.Round(hardHitMult * massMult);
+                hitCount = (int)Math.Ceiling(hardHitMult * massMult);
                 if (hitCount < 1) {
                     hitCount = 1;
                 }

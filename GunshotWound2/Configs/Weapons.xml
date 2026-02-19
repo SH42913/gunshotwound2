@@ -625,8 +625,8 @@
             </Wounds>
         </LightRunOverCar>
 
-        <HardRunOverCar MinSpeed="12.0" DamageMult="2.0" BleedMult="1.0" PainMult="1.2"
-                        ChanceToCauseTrauma="0.5" HelmetSafeChance="0.7" VehMassReference="2000">
+        <HardRunOverCar MinSpeed="8.0" DamageMult="2.0" BleedMult="1.0" PainMult="1.2"
+                        ChanceToCauseTrauma="0.6" HelmetSafeChance="0.7" VehMassReference="1500">
             <Wounds>
                 <Wound Key="BluntHematoma" Weight="35"/>
                 <Wound Key="HeavyBruise" Weight="30"/>
