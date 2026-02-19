@@ -574,8 +574,6 @@
             </Wounds>
         </HeavyBlunt>
 
-        <!-- Special section, no weapon names here -->
-        <!-- Do not rename these weapons, but you may edit attributes and wounds -->
         <HeliCrash DamageMult="2.0" BleedMult="2.0" PainMult="2.0" ChanceToCauseTrauma="0.95" HelmetSafeChance="0.0">
             <Hashes Hashes="HELI_CRASH;"/>
             <Wounds>
@@ -586,7 +584,17 @@
                 <Wound Key="StabCut" Weight="10"/>
             </Wounds>
         </HeliCrash>
+        <HeliRotors DamageMult="2.5" BleedMult="3.0" PainMult="2.0" ChanceToCauseTrauma="1.0" HelmetSafeChance="0.0">
+            <Hashes Hashes="VEHICLE_WEAPON_ROTORS;"/>
+            <Wounds>
+                <Wound Key="ChopCut" Weight="70"/>
+                <Wound Key="DeepIncisedCut" Weight="20"/>
+                <Wound Key="LacerationCut" Weight="10"/>
+            </Wounds>
+        </HeliRotors>
 
+        <!-- Special section, no weapon names here -->
+        <!-- Do not rename these weapons, but you may edit attributes and wounds -->
         <LightFall MinSpeed="3.5" DamageMult="1.0" BleedMult="0.5" PainMult="0.5"
                    ChanceToCauseTrauma="0.05" HelmetSafeChance="1.0">
             <Wounds>
