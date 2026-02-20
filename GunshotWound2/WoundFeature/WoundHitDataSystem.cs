@@ -1,5 +1,6 @@
 namespace GunshotWound2.WoundFeature {
     using System;
+    using GTA;
     using GTA.Math;
     using HitDetection;
     using PedsFeature;
@@ -39,7 +40,7 @@ namespace GunshotWound2.WoundFeature {
                     int boneIndex = PedEffects.GetBoneIndex(hitData.ped, randomBoneId);
                     woundData.damagedBone = hitData.ped.Bones[boneIndex];
 #if DEBUG
-                    sharedData.logger.WriteInfo($"There's no bone in hit, so will be used random - {randomBoneId}");
+                    sharedData.logger.WriteInfo($"There's no bone in hit, so will be used random - {(Bone)randomBoneId}");
 #endif
                 }
 

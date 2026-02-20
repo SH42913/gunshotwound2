@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using Configs;
     using GTA;
-    using GTA.Math;
     using GTA.Native;
     using PedsFeature;
     using PlayerFeature;
@@ -57,14 +56,18 @@
                                                                    out int attackerHandle,
                                                                    out int time);
 
+            uint damageRecordWeapon = weaponHash;
             int damageTimeDiff = Game.GameTime - time;
-            bool isValidLastDamage = hasLastDamage && damageTimeDiff <= 20;
-#if DEBUG
+            bool isValidLastDamage = hasLastDamage && damageTimeDiff <= sharedData.mainConfig.weaponConfig.MaxDamageDelay;
             string name = convertedPed.name;
-            if (hasLastDamage) {
-                sharedData.logger.WriteInfo($"Record {name} A:{attackerHandle} W:{weaponHash}, time={time}({damageTimeDiff})");
+            if (!hasLastDamage) {
+                sharedData.logger.WriteWarning($"Ped {name} has damage, but doesn't have damage record");
+            }
+#if DEBUG
+            else if (!isValidLastDamage) {
+                sharedData.logger.WriteInfo($"Ped {name} has damage, but damage record is outdated({damageTimeDiff.ToString()})");
             } else {
-                sharedData.logger.WriteError($"Ped {name} have damage, but doesn't have damage record");
+                sharedData.logger.WriteInfo($"Record {name} A:{attackerHandle} W:{weaponHash}, time={time}({damageTimeDiff})");
             }
 #endif
 
@@ -104,6 +107,21 @@
                 RefreshAggressor(ref convertedPed, ref hitData, attackerHandle);
             }
 
+            if (!weaponType.IsValid && CheckIndirectFallDamage(ped)) {
+#if DEBUG
+                sharedData.logger.WriteInfo("Indirect falling damage");
+#endif
+                float speed = ped.Velocity.Length();
+                weaponType = HandleFalling(speed, out specialHitCount);
+                isSpecialCase = true;
+                if (specialHitCount < 1) {
+#if DEBUG
+                    sharedData.logger.WriteInfo("And skip that");
+#endif
+                    return;
+                }
+            }
+
             if (weaponType.IsValid) {
                 hitData.weaponHash = weaponHash;
                 hitData.weaponType = weaponType;
@@ -116,10 +134,11 @@
 #endif
             } else {
                 sharedData.logger.WriteWarning("Can't detect weapon!");
-                PedEffects.TryGetLastDamageRecord(ped, out uint uintHash, out _, out int gameTime);
-                int timeDiff = Game.GameTime - gameTime;
-                sharedData.logger.WriteWarning($"Last record - {BuildWeaponName(uintHash)}, {timeDiff} frames ago");
-                sharedData.notifier.ShowOne(sharedData.localeConfig.GswCantDetectWeapon, blinking: true, Notifier.Color.RED);
+                sharedData.logger.WriteWarning($"Last record - {BuildWeaponName(damageRecordWeapon)}, {damageTimeDiff} ms ago");
+
+                if (sharedData.mainConfig.CantDetectWeaponNotificationEnabled && damageRecordWeapon != 0) {
+                    sharedData.notifier.ShowOne(sharedData.localeConfig.GswCantDetectWeapon, blinking: true, Notifier.Color.RED);
+                }
             }
         }
 
@@ -224,7 +243,7 @@
                 return HandleRunOverCar(ped, out hitCount);
             }
 
-            if (IsDamagedByWeapon(ped, WeaponConfig.WEAPON_FALL) || ped.IsFalling || ped.IsRagdoll) {
+            if (IsDamagedByWeapon(ped, WeaponConfig.WEAPON_FALL)) {
                 return HandleFalling(ped.Velocity.Length(), out hitCount);
             }
 
@@ -245,7 +264,8 @@
 #if DEBUG
             string vehicleName = possibleVehicle.DisplayName;
             float mass = possibleVehicle.HandlingData.Mass;
-            sharedData.logger.WriteInfo($"It is run over car damage by {vehicleName}, relativeSpeed:{relativeSpeed}, mass:{mass}");
+            float kph = relativeSpeed * 3.6f;
+            sharedData.logger.WriteInfo($"It is run over car damage by {vehicleName}, relativeSpeed:{relativeSpeed}({kph}kph), mass:{mass}");
 #endif
 
             float hardHitMult = relativeSpeed / WeaponConfig.HardRunOverThreshold;
@@ -254,7 +274,7 @@
 #if DEBUG
                 sharedData.logger.WriteInfo($"HardHitMult:{hardHitMult}, MassMult:{massMult}");
 #endif
-                hitCount = (int)Math.Round(hardHitMult * massMult);
+                hitCount = (int)Math.Ceiling(hardHitMult * massMult);
                 if (hitCount < 1) {
                     hitCount = 1;
                 }
@@ -302,11 +322,15 @@
                 return WeaponConfig.CarCrash;
             } else {
 #if DEBUG
-                sharedData.logger.WriteWarning("It is car crash damage, but ped is not player");
+                sharedData.logger.WriteInfo("It is car crash damage, but ped is not player");
 #endif
                 hitCount = 1;
                 return WeaponConfig.CarCrash;
             }
+        }
+
+        private bool CheckIndirectFallDamage(Ped ped) {
+            return sharedData.mainConfig.weaponConfig.FallbackToFallDamage && (ped.IsFalling || ped.IsRagdoll);
         }
 
         private static bool PedWasDamagedBy(HashSet<uint> hashes, Ped target, out uint weapon) {

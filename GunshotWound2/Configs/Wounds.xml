@@ -25,6 +25,21 @@
     <RagdollOnPainfulWound Value="TRUE"/>
     <!-- If TRUE - peds(including player) will set to short ragdoll on painful wounds -->
 
+    <BleedingEffects>
+        <!-- Particles at hit position of wound, severity is minimal bleeding severity to activate particle -->
+        <Penetrating>
+            <!-- For penetrating wounds -->
+            <Particle Asset="cut_michael2" Effect="cs_mich2_blood_head_leak" Severity="0.55"/>
+            <Particle Asset="core" Effect="ped_blood_drips" Severity="0.2"/>
+            <Particle Asset="cut_sec" Effect="cut_sec_golfclub_blood_drips" Severity="0.01"/>
+        </Penetrating>
+        <Blunt>
+            <!-- For blunt wounds -->
+            <Particle Asset="core" Effect="ped_blood_drips" Severity="0.04"/>
+            <Particle Asset="cut_sec" Effect="cut_sec_golfclub_blood_drips" Severity="0.01"/>
+        </Blunt>
+    </BleedingEffects>
+
     <BloodPools GrowTimeScale="1.0">
         <!-- GrowTime of Particle is time for particle to grow per one use -->
         <!-- GrowTimeScale is an overall modifier for GrowTime, you should adjust that when using modded blood pool particles -->

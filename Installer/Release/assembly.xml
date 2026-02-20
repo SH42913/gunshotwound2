@@ -3,7 +3,7 @@
 <!--       Generated with  :   OpenIV Package Manager -->
 <!--       * Author  :   SH42913 -->
 <!--       * Version  :   1.0 -->
-<!--       * Release date  :   01.02.2026 -->
+<!--       * Release date  :   19.02.2026 -->
 <!--======================================================-->
 <package version="2.1" id="{ae64a1f4-714c-44ec-b645-b257b7ba99a6}" target="Five">
   <metadata>
@@ -714,20 +714,20 @@ Public License instead of this License.  But first, please read
     <iconBackground>$00FFFFFF</iconBackground>
   </colors>
   <content>
-    <add source="CONTENT_README.md">scripts\GSW2\CONTENT_README.md</add>
-    <add source="GunshotWound2.Armor.xml">scripts\GSW2\GunshotWound2.Armor.xml</add>
-    <add source="GunshotWound2.BodyParts.xml">scripts\GSW2\GunshotWound2.BodyParts.xml</add>
+    <add source="CONTENT_README.md">scripts\GSW2\Configs\CONTENT_README.md</add>
+    <add source="Configs\Armor.xml">scripts\GSW2\Configs\Armor.xml</add>
+    <add source="Configs\BodyParts.xml">scripts\GSW2\Configs\BodyParts.xml</add>
     <add source="GunshotWound2.csv">scripts\GSW2\GunshotWound2.csv</add>
     <add source="GunshotWound2.dll">scripts\GSW2\GunshotWound2.dll</add>
-    <add source="GunshotWound2.Inventory.xml">scripts\GSW2\GunshotWound2.Inventory.xml</add>
-    <add source="GunshotWound2.KeyBinds.xml">scripts\GSW2\GunshotWound2.KeyBinds.xml</add>
-    <add source="GunshotWound2.Notifications.xml">scripts\GSW2\GunshotWound2.Notifications.xml</add>
+    <add source="Configs\Inventory.xml">scripts\GSW2\Configs\Inventory.xml</add>
+    <add source="Configs\KeyBinds.xml">scripts\GSW2\Configs\KeyBinds.xml</add>
+    <add source="Configs\Notifications.xml">scripts\GSW2\Configs\Notifications.xml</add>
     <add source="GunshotWound2.pdb">scripts\GSW2\GunshotWound2.pdb</add>
-    <add source="GunshotWound2.Peds.xml">scripts\GSW2\GunshotWound2.Peds.xml</add>
-    <add source="GunshotWound2.Player.xml">scripts\GSW2\GunshotWound2.Player.xml</add>
-    <add source="GunshotWound2.Traumas.xml">scripts\GSW2\GunshotWound2.Traumas.xml</add>
-    <add source="GunshotWound2.Weapons.xml">scripts\GSW2\GunshotWound2.Weapons.xml</add>
-    <add source="GunshotWound2.Wounds.xml">scripts\GSW2\GunshotWound2.Wounds.xml</add>
+    <add source="Configs\Peds.xml">scripts\GSW2\Configs\Peds.xml</add>
+    <add source="Configs\Player.xml">scripts\GSW2\Configs\Player.xml</add>
+    <add source="Configs\Traumas.xml">scripts\GSW2\Configs\Traumas.xml</add>
+    <add source="Configs\Weapons.xml">scripts\GSW2\Configs\Weapons.xml</add>
+    <add source="Configs\Wounds.xml">scripts\GSW2\Configs\Wounds.xml</add>
     <add source="Morpeh.dll">scripts\GSW2\Morpeh.dll</add>
     <add source="README.md">scripts\GSW2\README.md</add>
     <add source="WeightedRandomizer.dll">scripts\GSW2\WeightedRandomizer.dll</add>

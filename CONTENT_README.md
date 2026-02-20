@@ -28,7 +28,7 @@ Always **back up files before editing** (copy them somewhere else), especially `
 - **Booleans**: Values like `TRUE` / `FALSE` are not case‑sensitive.
 - **Numbers**: Use a dot for decimals, e.g. `0.5`, not `0,5`.
 - **Keys must match**: `Key=""` attributes are referenced across multiple files. Never change a `Key` unless you also update every reference to it.
-- **Hashes & weapon names**: Weapon config uses GTA weapon names (e.g. `PISTOL`, `MICROSMG`). If you add a weapon from another mod, use the correct hash/name from that mod’s documentation.
+- **Hashes & weapon names**: Weapon config uses GTA weapon names (e.g. `PISTOL`, `VEHICLE_WEAPON_ROTORS`). GSW2 supports `WEAPON_`, `VEHICLE_WEAPON_` and `GADGET_` prefixes. If you add a weapon from another mod, use the correct hash/name from that mod’s documentation.
 
 If GSW2 stops working after an edit, restore your backup and re‑apply changes in smaller steps.
 
@@ -156,6 +156,8 @@ After editing, save the file and restart GTA V to ensure changes are applied cle
 **Purpose**: Maps **GTA weapons** to realistic ballistic profiles: damage, bleeding, pain, armor interaction and wound types.
 
 **Top‑level options:**
+- `MaxDamageDelay`: Max allowed delay in milliseconds between the game's damage record time and hit detection. Larger values may cause incorrect weapon detection; smaller values may treat some hits as fall damage instead of weapon damage.
+- `FallbackToFallDamage`: When `TRUE` (default), if weapon detection fails for a ped that is falling or in ragdoll, GSW2 treats it as fall damage. Set to `FALSE` for debugging when weapon detection misclassifies hits.
 - `SpecialStunDamage`:
   - `Enabled`: If `TRUE`, stun damage (like Taser) always causes unconsciousness based on `StunPainPercent`.
   - `StunPainPercent`: Pain applied relative to max pain (e.g. `1.15` = 115%).
@@ -199,6 +201,10 @@ After editing, save the file and restart GTA V to ensure changes are applied cle
 **Purpose**: Defines **base wound templates** (bruises, cuts, gunshot types) and global multipliers that apply to every wound.
 
 **Global settings:**
+- `<BleedingEffects>`: Editable particle effects shown at wound hit positions.
+  - `<Penetrating>` and `<Blunt>` each contain `<Particle Asset="" Effect="" Severity=""/>` entries.
+  - `Severity` is the minimum bleeding severity to activate that particle (e.g. `0.55` for severe, `0.2` for moderate).
+- `<BloodPools GrowTimeScale="">`: Blood pool particles on the ground. `GrowTimeScale` is an overall modifier; each `<Particle>` has `Asset`, `Effect` and `GrowTime`. If no particles are defined, blood pools are disabled.
 - `<GlobalMultipliers DamageMult="" BleedMult="" PainMult=""/>`:
   - Multiply all wound damage/bleed/pain values.
   - Example: `BleedMult="2.0"` doubles bleeding from all wounds.
@@ -281,8 +287,9 @@ You can customize **how generous** the system is with medical supplies and how s
 **Purpose**: Configures **language**, helper tips and which notification categories are shown.
 
 **Key options:**
+- `<CantDetectWeaponNotification Enabled=""/>`: When `TRUE`, shows a notification when GSW2 cannot detect which weapon caused damage (useful for debugging or mod compatibility).
 - `<Language Value="EN"/>`:
-  - Supported codes: `EN,RU,DE,FR,PL,KR,PT-BR,SPA,SWE,JP,ZH-HK,ZN-CN,FA` (and potential future updates).
+  - Supported codes: `EN,RU,DE,FR,PL,KR,PT-BR,SPA,SWE,JP,ZH-HK,ZN-CN,FA,FI` (and potential future updates).
   - This both picks a language and must match a column in `GunshotWound2.csv`.
 - `<HelpTips Enabled="" TipDurationInSec="" MinIntervalInSec="" MaxIntervalInSec=""/>`:
   - Toggle contextual helper tips and how often they appear.
@@ -355,7 +362,7 @@ For major translation contributions, you can also use the shared spreadsheet ref
 
 1. **Back up** all XML and the CSV before making any changes.
 2. Change **one area at a time**:
-   - Difficulty → `Player`, `Peds`, `Wounds`, `Traumas`.
+   - Difficulty → `Player`, `Peds`, `Wounds`, `Tr~~~~~~~~~~~~aumas`.
    - HUD / messages → `Notifications`, `KeyBinds`, `GunshotWound2.csv`.
    - Ballistics / armor → `Weapons`, `Armor`, `BodyParts`.
    - Medical items → `Inventory`.

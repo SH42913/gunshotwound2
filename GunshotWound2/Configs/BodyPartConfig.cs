@@ -26,6 +26,22 @@ namespace GunshotWound2.Configs {
                 (int)Bone.SkelRightHand,
             ];
 
+            private static readonly int[] LEFT_LEG_BONES = [
+                (int)Bone.SkelLeftThigh,
+                (int)Bone.SkelLeftToe0,
+                (int)Bone.SkelLeftToe1,
+                (int)Bone.SkelLeftFoot,
+                (int)Bone.SkelLeftCalf,
+            ];
+
+            private static readonly int[] RIGHT_LEG_BONES = [
+                (int)Bone.SkelRightThigh,
+                (int)Bone.SkelRightToe0,
+                (int)Bone.SkelRightToe1,
+                (int)Bone.SkelRightFoot,
+                (int)Bone.SkelRightCalf,
+            ];
+
             public readonly string Key;
             public readonly string LocKey;
             public readonly DBPContainer DBPMults;
@@ -79,6 +95,14 @@ namespace GunshotWound2.Configs {
 
             public bool IsRightArm() {
                 return Bones.Overlaps(RIGHT_ARM_BONES);
+            }
+
+            public bool IsLeftLeg() {
+                return Bones.Overlaps(LEFT_LEG_BONES);
+            }
+
+            public bool IsRightLeg() {
+                return Bones.Overlaps(RIGHT_LEG_BONES);
             }
         }
 

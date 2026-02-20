@@ -10,6 +10,10 @@ namespace GunshotWound2.Configs {
     using Utils;
 
     public sealed class WeaponConfig : MainConfig.IConfig {
+        private const string WEAPON_PREFIX = "WEAPON_";
+        private const string GADGET_PREFIX = "GADGET_";
+        private const string VEHICLE_WEAPON_PREFIX = "VEHICLE_WEAPON_";
+
         public readonly struct Weapon {
             public readonly string Key;
             public readonly string ShortDesc;
@@ -54,13 +58,16 @@ namespace GunshotWound2.Configs {
         }
 
         public uint WEAPON_FALL;
+        public uint WEAPON_BLEEDING;
         public uint WEAPON_EXHAUSTION;
         public uint WEAPON_FIRE;
         public uint WEAPON_RAMMED_BY_CAR;
         public uint WEAPON_RUN_OVER_BY_CAR;
 
+        public int MaxDamageDelay;
         public bool UseSpecialStunDamage;
         public bool CleanLastDamageFromPed;
+        public bool FallbackToFallDamage;
         public float StunPainPercent;
         public HashSet<uint> IgnoreSet;
         public Weapon[] Weapons;
@@ -86,10 +93,13 @@ namespace GunshotWound2.Configs {
 
         public void FillFrom(XDocument doc) {
             XElement root = doc.Element(nameof(WeaponConfig))!;
+            MaxDamageDelay = root.Element(nameof(MaxDamageDelay)).GetInt();
+
             XElement specialStunDamage = root.Element("SpecialStunDamage");
             UseSpecialStunDamage = specialStunDamage.GetBool("Enabled");
             StunPainPercent = specialStunDamage.GetFloat(nameof(StunPainPercent));
-            CleanLastDamageFromPed = root.Element("CleanLastDamageFromPed").GetBool();
+            CleanLastDamageFromPed = root.Element(nameof(CleanLastDamageFromPed)).GetBool();
+            FallbackToFallDamage = root.Element(nameof(FallbackToFallDamage)).GetBool();
             IgnoreSet = ExtractWeaponHashes(root.Element(nameof(IgnoreSet)));
 
             XElement weaponsNode = root.Element(nameof(Weapons))!;
@@ -103,12 +113,12 @@ namespace GunshotWound2.Configs {
             HardRunOverVehMassReference = weaponsNode.Element(nameof(HardRunOverCar)).GetFloat("VehMassReference");
             CarCrashReferenceSpeed = weaponsNode.Element(nameof(CarCrash)).GetFloat("ReferenceSpeed");
 
-            const string prefix = "";
-            WEAPON_FALL = GetWeaponHash(nameof(WEAPON_FALL), prefix);
-            WEAPON_EXHAUSTION = GetWeaponHash(nameof(WEAPON_EXHAUSTION), prefix);
-            WEAPON_FIRE = GetWeaponHash(nameof(WEAPON_FIRE), prefix);
-            WEAPON_RAMMED_BY_CAR = GetWeaponHash(nameof(WEAPON_RAMMED_BY_CAR), prefix);
-            WEAPON_RUN_OVER_BY_CAR = GetWeaponHash(nameof(WEAPON_RUN_OVER_BY_CAR), prefix);
+            WEAPON_FALL = GetWeaponHash(nameof(WEAPON_FALL));
+            WEAPON_BLEEDING = GetWeaponHash(nameof(WEAPON_BLEEDING));
+            WEAPON_EXHAUSTION = GetWeaponHash(nameof(WEAPON_EXHAUSTION));
+            WEAPON_FIRE = GetWeaponHash(nameof(WEAPON_FIRE));
+            WEAPON_RAMMED_BY_CAR = GetWeaponHash(nameof(WEAPON_RAMMED_BY_CAR));
+            WEAPON_RUN_OVER_BY_CAR = GetWeaponHash(nameof(WEAPON_RUN_OVER_BY_CAR));
         }
 
         public void Validate(MainConfig mainConfig, ILogger logger) {
@@ -206,7 +216,7 @@ namespace GunshotWound2.Configs {
                 string[] splitStrings = attributeValue.Split(MainConfig.Separator, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string weaponString in splitStrings) {
                     uint hash = GetWeaponHash(weaponString);
-                    if (NativeMemory.IsHashValidAsWeaponHash(hash)) {
+                    if (GTAHelpers.IsValidWeapon(hash)) {
                         set.Add(hash);
                     } else {
                         invalidWeapons.Add(weaponString);
@@ -217,12 +227,19 @@ namespace GunshotWound2.Configs {
             return set;
         }
 
-        private static uint GetWeaponHash(string weaponString, string prefix = "WEAPON_") {
-            if (!uint.TryParse(weaponString, out uint hash)) {
-                hash = StringHash.AtStringHashUtf8(prefix + weaponString.ToUpper());
+        private static uint GetWeaponHash(string weaponString, string fallbackPrefix = WEAPON_PREFIX) {
+            if (uint.TryParse(weaponString, out uint hash)) {
+                return hash;
             }
 
-            return hash;
+            weaponString = weaponString.ToUpper();
+            string name = weaponString.StartsWith(WEAPON_PREFIX)
+                          || weaponString.StartsWith(GADGET_PREFIX)
+                          || weaponString.StartsWith(VEHICLE_WEAPON_PREFIX)
+                    ? weaponString
+                    : fallbackPrefix + weaponString;
+
+            return StringHash.AtStringHashUtf8(name);
         }
 
         public static string BuildWeaponName(uint hash) {

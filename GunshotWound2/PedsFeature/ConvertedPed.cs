@@ -5,9 +5,12 @@
     using Scellecs.Morpeh;
     using StatusFeature;
     using Utils;
+    using EcsEntity = Scellecs.Morpeh.Entity;
 
     public struct ConvertedPed : IComponent {
         public delegate void AfterRagdollAction(ref ConvertedPed convertedPed);
+
+        public delegate CustomHelper NaturalMotionBuilder(SharedData sharedData, EcsEntity entity, Ped ped);
 
         public string name;
         public Ped thisPed;
@@ -22,7 +25,8 @@
 
         public (int time, RagdollType type) ragdollRequest;
         public bool permanentRagdoll;
-        public CustomHelper requestedNmHelper;
+        public NaturalMotionBuilder naturalMotionBuilder;
+        public bool nmBuilderOverrideForbidden;
         public CustomHelper activeNmHelper;
         public bool ragdollReset;
         public bool isRagdoll;
@@ -71,6 +75,15 @@
         public static void RequestPermanentRagdoll(this ref ConvertedPed convertedPed) {
             convertedPed.permanentRagdoll = true;
             convertedPed.ragdollRequest = (RagdollSystem.PERMANENT_RAGDOLL_TIME, RagdollType.Relax);
+        }
+
+        public static void SetNaturalMotionBuilder(this ref ConvertedPed convertedPed,
+                                                   ConvertedPed.NaturalMotionBuilder builder,
+                                                   bool forbidOverride = false) {
+            if (!convertedPed.nmBuilderOverrideForbidden) {
+                convertedPed.naturalMotionBuilder = builder;
+                convertedPed.nmBuilderOverrideForbidden = forbidOverride;
+            }
         }
 
         public static void RemoveRagdollRequest(this ref ConvertedPed convertedPed) {

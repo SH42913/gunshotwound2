@@ -7,6 +7,8 @@ namespace GunshotWound2.Utils {
         private const string DEATH_ANIM_NAME = "die";
         private static readonly CrClipAsset DRIVER_DEATH_CLIP = new("veh@std@ds@base", DEATH_ANIM_NAME);
         private static readonly CrClipAsset PASSENGER_DEATH_CLIP = new("veh@std@ps@base", DEATH_ANIM_NAME);
+        private static readonly uint WEAPON_UNARMED_HASH = StringHash.AtStringHashUtf8("WEAPON_UNARMED");
+        private static readonly uint SLOT_UNARMED_HASH = StringHash.AtStringHashUtf8("SLOT_UNARMED");
 
         public static bool TryGetClosestPed(out Ped closestPed, float radius) {
             Ped playerPed = Game.Player.Character;
@@ -47,6 +49,10 @@ namespace GunshotWound2.Utils {
 
         public static bool IsValid(this Entity entity) {
             return entity != null && entity.Exists();
+        }
+
+        public static bool IsValidWeapon(uint hash) {
+            return Function.Call<bool>(Hash.IS_WEAPON_VALID, hash);
         }
 
         public static bool StandsStill(this Ped ped) {
@@ -106,6 +112,15 @@ namespace GunshotWound2.Utils {
             AnimationBlendDelta blendOut = AnimationBlendDelta.NormalBlendOut;
             CrClipAsset clip = vehDeathClip.Value;
             ped.Task.PlayAnimation(clip, blendIn, blendOut, duration: -1, flags, startPhase: 0f);
+        }
+
+        public static bool IsHumanWeapon(uint hash) {
+            var slotHash = Function.Call<uint>(Hash.GET_WEAPONTYPE_SLOT, hash);
+            if (slotHash == 0) {
+                return false;
+            }
+
+            return slotHash != SLOT_UNARMED_HASH || hash == WEAPON_UNARMED_HASH;
         }
     }
 }

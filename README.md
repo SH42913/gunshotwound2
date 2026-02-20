@@ -24,7 +24,6 @@ If you want **grounded, punishing gunplay** that rewards good tactics and medica
 1. **Install prerequisites**
    - Install **[Script Hook V](http://www.dev-c.com/gtav/scripthookv/)**.
    - Install the **[nightly Script Hook V .NET](https://github.com/scripthookvdotnet/scripthookvdotnet-nightly/releases)** build.
-   - Confirm GTAV launches and ScriptHookVDotNet scripts run.
 2. **Download GSW2**
    - Grab the latest GSW2 release archive.
 3. **Extract the mod**
@@ -33,12 +32,12 @@ If you want **grounded, punishing gunplay** that rewards good tactics and medica
    - Place the **entire `GSW2` folder** into your GTA V `scripts` folder.  
      If you don’t have a `scripts` folder yet, create one in your GTAV root directory.
 5. **Configure the mod**
-   - Open the `GunshotWound2.*.xml` files (for example `GunshotWound2.KeyBinds.xml`) with a text editor.
+   - Open the `Configs/*.xml` files (for example `Configs/KeyBinds.xml`) with a text editor.
    - For a detailed explanation of every config file and how they interact, see `CONTENT_README.md` in the same folder.
 6. **Launch the game**
    - Start GTAV single‑player.
    - If installed correctly, GSW2 will initialize automatically in the background.
-   - You'll see greeting notification when GSW2 will ready to play.
+   - You'll see greeting notification when GSW2 will be ready to play.
 
 If the mod doesn’t seem to start, double‑check ScriptHookVDotNet is installed (nightly), and verify there are no startup errors in your ScriptHookVDotNet logs.
 
@@ -70,42 +69,55 @@ Currently, GSW2 focuses on **ped and player weapon damage** and **does not handl
 
 ### 🛠 Technical Issues & Installation
 
-**Q: I get the error "Could not load type 'EntityDamageRecordForReturnValue' from assembly 'ScriptHookVDotNet'..."**
+**Q: I get the error "Could not load type 'EntityDamageRecordForReturnValue' from assembly 'ScriptHookVDotNet'..."**\
 **A:** You are using an outdated version of ScriptHookVDotNet. GSW2 requires the latest features of the **SHVDN Nightly Builds**. Please update your SHVDN to the latest dev version.
 
-**Q: My keys conflict with other mods. How can I change them?**
-**A:** All controls are fully rebindable. Check the `GunshotWound2.KeyBinds.xml` file to set your preferred keys.
+**Q: My keys conflict with other mods. How can I change them?**\
+**A:** All controls are fully rebindable. Check the `Configs/KeyBinds.xml` file to set your preferred keys.
 
-**Q: I think I found a bug with damage calculation. What should I do?**
+**Q: I think I found a bug with damage calculation. What should I do?**\
 **A:** Install the **DEBUG version** of the mod, reproduce the issue, and send your `ScriptHookVDotNet.log` to the developer. The log contains vital data on bone hits and trauma rolls.
 
 ### 🩺 Realism & Gameplay Logic
 
-**Q: Why don't headshots kill instantly?**
-**A:** In reality, brain trauma is complex, and "instant death" is not always a guarantee depending on the caliber and angle. However, if you prefer classic arcade mechanics, enable **`HeadshotIsInstantDeath`** in `GunshotWound2.Peds.xml`.
+**Q: Why don't headshots kill instantly?**\
+**A:** In reality, brain trauma is complex, and "instant death" is not always a guarantee depending on the caliber and angle. However, if you prefer classic arcade mechanics, enable **`HeadshotIsInstantDeath`** in `Configs/Peds.xml`.
 
-**Q: Peds can sometimes survive 10 shots! Is this a bug?**
-**A:** Adrenaline is a powerful thing. Real-life reports show people continuing to fight even with multiple non-vital wounds. If you want more lethal combat, increase the **`DamageMult`** or **`PainMult`** value in `GunshotWound2.Wounds.xml`.
+**Q: Peds can sometimes survive 10 shots! Is this a bug?**\
+**A:** Adrenaline is a powerful thing. Real-life reports show people continuing to fight even with multiple non-vital wounds. If you want more lethal combat, increase the **`DamageMult`** or **`PainMult`** value in `Configs/Wounds.xml`.
 
-**Q: I broke my spine and now I'm paralyzed. What am I supposed to do?**
-**A:** Paralysis is a permanent state in GSW2. You can perform a "mercy kill" on yourself by pressing the **Delete** key. If you find this mechanic too punishing, disable **`RealisticSpineDamage`** in `GunshotWound2.Player.xml`.
+**Q: I broke my spine and now I'm paralyzed. What am I supposed to do?**\
+**A:** Paralysis is a permanent state in GSW2. You can perform a "mercy kill" on yourself by pressing the **Delete** key. If you find this mechanic too punishing, disable **`RealisticSpineDamage`** in `Configs/Player.xml`.
 
-**Q: The mod is too difficult. How can I make my life easier?**
-**A:** GSW2 is highly customizable. Open `GunshotWound2.Player.xml` to adjust your resistance to pain, bleeding speed, and overall health recovery rates.
+**Q: The mod is too difficult. How can I make my life easier?**\
+**A:** GSW2 is highly customizable. Open `Configs/Player.xml` to adjust your resistance to pain, bleeding speed, and overall health recovery rates.
+
+### 🔫 Weapons & Ballistics
+
+**Q: I changed a weapon model or disagree with the assigned caliber. How can I change it?**\
+**A:** All ammunition settings are located in `Configs/Weapons.xml`. Find the ammo type you want (e.g., `Firearm9x19_HP`) and move the weapon's name or hash from its current group to the one you prefer.
+
+**Q: I get the notification "GSW2 couldn't detect a weapon". What should I do?**\
+**A:** This means the mod doesn't recognize the weapon in your or peds' hands (common with add-on weapons).\
+To fix this:
+1. Open `ScriptHookVDotNet.log`.
+2. Find the error line and copy the weapon's **hash** (ID).
+3. Add this hash to the appropriate category in `Configs/Weapons.xml`.
+   *Note:* If the hash appears as **0**, you can simply disable this alert in `Configs/Notifications.xml` by setting the `CantDetectWeaponNotification` option to `FALSE`.
 
 ### 🌍 Localization & Contribution
 
-**Q: How can I change the language of the mod?**
-**A:** All in-game text and notifications are stored in `GunshotWound2.Notifications.xml`. You can translate them there.
+**Q: How can I change the language of the mod?**\
+**A:** All in-game text and notifications are stored in `Configs/Notifications.xml`. You can translate them there.
 
-**Q: How can I help with the mod’s development?**
-**A:** We are always looking for help! You can contribute to localizations via [our Google Sheets](https://docs.google.com/spreadsheets/d/1TY0nSEJMDmypkYrcVUBlMG3HIAEW075dCOtxXgW5UJ0/edit) or join [our Discord community](https://discord.gg/NSsw7cYhUR) to suggest new features and balance changes.
+**Q: How can I help with the mod’s development?**\
+**A:** I'm always looking for help! You can contribute to localizations via [our Google Sheets](https://docs.google.com/spreadsheets/d/1TY0nSEJMDmypkYrcVUBlMG3HIAEW075dCOtxXgW5UJ0/edit) or join [our Discord community](https://discord.gg/NSsw7cYhUR) to suggest new features and balance changes.
 
 ---
 
 ## Default controls
 
-These are the **default** hotkeys (they are defined in `GunshotWound2.KeyBinds.xml` and can be changed there):
+These are the **default** hotkeys (they are defined in `Configs/KeyBinds.xml` and can be changed there):
 
 - **L** – Check yourself
     - **Shift + L** – Check the closest ped.
@@ -119,6 +131,14 @@ These are the **default** hotkeys (they are defined in `GunshotWound2.KeyBinds.x
 
 ---
 
+## Cheat-codes
+
+- _GSW_HEAL_ - Will instantly heal player
+- _GSW_KILL_PLAYER_ - Will instantly kill player
+- _GSW_TEST_PED_ - Will create ped for tests
+
+---
+
 ## Recommended mods
 
 These are optional but pair well with GSW2’s gameplay:
@@ -128,7 +148,7 @@ These are optional but pair well with GSW2’s gameplay:
 - **Better Weapon Ragdoll** – Better reactions to crashes and impacts.
 - **Euphoria overhauls** (e.g. Bass Dragon’s ERO, RAGEuphoria) – More realistic reactions to being shot.
 - **Improvements in Gore** – More believable wound visuals.
-- **Pickups** (with `Auto Weapon Pickup = 0`) – Works well with GSW2’s `CanDropWeapon` option in player's config.
+- **Pickups** (with `Auto Weapon Pickup = 0`) – Works well with GSW2’s `CanDropWeapon` option in Player.xml.
 - **LSPDFR** – If you want to experience GSW2 from the perspective of law enforcement.
 - **Dynamic NPC Accuracy** – Configurable accuracy for NPCs.
 

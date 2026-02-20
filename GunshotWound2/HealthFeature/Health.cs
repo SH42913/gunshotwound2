@@ -10,6 +10,7 @@
         public int max;
         public float diff;
         public bool kill;
+        public uint lastDamageWeapon;
         public string lastDamageReason;
         public bool isDead;
 
@@ -21,8 +22,13 @@
     }
 
     public static class HealthExtensions {
-        public static void DealDamage(this ref Health health, float damage, string reason) {
+        public static void DealDamage(this ref Health health, float damage, string reason = null, uint weapon = 0) {
             health.diff -= damage;
+
+            if (weapon != 0) {
+                health.lastDamageWeapon = weapon;
+            }
+
             health.lastDamageReason = reason;
         }
 

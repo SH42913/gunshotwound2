@@ -112,7 +112,7 @@
 
         public static bool TryGetPedByHandle(int handle, out Ped ped) {
             Entity entity = Entity.FromHandle(handle);
-            if (entity.EntityType == EntityType.Ped) {
+            if (entity.IsValid() && entity.EntityType == EntityType.Ped) {
                 ped = (Ped)entity;
                 return true;
             } else {
@@ -171,6 +171,26 @@
 
         public static void ResetWeaponDamageModifier() {
             Function.Call(Hash.RESET_AI_WEAPON_DAMAGE_MODIFIER);
+        }
+
+        public static void SetDisableHighFallDeath(Ped ped, bool value) {
+            Function.Call(Hash.SET_DISABLE_HIGH_FALL_DEATH, ped, value);
+        }
+
+        public static void SetHealth(Ped ped, int newHealth, Ped aggressor = null, uint weaponHash = 0) {
+            Function.Call(Hash.SET_ENTITY_HEALTH, ped, newHealth, aggressor, weaponHash);
+        }
+
+        public static bool OnAnyBike(Ped ped) {
+            return Function.Call<bool>(Hash.IS_PED_ON_ANY_BIKE, ped);
+        }
+
+        public static bool InAnyVehicle(Ped ped, bool atGetIn) {
+            return Function.Call<bool>(Hash.IS_PED_IN_ANY_VEHICLE, ped, atGetIn);
+        }
+
+        public static bool KnockOffVehicle(Ped ped) {
+            return Function.Call<bool>(Hash.KNOCK_PED_OFF_VEHICLE, ped);
         }
     }
 }

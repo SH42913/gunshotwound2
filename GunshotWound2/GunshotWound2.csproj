@@ -73,6 +73,7 @@
     <Compile Include="HealthFeature\BloodPoolFx.cs" />
     <Compile Include="HealthFeature\BloodPoolFxSystem.cs" />
     <Compile Include="HitDetection\MultiBulletHitSystem.cs" />
+    <Compile Include="HitDetection\DamageModifierSystem.cs" />
     <Compile Include="PainFeature\PainGenerator.cs" />
     <Compile Include="PainFeature\PainGeneratingSystem.cs" />
     <Compile Include="PainFeature\PainkillersEffect.cs" />
@@ -80,12 +81,10 @@
     <Compile Include="PedsFeature\FacialIdleAnimSystem.cs" />
     <Compile Include="PedsFeature\InjuredOnGroundUpdateSystem.cs" />
     <Compile Include="PedsFeature\PedCombatPerfSystem.cs" />
-    <Compile Include="PedsFeature\PedDamageModifierSystem.cs" />
     <Compile Include="PlayerFeature\MissionTrackerSystem.cs" />
     <Compile Include="PlayerFeature\PlayerHelpSystem.cs" />
     <Compile Include="PlayerFeature\PlayerHitNotification.cs" />
     <Compile Include="PlayerFeature\PlayerHitNotificationSystem.cs" />
-    <Compile Include="PlayerFeature\PlayerDamageModifierSystem.cs" />
     <Compile Include="PlayerFeature\PlayerPainRecoverySystem.cs" />
     <Compile Include="PlayerFeature\PlayerSpeedHistory.cs" />
     <Compile Include="PlayerFeature\PlayerSpeedSystem.cs" />
@@ -202,34 +201,34 @@
       <Link>README.md</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GunshotWound2.Armor.xml">
+    <Content Include="Configs\Armor.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GunshotWound2.BodyParts.xml">
+    <Content Include="Configs\BodyParts.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GunshotWound2.Traumas.xml">
+    <Content Include="Configs\Inventory.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GunshotWound2.Inventory.xml">
+    <Content Include="Configs\KeyBinds.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GunshotWound2.KeyBinds.xml">
+    <Content Include="Configs\Notifications.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GunshotWound2.Notifications.xml">
+    <Content Include="Configs\Peds.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GunshotWound2.Peds.xml">
+    <Content Include="Configs\Player.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GunshotWound2.Player.xml">
+    <Content Include="Configs\Traumas.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GunshotWound2.Weapons.xml">
+    <Content Include="Configs\Weapons.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="GunshotWound2.Wounds.xml">
+    <Content Include="Configs\Wounds.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="GunshotWound2.csv">

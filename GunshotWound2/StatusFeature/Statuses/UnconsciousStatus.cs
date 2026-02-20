@@ -73,6 +73,7 @@
 
         private void PlayerOnlyCase(ref ConvertedPed convertedPed) {
             Player player = Game.Player;
+            Ped ped = convertedPed.thisPed;
             if (player.Wanted.WantedLevel <= 2) {
                 SetPlayerIsIgnoredByPeds(Game.Player, true);
                 if (sharedData.mainConfig.playerConfig.PoliceCanForgetYou) {
@@ -83,7 +84,7 @@
             }
 
             if (sharedData.mainConfig.playerConfig.CanDropWeapon) {
-                convertedPed.thisPed.Weapons.Drop();
+                ped.Weapons.Drop();
             }
 
             if (!convertedPed.hasSpineDamage) {
@@ -91,6 +92,10 @@
             }
 
             sharedData.cameraService.SetUnconsciousEffect(true);
+
+            if (PedEffects.OnAnyBike(ped)) {
+                PedEffects.KnockOffVehicle(ped);
+            }
         }
 
         private void NonPlayerCase(ref ConvertedPed convertedPed) {
@@ -98,9 +103,13 @@
             ped.BlockPermanentEvents = true;
             ped.Weapons.Drop();
 
-            bool isInVehicle = ped.IsInVehicle();
-            bool notDriver = ped.SeatIndex != VehicleSeat.Driver;
-            if (isInVehicle && notDriver && sharedData.random.IsTrueWithProbability(0.5f)) {
+            if (!PedEffects.InAnyVehicle(ped, atGetIn: false)) {
+                return;
+            }
+
+            if (PedEffects.OnAnyBike(ped)) {
+                PedEffects.KnockOffVehicle(ped);
+            } else if (ped.SeatIndex != VehicleSeat.Driver && sharedData.random.IsTrueWithProbability(0.5f)) {
                 ped.Task.LeaveVehicle(LeaveVehicleFlags.BailOut);
             }
         }

@@ -68,6 +68,10 @@ namespace GunshotWound2.HealthFeature {
             ref ConvertedPed convertedMedic = ref owner.GetComponent<ConvertedPed>();
             ref ConvertedPed convertedTarget = ref target.GetComponent<ConvertedPed>();
             if (CheckBandagingConditions(convertedTarget, convertedMedic, health)) {
+                if (convertedMedic.isPlayer && convertedMedic.thisPed.CurrentVehicle.IsValid()) {
+                    PlayerFeature.PlayerEffects.DisableVehicleControlThisFrame();
+                }
+
                 message = null;
                 return true;
             } else {

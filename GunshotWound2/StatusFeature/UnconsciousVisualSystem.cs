@@ -53,16 +53,16 @@ namespace GunshotWound2.StatusFeature {
 #if DEBUG
             sharedData.logger.WriteInfo("Selecting unconscious visual behaviour");
 #endif
-            if (convertedPed.hasSpineDamage) {
+            if (convertedPed.naturalMotionBuilder != null) {
 #if DEBUG
-                sharedData.logger.WriteInfo("No visual behaviour due Spine Damage");
+                sharedData.logger.WriteInfo("No visual behaviour due NM helper requested");
 #endif
                 return;
             }
 
-            if (convertedPed.requestedNmHelper != null) {
+            if (convertedPed.hasSpineDamage) {
 #if DEBUG
-                sharedData.logger.WriteInfo("No visual behaviour due NM helper requested");
+                sharedData.logger.WriteInfo("No visual behaviour due Spine Damage");
 #endif
                 return;
             }
@@ -79,6 +79,8 @@ namespace GunshotWound2.StatusFeature {
             randomizer.Clear();
             randomizer.Add(0);
             randomizer.Add(1, weight: 3);
+            randomizer.Add(4);
+            randomizer.Add(5);
 
             if (!convertedPed.thisPed.IsInVehicle()) {
                 // TODO: Restore later
@@ -102,9 +104,11 @@ namespace GunshotWound2.StatusFeature {
 
             switch (randomizer.NextWithReplacement()) {
                 case 0:  BodyRelaxRagdollVisualBehaviour(ref convertedPed); break;
-                case 1:  InjuredVisualBehaviour(entity, ref convertedPed); break;
+                case 1:  InjuredVisualBehaviour(ref convertedPed); break;
                 case 2:  CrawlVisualBehaviour(entity, ref convertedPed); break;
                 case 3:  WritheVisualBehaviour(ref convertedPed); break;
+                case 4:  BodyWritheVisualBehaviour(ref convertedPed); break;
+                case 5:  ElectrocuteVisualBehaviour(ref convertedPed); break;
                 default: throw new Exception("Incorrect visual behaviour index");
             }
         }
@@ -117,7 +121,43 @@ namespace GunshotWound2.StatusFeature {
             convertedPed.thisPed.StopCurrentPlayingAmbientSpeech();
             convertedPed.thisPed.IsPainAudioEnabled = false;
 
-            convertedPed.requestedNmHelper = new BodyRelaxHelper(convertedPed.thisPed);
+            convertedPed.naturalMotionBuilder = static (_, _, ped) => new BodyRelaxHelper(ped);
+            convertedPed.RequestPermanentRagdoll();
+        }
+
+        private void BodyWritheVisualBehaviour(ref ConvertedPed convertedPed) {
+#if DEBUG
+            sharedData.logger.WriteInfo("BodyWritheHelper as visual behaviour");
+#endif
+
+            // ReSharper disable once ParameterHidesMember
+            convertedPed.SetNaturalMotionBuilder((sharedData, entity, ped) => {
+                CheckArmTraumas(entity, out bool leftArmBroken, out bool rightArmBroken);
+                CheckLegTraumas(entity, out bool leftLegBroken, out bool rightLegBroken);
+                return new BodyWritheHelper(ped) {
+                    ApplyStiffness = true,
+
+                    ArmStiffness = sharedData.random.NextFloat(5f, 8f),
+                    BackStiffness = sharedData.random.NextFloat(5f, 8f),
+                    LegStiffness = sharedData.random.NextFloat(5f, 8f),
+
+                    ArmPeriod = sharedData.random.NextFloat(2.5f, 3.5f),
+                    BackPeriod = sharedData.random.NextFloat(3.0f, 4.0f),
+                    LegPeriod = sharedData.random.NextFloat(2.5f, 3.5f),
+
+                    ArmAmplitude = 0.5f,
+                    BackAmplitude = 0.3f,
+                    LegAmplitude = 0.4f,
+
+                    ArmDamping = sharedData.random.NextFloat(1f, 1.5f),
+                    BackDamping = sharedData.random.NextFloat(1f, 1.5f),
+                    LegDamping = sharedData.random.NextFloat(1f, 1.5f),
+
+                    BlendArms = leftArmBroken || rightArmBroken ? 0.2f : 0.4f,
+                    BlendLegs = leftLegBroken || rightLegBroken ? 0.2f : 0.8f,
+                };
+            });
+
             convertedPed.RequestPermanentRagdoll();
         }
 
@@ -129,6 +169,34 @@ namespace GunshotWound2.StatusFeature {
             convertedPed.afterRagdollAction = writheAction;
         }
 
+        private void ElectrocuteVisualBehaviour(ref ConvertedPed convertedPed) {
+#if DEBUG
+            sharedData.logger.WriteInfo("ElectrocuteHelper as visual behaviour");
+#endif
+
+            // ReSharper disable once ParameterHidesMember
+            convertedPed.SetNaturalMotionBuilder((sharedData, entity, ped) => {
+                CheckArmTraumas(entity, out bool leftArmBroken, out bool rightArmBroken);
+                CheckLegTraumas(entity, out bool leftLegBroken, out bool rightLegBroken);
+                return new ElectrocuteHelper(ped) {
+                    ApplyStiffness = false,
+                    UseTorques = true,
+                    StunMag = sharedData.random.NextFloat(0.05f, 0.15f),
+                    StunInterval = sharedData.random.NextFloat(0.15f, 0.25f),
+                    DirectionRandomness = sharedData.random.NextFloat(0.3f, 1f),
+                    LargeMult = sharedData.random.NextFloat(1.5f, 2.5f),
+                    LargeMinTime = sharedData.random.NextFloat(2f, 4f),
+                    LargeMaxTime = sharedData.random.NextFloat(6f, 8f),
+                    LeftArm = !leftArmBroken,
+                    RightArm = !rightArmBroken,
+                    LeftLeg = !leftLegBroken,
+                    RightLeg = !rightLegBroken,
+                };
+            });
+
+            convertedPed.RequestPermanentRagdoll();
+        }
+
         private void CrawlVisualBehaviour(EcsEntity entity, ref ConvertedPed convertedPed) {
 #if DEBUG
             sharedData.logger.WriteInfo("Crawl animation as visual behaviour");
@@ -136,12 +204,11 @@ namespace GunshotWound2.StatusFeature {
             StartCrawl(entity, ref convertedPed);
         }
 
-        private void InjuredVisualBehaviour(EcsEntity entity, ref ConvertedPed convertedPed) {
+        private void InjuredVisualBehaviour(ref ConvertedPed convertedPed) {
 #if DEBUG
             sharedData.logger.WriteInfo("InjuredOnGroundHelper as visual behaviour");
 #endif
-            CheckArmTraumas(entity, out bool leftArmBroken, out bool rightArmBroken);
-            convertedPed.requestedNmHelper = GetInjuredOnGroundHelper(entity, convertedPed, leftArmBroken, rightArmBroken);
+            convertedPed.SetNaturalMotionBuilder(BuildInjuredOnGroundNM());
             convertedPed.RequestPermanentRagdoll();
         }
 
@@ -200,16 +267,19 @@ namespace GunshotWound2.StatusFeature {
 
             // convertedPed.forcedAnimation = (CRAWL_ANIM_DICT, animName);
             convertedPed.RequestPermanentRagdoll();
-            convertedPed.requestedNmHelper = sharedData.random.IsTrueWithProbability(0.5f)
-                    ? GetInjuredOnGroundHelper(entity, convertedPed, leftArmBroken, rightArmBroken)
-                    : null;
+            if (sharedData.random.IsTrueWithProbability(0.5f)) {
+                convertedPed.SetNaturalMotionBuilder(BuildInjuredOnGroundNM());
+            }
         }
 
-        private CustomHelper GetInjuredOnGroundHelper(EcsEntity entity,
-                                                      in ConvertedPed convertedPed,
-                                                      bool dontReachWithLeft,
-                                                      bool dontReachWithRight) {
-            var helper = new InjuredOnGroundHelper(convertedPed.thisPed) {
+        private ConvertedPed.NaturalMotionBuilder BuildInjuredOnGroundNM() {
+            return (_, ent, ped) => GetInjuredOnGroundHelper(ent, ped);
+        }
+
+        private CustomHelper GetInjuredOnGroundHelper(EcsEntity entity, Ped ped) {
+            CheckArmTraumas(entity, out bool dontReachWithLeft, out bool dontReachWithRight);
+
+            var helper = new InjuredOnGroundHelper(ped) {
                 DontReachWithLeft = dontReachWithLeft,
                 DontReachWithRight = dontReachWithRight,
             };
@@ -239,6 +309,7 @@ namespace GunshotWound2.StatusFeature {
             }
 
             ref Pain pain = ref entity.GetComponent<Pain>();
+            ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
             helper.StrongRollForce = pain.Percent() < 3.0f;
             helper.NumInjuries = numInjuries;
             helper.AttackerPos = convertedPed.lastAggressor.IsValid()
@@ -296,6 +367,23 @@ namespace GunshotWound2.StatusFeature {
                 ref Bleeding bleeding = ref bleedingStash.Get(traumaEntity);
                 leftArmBroken |= bleeding.bodyPart.IsLeftArm();
                 rightArmBroken |= bleeding.bodyPart.IsRightArm();
+            }
+        }
+
+        private void CheckLegTraumas(EcsEntity entity, out bool leftLegBroken, out bool rightLegBroken) {
+            ref Traumas traumas = ref entity.GetComponent<Traumas>(out bool hasTraumas);
+            if (!hasTraumas || !traumas.HasActive(Traumas.Effects.Legs)) {
+                leftLegBroken = false;
+                rightLegBroken = false;
+                return;
+            }
+
+            leftLegBroken = false;
+            rightLegBroken = false;
+            foreach (EcsEntity traumaEntity in traumas.traumas) {
+                ref Bleeding bleeding = ref bleedingStash.Get(traumaEntity);
+                leftLegBroken |= bleeding.bodyPart.IsLeftLeg();
+                rightLegBroken |= bleeding.bodyPart.IsRightLeg();
             }
         }
     }

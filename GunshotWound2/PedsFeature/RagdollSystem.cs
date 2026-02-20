@@ -1,7 +1,11 @@
-﻿namespace GunshotWound2.PedsFeature {
+﻿// #define DEBUG_EVERY_FRAME
+
+namespace GunshotWound2.PedsFeature {
+    using GTA;
     using GTA.NaturalMotion;
     using Scellecs.Morpeh;
-    using RagdollType = GTA.RagdollType;
+    using EcsEntity = Scellecs.Morpeh.Entity;
+    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class RagdollSystem : ILateSystem {
         public const int PERMANENT_RAGDOLL_TIME = -1;
@@ -11,7 +15,7 @@
         private Filter peds;
         private Stash<ConvertedPed> pedStash;
 
-        public World World { get; set; }
+        public EcsWorld World { get; set; }
 
         public RagdollSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -23,13 +27,13 @@
         }
 
         public void OnUpdate(float deltaTime) {
-            foreach (Entity entity in peds) {
-                Process(ref pedStash.Get(entity));
+            foreach (EcsEntity entity in peds) {
+                Process(entity, ref pedStash.Get(entity));
             }
         }
 
-        private void Process(ref ConvertedPed convertedPed) {
-            GTA.Ped ped = convertedPed.thisPed;
+        private void Process(EcsEntity entity, ref ConvertedPed convertedPed) {
+            Ped ped = convertedPed.thisPed;
             if (ped.IsInVehicle()) {
                 return;
             }
@@ -44,49 +48,27 @@
             }
 
             EnsurePermanentRagdoll(ref convertedPed);
-            ReplaceRequestWithBodyRelaxIfSpineDamage(ref convertedPed);
 
-            bool newHelperRequest = convertedPed.requestedNmHelper != null;
-            if (convertedPed.ragdollRequest.time != 0 || newHelperRequest) {
-                if (!convertedPed.isRagdoll || newHelperRequest) {
-                    ExecuteNewRagdoll(ref convertedPed);
-                } else {
-                    HandleActiveRagdoll(ref convertedPed);
-                }
-            }
-        }
-
-        private void ReplaceRequestWithBodyRelaxIfSpineDamage(ref ConvertedPed convertedPed) {
-            if (!convertedPed.hasSpineDamage) {
+            bool newHelperRequest = convertedPed.naturalMotionBuilder != null;
+            bool ragdollRequested = convertedPed.ragdollRequest.time != 0 || newHelperRequest;
+            if (!ragdollRequested) {
                 return;
             }
 
-            bool isActiveRelax = convertedPed.activeNmHelper is BodyRelaxHelper;
-            bool isRequestingRelax = convertedPed.requestedNmHelper is BodyRelaxHelper;
-            if (!isActiveRelax && !isRequestingRelax) {
-#if DEBUG
-                sharedData.logger.WriteInfo($"Spine damaged: Forcing BodyRelaxHelper for {convertedPed.name}");
+#if DEBUG && DEBUG_EVERY_FRAME
+            int time = convertedPed.ragdollRequest.time;
+            sharedData.logger.WriteInfo($"Exec Ragdoll for {convertedPed.name} t:{time} newNm:{newHelperRequest}");
 #endif
-                convertedPed.requestedNmHelper = new BodyRelaxHelper(convertedPed.thisPed);
-            } else if (isActiveRelax && convertedPed.requestedNmHelper != null && !isRequestingRelax) {
-#if DEBUG
-                sharedData.logger.WriteInfo($"Spine damaged: Ignoring non-relax helper for {convertedPed.name}");
-#endif
-                convertedPed.requestedNmHelper = null;
-            }
+            ExecuteNewRagdoll(entity, ref convertedPed);
         }
 
         private void EnsurePermanentRagdoll(ref ConvertedPed convertedPed) {
-            if (!convertedPed.permanentRagdoll || convertedPed.ragdollRequest.time == PERMANENT_RAGDOLL_TIME) {
+            if (!convertedPed.permanentRagdoll) {
                 return;
             }
 
             PedEffects.ResetRagdollTime(convertedPed.thisPed);
-            if (convertedPed.isRagdoll) {
-                return;
-            }
-
-            if (!PedEffects.IsRunningRagdollTask(convertedPed.thisPed) || PedEffects.IsPedGettingUp(convertedPed.thisPed)) {
+            if (PedEffects.IsPedGettingUp(convertedPed.thisPed)) {
 #if DEBUG && DEBUG_EVERY_FRAME
                 sharedData.logger.WriteInfo($"Force permanent ragdoll to {convertedPed.name}");
 #endif
@@ -94,51 +76,32 @@
             }
         }
 
-        private void HandleActiveRagdoll(ref ConvertedPed convertedPed) {
-            SkipTime(ref convertedPed.ragdollRequest);
-
-            if (!convertedPed.permanentRagdoll && convertedPed.ragdollRequest.time == 0) {
-                convertedPed.ragdollRequest = default;
-            }
-        }
-
-        private void ExecuteNewRagdoll(ref ConvertedPed convertedPed) {
-            ref (int time, RagdollType type) request = ref convertedPed.ragdollRequest;
-
-#if DEBUG && DEBUG_EVERY_FRAME
-            sharedData.logger.WriteInfo($"Apply Ragdoll for {convertedPed.name} time={request.time}");
-#endif
-
-            bool ragdollStarted = TryPlayNaturalMotion(ref convertedPed);
+        private void ExecuteNewRagdoll(EcsEntity entity, ref ConvertedPed convertedPed) {
+            bool ragdollStarted = TryPlayNaturalMotion(entity, ref convertedPed);
             if (!ragdollStarted) {
-                convertedPed.thisPed.Ragdoll(request.time, request.type);
+                (int time, RagdollType type) = convertedPed.ragdollRequest;
+                convertedPed.thisPed.Ragdoll(time, type);
             }
 
-            request = default;
+            convertedPed.RemoveRagdollRequest();
         }
 
-        private bool TryPlayNaturalMotion(ref ConvertedPed convertedPed) {
-            if (convertedPed.requestedNmHelper == null) {
+        private bool TryPlayNaturalMotion(EcsEntity entity, ref ConvertedPed convertedPed) {
+            if (convertedPed.naturalMotionBuilder == null) {
                 return false;
             }
 
-            if (convertedPed.activeNmHelper != null) {
-#if DEBUG
-                sharedData.logger.WriteInfo($"Switching NM helper: stopping {convertedPed.activeNmHelper.GetType().Name}");
-#endif
-                convertedPed.activeNmHelper.Stop();
-            }
-
-            convertedPed.activeNmHelper = convertedPed.requestedNmHelper;
-            convertedPed.requestedNmHelper = null;
+            CustomHelper newHelper = convertedPed.naturalMotionBuilder(sharedData, entity, convertedPed.thisPed);
+            convertedPed.naturalMotionBuilder = null;
+            convertedPed.nmBuilderOverrideForbidden = false;
 
 #if DEBUG
-            sharedData.logger.WriteInfo($"Starting NM helper: {convertedPed.activeNmHelper.GetType().Name}");
+            sharedData.logger.WriteInfo($"Starting NM helper: {newHelper.GetType().Name}");
 #endif
 
-            int duration = convertedPed.ragdollRequest.time;
-            convertedPed.thisPed.Ragdoll(duration, RagdollType.ScriptControl);
-            convertedPed.activeNmHelper.Start(duration);
+            StopAllNMBehaviours(convertedPed.thisPed);
+            convertedPed.activeNmHelper = newHelper;
+            convertedPed.activeNmHelper.Start(convertedPed.ragdollRequest.time);
             return true;
         }
 
@@ -164,30 +127,22 @@
 #if DEBUG
                 sharedData.logger.WriteInfo($"Restore {convertedPed.name} from ragdoll");
 #endif
+                StopAllNMBehaviours(convertedPed.thisPed);
                 convertedPed.thisPed.CancelRagdoll();
             }
 
             convertedPed.ragdollReset = false;
             convertedPed.permanentRagdoll = false;
             convertedPed.ragdollRequest = default;
-
-            if (convertedPed.activeNmHelper != null) {
-                convertedPed.activeNmHelper.Stop();
-                convertedPed.activeNmHelper = null;
-            }
+            convertedPed.activeNmHelper = null;
         }
 
-        private void SkipTime(ref (int time, RagdollType type) ragdollRequest) {
-            if (ragdollRequest.time <= 0) {
-                return;
-            }
-
-            int newTime = ragdollRequest.time - sharedData.deltaTimeInMs;
-            ragdollRequest.time = newTime > 0 ? newTime : 0;
+        private static void StopAllNMBehaviours(Ped ped) {
+            ped.Euphoria.StopAllBehaviors.Start();
         }
 
         public void Dispose() {
-            foreach (Entity entity in peds) {
+            foreach (EcsEntity entity in peds) {
                 ResetRagdoll(ref pedStash.Get(entity));
             }
         }

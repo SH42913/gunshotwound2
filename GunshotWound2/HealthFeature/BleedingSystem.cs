@@ -107,7 +107,7 @@ namespace GunshotWound2.HealthFeature {
                     continue;
                 }
 
-                health.DealDamage(bleeding.severity * deltaTime, reason: null);
+                health.DealDamage(bleeding.severity * deltaTime);
 
                 if (!bleeding.isTrauma) {
                     bleeding.severity -= health.bleedingHealRate * deltaTime;
