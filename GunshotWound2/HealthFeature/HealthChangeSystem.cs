@@ -59,14 +59,11 @@ namespace GunshotWound2.HealthFeature {
                 int currentDiff = health.diff > 0 ? (int)Math.Floor(health.diff) : (int)Math.Ceiling(health.diff);
                 health.diff -= currentDiff;
 
-                uint weaponHash = health.lastDamageWeapon;
-                if (weaponHash == 0) {
-                    weaponHash = sharedData.mainConfig.weaponConfig.WEAPON_BLEEDING;
-                }
-
                 int newHealth = oldHealth + currentDiff;
-                PedEffects.SetHealth(convertedPed.thisPed, newHealth, convertedPed.lastAggressor, weaponHash);
-                health.lastDamageWeapon = 0;
+#if DEBUG && DEBUG_EVERY_FRAME
+                uint weaponHash = health.lastDamageWeapon;
+#endif
+                SetHealth(ref convertedPed, ref health, newHealth);
 
 #if DEBUG && DEBUG_EVERY_FRAME
                 var healthString = $"{oldHealth} --({weaponHash})> {newHealth}/{health}";
@@ -84,7 +81,7 @@ namespace GunshotWound2.HealthFeature {
             sharedData.logger.WriteInfo($"Ped {convertedPed.name} is marked as dead");
 #endif
             health.isDead = true;
-            convertedPed.thisPed.ApplyDamage(100000);
+            SetHealth(ref convertedPed, ref health, newHealth: 0);
             CreateDeathReport(entity, ref convertedPed, ref health);
         }
 
@@ -94,6 +91,17 @@ namespace GunshotWound2.HealthFeature {
                     report = sharedData.pedStateService.BuildString(entity),
                 });
             }
+        }
+
+        private void SetHealth(ref ConvertedPed convertedPed, ref Health health, int newHealth) {
+            uint weaponHash = health.lastDamageWeapon;
+            if (weaponHash == 0) {
+                weaponHash = sharedData.mainConfig.weaponConfig.WEAPON_BLEEDING;
+            }
+
+            newHealth = MathHelpers.Clamp(newHealth, min: 0, max: 1000);
+            PedEffects.SetHealth(convertedPed.thisPed, newHealth, convertedPed.lastAggressor, weaponHash);
+            health.lastDamageWeapon = 0;
         }
 
         void IDisposable.Dispose() { }
