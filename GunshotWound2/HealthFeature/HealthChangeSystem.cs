@@ -5,13 +5,16 @@ namespace GunshotWound2.HealthFeature {
     using PedsFeature;
     using PlayerFeature;
     using Scellecs.Morpeh;
+    using Utils;
+    using EcsEntity = Scellecs.Morpeh.Entity;
+    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class HealthChangeSystem : ILateSystem {
         private readonly SharedData sharedData;
         private Filter peds;
         private Stash<Health> healthStash;
 
-        public World World { get; set; }
+        public EcsWorld World { get; set; }
 
         public HealthChangeSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -23,7 +26,7 @@ namespace GunshotWound2.HealthFeature {
         }
 
         public void OnUpdate(float deltaTime) {
-            foreach (Entity entity in peds) {
+            foreach (EcsEntity entity in peds) {
                 ref Health health = ref healthStash.Get(entity);
                 if (health.isDead) {
                     continue;
@@ -69,7 +72,7 @@ namespace GunshotWound2.HealthFeature {
             }
         }
 
-        private void MarkPedAsDead(Entity entity, ref ConvertedPed convertedPed, ref Health health) {
+        private void MarkPedAsDead(EcsEntity entity, ref ConvertedPed convertedPed, ref Health health) {
 #if DEBUG
             sharedData.logger.WriteInfo($"Ped {convertedPed.name} is marked as dead");
 #endif
@@ -78,7 +81,7 @@ namespace GunshotWound2.HealthFeature {
             CreateDeathReport(entity, ref convertedPed, ref health);
         }
 
-        private void CreateDeathReport(Entity entity, ref ConvertedPed convertedPed, ref Health health) {
+        private void CreateDeathReport(EcsEntity entity, ref ConvertedPed convertedPed, ref Health health) {
             if (health.isDead && convertedPed.isPlayer) {
                 World.CreateEntity().SetComponent(new ShowPlayerDeathReportRequest {
                     report = sharedData.pedStateService.BuildString(entity),
