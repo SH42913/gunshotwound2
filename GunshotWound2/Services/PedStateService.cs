@@ -85,7 +85,7 @@
                 ShowPainkillersEffect(pedEntity, health);
             }
 
-            ShowArmor(ref convertedPed);
+            ShowArmor(ref convertedPed, ref health);
             ShowBleedingWounds(pedEntity, ref convertedPed, ref health, ref currentlyUsing);
             if (hasInventory) {
                 ShowInventory(ref inventory, ref currentlyUsing, health);
@@ -171,7 +171,11 @@
             stringBuilder.Append(status);
         }
 
-        private void ShowArmor(ref ConvertedPed convertedPed) {
+        private void ShowArmor(ref ConvertedPed convertedPed, ref Health health) {
+            if (health.isDead) {
+                return;
+            }
+
             if (!mainConfig.armorConfig.TryGetArmorLevel(convertedPed.thisPed.Armor, out ArmorConfig.Level armorLevel)) {
                 return;
             }
