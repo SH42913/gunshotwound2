@@ -2,6 +2,7 @@
 
 namespace GunshotWound2.HealthFeature {
     using System;
+    using GTA;
     using PedsFeature;
     using PlayerFeature;
     using Scellecs.Morpeh;
@@ -33,12 +34,18 @@ namespace GunshotWound2.HealthFeature {
                 }
 
                 ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
-                if (!convertedPed.thisPed.Exists() || convertedPed.thisPed.IsDead) {
+                Ped thisPed = convertedPed.thisPed;
+                if (!thisPed.Exists()) {
                     health.isDead = true;
                     continue;
                 }
 
-                int oldHealth = convertedPed.thisPed.Health;
+                if (thisPed.IsDead) {
+                    MarkPedAsDead(entity, ref convertedPed, ref health);
+                    continue;
+                }
+
+                int oldHealth = thisPed.Health;
                 if (health.kill || Configs.WoundConfig.ConvertHealthFromNative(oldHealth) < 0) {
                     MarkPedAsDead(entity, ref convertedPed, ref health);
                     continue;
