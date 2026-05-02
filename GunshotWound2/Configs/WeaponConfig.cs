@@ -27,6 +27,7 @@ namespace GunshotWound2.Configs {
             public readonly int Pellets;
             public readonly string TakedownWound;
             public readonly string TangentialWound;
+            public readonly bool UseRandomBone;
 
             public bool IsValid => !string.IsNullOrEmpty(Key);
 
@@ -41,7 +42,8 @@ namespace GunshotWound2.Configs {
                           int armorDamage,
                           int pellets,
                           string takedownWound,
-                          string tangentialWound) {
+                          string tangentialWound,
+                          bool useRandomBone) {
                 Key = key;
                 ShortDesc = shortDesc;
                 DBPMults = dbpMults;
@@ -54,6 +56,7 @@ namespace GunshotWound2.Configs {
                 Pellets = pellets;
                 TakedownWound = takedownWound;
                 TangentialWound = tangentialWound;
+                UseRandomBone = useRandomBone;
             }
         }
 
@@ -183,6 +186,7 @@ namespace GunshotWound2.Configs {
             int pellets = weaponNode.GetInt(nameof(Weapon.Pellets), defaultValue: 1);
             string takedownWound = weaponNode.Element(nameof(Weapon.TakedownWound)).GetString(nameof(WoundConfig.Wound.Key));
             string tangentialWound = weaponNode.Element(nameof(Weapon.TangentialWound)).GetString(nameof(WoundConfig.Wound.Key));
+            bool useRandomBone = weaponNode.GetBool(nameof(Weapon.UseRandomBone));
             return new Weapon(key,
                               shortDesc,
                               dbp,
@@ -194,7 +198,8 @@ namespace GunshotWound2.Configs {
                               armorDamage,
                               pellets,
                               takedownWound,
-                              tangentialWound);
+                              tangentialWound,
+                              useRandomBone);
         }
 
         private static (string, int)[] ExtractWounds(XElement weaponNode) {

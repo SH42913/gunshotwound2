@@ -12,7 +12,6 @@
         public WeaponConfig.Weapon weaponType;
         public int healthDiff;
         public int armorDiff;
-        public bool useRandomBodyPart;
         public bool afterTakedown;
         public int hits;
 

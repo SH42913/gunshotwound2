@@ -126,7 +126,6 @@
                 hitData.weaponHash = weaponHash;
                 hitData.weaponType = weaponType;
                 hitData.hits = isSpecialCase ? specialHitCount : 1;
-                hitData.useRandomBodyPart = isSpecialCase;
 #if DEBUG
                 string weaponName = BuildWeaponName(weaponHash);
                 string specialString = isSpecialCase ? "(special)" : "";

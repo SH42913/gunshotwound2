@@ -8,13 +8,15 @@ namespace GunshotWound2.HitDetection {
     using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
+    using EcsEntity = Scellecs.Morpeh.Entity;
+    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class BodyHitSystem : ISystem {
         private readonly SharedData sharedData;
 
         private Filter damagedPeds;
 
-        public Scellecs.Morpeh.World World { get; set; }
+        public EcsWorld World { get; set; }
 
         private BodyPartConfig BodyPartConfig => sharedData.mainConfig.bodyPartConfig;
 
@@ -29,7 +31,7 @@ namespace GunshotWound2.HitDetection {
         void IDisposable.Dispose() { }
 
         public void OnUpdate(float deltaTime) {
-            foreach (Scellecs.Morpeh.Entity pedEntity in damagedPeds) {
+            foreach (EcsEntity pedEntity in damagedPeds) {
                 ref PedHitData hitData = ref pedEntity.GetComponent<PedHitData>();
                 if (ShouldSkipDetection(ref hitData)) {
                     continue;
@@ -37,23 +39,22 @@ namespace GunshotWound2.HitDetection {
 
                 ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
                 PedBone damagedBone = convertedPed.thisPed.Bones.LastDamaged;
-                if (hitData.useRandomBodyPart || !damagedBone.IsValid) {
+                bool useRandomBone = hitData.weaponType.UseRandomBone || !damagedBone.IsValid;
+                if (useRandomBone) {
                     hitData.bodyPart = sharedData.random.Next(BodyPartConfig.BodyParts);
 
-                    Bone randomBoneTag = (Bone)sharedData.random.NextFromCollection(hitData.bodyPart.Bones);
+                    var randomBoneTag = (Bone)sharedData.random.NextFromCollection(hitData.bodyPart.Bones);
                     hitData.damagedBone = convertedPed.thisPed.Bones[randomBoneTag];
-#if DEBUG
-                    var message = $"Damaged random part is {hitData.bodyPart.Key}, bone {randomBoneTag} of {convertedPed.name}";
-                    sharedData.logger.WriteInfo(message);
-#endif
                 } else {
                     hitData.damagedBone = damagedBone;
                     hitData.bodyPart = BodyPartConfig.GetBodyPartByBone(damagedBone.Tag);
-#if DEBUG
-                    var message = $"Damaged part is {hitData.bodyPart.Key}, bone {damagedBone.Name} at {convertedPed.name}";
-                    sharedData.logger.WriteInfo(message);
-#endif
                 }
+
+#if DEBUG
+                string random = useRandomBone ? "(random)" : "";
+                var message = $"Damaged body part is {hitData.bodyPart.Key}{random}, bone {damagedBone.Name} at {convertedPed.name}";
+                sharedData.logger.WriteInfo(message);
+#endif
 
                 CalculateLocalHitData(convertedPed, ref hitData);
             }
