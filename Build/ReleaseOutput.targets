@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Release ship folder: no PDBs, no NuGet XML docs next to dependencies. -->
+  <Target Name="StripReleaseShipArtifacts"
+          AfterTargets="Build"
+          BeforeTargets="DeployToGame"
+          Condition="'$(Configuration)' == 'Release' Or '$(Configuration)' == 'Release_Legacy'">
+    <ItemGroup>
+      <_StripShipFile Include="$(TargetDir)*.pdb" />
+      <_StripShipFile Include="$(TargetDir)WeightedRandomizer.xml" />
+    </ItemGroup>
+    <Delete Files="@(_StripShipFile)" TreatErrorsAsWarnings="true" />
+  </Target>
+</Project>
