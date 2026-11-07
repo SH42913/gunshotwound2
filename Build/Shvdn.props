@@ -3,8 +3,8 @@
   Pinned ScriptHookVDotNet reference binaries (not stored in git).
   Restored into $(RepoRoot).shvdn\<ShvdnTarget>\<ShvdnTag>\ during build (Build/Shvdn.targets).
 
-  Update pin: tools/update-shvdn.ps1 -Target Enhanced|Legacy -Tag <release-tag>
-  Legacy: pin a scripthookvdotnet-nightly release before building ShvdnTarget=Legacy.
+  Update pin: tools/update-shvdn.ps1 -Target Enhanced|Nightly -Tag <release-tag>
+  Nightly: pin a scripthookvdotnet-nightly release before building ShvdnTarget=Nightly.
 -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
@@ -24,13 +24,13 @@
     <ShvdnEnhancedReleasePage>https://github.com/Chiheb-Bacha/ScriptHookVDotNetEnhanced/releases/tag/$(ShvdnEnhancedTag)</ShvdnEnhancedReleasePage>
   </PropertyGroup>
 
-  <!-- SHVDN Legacy (upstream crosire — nightly). Not pinned yet; set tag + SHA256 before Legacy builds. -->
-  <PropertyGroup Label="SHVDN Legacy">
-    <ShvdnLegacyTag></ShvdnLegacyTag>
-    <ShvdnLegacyZipName>ScriptHookVDotNet-$(ShvdnLegacyTag).zip</ShvdnLegacyZipName>
-    <ShvdnLegacyDownloadUrl>https://github.com/scripthookvdotnet/scripthookvdotnet-nightly/releases/download/$(ShvdnLegacyTag)/$(ShvdnLegacyZipName)</ShvdnLegacyDownloadUrl>
-    <ShvdnLegacySha256></ShvdnLegacySha256>
-    <ShvdnLegacyReleasePage>https://github.com/scripthookvdotnet/scripthookvdotnet-nightly/releases/tag/$(ShvdnLegacyTag)</ShvdnLegacyReleasePage>
+  <!-- SHVDN Nightly (upstream crosire — scripthookvdotnet-nightly). Not pinned yet; set tag + SHA256 before Nightly builds. -->
+  <PropertyGroup Label="SHVDN Nightly">
+    <ShvdnNightlyTag>v3.7.0-nightly.201</ShvdnNightlyTag>
+    <ShvdnNightlyZipName>ScriptHookVDotNet-$(ShvdnNightlyTag).zip</ShvdnNightlyZipName>
+    <ShvdnNightlyDownloadUrl>https://github.com/scripthookvdotnet/scripthookvdotnet-nightly/releases/download/$(ShvdnNightlyTag)/$(ShvdnNightlyZipName)</ShvdnNightlyDownloadUrl>
+    <ShvdnNightlySha256>4f09269d3f19f2aa99ef14f5ecacacea6a899f9bb168999e31cca85748d9ff60</ShvdnNightlySha256>
+    <ShvdnNightlyReleasePage>https://github.com/scripthookvdotnet/scripthookvdotnet-nightly/releases/tag/$(ShvdnNightlyTag)</ShvdnNightlyReleasePage>
   </PropertyGroup>
 
   <!-- Active variant (selected by ShvdnTarget) -->
@@ -42,17 +42,26 @@
     <ShvdnReleasePage>$(ShvdnEnhancedReleasePage)</ShvdnReleasePage>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(ShvdnTarget)' == 'Legacy'">
-    <ShvdnTag>$(ShvdnLegacyTag)</ShvdnTag>
-    <ShvdnZipName>$(ShvdnLegacyZipName)</ShvdnZipName>
-    <ShvdnDownloadUrl>$(ShvdnLegacyDownloadUrl)</ShvdnDownloadUrl>
-    <ShvdnSha256>$(ShvdnLegacySha256)</ShvdnSha256>
-    <ShvdnReleasePage>$(ShvdnLegacyReleasePage)</ShvdnReleasePage>
+  <PropertyGroup Condition="'$(ShvdnTarget)' == 'Nightly'">
+    <ShvdnTag>$(ShvdnNightlyTag)</ShvdnTag>
+    <ShvdnZipName>$(ShvdnNightlyZipName)</ShvdnZipName>
+    <ShvdnDownloadUrl>$(ShvdnNightlyDownloadUrl)</ShvdnDownloadUrl>
+    <ShvdnSha256>$(ShvdnNightlySha256)</ShvdnSha256>
+    <ShvdnReleasePage>$(ShvdnNightlyReleasePage)</ShvdnReleasePage>
   </PropertyGroup>
 
   <PropertyGroup>
     <ShvdnDir>$(ShvdnCacheRoot)$(ShvdnTarget)\$(ShvdnTag)\</ShvdnDir>
     <ShvdnScriptDll>$(ShvdnDir)ScriptHookVDotNet3.dll</ShvdnScriptDll>
+  </PropertyGroup>
+
+  <!-- Loader .asi (game root); API reference for ScriptHookVDotNet.csproj reference -->
+  <PropertyGroup Condition="'$(ShvdnTarget)' == 'Enhanced'">
     <ShvdnAsi>$(ShvdnDir)ScriptHookVDotNet.asi</ShvdnAsi>
+    <ShvdnApiReference>$(ShvdnDir)ScriptHookVDotNet.asi</ShvdnApiReference>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(ShvdnTarget)' == 'Nightly'">
+    <ShvdnAsi>$(ShvdnDir)ScriptHookVDotNet-Loader.asi</ShvdnAsi>
+    <ShvdnApiReference>$(ShvdnDir)ScriptHookVDotNet.dll</ShvdnApiReference>
   </PropertyGroup>
 </Project>

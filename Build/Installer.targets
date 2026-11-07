@@ -3,7 +3,7 @@
   <Target Name="PackOiv"
           AfterTargets="StripReleaseShipArtifacts"
           BeforeTargets="DeployToGame"
-          Condition="'$(Configuration)' == 'Release' Or '$(Configuration)' == 'Release_Legacy'">
+          Condition="'$(Configuration)' == 'Release' Or '$(Configuration)' == 'Release_Nightly'">
     <PropertyGroup>
       <_PackOivScript>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\tools\pack-oiv.ps1'))</_PackOivScript>
       <_InstallerRepoRoot>$([System.String]::Copy($([System.IO.Path]::GetFullPath('$(RepoRoot)'))).TrimEnd('\'))</_InstallerRepoRoot>

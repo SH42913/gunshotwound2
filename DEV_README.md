@@ -4,7 +4,7 @@
 
 - **Language / runtime**: C# targeting **.NET Framework 4.8** (ScriptHookVDotNet-compatible)
 - **Game**: Grand Theft Auto V, single-player
-- **Scripting bridge**: `ScriptHookV` + **ScriptHookVDotNet Enhanced** for day-to-day builds (Legacy nightly optional)
+- **Scripting bridge**: `ScriptHookV` + **ScriptHookVDotNet Enhanced** for day-to-day builds (SHVDN Nightly optional)
 - **ECS framework**: Embedded fork of `Morpeh` ECS (included in this repo)
 
 ### Repository / folder layout (summary)
@@ -32,9 +32,12 @@
 ### Build configurations (SHVDN variant)
 
 - **Debug** / **Release** — compile against **Enhanced** (`SHVDN_ENHANCED`), restore from `.shvdn\Enhanced\…`.
-- **Debug_Legacy** / **Release_Legacy** — compile against **Legacy** nightly (`SHVDN_LEGACY`); pin tag/SHA256 via `tools/update-shvdn.ps1 -Target Legacy` first.
+- **Debug_Nightly** / **Release_Nightly** — compile against **Nightly** (`SHVDN_NIGHTLY`); pin tag/SHA256 via `tools/update-shvdn.ps1 -Target Nightly` first.
 
-References: `ScriptHookVDotNet.asi` (API/metadata) + `ScriptHookVDotNet3.dll`, both from the restored folder; neither is copied to the game output (`Private=False`).
+References from the restored folder (`Private=False`, not copied to `scripts\GSW2` on deploy):
+
+- **Enhanced** — `ScriptHookVDotNet.asi` (API) + `ScriptHookVDotNet3.dll`
+- **Nightly** — `ScriptHookVDotNet.dll` (API reference at build time only) + `ScriptHookVDotNet3.dll`; OIV ships `ScriptHookVDotNet-Loader.asi` + `ScriptHookVDotNet3.dll`
 
 ### SHVDN reference assemblies (build)
 
@@ -46,7 +49,7 @@ SHVDN **is not stored in git**. Versions are pinned in `Build/Shvdn.props`.
    .\tools\update-shvdn.ps1 -Target Enhanced -Tag v1.1.0.6
    ```
    Then delete the old cache folder under `.shvdn\<Target>\` if the tag changed, and rebuild.
-3. **Legacy** – pin with `update-shvdn.ps1 -Target Legacy -Tag <nightly-tag>` before using `Debug_Legacy` / `Release_Legacy`. API differences between Legacy and Enhanced will be handled in a separate change when Legacy is enabled.
+3. **Nightly** – pin with `update-shvdn.ps1 -Target Nightly -Tag <nightly-tag>` before using `Debug_Nightly` / `Release_Nightly`. API differences between Nightly and Enhanced will be handled in a separate change when Nightly is enabled.
 
 Override variant without changing solution configuration:
 
@@ -58,21 +61,21 @@ msbuild GunshotWound2\GunshotWound2.csproj /p:ShvdnTarget=Enhanced
 
 After a successful **GunshotWound2** build, MSBuild copies `$(TargetDir)` to `<game>\scripts\GSW2\` when a local GTA path is configured.
 
-1. Copy `Build/Deploy.props.user.example` → `Build/Deploy.props.user` and set `GtaGameDir_Enhanced` / `GtaGameDir_Legacy`.
-2. Alternatively set env vars `GSW2_GTA_DIR_ENHANCED`, `GSW2_GTA_DIR_LEGACY`, or `GSW2_GTA_DIR`.
+1. Copy `Build/Deploy.props.user.example` → `Build/Deploy.props.user` and set `GtaGameDir_Enhanced` / `GtaGameDir_Nightly`.
+2. Alternatively set env vars `GSW2_GTA_DIR_ENHANCED`, `GSW2_GTA_DIR_NIGHTLY`, or `GSW2_GTA_DIR`.
 3. If no path is set or the folder does not exist, deploy is **skipped** (build still succeeds).
 4. Disable for one build: `/p:DisableGameDeploy=true`.
 
 ### OpenIV installer (Release only)
 
-After **Release** / **Release_Legacy** build, MSBuild target **`PackOiv`** (`Build/Installer.targets`, after `StripReleaseShipArtifacts`) runs `tools/pack-oiv.ps1`: it writes `Installer\<Enhanced|Legacy>\GunshotWound2_<Enhanced|Legacy>.oiv` straight from `bin\…` plus restored `.shvdn\<Target>\<Tag>\` (same ship exclusions as Release: no PDB / `WeightedRandomizer.xml`). Paths inside the zip use a virtual `content\` tree; nothing is copied to `Installer\...\content\` on disk. `assembly.xml` in git still lists `source` paths relative to **content** (OpenIV 2.1). OpenIV Package Manager is optional.
+After **Release** / **Release_Nightly** build, MSBuild target **`PackOiv`** (`Build/Installer.targets`, after `StripReleaseShipArtifacts`) runs `tools/pack-oiv.ps1`: it writes `Installer\<Enhanced|Nightly>\GunshotWound2_<Enhanced|Nightly>.oiv` straight from `bin\…` plus restored `.shvdn\<Target>\<Tag>\` (same ship exclusions as Release: no PDB / `WeightedRandomizer.xml`). Paths inside the zip use a virtual `content\` tree; nothing is copied to `Installer\...\content\` on disk. `assembly.xml` in git still lists `source` paths relative to **content** (OpenIV 2.1). OpenIV Package Manager is optional.
 
 Re-pack only (needs a fresh `bin\…` output): `msbuild GunshotWound2\GunshotWound2.csproj /p:Configuration=Release /t:PackOiv`.
 
 | Configuration   | Installer folder      | `.oiv` output |
 |----------------|------------------------|---------------|
 | Release        | `Installer/Enhanced/`  | `GunshotWound2_Enhanced.oiv` |
-| Release_Legacy | `Installer/Legacy/`  | `GunshotWound2_Legacy.oiv` |
+| Release_Nightly | `Installer/Nightly/`  | `GunshotWound2_Nightly.oiv` |
 
 ### Project overview
 

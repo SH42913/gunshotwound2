@@ -109,8 +109,13 @@
             public Vector3 playerPosition;
 
             public int Compare(Ped x, Ped y) {
+#if SHVDN_NIGHTLY
+                float xDist = Vector3.Distance(x!.Position, playerPosition);
+                float yDist = Vector3.Distance(y!.Position, playerPosition);
+#else
                 float xDist = GTA.World.GetDistance(x!.Position, playerPosition);
                 float yDist = GTA.World.GetDistance(y!.Position, playerPosition);
+#endif
                 return xDist.CompareTo(yDist);
             }
         }

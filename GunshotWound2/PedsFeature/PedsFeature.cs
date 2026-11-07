@@ -1,7 +1,9 @@
 ﻿namespace GunshotWound2.PedsFeature {
     using Configs;
+    using GTA;
     using Scellecs.Morpeh;
     using Utils;
+    using EcsEntity = Scellecs.Morpeh.Entity;
 
     public static class PedsFeature {
         public static void Create(SystemsGroup systemsGroup, SharedData sharedData) {
@@ -22,7 +24,7 @@
 
 #if DEBUG
             sharedData.cheatListener.Register("GSW_TEST_RAGDOLL", () => {
-                if (sharedData.TryGetPlayer(out Entity entity)) {
+                if (sharedData.TryGetPlayer(out EcsEntity entity)) {
                     ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
                     if (convertedPed.thisPed.IsRagdoll) {
                         convertedPed.ResetRagdoll();
@@ -34,26 +36,32 @@
 #endif
 
             sharedData.cheatListener.Register("GSW_TEST_PED", () => {
-                GTA.Ped ped = GTA.World.CreateRandomPed(GTA.Game.Player.Character.BelowPosition);
-                ped.DecisionMaker = new GTA.DecisionMaker(GTA.DecisionMakerTypeHash.Empty);
-                ped.SetConfigFlag(GTA.PedConfigFlagToggles.DontActivateRagdollFromBulletImpact, true);
+#if SHVDN_NIGHTLY
+                Ped ped = Ped.CreateRandom(Game.Player.Character.BelowPosition);
+#else
+                Ped ped = GTA.World.CreateRandomPed(Game.Player.Character.BelowPosition);
+#endif
+                ped.DecisionMaker = new DecisionMaker(DecisionMakerTypeHash.Empty);
+                ped.SetConfigFlag(PedConfigFlagToggles.DontActivateRagdollFromBulletImpact, true);
             });
         }
 
         private static void CheckClosestPed(SharedData sharedData) {
-            if (sharedData.TryGetClosestPedEntity(out _, out Entity entity)) {
+            if (sharedData.TryGetClosestPedEntity(out _, out EcsEntity entity)) {
                 sharedData.pedStateService.Check(entity);
             }
         }
 
         private static void BandageClosestPed(SharedData sharedData) {
-            if (sharedData.TryGetPlayer(out Entity playerEntity) && sharedData.TryGetClosestPedEntity(out _, out Entity entity)) {
+            if (sharedData.TryGetPlayer(out EcsEntity playerEntity)
+                && sharedData.TryGetClosestPedEntity(out _, out EcsEntity entity)) {
                 HealthFeature.HealthFeature.StartBandaging(entity, medic: playerEntity);
             }
         }
 
         private static void PainkillersToClosestPed(SharedData sharedData) {
-            if (sharedData.TryGetPlayer(out Entity playerEntity) && sharedData.TryGetClosestPedEntity(out _, out Entity entity)) {
+            if (sharedData.TryGetPlayer(out EcsEntity playerEntity)
+                && sharedData.TryGetClosestPedEntity(out _, out EcsEntity entity)) {
                 PainFeature.PainFeature.UsePainkillers(entity, medic: playerEntity);
             }
         }

@@ -2,10 +2,18 @@
     using System;
     using GTA;
     using GTA.Native;
+#if SHVDN_NIGHTLY
+    using GTA.Input;
+#endif
 
     public static class PlayerEffects {
+#if SHVDN_NIGHTLY
+        private static readonly ControlAction[] CONTROL_VALUES = (ControlAction[])Enum.GetValues(typeof(ControlAction));
+        private static readonly string[] CONTROL_NAMES = Enum.GetNames(typeof(ControlAction));
+#else
         private static readonly Control[] CONTROL_VALUES = (Control[])Enum.GetValues(typeof(Control));
         private static readonly string[] CONTROL_NAMES = Enum.GetNames(typeof(Control));
+#endif
 
         private static Player Player => Game.Player;
 
@@ -35,7 +43,11 @@
         public static void DisableVehicleControlThisFrame() {
             for (var i = 0; i < CONTROL_VALUES.Length; i++) {
                 if (CONTROL_NAMES[i].StartsWith("Vehicle")) {
+#if SHVDN_NIGHTLY
+                    Controls.DisableControlActionThisFrame(ControlType.PlayerControl, CONTROL_VALUES[i], affectRelatedActions: true);
+#else
                     Game.DisableControlThisFrame(CONTROL_VALUES[i]);
+#endif
                 }
             }
         }

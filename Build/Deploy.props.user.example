@@ -6,7 +6,7 @@
   <PropertyGroup>
     <!-- GTA V Enhanced (SHVDN Enhanced builds: Debug / Release) -->
     <GtaGameDir_Enhanced>C:\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V Enhanced</GtaGameDir_Enhanced>
-    <!-- GTA V Legacy (Debug_Legacy / Release_Legacy) -->
-    <GtaGameDir_Legacy>C:\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V</GtaGameDir_Legacy>
+    <!-- GTA V (Debug_Nightly / Release_Nightly; classic / SHVDN nightly) -->
+    <GtaGameDir_Nightly>C:\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V</GtaGameDir_Nightly>
   </PropertyGroup>
 </Project>

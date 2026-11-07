@@ -54,5 +54,9 @@
 
     <Error Condition="'$(_ShvdnRestoreNeeded)' == 'true' and !Exists('$(ShvdnScriptDll)')"
            Text="SHVDN restore failed: '$(ShvdnScriptDll)' not found after extracting '$(ShvdnDownloadedZip)'. Check archive layout or ShvdnTag in Build/Shvdn.props." />
+    <Error Condition="'$(_ShvdnRestoreNeeded)' == 'true' and '$(ShvdnAsi)' != '' and !Exists('$(ShvdnAsi)')"
+           Text="SHVDN restore failed: '$(ShvdnAsi)' not found after extracting '$(ShvdnDownloadedZip)'. Check archive layout or ShvdnTag in Build/Shvdn.props." />
+    <Error Condition="'$(_ShvdnRestoreNeeded)' == 'true' and '$(ShvdnApiReference)' != '' and !Exists('$(ShvdnApiReference)')"
+           Text="SHVDN restore failed: '$(ShvdnApiReference)' not found after extracting '$(ShvdnDownloadedZip)'. Check archive layout or ShvdnTag in Build/Shvdn.props." />
   </Target>
 </Project>

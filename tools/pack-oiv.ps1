@@ -6,7 +6,7 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $false)]
-    [ValidateSet('Enhanced', 'Legacy')]
+    [ValidateSet('Enhanced', 'Nightly')]
     [string] $InstallerVariant,
 
     [Parameter(Mandatory = $false)]
@@ -31,8 +31,8 @@ if (-not $TargetDir) { $TargetDir = $env:GSW2_TARGET_DIR }
 if (-not $ShvdnDir) { $ShvdnDir = $env:GSW2_SHVDN_DIR }
 if (-not $OivOutput) { $OivOutput = $env:GSW2_OIV_OUTPUT }
 
-if ($InstallerVariant -notin @('Enhanced', 'Legacy')) {
-    throw 'InstallerVariant must be Enhanced or Legacy.'
+if ($InstallerVariant -notin @('Enhanced', 'Nightly')) {
+    throw 'InstallerVariant must be Enhanced or Nightly.'
 }
 foreach ($pair in @(
         @{ Name = 'RepoRoot'; Value = $RepoRoot }
@@ -88,7 +88,15 @@ $excludeLeafNames = @('GunshotWound2.pdb', 'Morpeh.pdb', 'WeightedRandomizer.xml
 $shipFiles = @(Get-ChildItem -LiteralPath $targetDirFull -Recurse -File |
     Where-Object { $excludeLeafNames -notcontains $_.Name })
 
-foreach ($shvdnFile in @('ScriptHookVDotNet.asi', 'ScriptHookVDotNet3.dll')) {
+$shvdnShipFiles = switch ($InstallerVariant) {
+    'Enhanced' { @('ScriptHookVDotNet.asi', 'ScriptHookVDotNet3.dll') }
+    'Nightly' {
+        @('ScriptHookVDotNet-Loader.asi', 'ScriptHookVDotNet3.dll')
+    }
+    default { throw "Unknown InstallerVariant: $InstallerVariant" }
+}
+
+foreach ($shvdnFile in $shvdnShipFiles) {
     Assert-FileExists (Join-Path $shvdnDirFull $shvdnFile) "SHVDN $shvdnFile"
 }
 
@@ -118,7 +126,7 @@ try {
         $entryCount++
     }
 
-    foreach ($shvdnFile in @('ScriptHookVDotNet.asi', 'ScriptHookVDotNet3.dll')) {
+    foreach ($shvdnFile in $shvdnShipFiles) {
         $src = Join-Path $shvdnDirFull $shvdnFile
         $entryName = Get-ContentZipEntryName $shvdnFile
         [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile(

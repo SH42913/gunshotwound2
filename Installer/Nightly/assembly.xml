@@ -7,7 +7,7 @@
 <!--======================================================-->
 <package version="2.1" id="{c4e8b6d2-9a1f-4e3c-8b72-1d5f6a9e0c3b}" target="Five">
   <metadata>
-    <name>Gunshot Wound 2 (Legacy / SHVDN Nightly)</name>
+    <name>Gunshot Wound 2 (SHVDN Nightly)</name>
     <version>
       <major>1</major>
       <minor>0</minor>
@@ -730,7 +730,7 @@ Public License instead of this License.  But first, please read
     <add source="Morpeh.dll">scripts\GSW2\Morpeh.dll</add>
     <add source="README.md">scripts\GSW2\README.md</add>
     <add source="WeightedRandomizer.dll">scripts\GSW2\WeightedRandomizer.dll</add>
-    <add source="ScriptHookVDotNet.asi">ScriptHookVDotNet.asi</add>
+    <add source="ScriptHookVDotNet-Loader.asi">ScriptHookVDotNet-Loader.asi</add>
     <add source="ScriptHookVDotNet3.dll">ScriptHookVDotNet3.dll</add>
   </content>
 </package>

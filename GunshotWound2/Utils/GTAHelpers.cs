@@ -3,6 +3,7 @@ namespace GunshotWound2.Utils {
     using GTA.Math;
     using GTA.Native;
 
+    // ReSharper disable once InconsistentNaming
     public static class GTAHelpers {
         private const string DEATH_ANIM_NAME = "die";
         private static readonly CrClipAsset DRIVER_DEATH_CLIP = new("veh@std@ds@base", DEATH_ANIM_NAME);
@@ -28,7 +29,11 @@ namespace GunshotWound2.Utils {
             Vector3 playerPos = playerPed.Position;
             for (int i = 0; i < closestPeds.Length; i++) {
                 Ped ped = closestPeds[i];
+#if SHVDN_NIGHTLY
+                float distance = Vector3.Distance(playerPos, ped.Position);
+#else
                 float distance = World.GetDistance(playerPos, ped.Position);
+#endif
                 if (distance < minDistance) {
                     closestPedIndex = i;
                     minDistance = distance;

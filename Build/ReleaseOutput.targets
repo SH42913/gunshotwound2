@@ -4,7 +4,7 @@
   <Target Name="StripReleaseShipArtifacts"
           AfterTargets="Build"
           BeforeTargets="DeployToGame"
-          Condition="'$(Configuration)' == 'Release' Or '$(Configuration)' == 'Release_Legacy'">
+          Condition="'$(Configuration)' == 'Release' Or '$(Configuration)' == 'Release_Nightly'">
     <ItemGroup>
       <_StripShipFile Include="$(TargetDir)*.pdb" />
       <_StripShipFile Include="$(TargetDir)WeightedRandomizer.xml" />

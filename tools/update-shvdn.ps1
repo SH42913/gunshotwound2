@@ -4,11 +4,11 @@
   Pins a ScriptHookVDotNet release in Build/Shvdn.props (tag + SHA256).
 
 .DESCRIPTION
-  Downloads the release .zip for Enhanced or Legacy, computes SHA256, and updates
+  Downloads the release .zip for Enhanced or Nightly, computes SHA256, and updates
   Build/Shvdn.props. Use after publishing or when bumping the reference SHVDN version.
 
 .PARAMETER Target
-  Enhanced (Chiheb-Bacha/ScriptHookVDotNetEnhanced) or Legacy (scripthookvdotnet-nightly).
+  Enhanced (Chiheb-Bacha/ScriptHookVDotNetEnhanced) or Nightly (scripthookvdotnet-nightly).
 
 .PARAMETER Tag
   GitHub release tag, e.g. v1.1.0.6 or v3.6.0-nightly.89 (must match the release tag exactly).
@@ -20,12 +20,12 @@
   .\tools\update-shvdn.ps1 -Target Enhanced -Tag v1.1.0.6
 
 .EXAMPLE
-  .\tools\update-shvdn.ps1 -Target Legacy -Tag v3.6.0-nightly.89
+  .\tools\update-shvdn.ps1 -Target Nightly -Tag v3.6.0-nightly.89
 #>
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet('Enhanced', 'Legacy')]
+    [ValidateSet('Enhanced', 'Nightly')]
     [string] $Target,
 
     [Parameter(Mandatory = $true)]
@@ -54,13 +54,13 @@ $config = switch ($Target) {
             ShaElement  = 'ShvdnEnhancedSha256'
         }
     }
-    'Legacy' {
+    'Nightly' {
         @{
             ZipName     = "ScriptHookVDotNet-$Tag.zip"
             DownloadUrl = "https://github.com/scripthookvdotnet/scripthookvdotnet-nightly/releases/download/$Tag/ScriptHookVDotNet-$Tag.zip"
             ApiUrl      = "https://api.github.com/repos/scripthookvdotnet/scripthookvdotnet-nightly/releases/tags/$Tag"
-            TagElement  = 'ShvdnLegacyTag'
-            ShaElement  = 'ShvdnLegacySha256'
+            TagElement  = 'ShvdnNightlyTag'
+            ShaElement  = 'ShvdnNightlySha256'
         }
     }
 }

@@ -18,17 +18,27 @@
         }
 
         public void WriteInfo(string message) {
+#if SHVDN_NIGHTLY
+            consoleInstance.Print(Log.Level.Info, message);
+#else
             consoleInstance.PrintInfo(message);
+#endif
             cachedMessages[0] = message;
             Log.Message(Log.Level.Info, cachedMessages);
         }
 
         public void WriteWarning(string message) {
+#if SHVDN_NIGHTLY
+            consoleInstance.Print(Log.Level.Warning, message);
+#endif
             cachedMessages[0] = message;
             Log.Message(Log.Level.Warning, cachedMessages);
         }
 
         public void WriteError(string message) {
+#if SHVDN_NIGHTLY
+            consoleInstance.Print(Log.Level.Error, message);
+#endif
             cachedMessages[0] = message;
             Log.Message(Log.Level.Error, cachedMessages);
         }
