@@ -17,7 +17,6 @@
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <LangVersion>latest</LangVersion>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)$(ShvdnTarget)\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
@@ -275,16 +274,5 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\Build\Shvdn.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-         Other similar extension points exist, see Microsoft.Common.targets.
-    <Target Name="BeforeBuild">
-    </Target>
-    <Target Name="AfterBuild">
-    </Target>
-    -->
-  <PropertyGroup>
-    <PostBuildEvent>xcopy /Y /S /I "$(TargetDir)*" "C:\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\scripts\GSW2\"
-
-if "$(ConfigurationName)" == "Release" xcopy /Y /S "$(TargetDir)*" "$(ProjectDir)\..\Installer\Release\content\"</PostBuildEvent>
-  </PropertyGroup>
+  <Import Project="..\Build\Deploy.targets" />
 </Project>

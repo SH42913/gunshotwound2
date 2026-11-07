@@ -11,7 +11,7 @@
 
 - `GunshotWound2/` – main mod source code (systems, components, config handling, UI).
 - `Morpeh/` – embedded ECS library source.
-- `Build/` – MSBuild `Shvdn.props` (pinned release tag + SHA256) and `Shvdn.targets` (download/restore on build).
+- `Build/` – MSBuild `Shvdn.*` (restore references) and `Deploy.*` (copy build output to your GTA `scripts\GSW2` folder).
 - `tools/` – `update-shvdn.ps1` to bump the pinned SHVDN release in `Shvdn.props`.
 - `.shvdn/` – local cache of restored SHVDN binaries (created on first build; listed in `.gitignore`).
 - `README.md` – player-facing description, install guide, hotkeys.
@@ -53,6 +53,17 @@ Override variant without changing solution configuration:
 ```text
 msbuild GunshotWound2\GunshotWound2.csproj /p:ShvdnTarget=Enhanced
 ```
+
+### Deploy to game folder (iteration)
+
+After a successful **GunshotWound2** build, MSBuild copies `$(TargetDir)` to `<game>\scripts\GSW2\` when a local GTA path is configured.
+
+1. Copy `Build/Deploy.props.user.example` → `Build/Deploy.props.user` and set `GtaGameDir_Enhanced` / `GtaGameDir_Legacy`.
+2. Alternatively set env vars `GSW2_GTA_DIR_ENHANCED`, `GSW2_GTA_DIR_LEGACY`, or `GSW2_GTA_DIR`.
+3. If no path is set or the folder does not exist, deploy is **skipped** (build still succeeds).
+4. Disable for one build: `/p:DisableGameDeploy=true`.
+
+Installer / `.oiv` packaging is not part of deploy yet.
 
 ### Project overview
 

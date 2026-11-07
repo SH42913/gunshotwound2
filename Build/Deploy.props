@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Local GTA V install roots (per SHVDN variant). Not committed — override in Build/Deploy.props.user
+  or via environment variables GSW2_GTA_DIR_ENHANCED / GSW2_GTA_DIR_LEGACY (optional GSW2_GTA_DIR).
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <GtaGameDir_Enhanced Condition="'$(GtaGameDir_Enhanced)' == '' and '$(GSW2_GTA_DIR_ENHANCED)' != ''">$(GSW2_GTA_DIR_ENHANCED)</GtaGameDir_Enhanced>
+    <GtaGameDir_Legacy Condition="'$(GtaGameDir_Legacy)' == '' and '$(GSW2_GTA_DIR_LEGACY)' != ''">$(GSW2_GTA_DIR_LEGACY)</GtaGameDir_Legacy>
+    <GtaGameDir_Enhanced Condition="'$(GtaGameDir_Enhanced)' == '' and '$(GSW2_GTA_DIR)' != ''">$(GSW2_GTA_DIR)</GtaGameDir_Enhanced>
+    <GtaGameDir_Legacy Condition="'$(GtaGameDir_Legacy)' == '' and '$(GSW2_GTA_DIR)' != ''">$(GSW2_GTA_DIR)</GtaGameDir_Legacy>
+  </PropertyGroup>
+</Project>

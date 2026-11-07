@@ -1,6 +1,7 @@
 */bin/
 */obj/
 .shvdn/
+Build/Deploy.props.user
 .idea/
 packages/
 *.DotSettings.user

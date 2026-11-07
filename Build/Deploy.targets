@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="DeployToGame" AfterTargets="Build" Condition="'$(DisableGameDeploy)' != 'true'">
+    <PropertyGroup>
+      <_GtaGameDir Condition="'$(ShvdnTarget)' == 'Legacy'">$(GtaGameDir_Legacy)</_GtaGameDir>
+      <_GtaGameDir Condition="'$(_GtaGameDir)' == ''">$(GtaGameDir_Enhanced)</_GtaGameDir>
+      <_GtaDeployDir>$(_GtaGameDir.TrimEnd('\'))\scripts\GSW2\</_GtaDeployDir>
+      <_GameDeployReady Condition="'$(_GtaGameDir)' != '' and Exists('$(_GtaGameDir)')">true</_GameDeployReady>
+    </PropertyGroup>
+
+    <Message Importance="high"
+             Condition="'$(_GameDeployReady)' != 'true'"
+             Text="Game deploy skipped: set GtaGameDir_Enhanced / GtaGameDir_Legacy in Build/Deploy.props.user (see Build/Deploy.props.user.example)." />
+
+    <Message Importance="high"
+             Condition="'$(_GameDeployReady)' == 'true'"
+             Text="Deploying $(TargetDir) → $(_GtaDeployDir) (ShvdnTarget=$(ShvdnTarget))" />
+
+    <MakeDir Directories="$(_GtaDeployDir)"
+             Condition="'$(_GameDeployReady)' == 'true'" />
+
+    <ItemGroup Condition="'$(_GameDeployReady)' == 'true'">
+      <_DeployFile Include="$(TargetDir)**\*.*" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(_DeployFile)"
+          DestinationFiles="@(_DeployFile->'$(_GtaDeployDir)%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true"
+          Condition="'$(_GameDeployReady)' == 'true'" />
+  </Target>
+</Project>

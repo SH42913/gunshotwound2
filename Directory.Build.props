@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildThisFileDirectory)Build\Deploy.props" Condition="Exists('$(MSBuildThisFileDirectory)Build\Deploy.props')" />
+  <Import Project="$(MSBuildThisFileDirectory)Build\Deploy.props.user" Condition="Exists('$(MSBuildThisFileDirectory)Build\Deploy.props.user')" />
+</Project>
