@@ -3,7 +3,7 @@
 <!--       Generated with  :   OpenIV Package Manager -->
 <!--       * Author  :   SH42913 -->
 <!--       * Version  :   1.0 -->
-<!--       * Release date  :   25.04.2026 -->
+<!--       * Release date  :   07.11.2026 -->
 <!--======================================================-->
 <package version="2.1" id="{ae64a1f4-714c-44ec-b645-b257b7ba99a6}" target="Five">
   <metadata>
@@ -722,7 +722,6 @@ Public License instead of this License.  But first, please read
     <add source="Configs\Inventory.xml">scripts\GSW2\Configs\Inventory.xml</add>
     <add source="Configs\KeyBinds.xml">scripts\GSW2\Configs\KeyBinds.xml</add>
     <add source="Configs\Notifications.xml">scripts\GSW2\Configs\Notifications.xml</add>
-    <add source="GunshotWound2.pdb">scripts\GSW2\GunshotWound2.pdb</add>
     <add source="Configs\Peds.xml">scripts\GSW2\Configs\Peds.xml</add>
     <add source="Configs\Player.xml">scripts\GSW2\Configs\Player.xml</add>
     <add source="Configs\Traumas.xml">scripts\GSW2\Configs\Traumas.xml</add>

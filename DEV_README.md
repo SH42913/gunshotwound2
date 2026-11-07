@@ -63,7 +63,16 @@ After a successful **GunshotWound2** build, MSBuild copies `$(TargetDir)` to `<g
 3. If no path is set or the folder does not exist, deploy is **skipped** (build still succeeds).
 4. Disable for one build: `/p:DisableGameDeploy=true`.
 
-Installer / `.oiv` packaging is not part of deploy yet.
+### OpenIV installer (Release only)
+
+After **Release** / **Release_Legacy** build, MSBuild target **`PackOiv`** (`Build/Installer.targets`, after `StripReleaseShipArtifacts`) runs `tools/pack-oiv.ps1`: it writes `Installer\<Enhanced|Legacy>\GunshotWound2_<Enhanced|Legacy>.oiv` straight from `bin\…` plus restored `.shvdn\<Target>\<Tag>\` (same ship exclusions as Release: no PDB / `WeightedRandomizer.xml`). Paths inside the zip use a virtual `content\` tree; nothing is copied to `Installer\...\content\` on disk. `assembly.xml` in git still lists `source` paths relative to **content** (OpenIV 2.1). OpenIV Package Manager is optional.
+
+Re-pack only (needs a fresh `bin\…` output): `msbuild GunshotWound2\GunshotWound2.csproj /p:Configuration=Release /t:PackOiv`.
+
+| Configuration   | Installer folder      | `.oiv` output |
+|----------------|------------------------|---------------|
+| Release        | `Installer/Enhanced/`  | `GunshotWound2_Enhanced.oiv` |
+| Release_Legacy | `Installer/Legacy/`  | `GunshotWound2_Legacy.oiv` |
 
 ### Project overview
 

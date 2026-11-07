@@ -275,5 +275,6 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\Build\Shvdn.targets" />
   <Import Project="..\Build\ReleaseOutput.targets" />
+  <Import Project="..\Build\Installer.targets" />
   <Import Project="..\Build\Deploy.targets" />
 </Project>

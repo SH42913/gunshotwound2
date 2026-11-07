@@ -5,4 +5,4 @@ Build/Deploy.props.user
 .idea/
 packages/
 *.DotSettings.user
-/Installer/Release/content/*
+/Installer/**/*.oiv

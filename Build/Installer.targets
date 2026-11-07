@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="PackOiv"
+          AfterTargets="StripReleaseShipArtifacts"
+          BeforeTargets="DeployToGame"
+          Condition="'$(Configuration)' == 'Release' Or '$(Configuration)' == 'Release_Legacy'">
+    <PropertyGroup>
+      <_PackOivScript>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\tools\pack-oiv.ps1'))</_PackOivScript>
+      <_InstallerRepoRoot>$([System.String]::Copy($([System.IO.Path]::GetFullPath('$(RepoRoot)'))).TrimEnd('\'))</_InstallerRepoRoot>
+      <_InstallerTargetDir>$([System.String]::Copy($([System.IO.Path]::GetFullPath('$(TargetDir)'))).TrimEnd('\'))</_InstallerTargetDir>
+      <_InstallerShvdnDir>$([System.String]::Copy($([System.IO.Path]::GetFullPath('$(ShvdnDir)'))).TrimEnd('\'))</_InstallerShvdnDir>
+      <_OivOutputPath>$([System.IO.Path]::GetFullPath('$(RepoRoot)Installer\$(ShvdnTarget)\GunshotWound2_$(ShvdnTarget).oiv'))</_OivOutputPath>
+    </PropertyGroup>
+    <Message Importance="high"
+             Text="Packing OpenIV package $(_OivOutputPath)…" />
+    <Exec Command="powershell.exe -NoProfile -ExecutionPolicy Bypass -File &quot;$(_PackOivScript)&quot; -InstallerVariant &quot;$(ShvdnTarget)&quot;"
+          EnvironmentVariables="GSW2_REPO_ROOT=$(_InstallerRepoRoot);GSW2_TARGET_DIR=$(_InstallerTargetDir);GSW2_SHVDN_DIR=$(_InstallerShvdnDir);GSW2_INSTALLER_VARIANT=$(ShvdnTarget);GSW2_OIV_OUTPUT=$(_OivOutputPath)" />
+  </Target>
+</Project>
