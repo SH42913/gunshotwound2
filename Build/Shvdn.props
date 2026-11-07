@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Pinned ScriptHookVDotNet reference binaries (not stored in git).
+  Restored into $(RepoRoot).shvdn\<ShvdnTarget>\<ShvdnTag>\ during build (Build/Shvdn.targets).
+
+  Update pin: tools/update-shvdn.ps1 -Target Enhanced|Legacy -Tag <release-tag>
+  Legacy: pin a scripthookvdotnet-nightly release before building ShvdnTarget=Legacy.
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <RepoRoot>$(MSBuildThisFileDirectory)..\</RepoRoot>
+    <ShvdnCacheRoot>$(RepoRoot).shvdn\</ShvdnCacheRoot>
+    <!-- Default variant when the project does not set ShvdnTarget (GunshotWound2 sets it from Configuration). -->
+    <ShvdnTarget Condition="'$(ShvdnTarget)' == ''">Enhanced</ShvdnTarget>
+  </PropertyGroup>
+
+  <!-- SHVDN Enhanced (Chiheb-Bacha / SHVDNE) -->
+  <PropertyGroup Label="SHVDN Enhanced">
+    <ShvdnEnhancedTag>v1.1.0.6</ShvdnEnhancedTag>
+    <ShvdnEnhancedZipName>ScriptHookVDotNetEnhanced-$(ShvdnEnhancedTag).zip</ShvdnEnhancedZipName>
+    <ShvdnEnhancedDownloadUrl>https://github.com/Chiheb-Bacha/ScriptHookVDotNetEnhanced/releases/download/$(ShvdnEnhancedTag)/$(ShvdnEnhancedZipName)</ShvdnEnhancedDownloadUrl>
+    <!-- GitHub release asset digest (ScriptHookVDotNetEnhanced-v1.1.0.6.zip) -->
+    <ShvdnEnhancedSha256>f10da8819fa6814fb0a04553567d2516934eac96b16af06ad8f315f0da00473a</ShvdnEnhancedSha256>
+    <ShvdnEnhancedReleasePage>https://github.com/Chiheb-Bacha/ScriptHookVDotNetEnhanced/releases/tag/$(ShvdnEnhancedTag)</ShvdnEnhancedReleasePage>
+  </PropertyGroup>
+
+  <!-- SHVDN Legacy (upstream crosire — nightly). Not pinned yet; set tag + SHA256 before Legacy builds. -->
+  <PropertyGroup Label="SHVDN Legacy">
+    <ShvdnLegacyTag></ShvdnLegacyTag>
+    <ShvdnLegacyZipName>ScriptHookVDotNet-$(ShvdnLegacyTag).zip</ShvdnLegacyZipName>
+    <ShvdnLegacyDownloadUrl>https://github.com/scripthookvdotnet/scripthookvdotnet-nightly/releases/download/$(ShvdnLegacyTag)/$(ShvdnLegacyZipName)</ShvdnLegacyDownloadUrl>
+    <ShvdnLegacySha256></ShvdnLegacySha256>
+    <ShvdnLegacyReleasePage>https://github.com/scripthookvdotnet/scripthookvdotnet-nightly/releases/tag/$(ShvdnLegacyTag)</ShvdnLegacyReleasePage>
+  </PropertyGroup>
+
+  <!-- Active variant (selected by ShvdnTarget) -->
+  <PropertyGroup Condition="'$(ShvdnTarget)' == 'Enhanced'">
+    <ShvdnTag>$(ShvdnEnhancedTag)</ShvdnTag>
+    <ShvdnZipName>$(ShvdnEnhancedZipName)</ShvdnZipName>
+    <ShvdnDownloadUrl>$(ShvdnEnhancedDownloadUrl)</ShvdnDownloadUrl>
+    <ShvdnSha256>$(ShvdnEnhancedSha256)</ShvdnSha256>
+    <ShvdnReleasePage>$(ShvdnEnhancedReleasePage)</ShvdnReleasePage>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(ShvdnTarget)' == 'Legacy'">
+    <ShvdnTag>$(ShvdnLegacyTag)</ShvdnTag>
+    <ShvdnZipName>$(ShvdnLegacyZipName)</ShvdnZipName>
+    <ShvdnDownloadUrl>$(ShvdnLegacyDownloadUrl)</ShvdnDownloadUrl>
+    <ShvdnSha256>$(ShvdnLegacySha256)</ShvdnSha256>
+    <ShvdnReleasePage>$(ShvdnLegacyReleasePage)</ShvdnReleasePage>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ShvdnDir>$(ShvdnCacheRoot)$(ShvdnTarget)\$(ShvdnTag)\</ShvdnDir>
+    <ShvdnScriptDll>$(ShvdnDir)ScriptHookVDotNet3.dll</ShvdnScriptDll>
+    <ShvdnAsi>$(ShvdnDir)ScriptHookVDotNet.asi</ShvdnAsi>
+  </PropertyGroup>
+</Project>

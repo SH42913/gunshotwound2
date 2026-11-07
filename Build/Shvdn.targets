@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ShvdnDownloadsDir>$(ShvdnCacheRoot)_downloads\</ShvdnDownloadsDir>
+    <!-- DownloadFile saves under DestinationFolder using the URL file name (must match ShvdnZipName in Shvdn.props). -->
+    <ShvdnDownloadedZip>$(ShvdnDownloadsDir)$(ShvdnZipName)</ShvdnDownloadedZip>
+  </PropertyGroup>
+
+  <!-- DownloadFile / Unzip / VerifyFileHash require MSBuild 16+ (VS 2019+). -->
+  <UsingTask TaskName="DownloadFile"
+             AssemblyName="Microsoft.Build.Tasks.Core, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <UsingTask TaskName="Unzip"
+             AssemblyName="Microsoft.Build.Tasks.Core, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <UsingTask TaskName="VerifyFileHash"
+             AssemblyName="Microsoft.Build.Tasks.Core, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+
+  <Target Name="RestoreShvdn"
+          BeforeTargets="ResolveAssemblyReferences">
+    <PropertyGroup>
+      <_ShvdnRestoreNeeded Condition="Exists('$(ShvdnScriptDll)')">false</_ShvdnRestoreNeeded>
+      <_ShvdnRestoreNeeded Condition="'$(_ShvdnRestoreNeeded)' == ''">true</_ShvdnRestoreNeeded>
+    </PropertyGroup>
+
+    <Error Condition="'$(_ShvdnRestoreNeeded)' == 'true' and '$(ShvdnTag)' == ''"
+           Text="ShvdnTag is empty for ShvdnTarget=$(ShvdnTarget). Pin a version in Build/Shvdn.props." />
+    <Error Condition="'$(_ShvdnRestoreNeeded)' == 'true' and '$(ShvdnSha256)' == ''"
+           Text="ShvdnSha256 is not set for ShvdnTarget=$(ShvdnTarget). Pin SHA256 in Build/Shvdn.props (release: $(ShvdnReleasePage))." />
+    <Error Condition="'$(_ShvdnRestoreNeeded)' == 'true' and '$(ShvdnDownloadUrl)' == ''"
+           Text="ShvdnDownloadUrl is empty for ShvdnTarget=$(ShvdnTarget). Check Build/Shvdn.props." />
+
+    <Message Importance="high"
+             Condition="'$(_ShvdnRestoreNeeded)' == 'true'"
+             Text="Restoring SHVDN $(ShvdnTarget) $(ShvdnTag) → $(ShvdnDir)" />
+    <Message Importance="high"
+             Condition="'$(_ShvdnRestoreNeeded)' == 'true'"
+             Text="Downloading $(ShvdnDownloadUrl)" />
+
+    <MakeDir Directories="$(ShvdnDir);$(ShvdnDownloadsDir)"
+             Condition="'$(_ShvdnRestoreNeeded)' == 'true'" />
+
+    <DownloadFile SourceUrl="$(ShvdnDownloadUrl)"
+                  DestinationFolder="$(ShvdnDownloadsDir)"
+                  Condition="'$(_ShvdnRestoreNeeded)' == 'true'" />
+
+    <VerifyFileHash File="$(ShvdnDownloadedZip)"
+                    Algorithm="SHA256"
+                    Hash="$(ShvdnSha256)"
+                    Condition="'$(_ShvdnRestoreNeeded)' == 'true'" />
+
+    <Unzip SourceFiles="$(ShvdnDownloadedZip)"
+           DestinationFolder="$(ShvdnDir)"
+           OverwriteReadOnlyFiles="true"
+           Condition="'$(_ShvdnRestoreNeeded)' == 'true'" />
+
+    <Error Condition="'$(_ShvdnRestoreNeeded)' == 'true' and !Exists('$(ShvdnScriptDll)')"
+           Text="SHVDN restore failed: '$(ShvdnScriptDll)' not found after extracting '$(ShvdnDownloadedZip)'. Check archive layout or ShvdnTag in Build/Shvdn.props." />
+  </Target>
+</Project>

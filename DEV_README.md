@@ -4,16 +4,18 @@
 
 - **Language / runtime**: C# targeting **.NET Framework 4.8** (ScriptHookVDotNet-compatible)
 - **Game**: Grand Theft Auto V, single-player
-- **Scripting bridge**: `ScriptHookV` + `ScriptHookVDotNet` (nightly builds only)
+- **Scripting bridge**: `ScriptHookV` + **ScriptHookVDotNet Enhanced** for day-to-day builds (Legacy nightly optional)
 - **ECS framework**: Embedded fork of `Morpeh` ECS (included in this repo)
 
 ### Repository / folder layout (summary)
 
 - `GunshotWound2/` – main mod source code (systems, components, config handling, UI).
 - `Morpeh/` – embedded ECS library source.
-- `HookDLLs/` – ScriptHookVDotNet binaries used at runtime.
+- `Build/` – MSBuild `Shvdn.props` (pinned release tag + SHA256) and `Shvdn.targets` (download/restore on build).
+- `tools/` – `update-shvdn.ps1` to bump the pinned SHVDN release in `Shvdn.props`.
+- `.shvdn/` – local cache of restored SHVDN binaries (created on first build; listed in `.gitignore`).
 - `README.md` – player-facing description, install guide, hotkeys.
-- `TECHNICAL_README.md` – this technical overview for developers.
+- `DEV_README.md` – this technical overview for developers.
 
 ### Solution / projects
 
@@ -27,10 +29,30 @@
   - Included as a separate project in the same solution.
   - Provides ECS primitives (`World`, `Entity`, `Component`, `System` etc.) used by `GunshotWound2`.
 
-- **`HookDLLs`**  
-  Runtime hook binaries (not source).
-  - `ScriptHookVDotNet.asi`
-  - `ScriptHookVDotNet3.dll`
+### Build configurations (SHVDN variant)
+
+- **Debug** / **Release** — compile against **Enhanced** (`SHVDN_ENHANCED`), restore from `.shvdn\Enhanced\…`.
+- **Debug_Legacy** / **Release_Legacy** — compile against **Legacy** nightly (`SHVDN_LEGACY`); pin tag/SHA256 via `tools/update-shvdn.ps1 -Target Legacy` first.
+
+References: `ScriptHookVDotNet.asi` (API/metadata) + `ScriptHookVDotNet3.dll`, both from the restored folder; neither is copied to the game output (`Private=False`).
+
+### SHVDN reference assemblies (build)
+
+SHVDN **is not stored in git**. Versions are pinned in `Build/Shvdn.props`.
+
+1. **First build** – MSBuild runs `RestoreShvdn` before resolving references: downloads the release `.zip` from GitHub, verifies SHA256, unpacks to `.shvdn\<Target>\<Tag>\`.
+2. **Bump SHVDN version** – from repo root:
+   ```powershell
+   .\tools\update-shvdn.ps1 -Target Enhanced -Tag v1.1.0.6
+   ```
+   Then delete the old cache folder under `.shvdn\<Target>\` if the tag changed, and rebuild.
+3. **Legacy** – pin with `update-shvdn.ps1 -Target Legacy -Tag <nightly-tag>` before using `Debug_Legacy` / `Release_Legacy`. API differences between Legacy and Enhanced will be handled in a separate change when Legacy is enabled.
+
+Override variant without changing solution configuration:
+
+```text
+msbuild GunshotWound2\GunshotWound2.csproj /p:ShvdnTarget=Enhanced
+```
 
 ### Project overview
 
