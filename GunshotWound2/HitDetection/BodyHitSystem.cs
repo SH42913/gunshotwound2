@@ -52,7 +52,7 @@ namespace GunshotWound2.HitDetection {
 
 #if DEBUG
                 string random = useRandomBone ? "(random)" : "";
-                var message = $"Damaged body part is {hitData.bodyPart.Key}{random}, bone {damagedBone.Name} at {convertedPed.name}";
+                var message = $"Damaged body part is {hitData.bodyPart.Key}{random}, bone {hitData.damagedBone.Name} at {convertedPed.name}";
                 sharedData.logger.WriteInfo(message);
 #endif
 

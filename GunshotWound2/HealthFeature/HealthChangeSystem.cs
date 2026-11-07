@@ -37,6 +37,7 @@ namespace GunshotWound2.HealthFeature {
                 Ped thisPed = convertedPed.thisPed;
                 if (!thisPed.Exists()) {
                     health.isDead = true;
+                    CreateDeathReport(entity, ref convertedPed, ref health);
                     continue;
                 }
 
