@@ -3,10 +3,11 @@
     <UseVanillaHealthSystem Value="FALSE"/>
     <!-- If you experience performance issues or want to use default health system for peds, set this value to TRUE -->
 
-    <HeadshotIsInstantDeath Value="FALSE"/>
-    <!-- Headshots in GSW2 are always deadly, but by a default death takes some time(like IRL).
-    Set this Value to TRUE if you want peds will dead instantly when getting headshot, it is recommended for story missions. -->
-    
+    <HeadshotBehaviour Value="SecondHitDeath"/>
+    <!-- Realistic: head hits never force instant kill — death comes from wounds and bleeding.
+         InstantDeath: first head hit kills immediately.
+         SecondHitDeath: instant kill only on the next Head trauma while head injury is active. -->
+
     <ShowFullHealthInfo Value="FALSE"/>
     <!-- If you want see full health info for closest ped(like one you see for player), set this value to TRUE.
     If this Value is FALSE, you will see only visible info(like health status, armor or bleeding wounds) -->

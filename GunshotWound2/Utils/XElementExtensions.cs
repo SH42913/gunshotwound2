@@ -24,6 +24,19 @@ namespace GunshotWound2.Utils {
             return float.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out float result) ? result : defaultValue;
         }
 
+        public static T GetEnum<T>(this XElement node,
+                                   string attributeName = "Value",
+                                   T defaultValue = default,
+                                   bool ignoreCase = true)
+                where T : struct, Enum {
+            string value = GetString(node, attributeName);
+            if (string.IsNullOrEmpty(value)) {
+                return defaultValue;
+            }
+
+            return Enum.TryParse(value, ignoreCase, out T result) ? result : defaultValue;
+        }
+
         private static Keys? GetKey(this XElement node, string attributeName) {
             string value = node.GetString(attributeName);
             return string.IsNullOrEmpty(value) ? null : (Keys?)Enum.Parse(typeof(Keys), value, ignoreCase: true);

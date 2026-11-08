@@ -26,6 +26,8 @@ Always **back up files before editing** (copy them somewhere else), especially `
 
 - **Editor**: Use a text editor that preserves UTF‑8 and XML (e.g. Notepad++, VS Code).
 - **Booleans**: Values like `TRUE` / `FALSE` are not case‑sensitive.
+- **Enums**: Some options (e.g. `HeadshotBehaviour`) use named values; spelling is not case‑sensitive unless noted
+  otherwise.
 - **Numbers**: Use a dot for decimals, e.g. `0.5`, not `0,5`.
 - **Keys must match**: `Key=""` attributes are referenced across multiple files. Never change a `Key` unless you also update every reference to it.
 - **Hashes & weapon names**: Weapon config uses GTA weapon names (e.g. `PISTOL`, `VEHICLE_WEAPON_ROTORS`). GSW2 supports `WEAPON_`, `VEHICLE_WEAPON_` and `GADGET_` prefixes. If you add a weapon from another mod, use the correct hash/name from that mod’s documentation.
@@ -45,7 +47,14 @@ If GSW2 stops working after an edit, restore your backup and re‑apply changes 
 - `PoliceCanForget`: Whether cops can lose aggro when you fall unconscious.
 - `PedsWillIgnoreUnconsciousPlayer`: Whether enemies stop attacking when you’re knocked out.
 - `CanDropWeapon`: If `TRUE`, you may drop your weapon on arm injuries or unconsciousness.
-- `HeadshotIsInstantDeath`: Make headshots kill the player immediately instead of over time.
+- `HeadshotBehaviour`: How **head hits** kill the player. Configured only in this file (NPCs use `Peds.xml`). Default: *
+  *`Realistic`**.
+  - **`Realistic`**: First head shot applies normal wounds and traumas; no forced instant kill. A second Head trauma
+    while head injury is already active still only adds damage/bleeding (no automatic execution).
+  - **`InstantDeath`**: First registered hit on the **head** body part kills immediately (classic one‑tap headshot).
+  - **`SecondHitDeath`**: First hit like `Realistic`; if a **Head** trauma effect is already active (`SkullFracture`,
+    `BleedingInHead`, `PenetratingSkullFracture` in `Traumas.xml`), the next qualifying head trauma forces instant
+    death (same as default NPC behavior).
 - `RealisticSpineDamage`: Controls whether spine hits cause permanent ragdoll or just limb damage.
 - `PainSlowMo`: Enables **adrenaline slow‑motion** based on pain level.
   - Negative value (default `-1`) disables this feature.
@@ -62,7 +71,7 @@ If GSW2 stops working after an edit, restore your backup and re‑apply changes 
   - Increase `PainShockThreshold` so you can withstand more pain before blacking out.
   - Set `UseScreenEffects` to `FALSE` if the visuals are too strong.
 - Make the game **more hardcore**:
-  - Set `HeadshotIsInstantDeath` to `TRUE`.
+  - Set `HeadshotBehaviour` to `InstantDeath` (or `SecondHitDeath` if you only want a follow‑up shot to finish).
   - Lower `PainShockThreshold`.
   - Reduce `SelfHealingRate` and `BleedHealSpeed`.
 
@@ -78,7 +87,11 @@ After editing, save the file and restart GTA V to ensure changes are applied cle
 - `UseVanillaHealthSystem`:  
   - `FALSE` – peds use GSW2’s wound system (recommended).  
   - `TRUE` – revert peds back to vanilla GTA health.
-- `HeadshotIsInstantDeath`: Same idea as the player option, but for NPCs.
+- `HeadshotBehaviour`: How **head hits** kill NPCs. Independent from the player setting. Default: **`SecondHitDeath`**.
+  - **`Realistic`**: No guaranteed instant kill; targets die from wounds, pain and bleeding.
+  - **`InstantDeath`**: First head hit kills immediately — good for story missions or faster shootouts.
+  - **`SecondHitDeath`**: First hit can leave the ped alive with head trauma; the next Head trauma while that effect is
+    active kills instantly (legacy GSW2 default for peds).
 - `ShowFullHealthInfo`: Show full wound/health panel when checking peds (`TRUE`) or a simplified version (`FALSE`).
 - `DontActivateRagdollFromBulletImpact`: If `TRUE`, bullets won’t trigger extra ragdoll from impacts (may override Euphoria mods).
 - `RealisticSpineDamage`: Determines permanent ragdoll behavior when spine is hit.
@@ -93,6 +106,8 @@ After editing, save the file and restart GTA V to ensure changes are applied cle
 
 **Typical tweaks:**
 - **Performance‑oriented / lighter:** Set `UseVanillaHealthSystem` to `TRUE` while leaving the player on GSW2.
+- **Faster story / mission kills:** Set `HeadshotBehaviour` to `InstantDeath` for NPCs (player can stay on `Realistic`
+  or match).
 - **Increased realism for shootouts:**
   - Set `CustomHealth` to something like `Min="50" Max="100"`.
   - Lower `CustomAccuracy` and `CustomShootRate` so NPCs aren’t perfect marksmen.

@@ -10,7 +10,7 @@ namespace GunshotWound2.Configs {
         public bool PoliceCanForgetYou;
         public bool PedsWillIgnoreUnconsciousPlayer;
         public bool CanDropWeapon;
-        public bool InstantDeathHeadshot;
+        public HeadshotBehaviour HeadshotBehaviour;
         public bool RealisticSpineDamage;
 
         public int MoneyForHelmet;
@@ -36,7 +36,7 @@ namespace GunshotWound2.Configs {
             PoliceCanForgetYou = root.Element("PoliceCanForget").GetBool();
             PedsWillIgnoreUnconsciousPlayer = root.Element(nameof(PedsWillIgnoreUnconsciousPlayer)).GetBool();
             CanDropWeapon = root.Element(nameof(CanDropWeapon)).GetBool();
-            InstantDeathHeadshot = root.Element("HeadshotIsInstantDeath").GetBool();
+            HeadshotBehaviour = root.Element(nameof(HeadshotBehaviour)).GetEnum(defaultValue: HeadshotBehaviour.Realistic);
             RealisticSpineDamage = root.Element(nameof(RealisticSpineDamage)).GetBool();
             PainSlowMo = root.Element(nameof(PainSlowMo)).GetFloat();
             UseScreenEffects = root.Element(nameof(UseScreenEffects)).GetBool();

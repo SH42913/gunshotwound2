@@ -43,6 +43,14 @@ namespace GunshotWound2.TraumaFeature {
         public override void Repeat(EcsEntity entity, ref ConvertedPed convertedPed) {
             base.Repeat(entity, ref convertedPed);
 
+            HeadshotBehaviour behaviour = convertedPed.isPlayer
+                    ? sharedData.mainConfig.playerConfig.HeadshotBehaviour
+                    : sharedData.mainConfig.pedsConfig.HeadshotBehaviour;
+
+            if (behaviour != HeadshotBehaviour.SecondHitDeath) {
+                return;
+            }
+
             string reason = sharedData.localeConfig.GetTranslation("Traumas.BleedingInHead");
             entity.GetComponent<Health>().InstantKill(reason);
         }

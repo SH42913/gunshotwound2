@@ -1,5 +1,3 @@
-
-
 // ReSharper disable InconsistentNaming
 
 namespace GunshotWound2.Configs {
@@ -23,7 +21,7 @@ namespace GunshotWound2.Configs {
     public sealed class PedsConfig : MainConfig.IConfig {
         public GswTargets Targets;
         public bool UseVanillaHealthSystem;
-        public bool InstantDeathHeadshot;
+        public HeadshotBehaviour HeadshotBehaviour;
         public bool ShowFullHealthInfo;
         public bool DontActivateRagdollFromBulletImpact;
         public bool RealisticSpineDamage;
@@ -56,8 +54,8 @@ namespace GunshotWound2.Configs {
             XElement root = doc.Element(nameof(PedsConfig))!;
 
             UseVanillaHealthSystem = root.Element(nameof(UseVanillaHealthSystem)).GetBool();
+            HeadshotBehaviour = root.Element(nameof(HeadshotBehaviour)).GetEnum(defaultValue: HeadshotBehaviour.SecondHitDeath);
             ShowEnemyCriticalMessages = root.Element("CriticalMessages").GetBool();
-            InstantDeathHeadshot = root.Element("HeadshotIsInstantDeath").GetBool();
             ShowFullHealthInfo = root.Element(nameof(ShowFullHealthInfo)).GetBool();
             DontActivateRagdollFromBulletImpact = root.Element(nameof(DontActivateRagdollFromBulletImpact)).GetBool();
             RealisticSpineDamage = root.Element(nameof(RealisticSpineDamage)).GetBool();

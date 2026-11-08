@@ -79,7 +79,11 @@ Currently, GSW2 focuses on **ped and player weapon damage** and **does not handl
 ### 🩺 Realism & Gameplay Logic
 
 **Q: Why don't headshots kill instantly?**\
-**A:** In reality, brain trauma is complex, and "instant death" is not always a guarantee depending on the caliber and angle. However, if you prefer classic arcade mechanics, enable **`HeadshotIsInstantDeath`** in `Configs/Peds.xml`.
+**A:** Brain trauma in GSW2 is simulated step by step: the first hit can wound and apply traumas without a guaranteed
+kill. By default the **player** uses **`HeadshotBehaviour` = `Realistic`** in `Configs/Player.xml` (death from damage
+and bleeding). **NPCs** default to **`SecondHitDeath`** in `Configs/Peds.xml` (instant kill once a lethal Head trauma is
+already active and they take another qualifying head hit). For classic one-tap headshots set **`InstantDeath`** in the
+relevant config; see the XML comments and `CONTENT_README.md` for all three modes.
 
 **Q: Peds can sometimes survive 10 shots! Is this a bug?**\
 **A:** Adrenaline is a powerful thing. Real-life reports show people continuing to fight even with multiple non-vital wounds. If you want more lethal combat, increase the **`DamageMult`** or **`PainMult`** value in `Configs/Wounds.xml`.

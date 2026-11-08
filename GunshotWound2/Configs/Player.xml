@@ -14,9 +14,10 @@
     <!-- If TRUE - player will lose a weapon on arm injury or when fall unconscious.
     Recommended to use with Pickups mod. -->
 
-    <HeadshotIsInstantDeath Value="FALSE"/>
-    <!-- Headshots in GSW2 are always deadly, but by default death takes some time(like IRL).
-    Set this Value to TRUE if you want player will dead instantly when getting headshot. -->
+    <HeadshotBehaviour Value="Realistic"/>
+    <!-- Realistic: head hits never force instant kill — death comes from wounds and bleeding.
+         InstantDeath: first head hit kills immediately.
+         SecondHitDeath: instant kill only on the next Head trauma while head injury is active. -->
 
     <RealisticSpineDamage Value="TRUE"/>
     <!-- If TRUE - player will set to permanent ragdoll on spine damage.

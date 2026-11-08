@@ -1,7 +1,6 @@
 // ReSharper disable InconsistentNaming
 
 namespace GunshotWound2.Configs {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Xml.Linq;
@@ -25,7 +24,7 @@ namespace GunshotWound2.Configs {
                 Key = node.GetString(nameof(Key));
                 LocKey = node.GetString(nameof(LocKey));
                 DBP = new DBPContainer(node, isMult: false);
-                Enum.TryParse(node.GetString(nameof(Effect)), out Effect);
+                Effect = node.GetEnum<Traumas.Effects>(nameof(Effect), ignoreCase: false);
                 EffectMessage = node.GetBool(nameof(EffectMessage), defaultValue: true);
                 PainRateWhenMoving = node.GetFloat(nameof(PainRateWhenMoving));
                 PainRateWhenRunning = node.GetFloat(nameof(PainRateWhenRunning));

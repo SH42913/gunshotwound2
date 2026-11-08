@@ -250,10 +250,15 @@ namespace GunshotWound2.WoundFeature {
         }
 
         private bool IsDeadlyWound(in PedHitData hitData, bool isPlayer) {
-            return hitData.bodyPart.IsHead()
-                   && (isPlayer
-                           ? sharedData.mainConfig.playerConfig.InstantDeathHeadshot
-                           : sharedData.mainConfig.pedsConfig.InstantDeathHeadshot);
+            if (!hitData.bodyPart.IsHead()) {
+                return false;
+            }
+
+            HeadshotBehaviour behaviour = isPlayer
+                    ? sharedData.mainConfig.playerConfig.HeadshotBehaviour
+                    : sharedData.mainConfig.pedsConfig.HeadshotBehaviour;
+
+            return behaviour == HeadshotBehaviour.InstantDeath;
         }
 
         private bool CheckIsTangentialHit(in PedHitData hitData) {

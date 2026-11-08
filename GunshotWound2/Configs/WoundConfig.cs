@@ -7,6 +7,12 @@ namespace GunshotWound2.Configs {
     using GTA;
     using Utils;
 
+    public enum HeadshotBehaviour {
+        Realistic,
+        InstantDeath,
+        SecondHitDeath,
+    }
+
     public sealed class WoundConfig : MainConfig.IConfig {
         public readonly struct Wound {
             public readonly string Key;
