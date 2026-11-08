@@ -123,7 +123,9 @@ namespace GunshotWound2.StatusFeature {
             }
 
             if (curStatus is UnconsciousStatus) {
-                entity.AddComponent<UnconsciousVisualRequest>();
+                World.GetRequest<UnconsciousVisualRequest>().Publish(new UnconsciousVisualRequest {
+                    entity = entity,
+                });
             }
 
             convertedPed.status = curStatus;

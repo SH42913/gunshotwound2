@@ -3,5 +3,7 @@ namespace GunshotWound2.StatusFeature {
     using Scellecs.Morpeh;
 
     [Serializable]
-    public struct UnconsciousVisualRequest : IComponent { }
+    public struct UnconsciousVisualRequest : IRequestData {
+        public EcsEntity entity;
+    }
 }

@@ -19,7 +19,9 @@ namespace GunshotWound2.StatusFeature {
         private readonly ConvertedPed.AfterRagdollAction writheAction;
 
         public EcsWorld World { get; set; }
-        private Filter requests;
+
+        private Request<UnconsciousVisualRequest> unconsciousVisualRequest;
+        private Stash<ConvertedPed> pedStash;
 
         private Stash<Bleeding> bleedingStash;
         private Stash<WoundData> woundDataStash;
@@ -31,17 +33,26 @@ namespace GunshotWound2.StatusFeature {
         }
 
         public void OnAwake() {
-            requests = World.Filter.With<UnconsciousVisualRequest>().With<ConvertedPed>();
+            unconsciousVisualRequest = World.GetRequest<UnconsciousVisualRequest>();
+            pedStash = World.GetStash<ConvertedPed>();
 
             bleedingStash = World.GetStash<Bleeding>();
             woundDataStash = World.GetStash<WoundData>();
         }
 
         public void OnUpdate(float deltaTime) {
-            foreach (EcsEntity entity in requests) {
-                ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
+            foreach (UnconsciousVisualRequest request in unconsciousVisualRequest.Consume()) {
+                EcsEntity entity = request.entity;
+                if (entity.IsNullOrDisposed()) {
+                    continue;
+                }
+
+                ref ConvertedPed convertedPed = ref pedStash.Get(entity, out bool hasPed);
+                if (!hasPed) {
+                    continue;
+                }
+
                 SelectVisualBehaviour(entity, ref convertedPed);
-                entity.RemoveComponent<UnconsciousVisualRequest>();
             }
         }
 
