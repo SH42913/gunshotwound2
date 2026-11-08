@@ -41,7 +41,7 @@ namespace GunshotWound2.HitDetection {
 #endif
                         ped.Resurrect();
                         ped.Task.ClearAllImmediately();
-                        ped.Health = convertedPed.lastFrameHealth - 1;
+                        convertedPed.SetHealth(convertedPed.lastFrameHealth - 1);
                         ped.SetConfigFlag(PedConfigFlagToggles.KilledByTakedown, false);
                         ped.SetConfigFlag(PedConfigFlagToggles.NeverEverTargetThisPed, false);
                         convertedPed.RequestRagdoll(sharedData.mainConfig.woundConfig.TakedownRagdollDurationMs, RagdollType.Balance);

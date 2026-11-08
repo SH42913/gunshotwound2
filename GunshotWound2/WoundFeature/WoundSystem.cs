@@ -58,8 +58,13 @@ namespace GunshotWound2.WoundFeature {
             }
 
             Ped ped = convertedPed.thisPed;
-            ped.Armor += hitData.armorDiff;
-            ped.Health += hitData.healthDiff;
+            if (hitData.armorDiff != 0) {
+                convertedPed.SetArmor(ped.Armor + hitData.armorDiff);
+            }
+
+            if (hitData.healthDiff != 0) {
+                convertedPed.SetHealth(ped.Health + hitData.healthDiff);
+            }
 
             if (!hitData.bodyPart.IsValid) {
                 hitData.bodyPart = sharedData.mainConfig.bodyPartConfig.GetBodyPartByBone(Bone.SkelRoot);

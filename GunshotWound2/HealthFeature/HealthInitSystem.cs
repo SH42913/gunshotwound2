@@ -40,7 +40,7 @@ namespace GunshotWound2.HealthFeature {
                 health.max = convertedPed.defaultMaxHealth;
                 ped.MaxHealth = health.max + 1;
                 if (ped.Health > health.max) {
-                    ped.Health = health.max;
+                    convertedPed.SetHealth(health.max);
                 }
 
                 if (convertedPed.isPlayer) {
@@ -53,7 +53,7 @@ namespace GunshotWound2.HealthFeature {
 
                     if (pedsConfig.MinStartHealth > 0 && pedsConfig.MaxStartHealth > 0) {
                         int randomHealth = sharedData.random.Next(pedsConfig.MinStartHealth, pedsConfig.MaxStartHealth);
-                        ped.Health = WoundConfig.ConvertHealthToNative(randomHealth);
+                        convertedPed.SetHealth(WoundConfig.ConvertHealthToNative(randomHealth));
                     }
                 }
             }

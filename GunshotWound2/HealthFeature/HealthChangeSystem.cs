@@ -100,7 +100,7 @@ namespace GunshotWound2.HealthFeature {
             }
 
             newHealth = MathHelpers.Clamp(newHealth, min: 0, max: 1000);
-            PedEffects.SetHealth(convertedPed.thisPed, newHealth, convertedPed.lastAggressor, weaponHash);
+            convertedPed.SetHealth(newHealth, convertedPed.lastAggressor, weaponHash);
             health.lastDamageWeapon = 0;
         }
 

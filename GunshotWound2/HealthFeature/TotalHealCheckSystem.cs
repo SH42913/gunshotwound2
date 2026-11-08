@@ -42,7 +42,7 @@ namespace GunshotWound2.HealthFeature {
                         sharedData.notifier.info.QueueMessage(sharedData.localeConfig.TotallyHealedMessage, Notifier.Color.GREEN);
                     }
 
-                    convertedPed.thisPed.Health = health.max;
+                    convertedPed.SetHealth(health.max);
                     convertedPed.thisPed.ClearBloodDamage();
                     entity.SetMarker<TotallyHealedEvent>();
                 }

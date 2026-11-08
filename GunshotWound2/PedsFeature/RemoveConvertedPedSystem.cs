@@ -28,8 +28,7 @@ namespace GunshotWound2.PedsFeature {
                 if (convertedPed.forceRemove || !ped.Exists() || ped.IsDead) {
                     Remove(entity, ref convertedPed);
                 } else {
-                    convertedPed.lastFrameHealth = ped.Health;
-                    convertedPed.lastFrameArmor = ped.Armor;
+                    convertedPed.SyncLastFrameHealthAndArmor();
                 }
             }
         }

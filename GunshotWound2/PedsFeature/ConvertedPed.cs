@@ -148,5 +148,23 @@ namespace GunshotWound2.PedsFeature {
             vehicle = convertedPed.thisPed.CurrentVehicle;
             return vehicle != null && vehicle.ClassType == VehicleClass.Emergency;
         }
+
+        public static void SetHealth(this ref ConvertedPed convertedPed, int newHealth, Ped aggressor = null, uint weaponHash = 0) {
+            Ped ped = convertedPed.thisPed;
+            PedEffects.SetHealth(ped, newHealth, aggressor, weaponHash);
+            convertedPed.lastFrameHealth = ped.Health;
+        }
+
+        public static void SetArmor(this ref ConvertedPed convertedPed, int newArmor) {
+            Ped ped = convertedPed.thisPed;
+            ped.Armor = newArmor;
+            convertedPed.lastFrameArmor = ped.Armor;
+        }
+
+        public static void SyncLastFrameHealthAndArmor(this ref ConvertedPed convertedPed) {
+            Ped ped = convertedPed.thisPed;
+            convertedPed.lastFrameHealth = ped.Health;
+            convertedPed.lastFrameArmor = ped.Armor;
+        }
     }
 }
