@@ -13,6 +13,7 @@ namespace GunshotWound2.HitDetection {
         private readonly SharedData sharedData;
 
         private Filter damagedPeds;
+        private AspectFactory<PedWithHit> damagedPedAspect;
 
         public EcsWorld World { get; set; }
 
@@ -23,19 +24,21 @@ namespace GunshotWound2.HitDetection {
         }
 
         public void OnAwake() {
-            damagedPeds = World.Filter.With<ConvertedPed>().With<PedHitData>();
+            damagedPeds = World.Filter.Extend<PedWithHit>();
+            damagedPedAspect = World.GetAspectFactory<PedWithHit>();
         }
 
         void IDisposable.Dispose() { }
 
         public void OnUpdate(float deltaTime) {
             foreach (EcsEntity pedEntity in damagedPeds) {
-                ref PedHitData hitData = ref pedEntity.GetComponent<PedHitData>();
+                PedWithHit aspect = damagedPedAspect.Get(pedEntity);
+                ref PedHitData hitData = ref aspect.Hit;
                 if (ShouldSkipDetection(ref hitData)) {
                     continue;
                 }
 
-                ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
+                ref ConvertedPed convertedPed = ref aspect.Ped;
                 PedBone damagedBone = convertedPed.thisPed.Bones.LastDamaged;
                 bool useRandomBone = hitData.weaponType.UseRandomBone || !damagedBone.IsValid;
                 if (useRandomBone) {

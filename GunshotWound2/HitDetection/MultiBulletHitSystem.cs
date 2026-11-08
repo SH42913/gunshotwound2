@@ -1,7 +1,6 @@
 namespace GunshotWound2.HitDetection {
     using System;
     using GTA.Native;
-    using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
 
@@ -9,6 +8,7 @@ namespace GunshotWound2.HitDetection {
         private readonly SharedData sharedData;
 
         private Filter damagedPeds;
+        private AspectFactory<PedWithHit> damagedPedAspect;
 
         public EcsWorld World { get; set; }
 
@@ -17,12 +17,13 @@ namespace GunshotWound2.HitDetection {
         }
 
         public void OnAwake() {
-            damagedPeds = World.Filter.With<ConvertedPed>().With<PedHitData>();
+            damagedPeds = World.Filter.Extend<PedWithHit>();
+            damagedPedAspect = World.GetAspectFactory<PedWithHit>();
         }
 
         public void OnUpdate(float deltaTime) {
             foreach (EcsEntity entity in damagedPeds) {
-                ref PedHitData hitData = ref entity.GetComponent<PedHitData>();
+                ref PedHitData hitData = ref damagedPedAspect.Get(entity).Hit;
                 if (hitData.weaponType.Pellets < 2 || hitData.afterTakedown) {
                     continue;
                 }

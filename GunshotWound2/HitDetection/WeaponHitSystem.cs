@@ -13,8 +13,7 @@ namespace GunshotWound2.HitDetection {
         private readonly SharedData sharedData;
 
         private Filter damagedPeds;
-        private Stash<PedHitData> hitsStash;
-        private Stash<ConvertedPed> pedsStash;
+        private AspectFactory<PedWithHit> damagedPedAspect;
 
         public EcsWorld World { get; set; }
 
@@ -25,18 +24,16 @@ namespace GunshotWound2.HitDetection {
         }
 
         public void OnAwake() {
-            damagedPeds = World.Filter.With<ConvertedPed>().With<PedHitData>();
-            hitsStash = World.GetStash<PedHitData>();
-            pedsStash = World.GetStash<ConvertedPed>();
+            damagedPeds = World.Filter.Extend<PedWithHit>();
+            damagedPedAspect = World.GetAspectFactory<PedWithHit>();
         }
 
         void IDisposable.Dispose() { }
 
         public void OnUpdate(float deltaTime) {
             foreach (EcsEntity entity in damagedPeds) {
-                ref PedHitData hitData = ref hitsStash.Get(entity);
-                ref ConvertedPed convertedPed = ref pedsStash.Get(entity);
-                ProcessHit(entity, ref hitData, ref convertedPed);
+                PedWithHit aspect = damagedPedAspect.Get(entity);
+                ProcessHit(entity, ref aspect.Hit, ref aspect.Ped);
             }
         }
 

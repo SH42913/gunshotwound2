@@ -106,6 +106,7 @@
     <Compile Include="HealthFeature\BloodPoolFx.cs" />
     <Compile Include="HealthFeature\BloodPoolFxSystem.cs" />
     <Compile Include="HitDetection\MultiBulletHitSystem.cs" />
+    <Compile Include="HitDetection\PedWithHit.cs"/>
     <Compile Include="HitDetection\DamageModifierSystem.cs" />
     <Compile Include="PainFeature\PainGenerator.cs" />
     <Compile Include="PainFeature\PainGeneratingSystem.cs" />
