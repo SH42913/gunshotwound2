@@ -19,6 +19,7 @@ namespace Scellecs.Morpeh {
     using Collections;
     using JetBrains.Annotations;
     using Unity.IL2CPP.CompilerServices;
+    using UnityEngine;
 #if MORPEH_BURST
     using Unity.Collections;
 #endif
@@ -84,6 +85,10 @@ namespace Scellecs.Morpeh {
             world.archetypesCount = 1;
             world.emptyArchetypes = new FastList<Archetype>();
             world.removedArchetypes = new FastList<Archetype>();
+
+#if !MORPEH_UNITY
+            RuntimeHelpers.RunClassConstructor(typeof(EventWorldPlugin).TypeHandle);
+#endif
 
             if (World.plugins != null) {
                 foreach (var plugin in World.plugins) {
@@ -191,6 +196,10 @@ namespace Scellecs.Morpeh {
         [PublicAPI]
         public static void Update(this World world, float deltaTime) {
             world.ThreadSafetyCheck();
+
+#if !MORPEH_UNITY
+            Time.frameCount++;
+#endif
 
             var newSysGroup = world.newSystemsGroups;
 

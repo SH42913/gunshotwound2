@@ -7,6 +7,7 @@ This document lists every difference between the vendored Morpeh tree and [upstr
 | Item | Value |
 |------|-------|
 | Vendored version | **[Morpeh 2023.1.1](https://github.com/scellecs/morpeh)** (`Scellecs.Morpeh` package layout under `Morpeh/Core/`) |
+| Events add-on | **[Morpeh.Events 1.2.0](https://github.com/codewriter-packages/Morpeh.Events)** (`Morpeh/Core/Events/`, merged into same assembly) |
 | Initial import | commit `4ed5cc0` (“Added Morpeh ECS”, 2023-07-25); upgraded in-repo to **2023.1.1** |
 | Location | `Morpeh/` at repo root (not a submodule) |
 | Build | standalone `Morpeh.csproj`, .NET Framework **4.8.1**, `AllowUnsafeBlocks` (default C# for this project; no `Collections/Raw` or `Native/` in compile list) |
@@ -26,6 +27,16 @@ Not shipped in this repo (removed when trimming Morpeh for SHVDN):
 `Aspect.cs` / `AspectExtensions.cs` are **kept** because `WorldExtensions.GetAspectFactory` references them (mod does not use aspects).
 
 Unity `.meta` files are not kept in `Morpeh/`.
+
+`Morpeh.Events` Unity package debris (`package.json`, `Tests/`, `Packages/ScriptTemplates.unitypackage`, `asmref`, `Assembly.cs` for tests) is not vendored.
+
+### Morpeh.Events (non-Unity)
+
+| Item | Detail |
+|------|--------|
+| Registration | `EventWorldPlugin` static ctor calls `AddWorldPlugin`; `WorldExtensions.Initialize` runs `RuntimeHelpers.RunClassConstructor(typeof(EventWorldPlugin))` when `!MORPEH_UNITY` (no `RuntimeInitializeOnLoadMethod` stubs in `Morpeh.cs`) |
+| `Request` DEBUG checks | `UnityEngine.Time.frameCount` stub in `Morpeh.cs`; incremented at the start of each `World.Update` when `!MORPEH_UNITY` |
+| Tick pipeline | GunshotWound2 registers `commonSystems` via `AddSystemsGroup`, then `ecsWorld.Update(0)` in the script ctor (while the group is still empty) so groups leave `newSystemsGroups` before gameplay; frame loop uses `ecsWorld.Update` / `LateUpdate` / `CleanupUpdate` (plugin groups, including `ProcessEventsSystem`, run after ordered world groups in each phase) |
 
 ---
 

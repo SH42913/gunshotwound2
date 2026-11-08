@@ -80,12 +80,11 @@ internal enum Option {
         DivideByZeroChecks = 3
     }
 
-    [AttributeUsage(
-        AttributeTargets.Class
-        | AttributeTargets.Struct
-        | AttributeTargets.Struct
-        | AttributeTargets.Method
-        | AttributeTargets.Property, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Class
+                    | AttributeTargets.Struct
+                    | AttributeTargets.Struct
+                    | AttributeTargets.Method
+                    | AttributeTargets.Property, AllowMultiple = true)]
 #if !MORPEH_EXTERNAL_IL2CPP_ATTRS
     public class Il2CppSetOptionAttribute : Attribute {
 #else
@@ -125,6 +124,10 @@ namespace UnityEngine {
     public sealed class SerializeField : Attribute { }
 
     public sealed class GameObject : Object { }
+
+    public static class Time {
+        public static int frameCount;
+    }
 #endif
 }
 

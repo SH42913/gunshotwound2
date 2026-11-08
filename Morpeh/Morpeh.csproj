@@ -72,6 +72,17 @@
         <Compile Include="Core\Entity.cs" />
         <Compile Include="Core\EntityExtensions.cs" />
         <Compile Include="Core\EntityId.cs" />
+        <Compile Include="Core\Events\Event.cs"/>
+        <Compile Include="Core\Events\EventRegistry.cs"/>
+        <Compile Include="Core\Events\EventWorldExtensions.cs"/>
+        <Compile Include="Core\Events\EventWorldPlugin.cs"/>
+        <Compile Include="Core\Events\IEventData.cs"/>
+        <Compile Include="Core\Events\IRequestData.cs"/>
+        <Compile Include="Core\Events\ProcessEventsSystem.cs"/>
+        <Compile Include="Core\Events\Request.cs"/>
+        <Compile Include="Core\Events\RequestRegistry.cs"/>
+        <Compile Include="Core\Events\RequestWorldExtensions.cs"/>
+        <Compile Include="Core\Events\World.Events.cs"/>
         <Compile Include="Core\Filter.cs" />
         <Compile Include="Core\FilterExtensions.cs" />
         <Compile Include="Core\Inspector\NoInspector.cs"/>
