@@ -289,7 +289,7 @@ You can customize **how generous** the system is with medical supplies and how s
 **Key options:**
 - `<CantDetectWeaponNotification Enabled=""/>`: When `TRUE`, shows a notification when GSW2 cannot detect which weapon caused damage (useful for debugging or mod compatibility).
 - `<Language Value="EN"/>`:
-  - Supported codes: `EN,RU,DE,FR,PL,KR,PT-BR,SPA,SWE,JP,ZH-HK,ZN-CN,FA,FI` (and potential future updates).
+  - Supported codes: `EN,RU,DE,FR,PL,KR,PT-BR,SPA,SWE,JP,ZH-HK,ZH-CN,FA,FI` (and potential future updates).
   - This both picks a language and must match a column in `GunshotWound2.csv`.
 - `<HelpTips Enabled="" TipDurationInSec="" MinIntervalInSec="" MaxIntervalInSec=""/>`:
   - Toggle contextual helper tips and how often they appear.
@@ -336,7 +336,8 @@ Always make sure new bindings do not conflict with other mods that also use Scri
 **Purpose**: Stores **all texts and translations** used by GSW2: notification messages, body part names, armor level descriptions, trauma/wound texts, etc.
 
 **Structure:**
-- First row defines columns: `KEY,EN,RU,DE,FR,PL,KR,PT-BR,SPA,SWE,JP,ZH-HK,ZN-CN,FA,FI`.
+
+- First row defines columns: `KEY,EN,RU,DE,FR,PL,KR,PT-BR,SPA,SWE,JP,ZH-HK,ZH-CN,FA,FI`.
 - Every subsequent row has:
   - `KEY`: Symbolic name used by XML files (e.g. `ArmorClassI`, `HelmetProtectedYou`, `BodyParts.Head`).
   - One cell per language with the translated text.
