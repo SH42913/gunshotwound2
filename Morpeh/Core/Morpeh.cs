@@ -1,22 +1,28 @@
+using System.Runtime.CompilerServices;
 #if UNITY_EDITOR
 #define MORPEH_DEBUG
 #endif
+
 #if !MORPEH_DEBUG
 #define MORPEH_DEBUG_DISABLED
 #endif
 
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Scellecs.Morpeh.Editor")]
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Scellecs.Morpeh.TestSuite")]
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Scellecs.Morpeh.TestSuite.Editor")]
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Scellecs.Morpeh.Globals")]
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Scellecs.Morpeh.Native")]
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Scellecs.Morpeh.Workaround")]
+#if ENABLE_MONO || ENABLE_IL2CPP
+#define MORPEH_UNITY
+#endif
+
+[assembly: InternalsVisibleTo("Scellecs.Morpeh.Editor")]
+[assembly: InternalsVisibleTo("Scellecs.Morpeh.TestSuite")]
+[assembly: InternalsVisibleTo("Scellecs.Morpeh.TestSuite.Editor")]
+[assembly: InternalsVisibleTo("Scellecs.Morpeh.Globals")]
+[assembly: InternalsVisibleTo("Scellecs.Morpeh.Native")]
+[assembly: InternalsVisibleTo("Scellecs.Morpeh.Workaround")]
+
 namespace Scellecs.Morpeh {
     using System;
     using UnityEngine;
-    
-    public interface IComponent {
-    }
+
+    public interface IComponent { }
 
     public interface IInitializer : IDisposable {
         World World { get; set; }
@@ -28,17 +34,15 @@ namespace Scellecs.Morpeh {
         void OnUpdate(float deltaTime);
     }
 
-    public interface IFixedSystem : ISystem {
-    }
+    public interface IFixedSystem : ISystem { }
 
-    public interface ILateSystem : ISystem {
-    }
+    public interface ILateSystem : ISystem { }
 
-    public interface ICleanupSystem : ISystem {
-    }
+    public interface ICleanupSystem : ISystem { }
 
     public interface IWorldPlugin {
         void Initialize(World world);
+        void Deinitialize(World world);
     }
 
     public interface IValidatable {
@@ -49,13 +53,14 @@ namespace Scellecs.Morpeh {
         void OnValidate(GameObject gameObject);
     }
 
-    public interface IAspect {
-        Entity Entity { get; set; }
+    public interface IFilterExtension {
+        FilterBuilder Extend(FilterBuilder rootFilter);
     }
 
     [AttributeUsage(AttributeTargets.Struct)]
     public class StashSizeAttribute : Attribute {
         internal int size;
+
         public StashSizeAttribute(int size) {
             this.size = size;
         }
@@ -70,51 +75,107 @@ namespace Unity.IL2CPP.CompilerServices {
 #else
 internal enum Option {
 #endif
-        NullChecks         = 1,
-        ArrayBoundsChecks  = 2,
+        NullChecks = 1,
+        ArrayBoundsChecks = 2,
         DivideByZeroChecks = 3
     }
 
-
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Struct | AttributeTargets.Method | AttributeTargets.Property, AllowMultiple = true)]
+    [AttributeUsage(
+        AttributeTargets.Class
+        | AttributeTargets.Struct
+        | AttributeTargets.Struct
+        | AttributeTargets.Method
+        | AttributeTargets.Property, AllowMultiple = true)]
 #if !MORPEH_EXTERNAL_IL2CPP_ATTRS
     public class Il2CppSetOptionAttribute : Attribute {
 #else
 internal class Il2CppSetOptionAttribute : Attribute {
 #endif
         public Option Option { get; }
-        public object Value  { get; }
+        public object Value { get; }
 
         public Il2CppSetOptionAttribute(Option option, object value) {
             this.Option = option;
-            this.Value  = value;
+            this.Value = value;
         }
     }
+
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, Inherited = false, AllowMultiple = false)]
+#if !MORPEH_EXTERNAL_IL2CPP_ATTRS
+    public class Il2CppEagerStaticClassConstructionAttribute : Attribute
+#else
+internal class Il2CppEagerStaticClassConstructionAttribute : Attribute {
+#endif
+    { }
 }
 
-#if !UNITY_2019_1_OR_NEWER
+namespace Unity.Collections.LowLevel.Unsafe {
+#if !MORPEH_UNITY
+    using System;
+
+    [AttributeUsage(AttributeTargets.Field)]
+    public sealed class NativeDisableUnsafePtrRestrictionAttributeAttribute : Attribute { }
+#endif
+}
+
 namespace UnityEngine {
-    public sealed class SerializeField : System.Attribute { }
-    public sealed class GameObject : System.Object { }
+    using System;
+
+#if !MORPEH_UNITY
+    public sealed class SerializeField : Attribute { }
+
+    public sealed class GameObject : Object { }
+#endif
 }
 
 namespace UnityEngine.Scripting {
-    public sealed class Preserve : System.Attribute { }
+    using System;
+
+#if !MORPEH_UNITY
+    public sealed class Preserve : Attribute { }
+#endif
+}
+
+namespace Unity.Collections {
+#if !MORPEH_UNITY
+    using System;
+
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.ReturnValue)]
+    public sealed class ReadOnlyAttribute : Attribute { }
+#endif
+}
+
+namespace Unity.Collections.LowLevel.Unsafe {
+    using System;
+
+#if !MORPEH_UNITY
+    public sealed class NativeDisableUnsafePtrRestrictionAttribute : Attribute { }
+#endif
 }
 
 namespace JetBrains.Annotations {
+#if !MORPEH_UNITY
     using System;
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Delegate)]
-    public sealed class NotNullAttribute : Attribute { }
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Delegate)]
-    public sealed class CanBeNullAttribute : Attribute { }
-}
-#endif
 
-#if !ODIN_INSPECTOR
-namespace Sirenix.OdinInspector {
-    using System;
-    [AttributeUsage(AttributeTargets.All, Inherited = false)]
-    public class ShowInInspectorAttribute : Attribute { }
-}
+    [AttributeUsage(AttributeTargets.Method
+                    | AttributeTargets.Property
+                    | AttributeTargets.Field
+                    | AttributeTargets.Parameter
+                    | AttributeTargets.Delegate)]
+    public sealed class NotNullAttribute : Attribute { }
+
+    [AttributeUsage(AttributeTargets.Method
+                    | AttributeTargets.Property
+                    | AttributeTargets.Field
+                    | AttributeTargets.Parameter
+                    | AttributeTargets.Delegate)]
+    public sealed class CanBeNullAttribute : Attribute { }
+
+    [AttributeUsage(AttributeTargets.Method
+                    | AttributeTargets.Property
+                    | AttributeTargets.Field
+                    | AttributeTargets.Parameter
+                    | AttributeTargets.Delegate)]
+    public sealed class PublicAPIAttribute : Attribute { }
 #endif
+}

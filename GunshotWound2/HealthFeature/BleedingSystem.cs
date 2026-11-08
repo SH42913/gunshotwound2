@@ -31,7 +31,7 @@ namespace GunshotWound2.HealthFeature {
 
             bleedingWounds = World.Filter.With<Bleeding>();
             peds = World.Filter.With<ConvertedPed>().With<Health>();
-            totallyHealedPeds = peds.With<TotallyHealedEvent>();
+            totallyHealedPeds = World.Filter.With<ConvertedPed>().With<Health>().With<TotallyHealedEvent>();
         }
 
         public void OnUpdate(float deltaTime) {

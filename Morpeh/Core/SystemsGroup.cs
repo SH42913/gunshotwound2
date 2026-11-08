@@ -15,54 +15,42 @@ namespace Scellecs.Morpeh {
     [Il2CppSetOption(Option.ArrayBoundsChecks, false)]
     [Il2CppSetOption(Option.DivideByZeroChecks, false)]
     public sealed class SystemsGroup : IDisposable {
-        [ShowInInspector]
-        internal FastList<ISystem> systems;
-        [ShowInInspector]
-        internal FastList<ISystem> fixedSystems;
-        [ShowInInspector]
-        internal FastList<ISystem> lateSystems;
-        [ShowInInspector]
-        internal FastList<ISystem> cleanupSystems;
+        [ShowInInspector] internal FastList<ISystem> systems;
+        [ShowInInspector] internal FastList<ISystem> fixedSystems;
+        [ShowInInspector] internal FastList<ISystem> lateSystems;
+        [ShowInInspector] internal FastList<ISystem> cleanupSystems;
 
-        [ShowInInspector]
-        internal FastList<ISystem> disabledSystems;
-        [ShowInInspector]
-        internal FastList<ISystem> disabledFixedSystems;
-        [ShowInInspector]
-        internal FastList<ISystem> disabledLateSystems;
-        [ShowInInspector]
-        internal FastList<ISystem> disabledCleanupSystems;
+        [ShowInInspector] internal FastList<ISystem> disabledSystems;
+        [ShowInInspector] internal FastList<ISystem> disabledFixedSystems;
+        [ShowInInspector] internal FastList<ISystem> disabledLateSystems;
+        [ShowInInspector] internal FastList<ISystem> disabledCleanupSystems;
 
-        [ShowInInspector]
-        internal FastList<IInitializer> newInitializers;
-        [ShowInInspector]
-        internal FastList<IInitializer> initializers;
-        [ShowInInspector]
-        internal FastList<IDisposable> disposables;
+        [ShowInInspector] internal FastList<IInitializer> newInitializers;
+        [ShowInInspector] internal FastList<IInitializer> initializers;
+        [ShowInInspector] internal FastList<IDisposable> disposables;
 
-        internal World  world;
+        internal World world;
         internal Action delayedAction;
 
-        private SystemsGroup() {
-        }
+        private SystemsGroup() { }
 
         internal SystemsGroup(World world) {
-            this.world         = world;
+            this.world = world;
             this.delayedAction = null;
 
-            this.systems         = new FastList<ISystem>();
-            this.fixedSystems    = new FastList<ISystem>();
-            this.lateSystems     = new FastList<ISystem>();
-            this.cleanupSystems  = new FastList<ISystem>();
+            this.systems = new FastList<ISystem>();
+            this.fixedSystems = new FastList<ISystem>();
+            this.lateSystems = new FastList<ISystem>();
+            this.cleanupSystems = new FastList<ISystem>();
 
-            this.disabledSystems         = new FastList<ISystem>();
-            this.disabledFixedSystems    = new FastList<ISystem>();
-            this.disabledLateSystems     = new FastList<ISystem>();
-            this.disabledCleanupSystems  = new FastList<ISystem>();
+            this.disabledSystems = new FastList<ISystem>();
+            this.disabledFixedSystems = new FastList<ISystem>();
+            this.disabledLateSystems = new FastList<ISystem>();
+            this.disabledCleanupSystems = new FastList<ISystem>();
 
             this.newInitializers = new FastList<IInitializer>();
-            this.initializers    = new FastList<IInitializer>();
-            this.disposables     = new FastList<IDisposable>();
+            this.initializers = new FastList<IInitializer>();
+            this.disposables = new FastList<IDisposable>();
         }
 
         public void Dispose() {
@@ -78,8 +66,7 @@ namespace Scellecs.Morpeh {
                         this.world.Commit();
                         system.Dispose();
 #if MORPEH_DEBUG
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         MLogger.LogError($"Can not dispose system {system.GetType()}");
                         MLogger.LogException(e);
                     }
@@ -121,8 +108,7 @@ namespace Scellecs.Morpeh {
                     this.world.Commit();
                     initializer.Dispose();
 #if MORPEH_DEBUG
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     MLogger.LogError($"Can not dispose new initializer {initializer.GetType()}");
                     MLogger.LogException(e);
                 }
@@ -139,8 +125,7 @@ namespace Scellecs.Morpeh {
                     this.world.Commit();
                     initializer.Dispose();
 #if MORPEH_DEBUG
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     MLogger.LogError($"Can not dispose initializer {initializer.GetType()}");
                     MLogger.LogException(e);
                 }
@@ -157,8 +142,7 @@ namespace Scellecs.Morpeh {
                     this.world.Commit();
                     disposable.Dispose();
 #if MORPEH_DEBUG
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     MLogger.LogError($"Can not dispose system group disposable {disposable.GetType()}");
                     MLogger.LogException(e);
                 }

@@ -6,12 +6,28 @@ This document lists every difference between the vendored Morpeh tree and [upstr
 
 | Item | Value |
 |------|-------|
-| Initial import | commit `4ed5cc0` (“Added Morpeh ECS”, 2023-07-25) |
+| Vendored version | **[Morpeh 2023.1.1](https://github.com/scellecs/morpeh)** (`Scellecs.Morpeh` package layout under `Morpeh/Core/`) |
+| Initial import | commit `4ed5cc0` (“Added Morpeh ECS”, 2023-07-25); upgraded in-repo to **2023.1.1** |
 | Location | `Morpeh/` at repo root (not a submodule) |
-| Build | standalone `Morpeh.csproj`, .NET Framework **4.8.1**, `AllowUnsafeBlocks` |
-| Upstream (approx.) | **~2023.1.x** layout (`Morpeh/Core/*.cs`); current upstream ships as `Scellecs.Morpeh` with a different file layout |
+| Build | standalone `Morpeh.csproj`, .NET Framework **4.8.1**, `AllowUnsafeBlocks` (default C# for this project; no `Collections/Raw` or `Native/` in compile list) |
+| Newer upstream | **2024+** uses `Core/Stashes/Stash.cs` and other breaking layout/API changes |
 
 Morpeh sources target Unity (`UnityEngine`, IL2CPP attributes) but are built as a normal class library with the mod. Logging is wired in `GunshotWound2` via `MLogger.SetInstance(new GSWMorpehLogger(...))` — **not** a Morpeh patch; no change needed on upgrade.
+
+## Removed from vendored tree (GSW)
+
+Not shipped in this repo (removed when trimming Morpeh for SHVDN):
+
+| Path | Reason |
+|------|--------|
+| `Collections/Raw/*` | Optional native containers; unused by core or GSW |
+| `Native/*` | Burst/Jobs API (`#if MORPEH_BURST`); requires Unity Burst |
+
+`Aspect.cs` / `AspectExtensions.cs` are **kept** because `WorldExtensions.GetAspectFactory` references them (mod does not use aspects).
+
+Unity `.meta` files are not kept in `Morpeh/`.
+
+---
 
 ## Change summary
 
@@ -20,7 +36,8 @@ Morpeh sources target Unity (`UnityEngine`, IL2CPP attributes) but are built as 
 | — | `4ed5cc0` | `Morpeh/Morpeh.csproj` | .NET 4.8.1 project, explicit `Compile` list |
 | 1 | `43c9c7c` | `Stash.cs`, `EntityExtensions.cs` | `AddOrGet` / `AddOrGetComponent` API |
 | 2 | `3dd0736` | `Entity.cs` | Public `Entity.world` field |
-| 3 | `5e53e54` | `WorldExtensions.cs` | Restrict type warmup to `GunshotWound2` assembly |
+| 3 | `5e53e54` | `WorldExtensions.cs` | *(obsolete in 2023.1.1)* assembly-scoped warmup — upstream removed `AppDomain` scan |
+| 3b | — | `Filter.cs` | Implicit `FilterBuilder` → `Filter` (GSW: old `World.Filter.With<…>()` assignment style) |
 | 4 | `e83bcee` | `Morpeh.csproj` | `MORPEH_DEBUG` in Debug configuration |
 | 5 | `b9cc45d` | `Stash.cs` | Richer DEBUG messages; silent path in `AddOrGet` |
 | 6 | `66dd545` | `SystemsGroupExtensions.cs` | Re-`throw` after logging in systems |
@@ -59,7 +76,7 @@ Without `MORPEH_DEBUG` in Debug, Morpeh validation and `TryCatch*` wrappers in s
 
 ## Patch 1 — `AddOrGet` and `AddOrGetComponent`
 
-**File:** `Morpeh/Core/Stash.cs`  
+**File:** `Morpeh/Core/Stash.cs` (2023.1.1: `TryAddData`, `map`, `data`, `AddTransfer(typeId, offset)`)  
 Insert after `Add(Entity entity)` (before `Add(Entity entity, out bool exist)`):
 
 ```csharp
@@ -69,15 +86,26 @@ public ref T AddOrGet(Entity entity) {
 
 #if MORPEH_DEBUG
     if (entity.IsNullOrDisposed()) {
-        throw new Exception($"[MORPEH] You are trying Add on null or disposed entity {entity.entityId.id}");
-    }
-#endif
-    if (this.components.Add(entity.entityId.id, default, out var slotIndex)) {
-        entity.AddTransfer(this.typeId);
-        return ref this.components.data[slotIndex];
+        throw new Exception($"[MORPEH] You are trying Add on null or disposed entity");
     }
 
-    return ref this.components.GetValueRefByKey(entity.entityId.id);
+    var previousCapacity = this.map.capacity;
+#endif
+    if (this.TryAddData(entity.entityId.id, default, out var slotIndex)) {
+        entity.AddTransfer(this.typeId, this.offset);
+#if MORPEH_DEBUG
+        if (previousCapacity != this.map.capacity) {
+            world.newMetrics.stashResizes++;
+        }
+#endif
+        return ref this.data[slotIndex];
+    }
+
+    if (this.map.TryGetIndex(entity.entityId.id, out var dataIndex)) {
+        return ref this.data[dataIndex];
+    }
+
+    return ref this.empty;
 }
 ```
 
@@ -119,22 +147,15 @@ Required by mod code (`entity.world.GetStash`, `entity.world.CreateEntity()`).
 
 ---
 
-## Patch 3 — warmup scoped to the mod assembly
+## Patch 3b — implicit filter build (GSW)
 
-**File:** `Morpeh/Core/WorldExtensions.cs`, `Warmup()`, loop over `AppDomain.CurrentDomain.GetAssemblies()`:
+**File:** `Morpeh/Core/Filter.cs`, inside `FilterBuilder`:
 
 ```csharp
-foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
-    // HACK: Collect components only for GunshotWound2 assembly
-    if (assembly.GetName().Name != "GunshotWound2") {
-        continue;
-    }
-
-    foreach (var type in assembly.GetTypes()) {
-        // ...
+public static implicit operator Filter(FilterBuilder builder) => builder.Build();
 ```
 
-**Why:** with multiple .NET script mods in the same app domain, scanning every assembly caused crashes. If you rename the mod assembly, update the name in this check.
+Morpeh 2023.1.1 returns `FilterBuilder` from `With` / `Without`; GunshotWound2 still assigns chains directly to `Filter`. Do not extend filters from an existing `Filter` instance (`filter.With<…>()` was removed upstream) — rebuild from `World.Filter` instead.
 
 ---
 

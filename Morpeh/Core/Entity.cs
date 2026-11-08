@@ -1,5 +1,6 @@
 namespace Scellecs.Morpeh {
     using System;
+    using Collections;
     using Sirenix.OdinInspector;
     using Unity.IL2CPP.CompilerServices;
     using UnityEngine;
@@ -10,36 +11,25 @@ namespace Scellecs.Morpeh {
     [Il2CppSetOption(Option.NullChecks, false)]
     [Il2CppSetOption(Option.ArrayBoundsChecks, false)]
     [Il2CppSetOption(Option.DivideByZeroChecks, false)]
-    public sealed class Entity {
-        [NonSerialized]
-        public World world;
+    public sealed partial class Entity {
+        [NonSerialized] public World world;
 
-        [SerializeField]
-        internal int worldID;
+        internal SortedBitMap components;
 
-        [SerializeField]
-        internal bool isDirty;
-        [SerializeField]
-        internal bool isDisposed;
+        [SerializeField] internal bool isDirty;
+        [SerializeField] internal bool isDisposed;
 
-        [SerializeField]
-        internal int previousArchetypeId;
-        [SerializeField]
-        internal int currentArchetypeId;
+        [SerializeField] internal long previousArchetype;
+        [SerializeField] internal long currentArchetype;
+        [SerializeField] internal int previousArchetypeLength;
+        [SerializeField] internal int currentArchetypeLength;
 
-        [NonSerialized]
-        internal Archetype currentArchetype;
+        [SerializeField] internal EntityId entityId;
 
-        [NonSerialized]
-        internal int indexInCurrentArchetype;
+        [ShowInInspector] public EntityId ID => this.entityId;
 
-        [SerializeField]
-        internal EntityId entityId;
-        
-        [ShowInInspector]
-        public EntityId ID => this.entityId;
+        internal Entity() { }
 
-        internal Entity() {
-        }
+        public override string ToString() => $"Entity:{ID.ToString()}";
     }
 }

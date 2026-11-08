@@ -16,30 +16,29 @@ namespace Scellecs.Morpeh.Collections {
         public int lastIndex;
         public int freeIndex;
 
-        public int[] buckets;
-        public int[] slots;
+        public IntPinnedArray buckets;
+        public IntPinnedArray slots;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IntHashSet() : this(0) {
-        }
+        public IntHashSet() : this(0) { }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IntHashSet(int capacity) {
             this.lastIndex = 0;
-            this.length    = 0;
+            this.length = 0;
             this.freeIndex = -1;
 
             this.capacityMinusOne = HashHelpers.GetCapacity(capacity);
-            this.capacity         = this.capacityMinusOne + 1;
-            this.buckets          = new int[this.capacity];
-            this.slots            = new int[this.capacity / 2];
+            this.capacity = this.capacityMinusOne + 1;
+            this.buckets = new IntPinnedArray(this.capacity);
+            this.slots = new IntPinnedArray(this.capacity * 2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Enumerator GetEnumerator() {
             Enumerator e;
-            e.set     = this;
-            e.index   = 0;
+            e.set = this;
+            e.index = 0;
             e.current = default;
             return e;
         }
@@ -58,9 +57,10 @@ namespace Scellecs.Morpeh.Collections {
             public int current;
 
             public bool MoveNext() {
-                fixed (int* slotsPtr = &this.set.slots[0]) {
+                {
+                    var slotsPtr = this.set.slots.ptr;
                     for (var len = this.set.lastIndex; this.index < len; ++this.index) {
-                        var v = *slotsPtr - 1;
+                        var v = slotsPtr[this.index] - 1;
                         if (v < 0) {
                             continue;
                         }
@@ -71,7 +71,7 @@ namespace Scellecs.Morpeh.Collections {
                         return true;
                     }
 
-                    this.index   = this.set.lastIndex + 1;
+                    this.index = this.set.lastIndex + 1;
                     this.current = default;
                     return false;
                 }
@@ -82,12 +82,11 @@ namespace Scellecs.Morpeh.Collections {
             object IEnumerator.Current => this.current;
 
             void IEnumerator.Reset() {
-                this.index   = 0;
+                this.index = 0;
                 this.current = default;
             }
 
-            public void Dispose() {
-            }
+            public void Dispose() { }
         }
     }
 }

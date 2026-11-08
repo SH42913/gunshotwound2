@@ -3,6 +3,7 @@ namespace Scellecs.Morpeh.Collections {
     using System.Runtime.CompilerServices;
     using Unity.IL2CPP.CompilerServices;
 
+    [Il2CppEagerStaticClassConstruction]
     [Il2CppSetOption(Option.NullChecks, false)]
     [Il2CppSetOption(Option.ArrayBoundsChecks, false)]
     [Il2CppSetOption(Option.DivideByZeroChecks, false)]
@@ -28,10 +29,10 @@ namespace Scellecs.Morpeh.Collections {
             67_108_863,
             134_217_727,
             268_435_455,
-            536_870_912,
+            536_870_911,
             1_073_741_823
         };
-            
+
         internal static readonly int[] smallCapacitySizes = {
             3,
             7,
@@ -58,21 +59,9 @@ namespace Scellecs.Morpeh.Collections {
             67_108_863,
             134_217_727,
             268_435_455,
-            536_870_912,
+            536_870_911,
             1_073_741_823
         };
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int ExpandCapacity(int oldSize) {
-            var min = oldSize - 1 << 1;
-            return min > 2_146_435_069U && 2_146_435_069 > oldSize ? 2_146_435_069 : GetCapacity(min);
-        }
-            
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int ExpandCapacitySmall(int oldSize) {
-            var min = oldSize - 1 << 1;
-            return min > 2_146_435_069U && 2_146_435_069 > oldSize ? 2_146_435_069 : GetCapacitySmall(min);
-        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int GetCapacity(int min) {
@@ -85,7 +74,7 @@ namespace Scellecs.Morpeh.Collections {
 
             throw new Exception("Capacity is too big");
         }
-            
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int GetCapacitySmall(int min) {
             for (int index = 0, length = smallCapacitySizes.Length; index < length; ++index) {

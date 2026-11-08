@@ -19,7 +19,13 @@ namespace Scellecs.Morpeh {
     public static class SystemsGroupExtensions {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Initialize(this SystemsGroup systemsGroup) {
+            if (systemsGroup.disposables.length == 0 && systemsGroup.newInitializers.length == 0) {
+                return;
+            }
+
             MLogger.BeginSample("SystemGroup.Initialize()");
+            systemsGroup.DropDelayedAction();
+
             if (systemsGroup.disposables.length > 0) {
                 systemsGroup.world.Commit();
 
@@ -45,15 +51,24 @@ namespace Scellecs.Morpeh {
 
                 systemsGroup.newInitializers.Clear();
             }
+
+            systemsGroup.InvokeDelayedAction();
+            systemsGroup.world.JobsComplete();
             MLogger.EndSample();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Update(this SystemsGroup systemsGroup, float deltaTime) {
+            systemsGroup.Initialize();
+
+            if (systemsGroup.systems.length == 0) {
+                return;
+            }
+
             MLogger.BeginSample("SystemGroup.Update()");
             systemsGroup.DropDelayedAction();
+            systemsGroup.world.Commit();
 
-            systemsGroup.Initialize();
             for (int i = 0, length = systemsGroup.systems.length; i < length; i++) {
                 var system = systemsGroup.systems.data[i];
 
@@ -64,11 +79,16 @@ namespace Scellecs.Morpeh {
             }
 
             systemsGroup.InvokeDelayedAction();
+            systemsGroup.world.JobsComplete();
             MLogger.EndSample();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void FixedUpdate(this SystemsGroup systemsGroup, float deltaTime) {
+            if (systemsGroup.fixedSystems.length == 0) {
+                return;
+            }
+
             MLogger.BeginSample("SystemGroup.FixedUpdate()");
             systemsGroup.DropDelayedAction();
             systemsGroup.world.Commit();
@@ -83,11 +103,16 @@ namespace Scellecs.Morpeh {
             }
 
             systemsGroup.InvokeDelayedAction();
+            systemsGroup.world.JobsComplete();
             MLogger.EndSample();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void LateUpdate(this SystemsGroup systemsGroup, float deltaTime) {
+            if (systemsGroup.lateSystems.length == 0) {
+                return;
+            }
+
             MLogger.BeginSample("SystemGroup.LateUpdate()");
             systemsGroup.DropDelayedAction();
             systemsGroup.world.Commit();
@@ -101,11 +126,16 @@ namespace Scellecs.Morpeh {
             }
 
             systemsGroup.InvokeDelayedAction();
+            systemsGroup.world.JobsComplete();
             MLogger.EndSample();
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void CleanupUpdate(this SystemsGroup systemsGroup, float deltaTime) {
+            if (systemsGroup.cleanupSystems.length == 0) {
+                return;
+            }
+
             MLogger.BeginSample("SystemGroup.CleanupUpdate()");
             systemsGroup.DropDelayedAction();
             systemsGroup.world.Commit();
@@ -119,6 +149,7 @@ namespace Scellecs.Morpeh {
             }
 
             systemsGroup.InvokeDelayedAction();
+            systemsGroup.world.JobsComplete();
             MLogger.EndSample();
         }
 
@@ -137,9 +168,14 @@ namespace Scellecs.Morpeh {
         [Conditional("MORPEH_DEBUG")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void SystemThrowException(this SystemsGroup systemsGroup, ISystem system, Exception exception) {
-            MLogger.LogError($"Can not update {system.GetType()}. System will be disabled.");
-            MLogger.LogException(exception);
-            systemsGroup.delayedAction += () => systemsGroup.DisableSystem(system);
+            if (systemsGroup.world.DoNotDisableSystemOnException) {
+                MLogger.LogError($"Can not update {system.GetType()}.");
+                MLogger.LogException(exception);
+            } else {
+                MLogger.LogError($"Can not update {system.GetType()}. System will be disabled.");
+                MLogger.LogException(exception);
+                systemsGroup.delayedAction += () => systemsGroup.DisableSystem(system);
+            }
         }
 
         [Conditional("MORPEH_DEBUG")]
@@ -149,12 +185,11 @@ namespace Scellecs.Morpeh {
 #if MORPEH_PROFILING
                 using (new ProfilerSampler(system)) {
 #endif
-                    system.OnUpdate(deltaTime);
+                system.OnUpdate(deltaTime);
 #if MORPEH_PROFILING
                 }
 #endif
-            }
-            catch (Exception exception) {
+            } catch (Exception exception) {
                 systemsGroup.SystemThrowException(system, exception);
                 throw;
             }
@@ -167,12 +202,11 @@ namespace Scellecs.Morpeh {
 #if MORPEH_PROFILING
                 using (new ProfilerSampler(initializer)) {
 #endif
-                    initializer.OnAwake();
+                initializer.OnAwake();
 #if MORPEH_PROFILING
                 }
 #endif
-            }
-            catch (Exception exception) {
+            } catch (Exception exception) {
                 MLogger.LogError($"Can not initialize {initializer.GetType()}");
                 MLogger.LogException(exception);
                 throw;
@@ -186,12 +220,11 @@ namespace Scellecs.Morpeh {
 #if MORPEH_PROFILING
                 using (new ProfilerSampler(disposable)) {
 #endif
-                    disposable.Dispose();
+                disposable.Dispose();
 #if MORPEH_PROFILING
                 }
 #endif
-            }
-            catch (Exception exception) {
+            } catch (Exception exception) {
                 MLogger.LogError($"Can not dispose {disposable.GetType()}");
                 MLogger.LogException(exception);
             }
@@ -203,7 +236,7 @@ namespace Scellecs.Morpeh {
 #if MORPEH_PROFILING
             using (new ProfilerSampler(disposable)) {
 #endif
-                disposable.Dispose();
+            disposable.Dispose();
 #if MORPEH_PROFILING
             }
 #endif
@@ -215,7 +248,7 @@ namespace Scellecs.Morpeh {
 #if MORPEH_PROFILING
             using (new ProfilerSampler(initializer)) {
 #endif
-                initializer.OnAwake();
+            initializer.OnAwake();
 #if MORPEH_PROFILING
             }
 #endif
@@ -227,21 +260,23 @@ namespace Scellecs.Morpeh {
 #if MORPEH_PROFILING
             using (new ProfilerSampler(system)) {
 #endif
-                system.OnUpdate(deltaTime);
+            system.OnUpdate(deltaTime);
 #if MORPEH_PROFILING
             }
 #endif
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void AddInitializer<T>(this SystemsGroup systemsGroup, T initializer) where T : class, IInitializer {
+        public static void AddInitializer<T>(this SystemsGroup systemsGroup, T initializer)
+                where T : class, IInitializer {
             initializer.World = systemsGroup.world;
 
             systemsGroup.newInitializers.Add(initializer);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void RemoveInitializer<T>(this SystemsGroup systemsGroup, T initializer) where T : class, IInitializer {
+        public static void RemoveInitializer<T>(this SystemsGroup systemsGroup, T initializer)
+                where T : class, IInitializer {
             var index = systemsGroup.newInitializers.IndexOf(initializer);
             if (index >= 0) {
                 systemsGroup.newInitializers.RemoveAt(index);
@@ -254,19 +289,18 @@ namespace Scellecs.Morpeh {
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool AddSystem<T>(this SystemsGroup systemsGroup, T system, bool enabled = true) where T : class, ISystem {
-            var collection         = systemsGroup.systems;
+        public static bool AddSystem<T>(this SystemsGroup systemsGroup, T system, bool enabled = true)
+                where T : class, ISystem {
+            var collection = systemsGroup.systems;
             var disabledCollection = systemsGroup.disabledSystems;
             if (system is IFixedSystem) {
-                collection         = systemsGroup.fixedSystems;
+                collection = systemsGroup.fixedSystems;
                 disabledCollection = systemsGroup.disabledFixedSystems;
-            }
-            else if (system is ILateSystem) {
-                collection         = systemsGroup.lateSystems;
+            } else if (system is ILateSystem) {
+                collection = systemsGroup.lateSystems;
                 disabledCollection = systemsGroup.disabledLateSystems;
-            }
-            else if (system is ICleanupSystem) {
-                collection         = systemsGroup.cleanupSystems;
+            } else if (system is ICleanupSystem) {
+                collection = systemsGroup.cleanupSystems;
                 disabledCollection = systemsGroup.disabledCleanupSystems;
             }
 
@@ -286,19 +320,18 @@ namespace Scellecs.Morpeh {
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool EnableSystem<T>(this SystemsGroup systemsGroup, T system) where T : class, ISystem {
-            var collection         = systemsGroup.systems;
+        public static bool EnableSystem<T>(this SystemsGroup systemsGroup, T system)
+                where T : class, ISystem {
+            var collection = systemsGroup.systems;
             var disabledCollection = systemsGroup.disabledSystems;
             if (system is IFixedSystem) {
-                collection         = systemsGroup.fixedSystems;
+                collection = systemsGroup.fixedSystems;
                 disabledCollection = systemsGroup.disabledFixedSystems;
-            }
-            else if (system is ILateSystem) {
-                collection         = systemsGroup.lateSystems;
+            } else if (system is ILateSystem) {
+                collection = systemsGroup.lateSystems;
                 disabledCollection = systemsGroup.disabledLateSystems;
-            }
-            else if (system is ICleanupSystem) {
-                collection         = systemsGroup.cleanupSystems;
+            } else if (system is ICleanupSystem) {
+                collection = systemsGroup.cleanupSystems;
                 disabledCollection = systemsGroup.disabledCleanupSystems;
             }
 
@@ -313,19 +346,18 @@ namespace Scellecs.Morpeh {
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool DisableSystem<T>(this SystemsGroup systemsGroup, T system) where T : class, ISystem {
-            var collection         = systemsGroup.systems;
+        public static bool DisableSystem<T>(this SystemsGroup systemsGroup, T system)
+                where T : class, ISystem {
+            var collection = systemsGroup.systems;
             var disabledCollection = systemsGroup.disabledSystems;
             if (system is IFixedSystem) {
-                collection         = systemsGroup.fixedSystems;
+                collection = systemsGroup.fixedSystems;
                 disabledCollection = systemsGroup.disabledFixedSystems;
-            }
-            else if (system is ILateSystem) {
-                collection         = systemsGroup.lateSystems;
+            } else if (system is ILateSystem) {
+                collection = systemsGroup.lateSystems;
                 disabledCollection = systemsGroup.disabledLateSystems;
-            }
-            else if (system is ICleanupSystem) {
-                collection         = systemsGroup.cleanupSystems;
+            } else if (system is ICleanupSystem) {
+                collection = systemsGroup.cleanupSystems;
                 disabledCollection = systemsGroup.disabledCleanupSystems;
             }
 
@@ -340,19 +372,18 @@ namespace Scellecs.Morpeh {
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool RemoveSystem<T>(this SystemsGroup systemsGroup, T system) where T : class, ISystem {
-            var collection         = systemsGroup.systems;
+        public static bool RemoveSystem<T>(this SystemsGroup systemsGroup, T system)
+                where T : class, ISystem {
+            var collection = systemsGroup.systems;
             var disabledCollection = systemsGroup.disabledSystems;
             if (system is IFixedSystem) {
-                collection         = systemsGroup.fixedSystems;
+                collection = systemsGroup.fixedSystems;
                 disabledCollection = systemsGroup.disabledFixedSystems;
-            }
-            else if (system is ILateSystem) {
-                collection         = systemsGroup.lateSystems;
+            } else if (system is ILateSystem) {
+                collection = systemsGroup.lateSystems;
                 disabledCollection = systemsGroup.disabledLateSystems;
-            }
-            else if (system is ICleanupSystem) {
-                collection         = systemsGroup.cleanupSystems;
+            } else if (system is ICleanupSystem) {
+                collection = systemsGroup.cleanupSystems;
                 disabledCollection = systemsGroup.disabledCleanupSystems;
             }
 

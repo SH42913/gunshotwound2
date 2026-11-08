@@ -24,7 +24,7 @@ namespace GunshotWound2.PlayerFeature {
 
         public void OnAwake() {
             pedsWithInventory = World.Filter.With<ConvertedPed>().With<Inventory>();
-            justHealed = pedsWithInventory.With<TotallyHealedEvent>();
+            justHealed = World.Filter.With<ConvertedPed>().With<Inventory>().With<TotallyHealedEvent>();
         }
 
         public void OnUpdate(float deltaTime) {

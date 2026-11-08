@@ -32,7 +32,7 @@ namespace GunshotWound2.HealthFeature {
 
             bleedToInit = World.Filter.With<Bleeding>().Without<BleedingFx>();
             activeParticles = World.Filter.With<BleedingFx>();
-            particlesToClean = activeParticles.Without<Bleeding>();
+            particlesToClean = World.Filter.With<BleedingFx>().Without<Bleeding>();
 
             RequestAssets(PenetratingEffects);
             RequestAssets(BluntEffects);

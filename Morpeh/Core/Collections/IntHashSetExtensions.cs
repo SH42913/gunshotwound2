@@ -1,5 +1,4 @@
 namespace Scellecs.Morpeh.Collections {
-    using System;
     using System.Runtime.CompilerServices;
     using Unity.IL2CPP.CompilerServices;
 
@@ -11,8 +10,9 @@ namespace Scellecs.Morpeh.Collections {
         public static bool Add(this IntHashSet hashSet, in int value) {
             var rem = value & hashSet.capacityMinusOne;
 
-            fixed (int* slotsPtr = &hashSet.slots[0])
-            fixed (int* bucketsPtr = &hashSet.buckets[0]) {
+            {
+                var slotsPtr = hashSet.slots.ptr;
+                var bucketsPtr = hashSet.buckets.ptr;
                 int* slot;
                 for (var i = *(bucketsPtr + rem) - 1; i >= 0; i = *(slot + 1)) {
                     slot = slotsPtr + i;
@@ -25,25 +25,23 @@ namespace Scellecs.Morpeh.Collections {
             int newIndex;
             if (hashSet.freeIndex >= 0) {
                 newIndex = hashSet.freeIndex;
-                fixed (int* s = &hashSet.slots[0]) {
-                    hashSet.freeIndex = *(s + newIndex + 1);
-                }
-            }
-            else {
+                hashSet.freeIndex = *(hashSet.slots.ptr + newIndex + 1);
+            } else {
                 if (hashSet.lastIndex == hashSet.capacity * 2) {
-                    var newCapacityMinusOne = HashHelpers.ExpandCapacity(hashSet.length);
-                    var newCapacity         = newCapacityMinusOne + 1;
+                    var newCapacityMinusOne = HashHelpers.GetCapacity(hashSet.length);
+                    var newCapacity = newCapacityMinusOne + 1;
 
-                    ArrayHelpers.Grow(ref hashSet.slots, newCapacity * 2);
+                    hashSet.slots.Resize(newCapacity * 2);
 
-                    var newBuckets = new int[newCapacity];
+                    var newBuckets = new IntPinnedArray(newCapacity);
 
-                    fixed (int* slotsPtr = &hashSet.slots[0])
-                    fixed (int* bucketsPtr = &newBuckets[0]) {
+                    {
+                        var slotsPtr = hashSet.slots.ptr;
+                        var bucketsPtr = newBuckets.ptr;
                         for (int i = 0, len = hashSet.lastIndex; i < len; i += 2) {
                             var slotPtr = slotsPtr + i;
 
-                            var newResizeIndex   = (*slotPtr - 1) & newCapacityMinusOne;
+                            var newResizeIndex = (*slotPtr - 1) & newCapacityMinusOne;
                             var newCurrentBucket = bucketsPtr + newResizeIndex;
 
                             *(slotPtr + 1) = *newCurrentBucket - 1;
@@ -52,23 +50,26 @@ namespace Scellecs.Morpeh.Collections {
                         }
                     }
 
-                    hashSet.buckets          = newBuckets;
+                    hashSet.buckets.Dispose();
+
+                    hashSet.buckets = newBuckets;
                     hashSet.capacityMinusOne = newCapacityMinusOne;
-                    hashSet.capacity         = newCapacity;
+                    hashSet.capacity = newCapacity;
 
                     rem = value & newCapacityMinusOne;
                 }
 
-                newIndex          =  hashSet.lastIndex;
+                newIndex = hashSet.lastIndex;
                 hashSet.lastIndex += 2;
             }
 
-            fixed (int* slotsPtr = &hashSet.slots[0])
-            fixed (int* bucketsPtr = &hashSet.buckets[0]) {
+            {
+                var slotsPtr = hashSet.slots.ptr;
+                var bucketsPtr = hashSet.buckets.ptr;
                 var bucket = bucketsPtr + rem;
-                var slot   = slotsPtr + newIndex;
+                var slot = slotsPtr + newIndex;
 
-                *slot       = value + 1;
+                *slot = value + 1;
                 *(slot + 1) = *bucket - 1;
 
                 *bucket = newIndex + 1;
@@ -80,33 +81,32 @@ namespace Scellecs.Morpeh.Collections {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Remove(this IntHashSet hashSet, in int value) {
-            fixed (int* slotsPtr = &hashSet.slots[0])
-            fixed (int* bucketsPtr = &hashSet.buckets[0]) {
+            {
+                var slotsPtr = hashSet.slots.ptr;
+                var bucketsPtr = hashSet.buckets.ptr;
                 var rem = value & hashSet.capacityMinusOne;
 
                 int next;
                 var num = -1;
 
                 for (var i = *(bucketsPtr + rem) - 1; i >= 0; i = next) {
-                    var slot     = slotsPtr + i;
+                    var slot = slotsPtr + i;
                     var slotNext = slot + 1;
 
                     if (*slot - 1 == value) {
                         if (num < 0) {
                             *(bucketsPtr + rem) = *slotNext + 1;
-                        }
-                        else {
+                        } else {
                             *(slotsPtr + num + 1) = *slotNext;
                         }
 
-                        *slot     = -1;
+                        *slot = -1;
                         *slotNext = hashSet.freeIndex;
 
                         if (--hashSet.length == 0) {
                             hashSet.lastIndex = 0;
                             hashSet.freeIndex = -1;
-                        }
-                        else {
+                        } else {
                             hashSet.freeIndex = i;
                         }
 
@@ -114,7 +114,7 @@ namespace Scellecs.Morpeh.Collections {
                     }
 
                     next = *slotNext;
-                    num  = i;
+                    num = i;
                 }
 
                 return false;
@@ -123,7 +123,8 @@ namespace Scellecs.Morpeh.Collections {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void CopyTo(this IntHashSet hashSet, int[] array) {
-            fixed (int* slotsPtr = &hashSet.slots[0]) {
+            {
+                var slotsPtr = hashSet.slots.ptr;
                 var num = 0;
                 for (int i = 0, li = hashSet.lastIndex, len = hashSet.length; i < li && num < len; ++i) {
                     var v = *(slotsPtr + i) - 1;
@@ -139,8 +140,9 @@ namespace Scellecs.Morpeh.Collections {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Has(this IntHashSet hashSet, in int key) {
-            fixed (int* slotsPtr = &hashSet.slots[0])
-            fixed (int* bucketsPtr = &hashSet.buckets[0]) {
+            {
+                var slotsPtr = hashSet.slots.ptr;
+                var bucketsPtr = hashSet.buckets.ptr;
                 var rem = key & hashSet.capacityMinusOne;
 
                 int next;
@@ -163,10 +165,10 @@ namespace Scellecs.Morpeh.Collections {
                 return;
             }
 
-            Array.Clear(hashSet.slots, 0, hashSet.lastIndex);
-            Array.Clear(hashSet.buckets, 0, hashSet.capacityMinusOne);
+            hashSet.slots.Clear();
+            hashSet.buckets.Clear();
             hashSet.lastIndex = 0;
-            hashSet.length    = 0;
+            hashSet.length = 0;
             hashSet.freeIndex = -1;
         }
     }
