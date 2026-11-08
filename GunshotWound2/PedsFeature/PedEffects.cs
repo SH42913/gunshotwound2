@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.PedsFeature {
+namespace GunshotWound2.PedsFeature {
     using System;
     using System.Runtime.InteropServices;
     using GTA;

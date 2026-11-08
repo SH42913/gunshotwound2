@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.HitDetection {
+namespace GunshotWound2.HitDetection {
     using Scellecs.Morpeh;
 
     public static class DetectHitFeature {

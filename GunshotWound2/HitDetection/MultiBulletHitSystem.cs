@@ -1,12 +1,9 @@
 namespace GunshotWound2.HitDetection {
     using System;
-    using Configs;
     using GTA.Native;
     using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class MultiBulletHitSystem : ISystem {
         private readonly SharedData sharedData;

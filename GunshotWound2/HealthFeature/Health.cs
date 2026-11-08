@@ -1,6 +1,7 @@
-﻿namespace GunshotWound2.HealthFeature {
+namespace GunshotWound2.HealthFeature {
     using System;
     using System.Collections.Generic;
+    using Configs;
     using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
@@ -15,9 +16,9 @@
         public bool isDead;
 
         public float bleedingHealRate;
-        public Entity bleedingToBandage;
-        public Entity mostDangerousBleeding;
-        public HashSet<Entity> bleedingWounds;
+        public EcsEntity bleedingToBandage;
+        public EcsEntity mostDangerousBleeding;
+        public HashSet<EcsEntity> bleedingWounds;
         public Notifier.Color statusColor;
     }
 
@@ -42,7 +43,7 @@
         }
 
         public static float Percent(this in Health health, in ConvertedPed convertedPed) {
-            return (float)convertedPed.TotalHealth() / Configs.WoundConfig.ConvertHealthFromNative(health.max);
+            return (float)convertedPed.TotalHealth() / WoundConfig.ConvertHealthFromNative(health.max);
         }
 
         public static bool IsAlive(this in Health health) {

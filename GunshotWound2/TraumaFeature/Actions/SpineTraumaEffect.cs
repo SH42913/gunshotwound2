@@ -1,10 +1,9 @@
-﻿namespace GunshotWound2.TraumaFeature {
+namespace GunshotWound2.TraumaFeature {
     using Configs;
     using GTA;
     using GTA.NaturalMotion;
     using PedsFeature;
     using Utils;
-    using EcsEntity = Scellecs.Morpeh.Entity;
 
     public class SpineTraumaEffect : BaseTraumaEffect {
         public override string PlayerMessage => sharedData.localeConfig.PlayerNervesCritMessage;

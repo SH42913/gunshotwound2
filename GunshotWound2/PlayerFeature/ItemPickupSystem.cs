@@ -14,7 +14,7 @@ namespace GunshotWound2.PlayerFeature {
         private Filter pedsWithInventory;
         private Filter justHealed;
 
-        public Scellecs.Morpeh.World World { get; set; }
+        public EcsWorld World { get; set; }
 
         public ItemPickupSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -33,7 +33,7 @@ namespace GunshotWound2.PlayerFeature {
         }
 
         private void CheckMedkitPickup() {
-            foreach (Scellecs.Morpeh.Entity entity in justHealed) {
+            foreach (EcsEntity entity in justHealed) {
                 const float medkitRange = 2f;
 
                 ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
@@ -59,7 +59,7 @@ namespace GunshotWound2.PlayerFeature {
         }
 
         private void CheckPedInSpecialVehicle() {
-            foreach (Scellecs.Morpeh.Entity entity in pedsWithInventory) {
+            foreach (EcsEntity entity in pedsWithInventory) {
                 ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
                 if (convertedPed.isPlayer && !Game.Player.CanControlCharacter) {
                     continue;

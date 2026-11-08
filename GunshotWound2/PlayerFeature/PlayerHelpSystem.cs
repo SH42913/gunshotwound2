@@ -11,8 +11,6 @@ namespace GunshotWound2.PlayerFeature {
     using Scellecs.Morpeh;
     using Utils;
     using Weighted_Randomizer;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class PlayerHelpSystem : ILateSystem {
         private readonly SharedData sharedData;

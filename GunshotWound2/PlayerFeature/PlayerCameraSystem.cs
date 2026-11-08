@@ -10,7 +10,7 @@ namespace GunshotWound2.PlayerFeature {
 
         private bool wasHeavyBleed;
 
-        public World World { get; set; }
+        public EcsWorld World { get; set; }
 
         public PlayerCameraSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -20,7 +20,7 @@ namespace GunshotWound2.PlayerFeature {
 
         public void OnUpdate(float deltaTime) {
             CameraService cameraService = sharedData.cameraService;
-            if (sharedData.TryGetPlayer(out Entity entity)) {
+            if (sharedData.TryGetPlayer(out EcsEntity entity)) {
                 ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>(out bool exist);
                 cameraService.aimingShakeMult = sharedData.mainConfig.playerConfig.AimShakingMult;
                 cameraService.SetAimingShake(exist && convertedPed.thisPed.IsAiming);

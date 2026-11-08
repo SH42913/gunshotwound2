@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.PlayerFeature {
+namespace GunshotWound2.PlayerFeature {
     using System;
     using GTA;
     using PainFeature;
@@ -7,7 +7,7 @@
 
     public sealed class AdrenalineSystem : ILateSystem {
         private readonly SharedData sharedData;
-        public Scellecs.Morpeh.World World { get; set; }
+        public EcsWorld World { get; set; }
 
         public AdrenalineSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -21,7 +21,7 @@
                 return;
             }
 
-            if (!sharedData.TryGetPlayer(out Scellecs.Morpeh.Entity playerEntity)) {
+            if (!sharedData.TryGetPlayer(out EcsEntity playerEntity)) {
                 return;
             }
 

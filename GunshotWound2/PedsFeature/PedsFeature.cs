@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.PedsFeature {
+namespace GunshotWound2.PedsFeature {
     using Compat;
     using Configs;
     using GTA;
@@ -6,7 +6,6 @@
     using PainFeature;
     using Scellecs.Morpeh;
     using Utils;
-    using EcsEntity = Scellecs.Morpeh.Entity;
 
     public static class PedsFeature {
         public static void Create(SystemsGroup systemsGroup, SharedData sharedData) {
@@ -27,8 +26,8 @@
 
 #if DEBUG
             sharedData.cheatListener.Register("GSW_TEST_RAGDOLL", () => {
-                if (sharedData.TryGetPlayer(out EcsEntity entity)) {
-                    ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
+                if (sharedData.TryGetPlayer(out EcsEntity playerEntity)) {
+                    ref ConvertedPed convertedPed = ref playerEntity.GetComponent<ConvertedPed>();
                     if (convertedPed.thisPed.IsRagdoll) {
                         convertedPed.ResetRagdoll();
                     } else {
@@ -46,22 +45,22 @@
         }
 
         private static void CheckClosestPed(SharedData sharedData) {
-            if (sharedData.TryGetClosestPedEntity(out _, out EcsEntity entity)) {
-                sharedData.pedStateService.Check(entity);
+            if (sharedData.TryGetClosestPedEntity(out _, out EcsEntity pedEntity)) {
+                sharedData.pedStateService.Check(pedEntity);
             }
         }
 
         private static void BandageClosestPed(SharedData sharedData) {
             if (sharedData.TryGetPlayer(out EcsEntity playerEntity)
-                && sharedData.TryGetClosestPedEntity(out _, out EcsEntity entity)) {
-                HealthFeature.StartBandaging(entity, medic: playerEntity);
+                && sharedData.TryGetClosestPedEntity(out _, out EcsEntity pedEntity)) {
+                HealthFeature.StartBandaging(pedEntity, medic: playerEntity);
             }
         }
 
         private static void PainkillersToClosestPed(SharedData sharedData) {
             if (sharedData.TryGetPlayer(out EcsEntity playerEntity)
-                && sharedData.TryGetClosestPedEntity(out _, out EcsEntity entity)) {
-                PainFeature.UsePainkillers(entity, medic: playerEntity);
+                && sharedData.TryGetClosestPedEntity(out _, out EcsEntity pedEntity)) {
+                PainFeature.UsePainkillers(pedEntity, medic: playerEntity);
             }
         }
     }

@@ -1,8 +1,6 @@
 namespace GunshotWound2.PedsFeature {
     using GTA;
     using Scellecs.Morpeh;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class FacialIdleAnimSystem : ILateSystem {
         private readonly SharedData sharedData;

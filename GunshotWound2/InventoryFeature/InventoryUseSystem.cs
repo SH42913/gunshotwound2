@@ -5,8 +5,6 @@ namespace GunshotWound2.InventoryFeature {
     using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class InventoryUseSystem : ISystem {
         private static int ERROR_POST;

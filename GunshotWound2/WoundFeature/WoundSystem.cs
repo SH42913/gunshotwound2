@@ -1,4 +1,4 @@
-﻿// #define DEBUG_EVERY_FRAME
+// #define DEBUG_EVERY_FRAME
 
 namespace GunshotWound2.WoundFeature {
     using System;
@@ -14,8 +14,6 @@ namespace GunshotWound2.WoundFeature {
     using Scellecs.Morpeh;
     using TraumaFeature;
     using Utils;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class WoundSystem : ILateSystem {
         private readonly SharedData sharedData;

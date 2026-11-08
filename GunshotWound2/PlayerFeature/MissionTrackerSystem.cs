@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.PlayerFeature {
+namespace GunshotWound2.PlayerFeature {
     using System;
     using GTA;
     using GTA.UI;
@@ -8,7 +8,7 @@
         private readonly SharedData sharedData;
         private bool lastMissionActive;
 
-        public Scellecs.Morpeh.World World { get; set; }
+        public EcsWorld World { get; set; }
 
         public MissionTrackerSystem(SharedData sharedData) {
             this.sharedData = sharedData;

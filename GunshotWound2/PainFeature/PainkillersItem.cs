@@ -2,9 +2,9 @@ namespace GunshotWound2.PainFeature {
     using GTA;
     using InventoryFeature;
     using PedsFeature;
+    using PlayerFeature;
     using Scellecs.Morpeh;
     using Utils;
-    using EcsEntity = Scellecs.Morpeh.Entity;
 
     public static class PainkillersItem {
         public const string KEY = "Painkillers";
@@ -58,7 +58,7 @@ namespace GunshotWound2.PainFeature {
             ref ConvertedPed convertedTarget = ref target.GetComponent<ConvertedPed>();
             if (ItemTemplate.IsAbleToInteract(convertedOwner, convertedTarget)) {
                 if (convertedOwner.isPlayer && convertedOwner.thisPed.CurrentVehicle.IsValid()) {
-                    PlayerFeature.PlayerEffects.DisableVehicleControlThisFrame();
+                    PlayerEffects.DisableVehicleControlThisFrame();
                 }
 
                 message = null;

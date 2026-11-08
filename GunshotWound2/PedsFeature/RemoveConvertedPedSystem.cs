@@ -1,10 +1,8 @@
-﻿// #define DEBUG_EVERY_FRAME
+// #define DEBUG_EVERY_FRAME
 
 namespace GunshotWound2.PedsFeature {
     using GTA;
     using Scellecs.Morpeh;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class RemoveConvertedPedSystem : ICleanupSystem {
         private readonly SharedData sharedData;

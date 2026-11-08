@@ -1,9 +1,7 @@
-﻿namespace GunshotWound2.PedsFeature {
+namespace GunshotWound2.PedsFeature {
     using GTA;
     using PlayerFeature;
     using Scellecs.Morpeh;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class PedMovementSystem : ILateSystem {
         private const float DEFAULT_MOVE_RATE = 1f;

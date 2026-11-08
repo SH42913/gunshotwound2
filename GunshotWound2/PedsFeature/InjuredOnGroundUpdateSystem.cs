@@ -3,8 +3,6 @@ namespace GunshotWound2.PedsFeature {
     using GTA.NaturalMotion;
     using Scellecs.Morpeh;
     using Utils;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class InjuredOnGroundUpdateSystem : ILateSystem {
         private readonly SharedData sharedData;

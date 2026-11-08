@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.WoundFeature {
+namespace GunshotWound2.WoundFeature {
     using Configs;
     using HitDetection;
     using PedsFeature;
@@ -12,7 +12,7 @@
 
 #if DEBUG
             sharedData.cheatListener.Register("GSW_RANDOM_HIT", () => {
-                if (sharedData.TryGetPlayer(out Entity entity)) {
+                if (sharedData.TryGetPlayer(out EcsEntity entity)) {
                     WeaponConfig weaponConfig = sharedData.mainConfig.weaponConfig;
                     BodyPartConfig bodyPartConfig = sharedData.mainConfig.bodyPartConfig;
                     BodyPartConfig.BodyPart bodyPart = sharedData.random.Next(bodyPartConfig.BodyParts);

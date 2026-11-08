@@ -1,4 +1,4 @@
-﻿// #define DEBUG_EVERY_FRAME
+// #define DEBUG_EVERY_FRAME
 
 namespace GunshotWound2.HitDetection {
     using System;
@@ -8,8 +8,6 @@ namespace GunshotWound2.HitDetection {
     using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class BodyHitSystem : ISystem {
         private readonly SharedData sharedData;
@@ -52,7 +50,9 @@ namespace GunshotWound2.HitDetection {
 
 #if DEBUG
                 string random = useRandomBone ? "(random)" : "";
-                var message = $"Damaged body part is {hitData.bodyPart.Key}{random}, bone {hitData.damagedBone.Name} at {convertedPed.name}";
+                var message =
+                        $"Damaged body part is {hitData.bodyPart.Key}{random}, bone {hitData.damagedBone.Name} at {convertedPed.name}";
+
                 sharedData.logger.WriteInfo(message);
 #endif
 

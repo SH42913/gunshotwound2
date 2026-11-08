@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.StatusFeature {
+namespace GunshotWound2.StatusFeature {
     using Scellecs.Morpeh;
 
     public static class StatusFeature {

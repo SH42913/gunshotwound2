@@ -1,9 +1,10 @@
-﻿// ReSharper disable InconsistentNaming
+// ReSharper disable InconsistentNaming
 
 namespace GunshotWound2.Configs {
     using System;
     using System.IO;
     using System.Xml.Linq;
+    using GTA;
     using Utils;
 
     public sealed class MainConfig {
@@ -133,7 +134,7 @@ namespace GunshotWound2.Configs {
                 return;
             }
 
-            switch (GTA.Game.Language) {
+            switch (Game.Language) {
                 case GTA.Language.American:          Language = "EN"; break;
                 case GTA.Language.French:            Language = "FR"; break;
                 case GTA.Language.German:            Language = "DE"; break;

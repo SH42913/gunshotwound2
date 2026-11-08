@@ -1,9 +1,6 @@
-﻿namespace GunshotWound2.TraumaFeature {
+namespace GunshotWound2.TraumaFeature {
     using Configs;
-    using HealthFeature;
-    using PainFeature;
     using PedsFeature;
-    using Scellecs.Morpeh;
 
     public abstract class BaseTraumaEffect {
         protected readonly SharedData sharedData;
@@ -16,10 +13,10 @@
             this.sharedData = sharedData;
         }
 
-        public abstract void Apply(Entity entity, in BodyPartConfig.BodyPart bodyPart, ref ConvertedPed convertedPed);
-        public abstract void Repeat(Entity entity, ref ConvertedPed convertedPed);
-        public abstract void EveryFrame(Entity entity, ref ConvertedPed convertedPed);
-        public abstract void Cancel(Entity entity, ref ConvertedPed convertedPed);
+        public abstract void Apply(EcsEntity entity, in BodyPartConfig.BodyPart bodyPart, ref ConvertedPed convertedPed);
+        public abstract void Repeat(EcsEntity entity, ref ConvertedPed convertedPed);
+        public abstract void EveryFrame(EcsEntity entity, ref ConvertedPed convertedPed);
+        public abstract void Cancel(EcsEntity entity, ref ConvertedPed convertedPed);
 
         protected void ShowRunningWarningMessage(in ConvertedPed convertedPed) {
             if (convertedPed.isPlayer) {

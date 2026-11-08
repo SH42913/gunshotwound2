@@ -1,10 +1,10 @@
-﻿namespace GunshotWound2.PlayerFeature {
+namespace GunshotWound2.PlayerFeature {
     using System.Collections.Generic;
     using GTA;
+    using HealthFeature;
     using PainFeature;
     using Scellecs.Morpeh;
     using Utils;
-    using EcsEntity = Scellecs.Morpeh.Entity;
 
     public static class PlayerFeature {
         public static void Create(SystemsGroup systemsGroup, SharedData sharedData) {
@@ -25,7 +25,7 @@
 
             sharedData.inputListener.RegisterHotkey(sharedData.mainConfig.BandagesSelfKey, () => {
                 if (sharedData.TryGetPlayer(out EcsEntity playerEntity)) {
-                    HealthFeature.HealthFeature.StartBandaging(playerEntity);
+                    HealthFeature.StartBandaging(playerEntity);
                 }
             });
 

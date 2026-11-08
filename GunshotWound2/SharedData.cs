@@ -1,15 +1,18 @@
-﻿namespace GunshotWound2 {
+namespace GunshotWound2 {
+    using System;
     using Configs;
+    using GTA;
     using HealthFeature;
     using Scellecs.Morpeh;
     using Services;
     using Utils;
+    using Weighted_Randomizer;
 
     public sealed class SharedData {
         public readonly string scriptPath;
         public readonly ILogger logger;
-        public readonly System.Random random;
-        public readonly Weighted_Randomizer.IWeightedRandomizer<int> weightRandom;
+        public readonly Random random;
+        public readonly IWeightedRandomizer<int> weightRandom;
         public readonly Notifier notifier;
         public readonly InputListener inputListener;
         public readonly CheatListener cheatListener;
@@ -23,7 +26,7 @@
         public readonly MainConfig mainConfig;
         public readonly LocaleConfig localeConfig;
 
-        public Entity playerEntity;
+        public EcsEntity playerEntity;
         public float deltaTime;
         public int deltaTimeInMs;
 
@@ -31,8 +34,8 @@
             this.scriptPath = scriptPath;
             this.logger = logger;
 
-            random = new System.Random();
-            weightRandom = new Weighted_Randomizer.StaticWeightedRandomizer<int>();
+            random = new Random();
+            weightRandom = new StaticWeightedRandomizer<int>();
             notifier = new Notifier();
             inputListener = new InputListener();
             cheatListener = new CheatListener(this.logger);
@@ -49,13 +52,13 @@
             playerEntity = null;
         }
 
-        public bool TryGetPlayer(out Entity player) {
+        public bool TryGetPlayer(out EcsEntity player) {
             player = playerEntity;
             return !player.IsNullOrDisposed();
         }
 
         public bool PlayerIsInitialized() {
-            if (TryGetPlayer(out Entity entity) && entity.GetComponent<Health>().IsAlive()) {
+            if (TryGetPlayer(out EcsEntity entity) && entity.GetComponent<Health>().IsAlive()) {
                 return PlayerCanSeeNotification();
             } else {
                 return false;
@@ -63,15 +66,15 @@
         }
 
         public bool PlayerCanSeeNotification() {
-            if (GTA.Game.IsCutsceneActive || !GTA.GameplayCamera.IsRendering) {
+            if (Game.IsCutsceneActive || !GameplayCamera.IsRendering) {
                 return false;
             }
 
-            GTA.Player player = GTA.Game.Player;
+            Player player = Game.Player;
             return player.IsPlaying && player.CanControlCharacter;
         }
 
-        public bool TryGetClosestPedEntity(out GTA.Ped closestPed, out Entity closestPedEntity) {
+        public bool TryGetClosestPedEntity(out Ped closestPed, out EcsEntity closestPedEntity) {
             if (GTAHelpers.TryGetClosestPed(out closestPed, mainConfig.pedsConfig.ClosestPedRange)) {
                 return worldService.TryGetConverted(closestPed, out closestPedEntity);
             }

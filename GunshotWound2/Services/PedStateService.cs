@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.Services {
+namespace GunshotWound2.Services {
     using System.Collections.Generic;
     using System.Text;
     using Configs;
@@ -55,14 +55,14 @@
             this.localeConfig = localeConfig;
         }
 
-        public void Check(Entity pedEntity) {
+        public void Check(EcsEntity pedEntity) {
             notifier.HideAllLast();
 
             string message = BuildString(pedEntity);
             lastPost = notifier.ReplaceOne(message, blinking: true, lastPost);
         }
 
-        public string BuildString(Entity pedEntity) {
+        public string BuildString(EcsEntity pedEntity) {
             ref ConvertedPed convertedPed = ref pedEntity.GetComponent<ConvertedPed>();
             ref Health health = ref pedEntity.GetComponent<Health>();
             ref Inventory inventory = ref pedEntity.GetComponent<Inventory>(out bool hasInventory);
@@ -135,7 +135,7 @@
             stringBuilder.SetDefaultColor();
         }
 
-        private void ShowStatus(Entity entity, ref ConvertedPed convertedPed, ref Health health) {
+        private void ShowStatus(EcsEntity entity, ref ConvertedPed convertedPed, ref Health health) {
             string statusType = convertedPed.isPlayer
                     ? localeConfig.YourStatus
                     : convertedPed.isMale
@@ -191,7 +191,7 @@
             stringBuilder.SetDefaultColor();
         }
 
-        private void ShowPain(Entity pedEntity, in Health health) {
+        private void ShowPain(EcsEntity pedEntity, in Health health) {
             ref Pain pain = ref pedEntity.GetComponent<Pain>();
             if (!pain.HasPain() || health.isDead) {
                 return;
@@ -220,7 +220,7 @@
             stringBuilder.SetDefaultColor();
         }
 
-        private void ShowPainkillersEffect(Entity pedEntity, in Health health) {
+        private void ShowPainkillersEffect(EcsEntity pedEntity, in Health health) {
             if (health.isDead) {
                 return;
             }
@@ -237,7 +237,7 @@
             stringBuilder.SetDefaultColor();
         }
 
-        private void ShowBleedingWounds(Entity pedEntity,
+        private void ShowBleedingWounds(EcsEntity pedEntity,
                                         ref ConvertedPed convertedPed,
                                         ref Health health,
                                         ref CurrentlyUsingItem currentlyUsing) {
@@ -251,7 +251,7 @@
             stringBuilder.Append(localeConfig.Wounds);
             stringBuilder.Append(':');
 
-            foreach (Entity bleedingEntity in health.bleedingWounds) {
+            foreach (EcsEntity bleedingEntity in health.bleedingWounds) {
                 ref Bleeding bleeding = ref bleedingEntity.GetComponent<Bleeding>();
                 if (bleeding.isProcessed) {
                     bool isBleedingToBandage = health.bleedingToBandage == bleedingEntity;

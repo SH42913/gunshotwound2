@@ -1,11 +1,9 @@
-﻿// #define DEBUG_EVERY_FRAME
+// #define DEBUG_EVERY_FRAME
 
 namespace GunshotWound2.PedsFeature {
     using GTA;
     using GTA.NaturalMotion;
     using Scellecs.Morpeh;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class RagdollSystem : ILateSystem {
         public const int PERMANENT_RAGDOLL_TIME = -1;

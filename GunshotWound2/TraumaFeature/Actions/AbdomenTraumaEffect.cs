@@ -1,10 +1,9 @@
-﻿namespace GunshotWound2.TraumaFeature {
+namespace GunshotWound2.TraumaFeature {
     using Configs;
     using GTA;
     using HealthFeature;
     using PedsFeature;
     using Utils;
-    using EcsEntity = Scellecs.Morpeh.Entity;
 
     public sealed class AbdomenTraumaEffect : BaseTraumaEffect {
         private const float NEW_BLEEDING_CHANCE = 0.25f / 100f;
@@ -22,6 +21,7 @@
             convertedPed.thisPed.PlayAmbientSpeech("PAIN_RAPIDS", SpeechModifier.InterruptShouted);
 
             convertedPed.RequestRagdoll(4000);
+
             // convertedPed.nmMessages = NM_MESSAGES; TODO restore as nmHelper
         }
 

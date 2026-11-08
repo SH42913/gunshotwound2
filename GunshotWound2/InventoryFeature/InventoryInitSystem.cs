@@ -10,7 +10,7 @@ namespace GunshotWound2.InventoryFeature {
         private Stash<Inventory> inventoryStash;
         private Filter justConvertedPeds;
 
-        public World World { get; set; }
+        public EcsWorld World { get; set; }
 
         public InventoryInitSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -23,7 +23,7 @@ namespace GunshotWound2.InventoryFeature {
         }
 
         public void OnUpdate(float deltaTime) {
-            foreach (Entity entity in justConvertedPeds) {
+            foreach (EcsEntity entity in justConvertedPeds) {
                 ref ConvertedPed convertedPed = ref convertedStash.Get(entity);
                 if (!convertedPed.isPlayer) {
                     continue;

@@ -1,4 +1,5 @@
-﻿namespace GunshotWound2.Utils {
+namespace GunshotWound2.Utils {
+    using System;
     using System.Globalization;
     using System.Windows.Forms;
     using System.Xml.Linq;
@@ -25,7 +26,7 @@
 
         private static Keys? GetKey(this XElement node, string attributeName) {
             string value = node.GetString(attributeName);
-            return string.IsNullOrEmpty(value) ? null : (Keys?)System.Enum.Parse(typeof(Keys), value, ignoreCase: true);
+            return string.IsNullOrEmpty(value) ? null : (Keys?)Enum.Parse(typeof(Keys), value, ignoreCase: true);
         }
 
         public static InputListener.Scheme GetKeyScheme(this XElement node) {

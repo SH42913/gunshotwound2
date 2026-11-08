@@ -1,12 +1,11 @@
-﻿// #define DEBUG_EVERY_FRAME
+// #define DEBUG_EVERY_FRAME
 
 namespace GunshotWound2.HealthFeature {
     using System;
     using System.Collections.Generic;
+    using GTA;
     using PedsFeature;
     using Scellecs.Morpeh;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class BleedingSystem : ILateSystem {
         private readonly SharedData sharedData;
@@ -70,7 +69,7 @@ namespace GunshotWound2.HealthFeature {
         }
 
         private void UpdateBleedingWounds(float deltaTime) {
-            foreach (Entity entity in bleedingWounds) {
+            foreach (EcsEntity entity in bleedingWounds) {
                 ref Bleeding bleeding = ref bleedingStash.Get(entity);
                 if (bleeding.target.IsNullOrDisposed()) {
                     World.RemoveEntity(entity);
@@ -115,16 +114,16 @@ namespace GunshotWound2.HealthFeature {
             }
         }
 
-        private void ProcessBleeding(Entity entity, ref Bleeding bleeding, ref Health health) {
-            health.bleedingWounds ??= new HashSet<Entity>(4);
+        private void ProcessBleeding(EcsEntity entity, ref Bleeding bleeding, ref Health health) {
+            health.bleedingWounds ??= new HashSet<EcsEntity>(4);
             health.bleedingWounds.Add(entity);
             health.bleedingToBandage = null;
             bleeding.isProcessed = true;
-            bleeding.processedTime = GTA.Game.GameTime;
+            bleeding.processedTime = Game.GameTime;
         }
 
         private void RefreshBleedingToBandage() {
-            foreach (Entity pedEntity in peds) {
+            foreach (EcsEntity pedEntity in peds) {
                 ref Health health = ref healthStash.Get(pedEntity);
                 if (health.bleedingToBandage.IsNullOrDisposed()) {
                     DetectBleedingToBandage(pedEntity, ref health);
@@ -132,14 +131,14 @@ namespace GunshotWound2.HealthFeature {
             }
         }
 
-        private void DetectBleedingToBandage(Entity pedEntity, ref Health health) {
+        private void DetectBleedingToBandage(EcsEntity pedEntity, ref Health health) {
             if (!health.HasBleedingWounds()) {
                 return;
             }
 
-            (Entity ent, float severity) mostDangerWound = default;
-            (Entity ent, float severity) woundToBandage = default;
-            foreach (Entity entity in health.bleedingWounds) {
+            (EcsEntity ent, float severity) mostDangerWound = default;
+            (EcsEntity ent, float severity) woundToBandage = default;
+            foreach (EcsEntity entity in health.bleedingWounds) {
                 ref Bleeding bleeding = ref bleedingStash.Get(entity);
 
                 if (mostDangerWound.ent.IsNullOrDisposed() || bleeding.severity > mostDangerWound.severity) {

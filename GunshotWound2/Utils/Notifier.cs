@@ -1,5 +1,6 @@
-﻿namespace GunshotWound2.Utils {
+namespace GunshotWound2.Utils {
     using System.Text;
+    using GTA.Native;
     using GTA.UI;
 
     public sealed class Notifier {
@@ -56,7 +57,7 @@
             }
 
             if (flushQueue) {
-                GTA.Native.Function.Call(GTA.Native.Hash.THEFEED_FLUSH_QUEUE);
+                Function.Call(Hash.THEFEED_FLUSH_QUEUE);
             }
         }
 

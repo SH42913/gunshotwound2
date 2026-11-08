@@ -1,9 +1,10 @@
-﻿namespace GunshotWound2.HealthFeature {
+namespace GunshotWound2.HealthFeature {
     using Configs;
     using GTA;
     using GTA.Native;
     using PedsFeature;
     using Scellecs.Morpeh;
+    using StatusFeature.Statuses;
     using Utils;
 
     public sealed class HealthInitSystem : ISystem {
@@ -11,7 +12,7 @@
         private Stash<ConvertedPed> convertedStash;
         private Filter justConvertedPeds;
 
-        public Scellecs.Morpeh.World World { get; set; }
+        public EcsWorld World { get; set; }
 
         public HealthInitSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -25,15 +26,15 @@
         public void OnUpdate(float deltaTime) {
             PlayerConfig playerConfig = sharedData.mainConfig.playerConfig;
             PedsConfig pedsConfig = sharedData.mainConfig.pedsConfig;
-            foreach (Scellecs.Morpeh.Entity entity in justConvertedPeds) {
+            foreach (EcsEntity entity in justConvertedPeds) {
                 ref ConvertedPed convertedPed = ref convertedStash.Get(entity);
                 Ped ped = convertedPed.thisPed;
                 ped.CanSufferCriticalHits = false;
                 ped.DiesOnLowHealth = false;
                 ped.CanWrithe = false;
 
-                ped.InjuryHealthThreshold = StatusFeature.Statuses.CriticalStatus.HEALTH_THRESHOLD;
-                ped.FatalInjuryHealthThreshold = StatusFeature.Statuses.UnconsciousStatus.HEALTH_THRESHOLD;
+                ped.InjuryHealthThreshold = CriticalStatus.HEALTH_THRESHOLD;
+                ped.FatalInjuryHealthThreshold = UnconsciousStatus.HEALTH_THRESHOLD;
 
                 ref Health health = ref entity.AddOrGetComponent<Health>();
                 health.max = convertedPed.defaultMaxHealth;

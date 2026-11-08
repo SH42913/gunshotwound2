@@ -7,8 +7,6 @@ namespace GunshotWound2.StatusFeature {
     using Scellecs.Morpeh;
     using Statuses;
     using Utils;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class PedStatusSystem : ILateSystem {
         private readonly SharedData sharedData;

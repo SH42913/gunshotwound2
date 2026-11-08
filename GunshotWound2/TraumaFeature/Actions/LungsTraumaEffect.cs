@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.TraumaFeature {
+namespace GunshotWound2.TraumaFeature {
     using Configs;
     using GTA;
     using PedsFeature;
@@ -10,7 +10,7 @@
 
         public LungsTraumaEffect(SharedData sharedData) : base(sharedData) { }
 
-        public override void Apply(Scellecs.Morpeh.Entity entity, in BodyPartConfig.BodyPart bodyPart, ref ConvertedPed convertedPed) {
+        public override void Apply(EcsEntity entity, in BodyPartConfig.BodyPart bodyPart, ref ConvertedPed convertedPed) {
             convertedPed.thisPed.PlayAmbientSpeech("COUGH", SpeechModifier.InterruptShouted);
             convertedPed.BlockSprint();
 
@@ -19,11 +19,11 @@
             }
         }
 
-        public override void Repeat(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) { }
+        public override void Repeat(EcsEntity entity, ref ConvertedPed convertedPed) { }
 
-        public override void EveryFrame(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) { }
+        public override void EveryFrame(EcsEntity entity, ref ConvertedPed convertedPed) { }
 
-        public override void Cancel(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) {
+        public override void Cancel(EcsEntity entity, ref ConvertedPed convertedPed) {
             convertedPed.UnBlockSprint();
 
             if (convertedPed.isPlayer) {

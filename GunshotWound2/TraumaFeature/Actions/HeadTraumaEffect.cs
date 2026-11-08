@@ -5,8 +5,8 @@ namespace GunshotWound2.TraumaFeature {
     using HealthFeature;
     using PedsFeature;
     using Scellecs.Morpeh;
+    using StatusFeature.Statuses;
     using Utils;
-    using EcsEntity = Scellecs.Morpeh.Entity;
 
     public sealed class HeadTraumaEffect : SpineTraumaEffect {
         private static readonly Message STIFFNESS_MESSAGE = new("setStiffness");
@@ -28,14 +28,14 @@ namespace GunshotWound2.TraumaFeature {
             string speech;
             if (convertedPed.isPlayer) {
                 sharedData.cameraService.SetHeadInjuryEffect(true);
-                speech = sharedData.random.Next(StatusFeature.Statuses.UnconsciousStatus.PLAYER_DEATH_AMBIENT);
+                speech = sharedData.random.Next(UnconsciousStatus.PLAYER_DEATH_AMBIENT);
             } else {
-                speech = sharedData.random.Next(StatusFeature.Statuses.UnconsciousStatus.NON_PLAYER_DEATH_AMBIENT);
+                speech = sharedData.random.Next(UnconsciousStatus.NON_PLAYER_DEATH_AMBIENT);
             }
 
             ped.PlayAmbientSpeech(speech);
 
-            string facialAnimName = sharedData.random.Next(StatusFeature.Statuses.UnconsciousStatus.DEATH_MOODS);
+            string facialAnimName = sharedData.random.Next(UnconsciousStatus.DEATH_MOODS);
             convertedPed.RequestFacialIdleAnim(facialAnimName);
             convertedPed.facialIdleAnimLock = true;
         }

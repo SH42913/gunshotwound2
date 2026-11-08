@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.Utils {
+namespace GunshotWound2.Utils {
     using System;
     using System.Collections.Generic;
     using Weighted_Randomizer;

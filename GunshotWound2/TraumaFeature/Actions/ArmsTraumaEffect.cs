@@ -1,8 +1,8 @@
-﻿namespace GunshotWound2.TraumaFeature {
+namespace GunshotWound2.TraumaFeature {
     using Configs;
+    using GTA;
     using GTA.NaturalMotion;
     using PedsFeature;
-    using Scellecs.Morpeh;
 
     public sealed class ArmsTraumaEffect : BaseTraumaEffect {
         private const float SHAKE_AMPLITUDE = 1f;
@@ -14,9 +14,9 @@
 
         public ArmsTraumaEffect(SharedData sharedData) : base(sharedData) { }
 
-        public override void Apply(Entity entity, in BodyPartConfig.BodyPart bodyPart, ref ConvertedPed convertedPed) {
+        public override void Apply(EcsEntity entity, in BodyPartConfig.BodyPart bodyPart, ref ConvertedPed convertedPed) {
             convertedPed.hasHandsTremor = true;
-            convertedPed.thisPed.PlayAmbientSpeech("DEATH_HIGH_MEDIUM", GTA.SpeechModifier.InterruptShouted);
+            convertedPed.thisPed.PlayAmbientSpeech("DEATH_HIGH_MEDIUM", SpeechModifier.InterruptShouted);
 
             if (!convertedPed.isPlayer) {
                 convertedPed.combatPerformanceMult = 0.1f;
@@ -40,11 +40,11 @@
             }
         }
 
-        public override void Repeat(Entity entity, ref ConvertedPed convertedPed) { }
+        public override void Repeat(EcsEntity entity, ref ConvertedPed convertedPed) { }
 
-        public override void EveryFrame(Entity entity, ref ConvertedPed convertedPed) { }
+        public override void EveryFrame(EcsEntity entity, ref ConvertedPed convertedPed) { }
 
-        public override void Cancel(Entity entity, ref ConvertedPed convertedPed) {
+        public override void Cancel(EcsEntity entity, ref ConvertedPed convertedPed) {
             convertedPed.hasHandsTremor = false;
             if (convertedPed.isPlayer) {
                 sharedData.cameraService.aimingShakeCritType = false;

@@ -6,8 +6,6 @@ namespace GunshotWound2.WoundFeature {
     using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class WoundHitDataSystem : ILateSystem {
         // ReSharper disable once NotAccessedField.Local

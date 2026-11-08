@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.PlayerFeature {
+namespace GunshotWound2.PlayerFeature {
     using System;
     using GTA;
     using PedsFeature;
@@ -10,7 +10,7 @@
         private Stash<ConvertedPed> pedStash;
         private Filter newPeds;
 
-        public Scellecs.Morpeh.World World { get; set; }
+        public EcsWorld World { get; set; }
 
         public PlayerDetectSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -34,7 +34,7 @@
         }
 
         private void MarkNewPedsAsPlayer() {
-            foreach (Scellecs.Morpeh.Entity entity in newPeds) {
+            foreach (EcsEntity entity in newPeds) {
                 ref ConvertedPed convertedPed = ref pedStash.Get(entity);
                 if (convertedPed.thisPed.IsPlayer) {
                     SetPlayer(entity, ref convertedPed);
@@ -43,7 +43,7 @@
         }
 
         private void RemoveMarkerIfDifferentPed() {
-            if (sharedData.TryGetPlayer(out Scellecs.Morpeh.Entity entity)) {
+            if (sharedData.TryGetPlayer(out EcsEntity entity)) {
                 ref ConvertedPed convertedPed = ref pedStash.Get(entity);
 
                 // !woundedPed.ThisPed.Position.Equals(playerPed.Position)
@@ -53,7 +53,7 @@
             }
         }
 
-        private void SetPlayer(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) {
+        private void SetPlayer(EcsEntity entity, ref ConvertedPed convertedPed) {
             convertedPed.isPlayer = true;
             entity.SetMarker<JustConvertedEvent>();
             sharedData.playerEntity = entity;
@@ -62,7 +62,7 @@
 #endif
         }
 
-        private void UnSetPlayer(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) {
+        private void UnSetPlayer(EcsEntity entity, ref ConvertedPed convertedPed) {
             convertedPed.isPlayer = false;
             entity.SetMarker<JustConvertedEvent>();
             sharedData.playerEntity = null;
@@ -77,7 +77,7 @@
             }
 
             Ped playerPed = Game.Player.Character;
-            if (sharedData.worldService.TryGetConverted(playerPed, out Scellecs.Morpeh.Entity entity)) {
+            if (sharedData.worldService.TryGetConverted(playerPed, out EcsEntity entity)) {
                 ref ConvertedPed convertedPed = ref pedStash.Get(entity);
                 SetPlayer(entity, ref convertedPed);
             } else if (playerPed.IsAlive) {

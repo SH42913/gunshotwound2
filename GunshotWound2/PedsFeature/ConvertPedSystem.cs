@@ -1,12 +1,10 @@
-﻿namespace GunshotWound2.PedsFeature {
+namespace GunshotWound2.PedsFeature {
     using System;
     using Configs;
     using GTA;
     using Scellecs.Morpeh;
     using Services;
     using Utils;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class ConvertPedSystem : ISystem {
         private readonly SharedData sharedData;
@@ -35,9 +33,9 @@
                     continue;
                 }
 
-                EcsEntity entity = World.CreateEntity();
+                EcsEntity newEntity = World.CreateEntity();
 
-                ref ConvertedPed convertedPed = ref entity.AddComponent<ConvertedPed>();
+                ref ConvertedPed convertedPed = ref newEntity.AddComponent<ConvertedPed>();
                 convertedPed.thisPed = pedToConvert;
                 convertedPed.isMale = pedToConvert.Gender == Gender.Male;
                 convertedPed.defaultMaxHealth = pedToConvert.MaxHealth;
@@ -57,8 +55,8 @@
                     pedToConvert.SetConfigFlag(PedConfigFlagToggles.DontActivateRagdollFromBulletImpact, true);
                 }
 
-                worldService.AddConverted(pedToConvert, entity);
-                entity.AddComponent<JustConvertedEvent>();
+                worldService.AddConverted(pedToConvert, newEntity);
+                newEntity.AddComponent<JustConvertedEvent>();
 
 #if PED_BLIPS
                 convertedPed.customBlip = pedToConvert.AddBlip();

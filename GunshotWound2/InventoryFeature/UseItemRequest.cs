@@ -5,6 +5,6 @@ namespace GunshotWound2.InventoryFeature {
     [Serializable]
     public struct UseItemRequest : IComponent {
         public ItemTemplate item;
-        public Entity target;
+        public EcsEntity target;
     }
 }

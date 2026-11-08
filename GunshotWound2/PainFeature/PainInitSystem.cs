@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.PainFeature {
+namespace GunshotWound2.PainFeature {
     using System;
     using Configs;
     using PedsFeature;
@@ -9,7 +9,7 @@
         private readonly SharedData sharedData;
         private Filter justConvertedPeds;
 
-        public World World { get; set; }
+        public EcsWorld World { get; set; }
 
         public PainInitSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -22,7 +22,7 @@
         public void OnUpdate(float deltaTime) {
             PlayerConfig playerConfig = sharedData.mainConfig.playerConfig;
             PedsConfig pedsConfig = sharedData.mainConfig.pedsConfig;
-            foreach (Entity entity in justConvertedPeds) {
+            foreach (EcsEntity entity in justConvertedPeds) {
                 ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
                 ref Pain pain = ref entity.AddOrGetComponent<Pain>();
                 if (convertedPed.isPlayer) {

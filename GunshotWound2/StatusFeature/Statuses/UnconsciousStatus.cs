@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.StatusFeature.Statuses {
+namespace GunshotWound2.StatusFeature.Statuses {
     using GTA;
     using PedsFeature;
     using Utils;

@@ -1,7 +1,7 @@
-﻿namespace GunshotWound2.TraumaFeature {
+namespace GunshotWound2.TraumaFeature {
     using Configs;
+    using GTA;
     using PedsFeature;
-    using Scellecs.Morpeh;
 
     public sealed class HeartTraumaEffect : BaseTraumaEffect {
         private static readonly int[] NM_MESSAGES = { 1083, }; // shotFallToKnees
@@ -12,9 +12,10 @@
 
         public HeartTraumaEffect(SharedData sharedData) : base(sharedData) { }
 
-        public override void Apply(Entity entity, in BodyPartConfig.BodyPart bodyPart, ref ConvertedPed convertedPed) {
-            convertedPed.thisPed.PlayAmbientSpeech("COUGH", GTA.SpeechModifier.InterruptShouted);
+        public override void Apply(EcsEntity entity, in BodyPartConfig.BodyPart bodyPart, ref ConvertedPed convertedPed) {
+            convertedPed.thisPed.PlayAmbientSpeech("COUGH", SpeechModifier.InterruptShouted);
             convertedPed.RequestRagdoll(6000);
+
             // convertedPed.nmMessages = NM_MESSAGES; TODO restore later as nmHelper
 
             if (convertedPed.isPlayer) {
@@ -22,11 +23,11 @@
             }
         }
 
-        public override void Repeat(Entity entity, ref ConvertedPed convertedPed) { }
+        public override void Repeat(EcsEntity entity, ref ConvertedPed convertedPed) { }
 
-        public override void EveryFrame(Entity entity, ref ConvertedPed convertedPed) { }
+        public override void EveryFrame(EcsEntity entity, ref ConvertedPed convertedPed) { }
 
-        public override void Cancel(Entity entity, ref ConvertedPed convertedPed) {
+        public override void Cancel(EcsEntity entity, ref ConvertedPed convertedPed) {
             if (convertedPed.isPlayer) {
                 sharedData.cameraService.SetHeartInjuryEffect(false);
             }

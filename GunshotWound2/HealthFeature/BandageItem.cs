@@ -2,9 +2,9 @@ namespace GunshotWound2.HealthFeature {
     using GTA;
     using InventoryFeature;
     using PedsFeature;
+    using PlayerFeature;
     using Scellecs.Morpeh;
     using Utils;
-    using EcsEntity = Scellecs.Morpeh.Entity;
 
     public static class BandageItem {
         public const string KEY = "Bandages";
@@ -13,8 +13,10 @@ namespace GunshotWound2.HealthFeature {
                                                   progressDescriptionKey: "BandagingProgress",
                                                   duration: 5f,
                                                   selfAnimation: ("move_m@_idles@shake_off", "shakeoff_1"),
-                                                  otherAnimation: ("anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer"),
-                                                  otherRagdollAnimation: ("anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer"),
+                                                  otherAnimation: (
+                                                      "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer"),
+                                                  otherRagdollAnimation: (
+                                                      "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer"),
                                                   StartAction,
                                                   ProgressAction,
                                                   FinishAction);
@@ -69,7 +71,7 @@ namespace GunshotWound2.HealthFeature {
             ref ConvertedPed convertedTarget = ref target.GetComponent<ConvertedPed>();
             if (CheckBandagingConditions(convertedTarget, convertedMedic, health)) {
                 if (convertedMedic.isPlayer && convertedMedic.thisPed.CurrentVehicle.IsValid()) {
-                    PlayerFeature.PlayerEffects.DisableVehicleControlThisFrame();
+                    PlayerEffects.DisableVehicleControlThisFrame();
                 }
 
                 message = null;

@@ -2,8 +2,6 @@ namespace GunshotWound2.PedsFeature {
     using System;
     using Configs;
     using Scellecs.Morpeh;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class PedCombatPerfSystem : ISystem {
         private readonly SharedData sharedData;

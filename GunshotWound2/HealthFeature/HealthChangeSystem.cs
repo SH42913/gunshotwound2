@@ -1,14 +1,13 @@
-﻿// #define DEBUG_EVERY_FRAME
+// #define DEBUG_EVERY_FRAME
 
 namespace GunshotWound2.HealthFeature {
     using System;
+    using Configs;
     using GTA;
     using PedsFeature;
     using PlayerFeature;
     using Scellecs.Morpeh;
     using Utils;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class HealthChangeSystem : ILateSystem {
         private readonly SharedData sharedData;
@@ -47,7 +46,7 @@ namespace GunshotWound2.HealthFeature {
                 }
 
                 int oldHealth = thisPed.Health;
-                if (health.kill || Configs.WoundConfig.ConvertHealthFromNative(oldHealth) < 0) {
+                if (health.kill || WoundConfig.ConvertHealthFromNative(oldHealth) < 0) {
                     MarkPedAsDead(entity, ref convertedPed, ref health);
                     continue;
                 }
@@ -71,7 +70,7 @@ namespace GunshotWound2.HealthFeature {
                 sharedData.logger.WriteInfo($"Changed health: {currentDiff.ToString()} to {convertedPed.name}. {healthString}");
 #endif
 
-                if (Configs.WoundConfig.ConvertHealthFromNative(newHealth) < 0) {
+                if (WoundConfig.ConvertHealthFromNative(newHealth) < 0) {
                     MarkPedAsDead(entity, ref convertedPed, ref health);
                 }
             }

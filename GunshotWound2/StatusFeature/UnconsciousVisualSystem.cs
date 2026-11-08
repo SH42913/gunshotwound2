@@ -11,8 +11,6 @@ namespace GunshotWound2.StatusFeature {
     using Utils;
     using Weighted_Randomizer;
     using WoundFeature;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class UnconsciousVisualSystem : ILateSystem {
         private const string CRAWL_ANIM_DICT = "move_injured_ground";

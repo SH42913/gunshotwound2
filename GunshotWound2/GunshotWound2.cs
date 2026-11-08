@@ -1,4 +1,4 @@
-﻿// #define GSW_PROFILING
+// #define GSW_PROFILING
 
 namespace GunshotWound2 {
     using System;
@@ -7,9 +7,9 @@ namespace GunshotWound2 {
     using System.Text;
     using System.Windows.Forms;
     using GTA;
+    using HitDetection;
     using Scellecs.Morpeh;
     using Utils;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     // ReSharper disable once UnusedType.Global
     public sealed class GunshotWound2 : Script {
@@ -182,7 +182,7 @@ namespace GunshotWound2 {
         private void RegisterSystems() {
             PedsFeature.PedsFeature.Create(commonSystems, sharedData);
             PlayerFeature.PlayerFeature.Create(commonSystems, sharedData);
-            HitDetection.DetectHitFeature.Create(commonSystems, sharedData);
+            DetectHitFeature.Create(commonSystems, sharedData);
             WoundFeature.WoundFeature.Create(commonSystems, sharedData);
             TraumaFeature.TraumaFeature.Create(commonSystems, sharedData);
             HealthFeature.HealthFeature.Create(ecsWorld, commonSystems, sharedData);

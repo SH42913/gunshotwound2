@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.HitDetection {
+namespace GunshotWound2.HitDetection {
     using System;
     using System.Collections.Generic;
     using Configs;
@@ -8,8 +8,6 @@
     using PlayerFeature;
     using Scellecs.Morpeh;
     using Utils;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class WeaponHitSystem : ISystem {
         private readonly SharedData sharedData;
@@ -264,7 +262,8 @@
             string vehicleName = possibleVehicle.DisplayName;
             float mass = possibleVehicle.HandlingData.Mass;
             float kph = relativeSpeed * 3.6f;
-            sharedData.logger.WriteInfo($"It is run over car damage by {vehicleName}, relativeSpeed:{relativeSpeed}({kph}kph), mass:{mass}");
+            sharedData.logger.WriteInfo(
+                $"It is run over car damage by {vehicleName}, relativeSpeed:{relativeSpeed}({kph}kph), mass:{mass}");
 #endif
 
             float hardHitMult = relativeSpeed / WeaponConfig.HardRunOverThreshold;

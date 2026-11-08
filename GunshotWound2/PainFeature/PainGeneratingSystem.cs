@@ -5,8 +5,6 @@ namespace GunshotWound2.PainFeature {
     using HealthFeature;
     using PedsFeature;
     using Scellecs.Morpeh;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class PainGeneratingSystem : ILateSystem {
         private readonly SharedData sharedData;

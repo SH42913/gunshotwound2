@@ -88,6 +88,7 @@
     <Compile Include="Compat\ShvdnCompat.Enhanced.cs" Condition="'$(ShvdnTarget)' == 'Enhanced'"/>
     <Compile Include="Compat\ShvdnCompat.Nightly.cs" Condition="'$(ShvdnTarget)' == 'Nightly'"/>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="GlobalUsings.cs"/>
     <Compile Include="Configs\ArmorConfig.cs" />
     <Compile Include="Configs\BodyPartConfig.cs" />
     <Compile Include="Configs\DBPContainer.cs" />

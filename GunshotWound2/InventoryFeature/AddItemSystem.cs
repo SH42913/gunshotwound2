@@ -8,7 +8,7 @@ namespace GunshotWound2.InventoryFeature {
         private readonly SharedData sharedData;
         private Filter requests;
 
-        public World World { get; set; }
+        public EcsWorld World { get; set; }
 
         public AddItemSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -19,7 +19,7 @@ namespace GunshotWound2.InventoryFeature {
         }
 
         public void OnUpdate(float deltaTime) {
-            foreach (Entity entity in requests) {
+            foreach (EcsEntity entity in requests) {
                 var request = entity.GetComponent<AddItemRequest>();
                 entity.RemoveComponent<AddItemRequest>();
 

@@ -1,5 +1,6 @@
-﻿namespace GunshotWound2.HitDetection {
+namespace GunshotWound2.HitDetection {
     using System;
+    using GTA;
     using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
@@ -15,7 +16,7 @@
             this.sharedData = sharedData;
         }
 
-        public World World { get; set; }
+        public EcsWorld World { get; set; }
 
         private bool CleanLastDamageFromPed => sharedData.mainConfig.weaponConfig.CleanLastDamageFromPed;
 
@@ -29,10 +30,10 @@
         }
 
         public void OnUpdate(float deltaTime) {
-            foreach (Entity entity in hits) {
+            foreach (EcsEntity entity in hits) {
                 ref ConvertedPed convertedPed = ref pedStash.Get(entity, out bool hasPed);
                 if (CleanLastDamageFromPed && hasPed) {
-                    GTA.Ped ped = convertedPed.thisPed;
+                    Ped ped = convertedPed.thisPed;
                     if (ped.IsValid()) {
                         ped.ClearLastWeaponDamage();
                         ped.Bones.ClearLastDamaged();

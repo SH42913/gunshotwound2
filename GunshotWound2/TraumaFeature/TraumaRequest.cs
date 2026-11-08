@@ -5,8 +5,8 @@ namespace GunshotWound2.TraumaFeature {
 
     [Serializable]
     public struct TraumaRequest : IComponent {
-        public Entity target;
-        public Entity parentBleeding;
+        public EcsEntity target;
+        public EcsEntity parentBleeding;
         public BodyPartConfig.BodyPart targetBodyPart;
     }
 }

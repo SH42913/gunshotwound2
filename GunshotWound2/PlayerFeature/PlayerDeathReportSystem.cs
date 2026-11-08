@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.PlayerFeature {
+namespace GunshotWound2.PlayerFeature {
     using System;
     using Scellecs.Morpeh;
 
@@ -15,7 +15,7 @@
             this.sharedData = sharedData;
         }
 
-        public World World { get; set; }
+        public EcsWorld World { get; set; }
 
         public void OnAwake() {
             filter = World.Filter.With<ShowPlayerDeathReportRequest>();
@@ -26,7 +26,7 @@
                 return;
             }
 
-            foreach (Entity entity in filter) {
+            foreach (EcsEntity entity in filter) {
                 ref ShowPlayerDeathReportRequest request = ref entity.GetComponent<ShowPlayerDeathReportRequest>();
                 if (!string.IsNullOrEmpty(request.report)) {
                     sharedData.notifier.HideAllLast();

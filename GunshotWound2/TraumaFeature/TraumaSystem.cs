@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.TraumaFeature {
+namespace GunshotWound2.TraumaFeature {
     using System;
     using System.Collections.Generic;
     using Configs;
@@ -19,7 +19,7 @@
         private Stash<ConvertedPed> pedStash;
         private Stash<TotallyHealedEvent> totallyHealedStash;
 
-        public World World { get; set; }
+        public EcsWorld World { get; set; }
 
         public TraumaSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -50,7 +50,7 @@
         }
 
         private void ProcessRequests() {
-            foreach (Entity entity in traumaRequests) {
+            foreach (EcsEntity entity in traumaRequests) {
                 ref TraumaRequest request = ref entity.GetComponent<TraumaRequest>();
                 if (request.target.IsNullOrDisposed()) {
                     sharedData.logger.WriteWarning("Can't find target for trauma");
@@ -71,7 +71,7 @@
         }
 
         private void UpdateActiveTraumas() {
-            foreach (Entity entity in pedsWithTraumas) {
+            foreach (EcsEntity entity in pedsWithTraumas) {
                 ref Traumas traumas = ref traumasStash.Get(entity);
                 ref ConvertedPed convertedPed = ref pedStash.Get(entity);
                 if (totallyHealedStash.Has(entity)) {
@@ -82,11 +82,11 @@
             }
         }
 
-        private void ProcessRequest(Entity traumaEntity, ref TraumaRequest request, ref ConvertedPed convertedPed) {
+        private void ProcessRequest(EcsEntity traumaEntity, ref TraumaRequest request, ref ConvertedPed convertedPed) {
             BodyPartConfig.BodyPart bodyPart = request.targetBodyPart;
 
             var bluntDamage = true;
-            Entity parentEntity = request.parentBleeding;
+            EcsEntity parentEntity = request.parentBleeding;
             bool parentEntityExists = !parentEntity.IsNullOrDisposed();
             if (parentEntityExists) {
                 ref Bleeding bleeding = ref parentEntity.GetComponent<Bleeding>(out bool hasBleeding);
@@ -109,7 +109,7 @@
             sharedData.logger.WriteInfo($"Final trauma DBP:{dbp.ToString()}");
 #endif
 
-            Entity targetEntity = request.target;
+            EcsEntity targetEntity = request.target;
             string traumaName = sharedData.localeConfig.GetTranslation(trauma.LocKey);
             targetEntity.GetComponent<Health>().DealDamage(dbp.damage, traumaName);
             targetEntity.GetComponent<Pain>().diff += dbp.pain;
@@ -136,7 +136,7 @@
             }
 
             ref Traumas activeTraumas = ref traumasStash.AddOrGet(targetEntity);
-            activeTraumas.traumas ??= new HashSet<Entity>(4);
+            activeTraumas.traumas ??= new HashSet<EcsEntity>(4);
             activeTraumas.traumas.Add(traumaEntity);
 
             if (trauma.Effect != Traumas.Effects.Spine) {
@@ -157,14 +157,14 @@
         }
 
         public void Dispose() {
-            foreach (Entity entity in pedsWithTraumas) {
+            foreach (EcsEntity entity in pedsWithTraumas) {
                 ref Traumas traumas = ref traumasStash.Get(entity);
                 ref ConvertedPed convertedPed = ref pedStash.Get(entity);
                 CancelAllTraumaEffects(entity, ref traumas, ref convertedPed);
             }
         }
 
-        private void ApplyEffect(Entity entity,
+        private void ApplyEffect(EcsEntity entity,
                                  in BodyPartConfig.BodyPart bodyPart,
                                  ref Traumas traumas,
                                  ref ConvertedPed convertedPed,
@@ -199,7 +199,7 @@
             }
         }
 
-        private void IterateTraumaEffects(Entity entity, ref Traumas traumas, ref ConvertedPed convertedPed) {
+        private void IterateTraumaEffects(EcsEntity entity, ref Traumas traumas, ref ConvertedPed convertedPed) {
             foreach ((Traumas.Effects type, BaseTraumaEffect action) in effects) {
                 if (traumas.HasActive(type)) {
                     action.EveryFrame(entity, ref convertedPed);
@@ -207,14 +207,14 @@
             }
         }
 
-        private void CancelAllTraumaEffects(Entity entity, ref Traumas traumas, ref ConvertedPed convertedPed) {
+        private void CancelAllTraumaEffects(EcsEntity entity, ref Traumas traumas, ref ConvertedPed convertedPed) {
             foreach ((Traumas.Effects type, BaseTraumaEffect action) in effects) {
                 if (traumas.HasActive(type)) {
                     action.Cancel(entity, ref convertedPed);
                 }
             }
 
-            foreach (Entity traumaEntity in traumas.traumas) {
+            foreach (EcsEntity traumaEntity in traumas.traumas) {
                 if (!traumaEntity.IsNullOrDisposed()) {
                     World.RemoveEntity(traumaEntity);
                 }

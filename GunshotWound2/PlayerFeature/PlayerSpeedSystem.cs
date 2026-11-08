@@ -2,8 +2,6 @@ namespace GunshotWound2.PlayerFeature {
     using System;
     using PedsFeature;
     using Scellecs.Morpeh;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class PlayerSpeedSystem : ILateSystem {
         private const int HISTORY_LENGTH = 5;

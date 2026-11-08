@@ -5,8 +5,6 @@ namespace GunshotWound2.PlayerFeature {
     using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class PlayerPainRecoverySystem : ILateSystem {
         private readonly SharedData sharedData;

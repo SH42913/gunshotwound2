@@ -3,12 +3,8 @@ namespace GunshotWound2.HealthFeature {
     using Configs;
     using GTA;
     using GTA.Math;
-    using PedsFeature;
     using Scellecs.Morpeh;
-    using Utils;
     using WoundFeature;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class BleedingFxSystem : ILateSystem {
         // ReSharper disable once NotAccessedField.Local

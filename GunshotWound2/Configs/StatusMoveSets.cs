@@ -1,4 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
+// ReSharper disable InconsistentNaming
 
 namespace GunshotWound2.Configs {
     using System;
@@ -18,8 +18,8 @@ namespace GunshotWound2.Configs {
         public static StatusMoveSets FromXElement(XElement node, string nodeName) {
             XElement setsNode = node.Element(nodeName)!;
             return new StatusMoveSets(warning: GetFromAttribute(nameof(Warning)),
-                                    distressed: GetFromAttribute(nameof(Distressed)),
-                                    critical: GetFromAttribute(nameof(Critical)));
+                                      distressed: GetFromAttribute(nameof(Distressed)),
+                                      critical: GetFromAttribute(nameof(Critical)));
 
             string[] GetFromAttribute(string name) {
                 string value = setsNode.Attribute(name)?.Value;

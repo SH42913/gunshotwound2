@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.PainFeature {
+namespace GunshotWound2.PainFeature {
     using InventoryFeature;
     using Scellecs.Morpeh;
 
@@ -10,22 +10,22 @@
 
 #if DEBUG
             sharedData.cheatListener.Register("GSW_RANDOM_PAIN", () => {
-                if (sharedData.TryGetPlayer(out Entity player)) {
-                    player.GetComponent<Pain>().diff += sharedData.random.Next(39, 42);
+                if (sharedData.TryGetPlayer(out EcsEntity playerEntity)) {
+                    playerEntity.GetComponent<Pain>().diff += sharedData.random.Next(39, 42);
                 }
             });
 #endif
 
             sharedData.cheatListener.Register("GSW_FREE_PAINKILLERS", () => {
-                if (sharedData.TryGetPlayer(out Entity entity)) {
-                    entity.SetComponent(new AddItemRequest {
-                        items = new (string Key, int Count)[] { (PainkillersItem.KEY, 3) },
+                if (sharedData.TryGetPlayer(out EcsEntity playerEntity)) {
+                    playerEntity.SetComponent(new AddItemRequest {
+                        items = [(PainkillersItem.KEY, 3),],
                     });
                 }
             });
         }
 
-        public static void UsePainkillers(Entity target, Entity medic = null) {
+        public static void UsePainkillers(EcsEntity target, EcsEntity medic = null) {
             medic ??= target;
             medic.SetComponent(new UseItemRequest {
                 target = target,

@@ -1,7 +1,7 @@
-﻿namespace GunshotWound2.Services {
+namespace GunshotWound2.Services {
     using System.Collections.Generic;
     using GTA;
-    using EcsEntity = Scellecs.Morpeh.Entity;
+    using SHVDN;
 
     public sealed class WorldService {
         public bool forceRefreshRequest;
@@ -59,7 +59,7 @@
                 return pickupObjects;
             }
 
-            int[] pickupsHandles = SHVDN.NativeMemory.GetPickupObjectHandles();
+            int[] pickupsHandles = NativeMemory.GetPickupObjectHandles();
             int pickupsCount = pickupsHandles.Length;
             if (pickupObjects.Capacity < pickupsCount) {
                 pickupObjects.Capacity = pickupsCount;

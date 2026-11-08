@@ -4,7 +4,7 @@ namespace GunshotWound2.PainFeature {
 
     [Serializable]
     public struct PainGenerator : IComponent {
-        public Entity target;
+        public EcsEntity target;
         public float moveRate;
         public float runRate;
         public float aimRate;

@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.PlayerFeature {
+namespace GunshotWound2.PlayerFeature {
     using System.Collections.Generic;
     using Configs;
     using GTA;
@@ -14,7 +14,7 @@
         private readonly List<(Prop kit, Blip blip)> medkits;
         private float timeToRefresh;
 
-        public Scellecs.Morpeh.World World { get; set; }
+        public EcsWorld World { get; set; }
         private InventoryConfig InventoryConfig => sharedData.mainConfig.inventoryConfig;
 
         public MedkitGpsSystem(SharedData sharedData) {

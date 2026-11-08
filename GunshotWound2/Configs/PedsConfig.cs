@@ -1,9 +1,10 @@
-﻿using System;
-using System.Globalization;
+
 
 // ReSharper disable InconsistentNaming
 
 namespace GunshotWound2.Configs {
+    using System;
+    using System.Globalization;
     using System.Xml.Linq;
     using Utils;
 

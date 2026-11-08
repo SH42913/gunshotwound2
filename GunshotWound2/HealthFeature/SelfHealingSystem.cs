@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.HealthFeature {
+namespace GunshotWound2.HealthFeature {
     using System;
     using PedsFeature;
     using Scellecs.Morpeh;
@@ -10,7 +10,7 @@
         private Stash<ConvertedPed> pedStash;
         private Filter peds;
 
-        public World World { get; set; }
+        public EcsWorld World { get; set; }
 
         public SelfHealingSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -23,7 +23,7 @@
         }
 
         public void OnUpdate(float deltaTime) {
-            foreach (Entity entity in peds) {
+            foreach (EcsEntity entity in peds) {
                 ref Health health = ref healthStash.Get(entity);
                 if (health.isDead) {
                     continue;

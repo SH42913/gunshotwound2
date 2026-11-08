@@ -5,8 +5,6 @@ namespace GunshotWound2.HealthFeature {
     using Scellecs.Morpeh;
     using Utils;
     using WoundFeature;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class BloodPoolFxSystem : ILateSystem {
         private readonly SharedData sharedData;

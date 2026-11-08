@@ -1,9 +1,9 @@
-﻿namespace GunshotWound2.HealthFeature {
+namespace GunshotWound2.HealthFeature {
     using Configs;
     using Scellecs.Morpeh;
 
     public struct Bleeding : IComponent {
-        public Entity target;
+        public EcsEntity target;
         public BodyPartConfig.BodyPart bodyPart;
         public string name;
         public string reason;
@@ -16,13 +16,13 @@
     }
 
     public static class BleedingExtensions {
-        public static Entity CreateCommonBleeding(this Entity target,
-                                                  in BodyPartConfig.BodyPart bodyPart,
-                                                  float severity,
-                                                  string name,
-                                                  string reason,
-                                                  bool bluntDamageReason) {
-            Entity newEntity = target.world.CreateEntity();
+        public static EcsEntity CreateCommonBleeding(this EcsEntity target,
+                                                     in BodyPartConfig.BodyPart bodyPart,
+                                                     float severity,
+                                                     string name,
+                                                     string reason,
+                                                     bool bluntDamageReason) {
+            EcsEntity newEntity = target.world.CreateEntity();
             newEntity.SetComponent(new Bleeding {
                 target = target,
                 bodyPart = bodyPart,
@@ -35,12 +35,12 @@
             return newEntity;
         }
 
-        public static void CreateTraumaBleeding(this Entity target,
+        public static void CreateTraumaBleeding(this EcsEntity target,
                                                 in BodyPartConfig.BodyPart bodyPart,
                                                 float severity,
                                                 string name,
                                                 string reason,
-                                                Entity traumaEntity = null) {
+                                                EcsEntity traumaEntity = null) {
             traumaEntity ??= target.world.CreateEntity();
             traumaEntity.SetComponent(new Bleeding {
                 target = target,

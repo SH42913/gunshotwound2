@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.PainFeature {
+namespace GunshotWound2.PainFeature {
     using System;
     using Scellecs.Morpeh;
     using Utils;

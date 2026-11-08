@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.RegularExpressions;
+namespace GunshotWound2.Utils {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Text.RegularExpressions;
 
-namespace GunshotWound2.Utils
-{
-    public sealed class LocalizationManager
-    {
+    public sealed class LocalizationManager {
         private readonly Regex _csvMultilineFixRegex = new Regex("\"([^\"]|\"\"|\\n)*\"");
         private readonly Regex _csvParseRegex = new Regex("(?<=^|,)(\"(?:[^\"]|\"\")*\"|[^,]*)");
         private readonly List<string> _csvBuffer = new List<string>(32);
@@ -14,21 +12,18 @@ namespace GunshotWound2.Utils
         private readonly Dictionary<string, string[]> _localizationDictionary;
         private int _currentLocaleIndex = -1;
 
-        public LocalizationManager(Stream stream)
-        {
-            using (var reader = new StreamReader(stream))
-            {
+        public LocalizationManager(Stream stream) {
+            using (var reader = new StreamReader(stream)) {
                 _localizationDictionary = CsvToDict(reader.ReadToEnd());
             }
         }
 
-        public void SetLanguage(string desiredLanguage)
-        {
+        public void SetLanguage(string desiredLanguage) {
             var languages = _localizationDictionary["Localization"];
 
-            for (var i = 0; i < languages.Length; i++)
-            {
-                if (!string.Equals(languages[i], desiredLanguage, StringComparison.CurrentCultureIgnoreCase)) continue;
+            for (var i = 0; i < languages.Length; i++) {
+                if (!string.Equals(languages[i], desiredLanguage, StringComparison.CurrentCultureIgnoreCase))
+                    continue;
 
                 _currentLocaleIndex = i;
                 return;
@@ -37,35 +32,27 @@ namespace GunshotWound2.Utils
             _currentLocaleIndex = -1;
         }
 
-        public string GetWord(string key)
-        {
-            if (_currentLocaleIndex < 0)
-            {
+        public string GetWord(string key) {
+            if (_currentLocaleIndex < 0) {
                 throw new Exception("Language not selected");
             }
 
-            if (!_localizationDictionary.ContainsKey(key))
-            {
+            if (!_localizationDictionary.ContainsKey(key)) {
                 throw new Exception($"Word \"{key}\" doesn't exist in localization");
             }
 
             return _localizationDictionary[key][_currentLocaleIndex];
         }
 
-        private void ParseCsvLine(string data)
-        {
+        private void ParseCsvLine(string data) {
             _csvBuffer.Clear();
             var lastAddedPart = "FirstLine";
-            try
-            {
+            try {
                 data = _csvMultilineFixRegex.Replace(data, m => m.Value.Replace("\n", "space"));
-                foreach (Match m in _csvParseRegex.Matches(data))
-                {
+                foreach (Match m in _csvParseRegex.Matches(data)) {
                     var part = m.Value.Trim();
-                    if (part.Length > 0)
-                    {
-                        if (part[0] == '"' && part[part.Length - 1] == '"')
-                        {
+                    if (part.Length > 0) {
+                        if (part[0] == '"' && part[part.Length - 1] == '"') {
                             part = part.Substring(1, part.Length - 2);
                         }
 
@@ -75,33 +62,27 @@ namespace GunshotWound2.Utils
                     lastAddedPart = part;
                     _csvBuffer.Add(part);
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 throw new Exception($"ParsingException! ErrorPart:\n{lastAddedPart}.\nInner:\n{e.Message}", e);
             }
         }
 
-        private Dictionary<string, string[]> CsvToDict(string data)
-        {
+        private Dictionary<string, string[]> CsvToDict(string data) {
             var dict = new Dictionary<string, string[]>();
             var headerLen = -1;
             string key;
 
-            using (var reader = new StringReader(data))
-            {
-                while (reader.Peek() != -1)
-                {
+            using (var reader = new StringReader(data)) {
+                while (reader.Peek() != -1) {
                     ParseCsvLine(reader.ReadLine());
-                    if (_csvBuffer.Count <= 0 || string.IsNullOrEmpty(_csvBuffer[0])) continue;
+                    if (_csvBuffer.Count <= 0 || string.IsNullOrEmpty(_csvBuffer[0]))
+                        continue;
 
-                    if (headerLen == -1)
-                    {
+                    if (headerLen == -1) {
                         headerLen = _csvBuffer.Count;
                     }
 
-                    if (_csvBuffer.Count != headerLen)
-                    {
+                    if (_csvBuffer.Count != headerLen) {
                         continue;
                     }
 

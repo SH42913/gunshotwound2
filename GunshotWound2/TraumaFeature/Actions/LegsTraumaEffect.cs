@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.TraumaFeature {
+namespace GunshotWound2.TraumaFeature {
     using Configs;
     using GTA;
     using PedsFeature;
@@ -14,7 +14,7 @@
 
         public LegsTraumaEffect(SharedData sharedData) : base(sharedData) { }
 
-        public override void Apply(Scellecs.Morpeh.Entity entity, in BodyPartConfig.BodyPart bodyPart, ref ConvertedPed convertedPed) {
+        public override void Apply(EcsEntity entity, in BodyPartConfig.BodyPart bodyPart, ref ConvertedPed convertedPed) {
             RagdollType ragdollType = convertedPed.thisPed.IsRunning ? RagdollType.Balance : RagdollType.Relax;
             convertedPed.RequestRagdoll(RAGDOLL_TIME_IN_MS, ragdollType);
             convertedPed.hasBrokenLegs = true;
@@ -26,9 +26,9 @@
             convertedPed.thisPed.PlayAmbientSpeech("DEATH_HIGH_MEDIUM", SpeechModifier.InterruptShouted);
         }
 
-        public override void Repeat(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) { }
+        public override void Repeat(EcsEntity entity, ref ConvertedPed convertedPed) { }
 
-        public override void EveryFrame(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) {
+        public override void EveryFrame(EcsEntity entity, ref ConvertedPed convertedPed) {
             Ped ped = convertedPed.thisPed;
             if (ped.IsRagdoll) {
                 return;
@@ -47,7 +47,7 @@
             ShowRunningWarningMessage(convertedPed);
         }
 
-        public override void Cancel(Scellecs.Morpeh.Entity entity, ref ConvertedPed convertedPed) {
+        public override void Cancel(EcsEntity entity, ref ConvertedPed convertedPed) {
             convertedPed.hasBrokenLegs = false;
             convertedPed.thisPed.SetConfigFlag(PedConfigFlagToggles.IsInjured, false);
             convertedPed.ResetMoveRate();

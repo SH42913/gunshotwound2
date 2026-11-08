@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.HealthFeature {
+namespace GunshotWound2.HealthFeature {
     using System;
     using PedsFeature;
     using Scellecs.Morpeh;
@@ -12,7 +12,7 @@
         private Stash<Health> healthStash;
         private Stash<TotallyHealedEvent> totallyHealedStash;
 
-        public World World { get; set; }
+        public EcsWorld World { get; set; }
 
         public TotalHealCheckSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -26,7 +26,7 @@
         }
 
         public void OnUpdate(float deltaTime) {
-            foreach (Entity entity in peds) {
+            foreach (EcsEntity entity in peds) {
                 bool wasHealedLastFrame = totallyHealedStash.Remove(entity);
                 if (wasHealedLastFrame) {
                     continue;

@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.PedsFeature {
+namespace GunshotWound2.PedsFeature {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -8,7 +8,6 @@
     using GTA.Math;
     using Scellecs.Morpeh;
     using Services;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class NpcDetectSystem : ISystem {
         private const double MAX_TIME_TO_FIND_IN_MS = 1d;

@@ -4,8 +4,6 @@ namespace GunshotWound2.PlayerFeature {
     using Configs;
     using Scellecs.Morpeh;
     using Utils;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class PlayerHitNotificationSystem : ILateSystem {
         private readonly SharedData sharedData;

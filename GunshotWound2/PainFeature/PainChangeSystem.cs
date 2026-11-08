@@ -1,4 +1,4 @@
-﻿// #define DEBUG_EVERY_FRAME
+// #define DEBUG_EVERY_FRAME
 
 namespace GunshotWound2.PainFeature {
     using System;
@@ -10,8 +10,6 @@ namespace GunshotWound2.PainFeature {
     using PlayerFeature;
     using Scellecs.Morpeh;
     using Utils;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class PainChangeSystem : ILateSystem {
         private readonly SharedData sharedData;

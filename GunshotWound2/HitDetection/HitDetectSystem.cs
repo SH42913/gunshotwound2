@@ -1,11 +1,9 @@
-﻿namespace GunshotWound2.HitDetection {
+namespace GunshotWound2.HitDetection {
     using System;
     using GTA;
     using PedsFeature;
     using Scellecs.Morpeh;
     using Utils;
-    using EcsEntity = Scellecs.Morpeh.Entity;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class HitDetectSystem : ISystem {
         private readonly SharedData sharedData;

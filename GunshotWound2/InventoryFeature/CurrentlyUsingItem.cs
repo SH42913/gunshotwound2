@@ -6,7 +6,7 @@ namespace GunshotWound2.InventoryFeature {
     public struct CurrentlyUsingItem : IComponent {
         public ItemTemplate itemTemplate;
         public float remainingTime;
-        public Entity target;
+        public EcsEntity target;
     }
 
     public static class CurrentlyUsingItemExtensions {

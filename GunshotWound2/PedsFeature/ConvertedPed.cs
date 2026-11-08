@@ -1,11 +1,11 @@
-﻿namespace GunshotWound2.PedsFeature {
+namespace GunshotWound2.PedsFeature {
+    using Configs;
     using GTA;
     using GTA.Native;
     using GTA.NaturalMotion;
     using Scellecs.Morpeh;
     using StatusFeature;
     using Utils;
-    using EcsEntity = Scellecs.Morpeh.Entity;
 
     public struct ConvertedPed : IComponent {
         public delegate void AfterRagdollAction(ref ConvertedPed convertedPed);
@@ -63,7 +63,7 @@
         }
 
         public static int TotalHealth(this in ConvertedPed convertedPed) {
-            return Configs.WoundConfig.ConvertHealthFromNative(convertedPed.thisPed.Health);
+            return WoundConfig.ConvertHealthFromNative(convertedPed.thisPed.Health);
         }
 
         public static void RequestRagdoll(this ref ConvertedPed convertedPed, int timeInMs, RagdollType type = RagdollType.Relax) {

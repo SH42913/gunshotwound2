@@ -1,4 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
+// ReSharper disable InconsistentNaming
 // ReSharper disable UnassignedField.Global due fields are filling with reflection 
 
 namespace GunshotWound2.Configs {
@@ -83,7 +83,7 @@ namespace GunshotWound2.Configs {
         public string PainkillersSuccess;
         public string PainkillersRemainingTime;
         public string PainkillersQTE;
-        
+
         public string CheckHelpMessage;
         public string BandageHelpMessage;
         public string PainkillerHelpMessage;

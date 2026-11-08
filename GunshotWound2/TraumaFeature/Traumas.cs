@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.TraumaFeature {
+namespace GunshotWound2.TraumaFeature {
     using System;
     using System.Collections.Generic;
     using Scellecs.Morpeh;
@@ -18,7 +18,7 @@
         }
 
         public Effects activeEffects;
-        public HashSet<Entity> traumas;
+        public HashSet<EcsEntity> traumas;
     }
 
     public static class TraumasExtensions {

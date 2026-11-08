@@ -6,7 +6,6 @@ namespace GunshotWound2.HitDetection {
     using PlayerFeature;
     using Scellecs.Morpeh;
     using Utils;
-    using EcsWorld = Scellecs.Morpeh.World;
 
     public sealed class DamageModifierSystem : ISystem {
         private readonly SharedData sharedData;

@@ -1,4 +1,4 @@
-﻿namespace GunshotWound2.HitDetection {
+namespace GunshotWound2.HitDetection {
     using Configs;
     using GTA;
     using GTA.Math;
