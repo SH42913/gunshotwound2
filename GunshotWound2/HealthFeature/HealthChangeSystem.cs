@@ -88,7 +88,7 @@ namespace GunshotWound2.HealthFeature {
 
         private void CreateDeathReport(EcsEntity entity, ref ConvertedPed convertedPed, ref Health health) {
             if (health.isDead && convertedPed.isPlayer) {
-                World.CreateEntity().SetComponent(new ShowPlayerDeathReportRequest {
+                World.GetRequest<ShowPlayerDeathReportRequest>().Publish(new ShowPlayerDeathReportRequest {
                     report = sharedData.pedStateService.BuildString(entity),
                 });
             }

@@ -3,13 +3,13 @@ namespace GunshotWound2.PlayerFeature {
     using Scellecs.Morpeh;
 
     [Serializable]
-    public struct ShowPlayerDeathReportRequest : IComponent {
+    public struct ShowPlayerDeathReportRequest : IRequestData {
         public string report;
     }
 
     public sealed class PlayerDeathReportSystem : ILateSystem {
         private readonly SharedData sharedData;
-        private Filter filter;
+        private Request<ShowPlayerDeathReportRequest> deathReportRequest;
 
         public PlayerDeathReportSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -18,7 +18,7 @@ namespace GunshotWound2.PlayerFeature {
         public EcsWorld World { get; set; }
 
         public void OnAwake() {
-            filter = World.Filter.With<ShowPlayerDeathReportRequest>();
+            deathReportRequest = World.GetRequest<ShowPlayerDeathReportRequest>();
         }
 
         public void OnUpdate(float deltaTime) {
@@ -26,15 +26,17 @@ namespace GunshotWound2.PlayerFeature {
                 return;
             }
 
-            foreach (EcsEntity entity in filter) {
-                ref ShowPlayerDeathReportRequest request = ref entity.GetComponent<ShowPlayerDeathReportRequest>();
-                if (!string.IsNullOrEmpty(request.report)) {
-                    sharedData.notifier.HideAllLast();
-                    sharedData.notifier.ShowOne(request.report, blinking: true);
-                }
-
-                entity.RemoveComponent<ShowPlayerDeathReportRequest>();
+            ShowPlayerDeathReportRequest? last = null;
+            foreach (var request in deathReportRequest.Consume()) {
+                last = request;
             }
+
+            if (!last.HasValue || string.IsNullOrEmpty(last.Value.report)) {
+                return;
+            }
+
+            sharedData.notifier.HideAllLast();
+            sharedData.notifier.ShowOne(last.Value.report, blinking: true);
         }
 
         void IDisposable.Dispose() { }
