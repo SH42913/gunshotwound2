@@ -13,6 +13,7 @@ namespace GunshotWound2.PlayerFeature {
         private readonly HashSet<int> vehiclesWithoutLoadout;
         private Filter pedsWithInventory;
         private Filter justHealed;
+        private AspectFactory<PedWithInventory> pedWithInventoryAspect;
 
         public EcsWorld World { get; set; }
 
@@ -23,8 +24,9 @@ namespace GunshotWound2.PlayerFeature {
         }
 
         public void OnAwake() {
-            pedsWithInventory = World.Filter.With<ConvertedPed>().With<Inventory>();
-            justHealed = World.Filter.With<ConvertedPed>().With<Inventory>().With<TotallyHealedEvent>();
+            pedsWithInventory = World.Filter.Extend<PedWithInventory>();
+            justHealed = World.Filter.Extend<PedWithInventory>().With<TotallyHealedEvent>();
+            pedWithInventoryAspect = World.GetAspectFactory<PedWithInventory>();
         }
 
         public void OnUpdate(float deltaTime) {
@@ -36,7 +38,7 @@ namespace GunshotWound2.PlayerFeature {
             foreach (EcsEntity entity in justHealed) {
                 const float medkitRange = 2f;
 
-                ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
+                ref ConvertedPed convertedPed = ref pedWithInventoryAspect.Get(entity).Ped;
                 Ped ped = convertedPed.thisPed;
                 IReadOnlyList<PickupObject> pickups = sharedData.worldService.GetAllPickupObjects();
 
@@ -60,7 +62,7 @@ namespace GunshotWound2.PlayerFeature {
 
         private void CheckPedInSpecialVehicle() {
             foreach (EcsEntity entity in pedsWithInventory) {
-                ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
+                ref ConvertedPed convertedPed = ref pedWithInventoryAspect.Get(entity).Ped;
                 if (convertedPed.isPlayer && !Game.Player.CanControlCharacter) {
                     continue;
                 }

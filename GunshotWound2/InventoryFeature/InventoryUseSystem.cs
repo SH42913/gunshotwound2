@@ -13,6 +13,7 @@ namespace GunshotWound2.InventoryFeature {
         private readonly SharedData sharedData;
         private Filter usages;
         private Filter requests;
+        private AspectFactory<PedWithInventory> pedWithInventoryAspect;
 
         public EcsWorld World { get; set; }
 
@@ -21,8 +22,9 @@ namespace GunshotWound2.InventoryFeature {
         }
 
         public void OnAwake() {
-            usages = World.Filter.With<ConvertedPed>().With<CurrentlyUsingItem>().With<Inventory>();
-            requests = World.Filter.With<ConvertedPed>().With<UseItemRequest>().With<Inventory>();
+            usages = World.Filter.Extend<PedWithInventory>().With<CurrentlyUsingItem>();
+            requests = World.Filter.Extend<PedWithInventory>().With<UseItemRequest>();
+            pedWithInventoryAspect = World.GetAspectFactory<PedWithInventory>();
         }
 
         public void OnUpdate(float deltaTime) {
@@ -42,8 +44,9 @@ namespace GunshotWound2.InventoryFeature {
             }
 
             foreach (EcsEntity owner in usages) {
-                ref Inventory inventory = ref owner.GetComponent<Inventory>();
-                ref ConvertedPed convertedPed = ref owner.GetComponent<ConvertedPed>();
+                PedWithInventory aspect = pedWithInventoryAspect.Get(owner);
+                ref Inventory inventory = ref aspect.Inventory;
+                ref ConvertedPed convertedPed = ref aspect.Ped;
                 ref CurrentlyUsingItem currentUsing = ref owner.GetComponent<CurrentlyUsingItem>();
                 currentUsing.remainingTime -= deltaTime;
 

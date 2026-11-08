@@ -148,6 +148,7 @@
     <Compile Include="InventoryFeature\AddItemRequest.cs" />
     <Compile Include="InventoryFeature\CurrentlyUsingItem.cs" />
     <Compile Include="InventoryFeature\Inventory.cs" />
+    <Compile Include="InventoryFeature\PedWithInventory.cs"/>
     <Compile Include="InventoryFeature\InventoryFeature.cs" />
     <Compile Include="InventoryFeature\InventoryInitSystem.cs" />
     <Compile Include="InventoryFeature\AddItemSystem.cs" />
