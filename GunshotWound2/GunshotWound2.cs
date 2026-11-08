@@ -13,6 +13,8 @@ namespace GunshotWound2 {
 
     // ReSharper disable once UnusedType.Global
     public sealed class GunshotWound2 : Script {
+        private const int CommonSystemsOrder = 0;
+
         private static readonly AssemblyName ASSEMBLY_NAME = Assembly.GetCallingAssembly().GetName();
         private static readonly string SCRIPT_NAME = $"{ASSEMBLY_NAME.Name}({ASSEMBLY_NAME.Version})";
         private static readonly string EXCEPTION_LOG_PATH = Path.Combine(Application.StartupPath, "GSW2Exception.log");
@@ -41,6 +43,7 @@ namespace GunshotWound2 {
 
             ecsWorld = EcsWorld.Create();
             commonSystems = ecsWorld.CreateSystemsGroup();
+            ecsWorld.AddSystemsGroup(CommonSystemsOrder, commonSystems);
 
             KeyUp += OnKeyUp;
             Tick += OnTick;
@@ -95,7 +98,6 @@ namespace GunshotWound2 {
 #if GSW_PROFILING
                 profilerSample.OutputCurrentProfilingResults(sharedData.logger);
 #endif
-                commonSystems.Dispose();
                 ecsWorld.Dispose();
                 sharedData.cameraService.ClearAllEffects();
                 sharedData.uiService.ClearAll();
@@ -199,9 +201,9 @@ namespace GunshotWound2 {
                 profilerSample.Start();
 #endif
                 sharedData.cheatListener.Check();
-                commonSystems.Update(sharedData.deltaTime);
-                commonSystems.LateUpdate(sharedData.deltaTime);
-                commonSystems.CleanupUpdate(sharedData.deltaTime);
+                ecsWorld.Update(sharedData.deltaTime);
+                ecsWorld.LateUpdate(sharedData.deltaTime);
+                ecsWorld.CleanupUpdate(sharedData.deltaTime);
 #if GSW_PROFILING
                 double tickTime = profilerSample.Stop();
                 string message = $"lastFrameTime={ProfilerSample.ConvertSecondsToMsString(sharedData.deltaTime)}\n"
