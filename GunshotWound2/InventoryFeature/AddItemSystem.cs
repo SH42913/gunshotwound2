@@ -6,7 +6,9 @@ namespace GunshotWound2.InventoryFeature {
 
     public sealed class AddItemSystem : ILateSystem {
         private readonly SharedData sharedData;
-        private Filter requests;
+        private Request<AddItemRequest> addItemRequest;
+        private Stash<Inventory> inventoryStash;
+        private Stash<ConvertedPed> pedStash;
 
         public EcsWorld World { get; set; }
 
@@ -15,16 +17,29 @@ namespace GunshotWound2.InventoryFeature {
         }
 
         public void OnAwake() {
-            requests = World.Filter.With<Inventory>().With<AddItemRequest>();
+            addItemRequest = World.GetRequest<AddItemRequest>();
+            inventoryStash = World.GetStash<Inventory>();
+            pedStash = World.GetStash<ConvertedPed>();
         }
 
         public void OnUpdate(float deltaTime) {
-            foreach (EcsEntity entity in requests) {
-                var request = entity.GetComponent<AddItemRequest>();
-                entity.RemoveComponent<AddItemRequest>();
+            foreach (AddItemRequest request in addItemRequest.Consume()) {
+                EcsEntity entity = request.target;
+                if (entity.IsNullOrDisposed()) {
+                    continue;
+                }
 
-                bool isPlayer = entity.GetComponent<ConvertedPed>().isPlayer;
-                ref Inventory inventory = ref entity.GetComponent<Inventory>();
+                ref Inventory inventory = ref inventoryStash.Get(entity, out bool hasInventory);
+                if (!hasInventory) {
+                    continue;
+                }
+
+                ref ConvertedPed convertedPed = ref pedStash.Get(entity, out bool hasPed);
+                if (!hasPed) {
+                    continue;
+                }
+
+                bool isPlayer = convertedPed.isPlayer;
                 foreach ((string key, int count) in request.items) {
                     ItemTemplate item = InventoryFeature.GetTemplateByKey(key);
                     if (!item.IsValid) {

@@ -18,7 +18,8 @@ namespace GunshotWound2.PainFeature {
 
             sharedData.cheatListener.Register("GSW_FREE_PAINKILLERS", () => {
                 if (sharedData.TryGetPlayer(out EcsEntity playerEntity)) {
-                    playerEntity.SetComponent(new AddItemRequest {
+                    playerEntity.world.GetRequest<AddItemRequest>().Publish(new AddItemRequest {
+                        target = playerEntity,
                         items = [(PainkillersItem.KEY, 3),],
                     });
                 }

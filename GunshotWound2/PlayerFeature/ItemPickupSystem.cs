@@ -50,7 +50,8 @@ namespace GunshotWound2.PlayerFeature {
                         sharedData.logger.WriteInfo($"Ped {convertedPed.name} just picked up medkit");
 #endif
 
-                        entity.SetComponent(new AddItemRequest {
+                        World.GetRequest<AddItemRequest>().Publish(new AddItemRequest {
+                            target = entity,
                             items = sharedData.mainConfig.inventoryConfig.MedkitLoadout.items,
                         });
 
@@ -71,7 +72,8 @@ namespace GunshotWound2.PlayerFeature {
 #if DEBUG
                     sharedData.logger.WriteInfo($"Ped {convertedPed.name} just entered vehicle {vehicle.DisplayName}");
 #endif
-                    entity.SetComponent(new AddItemRequest {
+                    World.GetRequest<AddItemRequest>().Publish(new AddItemRequest {
+                        target = entity,
                         items = sharedData.mainConfig.inventoryConfig.EmergencyVehicleLoadout.items,
                     });
                 }
