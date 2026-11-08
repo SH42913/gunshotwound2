@@ -3,6 +3,7 @@ namespace GunshotWound2.TraumaFeature {
     using GTA;
     using GTA.NaturalMotion;
     using PedsFeature;
+    using Scellecs.Morpeh;
 
     public sealed class ArmsTraumaEffect : BaseTraumaEffect {
         private const float SHAKE_AMPLITUDE = 1f;
@@ -25,9 +26,9 @@ namespace GunshotWound2.TraumaFeature {
                 sharedData.cameraService.aimingShakeAmplitude += SHAKE_AMPLITUDE;
             }
 
-            if (!convertedPed.isPlayer || sharedData.mainConfig.playerConfig.CanDropWeapon) {
-                convertedPed.thisPed.Weapons.Drop();
-            }
+            entity.world.GetRequest<WeaponDropRequest>().Publish(new WeaponDropRequest {
+                target = entity,
+            });
 
             if (convertedPed.thisPed.IsClimbing || convertedPed.thisPed.IsClimbingLadder) {
                 convertedPed.RequestRagdoll(1000);

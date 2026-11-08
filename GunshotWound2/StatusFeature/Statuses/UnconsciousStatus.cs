@@ -83,10 +83,6 @@ namespace GunshotWound2.StatusFeature.Statuses {
                 }
             }
 
-            if (sharedData.mainConfig.playerConfig.CanDropWeapon) {
-                ped.Weapons.Drop();
-            }
-
             if (!convertedPed.hasSpineDamage) {
                 sharedData.notifier.critical.QueueMessage(sharedData.localeConfig.UnbearablePainMessage);
             }
@@ -101,7 +97,6 @@ namespace GunshotWound2.StatusFeature.Statuses {
         private void NonPlayerCase(ref ConvertedPed convertedPed) {
             Ped ped = convertedPed.thisPed;
             ped.BlockPermanentEvents = true;
-            ped.Weapons.Drop();
 
             if (!PedEffects.InAnyVehicle(ped, atGetIn: false)) {
                 return;

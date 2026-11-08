@@ -3,6 +3,7 @@ namespace GunshotWound2.TraumaFeature {
     using GTA;
     using GTA.NaturalMotion;
     using PedsFeature;
+    using Scellecs.Morpeh;
     using Utils;
 
     public class SpineTraumaEffect : BaseTraumaEffect {
@@ -17,9 +18,9 @@ namespace GunshotWound2.TraumaFeature {
             convertedPed.SetNaturalMotionBuilder(GetNMBuilder(), forbidOverride: true);
             convertedPed.RequestPermanentRagdoll();
 
-            if (!convertedPed.isPlayer || sharedData.mainConfig.playerConfig.CanDropWeapon) {
-                convertedPed.thisPed.Weapons.Drop();
-            }
+            entity.world.GetRequest<WeaponDropRequest>().Publish(new WeaponDropRequest {
+                target = entity,
+            });
 
             Ped ped = convertedPed.thisPed;
             if (PedEffects.OnAnyBike(ped)) {

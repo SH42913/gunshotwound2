@@ -17,6 +17,7 @@ namespace GunshotWound2.PedsFeature {
             systemsGroup.AddSystem(new PedMovementSystem(sharedData));
             systemsGroup.AddSystem(new FacialIdleAnimSystem(sharedData));
             systemsGroup.AddSystem(new RemoveConvertedPedSystem(sharedData));
+            systemsGroup.AddSystem(new WeaponDropSystem(sharedData));
 
             MainConfig mainConfig = sharedData.mainConfig;
             InputListener inputListener = sharedData.inputListener;

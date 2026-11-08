@@ -202,7 +202,7 @@ namespace GunshotWound2.WoundFeature {
                 });
             }
 
-            CheckRightHandHitAndDropWeapon(hitData, convertedPed);
+            CheckRightHandHitAndDropWeapon(targetEntity, hitData);
 
 #if DEBUG
             sharedData.logger.WriteInfo($"Final wound DBP:{dbp.ToString()} trauma:{shouldCreateTrauma} by {reason}");
@@ -215,7 +215,7 @@ namespace GunshotWound2.WoundFeature {
             }
         }
 
-        private void CheckRightHandHitAndDropWeapon(in PedHitData hitData, in ConvertedPed convertedPed) {
+        private void CheckRightHandHitAndDropWeapon(EcsEntity target, in PedHitData hitData) {
             if (hitData.damagedBone == null || !hitData.damagedBone.IsValid) {
                 return;
             }
@@ -225,14 +225,12 @@ namespace GunshotWound2.WoundFeature {
                 return;
             }
 
-            if (convertedPed.isPlayer && !sharedData.mainConfig.playerConfig.CanDropWeapon) {
-                return;
-            }
-
 #if DEBUG
-            sharedData.logger.WriteInfo($"Right hand was hit, so drop weapon");
+            sharedData.logger.WriteInfo("Right hand was hit, so drop weapon");
 #endif
-            convertedPed.thisPed.Weapons.Drop();
+            World.GetRequest<WeaponDropRequest>().Publish(new WeaponDropRequest {
+                target = target,
+            });
         }
 
         private bool ShouldCreateTrauma(in WoundConfig.Wound wound, in PedHitData hitData) {

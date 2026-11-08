@@ -180,6 +180,7 @@
     <Compile Include="WoundFeature\WoundFeature.cs" />
     <Compile Include="WoundFeature\WoundHitDataSystem.cs" />
     <Compile Include="WoundFeature\WoundSystem.cs" />
+    <Compile Include="PedsFeature\WeaponDropSystem.cs"/>
     <Compile Include="HealthFeature\Bleeding.cs" />
     <Compile Include="HealthFeature\BleedingSystem.cs" />
     <Compile Include="HealthFeature\HealthChangeSystem.cs" />

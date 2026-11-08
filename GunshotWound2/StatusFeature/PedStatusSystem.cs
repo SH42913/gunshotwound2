@@ -126,6 +126,10 @@ namespace GunshotWound2.StatusFeature {
                 World.GetRequest<UnconsciousVisualRequest>().Publish(new UnconsciousVisualRequest {
                     entity = entity,
                 });
+
+                World.GetRequest<WeaponDropRequest>().Publish(new WeaponDropRequest {
+                    target = entity,
+                });
             }
 
             convertedPed.status = curStatus;

@@ -215,7 +215,9 @@ namespace GunshotWound2.PainFeature {
                 if (convertedPed.isPlayer) {
                     sharedData.cameraService.PlayPainfulWoundEffect();
                 } else if (hasHitData && hitData.bodyPart.IsValid && hitData.bodyPart.IsRightArm()) {
-                    ped.Weapons.Drop();
+                    World.GetRequest<WeaponDropRequest>().Publish(new WeaponDropRequest {
+                        target = entity,
+                    });
                 }
             }
         }
