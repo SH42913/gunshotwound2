@@ -13,7 +13,7 @@ namespace GunshotWound2.TraumaFeature {
         private readonly SharedData sharedData;
         private readonly (Traumas.Effects, BaseTraumaEffect)[] effects;
 
-        private Filter traumaRequests;
+        private Request<TraumaRequest> traumaRequest;
         private Filter pedsWithTraumas;
         private Stash<Traumas> traumasStash;
         private Stash<ConvertedPed> pedStash;
@@ -36,7 +36,7 @@ namespace GunshotWound2.TraumaFeature {
         }
 
         public void OnAwake() {
-            traumaRequests = World.Filter.With<TraumaRequest>();
+            traumaRequest = World.GetRequest<TraumaRequest>();
             pedsWithTraumas = World.Filter.With<ConvertedPed>().With<Traumas>();
 
             traumasStash = World.GetStash<Traumas>();
@@ -50,23 +50,19 @@ namespace GunshotWound2.TraumaFeature {
         }
 
         private void ProcessRequests() {
-            foreach (EcsEntity entity in traumaRequests) {
-                ref TraumaRequest request = ref entity.GetComponent<TraumaRequest>();
+            foreach (TraumaRequest request in traumaRequest.Consume()) {
                 if (request.target.IsNullOrDisposed()) {
                     sharedData.logger.WriteWarning("Can't find target for trauma");
-                    World.RemoveEntity(entity);
                     continue;
                 }
 
                 ref ConvertedPed convertedPed = ref pedStash.Get(request.target, out bool isConverted);
                 if (!isConverted) {
                     sharedData.logger.WriteWarning("Not valid target for trauma");
-                    World.RemoveEntity(entity);
                     continue;
                 }
 
-                ProcessRequest(entity, ref request, ref convertedPed);
-                entity.RemoveComponent<TraumaRequest>();
+                ProcessRequest(request, ref convertedPed);
             }
         }
 
@@ -82,7 +78,8 @@ namespace GunshotWound2.TraumaFeature {
             }
         }
 
-        private void ProcessRequest(EcsEntity traumaEntity, ref TraumaRequest request, ref ConvertedPed convertedPed) {
+        private void ProcessRequest(in TraumaRequest request, ref ConvertedPed convertedPed) {
+            EcsEntity traumaEntity = World.CreateEntity();
             BodyPartConfig.BodyPart bodyPart = request.targetBodyPart;
 
             var bluntDamage = true;

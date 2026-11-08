@@ -11,7 +11,7 @@ namespace GunshotWound2.TraumaFeature {
             sharedData.cheatListener.Register("GSW_RANDOM_CRIT", () => {
                 if (sharedData.TryGetPlayer(out EcsEntity player)) {
                     BodyPartConfig.BodyPart[] bodyParts = sharedData.mainConfig.bodyPartConfig.BodyParts;
-                    player.world.CreateEntity().SetComponent(new TraumaRequest {
+                    player.world.GetRequest<TraumaRequest>().Publish(new TraumaRequest {
                         target = player,
                         targetBodyPart = sharedData.random.Next(bodyParts),
                     });

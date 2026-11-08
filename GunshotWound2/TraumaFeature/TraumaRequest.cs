@@ -4,7 +4,7 @@ namespace GunshotWound2.TraumaFeature {
     using Scellecs.Morpeh;
 
     [Serializable]
-    public struct TraumaRequest : IComponent {
+    public struct TraumaRequest : IRequestData {
         public EcsEntity target;
         public EcsEntity parentBleeding;
         public BodyPartConfig.BodyPart targetBodyPart;

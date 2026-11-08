@@ -195,7 +195,7 @@ namespace GunshotWound2.WoundFeature {
 
             bool shouldCreateTrauma = ShouldCreateTrauma(wound, hitData);
             if (shouldCreateTrauma) {
-                World.CreateEntity().SetComponent(new TraumaRequest {
+                World.GetRequest<TraumaRequest>().Publish(new TraumaRequest {
                     target = targetEntity,
                     targetBodyPart = hitData.bodyPart,
                     parentBleeding = woundBleeding,
