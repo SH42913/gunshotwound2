@@ -43,7 +43,8 @@ namespace GunshotWound2.HealthFeature {
 
             sharedData.cheatListener.Register("GSW_FREE_BANDAGES", () => {
                 if (sharedData.TryGetPlayer(out EcsEntity playerEntity)) {
-                    playerEntity.SetComponent(new AddItemRequest {
+                    playerEntity.world.GetRequest<AddItemRequest>().Publish(new AddItemRequest {
+                        target = playerEntity,
                         items = [(BandageItem.KEY, 5),],
                     });
                 }
@@ -52,7 +53,8 @@ namespace GunshotWound2.HealthFeature {
 
         public static void StartBandaging(EcsEntity target, EcsEntity medic = null) {
             medic ??= target;
-            medic.SetComponent(new UseItemRequest {
+            medic.world.GetRequest<UseItemRequest>().Publish(new UseItemRequest {
+                owner = medic,
                 target = target,
                 item = BandageItem.template,
             });

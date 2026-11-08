@@ -3,7 +3,8 @@ namespace GunshotWound2.InventoryFeature {
     using Scellecs.Morpeh;
 
     [Serializable]
-    public struct UseItemRequest : IComponent {
+    public struct UseItemRequest : IRequestData {
+        public EcsEntity owner;
         public ItemTemplate item;
         public EcsEntity target;
     }

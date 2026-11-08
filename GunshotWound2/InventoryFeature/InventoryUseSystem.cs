@@ -12,7 +12,7 @@ namespace GunshotWound2.InventoryFeature {
 
         private readonly SharedData sharedData;
         private Filter usages;
-        private Filter requests;
+        private Request<UseItemRequest> useItemRequest;
         private AspectFactory<PedWithInventory> pedWithInventoryAspect;
 
         public EcsWorld World { get; set; }
@@ -23,7 +23,7 @@ namespace GunshotWound2.InventoryFeature {
 
         public void OnAwake() {
             usages = World.Filter.Extend<PedWithInventory>().With<CurrentlyUsingItem>();
-            requests = World.Filter.Extend<PedWithInventory>().With<UseItemRequest>();
+            useItemRequest = World.GetRequest<UseItemRequest>();
             pedWithInventoryAspect = World.GetAspectFactory<PedWithInventory>();
         }
 
@@ -68,11 +68,13 @@ namespace GunshotWound2.InventoryFeature {
         }
 
         private void ProcessRequests() {
-            foreach (EcsEntity owner in requests) {
-                var request = owner.GetComponent<UseItemRequest>();
-                owner.RemoveComponent<UseItemRequest>();
+            foreach (UseItemRequest request in useItemRequest.Consume()) {
+                EcsEntity owner = request.owner;
+                if (owner.IsNullOrDisposed()) {
+                    continue;
+                }
 
-                bool success = TryProcessRequest(owner, request, out string message);
+                bool success = TryProcessRequest(request, out string message);
                 bool isPlayer = owner.GetComponent<ConvertedPed>().isPlayer;
                 if (isPlayer) {
                     if (success) {
@@ -90,7 +92,8 @@ namespace GunshotWound2.InventoryFeature {
             }
         }
 
-        private bool TryProcessRequest(EcsEntity owner, UseItemRequest request, out string message) {
+        private bool TryProcessRequest(in UseItemRequest request, out string message) {
+            EcsEntity owner = request.owner;
             if (owner.Has<CurrentlyUsingItem>()) {
 #if DEBUG
                 sharedData.logger.WriteInfo("Can't use item due hands are busy");

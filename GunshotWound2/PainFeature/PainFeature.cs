@@ -28,7 +28,8 @@ namespace GunshotWound2.PainFeature {
 
         public static void UsePainkillers(EcsEntity target, EcsEntity medic = null) {
             medic ??= target;
-            medic.SetComponent(new UseItemRequest {
+            medic.world.GetRequest<UseItemRequest>().Publish(new UseItemRequest {
+                owner = medic,
                 target = target,
                 item = PainkillersItem.template,
             });
