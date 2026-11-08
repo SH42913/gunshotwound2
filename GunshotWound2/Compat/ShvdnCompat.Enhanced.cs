@@ -2,6 +2,7 @@ namespace GunshotWound2.Compat {
     using System;
     using GTA;
     using GTA.Math;
+    using SHVDN;
 
     /// <summary>SHVDN Enhanced API bindings (single variant compiled per build).</summary>
     public static class ShvdnCompat {
@@ -32,6 +33,17 @@ namespace GunshotWound2.Compat {
             for (var i = 0; i < CONTROL_VALUES.Length; i++) {
                 if (CONTROL_NAMES[i].StartsWith("Vehicle")) {
                     Game.DisableControlThisFrame(CONTROL_VALUES[i]);
+                }
+            }
+        }
+
+        public static void MergeLatestEntityDamageRecord(Ped ped, ref uint weaponHash, ref int attackerHandle, ref int gameTime) {
+            for (uint i = 0; i < 3; i++) {
+                var record = NativeMemory.GetEntityDamageRecordEntryAtIndex(ped.MemoryAddress, i);
+                if (record.gameTime > gameTime) {
+                    weaponHash = unchecked((uint)record.weaponHash);
+                    attackerHandle = record.attackerEntityHandle;
+                    gameTime = record.gameTime;
                 }
             }
         }

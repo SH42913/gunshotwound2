@@ -1,9 +1,7 @@
 namespace GunshotWound2.PedsFeature {
-    using System;
-    using System.Runtime.InteropServices;
+    using Compat;
     using GTA;
     using GTA.Native;
-    using SHVDN;
     using Utils;
 
     public static class PedEffects {
@@ -100,52 +98,8 @@ namespace GunshotWound2.PedsFeature {
                 return false;
             }
 
-            for (int i = 0; i < 3; i++) {
-                if (!NativeMemory.IsIndexOfEntityDamageRecordValid(ped.MemoryAddress, (uint)i)) {
-                    break;
-                }
-
-                GetDamageRecord(ped, i, out int handle, out int hash, out int time);
-                if (time > gameTime) {
-                    weaponHash = unchecked((uint)hash);
-                    attackerHandle = handle;
-                    gameTime = time;
-                }
-            }
-
+            ShvdnCompat.MergeLatestEntityDamageRecord(ped, ref weaponHash, ref attackerHandle, ref gameTime);
             return gameTime != 0;
-        }
-
-        /// <summary>
-        /// Copy-paste from SHVDN.NativeMemory.GetEntityDamageRecordEntryAtIndex
-        /// </summary>
-        private static unsafe void GetDamageRecord(Ped ped, int index, out int attackerHandle, out int weaponHash, out int gameTime) {
-            var cAttackerArrayAddress = (ulong)*(long*)(ped.MemoryAddress + NativeMemory.CAttackerArrayOfEntityOffset).ToPointer();
-            if (cAttackerArrayAddress == 0UL) {
-                attackerHandle = 0;
-                weaponHash = 0;
-                gameTime = 0;
-                return;
-            }
-
-            var cattackerPtr = (CAttacker*)((IntPtr)cAttackerArrayAddress + index * NativeMemory.ElementSizeOfCAttackerArrayOfEntity);
-            weaponHash = cattackerPtr->weaponHash;
-            gameTime = cattackerPtr->gameTime;
-
-            ulong attackerEntityAddress = cattackerPtr->attackerEntityAddress;
-            attackerHandle = attackerEntityAddress != 0UL
-                    ? NativeMemory.GetEntityHandleFromAddress(new IntPtr((long)attackerEntityAddress))
-                    : 0;
-        }
-
-        /// <summary>
-        /// Copy-paste from SHVDN.NativeMemory.CAttacker
-        /// </summary>
-        [StructLayout(LayoutKind.Explicit, Size = 16)]
-        private struct CAttacker {
-            [FieldOffset(0)] internal ulong attackerEntityAddress;
-            [FieldOffset(8)] internal int weaponHash;
-            [FieldOffset(12)] internal int gameTime;
         }
 
         public static bool TryGetPedByHandle(int handle, out Ped ped) {
