@@ -171,7 +171,7 @@
                            DamageMult="1.2" BleedMult="1.5" PainMult="1.0" ChanceToCauseTrauma="0.6"
                            SafeArmorLevel="ClassIII" ArmorDamage="12" HelmetSafeChance="0.3">
             <Carbines Hashes="SPECIALCARBINE;"/>
-            <Rifles Hashes="ADVANCEDRIFLE;BULLPUPRIFLE;MILITARYRIFLE;TACTICALRIFLE;STRICKLER;"/>
+            <Rifles Hashes="ADVANCEDRIFLE;MILITARYRIFLE;TACTICALRIFLE;STRICKLER;"/>
             <MGs Hashes="COMBATMG;"/>
             <TakedownWound Key="HeavyBruise"/>
             <TangentialWound Key="TangentialGsw"/>
@@ -196,6 +196,19 @@
                 <Wound Key="AvulsiveGsw" Weight="5"/>
             </Wounds>
         </Firearm556x45_AP>
+        <Firearm58x42_FMJ ShortDesc="5.8x42 FMJ"
+                          DamageMult="1.3" BleedMult="1.6" PainMult="1.1" ChanceToCauseTrauma="0.7"
+                          SafeArmorLevel="ClassIII" ArmorDamage="14" HelmetSafeChance="0.25">
+            <Rifles Hashes="BULLPUPRIFLE;"/>
+            <TakedownWound Key="HeavyBruise"/>
+            <TangentialWound Key="TangentialGsw"/>
+            <Wounds>
+                <Wound Key="PerforatingGsw" Weight="50"/>
+                <Wound Key="LaceratingGsw" Weight="30"/>
+                <Wound Key="PenetratingGsw" Weight="15"/>
+                <Wound Key="AvulsiveGsw" Weight="5"/>
+            </Wounds>
+        </Firearm58x42_FMJ>
         <Firearm300Blk ShortDesc=".300 Blackout"
                        DamageMult="1.2" BleedMult="2.0" PainMult="0.6" ChanceToCauseTrauma="0.5"
                        SafeArmorLevel="ClassII" ArmorDamage="6" HelmetSafeChance="0.4">
