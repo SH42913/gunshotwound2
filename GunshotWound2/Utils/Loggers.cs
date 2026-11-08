@@ -1,5 +1,6 @@
 ﻿namespace GunshotWound2.Utils {
     using System;
+    using Compat;
     using SHVDN;
 
     public interface ILogger {
@@ -18,27 +19,19 @@
         }
 
         public void WriteInfo(string message) {
-#if SHVDN_NIGHTLY
-            consoleInstance.Print(Log.Level.Info, message);
-#else
-            consoleInstance.PrintInfo(message);
-#endif
+            ShvdnCompat.ConsolePrintInfo(consoleInstance, message);
             cachedMessages[0] = message;
             Log.Message(Log.Level.Info, cachedMessages);
         }
 
         public void WriteWarning(string message) {
-#if SHVDN_NIGHTLY
-            consoleInstance.Print(Log.Level.Warning, message);
-#endif
+            ShvdnCompat.ConsolePrintWarning(consoleInstance, message);
             cachedMessages[0] = message;
             Log.Message(Log.Level.Warning, cachedMessages);
         }
 
         public void WriteError(string message) {
-#if SHVDN_NIGHTLY
-            consoleInstance.Print(Log.Level.Error, message);
-#endif
+            ShvdnCompat.ConsolePrintError(consoleInstance, message);
             cachedMessages[0] = message;
             Log.Message(Log.Level.Error, cachedMessages);
         }

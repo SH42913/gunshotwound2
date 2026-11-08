@@ -2,6 +2,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using Compat;
     using Configs;
     using GTA;
     using GTA.Math;
@@ -109,13 +110,8 @@
             public Vector3 playerPosition;
 
             public int Compare(Ped x, Ped y) {
-#if SHVDN_NIGHTLY
-                float xDist = Vector3.Distance(x!.Position, playerPosition);
-                float yDist = Vector3.Distance(y!.Position, playerPosition);
-#else
-                float xDist = GTA.World.GetDistance(x!.Position, playerPosition);
-                float yDist = GTA.World.GetDistance(y!.Position, playerPosition);
-#endif
+                float xDist = ShvdnCompat.VectorDistance(x!.Position, playerPosition);
+                float yDist = ShvdnCompat.VectorDistance(y!.Position, playerPosition);
                 return xDist.CompareTo(yDist);
             }
         }

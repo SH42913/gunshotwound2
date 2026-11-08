@@ -49,7 +49,11 @@ SHVDN **is not stored in git**. Versions are pinned in `Build/Shvdn.props`.
    .\tools\update-shvdn.ps1 -Target Enhanced -Tag v1.1.0.6
    ```
    Then delete the old cache folder under `.shvdn\<Target>\` if the tag changed, and rebuild.
-3. **Nightly** – pin with `update-shvdn.ps1 -Target Nightly -Tag <nightly-tag>` before using `Debug_Nightly` / `Release_Nightly`. API differences between Nightly and Enhanced will be handled in a separate change when Nightly is enabled.
+3. **Nightly** – pin with `update-shvdn.ps1 -Target Nightly -Tag <nightly-tag>` before using `Debug_Nightly` /
+   `Release_Nightly`.
+4. **API differences** – keep SHVDN Enhanced vs Nightly splits in `GunshotWound2/Compat/` (`ShvdnCompat.Enhanced.cs` /
+   `ShvdnCompat.Nightly.cs`, included by `$(ShvdnTarget)`). Gameplay code should call `ShvdnCompat`, not use
+   `#if SHVDN_*`.
 
 Override variant without changing solution configuration:
 

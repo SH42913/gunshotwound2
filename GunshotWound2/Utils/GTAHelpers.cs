@@ -1,4 +1,5 @@
 namespace GunshotWound2.Utils {
+    using Compat;
     using GTA;
     using GTA.Math;
     using GTA.Native;
@@ -29,11 +30,7 @@ namespace GunshotWound2.Utils {
             Vector3 playerPos = playerPed.Position;
             for (int i = 0; i < closestPeds.Length; i++) {
                 Ped ped = closestPeds[i];
-#if SHVDN_NIGHTLY
-                float distance = Vector3.Distance(playerPos, ped.Position);
-#else
-                float distance = World.GetDistance(playerPos, ped.Position);
-#endif
+                float distance = ShvdnCompat.VectorDistance(playerPos, ped.Position);
                 if (distance < minDistance) {
                     closestPedIndex = i;
                     minDistance = distance;

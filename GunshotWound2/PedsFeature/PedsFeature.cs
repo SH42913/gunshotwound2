@@ -1,6 +1,9 @@
 ﻿namespace GunshotWound2.PedsFeature {
+    using Compat;
     using Configs;
     using GTA;
+    using HealthFeature;
+    using PainFeature;
     using Scellecs.Morpeh;
     using Utils;
     using EcsEntity = Scellecs.Morpeh.Entity;
@@ -36,11 +39,7 @@
 #endif
 
             sharedData.cheatListener.Register("GSW_TEST_PED", () => {
-#if SHVDN_NIGHTLY
-                Ped ped = Ped.CreateRandom(Game.Player.Character.BelowPosition);
-#else
-                Ped ped = GTA.World.CreateRandomPed(Game.Player.Character.BelowPosition);
-#endif
+                Ped ped = ShvdnCompat.CreateRandomPed(Game.Player.Character.BelowPosition);
                 ped.DecisionMaker = new DecisionMaker(DecisionMakerTypeHash.Empty);
                 ped.SetConfigFlag(PedConfigFlagToggles.DontActivateRagdollFromBulletImpact, true);
             });
@@ -55,14 +54,14 @@
         private static void BandageClosestPed(SharedData sharedData) {
             if (sharedData.TryGetPlayer(out EcsEntity playerEntity)
                 && sharedData.TryGetClosestPedEntity(out _, out EcsEntity entity)) {
-                HealthFeature.HealthFeature.StartBandaging(entity, medic: playerEntity);
+                HealthFeature.StartBandaging(entity, medic: playerEntity);
             }
         }
 
         private static void PainkillersToClosestPed(SharedData sharedData) {
             if (sharedData.TryGetPlayer(out EcsEntity playerEntity)
                 && sharedData.TryGetClosestPedEntity(out _, out EcsEntity entity)) {
-                PainFeature.PainFeature.UsePainkillers(entity, medic: playerEntity);
+                PainFeature.UsePainkillers(entity, medic: playerEntity);
             }
         }
     }
