@@ -124,6 +124,9 @@ namespace GunshotWound2.HitDetection {
                 hitData.weaponHash = weaponHash;
                 hitData.weaponType = weaponType;
                 hitData.hits = isSpecialCase ? specialHitCount : 1;
+                if (isValidLastDamage) {
+                    convertedPed.lastProcessedDamageGameTime = time;
+                }
 #if DEBUG
                 string weaponName = BuildWeaponName(weaponHash);
                 string specialString = isSpecialCase ? "(special)" : "";

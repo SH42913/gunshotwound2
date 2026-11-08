@@ -20,6 +20,7 @@ namespace GunshotWound2.PedsFeature {
         public int defaultMaxHealth;
         public int lastFrameHealth;
         public int lastFrameArmor;
+        public int lastProcessedDamageGameTime;
         public Ped lastAggressor;
         public IPedStatus status;
 

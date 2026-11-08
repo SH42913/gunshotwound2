@@ -56,6 +56,17 @@ namespace GunshotWound2.HitDetection {
                     continue;
                 }
 
+                if (convertedPed.lastProcessedDamageGameTime != 0
+                    && PedEffects.TryGetLastDamageRecord(ped, out _, out _, out int damageGameTime)
+                    && damageGameTime == convertedPed.lastProcessedDamageGameTime) {
+#if DEBUG
+                    sharedData.logger.WriteInfo(
+                        $"Skip duplicate damage record time={damageGameTime} at {convertedPed.name}, healthDiff={healthDiff}");
+#endif
+                    convertedPed.SyncLastFrameHealthAndArmor();
+                    continue;
+                }
+
                 entity.SetComponent(new PedHitData {
                     ped = ped,
                     healthDiff = healthDiff,
