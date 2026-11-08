@@ -17,6 +17,7 @@ namespace GunshotWound2.HealthFeature {
         private Filter bleedingWounds;
         private Filter peds;
         private Filter totallyHealedPeds;
+        private AspectFactory<PedWithHealth> pedWithHealthAspect;
 
         public BleedingSystem(SharedData sharedData) {
             this.sharedData = sharedData;
@@ -30,8 +31,9 @@ namespace GunshotWound2.HealthFeature {
             pedsStash = World.GetStash<ConvertedPed>();
 
             bleedingWounds = World.Filter.With<Bleeding>();
-            peds = World.Filter.With<ConvertedPed>().With<Health>();
-            totallyHealedPeds = World.Filter.With<ConvertedPed>().With<Health>().With<TotallyHealedEvent>();
+            peds = World.Filter.Extend<PedWithHealth>();
+            totallyHealedPeds = World.Filter.Extend<PedWithHealth>().With<TotallyHealedEvent>();
+            pedWithHealthAspect = World.GetAspectFactory<PedWithHealth>();
         }
 
         public void OnUpdate(float deltaTime) {
@@ -45,7 +47,7 @@ namespace GunshotWound2.HealthFeature {
         private void CleanWoundsIfTotallyHealed() {
             var needCommitWorld = false;
             foreach (EcsEntity entity in totallyHealedPeds) {
-                ref Health health = ref healthStash.Get(entity);
+                ref Health health = ref pedWithHealthAspect.Get(entity).Health;
                 if (!health.HasBleedingWounds()) {
                     continue;
                 }
@@ -124,7 +126,7 @@ namespace GunshotWound2.HealthFeature {
 
         private void RefreshBleedingToBandage() {
             foreach (EcsEntity pedEntity in peds) {
-                ref Health health = ref healthStash.Get(pedEntity);
+                ref Health health = ref pedWithHealthAspect.Get(pedEntity).Health;
                 if (health.bleedingToBandage.IsNullOrDisposed()) {
                     DetectBleedingToBandage(pedEntity, ref health);
                 }

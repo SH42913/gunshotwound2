@@ -12,7 +12,7 @@ namespace GunshotWound2.HealthFeature {
     public sealed class HealthChangeSystem : ILateSystem {
         private readonly SharedData sharedData;
         private Filter peds;
-        private Stash<Health> healthStash;
+        private AspectFactory<PedWithHealth> pedWithHealthAspect;
 
         public EcsWorld World { get; set; }
 
@@ -21,18 +21,19 @@ namespace GunshotWound2.HealthFeature {
         }
 
         public void OnAwake() {
-            peds = World.Filter.With<ConvertedPed>().With<Health>();
-            healthStash = World.GetStash<Health>();
+            peds = World.Filter.Extend<PedWithHealth>();
+            pedWithHealthAspect = World.GetAspectFactory<PedWithHealth>();
         }
 
         public void OnUpdate(float deltaTime) {
             foreach (EcsEntity entity in peds) {
-                ref Health health = ref healthStash.Get(entity);
+                PedWithHealth aspect = pedWithHealthAspect.Get(entity);
+                ref Health health = ref aspect.Health;
                 if (health.isDead) {
                     continue;
                 }
 
-                ref ConvertedPed convertedPed = ref entity.GetComponent<ConvertedPed>();
+                ref ConvertedPed convertedPed = ref aspect.Ped;
                 Ped thisPed = convertedPed.thisPed;
                 if (!thisPed.Exists()) {
                     health.isDead = true;

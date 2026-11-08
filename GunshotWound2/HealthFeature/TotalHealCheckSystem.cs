@@ -8,8 +8,7 @@ namespace GunshotWound2.HealthFeature {
         private readonly SharedData sharedData;
 
         private Filter peds;
-        private Stash<ConvertedPed> pedStash;
-        private Stash<Health> healthStash;
+        private AspectFactory<PedWithHealth> pedWithHealthAspect;
         private Stash<TotallyHealedEvent> totallyHealedStash;
 
         public EcsWorld World { get; set; }
@@ -19,9 +18,8 @@ namespace GunshotWound2.HealthFeature {
         }
 
         public void OnAwake() {
-            peds = World.Filter.With<ConvertedPed>().With<Health>();
-            pedStash = World.GetStash<ConvertedPed>();
-            healthStash = World.GetStash<Health>();
+            peds = World.Filter.Extend<PedWithHealth>();
+            pedWithHealthAspect = World.GetAspectFactory<PedWithHealth>();
             totallyHealedStash = World.GetStash<TotallyHealedEvent>();
         }
 
@@ -32,8 +30,9 @@ namespace GunshotWound2.HealthFeature {
                     continue;
                 }
 
-                ref ConvertedPed convertedPed = ref pedStash.Get(entity);
-                ref Health health = ref healthStash.Get(entity);
+                PedWithHealth aspect = pedWithHealthAspect.Get(entity);
+                ref ConvertedPed convertedPed = ref aspect.Ped;
+                ref Health health = ref aspect.Health;
                 if (health.IsAlive() && convertedPed.thisPed.Health > health.max) {
 #if DEBUG && DEBUG_EVERY_FRAME
                     sharedData.logger.WriteInfo($"Ped {convertedPed.name} was totally healed");

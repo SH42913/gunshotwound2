@@ -184,6 +184,7 @@
     <Compile Include="HealthFeature\HealthChangeSystem.cs" />
     <Compile Include="HealthFeature\HealthFeature.cs" />
     <Compile Include="HealthFeature\Health.cs" />
+    <Compile Include="HealthFeature\PedWithHealth.cs"/>
     <Compile Include="HealthFeature\HealthInitSystem.cs" />
     <Compile Include="HealthFeature\SelfHealingSystem.cs" />
     <Compile Include="HealthFeature\TotalHealCheckSystem.cs" />

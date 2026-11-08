@@ -6,9 +6,8 @@ namespace GunshotWound2.HealthFeature {
     public sealed class SelfHealingSystem : ILateSystem {
         private readonly SharedData sharedData;
 
-        private Stash<Health> healthStash;
-        private Stash<ConvertedPed> pedStash;
         private Filter peds;
+        private AspectFactory<PedWithHealth> pedWithHealthAspect;
 
         public EcsWorld World { get; set; }
 
@@ -17,14 +16,14 @@ namespace GunshotWound2.HealthFeature {
         }
 
         public void OnAwake() {
-            healthStash = World.GetStash<Health>();
-            pedStash = World.GetStash<ConvertedPed>();
-            peds = World.Filter.With<Health>().With<ConvertedPed>();
+            peds = World.Filter.Extend<PedWithHealth>();
+            pedWithHealthAspect = World.GetAspectFactory<PedWithHealth>();
         }
 
         public void OnUpdate(float deltaTime) {
             foreach (EcsEntity entity in peds) {
-                ref Health health = ref healthStash.Get(entity);
+                PedWithHealth aspect = pedWithHealthAspect.Get(entity);
+                ref Health health = ref aspect.Health;
                 if (health.isDead) {
                     continue;
                 }
@@ -33,7 +32,7 @@ namespace GunshotWound2.HealthFeature {
                     continue;
                 }
 
-                ref ConvertedPed convertedPed = ref pedStash.Get(entity);
+                ref ConvertedPed convertedPed = ref aspect.Ped;
                 if (convertedPed.thisPed.Health + health.diff < health.max) {
                     float selfHealingRate = convertedPed.isPlayer
                             ? sharedData.mainConfig.playerConfig.SelfHealingRate
