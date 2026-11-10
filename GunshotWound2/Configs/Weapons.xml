@@ -17,6 +17,16 @@
     <!-- Primarily, that's a debug option.
     Set this value to FALSE if you want to detect weapon with hits in-game, but GSW treats that like falling damage. -->
 
+    <!-- ARMOR TUNING NOTES (NIJ Standard-0101.06 levels: TypeIIA=20, TypeII=40, TypeIIIA=60, TypeIII=80, TypeIV=100, Special=200)
+         SafeArmorLevel: the lowest level that reliably stops this threat. While armor >= MaxValue of that level the save is 100%.
+                         Below it the save chance falls linearly from 100% to MinimalChanceForArmorSave.
+                         Empty SafeArmorLevel = the weapon can never penetrate armor.
+         ArmorDamage:    armor points removed per hit (per pellet for shotguns). Scaled to roughly 1/13 of the MaxValue of the
+                         weapon's SafeArmorLevel, so after ~6 hits a vest of exactly that level is down to ~50% and the save chance
+                         has visibly dropped. Weaker threats against a higher vest only wear it down slowly.
+         Edged weapons, falls and crashes are NOT what ballistic vests are rated for (NIJ 0115 is the stab standard), so they use
+         a high SafeArmorLevel: the vest only helps partially, and more reliably the higher the armor value. -->
+
     <!-- GSW2 will ignore these weapons, so they will deal vanilla damage -->
     <IgnoreSet>
         <Explosives Hashes="EXPLOSION;GRENADE;STICKYBOMB;PROXMINE;PIPEBOMB;"/>
@@ -36,7 +46,7 @@
     <Weapons>
         <Firearm9x19_HP ShortDesc="9x19 HP"
                         DamageMult="1.3" BleedMult="2.0" PainMult="0.9" ChanceToCauseTrauma="0.55"
-                        SafeArmorLevel="ClassI" ArmorDamage="1" HelmetSafeChance="0.9">
+                        SafeArmorLevel="TypeIIA" ArmorDamage="1" HelmetSafeChance="0.9">
             <Pistols Hashes="PISTOL;SNSPISTOL;CERAMICPISTOL;"/>
             <SMGs Hashes="MACHINEPISTOL;TECPISTOL;"/>
             <TakedownWound Key="MediumBruise"/>
@@ -49,7 +59,7 @@
         </Firearm9x19_HP>
         <Firearm9x19_FMJ ShortDesc="9x19 FMJ"
                          DamageMult="1.0" BleedMult="1.4" PainMult="1.0" ChanceToCauseTrauma="0.4"
-                         SafeArmorLevel="ClassII" ArmorDamage="3" HelmetSafeChance="0.8">
+                         SafeArmorLevel="TypeIIA" ArmorDamage="2" HelmetSafeChance="0.8">
             <Pistols Hashes="PISTOLXM3;"/>
             <SMGs Hashes="MICROSMG;SMG;"/>
             <TakedownWound Key="MediumBruise"/>
@@ -62,7 +72,7 @@
         </Firearm9x19_FMJ>
         <Firearm9x19_AP ShortDesc="9x19 AP"
                         DamageMult="0.9" BleedMult="0.8" PainMult="0.7" ChanceToCauseTrauma="0.3"
-                        SafeArmorLevel="ClassIII" ArmorDamage="7" HelmetSafeChance="0.6">
+                        SafeArmorLevel="TypeIIIA" ArmorDamage="4" HelmetSafeChance="0.6">
             <Pistols Hashes="APPISTOL;PISTOL_MK2;SMG_MK2;"/>
             <SMGs Hashes="COMBATPDW;"/>
             <TakedownWound Key="MediumBruise"/>
@@ -74,9 +84,10 @@
             </Wounds>
         </Firearm9x19_AP>
 
+        <!-- Shotguns: ArmorDamage is applied per pellet that hit -->
         <Firearm12GA_00Buck ShortDesc="12GA #00" Pellets="8"
                             DamageMult="0.7" BleedMult="0.8" PainMult="0.5" ChanceToCauseTrauma="0.2"
-                            SafeArmorLevel="ClassII" ArmorDamage="2" HelmetSafeChance="0.95">
+                            SafeArmorLevel="TypeIIA" ArmorDamage="1" HelmetSafeChance="0.95">
             <Shotguns Hashes="PUMPSHOTGUN;PUMPSHOTGUN_MK2;SAWNOFFSHOTGUN;BULLPUPSHOTGUN;DBSHOTGUN;"/>
             <TakedownWound Key="HeavyBruise"/>
             <Wounds>
@@ -87,7 +98,7 @@
         </Firearm12GA_00Buck>
         <Firearm12GA_000Buck ShortDesc="12GA #000" Pellets="6"
                              DamageMult="0.9" BleedMult="1.0" PainMult="0.7" ChanceToCauseTrauma="0.3"
-                             SafeArmorLevel="ClassII" ArmorDamage="4" HelmetSafeChance="0.85">
+                             SafeArmorLevel="TypeII" ArmorDamage="2" HelmetSafeChance="0.85">
             <Shotguns Hashes="COMBATSHOTGUN;"/>
             <AutoShotguns Hashes="AUTOSHOTGUN;ASSAULTSHOTGUN;"/>
             <TakedownWound Key="HeavyBruise"/>
@@ -99,7 +110,7 @@
         </Firearm12GA_000Buck>
         <Firearm12GA_Slug ShortDesc="12GA Slug"
                           DamageMult="2.0" BleedMult="2.0" PainMult="1.3" ChanceToCauseTrauma="0.9"
-                          SafeArmorLevel="ClassIII" ArmorDamage="30" HelmetSafeChance="0.1">
+                          SafeArmorLevel="TypeIII" ArmorDamage="7" HelmetSafeChance="0.1">
             <AutoShotguns Hashes="MUSKET;HEAVYSHOTGUN;"/>
             <TakedownWound Key="HeavyBruise"/>
             <Wounds>
@@ -110,7 +121,7 @@
         </Firearm12GA_Slug>
         <Firearm12GA_Flechette ShortDesc="12GA Flechette" Pellets="8"
                                DamageMult="0.9" BleedMult="1.5" PainMult="0.3" ChanceToCauseTrauma="0.4"
-                               SafeArmorLevel="ClassIII" ArmorDamage="8" HelmetSafeChance="0.6">
+                               SafeArmorLevel="TypeIII" ArmorDamage="1" HelmetSafeChance="0.6">
             <Shotguns Hashes=""/>
             <TakedownWound Key="HeavyBruise"/>
             <Wounds>
@@ -121,7 +132,7 @@
         </Firearm12GA_Flechette>
         <Firearm12GA_RubberBuckshot ShortDesc="12GA Rubber" Pellets="8"
                                     DamageMult="0.1" BleedMult="0.0" PainMult="0.8" ChanceToCauseTrauma="0.1"
-                                    SafeArmorLevel="ClassI" ArmorDamage="0" HelmetSafeChance="1.0">
+                                    SafeArmorLevel="TypeIIA" ArmorDamage="0" HelmetSafeChance="1.0">
             <Shotguns Hashes=""/>
             <TakedownWound Key="MediumBruise"/>
             <Wounds>
@@ -133,7 +144,7 @@
         </Firearm12GA_RubberBuckshot>
         <Firearm12GA_BeanBag ShortDesc="12GA BeanBag"
                              DamageMult="0.2" BleedMult="0.0" PainMult="1.5" ChanceToCauseTrauma="0.4"
-                             SafeArmorLevel="ClassI" ArmorDamage="0" HelmetSafeChance="1.0">
+                             SafeArmorLevel="TypeIIA" ArmorDamage="0" HelmetSafeChance="1.0">
             <Shotguns Hashes=""/>
             <TakedownWound Key="HeavyBruise"/>
             <Wounds>
@@ -144,7 +155,7 @@
         </Firearm12GA_BeanBag>
         <Firearm12GA_RubberSlug ShortDesc="12GA Rubber Slug"
                                 DamageMult="0.3" BleedMult="0.0" PainMult="2.0" ChanceToCauseTrauma="0.6"
-                                SafeArmorLevel="ClassI" ArmorDamage="0" HelmetSafeChance="0.9">
+                                SafeArmorLevel="TypeIIA" ArmorDamage="0" HelmetSafeChance="0.9">
             <Shotguns Hashes=""/>
             <TakedownWound Key="HeavyBruise"/>
             <Wounds>
@@ -156,7 +167,7 @@
 
         <Firearm223Rem_HP ShortDesc=".223 Rem HP"
                           DamageMult="1.5" BleedMult="2.5" PainMult="1.2" ChanceToCauseTrauma="0.7"
-                          SafeArmorLevel="ClassII" ArmorDamage="5" HelmetSafeChance="0.5">
+                          SafeArmorLevel="TypeIIIA" ArmorDamage="4" HelmetSafeChance="0.5">
             <Carbines Hashes="CARBINERIFLE;"/>
             <TakedownWound Key="HeavyBruise"/>
             <TangentialWound Key="TangentialGsw"/>
@@ -169,7 +180,7 @@
         </Firearm223Rem_HP>
         <Firearm556x45_FMJ ShortDesc="5.56x45 FMJ"
                            DamageMult="1.2" BleedMult="1.5" PainMult="1.0" ChanceToCauseTrauma="0.6"
-                           SafeArmorLevel="ClassIII" ArmorDamage="12" HelmetSafeChance="0.3">
+                           SafeArmorLevel="TypeIII" ArmorDamage="5" HelmetSafeChance="0.3">
             <Carbines Hashes="SPECIALCARBINE;"/>
             <Rifles Hashes="ADVANCEDRIFLE;MILITARYRIFLE;TACTICALRIFLE;STRICKLER;"/>
             <MGs Hashes="COMBATMG;"/>
@@ -184,7 +195,7 @@
         </Firearm556x45_FMJ>
         <Firearm556x45_AP ShortDesc="5.56x45 AP"
                           DamageMult="1.1" BleedMult="1.3" PainMult="0.8" ChanceToCauseTrauma="0.95"
-                          SafeArmorLevel="ClassIV" ArmorDamage="20" HelmetSafeChance="0.1">
+                          SafeArmorLevel="TypeIV" ArmorDamage="8" HelmetSafeChance="0.1">
             <Carbines Hashes="SPECIALCARBINE_MK2;"/>
             <Rifles Hashes="BULLPUPRIFLE_MK2;CARBINERIFLE_MK2;"/>
             <TakedownWound Key="HeavyBruise"/>
@@ -198,7 +209,7 @@
         </Firearm556x45_AP>
         <Firearm58x42_FMJ ShortDesc="5.8x42 FMJ"
                           DamageMult="1.3" BleedMult="1.6" PainMult="1.1" ChanceToCauseTrauma="0.7"
-                          SafeArmorLevel="ClassIII" ArmorDamage="14" HelmetSafeChance="0.25">
+                          SafeArmorLevel="TypeIII" ArmorDamage="5" HelmetSafeChance="0.25">
             <Rifles Hashes="BULLPUPRIFLE;"/>
             <TakedownWound Key="HeavyBruise"/>
             <TangentialWound Key="TangentialGsw"/>
@@ -211,7 +222,7 @@
         </Firearm58x42_FMJ>
         <Firearm300Blk ShortDesc=".300 Blackout"
                        DamageMult="1.2" BleedMult="2.0" PainMult="0.6" ChanceToCauseTrauma="0.5"
-                       SafeArmorLevel="ClassII" ArmorDamage="6" HelmetSafeChance="0.4">
+                       SafeArmorLevel="TypeIII" ArmorDamage="5" HelmetSafeChance="0.4">
             <Rifles Hashes=""/>
             <TakedownWound Key="HeavyBruise"/>
             <TangentialWound Key="TangentialGsw"/>
@@ -224,7 +235,7 @@
 
         <Firearm545x39_FMJ ShortDesc="5.45x39 FMJ"
                            DamageMult="1.2" BleedMult="1.8" PainMult="1.1" ChanceToCauseTrauma="0.75"
-                           SafeArmorLevel="ClassIII" ArmorDamage="10" HelmetSafeChance="0.2">
+                           SafeArmorLevel="TypeIII" ArmorDamage="5" HelmetSafeChance="0.2">
             <Rifles Hashes="COMPACTRIFLE;"/>
             <TakedownWound Key="HeavyBruise"/>
             <TangentialWound Key="TangentialGsw"/>
@@ -237,7 +248,7 @@
         </Firearm545x39_FMJ>
         <Firearm545x39_AP ShortDesc="5.45x39 AP"
                           DamageMult="1.0" BleedMult="1.2" PainMult="0.8" ChanceToCauseTrauma="0.8"
-                          SafeArmorLevel="ClassIV" ArmorDamage="18" HelmetSafeChance="0.1">
+                          SafeArmorLevel="TypeIV" ArmorDamage="8" HelmetSafeChance="0.1">
             <Rifles Hashes=""/>
             <TakedownWound Key="HeavyBruise"/>
             <TangentialWound Key="TangentialGsw"/>
@@ -250,7 +261,7 @@
 
         <Firearm762x39_FMJ ShortDesc="7.62x39 FMJ"
                            DamageMult="1.4" BleedMult="1.6" PainMult="1.4" ChanceToCauseTrauma="0.8"
-                           SafeArmorLevel="ClassIV" ArmorDamage="15" HelmetSafeChance="0.05">
+                           SafeArmorLevel="TypeIII" ArmorDamage="6" HelmetSafeChance="0.05">
             <Rifles Hashes="ASSAULTRIFLE;ASSAULTRIFLE_MK2;MARKSMANRIFLE;"/>
             <MGs Hashes="MG;"/>
             <TakedownWound Key="HeavyBruise"/>
@@ -264,7 +275,7 @@
         </Firearm762x39_FMJ>
         <Firearm762x39_AP ShortDesc="7.62x39 AP"
                           DamageMult="1.3" BleedMult="1.5" PainMult="1.2" ChanceToCauseTrauma="0.9"
-                          SafeArmorLevel="ClassV" ArmorDamage="25" HelmetSafeChance="0.0">
+                          SafeArmorLevel="TypeIV" ArmorDamage="9" HelmetSafeChance="0.0">
             <Rifles Hashes=""/>
             <TakedownWound Key="HeavyBruise"/>
             <TangentialWound Key="TangentialGsw"/>
@@ -277,7 +288,7 @@
 
         <Firearm762x51_FMJ ShortDesc="7.62x51 NATO"
                            DamageMult="1.7" BleedMult="2.0" PainMult="1.7" ChanceToCauseTrauma="0.95"
-                           SafeArmorLevel="ClassV" ArmorDamage="30" HelmetSafeChance="0.01">
+                           SafeArmorLevel="TypeIII" ArmorDamage="8" HelmetSafeChance="0.01">
             <Rifles Hashes="BATTLERIFLE;MARKSMANRIFLE_MK2;SNIPERRIFLE;PRECISIONRIFLE;HEAVYRIFLE;"/>
             <MGs Hashes="COMBATMG_MK2;MINIGUN;ARENA_MACHINE_GUN;AIR_DEFENCE_GUN;"/>
             <TakedownWound Key="HeavyBruise"/>
@@ -292,7 +303,7 @@
 
         <Firearm40SW_FMJ ShortDesc=".40 S&amp;W FMJ"
                          DamageMult="1.1" BleedMult="1.3" PainMult="1.2" ChanceToCauseTrauma="0.5"
-                         SafeArmorLevel="ClassII" ArmorDamage="5" HelmetSafeChance="0.8">
+                         SafeArmorLevel="TypeIIA" ArmorDamage="2" HelmetSafeChance="0.8">
             <Pistols Hashes="COMBATPISTOL;SNSPISTOL_MK2;"/>
             <TakedownWound Key="MediumBruise"/>
             <TangentialWound Key="TangentialGsw"/>
@@ -305,7 +316,7 @@
         </Firearm40SW_FMJ>
         <Firearm40SW_HP ShortDesc=".40 S&amp;W HP"
                         DamageMult="1.3" BleedMult="1.8" PainMult="1.3" ChanceToCauseTrauma="0.6"
-                        SafeArmorLevel="ClassII" ArmorDamage="2" HelmetSafeChance="0.85">
+                        SafeArmorLevel="TypeIIA" ArmorDamage="1" HelmetSafeChance="0.85">
             <Pistols Hashes=""/>
             <TakedownWound Key="MediumBruise"/>
             <TangentialWound Key="TangentialGsw"/>
@@ -319,7 +330,7 @@
 
         <Firearm50AE_FMJ ShortDesc=".50 AE FMJ"
                          DamageMult="1.9" BleedMult="1.9" PainMult="2.0" ChanceToCauseTrauma="0.95"
-                         SafeArmorLevel="ClassIII" ArmorDamage="25" HelmetSafeChance="0.05">
+                         SafeArmorLevel="TypeIII" ArmorDamage="6" HelmetSafeChance="0.05">
             <Pistols Hashes=""/>
             <TakedownWound Key="BluntLaceration"/>
             <TangentialWound Key="TangentialGsw"/>
@@ -332,7 +343,7 @@
         </Firearm50AE_FMJ>
         <Firearm50AE_JHP ShortDesc=".50 AE JHP"
                          DamageMult="2.3" BleedMult="2.8" PainMult="2.2" ChanceToCauseTrauma="1.0"
-                         SafeArmorLevel="ClassII" ArmorDamage="12" HelmetSafeChance="0.15">
+                         SafeArmorLevel="TypeIIIA" ArmorDamage="5" HelmetSafeChance="0.15">
             <Pistols Hashes=""/>
             <TakedownWound Key="BluntLaceration"/>
             <TangentialWound Key="TangentialGsw"/>
@@ -345,7 +356,7 @@
 
         <Firearm357Mag_FMJ ShortDesc=".357 Magnum"
                            DamageMult="1.4" BleedMult="1.4" PainMult="1.5" ChanceToCauseTrauma="0.7"
-                           SafeArmorLevel="ClassIII" ArmorDamage="12" HelmetSafeChance="0.3">
+                           SafeArmorLevel="TypeII" ArmorDamage="4" HelmetSafeChance="0.3">
             <Pistols Hashes="PISTOL50;"/>
             <Revolvers Hashes="REVOLVER;"/>
             <TakedownWound Key="HeavyBruise"/>
@@ -360,7 +371,7 @@
 
         <Firearm44Mag_FMJ ShortDesc=".44 Magnum"
                           DamageMult="1.7" BleedMult="1.8" PainMult="1.8" ChanceToCauseTrauma="0.9"
-                          SafeArmorLevel="ClassIII" ArmorDamage="20" HelmetSafeChance="0.1">
+                          SafeArmorLevel="TypeIIIA" ArmorDamage="5" HelmetSafeChance="0.1">
             <Pistols Hashes="MARKSMANPISTOL;GADGETPISTOL;"/>
             <Revolvers Hashes="REVOLVER_MK2;"/>
             <TakedownWound Key="BluntLaceration"/>
@@ -375,7 +386,7 @@
 
         <Firearm45ACP_FMJ ShortDesc=".45 ACP"
                           DamageMult="1.3" BleedMult="1.5" PainMult="1.6" ChanceToCauseTrauma="0.6"
-                          SafeArmorLevel="ClassII" ArmorDamage="8" HelmetSafeChance="0.7">
+                          SafeArmorLevel="TypeIIA" ArmorDamage="3" HelmetSafeChance="0.7">
             <Pistols Hashes="HEAVYPISTOL;"/>
             <SMGs Hashes="GUSENBERG;"/>
             <TakedownWound Key="HeavyBruise"/>
@@ -390,7 +401,7 @@
 
         <Firearm32ACP_FMJ ShortDesc=".32 ACP"
                           DamageMult="0.7" BleedMult="0.7" PainMult="0.9" ChanceToCauseTrauma="0.2"
-                          SafeArmorLevel="ClassI" ArmorDamage="1" HelmetSafeChance="0.95">
+                          SafeArmorLevel="TypeIIA" ArmorDamage="1" HelmetSafeChance="0.95">
             <Pistols Hashes="VINTAGEPISTOL;"/>
             <SMGs Hashes="MINISMG;"/>
             <TakedownWound Key="MediumBruise"/>
@@ -404,7 +415,7 @@
 
         <Firearm57x28_AP ShortDesc="5.7x28mm SS190"
                          DamageMult="0.9" BleedMult="0.8" PainMult="0.6" ChanceToCauseTrauma="0.4"
-                         SafeArmorLevel="ClassIII" ArmorDamage="8" HelmetSafeChance="0.4">
+                         SafeArmorLevel="TypeIII" ArmorDamage="4" HelmetSafeChance="0.4">
             <SMGs Hashes="ASSAULTSMG;"/>
             <Pistols Hashes=""/>
             <TakedownWound Key="MediumBruise"/>
@@ -417,7 +428,7 @@
         </Firearm57x28_AP>
         <Firearm57x28_HP ShortDesc="5.7x28mm SS195LF"
                          DamageMult="1.1" BleedMult="1.2" PainMult="0.9" ChanceToCauseTrauma="0.6"
-                         SafeArmorLevel="ClassII" ArmorDamage="4" HelmetSafeChance="0.7">
+                         SafeArmorLevel="TypeIIA" ArmorDamage="1" HelmetSafeChance="0.7">
             <SMGs Hashes=""/>
             <Pistols Hashes=""/>
             <TakedownWound Key="MediumBruise"/>
@@ -431,7 +442,7 @@
 
         <Firearm46x30_FMJ ShortDesc="4.6x30mm DM11"
                           DamageMult="0.85" BleedMult="0.7" PainMult="0.5" ChanceToCauseTrauma="0.35"
-                          SafeArmorLevel="ClassIII" ArmorDamage="10" HelmetSafeChance="0.35">
+                          SafeArmorLevel="TypeIII" ArmorDamage="4" HelmetSafeChance="0.35">
             <SMGs Hashes=""/>
             <TakedownWound Key="MediumBruise"/>
             <TangentialWound Key="TangentialGsw"/>
@@ -444,7 +455,7 @@
 
         <Firearm38Revolver_LRN ShortDesc=".38 Special LRN"
                                DamageMult="1.1" BleedMult="1.3" PainMult="1.2" ChanceToCauseTrauma="0.4"
-                               SafeArmorLevel="ClassII" ArmorDamage="4" HelmetSafeChance="0.6">
+                               SafeArmorLevel="TypeIIA" ArmorDamage="1" HelmetSafeChance="0.6">
             <Revolvers Hashes="DOUBLEACTION;NAVYREVOLVER;"/>
             <TakedownWound Key="HeavyBruise"/>
             <TangentialWound Key="TangentialGsw"/>
@@ -458,7 +469,7 @@
 
         <Firearm50BMG_Ball ShortDesc=".50 BMG"
                            DamageMult="2.5" BleedMult="3.0" PainMult="2.2" ChanceToCauseTrauma="1.0"
-                           SafeArmorLevel="ClassV" ArmorDamage="40" HelmetSafeChance="0.0">
+                           SafeArmorLevel="Special" ArmorDamage="35" HelmetSafeChance="0.0">
             <Rifles Hashes="HEAVYSNIPER;HEAVYSNIPER_MK2;REMOTESNIPER;"/>
             <TakedownWound Key="HeavyBruise"/>
             <Wounds>
@@ -469,7 +480,7 @@
         </Firearm50BMG_Ball>
 
         <Railguns DamageMult="4.0" BleedMult="0.0" PainMult="3.0" ChanceToCauseTrauma="1.0"
-                  SafeArmorLevel="ClassV" ArmorDamage="100" HelmetSafeChance="0.0">
+                  SafeArmorLevel="Special" ArmorDamage="100" HelmetSafeChance="0.0">
             <Hashes Hashes="RAILGUN;RAILGUNXM3;"/>
             <TakedownWound Key="BluntLaceration"/>
             <Wounds>
@@ -483,7 +494,9 @@
         
         -->
 
-        <!-- Cutting -->
+        <!-- Cutting. Ballistic vests are not rated against edged weapons: the vest helps only partially,
+             a higher armor value (hard plates, thicker layers) helps more reliably. -->
+        <!-- Barbed wire: no SafeArmorLevel, armor fully blocks it -->
         <EnvironmentCut DamageMult="0.2" BleedMult="3.0" PainMult="2.0" ChanceToCauseTrauma="0.0"
                         HelmetSafeChance="1.0">
             <Hashes Hashes="BARBED_WIRE;"/>
@@ -493,7 +506,8 @@
                 <Wound Key="SlashCut" Weight="20"/>
             </Wounds>
         </EnvironmentCut>
-        <LightCut DamageMult="0.8" BleedMult="2.5" PainMult="1.0" ChanceToCauseTrauma="0.2" HelmetSafeChance="0.95">
+        <LightCut DamageMult="0.8" BleedMult="2.5" PainMult="1.0" ChanceToCauseTrauma="0.2"
+                  SafeArmorLevel="TypeII" ArmorDamage="1" HelmetSafeChance="0.95">
             <Hashes Hashes="SWITCHBLADE;BOTTLE;"/>
             <TakedownWound Key="SlashCut"/>
             <Wounds>
@@ -504,7 +518,7 @@
             </Wounds>
         </LightCut>
         <CombatCut DamageMult="1.0" BleedMult="3.0" PainMult="0.8" ChanceToCauseTrauma="0.5"
-                   SafeArmorLevel="ClassI" ArmorDamage="2" HelmetSafeChance="0.9">
+                   SafeArmorLevel="TypeIV" ArmorDamage="2" HelmetSafeChance="0.9">
             <Hashes Hashes="KNIFE;DAGGER;"/>
             <TakedownWound Key="StabCut"/>
             <Wounds>
@@ -514,7 +528,7 @@
             </Wounds>
         </CombatCut>
         <HeavyCut DamageMult="1.2" BleedMult="3.0" PainMult="1.0" ChanceToCauseTrauma="0.65"
-                  SafeArmorLevel="ClassII" ArmorDamage="5" HelmetSafeChance="0.7">
+                  SafeArmorLevel="Special" ArmorDamage="4" HelmetSafeChance="0.7">
             <Hashes Hashes="MACHETE;"/>
             <TakedownWound Key="ChopCut"/>
             <Wounds>
@@ -524,7 +538,7 @@
             </Wounds>
         </HeavyCut>
         <Chopping DamageMult="1.6" BleedMult="2.5" PainMult="1.25" ChanceToCauseTrauma="0.85"
-                  SafeArmorLevel="ClassIII" ArmorDamage="10" HelmetSafeChance="0.5">
+                  SafeArmorLevel="Special" ArmorDamage="8" HelmetSafeChance="0.5">
             <Hashes Hashes="BATTLEAXE;HATCHET;STONE_HATCHET;"/>
             <TakedownWound Key="ChopCut"/>
             <Wounds>
@@ -544,7 +558,8 @@
                 <Wound Key="BluntAbrasion" Weight="15"/>
             </Wounds>
         </LightBlunt>
-        <FistLoad DamageMult="1.1" BleedMult="1.5" PainMult="1.3" ChanceToCauseTrauma="0.3" HelmetSafeChance="0.95">
+        <FistLoad DamageMult="1.1" BleedMult="1.5" PainMult="1.3" ChanceToCauseTrauma="0.3" ArmorDamage="1"
+                  HelmetSafeChance="0.95">
             <Hashes Hashes="KNUCKLE;"/>
             <TakedownWound Key="BluntLaceration"/>
             <Wounds>
@@ -554,7 +569,8 @@
                 <Wound Key="BluntHematoma" Weight="10"/>
             </Wounds>
         </FistLoad>
-        <PoliceBlunt DamageMult="1.0" BleedMult="1.0" PainMult="1.4" ChanceToCauseTrauma="0.25" HelmetSafeChance="0.95">
+        <PoliceBlunt DamageMult="1.0" BleedMult="1.0" PainMult="1.4" ChanceToCauseTrauma="0.25" ArmorDamage="1"
+                     HelmetSafeChance="0.95">
             <Hashes Hashes="NIGHTSTICK;FLASHLIGHT;CANDYCANE;POOLCUE;HIT_BY_WATER_CANNON;KNUCKLE;"/>
             <TakedownWound Key="HeavyBruise"/>
             <Wounds>
@@ -564,7 +580,8 @@
                 <Wound Key="BluntLaceration" Weight="10"/>
             </Wounds>
         </PoliceBlunt>
-        <ImpactBlunt DamageMult="1.5" BleedMult="1.5" PainMult="1.3" ChanceToCauseTrauma="0.6" HelmetSafeChance="0.8">
+        <ImpactBlunt DamageMult="1.5" BleedMult="1.5" PainMult="1.3" ChanceToCauseTrauma="0.6" ArmorDamage="2"
+                     HelmetSafeChance="0.8">
             <Hashes Hashes="HAMMER;WRENCH;CROWBAR;"/>
             <TakedownWound Key="BluntLaceration"/>
             <Wounds>
@@ -575,7 +592,8 @@
                 <Wound Key="MediumBruise" Weight="10"/>
             </Wounds>
         </ImpactBlunt>
-        <HeavyBlunt DamageMult="1.2" BleedMult="1.0" PainMult="1.6" ChanceToCauseTrauma="0.8" HelmetSafeChance="0.85">
+        <HeavyBlunt DamageMult="1.2" BleedMult="1.0" PainMult="1.6" ChanceToCauseTrauma="0.8" ArmorDamage="2"
+                    HelmetSafeChance="0.85">
             <Hashes Hashes="BAT;GOLFCLUB;"/>
             <TakedownWound Key="BluntHematoma"/>
             <Wounds>
@@ -586,8 +604,9 @@
             </Wounds>
         </HeavyBlunt>
 
+        <!-- Crashes and falls: a ballistic vest is only padding here, protection is partial and grows with armor value -->
         <HeliCrash DamageMult="2.0" BleedMult="2.0" PainMult="2.0"
-                   SafeArmorLevel="ClassIII" ArmorDamage="5"
+                   SafeArmorLevel="Special" ArmorDamage="5"
                    UseRandomBone="TRUE" ChanceToCauseTrauma="0.95" HelmetSafeChance="0.0">
             <Hashes Hashes="HELI_CRASH;"/>
             <Wounds>
@@ -599,7 +618,7 @@
             </Wounds>
         </HeliCrash>
         <HeliRotors DamageMult="2.5" BleedMult="3.0" PainMult="2.0"
-                    SafeArmorLevel="ClassV" ArmorDamage="15"
+                    SafeArmorLevel="Special" ArmorDamage="20"
                     UseRandomBone="TRUE" ChanceToCauseTrauma="1.0" HelmetSafeChance="0.0">
             <Hashes Hashes="VEHICLE_WEAPON_ROTORS;"/>
             <Wounds>
@@ -622,7 +641,7 @@
         </LightFall>
 
         <HardFall MinSpeed="7.0" DamageMult="2.0" BleedMult="1.0" PainMult="1.0"
-                  SafeArmorLevel="ClassII" ArmorDamage="3"
+                  SafeArmorLevel="TypeIV" ArmorDamage="3"
                   UseRandomBone="TRUE" ChanceToCauseTrauma="0.6" HelmetSafeChance="0.7">
             <Wounds>
                 <Wound Key="HeavyBruise" Weight="30"/>
@@ -643,7 +662,7 @@
         </LightRunOverCar>
 
         <HardRunOverCar MinSpeed="8.0" DamageMult="2.0" BleedMult="1.0" PainMult="1.2"
-                        SafeArmorLevel="ClassIII" ArmorDamage="5"
+                        SafeArmorLevel="TypeIV" ArmorDamage="5"
                         ChanceToCauseTrauma="0.6" HelmetSafeChance="0.7" VehMassReference="1500">
             <Wounds>
                 <Wound Key="BluntHematoma" Weight="35"/>
@@ -654,7 +673,7 @@
         </HardRunOverCar>
 
         <CarCrash ReferenceSpeed="8.0" DamageMult="0.5" BleedMult="0.5" PainMult="0.8"
-                  SafeArmorLevel="ClassIII" ArmorDamage="3"
+                  SafeArmorLevel="TypeIV" ArmorDamage="3"
                   UseRandomBone="TRUE" ChanceToCauseTrauma="0.7" HelmetSafeChance="1.0">
             <Wounds>
                 <Wound Key="HeavyBruise" Weight="25"/>

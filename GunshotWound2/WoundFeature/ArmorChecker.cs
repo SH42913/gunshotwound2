@@ -29,7 +29,8 @@ namespace GunshotWound2.WoundFeature {
 
             Ped ped = convertedPed.thisPed;
             ArmorConfig armorConfig = sharedData.mainConfig.armorConfig;
-            if (!armorConfig.TryGetArmorLevel(ped.Armor, out ArmorConfig.Level armorLevel)) {
+            int armorBefore = ped.Armor;
+            if (!armorConfig.TryGetArmorLevel(armorBefore, out ArmorConfig.Level armorLevel)) {
 #if DEBUG
                 sharedData.logger.WriteInfo("Has no armor");
 #endif
@@ -46,30 +47,29 @@ namespace GunshotWound2.WoundFeature {
                 return false;
             }
 
+            bool penetrated = CheckArmorPenetration(armorBefore, hit.weaponType);
             int armorDamage = hit.weaponType.ArmorDamage * hit.hits;
-            convertedPed.SetArmor(ped.Armor - armorDamage);
-            LocaleConfig localeConfig = sharedData.localeConfig;
-            if (!armorConfig.TryGetArmorLevel(ped.Armor, out armorLevel)) {
-#if DEBUG
-                sharedData.logger.WriteInfo("Armor is dead");
-#endif
-                ShowArmorMessage(convertedPed, localeConfig.ArmorDestroyed);
-                armorWound = default;
-                return false;
-            }
+            int newArmor = armorBefore - armorDamage;
+            convertedPed.SetArmor(newArmor);
 
-            if (CheckArmorPenetration(ped, hit.weaponType)) {
-                ShowArmorMessage(convertedPed, localeConfig.ArmorPenetrated);
+            LocaleConfig localeConfig = sharedData.localeConfig;
+            if (penetrated) {
+                string message = newArmor <= 0 ? localeConfig.ArmorDestroyed : localeConfig.ArmorPenetrated;
+                ShowArmorMessage(convertedPed, message);
                 armorWound = default;
                 return false;
             }
 
             ShowArmorMessage(convertedPed, localeConfig.ArmorProtectedYou);
+            if (newArmor <= 0) {
+                ShowArmorMessage(convertedPed, localeConfig.ArmorDestroyed);
+            }
 
             if (armorDamage > 0 && armorLevel.TraumaPadEfficiency < 1f) {
                 float traumaPadAbsorbed = armorDamage * armorLevel.TraumaPadEfficiency;
                 float bluntDamage = armorDamage - traumaPadAbsorbed;
-                bool canCauseTrauma = armorLevel.MaxValue / bluntDamage < 10;
+                float chanceToCauseTrauma = hit.weaponType.ChanceToCauseTrauma * (1f - armorLevel.TraumaPadEfficiency);
+                bool canCauseTrauma = sharedData.random.IsTrueWithProbability(chanceToCauseTrauma);
                 armorWound = ARMOR_INJURY.Clone(damage: bluntDamage, pain: bluntDamage, canCauseTrauma: canCauseTrauma);
             } else {
                 armorWound = default;
@@ -89,7 +89,7 @@ namespace GunshotWound2.WoundFeature {
             }
         }
 
-        private bool CheckArmorPenetration(Ped ped, in WeaponConfig.Weapon weapon) {
+        private bool CheckArmorPenetration(int armorBefore, in WeaponConfig.Weapon weapon) {
             ArmorConfig armorConfig = sharedData.mainConfig.armorConfig;
             if (string.IsNullOrEmpty(weapon.SafeArmorLevel)) {
 #if DEBUG
@@ -105,14 +105,13 @@ namespace GunshotWound2.WoundFeature {
             }
 
             ArmorConfig.Level weaponSafeLevel = armorConfig.GetArmorLevelByKey(weapon.SafeArmorLevel);
-            float saveProbability = armorConfig.GetArmorSaveProbability(weaponSafeLevel, ped.Armor);
+            float saveProbability = armorConfig.GetArmorSaveProbability(weaponSafeLevel, armorBefore);
             if (saveProbability >= 1f) {
 #if DEBUG
                 sharedData.logger.WriteInfo($"{weapon.Key} can't penetrate safe armor level {weapon.SafeArmorLevel}");
 
-                int armor = ped.Armor;
-                string armorKey = armorConfig.TryGetArmorLevel(armor, out ArmorConfig.Level level) ? level.Key : "NO ARMOR";
-                sharedData.logger.WriteInfo($"Target has {armorKey}({armor}) armor");
+                string armorKey = armorConfig.TryGetArmorLevel(armorBefore, out ArmorConfig.Level level) ? level.Key : "NO ARMOR";
+                sharedData.logger.WriteInfo($"Target has {armorKey}({armorBefore}) armor");
 #endif
                 return false;
             }

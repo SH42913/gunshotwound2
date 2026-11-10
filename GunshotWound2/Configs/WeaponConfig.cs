@@ -93,7 +93,6 @@ namespace GunshotWound2.Configs {
         public string sectionName => "Weapons.xml";
 
         private readonly List<string> invalidWeapons = new();
-        private readonly Dictionary<string, Weapon> representativeWeaponsByArmorLevel = new();
 
         public void FillFrom(XDocument doc) {
             XElement root = doc.Element(nameof(WeaponConfig))!;
@@ -149,52 +148,7 @@ namespace GunshotWound2.Configs {
                 }
             }
 
-            BuildRepresentativeWeaponsByArmorLevel(mainConfig, logger);
             SuggestWeapons(logger);
-        }
-
-        public bool TryGetWeaponForArmorLevel(string armorLevelKey, out Weapon weapon) {
-            return representativeWeaponsByArmorLevel.TryGetValue(armorLevelKey, out weapon);
-        }
-
-        private void BuildRepresentativeWeaponsByArmorLevel(MainConfig mainConfig, ILogger logger) {
-            representativeWeaponsByArmorLevel.Clear();
-
-            foreach (ArmorConfig.Level armorLevel in mainConfig.armorConfig.Levels) {
-                bool found = false;
-                Weapon representative = default;
-
-                foreach (Weapon weapon in Weapons) {
-                    if (weapon.SafeArmorLevel != armorLevel.Key || weapon.Hashes.Count < 1) {
-                        continue;
-                    }
-
-                    if (!found || CompareRepresentativeWeapons(weapon, representative) < 0) {
-                        representative = weapon;
-                        found = true;
-                    }
-                }
-
-                if (found) {
-                    representativeWeaponsByArmorLevel[armorLevel.Key] = representative;
-                } else {
-                    logger.WriteWarning($"No representative weapon for armor level {armorLevel.Key}");
-                }
-            }
-        }
-
-        private static int CompareRepresentativeWeapons(in Weapon candidate, in Weapon current) {
-            int armorDamageCompare = current.ArmorDamage.CompareTo(candidate.ArmorDamage);
-            if (armorDamageCompare != 0) {
-                return armorDamageCompare;
-            }
-
-            int damageMultCompare = current.DBPMults.damage.CompareTo(candidate.DBPMults.damage);
-            if (damageMultCompare != 0) {
-                return damageMultCompare;
-            }
-
-            return string.Compare(current.Key, candidate.Key, StringComparison.Ordinal);
         }
 
         private void SuggestWeapons(ILogger logger) {

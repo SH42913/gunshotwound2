@@ -14,13 +14,8 @@ Pain,Pain level,Уровень боли,Schmerz,,Poziom bólu,,Nível de dor,Niv
 PainDecreasedMessage,You feel better,Вы чувствуете себя лучше,Die Schmerzen werden besser,,Czujesz się lepiej,,Você se sente melhor,Te sientes mejor,Du mår bättre,気分が良くなった,你感覺好多了,你感觉好多了,,Sinusta tuntuu paremmalta
 TotallyHealedMessage,You are totally healed!,Вы абсолютно здоровы,Du bist wieder gesund,,Jesteś całkowicie uzdrowiony,,Você está totalmente curado!,¡Ya estás completamente curado!,Du är helt frisk!,完全に回復した,你已經完全康復,你已经完全康复,,Olet täysin parantunut!
 ,,,,,,,,,,,,,,
-ArmorClassI,Armor Level I (melee),Броня I класса защиты (ближний бой),Schutzweste I (Nahkampf),,Poziom I ochrony balistycznej pancerza (broń obuchowa),,Armadura Nível I (armas brancas),Nivel de blindaje I (cuerpo a cuerpo),Rustning Nivå I (närstrid),アーマークラス I,一級護甲（近戰防護）,一级护甲（近战防护）,,Panssari I (lähitaisteluaseet)
-ArmorClassII,Armor Level II (pistols),Броня II класса защиты (пистолеты),Schutzweste II (Pistolen),,Poziom II ochrony balistycznej pancerza (pistolety),,Armadura Nível II (pistolas),Nivel de blindaje II (pistolas),Pansarnivå II (pistoler),アーマークラス II,二級護甲（手槍防護）,二级护甲（手枪防护）,,Panssari II (pistoolit)
-ArmorClassIII,Armor Level III (carbines),Броня III класса защиты (дробовики),Schutzweste III (Gewehre),,Poziom III ochrony balistycznej pancerza (karabinki),,Armadura Nível III (carabinas),Nivel de blindaje III (carabinas),Pansarnivå III (karbiner),アーマークラス III,三級護甲（卡賓槍防護）,三级护甲（卡宾枪防护）,,Panssari III (pienikaliiperiset kiväärit)
-ArmorClassIV,Armor Level IV (rifles),Броня IV класса защиты (карабины),Schutzweste IV (Gewehre),,Poziom IV ochrony balistycznej pancerza (karabiny),,Armadura Nível IV (fuzis),Nivel de blindaje IV (rifles),Pansarnivå IV (gevär),アーマークラス IV,四級護甲（步槍防護）,四级护甲（步枪防护）,,Panssari IV (kiväärit)
-ArmorClassV,Armor Level V (rifles),Броня V класса защиты (винтовки),Schutzweste V (Gewehre),,Poziom V ochrony balistycznej pancerza (karabiny),,Armadura Nível V (fuzis),Nivel de blindaje V (rifles),Pansarnivå V (gevär),アーマークラス V,五級護甲（步槍防護）,五级护甲（步枪防护）,,Panssari V (suojaa isokaliiperisilta kivääreiltä)
+Armor.Label,Armor: {0},Броня: {0},,,,,,,,,,,,
 Armor.SaveChance,Armor stops {0} with chance {1},Броня остановит {0} с шансом {1},,,,,,,,,,,,
-Armor.SaveFallbackWeapon,melee hit,рукопашный удар,,,,,,,,,,,,
 ,,,,,,,,,,,,,,
 DontHaveMoneyForHelmet,Insufficient funds to purchase a helmet,Недостаточно денег для покупки шлема,Du hast nicht genug Geld für einen Helm,Vous n'avez pas assez d'argent pour acheter un casque,Nie masz wystarczających pieniędzy aby kupić hełm,당신은 헬멧을 사기에 충분한 돈을 가지고 있지 않다,Você não tem dinheiro suficiente para comprar um capacete,No tienes suficientes fondos para comprar un casco,Otillräckligt med pengar för köpa hjälm,ヘルメットを購入するお金が足りません,你的錢不夠，無法購買頭盔,你的钱不够，无法购买头盔,Insufficient funds to purchase a helmet,Ei tarpeeksi varoja kypärän ostamiseen
 ,,,,,,,,,,,,,,

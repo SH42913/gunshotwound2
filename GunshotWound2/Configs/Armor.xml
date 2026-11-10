@@ -1,33 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ArmorConfig>
     <MinimalChanceForArmorSave Value="0.1"/>
-    <!-- 0.3 means 30% chance to save, when there's at least 1 armor point.
-    100 armor points will always 100% chance to save. -->
+    <!-- 0.1 = 10% minimum save chance at 1 armor point; at full MaxValue for the level, save chance is 100%. -->
 
     <HelmetPropIndexes Indexes="16;17;18;38;39;47;48;49;50;51;52;53;57;59;62;67;68;69;70;71;72;73;74;75;78;79;80;
                                 81;82;84;85;86;87;88;89;90;91;92;93;111;112;115;116;117;118;119;123;124;125;
                                 126;127;128;129;133;134;137;138;141;144;145;150;187;188;202;203;204;207;208;213;229;"/>
     <!-- You can add here prop indexes that GSW will use as helmets -->
 
+    <!-- NIJ Standard-0101.06 levels use Ammu-Nation values 20 / 40 / 60 / 80 / 100.
+         Special is mission armor up to 200 and is not an NIJ type. A fresh vest at MaxValue is a 100% save.
+         TestRound must match the ShortDesc of a weapon in Weapons.xml whose SafeArmorLevel equals this level. -->
     <Levels>
-        <Level Key="ClassI" LocKey="ArmorClassI"
+        <Level Key="TypeIIA" ShortDesc="Type IIA" TestRound="9x19 FMJ"
                Parts="Chest;Abdomen;"
-               MaxValue="20" ColorPrefix="~r~" TraumaPadEfficiency="0.1"/>
+               MaxValue="20" TraumaPadEfficiency="0.20"/>
 
-        <Level Key="ClassII" LocKey="ArmorClassII"
+        <Level Key="TypeII" ShortDesc="Type II" TestRound=".357 Magnum"
                Parts="Chest;Abdomen;"
-               MaxValue="40" ColorPrefix="~o~" TraumaPadEfficiency="0.3"/>
+               MaxValue="40" TraumaPadEfficiency="0.35"/>
 
-        <Level Key="ClassIII" LocKey="ArmorClassIII"
+        <Level Key="TypeIIIA" ShortDesc="Type IIIA" TestRound=".44 Magnum"
+               Parts="Chest;Abdomen;"
+               MaxValue="60" TraumaPadEfficiency="0.50"/>
+
+        <Level Key="TypeIII" ShortDesc="Type III" TestRound="7.62x51 NATO"
                Parts="Chest;Abdomen;LeftShoulder;RightShoulder;"
-               MaxValue="60" ColorPrefix="~y~" TraumaPadEfficiency="0.7"/>
+               MaxValue="80" TraumaPadEfficiency="0.65"/>
 
-        <Level Key="ClassIV" LocKey="ArmorClassIV"
-               Parts="Neck;Chest;Abdomen;LeftShoulder;RightShoulder;"
-               MaxValue="80" ColorPrefix="~g~" TraumaPadEfficiency="0.85"/>
-
-        <Level Key="ClassV" LocKey="ArmorClassV"
+        <Level Key="TypeIV" ShortDesc="Type IV" TestRound="7.62x39 AP"
                Parts="Neck;Chest;Abdomen;Pelvis;LeftShoulder;RightShoulder;"
-               MaxValue="200" ColorPrefix="~g~" TraumaPadEfficiency="0.95"/>
+               MaxValue="100" TraumaPadEfficiency="0.75"/>
+
+        <Level Key="Special" ShortDesc="Special" TestRound=".50 BMG"
+               Parts="Neck;Chest;Abdomen;Pelvis;LeftShoulder;RightShoulder;"
+               MaxValue="200" TraumaPadEfficiency="0.85"/>
     </Levels>
 </ArmorConfig>

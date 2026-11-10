@@ -13,17 +13,17 @@ namespace GunshotWound2.Configs {
 
         public readonly struct Level {
             public readonly string Key;
-            public readonly string LocKey;
+            public readonly string ShortDesc;
+            public readonly string TestRound;
             public readonly int MaxValue;
-            public readonly string ColorPrefix;
             public readonly HashSet<string> Parts;
             public readonly float TraumaPadEfficiency;
 
             public Level(XElement node) {
                 Key = node.GetString(nameof(Key));
-                LocKey = node.GetString(nameof(LocKey));
+                ShortDesc = node.GetString(nameof(ShortDesc));
+                TestRound = node.GetString(nameof(TestRound));
                 MaxValue = node.GetInt(nameof(MaxValue));
-                ColorPrefix = node.GetString(nameof(ColorPrefix));
                 Parts = node.GetString(nameof(Parts))
                             .Split(MainConfig.Separator, StringSplitOptions.RemoveEmptyEntries)
                             .ToHashSet();
@@ -59,6 +59,10 @@ namespace GunshotWound2.Configs {
             foreach (Level level in Levels) {
                 if (level.MaxValue < MIN_ARMOR_VALUE) {
                     logger.WriteWarning($"MaxValue for {level.Key} must be positive");
+                }
+
+                if (string.IsNullOrWhiteSpace(level.TestRound)) {
+                    logger.WriteWarning($"{level.Key} has no NIJ test round");
                 }
 
                 foreach (string key in level.Parts) {
