@@ -102,6 +102,21 @@ namespace GunshotWound2.Configs {
             return true;
         }
 
+        public float GetArmorSaveProbability(in Level armorLevel, int armorValue) {
+            int maxValue = armorLevel.MaxValue;
+            if (maxValue < MIN_ARMOR_VALUE) {
+                throw new ArgumentOutOfRangeException(nameof(armorLevel));
+            }
+
+            float armorPercent = (float)armorValue / maxValue;
+            if (armorPercent >= 1f) {
+                return 1f;
+            }
+
+            float chanceForArmorPercent = 1f - MinimalChanceForArmorSave;
+            return MinimalChanceForArmorSave + chanceForArmorPercent * armorPercent;
+        }
+
         private static HashSet<int> ExtractHelmets(XElement node) {
             string indexesString = node?.Element(nameof(HelmetPropIndexes))?.Attribute("Indexes")?.Value;
             return string.IsNullOrEmpty(indexesString)

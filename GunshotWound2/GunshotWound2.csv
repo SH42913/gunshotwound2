@@ -19,6 +19,8 @@ ArmorClassII,Armor Level II (pistols),Броня II класса защиты (�
 ArmorClassIII,Armor Level III (carbines),Броня III класса защиты (дробовики),,,,,Armadura Nível III (carabinas),,Pansarnivå III (karbiner),アーマークラス III,三級護甲（卡賓槍防護）,三级护甲（卡宾枪防护）,,Panssari III (suojaa pienikaliiperisilta kivääreiltä)
 ArmorClassIV,Armor Level IV (rifles),Броня IV класса защиты (карабины),,,,,Armadura Nível IV (fuzis),,Pansarnivå IV (gevär),アーマークラス IV,四級護甲（步槍防護）,四级护甲（步枪防护）,,Panssari IV (suojaa kivääreiltä)
 ArmorClassV,Armor Level V (rifles),Броня V класса защиты (винтовки),,,,,Armadura Nível V (fuzis),,Pansarnivå V (gevär),アーマークラス V,五級護甲（步槍防護）,五级护甲（步枪防护）,,Panssari V (suojaa isokaliiperisilta kivääreiltä)
+Armor.SaveChance,Armor stops {0} with chance {1},Броня остановит {0} с шансом {1},,,,,,,,,,,,
+Armor.SaveFallbackWeapon,melee hit,рукопашный удар,,,,,,,,,,,,
 ,,,,,,,,,,,,,,
 DontHaveMoneyForHelmet,Insufficient funds to purchase a helmet,Недостаточно денег для покупки шлема,Du hast nicht genug Geld für einen Helm,Vous n'avez pas assez d'argent pour acheter un casque,Nie masz wystarczających pieniędzy aby kupić hełm,당신은 헬멧을 사기에 충분한 돈을 가지고 있지 않다,Você não tem dinheiro suficiente para comprar um capacete,No tienes suficientes fondos para comprar un casco,Otillräckligt med pengar för köpa hjälm,ヘルメットを買うお金がない,你的錢不夠，無法購買頭盔,你的钱不够，无法购买头盔,Insufficient funds to purchase a helmet,Ei tarpeeksi varoja kypärän ostamiseen
 ,,,,,,,,,,,,,,

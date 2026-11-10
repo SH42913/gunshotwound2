@@ -176,18 +176,36 @@ namespace GunshotWound2.Services {
                 return;
             }
 
-            if (!mainConfig.armorConfig.TryGetArmorLevel(convertedPed.thisPed.Armor, out ArmorConfig.Level armorLevel)) {
+            int armor = convertedPed.thisPed.Armor;
+            if (!mainConfig.armorConfig.TryGetArmorLevel(armor, out ArmorConfig.Level armorLevel)) {
                 return;
             }
 
-            string message = localeConfig.GetTranslation(armorLevel.LocKey);
-            string color = armorLevel.ColorPrefix;
             stringBuilder.AppendEndOfLine();
-            stringBuilder.Append(color);
-            stringBuilder.Append(message);
+            stringBuilder.SetDefaultColor();
+            stringBuilder.Append(localeConfig.GetTranslation(armorLevel.LocKey));
 #if DEBUG
-            stringBuilder.AppendFormat(" ({0})", convertedPed.thisPed.Armor.ToString());
+            stringBuilder.AppendFormat(" ({0})", armor.ToString());
 #endif
+            stringBuilder.AppendEndOfLine();
+
+            float saveProbability = mainConfig.armorConfig.GetArmorSaveProbability(armorLevel, armor);
+            Notifier.Color saveChanceColor = saveProbability switch {
+                >= 1f   => Notifier.Color.GREEN,
+                >= 0.6f => Notifier.Color.YELLOW,
+                >= 0.3f => Notifier.Color.ORANGE,
+                _       => Notifier.Color.RED,
+            };
+
+            saveChanceColor.AppendTo(stringBuilder);
+
+            string message = localeConfig.GetTranslation("Armor.SaveChance");
+            string weaponDesc = mainConfig.weaponConfig.TryGetWeaponForArmorLevel(armorLevel.Key, out WeaponConfig.Weapon weapon)
+                                && !string.IsNullOrWhiteSpace(weapon.ShortDesc)
+                    ? weapon.ShortDesc
+                    : localeConfig.GetTranslation("Armor.SaveFallbackWeapon");
+
+            stringBuilder.AppendFormat(message, weaponDesc, saveProbability.ToString("P0"));
             stringBuilder.SetDefaultColor();
         }
 

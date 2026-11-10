@@ -105,8 +105,8 @@ namespace GunshotWound2.WoundFeature {
             }
 
             ArmorConfig.Level weaponSafeLevel = armorConfig.GetArmorLevelByKey(weapon.SafeArmorLevel);
-            float armorPercent = (float)ped.Armor / weaponSafeLevel.MaxValue;
-            if (armorPercent >= 1f) {
+            float saveProbability = armorConfig.GetArmorSaveProbability(weaponSafeLevel, ped.Armor);
+            if (saveProbability >= 1f) {
 #if DEBUG
                 sharedData.logger.WriteInfo($"{weapon.Key} can't penetrate safe armor level {weapon.SafeArmorLevel}");
 
@@ -117,8 +117,6 @@ namespace GunshotWound2.WoundFeature {
                 return false;
             }
 
-            float chanceForArmorPercent = 1f - armorConfig.MinimalChanceForArmorSave;
-            float saveProbability = armorConfig.MinimalChanceForArmorSave + chanceForArmorPercent * armorPercent;
             if (sharedData.random.IsTrueWithProbability(saveProbability)) {
 #if DEBUG
                 sharedData.logger.WriteInfo($"Armor deflected damage, save probability {saveProbability.ToString("F2")}");
